@@ -3,10 +3,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://Han-think.github.io/categories/</loc>
-  </url><url>
     <loc>https://Han-think.github.io/</loc>
+    <lastmod>2026-05-27T09:02:57+09:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/posts/</loc>
+    <lastmod>2026-05-27T09:02:57+09:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/</loc>
+    <lastmod>2026-05-27T09:02:57+09:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/%EB%B8%94%EB%A1%9C%EA%B7%B8/</loc>
+    <lastmod>2026-05-27T09:02:57+09:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/%EC%8B%9C%EC%9E%91/</loc>
+    <lastmod>2026-05-27T09:02:57+09:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/posts/%EC%B2%AB%EB%B2%88%EC%A7%B8-%EA%B8%80/</loc>
+    <lastmod>2026-05-27T09:02:57+09:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/categories/</loc>
   </url>
 </urlset>
