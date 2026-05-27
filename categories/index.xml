@@ -6,20 +6,41 @@
     <description>Recent content in Categories on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-kr</language>
-    <lastBuildDate>Wed, 27 May 2026 00:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 27 May 2026 05:00:00 +0900</lastBuildDate>
     <atom:link href="https://Han-think.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Music</title>
       <link>https://Han-think.github.io/categories/music/</link>
-      <pubDate>Wed, 27 May 2026 00:00:00 +0900</pubDate>
+      <pubDate>Wed, 27 May 2026 05:00:00 +0900</pubDate>
       <guid>https://Han-think.github.io/categories/music/</guid>
       <description></description>
     </item>
     <item>
-      <title>Updates</title>
-      <link>https://Han-think.github.io/categories/updates/</link>
-      <pubDate>Wed, 27 May 2026 00:00:00 +0900</pubDate>
-      <guid>https://Han-think.github.io/categories/updates/</guid>
+      <title>Data</title>
+      <link>https://Han-think.github.io/categories/data/</link>
+      <pubDate>Wed, 27 May 2026 04:00:00 +0900</pubDate>
+      <guid>https://Han-think.github.io/categories/data/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Video</title>
+      <link>https://Han-think.github.io/categories/video/</link>
+      <pubDate>Wed, 27 May 2026 03:00:00 +0900</pubDate>
+      <guid>https://Han-think.github.io/categories/video/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Image</title>
+      <link>https://Han-think.github.io/categories/image/</link>
+      <pubDate>Wed, 27 May 2026 02:00:00 +0900</pubDate>
+      <guid>https://Han-think.github.io/categories/image/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Llm</title>
+      <link>https://Han-think.github.io/categories/llm/</link>
+      <pubDate>Wed, 27 May 2026 01:00:00 +0900</pubDate>
+      <guid>https://Han-think.github.io/categories/llm/</guid>
       <description></description>
     </item>
   </channel>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Diffusers on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/diffusers/</link>
+    <description>Recent content in Diffusers on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-kr</language>
+    <lastBuildDate>Wed, 27 May 2026 02:00:00 +0900</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/diffusers/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[이미지 AI] Stable Diffusion · Intel Arc에서 IPEX로 돌리기</title>
+      <link>https://Han-think.github.io/posts/recipes/stable-diffusion-ipex/</link>
+      <pubDate>Wed, 27 May 2026 02:00:00 +0900</pubDate>
+      <guid>https://Han-think.github.io/posts/recipes/stable-diffusion-ipex/</guid>
+      <description>NVIDIA 없이 Intel Arc GPU로 Stable Diffusion을 실행하는 검증된 환경 레시피 · IPEX-LLM과 diffusers 연동</description>
+    </item>
+  </channel>
+</rss>

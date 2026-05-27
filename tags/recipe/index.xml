@@ -6,8 +6,43 @@
     <description>Recent content in Recipe on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-kr</language>
-    <lastBuildDate>Wed, 27 May 2026 00:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 27 May 2026 05:00:00 +0900</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/recipe/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[음악 AI] AudioCraft — Meta의 AI 음악 생성, 로컬 설치</title>
+      <link>https://Han-think.github.io/posts/recipes/audiocraft-setup/</link>
+      <pubDate>Wed, 27 May 2026 05:00:00 +0900</pubDate>
+      <guid>https://Han-think.github.io/posts/recipes/audiocraft-setup/</guid>
+      <description>Meta AudioCraft(MusicGen)을 로컬에서 설치하고 텍스트로 음악을 생성하는 레시피 · 패키지 의존성 지뢰밭 해결</description>
+    </item>
+    <item>
+      <title>[데이터] pandas · numpy · matplotlib 로컬 AI 연동 환경</title>
+      <link>https://Han-think.github.io/posts/recipes/pandas-ai-env/</link>
+      <pubDate>Wed, 27 May 2026 04:00:00 +0900</pubDate>
+      <guid>https://Han-think.github.io/posts/recipes/pandas-ai-env/</guid>
+      <description>데이터 분석 도구와 로컬 AI를 연동하는 Python 환경 구성 · conda 기반 안정적인 패키지 조합</description>
+    </item>
+    <item>
+      <title>[영상 AI] 로컬 영상 생성 환경 만들기 — 선택지와 현실</title>
+      <link>https://Han-think.github.io/posts/recipes/videocrafter-local/</link>
+      <pubDate>Wed, 27 May 2026 03:00:00 +0900</pubDate>
+      <guid>https://Han-think.github.io/posts/recipes/videocrafter-local/</guid>
+      <description>로컬에서 AI 영상 생성이 가능한가? 선택지별 요구 사양과 현실적인 접근법 정리</description>
+    </item>
+    <item>
+      <title>[이미지 AI] Stable Diffusion · Intel Arc에서 IPEX로 돌리기</title>
+      <link>https://Han-think.github.io/posts/recipes/stable-diffusion-ipex/</link>
+      <pubDate>Wed, 27 May 2026 02:00:00 +0900</pubDate>
+      <guid>https://Han-think.github.io/posts/recipes/stable-diffusion-ipex/</guid>
+      <description>NVIDIA 없이 Intel Arc GPU로 Stable Diffusion을 실행하는 검증된 환경 레시피 · IPEX-LLM과 diffusers 연동</description>
+    </item>
+    <item>
+      <title>[LLM] Ollama 로컬 설치 — Windows에서 모델 내려받고 바로 쓰기</title>
+      <link>https://Han-think.github.io/posts/recipes/ollama-local-setup/</link>
+      <pubDate>Wed, 27 May 2026 01:00:00 +0900</pubDate>
+      <guid>https://Han-think.github.io/posts/recipes/ollama-local-setup/</guid>
+      <description>Windows 환경에서 Ollama를 설치하고 로컬 LLM을 띄우는 최단 경로 · GPU 감지부터 모델 실행까지</description>
+    </item>
     <item>
       <title>[음악 AI] Magenta — 처음 만난 AI 작곡, 그리고 벽</title>
       <link>https://Han-think.github.io/posts/recipes/magenta-music-conda/</link>
