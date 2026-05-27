@@ -10,9 +10,9 @@
     <atom:link href="https://Han-think.github.io/tags/musicgen/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[음악 AI] AudioCraft — Meta의 AI 음악 생성, 로컬 설치</title>
-      <link>https://Han-think.github.io/posts/recipes/audiocraft-setup/</link>
+      <link>https://Han-think.github.io/posts/generator/audiocraft-setup/</link>
       <pubDate>Wed, 27 May 2026 05:00:00 +0900</pubDate>
-      <guid>https://Han-think.github.io/posts/recipes/audiocraft-setup/</guid>
+      <guid>https://Han-think.github.io/posts/generator/audiocraft-setup/</guid>
       <description>Meta AudioCraft(MusicGen)을 로컬에서 설치하고 텍스트로 음악을 생성하는 레시피 · 패키지 의존성 지뢰밭 해결</description>
     </item>
   </channel>

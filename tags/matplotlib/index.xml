@@ -10,9 +10,9 @@
     <atom:link href="https://Han-think.github.io/tags/matplotlib/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[데이터] pandas · numpy · matplotlib 로컬 AI 연동 환경</title>
-      <link>https://Han-think.github.io/posts/recipes/pandas-ai-env/</link>
+      <link>https://Han-think.github.io/posts/dataset/pandas-ai-env/</link>
       <pubDate>Wed, 27 May 2026 04:00:00 +0900</pubDate>
-      <guid>https://Han-think.github.io/posts/recipes/pandas-ai-env/</guid>
+      <guid>https://Han-think.github.io/posts/dataset/pandas-ai-env/</guid>
       <description>데이터 분석 도구와 로컬 AI를 연동하는 Python 환경 구성 · conda 기반 안정적인 패키지 조합</description>
     </item>
   </channel>

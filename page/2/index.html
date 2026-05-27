@@ -168,15 +168,15 @@
     </h2>
   </header>
   <div class="entry-content">
-    <p> ⬇ BookCrawler 소스 다운로드 (ZIP · 전체 파이프라인) 개요 books.toscrape.com에서 책 정보를 수집해 Hugo 블로그에 5분 간격으로 자동 발행하는 파이프라인입니다.
+    <p>⬇ BookCrawler 소스 다운로드 (ZIP · 전체 파이프라인)개요 books.toscrape.com에서 책 정보를 수집해 Hugo 블로그에 5분 간격으로 자동 발행하는 파이프라인입니다.
 스크레이핑 → 변환 → Git 자동화 → 스케줄링까지 전 과정을 Python 모듈로 구성했습니다.
-파이프라인 구조 run.py (진입점 · argparse) │ ├─ pipeline.py (오케스트레이터) │ ├─ PHASE 1 ─ scraper.py ← requests &#43; BeautifulSoup4 │ │ queue_manager.py ← books.json / queue.json 관리 │ │ │ └─ PHASE 2 ─ scheduler.py ← schedule 라이브러리 (5분 주기) │ converter.py ← dict → Hugo .md (TOML front matter) │ publisher.py ← Hugo build &#43; git push (subprocess) │ └─ config.py (URL, 경로, 상수 중앙 관리) 모듈별 역할 scraper.py — 수집 (requests &#43; BeautifulSoup4) from scraper import scrape_books_with_details books = scrape_books_with_details(pages=5, limit=10) # [{&#34;title&#34;: &#34;...&#34;, &#34;price&#34;: 12.34, &#34;rating&#34;: 4, &#34;category&#34;: &#34;Mystery&#34;, ...}, ...] page-{N}.html 목록 → article.product_pod 파싱 상세 페이지 → 카테고리(breadcrumb), 설명, UPC 추출 requests.Session 재사용 &#43; time.sleep(1) (예의 바른 크롤링) converter.py — 변환 from converter import save_markdown from datetime import datetime, timezone, timedelta path = save_markdown(book, pub_date=datetime.now(timezone(timedelta(hours=9)))) # → content/posts/book-reviews/2026-05-27_a-light-in-the-attic.md Hugo TOML front matter 생성:
+파이프라인 구조 run.py (진입점 · argparse)│├─ pipeline.py (오케스트레이터)│ ├─ PHASE 1 ─ scraper.py ← requests &#43; BeautifulSoup4│ │ queue_manager.py ← books.json / queue.json 관리│ ││ └─ PHASE 2 ─ scheduler.py ← schedule 라이브러리 (5분 주기)│ converter.py ← dict → Hugo .md (TOML front matter)│ publisher.py ← Hugo build &#43; git push (subprocess)│└─ config.py (URL, 경로, 상수 중앙 관리) 모듈별 역할 scraper.py — 수집 (requests &#43; BeautifulSoup4) from scraper import scrape_books_with_details books = scrape_books_with_details(pages=5, limit=10) # [{&#34;title&#34;: &#34;...&#34;, &#34;price&#34;: 12.34, &#34;rating&#34;: 4, &#34;category&#34;: &#34;Mystery&#34;, ...}, ...] page-{N}.html 목록 → article.product_pod 파싱 상세 페이지 → 카테고리(breadcrumb), 설명, UPC 추출 requests.Session 재사용 &#43; time.sleep(1) (예의 바른 크롤링) converter.py — 변환 from converter import save_markdown from datetime import datetime, timezone, timedelta path = save_markdown(book, pub_date=datetime.now(timezone(timedelta(hours=9)))) # → content/posts/book-reviews/2026-05-27_a-light-in-the-attic.md Hugo TOML front matter 생성:
 ...</p>
   </div>
   <footer class="entry-footer">
 
 <span title='2026-05-27 10:00:00 +0900 KST'>2026년 5월 27일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
-  <a class="entry-link" aria-label="post link to BookCrawler — 웹 크롤링부터 블로그 자동 발행까지" href="https://Han-think.github.io/posts/recipes/bookcrawler-pipeline/"></a>
+  <a class="entry-link" aria-label="post link to BookCrawler — 웹 크롤링부터 블로그 자동 발행까지" href="https://Han-think.github.io/posts/dataset/bookcrawler-pipeline/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -243,7 +243,7 @@
 하지만 실제로 코드가 하는 일은 “브라우저가 하는 것을 그대로 따라 하는 것” 입니다.
 브라우저가 주소 치고 → 페이지 받고 → 내용 읽는 것처럼요.
 1. 크롤러가 페이지를 넘기는 방법 — URL 패턴 브라우저로 books.toscrape.com을 직접 열어보면 이런 URL이 보입니다:
-http://books.toscrape.com/catalogue/page-1.html ← 1페이지 http://books.toscrape.com/catalogue/page-2.html ← 2페이지 http://books.toscrape.com/catalogue/page-3.html ← 3페이지 패턴이 보이죠? 숫자만 바뀝니다.
+http://books.toscrape.com/catalogue/page-1.html ← 1페이지http://books.toscrape.com/catalogue/page-2.html ← 2페이지http://books.toscrape.com/catalogue/page-3.html ← 3페이지 패턴이 보이죠? 숫자만 바뀝니다.
 크롤러는 이 규칙을 이용해서 반복문으로 URL을 만들어냅니다:
 for page_num in range(1, 6): # 1, 2, 3, 4, 5 url = f&#34;http://books.toscrape.com/catalogue/page-{page_num}.html&#34; # → 이 주소로 요청을 보냄 이게 전부입니다. 페이지 넘기기 = URL 숫자 바꾸기.
 ...</p>
@@ -251,7 +251,7 @@ for page_num in range(1, 6): # 1, 2, 3, 4, 5 url = f&#34;http://books.toscrape.c
   <footer class="entry-footer">
 
 <span title='2026-05-27 09:00:00 +0900 KST'>2026년 5월 27일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
-  <a class="entry-link" aria-label="post link to 크롤링은 어떻게 페이지를 넘어가나 — 명령어와 구조로 읽는 웹 수집" href="https://Han-think.github.io/posts/recipes/how-crawling-works/"></a>
+  <a class="entry-link" aria-label="post link to 크롤링은 어떻게 페이지를 넘어가나 — 명령어와 구조로 읽는 웹 수집" href="https://Han-think.github.io/posts/dataset/how-crawling-works/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -261,14 +261,14 @@ for page_num in range(1, 6): # 1, 2, 3, 4, 5 url = f&#34;http://books.toscrape.c
   </header>
   <div class="entry-content">
     <p>AudioCraft란 Meta가 공개한 오디오 생성 프레임워크다. 텍스트 프롬프트로 음악(MusicGen), 효과음(AudioGen), 고품질 오디오(EnCodec)를 만든다.
-&#34;upbeat jazz with piano and drums, 120bpm&#34; → .wav 파일 생성 요구 사양 항목 최소 권장 VRAM 4 GB 8 GB RAM 8 GB 16 GB Python 3.9 3.10 AudioCraft는 Python 3.11 이상에서 설치 실패하는 경우가 많다. conda로 3.10 환경을 별도 구성하는 것을 강하게 권장.
+&#34;upbeat jazz with piano and drums, 120bpm&#34;→ .wav 파일 생성 요구 사양 항목 최소 권장 VRAM 4 GB 8 GB RAM 8 GB 16 GB Python 3.9 3.10 AudioCraft는 Python 3.11 이상에서 설치 실패하는 경우가 많다. conda로 3.10 환경을 별도 구성하는 것을 강하게 권장.
 설치 (검증된 경로) # 1. Python 3.10 conda 환경 conda create -n audiocraft python=3.10 -y conda activate audiocraft # 2. PyTorch (CUDA 12.1 기준) pip install torch==2.1.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu121 # 3. AudioCraft 설치 pip install audiocraft==1.3.0 # 4. 의존성 확인 python -c &#34;import audiocraft; print(&#39;OK&#39;)&#34; 자주 만나는 오류 ERROR: No matching distribution found for demucs==4.0.0 → pip install demucs==4.0.1로 먼저 설치 후 재시도
 ...</p>
   </div>
   <footer class="entry-footer">
 
 <span title='2026-05-27 05:00:00 +0900 KST'>2026년 5월 27일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
-  <a class="entry-link" aria-label="post link to [음악 AI] AudioCraft — Meta의 AI 음악 생성, 로컬 설치" href="https://Han-think.github.io/posts/recipes/audiocraft-setup/"></a>
+  <a class="entry-link" aria-label="post link to [음악 AI] AudioCraft — Meta의 AI 음악 생성, 로컬 설치" href="https://Han-think.github.io/posts/generator/audiocraft-setup/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -283,7 +283,7 @@ for page_num in range(1, 6): # 1, 2, 3, 4, 5 url = f&#34;http://books.toscrape.c
   <footer class="entry-footer">
 
 <span title='2026-05-27 04:00:00 +0900 KST'>2026년 5월 27일</span>&nbsp;·&nbsp;<span>1 min</span></footer>
-  <a class="entry-link" aria-label="post link to [데이터] pandas · numpy · matplotlib 로컬 AI 연동 환경" href="https://Han-think.github.io/posts/recipes/pandas-ai-env/"></a>
+  <a class="entry-link" aria-label="post link to [데이터] pandas · numpy · matplotlib 로컬 AI 연동 환경" href="https://Han-think.github.io/posts/dataset/pandas-ai-env/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -300,7 +300,7 @@ conda create -n wan21 python=3.11 -y conda activate wan21 pip install torch==2.4
   <footer class="entry-footer">
 
 <span title='2026-05-27 03:00:00 +0900 KST'>2026년 5월 27일</span>&nbsp;·&nbsp;<span>1 min</span></footer>
-  <a class="entry-link" aria-label="post link to [영상 AI] 로컬 영상 생성 환경 만들기 — 선택지와 현실" href="https://Han-think.github.io/posts/recipes/videocrafter-local/"></a>
+  <a class="entry-link" aria-label="post link to [영상 AI] 로컬 영상 생성 환경 만들기 — 선택지와 현실" href="https://Han-think.github.io/posts/generator/videocrafter-local/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -316,7 +316,7 @@ conda create -n wan21 python=3.11 -y conda activate wan21 pip install torch==2.4
   <footer class="entry-footer">
 
 <span title='2026-05-27 02:00:00 +0900 KST'>2026년 5월 27일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
-  <a class="entry-link" aria-label="post link to [이미지 AI] Stable Diffusion · Intel Arc에서 IPEX로 돌리기" href="https://Han-think.github.io/posts/recipes/stable-diffusion-ipex/"></a>
+  <a class="entry-link" aria-label="post link to [이미지 AI] Stable Diffusion · Intel Arc에서 IPEX로 돌리기" href="https://Han-think.github.io/posts/generator/stable-diffusion-ipex/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -332,7 +332,7 @@ conda create -n wan21 python=3.11 -y conda activate wan21 pip install torch==2.4
   <footer class="entry-footer">
 
 <span title='2026-05-27 01:00:00 +0900 KST'>2026년 5월 27일</span>&nbsp;·&nbsp;<span>1 min</span></footer>
-  <a class="entry-link" aria-label="post link to [LLM] Ollama 로컬 설치 — Windows에서 모델 내려받고 바로 쓰기" href="https://Han-think.github.io/posts/recipes/ollama-local-setup/"></a>
+  <a class="entry-link" aria-label="post link to [LLM] Ollama 로컬 설치 — Windows에서 모델 내려받고 바로 쓰기" href="https://Han-think.github.io/posts/setup/ollama-local-setup/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
