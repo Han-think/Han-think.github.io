@@ -11,7 +11,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="canonical" href="https://Han-think.github.io/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.89ca4972ab5e6aaa05e9a0dae0c4bb64b26585bc79e36f5cf33614eea0283abe.css" integrity="sha256-icpJcqteaqoF6aDa4MS7ZLJlhbx5429c8zYU7qAoOr4=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.10becfcd26f1b7b2a49cebd36b6eae9c01dc797f79da2d5e6fee612fec3b1b5e.css" integrity="sha256-EL7PzSbxt7KknOvTa26unAHceX952i1eb&#43;5hL&#43;w7G14=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://Han-think.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
@@ -166,21 +166,212 @@
     </nav>
 </header>
 <main class="main"> 
-<article class="first-entry home-info">
-    <header class="entry-header">
-        <h1>👋 Python 창작 AI 레시피 맵</h1>
-    </header>
-    <div class="entry-content md-content">
-        
-        <p>검증된 Python 환경 레시피 · 음악 · 이미지 · 영상 · 데이터 · LLM</p>
+<section class="home-info madang-hero">
+  <div class="madang-inner">
+
+    
+    <div class="madang-top-rule">
+      <span class="rule-accent"></span>
+      <span class="rule-mark">&#x25C6;</span>
+      <span class="rule-accent"></span>
+    </div>
+
+    
+    <h1 class="madang-title">Python 창작 AI 레시피 맵</h1>
+
+    
+    <p class="madang-sub">
+      Python으로 여는 창작 AI의 길<br>
+      <span class="madang-sub-em">음악 · 이미지 · 영상 · 언어 · 데이터</span>
+    </p>
+
+    
+    <div class="madang-desc">
+      
+      <p>검증된 Python 환경 레시피 · 음악 · 이미지 · 영상 · 데이터 · LLM</p>
 
     </div>
-    <footer class="entry-footer">
-        <div class="social-icons" >
-</div>
 
-    </footer>
-</article>
+    
+    <div class="madang-pillars">
+      <div class="pillar">
+        <span class="pillar-glyph">環</span>
+        <span class="pillar-label">로컬 환경 최적화</span>
+        <span class="pillar-note">Intel Arc · NVIDIA · CPU-only</span>
+      </div>
+      <div class="pillar-divider"></div>
+      <div class="pillar">
+        <span class="pillar-glyph">法</span>
+        <span class="pillar-label">검증된 설치 레시피</span>
+        <span class="pillar-note">패키지 버전 · 의존성 해결</span>
+      </div>
+      <div class="pillar-divider"></div>
+      <div class="pillar">
+        <span class="pillar-glyph">作</span>
+        <span class="pillar-label">실전 창작 파이프라인</span>
+        <span class="pillar-note">음악 생성 · 이미지 · 글쓰기</span>
+      </div>
+    </div>
+
+    
+    <div class="madang-bottom-rule">
+      <span class="rule-line"></span>
+    </div>
+
+  </div>
+</section>
+
+<style>
+ 
+.madang-hero {
+  padding: 3.5rem 0 2.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.madang-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 var(--gap);
+}
+
+ 
+.madang-top-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 2.2rem;
+  color: var(--dancheong-red, #8c3420);
+}
+.rule-accent {
+  display: block;
+  width: 60px;
+  height: 1px;
+  background: var(--dancheong-red, #8c3420);
+  opacity: 0.5;
+}
+.rule-mark {
+  font-size: 0.6rem;
+  opacity: 0.7;
+}
+
+ 
+.madang-title {
+  font-family: 'Noto Serif KR', 'Nanum Myeongjo', serif !important;
+  font-size: clamp(1.4rem, 3.5vw, 2rem);
+  font-weight: 500 !important;
+  letter-spacing: 0.12em;
+  line-height: 1.5;
+  color: var(--primary);
+  margin: 0 0 1.1rem;
+  border: none !important;
+  padding: 0 !important;
+}
+.madang-title::after { content: none !important; }
+
+ 
+.madang-sub {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 300;
+  color: var(--secondary);
+  letter-spacing: 0.08em;
+  line-height: 1.9;
+  margin: 0 0 1.6rem;
+}
+.madang-sub-em {
+  color: var(--dancheong-red, #8c3420);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+}
+
+ 
+.madang-desc {
+  display: none;  
+}
+
+ 
+.madang-pillars {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0;
+  margin: 2rem 0 2.2rem;
+  border: 1px solid var(--border, #d4c4b0);
+}
+
+.pillar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 1.4rem 1rem;
+  background: var(--entry, #faf4ec);
+  transition: background 0.2s;
+}
+.pillar:hover {
+  background: var(--theme, #f5ede0);
+}
+
+.pillar-glyph {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 1.6rem;
+  font-weight: 300;
+  color: var(--dancheong-red, #8c3420);
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.pillar-label {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--primary);
+  letter-spacing: 0.06em;
+}
+
+.pillar-note {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.7rem;
+  color: var(--secondary);
+  letter-spacing: 0.03em;
+}
+
+.pillar-divider {
+  width: 1px;
+  background: var(--border, #d4c4b0);
+  flex-shrink: 0;
+}
+
+ 
+.madang-bottom-rule {
+  display: flex;
+  justify-content: center;
+}
+.rule-line {
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--border, #d4c4b0);
+}
+
+ 
+@media (max-width: 520px) {
+  .madang-pillars {
+    flex-direction: column;
+  }
+  .pillar-divider {
+    width: 100%;
+    height: 1px;
+  }
+  .madang-title {
+    font-size: 1.3rem;
+  }
+}
+</style>
 
 <article class="post-entry"> 
   <header class="entry-header">
