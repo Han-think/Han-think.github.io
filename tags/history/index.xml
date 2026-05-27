@@ -1,4 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>History on Han-think Blog</title><link>https://Han-think.github.io/tags/history/</link><description>Recent content in History on Han-think Blog</description><generator>Hugo</generator><language>ko-KR</language><lastBuildDate>Wed, 27 May 2026 15:59:32 +0900</lastBuildDate><atom:link href="https://Han-think.github.io/tags/history/index.xml" rel="self" type="application/rss+xml"/><item><title>History 큐레이션 — 5페이지 색인에서 뽑은 5권</title><link>https://Han-think.github.io/posts/book-reviews/topic-history/</link><pubDate>Wed, 27 May 2026 15:59:32 +0900</pubDate><guid>https://Han-think.github.io/posts/book-reviews/topic-history/</guid><description>&lt;h2 id="수집-방법"&gt;수집 방법&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>History on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/history/</link>
+    <description>Recent content in History on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Wed, 27 May 2026 15:59:32 +0900</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/history/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>History 큐레이션 — 5페이지 색인에서 뽑은 5권</title>
+      <link>https://Han-think.github.io/posts/book-reviews/topic-history/</link>
+      <pubDate>Wed, 27 May 2026 15:59:32 +0900</pubDate>
+      <guid>https://Han-think.github.io/posts/book-reviews/topic-history/</guid>
+      <description>&lt;h2 id=&#34;수집-방법&#34;&gt;수집 방법&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;1단계 — 전체 색인&lt;/strong&gt;: books.toscrape.com 5페이지(100권)를 한 번에 크롤링&lt;br&gt;
 &lt;strong&gt;2단계 — 주제 필터&lt;/strong&gt;: &lt;code&gt;History&lt;/code&gt; 장르 해당 책만 추출&lt;br&gt;
@@ -6,63 +21,73 @@
 &lt;strong&gt;4단계 — 발행&lt;/strong&gt;: Hugo .md 변환 → git push&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
-&lt;h2 id="history-추천-5권"&gt;History 추천 5권&lt;/h2&gt;
-&lt;h3 id="1-sapiens-a-brief-history-of-humankind"&gt;1. Sapiens: A Brief History of Humankind&lt;/h3&gt;
-&lt;p&gt;&lt;img alt="표지" loading="lazy" src="http://books.toscrape.com/media/cache/be/a5/bea5697f2534a2f86a3ef27b5a8c12a6.jpg"&gt;&lt;/p&gt;
+&lt;h2 id=&#34;history-추천-5권&#34;&gt;History 추천 5권&lt;/h2&gt;
+&lt;h3 id=&#34;1-sapiens-a-brief-history-of-humankind&#34;&gt;1. Sapiens: A Brief History of Humankind&lt;/h3&gt;
+&lt;p&gt;&lt;img alt=&#34;표지&#34; loading=&#34;lazy&#34; src=&#34;http://books.toscrape.com/media/cache/be/a5/bea5697f2534a2f86a3ef27b5a8c12a6.jpg&#34;&gt;&lt;/p&gt;
 &lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;항목&lt;/th&gt;
-&lt;th&gt;내용&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;가격&lt;/td&gt;
-&lt;td&gt;£54.23&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;별점&lt;/td&gt;
-&lt;td&gt;⭐⭐⭐⭐⭐ (5/5)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;재고&lt;/td&gt;
-&lt;td&gt;재고 있음&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;항목&lt;/th&gt;
+					&lt;th&gt;내용&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;가격&lt;/td&gt;
+					&lt;td&gt;£54.23&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;별점&lt;/td&gt;
+					&lt;td&gt;⭐⭐⭐⭐⭐ (5/5)&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;재고&lt;/td&gt;
+					&lt;td&gt;재고 있음&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
 &lt;/table&gt;
 &lt;blockquote&gt;
-&lt;p&gt;From a renowned historian comes a groundbreaking narrative of humanity’s creation and evolution—a #1 international bestseller—that explores the ways in which biology and history have defined us and en&amp;hellip;&lt;/p&gt;</description></item><item><title>Sapiens: A Brief History of Humankind</title><link>https://Han-think.github.io/posts/book-reviews/2026-05-27_sapiens-a-brief-history-of-humankind/</link><pubDate>Wed, 27 May 2026 14:00:00 +0900</pubDate><guid>https://Han-think.github.io/posts/book-reviews/2026-05-27_sapiens-a-brief-history-of-humankind/</guid><description>&lt;p&gt;&lt;img alt="표지" loading="lazy" src="http://books.toscrape.com/media/cache/be/a5/bea5697f2534a2f86a3ef27b5a8c12a6.jpg"&gt;&lt;/p&gt;
-&lt;h2 id="-기본-정보"&gt;📖 기본 정보&lt;/h2&gt;
+&lt;p&gt;From a renowned historian comes a groundbreaking narrative of humanity’s creation and evolution—a #1 international bestseller—that explores the ways in which biology and history have defined us and en&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Sapiens: A Brief History of Humankind</title>
+      <link>https://Han-think.github.io/posts/book-reviews/2026-05-27_sapiens-a-brief-history-of-humankind/</link>
+      <pubDate>Wed, 27 May 2026 14:00:00 +0900</pubDate>
+      <guid>https://Han-think.github.io/posts/book-reviews/2026-05-27_sapiens-a-brief-history-of-humankind/</guid>
+      <description>&lt;p&gt;&lt;img alt=&#34;표지&#34; loading=&#34;lazy&#34; src=&#34;http://books.toscrape.com/media/cache/be/a5/bea5697f2534a2f86a3ef27b5a8c12a6.jpg&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;-기본-정보&#34;&gt;📖 기본 정보&lt;/h2&gt;
 &lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;항목&lt;/th&gt;
-&lt;th&gt;내용&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;장르&lt;/td&gt;
-&lt;td&gt;History&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;가격&lt;/td&gt;
-&lt;td&gt;£54.23&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;별점&lt;/td&gt;
-&lt;td&gt;⭐⭐⭐⭐⭐ (5/5)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;재고&lt;/td&gt;
-&lt;td&gt;재고 있음 ✅&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;UPC&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;4165285e1663650f&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;항목&lt;/th&gt;
+					&lt;th&gt;내용&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;장르&lt;/td&gt;
+					&lt;td&gt;History&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;가격&lt;/td&gt;
+					&lt;td&gt;£54.23&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;별점&lt;/td&gt;
+					&lt;td&gt;⭐⭐⭐⭐⭐ (5/5)&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;재고&lt;/td&gt;
+					&lt;td&gt;재고 있음 ✅&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;UPC&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;4165285e1663650f&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;h2 id="-책-소개"&gt;📝 책 소개&lt;/h2&gt;
-&lt;p&gt;From a renowned historian comes a groundbreaking narrative of humanity’s creation and evolution—a #1 international bestseller—that explores the ways in which biology and history have defined us and enhanced our understanding of what it means to be “human.”One hundred thousand years ago, at least six different species of humans inhabited Earth. Yet today there is only one—h From a renowned historian comes a groundbreaking narrative of humanity’s creation and evolution—a #1 international bestseller—that explores the ways in which biology and history have defined us and enhanced our understanding of what it means to be “human.”One hundred thousand years ago, at least six different species of humans inhabited Earth. Yet today there is only one—homo sapiens. What happened to the others? And what may happen to us?Most books about the history of humanity pursue either a historical or a biological approach, but Dr. Yuval Noah Harari breaks the mold with this highly original book that begins about 70,000 years ago with the appearance of modern cognition. From examining the role evolving humans have played in the global ecosystem to charting the rise of empires, Sapiens integrates history and science to reconsider accepted narratives, connect past developments with contemporary concerns, and examine specific events within the context of larger ideas.Dr. Harari also compels us to look ahead, because over the last few decades humans have begun to bend laws of natural selection that have governed life for the past four billion years. We are acquiring the ability to design not only the world around us, but also ourselves. Where is this leading us, and what do we want to become?Featuring 27 photographs, 6 maps, and 25 illustrations/diagrams, this provocative and insightful work is sure to spark debate and is essential reading for aficionados of Jared Diamond, James Gleick, Matt Ridley, Robert Wright, and Sharon Moalem. &amp;hellip;more&lt;/p&gt;</description></item></channel></rss>
+&lt;h2 id=&#34;-책-소개&#34;&gt;📝 책 소개&lt;/h2&gt;
+&lt;p&gt;From a renowned historian comes a groundbreaking narrative of humanity’s creation and evolution—a #1 international bestseller—that explores the ways in which biology and history have defined us and enhanced our understanding of what it means to be “human.”One hundred thousand years ago, at least six different species of humans inhabited Earth. Yet today there is only one—h From a renowned historian comes a groundbreaking narrative of humanity’s creation and evolution—a #1 international bestseller—that explores the ways in which biology and history have defined us and enhanced our understanding of what it means to be “human.”One hundred thousand years ago, at least six different species of humans inhabited Earth. Yet today there is only one—homo sapiens. What happened to the others? And what may happen to us?Most books about the history of humanity pursue either a historical or a biological approach, but Dr. Yuval Noah Harari breaks the mold with this highly original book that begins about 70,000 years ago with the appearance of modern cognition. From examining the role evolving humans have played in the global ecosystem to charting the rise of empires, Sapiens integrates history and science to reconsider accepted narratives, connect past developments with contemporary concerns, and examine specific events within the context of larger ideas.Dr. Harari also compels us to look ahead, because over the last few decades humans have begun to bend laws of natural selection that have governed life for the past four billion years. We are acquiring the ability to design not only the world around us, but also ourselves. Where is this leading us, and what do we want to become?Featuring 27 photographs, 6 maps, and 25 illustrations/diagrams, this provocative and insightful work is sure to spark debate and is essential reading for aficionados of Jared Diamond, James Gleick, Matt Ridley, Robert Wright, and Sharon Moalem. &amp;hellip;more&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

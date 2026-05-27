@@ -1,4 +1,22 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>블로그 on Han-think Blog</title><link>https://Han-think.github.io/tags/%EB%B8%94%EB%A1%9C%EA%B7%B8/</link><description>Recent content in 블로그 on Han-think Blog</description><generator>Hugo</generator><language>ko-KR</language><lastBuildDate>Wed, 27 May 2026 09:02:57 +0900</lastBuildDate><atom:link href="https://Han-think.github.io/tags/%EB%B8%94%EB%A1%9C%EA%B7%B8/index.xml" rel="self" type="application/rss+xml"/><item><title>첫번째 글</title><link>https://Han-think.github.io/posts/%EC%B2%AB%EB%B2%88%EC%A7%B8-%EA%B8%80/</link><pubDate>Wed, 27 May 2026 09:02:57 +0900</pubDate><guid>https://Han-think.github.io/posts/%EC%B2%AB%EB%B2%88%EC%A7%B8-%EA%B8%80/</guid><description>&lt;h2 id="안녕하세요"&gt;안녕하세요!&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>블로그 on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/%EB%B8%94%EB%A1%9C%EA%B7%B8/</link>
+    <description>Recent content in 블로그 on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Wed, 27 May 2026 09:02:57 +0900</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/%EB%B8%94%EB%A1%9C%EA%B7%B8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>첫번째 글</title>
+      <link>https://Han-think.github.io/posts/%EC%B2%AB%EB%B2%88%EC%A7%B8-%EA%B8%80/</link>
+      <pubDate>Wed, 27 May 2026 09:02:57 +0900</pubDate>
+      <guid>https://Han-think.github.io/posts/%EC%B2%AB%EB%B2%88%EC%A7%B8-%EA%B8%80/</guid>
+      <description>&lt;h2 id=&#34;안녕하세요&#34;&gt;안녕하세요!&lt;/h2&gt;
 &lt;p&gt;Hugo와 GitHub Pages로 블로그를 시작했습니다.&lt;/p&gt;
 &lt;p&gt;이 블로그는 로컬 AI, 개발, 그리고 만들어가는 것들을 기록하는 공간입니다.&lt;/p&gt;
-&lt;p&gt;앞으로 잘 부탁드립니다 🙂&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;앞으로 잘 부탁드립니다 🙂&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

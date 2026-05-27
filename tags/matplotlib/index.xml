@@ -1,1 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Matplotlib on Han-think Blog</title><link>https://Han-think.github.io/tags/matplotlib/</link><description>Recent content in Matplotlib on Han-think Blog</description><generator>Hugo</generator><language>ko-KR</language><lastBuildDate>Wed, 27 May 2026 04:00:00 +0900</lastBuildDate><atom:link href="https://Han-think.github.io/tags/matplotlib/index.xml" rel="self" type="application/rss+xml"/><item><title>[데이터] pandas · numpy · matplotlib 로컬 AI 연동 환경</title><link>https://Han-think.github.io/posts/recipes/pandas-ai-env/</link><pubDate>Wed, 27 May 2026 04:00:00 +0900</pubDate><guid>https://Han-think.github.io/posts/recipes/pandas-ai-env/</guid><description>데이터 분석 도구와 로컬 AI를 연동하는 Python 환경 구성 · conda 기반 안정적인 패키지 조합</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Matplotlib on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/matplotlib/</link>
+    <description>Recent content in Matplotlib on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Wed, 27 May 2026 04:00:00 +0900</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/matplotlib/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[데이터] pandas · numpy · matplotlib 로컬 AI 연동 환경</title>
+      <link>https://Han-think.github.io/posts/recipes/pandas-ai-env/</link>
+      <pubDate>Wed, 27 May 2026 04:00:00 +0900</pubDate>
+      <guid>https://Han-think.github.io/posts/recipes/pandas-ai-env/</guid>
+      <description>데이터 분석 도구와 로컬 AI를 연동하는 Python 환경 구성 · conda 기반 안정적인 패키지 조합</description>
+    </item>
+  </channel>
+</rss>
