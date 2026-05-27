@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Beautifulsoup on Han-think Blog</title><link>https://Han-think.github.io/tags/beautifulsoup/</link><description>Recent content in Beautifulsoup on Han-think Blog</description><generator>Hugo</generator><language>ko-KR</language><lastBuildDate>Wed, 27 May 2026 10:00:00 +0900</lastBuildDate><atom:link href="https://Han-think.github.io/tags/beautifulsoup/index.xml" rel="self" type="application/rss+xml"/><item><title>BookCrawler — 웹 크롤링부터 블로그 자동 발행까지</title><link>https://Han-think.github.io/posts/recipes/bookcrawler-pipeline/</link><pubDate>Wed, 27 May 2026 10:00:00 +0900</pubDate><guid>https://Han-think.github.io/posts/recipes/bookcrawler-pipeline/</guid><description>&lt;a href="https://Han-think.github.io/downloads/bookcrawler.zip" class="dl-btn" download&gt;
+⬇ BookCrawler 소스 다운로드 (ZIP · 전체 파이프라인)
+&lt;/a&gt;
+&lt;h2 id="개요"&gt;개요&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;books.toscrape.com&lt;/code&gt;에서 책 정보를 수집해 Hugo 블로그에 &lt;strong&gt;5분 간격으로 자동 발행&lt;/strong&gt;하는 파이프라인입니다.&lt;br&gt;
+스크레이핑 → 변환 → Git 자동화 → 스케줄링까지 전 과정을 Python 모듈로 구성했습니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="파이프라인-구조"&gt;파이프라인 구조&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;run.py (진입점 · argparse)
+│
+├─ pipeline.py (오케스트레이터)
+│ ├─ PHASE 1 ─ scraper.py ← requests + BeautifulSoup4
+│ │ queue_manager.py ← books.json / queue.json 관리
+│ │
+│ └─ PHASE 2 ─ scheduler.py ← schedule 라이브러리 (5분 주기)
+│ converter.py ← dict → Hugo .md (TOML front matter)
+│ publisher.py ← Hugo build + git push (subprocess)
+│
+└─ config.py (URL, 경로, 상수 중앙 관리)
+&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
+&lt;h2 id="모듈별-역할"&gt;모듈별 역할&lt;/h2&gt;
+&lt;h3 id="scraperpy--수집-requests--beautifulsoup4"&gt;scraper.py — 수집 (requests + BeautifulSoup4)&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; scraper &lt;span style="color:#f92672"&gt;import&lt;/span&gt; scrape_books_with_details
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;books &lt;span style="color:#f92672"&gt;=&lt;/span&gt; scrape_books_with_details(pages&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;5&lt;/span&gt;, limit&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;10&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# [{&amp;#34;title&amp;#34;: &amp;#34;...&amp;#34;, &amp;#34;price&amp;#34;: 12.34, &amp;#34;rating&amp;#34;: 4, &amp;#34;category&amp;#34;: &amp;#34;Mystery&amp;#34;, ...}, ...]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;page-{N}.html&lt;/code&gt; 목록 → &lt;code&gt;article.product_pod&lt;/code&gt; 파싱&lt;/li&gt;
+&lt;li&gt;상세 페이지 → 카테고리(breadcrumb), 설명, UPC 추출&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;requests.Session&lt;/code&gt; 재사용 + &lt;code&gt;time.sleep(1)&lt;/code&gt; (예의 바른 크롤링)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="converterpy--변환"&gt;converter.py — 변환&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; converter &lt;span style="color:#f92672"&gt;import&lt;/span&gt; save_markdown
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; datetime &lt;span style="color:#f92672"&gt;import&lt;/span&gt; datetime, timezone, timedelta
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;path &lt;span style="color:#f92672"&gt;=&lt;/span&gt; save_markdown(book, pub_date&lt;span style="color:#f92672"&gt;=&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;now(timezone(timedelta(hours&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;9&lt;/span&gt;))))
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# → content/posts/book-reviews/2026-05-27_a-light-in-the-attic.md&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Hugo TOML front matter 생성:&lt;/p&gt;</description></item></channel></rss>
