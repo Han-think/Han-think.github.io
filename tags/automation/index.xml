@@ -6,14 +6,14 @@
     <description>Recent content in Automation on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Sat, 30 May 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 31 May 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/automation/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인</title>
       <link>https://Han-think.github.io/posts/setup/learninglog-kit/</link>
       <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/posts/setup/learninglog-kit/</guid>
-      <description>강의자료와 개인 학습 노트(.md)를 폴더에 넣으면 LLM이 정리 → 블로그 초안 → 발행까지 자동으로 해주는 파이프라인 도구. pip 설치 &#43; 웹 UI로 누구나 5분이면 시작.</description>
+      <description>강의자료와 개인 학습 노트(.md)를 폴더에 넣으면 LLM이 정리 → 블로그 초안 → 발행까지 자동으로 해주는 파이프라인 도구. pip 설치 &#43; 웹 UI로 시작. v0.4.0.</description>
     </item>
     <item>
       <title>BookCrawler — 웹 크롤링부터 블로그 자동 발행까지</title>
