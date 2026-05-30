@@ -6,8 +6,29 @@
     <description>Recent content in Python on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Wed, 27 May 2026 10:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 30 May 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Python 연산자 이해하기: 초보자를 위한 가이드 (1부)</title>
+      <link>https://Han-think.github.io/learning/python-operations-input-indexing-slicing/</link>
+      <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-operations-input-indexing-slicing/</guid>
+      <description>초보자로서 Python 연산자의 다양한 사용법과 타입 변환에 대한 혼란을 정리하고 이해하는 과정을 공유합니다.</description>
+    </item>
+    <item>
+      <title>리스트 메서드 이해와 활용: 초보자를 위한 혼란 해결 가이드</title>
+      <link>https://Han-think.github.io/learning/list-methods-scenarios-dedupe-connection/</link>
+      <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/list-methods-scenarios-dedupe-connection/</guid>
+      <description>이 글에서는 Python 리스트의 주요 메서드 (append, insert, remove, sort)와 중복 요소 제거 방법에 대해 개인적인 학습 경험을 바탕으로 설명하고 이해를 돕고자 합니다.</description>
+    </item>
+    <item>
+      <title>초보자를 위한 Python 에러 메시지 이해하기: 첫걸음</title>
+      <link>https://Han-think.github.io/learning/official-docs-error-messages-methods/</link>
+      <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/official-docs-error-messages-methods/</guid>
+      <description>Python에서 흔히 마주치는 에러 메시지를 이해하고, 특히 초보자들이 쉽게 혼동할 수 있는 부분들을 정리해 보았습니다. 이 노트는 에러 메시지의 의미를 파악하고, 어떻게 해결할 수 있는지에 대한 실용적인 가이드를 제공합니다.</description>
+    </item>
     <item>
       <title>BookCrawler — 웹 크롤링부터 블로그 자동 발행까지</title>
       <link>https://Han-think.github.io/posts/dataset/bookcrawler-pipeline/</link>

@@ -6,8 +6,50 @@
     <description>Recent content in Hugo on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Wed, 27 May 2026 10:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 30 May 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2026-05-28 학습 노트: Git Bash, Markdown, vi, 그리고 Hugo 활용</title>
+      <link>https://Han-think.github.io/learning/git-bash-markdown-vi/</link>
+      <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/git-bash-markdown-vi/</guid>
+      <description>오늘의 학습 경험을 바탕으로 Git Bash의 기초, Markdown 문서 작성, vi 편집기 사용법 그리고 이를 활용한 Hugo 블로그 설정에 대한 개인적인 통찰과 고민들을 정리했습니다.</description>
+    </item>
+    <item>
+      <title>웹 서버, HTTP, GitHub Pages 이해하기: 기초 개념 정리</title>
+      <link>https://Han-think.github.io/learning/web-server-http-github-pages/</link>
+      <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/web-server-http-github-pages/</guid>
+      <description>웹 서버, HTTP 프로토콜, 그리고 GitHub Pages와 Hugo 블로그 설정의 기초 개념을 이해하고 실습 예시를 통해 초보자도 쉽게 접근할 수 있도록 정리.</description>
+    </item>
+    <item>
+      <title>초보자를 위한 혼란 극복: Git Bash, Markdown, vi 편집기 그리고 Hugo 블로그 구축 시작</title>
+      <link>https://Han-think.github.io/learning/today-learning-personal-notes/</link>
+      <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/today-learning-personal-notes/</guid>
+      <description>Git Bash와 Markdown, vi 편집기를 활용한 초기 Hugo 블로그 구축 과정에서의 학습 경험과 해석을 공유합니다.</description>
+    </item>
+    <item>
+      <title>Git Bash, Markdown, vi 기초 — 내가 헷갈린 것들</title>
+      <link>https://Han-think.github.io/learning/git-bash-markdown-vi-basics/</link>
+      <pubDate>Thu, 28 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/git-bash-markdown-vi-basics/</guid>
+      <description>CLI 처음 배울 때 헷갈렸던 것들 솔직 정리. &amp;gt; vs &amp;gt;&amp;gt;, # 의 이중 의미, vi 탈출법, 따옴표 차이. 명령어 암기보다 개념 이해에 집중한 기록.</description>
+    </item>
+    <item>
+      <title>LearningLog와 TableCard — 학습 기록을 프로젝트 구조로 만드는 법</title>
+      <link>https://Han-think.github.io/projects/learninglog-tablecard-workflow/</link>
+      <pubDate>Thu, 28 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/learninglog-tablecard-workflow/</guid>
+      <description>수업 노트, PDF, 대화 기록이 쌓여도 흘려보내지 않기 위해 만든 학습 파이프라인. LearningLog와 TableCard의 역할 분리, 그리고 상태 장부 시스템에 대한 기록.</description>
+    </item>
+    <item>
+      <title>웹 서버와 GitHub Pages — 내 PC를 서버로 켜둬야 하나?</title>
+      <link>https://Han-think.github.io/learning/web-server-http-github-pages-basics/</link>
+      <pubDate>Thu, 28 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/web-server-http-github-pages-basics/</guid>
+      <description>처음 블로그를 만들 때 가장 헷갈렸던 것 — 내 컴퓨터가 꺼지면 블로그도 꺼지나? 로컬 서버와 공개 서버, GitHub Pages의 차이를 솔직하게 정리했다.</description>
+    </item>
     <item>
       <title>BookCrawler — 웹 크롤링부터 블로그 자동 발행까지</title>
       <link>https://Han-think.github.io/posts/dataset/bookcrawler-pipeline/</link>

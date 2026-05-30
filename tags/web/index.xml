@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Web on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/web/</link>
+    <description>Recent content in Web on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Thu, 28 May 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/web/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>웹 서버와 GitHub Pages — 내 PC를 서버로 켜둬야 하나?</title>
+      <link>https://Han-think.github.io/learning/web-server-http-github-pages-basics/</link>
+      <pubDate>Thu, 28 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/web-server-http-github-pages-basics/</guid>
+      <description>처음 블로그를 만들 때 가장 헷갈렸던 것 — 내 컴퓨터가 꺼지면 블로그도 꺼지나? 로컬 서버와 공개 서버, GitHub Pages의 차이를 솔직하게 정리했다.</description>
+    </item>
+  </channel>
+</rss>
