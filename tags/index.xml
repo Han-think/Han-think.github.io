@@ -9,6 +9,13 @@
     <lastBuildDate>Sat, 30 May 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Automation</title>
+      <link>https://Han-think.github.io/tags/automation/</link>
+      <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/automation/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Beginner</title>
       <link>https://Han-think.github.io/tags/beginner/</link>
       <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
@@ -34,6 +41,13 @@
       <link>https://Han-think.github.io/tags/error-handling/</link>
       <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/error-handling/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Gemini</title>
+      <link>https://Han-think.github.io/tags/gemini/</link>
+      <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/gemini/</guid>
       <description></description>
     </item>
     <item>
@@ -72,6 +86,13 @@
       <description></description>
     </item>
     <item>
+      <title>Llm</title>
+      <link>https://Han-think.github.io/tags/llm/</link>
+      <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/llm/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Localhost</title>
       <link>https://Han-think.github.io/tags/localhost/</link>
       <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
@@ -90,6 +111,20 @@
       <link>https://Han-think.github.io/tags/markdown/</link>
       <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/markdown/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ollama</title>
+      <link>https://Han-think.github.io/tags/ollama/</link>
+      <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/ollama/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Pipeline</title>
+      <link>https://Han-think.github.io/tags/pipeline/</link>
+      <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/pipeline/</guid>
       <description></description>
     </item>
     <item>
@@ -359,13 +394,6 @@
       <description></description>
     </item>
     <item>
-      <title>Automation</title>
-      <link>https://Han-think.github.io/tags/automation/</link>
-      <pubDate>Wed, 27 May 2026 10:00:00 +0900</pubDate>
-      <guid>https://Han-think.github.io/tags/automation/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Beautifulsoup</title>
       <link>https://Han-think.github.io/tags/beautifulsoup/</link>
       <pubDate>Wed, 27 May 2026 10:00:00 +0900</pubDate>
@@ -545,20 +573,6 @@
       <link>https://Han-think.github.io/tags/stable-diffusion/</link>
       <pubDate>Wed, 27 May 2026 02:00:00 +0900</pubDate>
       <guid>https://Han-think.github.io/tags/stable-diffusion/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Llm</title>
-      <link>https://Han-think.github.io/tags/llm/</link>
-      <pubDate>Wed, 27 May 2026 01:00:00 +0900</pubDate>
-      <guid>https://Han-think.github.io/tags/llm/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Ollama</title>
-      <link>https://Han-think.github.io/tags/ollama/</link>
-      <pubDate>Wed, 27 May 2026 01:00:00 +0900</pubDate>
-      <guid>https://Han-think.github.io/tags/ollama/</guid>
       <description></description>
     </item>
     <item>

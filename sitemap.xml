@@ -3,7 +3,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://Han-think.github.io/posts/setup/learninglog-kit/</loc>
+    <lastmod>2026-05-30T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://Han-think.github.io/learning/git-bash-markdown-vi/</loc>
+    <lastmod>2026-05-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/automation/</loc>
     <lastmod>2026-05-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/beginner/</loc>
@@ -19,6 +25,9 @@
     <lastmod>2026-05-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/error-handling/</loc>
+    <lastmod>2026-05-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/gemini/</loc>
     <lastmod>2026-05-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/git/</loc>
@@ -42,6 +51,9 @@
     <loc>https://Han-think.github.io/categories/learning/</loc>
     <lastmod>2026-05-30T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://Han-think.github.io/tags/llm/</loc>
+    <lastmod>2026-05-30T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://Han-think.github.io/tags/localhost/</loc>
     <lastmod>2026-05-30T00:00:00+00:00</lastmod>
   </url><url>
@@ -51,6 +63,15 @@
     <loc>https://Han-think.github.io/tags/markdown/</loc>
     <lastmod>2026-05-30T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://Han-think.github.io/tags/ollama/</loc>
+    <lastmod>2026-05-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/pipeline/</loc>
+    <lastmod>2026-05-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/posts/</loc>
+    <lastmod>2026-05-30T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://Han-think.github.io/tags/programming/</loc>
     <lastmod>2026-05-30T00:00:00+00:00</lastmod>
   </url><url>
@@ -58,6 +79,9 @@
     <lastmod>2026-05-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/learning/python-operations-input-indexing-slicing/</loc>
+    <lastmod>2026-05-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/categories/setup/</loc>
     <lastmod>2026-05-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/</loc>
@@ -186,9 +210,6 @@
     <loc>https://Han-think.github.io/posts/book-reviews/topic-history/</loc>
     <lastmod>2026-05-27T15:59:32+09:00</lastmod>
   </url><url>
-    <loc>https://Han-think.github.io/posts/</loc>
-    <lastmod>2026-05-27T15:59:32+09:00</lastmod>
-  </url><url>
     <loc>https://Han-think.github.io/series/</loc>
     <lastmod>2026-05-27T15:59:32+09:00</lastmod>
   </url><url>
@@ -256,9 +277,6 @@
     <lastmod>2026-05-27T11:00:00+09:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/posts/book-reviews/2026-05-27_a-light-in-the-attic/</loc>
-    <lastmod>2026-05-27T10:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/tags/automation/</loc>
     <lastmod>2026-05-27T10:00:00+09:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/beautifulsoup/</loc>
@@ -370,15 +388,6 @@
     <lastmod>2026-05-27T02:00:00+09:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/posts/setup/ollama-local-setup/</loc>
-    <lastmod>2026-05-27T01:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/tags/llm/</loc>
-    <lastmod>2026-05-27T01:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/tags/ollama/</loc>
-    <lastmod>2026-05-27T01:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/categories/setup/</loc>
     <lastmod>2026-05-27T01:00:00+09:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/windows/</loc>
