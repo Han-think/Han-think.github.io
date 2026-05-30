@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto" data-theme="auto">
 
-<head><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, nofollow">
 <title>웹 서버와 GitHub Pages — 내 PC를 서버로 켜둬야 하나? | Han-think Blog</title>
 <meta name="keywords" content="web, server, http, github-pages, hugo, static-site, beginner">
 <meta name="description" content="처음 블로그를 만들 때 가장 헷갈렸던 것 — 내 컴퓨터가 꺼지면 블로그도 꺼지나? 로컬 서버와 공개 서버, GitHub Pages의 차이를 솔직하게 정리했다.">
 <meta name="author" content="">
-<link rel="canonical" href="https://Han-think.github.io/learning/web-server-http-github-pages-basics/">
+<link rel="canonical" href="http://127.0.0.1:1313/learning/web-server-http-github-pages-basics/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://Han-think.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<link rel="icon" href="http://127.0.0.1:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://127.0.0.1:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://127.0.0.1:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://127.0.0.1:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://127.0.0.1:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/web-server-http-github-pages-basics/">
+<link rel="alternate" hreflang="en" href="http://127.0.0.1:1313/learning/web-server-http-github-pages-basics/">
 <noscript>
     <style>
         #theme-toggle,
@@ -69,95 +69,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
 
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
-      <script>
-        var doNotTrack = false;
-        if ( true ) {
-          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
-          var doNotTrack = (dnt == "1" || dnt == "yes");
-        }
-        if (!doNotTrack) {
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-9YN1SZZ1G8');
-        }
-      </script><meta property="og:url" content="https://Han-think.github.io/learning/web-server-http-github-pages-basics/">
-  <meta property="og:site_name" content="Han-think Blog">
-  <meta property="og:title" content="웹 서버와 GitHub Pages — 내 PC를 서버로 켜둬야 하나?">
-  <meta property="og:description" content="처음 블로그를 만들 때 가장 헷갈렸던 것 — 내 컴퓨터가 꺼지면 블로그도 꺼지나? 로컬 서버와 공개 서버, GitHub Pages의 차이를 솔직하게 정리했다.">
-  <meta property="og:locale" content="ko_KR">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="learning">
-    <meta property="article:published_time" content="2026-05-28T00:00:00+00:00">
-    <meta property="article:modified_time" content="2026-05-28T00:00:00+00:00">
-    <meta property="article:tag" content="Web">
-    <meta property="article:tag" content="Server">
-    <meta property="article:tag" content="Http">
-    <meta property="article:tag" content="Github-Pages">
-    <meta property="article:tag" content="Hugo">
-    <meta property="article:tag" content="Static-Site">
-
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="웹 서버와 GitHub Pages — 내 PC를 서버로 켜둬야 하나?">
-  <meta name="twitter:description" content="처음 블로그를 만들 때 가장 헷갈렸던 것 — 내 컴퓨터가 꺼지면 블로그도 꺼지나? 로컬 서버와 공개 서버, GitHub Pages의 차이를 솔직하게 정리했다.">
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "학습 기록",
-      "item": "https://Han-think.github.io/learning/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "웹 서버와 GitHub Pages — 내 PC를 서버로 켜둬야 하나?",
-      "item": "https://Han-think.github.io/learning/web-server-http-github-pages-basics/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "웹 서버와 GitHub Pages — 내 PC를 서버로 켜둬야 하나?",
-  "name": "웹 서버와 GitHub Pages — 내 PC를 서버로 켜둬야 하나?",
-  "description": "처음 블로그를 만들 때 가장 헷갈렸던 것 — 내 컴퓨터가 꺼지면 블로그도 꺼지나? 로컬 서버와 공개 서버, GitHub Pages의 차이를 솔직하게 정리했다.",
-  "keywords": [
-    "web", "server", "http", "github-pages", "hugo", "static-site", "beginner"
-  ],
-  "articleBody": "내가 처음 가진 공포 블로그를 만들겠다고 Hugo를 설치하고, hugo server 를 실행했다.\n로컬호스트에서 사이트가 뜨자마자 갑자기 무서운 생각이 들었다.\n내가 컴퓨터를 끄면 이 블로그도 꺼지는 건가? 이 질문이 헷갈린 이유는 “서버\"라는 단어 하나에 너무 많은 개념이 묶여 있기 때문이다.\n로컬 서버 = 임시 미리보기 hugo server 로 켜는 서버는 내 컴퓨터 안에서만 열린다.\nhttp://localhost:1313 이 주소는 나만 볼 수 있다. 인터넷에 열려있지 않다. 내가 터미널 창을 닫으면 이 서버도 사라진다.\n정리: 로컬 서버는 글을 쓰면서 “어떻게 보이는지 확인하는 미리보기\"다.\nGitHub Pages = 공개 호스팅 GitHub Pages에 올라간 블로그는 내 PC가 꺼져도 열린다.\n왜냐하면 파일이 내 컴퓨터가 아니라 GitHub 서버에 저장되어 있기 때문이다.\n내 PC = 글 쓰고, 빌드하고, git push 하는 작업장 GitHub Pages = 그 결과물을 24시간 공개하는 서버 내 PC는 “항상 켜야 하는 서버\"가 아니다. 내 PC는 “작업하고 업로드하는 작업장\"이다.\nHugo는 서버가 아니다 혼동하기 쉬운 것:\n도구 역할 Hugo Markdown → HTML 파일 생성 hugo server 로컬 미리보기용 (개발 중에만 사용) GitHub Pages 정적 파일을 인터넷에 공개 GitHub 저장소 파일 저장 및 버전 관리 Hugo는 “변환 도구\"다. 직접 인터넷에 파일을 올리지 않는다. 내가 git push를 해야 GitHub Pages가 그 파일을 공개한다.\nHTTP는 뭔가 브라우저가 사이트를 여는 과정은 이렇다.\n브라우저: 이 주소의 페이지 주세요. 서버: 여기 HTML 파일입니다. 이게 HTTP request-response 구조다.\n정적 사이트에서는 서버가 미리 만들어진 HTML 파일을 그냥 전달하면 된다. 복잡한 계산이나 데이터베이스가 필요 없다.\n정적 사이트가 맞는 이유 로그인, 댓글, 실시간 데이터가 필요한 사이트는 백엔드 서버가 필요하다.\n하지만 블로그에 필요한 건:\n글 목록 글 내용 태그/카테고리 페이지 이건 정적 파일로 충분하다. GitHub Pages가 이 역할을 무료로 해준다.\n정리 처음 가졌던 공포의 정답:\n내 PC가 꺼져도 블로그는 살아있다. GitHub Pages가 24시간 대신 서비스하기 때문이다. hugo server 는 글 쓸 때만 켜는 미리보기 도구다. 글을 완성하고 git push 하면 내 PC 없이도 블로그가 공개 상태로 유지된다.\nEnglish Technical Summary Key Concepts Local server (hugo server): accessible only at localhost:1313, stops when terminal closes GitHub Pages: static file hosting by GitHub — survives PC shutdown Hugo: static site generator (Markdown → HTML), not a hosting service HTTP: request-response protocol between browser and server Static site: pre-built HTML/CSS/JS files served as-is (no server-side computation) My Setup Flow Write Markdown → hugo build → git push → GitHub Pages serves HTML Next Topics HTTP request/response structure URL anatomy (protocol, domain, path, query string) DNS basics Static hosting vs backend API CORS ",
-  "wordCount" : "380",
-  "inLanguage": "en",
-  "datePublished": "2026-05-28T00:00:00Z",
-  "dateModified": "2026-05-28T00:00:00Z",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://Han-think.github.io/learning/web-server-http-github-pages-basics/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Han-think Blog",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://Han-think.github.io/favicon.ico"
-    }
-  }
-}
-</script>
 </head>
 <body id="top">
     <header class="header">
     <nav class="header-nav">
         <div class="logo">
-            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <a href="http://127.0.0.1:1313/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
             <div class="logo-switches">
                 <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
@@ -183,27 +100,27 @@
         </div>
         <ul id="menu" class="menu">
             <li>
-                <a href="https://Han-think.github.io/categories/learning/" title="학습 로그">
+                <a href="http://127.0.0.1:1313/categories/learning/" title="학습 로그">
                     <span>학습 로그</span>
                 </a>
             </li>
             <li>
-                <a href="https://Han-think.github.io/categories/generator/" title="생성 AI">
+                <a href="http://127.0.0.1:1313/categories/generator/" title="생성 AI">
                     <span>생성 AI</span>
                 </a>
             </li>
             <li>
-                <a href="https://Han-think.github.io/categories/setup/" title="환경 구성">
+                <a href="http://127.0.0.1:1313/categories/setup/" title="환경 구성">
                     <span>환경 구성</span>
                 </a>
             </li>
             <li>
-                <a href="https://Han-think.github.io/categories/dataset/" title="데이터셋">
+                <a href="http://127.0.0.1:1313/categories/dataset/" title="데이터셋">
                     <span>데이터셋</span>
                 </a>
             </li>
             <li>
-                <a href="https://Han-think.github.io/search/" title="검색">
+                <a href="http://127.0.0.1:1313/search/" title="검색">
                     <span>검색</span>
                 </a>
             </li>
@@ -328,13 +245,13 @@ GitHub Pages가 이 역할을 무료로 해준다.</p>
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://Han-think.github.io/tags/web/">Web</a></li>
-      <li><a href="https://Han-think.github.io/tags/server/">Server</a></li>
-      <li><a href="https://Han-think.github.io/tags/http/">Http</a></li>
-      <li><a href="https://Han-think.github.io/tags/github-pages/">Github-Pages</a></li>
-      <li><a href="https://Han-think.github.io/tags/hugo/">Hugo</a></li>
-      <li><a href="https://Han-think.github.io/tags/static-site/">Static-Site</a></li>
-      <li><a href="https://Han-think.github.io/tags/beginner/">Beginner</a></li>
+      <li><a href="http://127.0.0.1:1313/tags/web/">Web</a></li>
+      <li><a href="http://127.0.0.1:1313/tags/server/">Server</a></li>
+      <li><a href="http://127.0.0.1:1313/tags/http/">Http</a></li>
+      <li><a href="http://127.0.0.1:1313/tags/github-pages/">Github-Pages</a></li>
+      <li><a href="http://127.0.0.1:1313/tags/hugo/">Hugo</a></li>
+      <li><a href="http://127.0.0.1:1313/tags/static-site/">Static-Site</a></li>
+      <li><a href="http://127.0.0.1:1313/tags/beginner/">Beginner</a></li>
     </ul>
 
   </footer>
@@ -342,7 +259,7 @@ GitHub Pages가 이 역할을 무료로 해준다.</p>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+        <span>&copy; 2026 <a href="http://127.0.0.1:1313/">Han-think Blog</a></span> · 
 
     
     
