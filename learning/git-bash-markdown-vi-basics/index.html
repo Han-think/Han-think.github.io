@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto" data-theme="auto">
 
-<head><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, nofollow">
 <title>Git Bash, Markdown, vi 기초 — 내가 헷갈린 것들 | Han-think Blog</title>
 <meta name="keywords" content="linux, git-bash, cli, markdown, vi, nano, hugo, beginner, workflow">
 <meta name="description" content="CLI 처음 배울 때 헷갈렸던 것들 솔직 정리. &gt; vs &gt;&gt;, # 의 이중 의미, vi 탈출법, 따옴표 차이. 명령어 암기보다 개념 이해에 집중한 기록.">
 <meta name="author" content="">
-<link rel="canonical" href="https://Han-think.github.io/learning/git-bash-markdown-vi-basics/">
+<link rel="canonical" href="http://127.0.0.1:1313/learning/git-bash-markdown-vi-basics/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://Han-think.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<link rel="icon" href="http://127.0.0.1:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://127.0.0.1:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://127.0.0.1:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://127.0.0.1:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://127.0.0.1:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/git-bash-markdown-vi-basics/">
+<link rel="alternate" hreflang="en" href="http://127.0.0.1:1313/learning/git-bash-markdown-vi-basics/">
 <noscript>
     <style>
         #theme-toggle,
@@ -69,95 +69,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
 
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
-      <script>
-        var doNotTrack = false;
-        if ( true ) {
-          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
-          var doNotTrack = (dnt == "1" || dnt == "yes");
-        }
-        if (!doNotTrack) {
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-9YN1SZZ1G8');
-        }
-      </script><meta property="og:url" content="https://Han-think.github.io/learning/git-bash-markdown-vi-basics/">
-  <meta property="og:site_name" content="Han-think Blog">
-  <meta property="og:title" content="Git Bash, Markdown, vi 기초 — 내가 헷갈린 것들">
-  <meta property="og:description" content="CLI 처음 배울 때 헷갈렸던 것들 솔직 정리. &gt; vs &gt;&gt;, # 의 이중 의미, vi 탈출법, 따옴표 차이. 명령어 암기보다 개념 이해에 집중한 기록.">
-  <meta property="og:locale" content="ko_KR">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="learning">
-    <meta property="article:published_time" content="2026-05-28T00:00:00+00:00">
-    <meta property="article:modified_time" content="2026-05-28T00:00:00+00:00">
-    <meta property="article:tag" content="Linux">
-    <meta property="article:tag" content="Git-Bash">
-    <meta property="article:tag" content="Cli">
-    <meta property="article:tag" content="Markdown">
-    <meta property="article:tag" content="Vi">
-    <meta property="article:tag" content="Nano">
-
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Git Bash, Markdown, vi 기초 — 내가 헷갈린 것들">
-  <meta name="twitter:description" content="CLI 처음 배울 때 헷갈렸던 것들 솔직 정리. &gt; vs &gt;&gt;, # 의 이중 의미, vi 탈출법, 따옴표 차이. 명령어 암기보다 개념 이해에 집중한 기록.">
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "학습 기록",
-      "item": "https://Han-think.github.io/learning/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Git Bash, Markdown, vi 기초 — 내가 헷갈린 것들",
-      "item": "https://Han-think.github.io/learning/git-bash-markdown-vi-basics/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Git Bash, Markdown, vi 기초 — 내가 헷갈린 것들",
-  "name": "Git Bash, Markdown, vi 기초 — 내가 헷갈린 것들",
-  "description": "CLI 처음 배울 때 헷갈렸던 것들 솔직 정리. \u003e vs \u003e\u003e, # 의 이중 의미, vi 탈출법, 따옴표 차이. 명령어 암기보다 개념 이해에 집중한 기록.",
-  "keywords": [
-    "linux", "git-bash", "cli", "markdown", "vi", "nano", "hugo", "beginner", "workflow"
-  ],
-  "articleBody": "터미널을 처음 쓸 때 가장 힘든 건 명령어를 모르는 것이 아니었다.\n명령어는 검색하면 나온다.\n진짜 힘든 건 같은 기호가 환경마다 다르게 작동한다는 것, 그리고\nvi를 열었는데 나갈 수가 없다는 것이었다.\n오늘은 그 혼란들을 정리해 본다.\n\u003e 와 \u003e\u003e — 둘 다 “파일에 쓰기\"인데 왜 다른가 처음에 이 두 기호를 배웠을 때 “파일에 저장한다\"는 설명만 들었다.\n그래서 둘이 같은 거라고 생각했다.\n직접 써보고 나서야 차이를 알았다.\necho \"첫 번째 줄\" \u003e memo.md echo \"두 번째 줄\" \u003e memo.md cat memo.md 결과:\n두 번째 줄 첫 번째 줄이 사라졌다. \u003e는 파일을 새로 쓰기 때문이다. 기존 내용이 지워진다.\necho \"첫 번째 줄\" \u003e memo.md echo \"두 번째 줄\" \u003e\u003e memo.md cat memo.md 결과:\n첫 번째 줄 두 번째 줄 \u003e\u003e는 이어 쓰기다. 기존 내용 아래에 추가된다.\n내가 이해한 방식:\n\u003e = 새 종이에 처음부터 씀 (기존 내용 삭제) \u003e\u003e = 같은 종이 맨 아래에 이어 씀 (기존 내용 보존) Python을 조금 안다면 이렇게 연결할 수 있다.\nopen(\"file\", \"w\") → \u003e open(\"file\", \"a\") → \u003e\u003e # — 문서에선 제목, 터미널에선 주석 Markdown 파일을 편집할 때 #는 제목이다.\n# 이건 H1 제목 ## 이건 H2 제목 그런데 Git Bash 터미널에서 #는 주석이다.\n# 이 줄은 실행되지 않음 echo \"이건 실행됨\" 같은 기호인데 어디서 쓰느냐에 따라 의미가 완전히 다르다.\n내가 이해한 방식:\nMarkdown 안에서 # → 제목 터미널 명령어 안에서 # → 주석 한 가지 더. Markdown 파일 안의 코드 블록(```)에서는 bash 문법이 작동한다.\n즉, 같은 .md 파일 안에서도 Markdown 영역과 코드 블록 영역이 다르게 해석된다.\nvi — 처음엔 탈출 게임이다 vi를 처음 열면 당황한다.\n타이핑을 해도 화면에 아무것도 안 보이거나, 글자 대신 명령이 실행된다.\n이유는 vi가 모드 기반 편집기이기 때문이다.\n일반 편집기와 달리 “지금 내가 어느 모드에 있는지\"에 따라 키보드가 다르게 작동한다.\n처음엔 이것만 외우면 된다.\n파일 열기 → vi 파일명 입력 시작 → i 누름 (INSERT 모드) 입력 중단 → ESC 누름 (NORMAL 모드로 복귀) 저장하고 나가기 → :wq Enter 그냥 나가기 → :q! Enter 내 표현:\nVS Code = 평소 작업실 nano = 쉬운 터미널 편집기 vi = 야전 생존 편집기 vi를 쓰는 이유는 간단하다. SSH 서버, Docker 컨테이너, GUI 없는 환경에는\nVS Code가 없다. vi는 거의 모든 Linux 환경에 기본으로 설치되어 있다.\n즐겨 쓸 필요는 없다. 하지만 열었을 때 나올 수는 있어야 한다.\n큰따옴표와 작은따옴표 — 실제로 다르다 name=\"Hugo\" echo \"Hello $name\" 출력: Hello Hugo\nname=\"Hugo\" echo 'Hello $name' 출력: Hello $name\n큰따옴표 안에서는 $변수가 실제 값으로 치환된다.\n작은따옴표 안에서는 내용이 그대로 보존된다.\n내가 이해한 방식:\n\" \" = 어느 정도 해석하는 보호막 ' ' = 거의 그대로 보존하는 강한 보호막 mkdir -p — 폴더 구조를 한 번에 mkdir docs mkdir docs/linux mkdir docs/linux/basic 이렇게 세 번 칠 것을 -p 하나로 줄일 수 있다.\nmkdir -p docs/linux/basic 중간에 없는 폴더가 있으면 알아서 만들어 준다.\n오늘 개인 학습 관리 폴더 구조를\n만들 때도 이 방식이 쓰였다. 명령어를 배우면서 동시에 그 명령어로\n배운 것을 담는 구조를 만든다는 게 흥미로웠다.\n오늘의 핵심 명령어 정리 pwd # 현재 위치 확인 ls -al # 숨김 파일 포함 상세 목록 cd .. # 상위 폴더로 이동 mkdir -p 경로/폴더 # 중첩 폴더 한 번에 생성 touch 파일명.md # 빈 파일 생성 echo \"내용\" \u003e 파일.md # 파일 새로 쓰기 (덮어씀) echo \"내용\" \u003e\u003e 파일.md # 파일에 이어 쓰기 rm -ri 폴더/ # 확인하면서 삭제 (초보자 권장) 다음에 알아볼 것 vi 이동 명령어 (hjkl, gg, G) nano 기본 단축키 (Ctrl+O 저장, Ctrl+X 종료) Git 기본 흐름 (add → commit → push) Hugo front matter 구조 더 이해하기 ",
-  "wordCount" : "558",
-  "inLanguage": "en",
-  "datePublished": "2026-05-28T00:00:00Z",
-  "dateModified": "2026-05-28T00:00:00Z",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://Han-think.github.io/learning/git-bash-markdown-vi-basics/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Han-think Blog",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://Han-think.github.io/favicon.ico"
-    }
-  }
-}
-</script>
 </head>
 <body id="top">
     <header class="header">
     <nav class="header-nav">
         <div class="logo">
-            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <a href="http://127.0.0.1:1313/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
             <div class="logo-switches">
                 <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
@@ -183,27 +100,27 @@
         </div>
         <ul id="menu" class="menu">
             <li>
-                <a href="https://Han-think.github.io/categories/learning/" title="학습 로그">
+                <a href="http://127.0.0.1:1313/categories/learning/" title="학습 로그">
                     <span>학습 로그</span>
                 </a>
             </li>
             <li>
-                <a href="https://Han-think.github.io/categories/generator/" title="생성 AI">
+                <a href="http://127.0.0.1:1313/categories/generator/" title="생성 AI">
                     <span>생성 AI</span>
                 </a>
             </li>
             <li>
-                <a href="https://Han-think.github.io/categories/setup/" title="환경 구성">
+                <a href="http://127.0.0.1:1313/categories/setup/" title="환경 구성">
                     <span>환경 구성</span>
                 </a>
             </li>
             <li>
-                <a href="https://Han-think.github.io/categories/dataset/" title="데이터셋">
+                <a href="http://127.0.0.1:1313/categories/dataset/" title="데이터셋">
                     <span>데이터셋</span>
                 </a>
             </li>
             <li>
-                <a href="https://Han-think.github.io/search/" title="검색">
+                <a href="http://127.0.0.1:1313/search/" title="검색">
                     <span>검색</span>
                 </a>
             </li>
@@ -337,15 +254,15 @@ VS Code가 없다. vi는 거의 모든 Linux 환경에 기본으로 설치되어
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://Han-think.github.io/tags/linux/">Linux</a></li>
-      <li><a href="https://Han-think.github.io/tags/git-bash/">Git-Bash</a></li>
-      <li><a href="https://Han-think.github.io/tags/cli/">Cli</a></li>
-      <li><a href="https://Han-think.github.io/tags/markdown/">Markdown</a></li>
-      <li><a href="https://Han-think.github.io/tags/vi/">Vi</a></li>
-      <li><a href="https://Han-think.github.io/tags/nano/">Nano</a></li>
-      <li><a href="https://Han-think.github.io/tags/hugo/">Hugo</a></li>
-      <li><a href="https://Han-think.github.io/tags/beginner/">Beginner</a></li>
-      <li><a href="https://Han-think.github.io/tags/workflow/">Workflow</a></li>
+      <li><a href="http://127.0.0.1:1313/tags/linux/">Linux</a></li>
+      <li><a href="http://127.0.0.1:1313/tags/git-bash/">Git-Bash</a></li>
+      <li><a href="http://127.0.0.1:1313/tags/cli/">Cli</a></li>
+      <li><a href="http://127.0.0.1:1313/tags/markdown/">Markdown</a></li>
+      <li><a href="http://127.0.0.1:1313/tags/vi/">Vi</a></li>
+      <li><a href="http://127.0.0.1:1313/tags/nano/">Nano</a></li>
+      <li><a href="http://127.0.0.1:1313/tags/hugo/">Hugo</a></li>
+      <li><a href="http://127.0.0.1:1313/tags/beginner/">Beginner</a></li>
+      <li><a href="http://127.0.0.1:1313/tags/workflow/">Workflow</a></li>
     </ul>
 
   </footer>
@@ -353,7 +270,7 @@ VS Code가 없다. vi는 거의 모든 Linux 환경에 기본으로 설치되어
     </main>
     
 <footer class="footer">
-        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+        <span>&copy; 2026 <a href="http://127.0.0.1:1313/">Han-think Blog</a></span> · 
 
     
     
