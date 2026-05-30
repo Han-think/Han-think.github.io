@@ -2,59 +2,52 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Han-think Blog</title>
-    <link>http://127.0.0.1:1313/</link>
+    <link>https://Han-think.github.io/</link>
     <description>Recent content on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
     <lastBuildDate>Sat, 30 May 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://127.0.0.1:1313/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://Han-think.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인</title>
-      <link>http://127.0.0.1:1313/posts/setup/learninglog-kit/</link>
+      <link>https://Han-think.github.io/posts/setup/learninglog-kit/</link>
       <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
-      <guid>http://127.0.0.1:1313/posts/setup/learninglog-kit/</guid>
+      <guid>https://Han-think.github.io/posts/setup/learninglog-kit/</guid>
       <description>강의자료와 개인 학습 노트(.md)를 폴더에 넣으면 LLM이 정리 → 블로그 초안 → 발행까지 자동으로 해주는 파이프라인 도구. pip 설치 &#43; 웹 UI로 누구나 5분이면 시작.</description>
     </item>
     <item>
       <title>Python 공식 문서로 에러 메시지 이해하기: `int`와 `str` 메서드 탐구</title>
-      <link>http://127.0.0.1:1313/learning/official-docs-error-messages-methods/</link>
+      <link>https://Han-think.github.io/learning/official-docs-error-messages-methods/</link>
       <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
-      <guid>http://127.0.0.1:1313/learning/official-docs-error-messages-methods/</guid>
+      <guid>https://Han-think.github.io/learning/official-docs-error-messages-methods/</guid>
       <description>Python 공식 문서를 활용해 자주 발생하는 에러 메시지를 이해하고, `int`와 `str`의 주요 메서드를 학습한 기록.</description>
     </item>
     <item>
-      <title>구름의 흐름에서 배우는 유연한 학습과 프로젝트 관리</title>
-      <link>http://127.0.0.1:1313/learning/cloud-poem/</link>
-      <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
-      <guid>http://127.0.0.1:1313/learning/cloud-poem/</guid>
-      <description>&amp;#39;구름의 흐름&amp;#39;이라는 글을 통해 변화와 불확실성 속에서 학습하고 성장하는 방법을 탐색하며, 개인 프로젝트에 유연성을 적용하는 방안을 모색합니다.</description>
-    </item>
-    <item>
       <title>초보자를 위한 혼란 극복: Git Bash, Markdown, vi 편집기 그리고 Hugo 블로그 구축 시작</title>
-      <link>http://127.0.0.1:1313/learning/today-learning-personal-notes/</link>
+      <link>https://Han-think.github.io/learning/today-learning-personal-notes/</link>
       <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
-      <guid>http://127.0.0.1:1313/learning/today-learning-personal-notes/</guid>
+      <guid>https://Han-think.github.io/learning/today-learning-personal-notes/</guid>
       <description>Git Bash와 Markdown, vi 편집기를 활용한 초기 Hugo 블로그 구축 과정에서의 학습 경험과 해석을 공유합니다.</description>
     </item>
     <item>
       <title>Git Bash, Markdown, vi 기초 — 내가 헷갈린 것들</title>
-      <link>http://127.0.0.1:1313/learning/git-bash-markdown-vi-basics/</link>
+      <link>https://Han-think.github.io/learning/git-bash-markdown-vi-basics/</link>
       <pubDate>Thu, 28 May 2026 00:00:00 +0000</pubDate>
-      <guid>http://127.0.0.1:1313/learning/git-bash-markdown-vi-basics/</guid>
+      <guid>https://Han-think.github.io/learning/git-bash-markdown-vi-basics/</guid>
       <description>CLI 처음 배울 때 헷갈렸던 것들 솔직 정리. &amp;gt; vs &amp;gt;&amp;gt;, # 의 이중 의미, vi 탈출법, 따옴표 차이. 명령어 암기보다 개념 이해에 집중한 기록.</description>
     </item>
     <item>
       <title>LearningLog와 TableCard — 학습 기록을 프로젝트 구조로 만드는 법</title>
-      <link>http://127.0.0.1:1313/projects/learninglog-tablecard-workflow/</link>
+      <link>https://Han-think.github.io/projects/learninglog-tablecard-workflow/</link>
       <pubDate>Thu, 28 May 2026 00:00:00 +0000</pubDate>
-      <guid>http://127.0.0.1:1313/projects/learninglog-tablecard-workflow/</guid>
+      <guid>https://Han-think.github.io/projects/learninglog-tablecard-workflow/</guid>
       <description>수업 노트, PDF, 대화 기록이 쌓여도 흘려보내지 않기 위해 만든 학습 파이프라인. LearningLog와 TableCard의 역할 분리, 그리고 상태 장부 시스템에 대한 기록.</description>
     </item>
     <item>
       <title>History 큐레이션 — 5페이지 색인에서 뽑은 5권</title>
-      <link>http://127.0.0.1:1313/posts/book-reviews/topic-history/</link>
+      <link>https://Han-think.github.io/posts/book-reviews/topic-history/</link>
       <pubDate>Wed, 27 May 2026 15:59:32 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/book-reviews/topic-history/</guid>
+      <guid>https://Han-think.github.io/posts/book-reviews/topic-history/</guid>
       <description>&lt;h2 id=&#34;수집-방법&#34;&gt;수집 방법&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;1단계 — 전체 색인&lt;/strong&gt;: books.toscrape.com 5페이지(100권)를 한 번에 크롤링&lt;br&gt;
@@ -93,9 +86,9 @@
     </item>
     <item>
       <title>Mystery 큐레이션 — 5페이지 색인에서 뽑은 5권</title>
-      <link>http://127.0.0.1:1313/posts/book-reviews/topic-mystery/</link>
+      <link>https://Han-think.github.io/posts/book-reviews/topic-mystery/</link>
       <pubDate>Wed, 27 May 2026 15:59:04 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/book-reviews/topic-mystery/</guid>
+      <guid>https://Han-think.github.io/posts/book-reviews/topic-mystery/</guid>
       <description>&lt;h2 id=&#34;수집-방법&#34;&gt;수집 방법&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;1단계 — 전체 색인&lt;/strong&gt;: books.toscrape.com 5페이지(100권)를 한 번에 크롤링&lt;br&gt;
@@ -134,9 +127,9 @@
     </item>
     <item>
       <title>Sapiens: A Brief History of Humankind</title>
-      <link>http://127.0.0.1:1313/posts/book-reviews/2026-05-27_sapiens-a-brief-history-of-humankind/</link>
+      <link>https://Han-think.github.io/posts/book-reviews/2026-05-27_sapiens-a-brief-history-of-humankind/</link>
       <pubDate>Wed, 27 May 2026 14:00:00 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/book-reviews/2026-05-27_sapiens-a-brief-history-of-humankind/</guid>
+      <guid>https://Han-think.github.io/posts/book-reviews/2026-05-27_sapiens-a-brief-history-of-humankind/</guid>
       <description>&lt;p&gt;&lt;img alt=&#34;표지&#34; loading=&#34;lazy&#34; src=&#34;http://books.toscrape.com/media/cache/be/a5/bea5697f2534a2f86a3ef27b5a8c12a6.jpg&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;-기본-정보&#34;&gt;📖 기본 정보&lt;/h2&gt;
 &lt;table&gt;
@@ -174,9 +167,9 @@
     </item>
     <item>
       <title>books.toscrape.com — 5페이지 책 목록 (20권)</title>
-      <link>http://127.0.0.1:1313/posts/book-reviews/books-page-5/</link>
+      <link>https://Han-think.github.io/posts/book-reviews/books-page-5/</link>
       <pubDate>Wed, 27 May 2026 13:00:00 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/book-reviews/books-page-5/</guid>
+      <guid>https://Han-think.github.io/posts/book-reviews/books-page-5/</guid>
       <description>&lt;h2 id=&#34;5페이지--크롤링-결과&#34;&gt;5페이지 — 크롤링 결과&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;크롤링 URL: &lt;code&gt;http://books.toscrape.com/catalogue/page-5.html&lt;/code&gt;&lt;br&gt;
@@ -363,9 +356,9 @@
     </item>
     <item>
       <title>Sharp Objects</title>
-      <link>http://127.0.0.1:1313/posts/book-reviews/2026-05-27_sharp-objects/</link>
+      <link>https://Han-think.github.io/posts/book-reviews/2026-05-27_sharp-objects/</link>
       <pubDate>Wed, 27 May 2026 13:00:00 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/book-reviews/2026-05-27_sharp-objects/</guid>
+      <guid>https://Han-think.github.io/posts/book-reviews/2026-05-27_sharp-objects/</guid>
       <description>&lt;p&gt;&lt;img alt=&#34;표지&#34; loading=&#34;lazy&#34; src=&#34;http://books.toscrape.com/media/cache/32/51/3251cf3a3412f53f339e42cac2134093.jpg&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;-기본-정보&#34;&gt;📖 기본 정보&lt;/h2&gt;
 &lt;table&gt;
@@ -403,9 +396,9 @@
     </item>
     <item>
       <title>books.toscrape.com — 4페이지 책 목록 (20권)</title>
-      <link>http://127.0.0.1:1313/posts/book-reviews/books-page-4/</link>
+      <link>https://Han-think.github.io/posts/book-reviews/books-page-4/</link>
       <pubDate>Wed, 27 May 2026 12:00:00 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/book-reviews/books-page-4/</guid>
+      <guid>https://Han-think.github.io/posts/book-reviews/books-page-4/</guid>
       <description>&lt;h2 id=&#34;4페이지--크롤링-결과&#34;&gt;4페이지 — 크롤링 결과&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;크롤링 URL: &lt;code&gt;http://books.toscrape.com/catalogue/page-4.html&lt;/code&gt;&lt;br&gt;
@@ -592,9 +585,9 @@
     </item>
     <item>
       <title>Soumission</title>
-      <link>http://127.0.0.1:1313/posts/book-reviews/2026-05-27_soumission/</link>
+      <link>https://Han-think.github.io/posts/book-reviews/2026-05-27_soumission/</link>
       <pubDate>Wed, 27 May 2026 12:00:00 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/book-reviews/2026-05-27_soumission/</guid>
+      <guid>https://Han-think.github.io/posts/book-reviews/2026-05-27_soumission/</guid>
       <description>&lt;p&gt;&lt;img alt=&#34;표지&#34; loading=&#34;lazy&#34; src=&#34;http://books.toscrape.com/media/cache/3e/ef/3eef99c9d9adef34639f510662022830.jpg&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;-기본-정보&#34;&gt;📖 기본 정보&lt;/h2&gt;
 &lt;table&gt;
@@ -632,9 +625,9 @@
     </item>
     <item>
       <title>books.toscrape.com — 3페이지 책 목록 (20권)</title>
-      <link>http://127.0.0.1:1313/posts/book-reviews/books-page-3/</link>
+      <link>https://Han-think.github.io/posts/book-reviews/books-page-3/</link>
       <pubDate>Wed, 27 May 2026 11:00:00 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/book-reviews/books-page-3/</guid>
+      <guid>https://Han-think.github.io/posts/book-reviews/books-page-3/</guid>
       <description>&lt;h2 id=&#34;3페이지--크롤링-결과&#34;&gt;3페이지 — 크롤링 결과&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;크롤링 URL: &lt;code&gt;http://books.toscrape.com/catalogue/page-3.html&lt;/code&gt;&lt;br&gt;
@@ -821,9 +814,9 @@
     </item>
     <item>
       <title>Tipping the Velvet</title>
-      <link>http://127.0.0.1:1313/posts/book-reviews/2026-05-27_tipping-the-velvet/</link>
+      <link>https://Han-think.github.io/posts/book-reviews/2026-05-27_tipping-the-velvet/</link>
       <pubDate>Wed, 27 May 2026 11:00:00 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/book-reviews/2026-05-27_tipping-the-velvet/</guid>
+      <guid>https://Han-think.github.io/posts/book-reviews/2026-05-27_tipping-the-velvet/</guid>
       <description>&lt;p&gt;&lt;img alt=&#34;표지&#34; loading=&#34;lazy&#34; src=&#34;http://books.toscrape.com/media/cache/26/0c/260c6ae16bce31c8f8c95daddd9f4a1c.jpg&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;-기본-정보&#34;&gt;📖 기본 정보&lt;/h2&gt;
 &lt;table&gt;
@@ -861,9 +854,9 @@
     </item>
     <item>
       <title>A Light in the Attic</title>
-      <link>http://127.0.0.1:1313/posts/book-reviews/2026-05-27_a-light-in-the-attic/</link>
+      <link>https://Han-think.github.io/posts/book-reviews/2026-05-27_a-light-in-the-attic/</link>
       <pubDate>Wed, 27 May 2026 10:00:00 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/book-reviews/2026-05-27_a-light-in-the-attic/</guid>
+      <guid>https://Han-think.github.io/posts/book-reviews/2026-05-27_a-light-in-the-attic/</guid>
       <description>&lt;p&gt;&lt;img alt=&#34;표지&#34; loading=&#34;lazy&#34; src=&#34;http://books.toscrape.com/media/cache/2c/da/2cdad67c44b002e7ead0cc35693c0e8b.jpg&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;-기본-정보&#34;&gt;📖 기본 정보&lt;/h2&gt;
 &lt;table&gt;
@@ -901,10 +894,10 @@
     </item>
     <item>
       <title>BookCrawler — 웹 크롤링부터 블로그 자동 발행까지</title>
-      <link>http://127.0.0.1:1313/posts/dataset/bookcrawler-pipeline/</link>
+      <link>https://Han-think.github.io/posts/dataset/bookcrawler-pipeline/</link>
       <pubDate>Wed, 27 May 2026 10:00:00 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/dataset/bookcrawler-pipeline/</guid>
-      <description>&lt;a href=&#34;http://127.0.0.1:1313/downloads/bookcrawler.zip&#34; class=&#34;dl-btn&#34; download&gt;
+      <guid>https://Han-think.github.io/posts/dataset/bookcrawler-pipeline/</guid>
+      <description>&lt;a href=&#34;https://Han-think.github.io/downloads/bookcrawler.zip&#34; class=&#34;dl-btn&#34; download&gt;
   ⬇ BookCrawler 소스 다운로드 (ZIP · 전체 파이프라인)
 &lt;/a&gt;
 
@@ -946,9 +939,9 @@
     </item>
     <item>
       <title>books.toscrape.com — 2페이지 책 목록 (20권)</title>
-      <link>http://127.0.0.1:1313/posts/book-reviews/books-page-2/</link>
+      <link>https://Han-think.github.io/posts/book-reviews/books-page-2/</link>
       <pubDate>Wed, 27 May 2026 10:00:00 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/book-reviews/books-page-2/</guid>
+      <guid>https://Han-think.github.io/posts/book-reviews/books-page-2/</guid>
       <description>&lt;h2 id=&#34;2페이지--크롤링-결과&#34;&gt;2페이지 — 크롤링 결과&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;크롤링 URL: &lt;code&gt;http://books.toscrape.com/catalogue/page-2.html&lt;/code&gt;&lt;br&gt;
@@ -1135,9 +1128,9 @@
     </item>
     <item>
       <title>첫번째 글</title>
-      <link>http://127.0.0.1:1313/posts/%EC%B2%AB%EB%B2%88%EC%A7%B8-%EA%B8%80/</link>
+      <link>https://Han-think.github.io/posts/%EC%B2%AB%EB%B2%88%EC%A7%B8-%EA%B8%80/</link>
       <pubDate>Wed, 27 May 2026 09:02:57 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/%EC%B2%AB%EB%B2%88%EC%A7%B8-%EA%B8%80/</guid>
+      <guid>https://Han-think.github.io/posts/%EC%B2%AB%EB%B2%88%EC%A7%B8-%EA%B8%80/</guid>
       <description>&lt;h2 id=&#34;안녕하세요&#34;&gt;안녕하세요!&lt;/h2&gt;
 &lt;p&gt;Hugo와 GitHub Pages로 블로그를 시작했습니다.&lt;/p&gt;
 &lt;p&gt;이 블로그는 로컬 AI, 개발, 그리고 만들어가는 것들을 기록하는 공간입니다.&lt;/p&gt;
@@ -1145,9 +1138,9 @@
     </item>
     <item>
       <title>books.toscrape.com — 1페이지 책 목록 (20권)</title>
-      <link>http://127.0.0.1:1313/posts/book-reviews/books-page-1/</link>
+      <link>https://Han-think.github.io/posts/book-reviews/books-page-1/</link>
       <pubDate>Wed, 27 May 2026 09:00:00 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/book-reviews/books-page-1/</guid>
+      <guid>https://Han-think.github.io/posts/book-reviews/books-page-1/</guid>
       <description>&lt;h2 id=&#34;1페이지--크롤링-결과&#34;&gt;1페이지 — 크롤링 결과&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;크롤링 URL: &lt;code&gt;http://books.toscrape.com/catalogue/page-1.html&lt;/code&gt;&lt;br&gt;
@@ -1334,58 +1327,58 @@
     </item>
     <item>
       <title>크롤링은 어떻게 페이지를 넘어가나 — 명령어와 구조로 읽는 웹 수집</title>
-      <link>http://127.0.0.1:1313/posts/dataset/how-crawling-works/</link>
+      <link>https://Han-think.github.io/posts/dataset/how-crawling-works/</link>
       <pubDate>Wed, 27 May 2026 09:00:00 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/dataset/how-crawling-works/</guid>
+      <guid>https://Han-think.github.io/posts/dataset/how-crawling-works/</guid>
       <description>겁나 살벌해 보이는 웹 크롤링. 사실 URL 규칙 하나 잡으면 끝입니다. 페이지네이션 구조부터 데이터 저장까지, 코드가 실제로 뭘 하는지 단계별로 읽어봅니다.</description>
     </item>
     <item>
       <title>[음악 AI] AudioCraft — Meta의 AI 음악 생성, 로컬 설치</title>
-      <link>http://127.0.0.1:1313/posts/generator/audiocraft-setup/</link>
+      <link>https://Han-think.github.io/posts/generator/audiocraft-setup/</link>
       <pubDate>Wed, 27 May 2026 05:00:00 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/generator/audiocraft-setup/</guid>
+      <guid>https://Han-think.github.io/posts/generator/audiocraft-setup/</guid>
       <description>Meta AudioCraft(MusicGen)을 로컬에서 설치하고 텍스트로 음악을 생성하는 레시피 · 패키지 의존성 지뢰밭 해결</description>
     </item>
     <item>
       <title>[데이터] pandas · numpy · matplotlib 로컬 AI 연동 환경</title>
-      <link>http://127.0.0.1:1313/posts/dataset/pandas-ai-env/</link>
+      <link>https://Han-think.github.io/posts/dataset/pandas-ai-env/</link>
       <pubDate>Wed, 27 May 2026 04:00:00 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/dataset/pandas-ai-env/</guid>
+      <guid>https://Han-think.github.io/posts/dataset/pandas-ai-env/</guid>
       <description>데이터 분석 도구와 로컬 AI를 연동하는 Python 환경 구성 · conda 기반 안정적인 패키지 조합</description>
     </item>
     <item>
       <title>[영상 AI] 로컬 영상 생성 환경 만들기 — 선택지와 현실</title>
-      <link>http://127.0.0.1:1313/posts/generator/videocrafter-local/</link>
+      <link>https://Han-think.github.io/posts/generator/videocrafter-local/</link>
       <pubDate>Wed, 27 May 2026 03:00:00 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/generator/videocrafter-local/</guid>
+      <guid>https://Han-think.github.io/posts/generator/videocrafter-local/</guid>
       <description>로컬에서 AI 영상 생성이 가능한가? 선택지별 요구 사양과 현실적인 접근법 정리</description>
     </item>
     <item>
       <title>[이미지 AI] Stable Diffusion · Intel Arc에서 IPEX로 돌리기</title>
-      <link>http://127.0.0.1:1313/posts/generator/stable-diffusion-ipex/</link>
+      <link>https://Han-think.github.io/posts/generator/stable-diffusion-ipex/</link>
       <pubDate>Wed, 27 May 2026 02:00:00 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/generator/stable-diffusion-ipex/</guid>
+      <guid>https://Han-think.github.io/posts/generator/stable-diffusion-ipex/</guid>
       <description>NVIDIA 없이 Intel Arc GPU로 Stable Diffusion을 실행하는 검증된 환경 레시피 · IPEX-LLM과 diffusers 연동</description>
     </item>
     <item>
       <title>[LLM] Ollama 로컬 설치 — Windows에서 모델 내려받고 바로 쓰기</title>
-      <link>http://127.0.0.1:1313/posts/setup/ollama-local-setup/</link>
+      <link>https://Han-think.github.io/posts/setup/ollama-local-setup/</link>
       <pubDate>Wed, 27 May 2026 01:00:00 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/setup/ollama-local-setup/</guid>
+      <guid>https://Han-think.github.io/posts/setup/ollama-local-setup/</guid>
       <description>Windows 환경에서 Ollama를 설치하고 로컬 LLM을 띄우는 최단 경로 · GPU 감지부터 모델 실행까지</description>
     </item>
     <item>
       <title>[도구] PyRecipe — 로컬 AI 환경 추천기 설계와 구현</title>
-      <link>http://127.0.0.1:1313/posts/setup/pyrecipe-architecture/</link>
+      <link>https://Han-think.github.io/posts/setup/pyrecipe-architecture/</link>
       <pubDate>Wed, 27 May 2026 00:00:00 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/setup/pyrecipe-architecture/</guid>
+      <guid>https://Han-think.github.io/posts/setup/pyrecipe-architecture/</guid>
       <description>로컬 LLM으로 Python 패키지 버전 조합을 추천하는 단일 HTML 도구 · 아키텍처 설계부터 JSON 파싱 엣지케이스 해결까지</description>
     </item>
     <item>
       <title>[음악 AI] Magenta — 처음 만난 AI 작곡, 그리고 벽</title>
-      <link>http://127.0.0.1:1313/posts/generator/magenta-music-conda/</link>
+      <link>https://Han-think.github.io/posts/generator/magenta-music-conda/</link>
       <pubDate>Wed, 27 May 2026 00:00:00 +0900</pubDate>
-      <guid>http://127.0.0.1:1313/posts/generator/magenta-music-conda/</guid>
+      <guid>https://Han-think.github.io/posts/generator/magenta-music-conda/</guid>
       <description>Google Magenta로 시작한 AI 작곡 여정 · 실패와 돌파구 · 검증된 로컬 환경 레시피</description>
     </item>
   </channel>
