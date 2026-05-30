@@ -178,50 +178,18 @@ LearningLog Kit은 그 과정을 자동화한다.
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Python 연산자 이해하기: 초보자를 위한 가이드 (1부)
+    <h2 class="entry-hint-parent">Python 공식 문서로 에러 메시지 이해하기: `int`와 `str` 메서드 탐구
     </h2>
   </header>
   <div class="entry-content">
-    <p>왜 썼나 오늘은 Python 프로그래밍 언어를 처음 배우는 입장에서 가장 기본적이면서도 종종 혼란을 일으키는 연산자들에 대해 깊이 이해해보고자 합니다. 특히, 다양한 데이터 타입 간의 연산자 활용과 타입 변환에 초점을 맞추어 학습 경험을 기록하고 싶었습니다. 이를 통해 비슷한 고민을 하는 초보자들이 조금 더 명확하게 개념을 파악할 수 있기를 바랍니다.
-배운 것 데이터 타입과 연산자의 상호작용: Python에서는 동일한 연산자라도 사용하는 데이터 타입에 따라 결과가 달라질 수 있다는 점을 명확히 이해했습니다. 예를 들어, 정수와 실수를 함께 사용할 때 연산 결과가 항상 실수로 반환되는 이유를 알게 되었습니다. 이는 연산의 기본적인 타입 우선순위와 관련이 있습니다. 나눗셈 연산자의 결과 타입: / 연산자는 항상 실수(float)를 반환한다는 사실을 확인했습니다. 이는 두 숫자를 나눌 때 결과가 항상 실수로 처리되기 때문입니다. 반대로, 정수 나눗셈을 원한다면 // 연산자를 사용해야 함을 배웠습니다. 이 연산자는 몫을 정수로 반환합니다. 나머지 연산자 이해: % 연산자는 나머지를 반환하며, 주로 나눗셈에서의 나머지 값을 계산할 때 사용됩니다. 예를 들어, 10 % 3은 1을 반환합니다. 문자열 연산자: 문자열에서 &#43;는 문자열 연결을 의미하며, 여러 문자열을 이어붙일 때 사용됩니다. 반면, * 연산자는 문자열을 지정된 횟수만큼 반복합니다. 예를 들어, &#34;안녕&#34; * 3은 &#34;안녕안녕안녕&#34;을 생성합니다. 헷갈린 것 타입 변환의 미묘함: 정수와 실수를 혼합 사용할 때 발생하는 타입 변환의 미묘한 부분이 여전히 명확하지 않습니다. 특히, 의도치 않은 타입 변환이 프로그램의 결과에 어떤 영향을 미칠 수 있는지에 대해 더 깊이 이해할 필요가 있습니다. 연산자 역할의 복잡성: //와 % 연산자의 역할이 비슷해 보일 수 있지만, 실제로는 서로 다른 목적을 가지고 있다는 점이 혼란스럽습니다. 구체적인 사용 사례를 통해 차이점을 명확히 파악해야겠습니다. 정리된 이해 데이터 타입의 중요성: Python에서 연산자의 결과는 사용하는 변수의 데이터 타입에 크게 영향을 받습니다. 특히, 정수와 실수 연산에서는 결과 타입이 항상 실수로 변환되는 경향이 있으므로 주의가 필요합니다. 연산자의 명확한 역할: /, //, % 연산자는 각각 다른 목적을 가지고 있으며, 이를 정확히 이해하고 사용하는 것이 중요합니다. 특히 문자열 연산자인 &#43;와 *는 문자열 처리 시 매우 유용하지만, 올바른 사용법을 익혀야 합니다. 실습 예시 정수 나눗셈과 몫 계산:
-...</p>
+    <p>왜 썼나 Python을 학습하면서 자주 마주치는 에러 메시지의 의미를 정확히 이해하고, 공식 문서를 활용하는 습관을 들이기 위해 이 노트를 작성했습니다.
+배운 것 에러 메시지 읽기: TypeError, ValueError 등 자주 발생하는 에러의 의미를 파악하는 방법을 익혔습니다. 공식 문서 활용: Python 공식 문서에서 내장 함수와 메서드를 찾아보는 방법을 학습했습니다. int와 str 메서드: 형 변환과 문자열 처리에 유용한 다양한 메서드를 정리했습니다. 헷갈렸던 것 에러 메시지의 구조: 처음에는 traceback이 복잡하게 느껴졌지만, 마지막 줄부터 읽으면 핵심을 파악하기 쉽다는 것을 알았습니다. 정리된 이해 에러는 정보다: 에러 메시지는 문제 해결의 단서이며, 두려워할 대상이 아니라는 것을 깨달았습니다. 실습 예시 # int 메서드 예시 num = 42 print(num.bit_length()) # 6 다음 복습 목표: 다양한 Python 에러 메시지를 분석하고, 각 에러 메시지가 의미하는 바를 정확히 이해하는 연습을 계속할 것입니다. 특히, TypeError, ValueError 등 다른 유형의 에러 메시지에 대해서도 탐구해 볼 계획입니다. 또한, Python 공식 문서를 적극 활용하여 내장 객체와 메서드에 대한 깊은 이해를 쌓아가겠습니다. 초보자 키워드 Python 공식 문서 에러 메시지 int 메서드 str 메서드 형 변환 이 노트가 도움이 되길 바랍니다!
+</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-05-30 00:00:00 +0000 UTC'>2026년 5월 30일</span>&nbsp;·&nbsp;<span>11 min</span></footer>
-  <a class="entry-link" aria-label="post link to Python 연산자 이해하기: 초보자를 위한 가이드 (1부)" href="https://Han-think.github.io/learning/python-operations-input-indexing-slicing/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">리스트 메서드 이해와 활용: 초보자를 위한 혼란 해결 가이드
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>왜 썼나 최근 데이터 처리와 관리를 위해 Python 리스트 메서드를 활용하는 과정에서 몇 가지 혼란을 겪었습니다. 이러한 경험을 바탕으로 초보자들이 쉽게 이해하고 적용할 수 있도록 가이드를 작성하고자 했습니다. 특히, 실무에서 자주 사용되는 append, insert, remove, sort 메서드와 중복 요소를 제거하는 방법에 초점을 맞추었습니다.
-배운 것 append() 메서드: 리스트 끝에 새로운 요소를 추가하는 데 사용됩니다. 간단하고 직관적인 방법으로 리스트에 항목을 추가하는 데 유용합니다.
-my_list = [1, 2, 3] my_list.append(4) print(my_list) # 출력: [1, 2, 3, 4] insert() 메서드: 리스트의 특정 위치에 요소를 삽입할 때 사용됩니다. 원하는 위치와 값을 정확히 지정해야 합니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-05-30 00:00:00 +0000 UTC'>2026년 5월 30일</span>&nbsp;·&nbsp;<span>13 min</span></footer>
-  <a class="entry-link" aria-label="post link to 리스트 메서드 이해와 활용: 초보자를 위한 혼란 해결 가이드" href="https://Han-think.github.io/learning/list-methods-scenarios-dedupe-connection/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">초보자를 위한 Python 에러 메시지 이해하기: 첫걸음
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>왜 썼나 학습 동기: Python 프로그래밍을 배우면서 자주 마주치는 에러 메시지들로 인해 코드 실행이 막히는 경우가 많았습니다. 특히 초보자로서 이러한 메시지들을 해석하는 것이 처음에는 큰 난관이었습니다. 이 노트를 통해 비슷한 어려움을 겪는 다른 학습자들에게 도움을 주고자 합니다. 배운 것 에러 메시지의 해석: 에러 메시지는 단순히 문제를 알려주는 것 이상으로, 문제의 핵심 원인을 가리키는 중요한 단서입니다. 예를 들어, AttributeError: &#39;str&#39; object has no attribute &#39;append&#39;는 문자열 객체(str)에서 append 메서드를 사용하려고 했다는 사실을 명확히 알려줍니다. 자료형 이해의 중요성: 각 Python 내장 객체(list, str, dict 등)가 가지고 있는 특징과 메서드의 적용 범위를 이해하는 것이 중요합니다. append는 list 객체에만 적용 가능하며, str 타입에서는 사용할 수 없습니다. 헷갈릴린 것 초기 오해: 처음에는 에러 메시지에서 언급된 메서드(append)만 찾으려고 애썼습니다. 그러나 실제로는 해당 메서드가 어떤 자료형에 적용 가능한지 파악하는 것이 더 중요한 문제였습니다. 예를 들어, 위의 에러 메시지에서 str 타입이 append 메서드를 지원하지 않는다는 점을 명확히 이해하는 것이 필요했습니다. 정리된 이해 에러 메시지의 역할: 에러 메시지는 코드 실행 중 발생한 문제의 정확한 위치와 원인을 제공합니다. 이를 통해 디버깅 과정을 효율적으로 진행할 수 있습니다. 공식 문서 활용: Python 공식 문서는 각 내장 객체와 그들의 메서드에 대한 상세한 설명을 제공합니다. str과 list의 차이점 및 메서드 사용 범위를 확인하기 위해 이러한 자료를 참조하는 것이 매우 유용합니다. 예를 들어, str은 불변(immutable) 타입으로 여러 가지 문자열 조작 메서드가 있지만, append는 변경 가능한(mutable) list에만 적용됩니다. 실습 예시 예시 코드: # 올바른 코드 예시: 문자열 대신 리스트 사용 my_list = [&#34;hello&#34;] my_list.append(&#34; world&#34;) # 정상 작동 print(my_list) # 출력: [&#39;hello&#39;, &#39; world&#39;] # 에러 발생 예시 이해 my_string = &#34;hello&#34; # my_string.append(&#34; world&#34;) # 실행 시 에러 발생: AttributeError: &#39;str&#39; object has no attribute &#39;append&#39; 초보자 키워드 AttributeError 문자열(str) 리스트(list) 불변 객체 변경 가능한 객체 디버깅 다음 복습 목표: 다양한 Python 에러 메시지를 분석하고, 각 에러 메시지가 의미하는 바를 정확히 이해하는 연습을 계속할 것입니다. 특히, TypeError, ValueError 등 다른 유형의 에러 메시지에 대해서도 탐구해 볼 계획입니다. 또한, Python 공식 문서를 적극 활용하여 내장 객체와 메서드에 대한 깊은 이해를 쌓아가겠습니다. source_id: SRC-20260530-001 note_date: 2026-05-30 model: huihui_ai/exaone3.5-abliterated:7.8b mode: working_note
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-05-30 00:00:00 +0000 UTC'>2026년 5월 30일</span>&nbsp;·&nbsp;<span>11 min</span></footer>
-  <a class="entry-link" aria-label="post link to 초보자를 위한 Python 에러 메시지 이해하기: 첫걸음" href="https://Han-think.github.io/learning/official-docs-error-messages-methods/"></a>
+<span title='2026-05-30 00:00:00 +0000 UTC'>2026년 5월 30일</span>&nbsp;·&nbsp;<span>1 min</span></footer>
+  <a class="entry-link" aria-label="post link to Python 공식 문서로 에러 메시지 이해하기: `int`와 `str` 메서드 탐구" href="https://Han-think.github.io/learning/official-docs-error-messages-methods/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 

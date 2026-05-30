@@ -9,11 +9,11 @@
     <lastBuildDate>Sat, 30 May 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/error-handling/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>초보자를 위한 Python 에러 메시지 이해하기: 첫걸음</title>
+      <title>Python 공식 문서로 에러 메시지 이해하기: `int`와 `str` 메서드 탐구</title>
       <link>https://Han-think.github.io/learning/official-docs-error-messages-methods/</link>
       <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/learning/official-docs-error-messages-methods/</guid>
-      <description>Python에서 흔히 마주치는 에러 메시지를 이해하고, 특히 초보자들이 쉽게 혼동할 수 있는 부분들을 정리해 보았습니다. 이 노트는 에러 메시지의 의미를 파악하고, 어떻게 해결할 수 있는지에 대한 실용적인 가이드를 제공합니다.</description>
+      <description>Python 공식 문서를 활용해 자주 발생하는 에러 메시지를 이해하고, `int`와 `str`의 주요 메서드를 학습한 기록.</description>
     </item>
   </channel>
 </rss>
