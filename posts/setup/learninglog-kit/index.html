@@ -133,8 +133,8 @@
   "keywords": [
     "python", "llm", "automation", "gemini", "ollama", "hugo", "pipeline"
   ],
-  "articleBody": "무엇을 만드나 매일 배운 것을 기록하고 싶지만, 정리하고 블로그에 올리는 과정이 번거롭다.\nLearningLog Kit은 그 과정을 자동화한다.\n00_inbox/personal_notes/ 에 노트(.md)를 넣는다 ↓ LLM (Gemini / Groq / Ollama) 사실 추출 → 워킹 노트 → 블로그 초안 ↓ 블로그 발행 (draft → publish) 설치부터 발행까지 버튼 클릭만으로 가능하다.\n다운로드 ⬇ LearningLog Kit 다운로드 (ZIP · v0.3.0) pip install ./learninglog-kit-v0.3.0.zip[web,gemini] 로 바로 설치할 수 있습니다.\n가장 쉬운 시작 — 웹 UI pip install \"./learninglog-kit-v0.3.0.zip[web,gemini]\" learninglog ui 브라우저(http://127.0.0.1:8765)가 열리면:\n1. [폴더 구조 생성] 클릭 → 작업 폴더 자동 세팅 2. Gemini 선택 → API 키 붙여넣기 → [저장 + 테스트] 3. 00_inbox/personal_notes/ 에 노트(.md) 넣기 4. [① intake] → [② extract] → [③ publish] 클릭 터미널 명령을 몰라도 됩니다. 설치·설정·실행이 전부 화면 안에서 끝납니다.\nAPI 키는 어디서 — Gemini 무료 가장 간단한 무료 옵션은 Google Gemini입니다.\n1. https://aistudio.google.com/app/apikey 접속 (구글 계정) 2. [Create API key] 클릭 3. AIzaSy... 키 복사 → 웹 UI에 붙여넣기 무료 한도: 하루 1,500회 요청 (매일 자정 초기화). 개인 학습 노트에는 충분합니다.\n⚠️ API 키는 메신저·GitHub·SNS에 공유하지 마세요.\n헷갈렸던 것 — 로컬 vs 클라우드 처음엔 “로컬 모델(Ollama)을 꼭 깔아야 하나?” 싶었다.\n정리하면 선택지는 세 가지다.\n방식 비용 특징 Gemini / Groq 무료 (한도) 설치 불필요, API 키만. 빠름 Ollama 완전 무료 로컬 실행, 인터넷 불필요, 프라이버시 핵심: 클라우드 API는 컨텍스트가 커서 긴 노트도 한 번에 처리되고, 로컬은 데이터가 PC를 벗어나지 않는다. 목적에 따라 고르면 된다.\n정리된 이해 — 파이프라인 구조 intake : 00_inbox 스캔 → 등록 (중복 자동 감지) extract : LLM 처리 → 사실 추출 + 워킹 노트 + 블로그 초안 publish : draft:false + ai_assisted 마킹 → 블로그로 복사 + 빌드 + 발행 각 단계는 상태 장부(CSV)로 추적되어, 이미 처리한 노트는 다시 처리하지 않는다.\n실습 — 하루 학습 기록 흐름 오전 수업 → Gemini에게 \"오늘 배운 것 정리해줘\" → PN_날짜_01_주제.md 오후 수업 → 같은 방식 → PN_날짜_02_주제.md 수업 후: learninglog ui → [intake] → [extract] → [publish] → 오늘 학습 2편이 블로그에 자동 발행 한 번에 다 넣기보다 강의 시간 단위로 나눠 정리하는 것을 권장합니다. LLM이 맥락을 더 정확히 처리합니다.\n초보자 키워드 파이프라인(pipeline): 입력 → 처리 → 출력이 단계로 이어진 자동 흐름. 검색어 data pipeline API 키(API key): 외부 AI 서비스를 쓸 때 신원을 증명하는 비밀 문자열. 검색어 gemini api key front matter: 마크다운 글 맨 위 --- 사이의 설정(제목·날짜·카테고리). 검색어 hugo front matter 다음 복습 LLM provider별 무료 한도 비교 Ollama 로컬 모델 컨텍스트(num_ctx) 조정 한/영 자동 생성 (다국어 발행) 이 글과 도구는 학습 기록 자동화 실험의 결과물입니다. 도구를 직접 설치해 본인의 학습 노트로 시험해 보세요.\n",
-  "wordCount" : "410",
+  "articleBody": "무엇을 만드나 매일 배운 것을 기록하고 싶지만, 정리하고 블로그에 올리는 과정이 번거롭다.\nLearningLog Kit은 그 과정을 자동화한다.\n00_inbox/personal_notes/ 에 노트(.md)를 넣는다 ↓ LLM (Gemini / Groq / Ollama) 사실 추출 → 워킹 노트 → 블로그 초안 ↓ 블로그 발행 (draft → publish) 설치부터 발행까지 버튼 클릭만으로 가능하다.\n다운로드 ⬇ LearningLog Kit 다운로드 (ZIP · v0.3.1) pip install ./learninglog-kit-v0.3.1.zip[web,gemini] 로 바로 설치할 수 있습니다.\n가장 쉬운 시작 — 웹 UI pip install \"./learninglog-kit-v0.3.1.zip[web,gemini]\" learninglog ui 브라우저(http://127.0.0.1:8765)가 열리면:\n1. [폴더 구조 생성] 클릭 → 작업 폴더 자동 세팅 2. Gemini 선택 → API 키 붙여넣기 → [저장 + 테스트] 3. 00_inbox/personal_notes/ 에 노트(.md) 넣기 4. [① intake] → [② extract] → [③ publish] 클릭 터미널 명령을 몰라도 됩니다. 설치·설정·실행이 전부 화면 안에서 끝납니다.\nAPI 키는 어디서 — Gemini 무료 가장 간단한 무료 옵션은 Google Gemini입니다.\n1. https://aistudio.google.com/app/apikey 접속 (구글 계정) 2. [Create API key] 클릭 3. AIzaSy... 키 복사 → 웹 UI에 붙여넣기 무료 한도: 하루 1,500회 요청 (매일 자정 초기화). 개인 학습 노트에는 충분합니다.\n⚠️ API 키는 메신저·GitHub·SNS에 공유하지 마세요.\n헷갈렸던 것 — 로컬 vs 클라우드 처음엔 “로컬 모델(Ollama)을 꼭 깔아야 하나?” 싶었다.\n정리하면 선택지는 세 가지다.\n방식 비용 특징 Gemini / Groq 무료 (한도) 설치 불필요, API 키만. 빠름 Ollama 완전 무료 로컬 실행, 인터넷 불필요, 프라이버시 핵심: 클라우드 API는 컨텍스트가 커서 긴 노트도 한 번에 처리되고, 로컬은 데이터가 PC를 벗어나지 않는다. 목적에 따라 고르면 된다.\n정리된 이해 — 파이프라인 구조 intake : 00_inbox 스캔 → 등록 (중복 자동 감지) extract : LLM 처리 → 사실 추출 + 워킹 노트 + 블로그 초안 publish : draft:false + ai_assisted 마킹 → 블로그로 복사 + 빌드 + 발행 각 단계는 상태 장부(CSV)로 추적되어, 이미 처리한 노트는 다시 처리하지 않는다.\n삭제 / 정리 깔끔하게 지우고 싶을 때:\nlearninglog clean # 생성물만 삭제 learninglog clean --all -y # 설정·API키까지 전부 삭제 pip uninstall learninglog-kit # 패키지 제거 00_inbox/ 의 원본 노트는 자동 삭제되지 않습니다. 안전하게 보존됩니다.\n실습 — 하루 학습 기록 흐름 오전 수업 → Gemini에게 \"오늘 배운 것 정리해줘\" → PN_날짜_01_주제.md 오후 수업 → 같은 방식 → PN_날짜_02_주제.md 수업 후: learninglog ui → [intake] → [extract] → [publish] → 오늘 학습 2편이 블로그에 자동 발행 한 번에 다 넣기보다 강의 시간 단위로 나눠 정리하는 것을 권장합니다. LLM이 맥락을 더 정확히 처리합니다.\n초보자 키워드 파이프라인(pipeline): 입력 → 처리 → 출력이 단계로 이어진 자동 흐름. 검색어 data pipeline API 키(API key): 외부 AI 서비스를 쓸 때 신원을 증명하는 비밀 문자열. 검색어 gemini api key front matter: 마크다운 글 맨 위 --- 사이의 설정(제목·날짜·카테고리). 검색어 hugo front matter 다음 복습 LLM provider별 무료 한도 비교 Ollama 로컬 모델 컨텍스트(num_ctx) 조정 한/영 자동 생성 (다국어 발행) 이 글과 도구는 학습 기록 자동화 실험의 결과물입니다. 도구를 직접 설치해 본인의 학습 노트로 시험해 보세요.\n",
+  "wordCount" : "445",
   "inLanguage": "en",
   "datePublished": "2026-05-30T00:00:00Z",
   "dateModified": "2026-05-30T00:00:00Z",
@@ -223,7 +223,7 @@
     </div>
     <div class="post-meta">
 
-<span title='2026-05-30 00:00:00 +0000 UTC'>2026년 5월 30일</span>&nbsp;·&nbsp;<span>2 min</span>
+<span title='2026-05-30 00:00:00 +0000 UTC'>2026년 5월 30일</span>&nbsp;·&nbsp;<span>3 min</span>
 
 </div>
   </header> 
@@ -239,16 +239,16 @@
 <hr>
 <h2 id="다운로드">다운로드<a hidden class="anchor" aria-hidden="true" href="#다운로드">#</a></h2>
 
-<a href="/downloads/learninglog-kit-v0.3.0.zip" class="dl-btn" download>
-  ⬇ LearningLog Kit 다운로드 (ZIP · v0.3.0)
+<a href="/downloads/learninglog-kit-v0.3.1.zip" class="dl-btn" download>
+  ⬇ LearningLog Kit 다운로드 (ZIP · v0.3.1)
 </a>
 
 <blockquote>
-<p><code>pip install ./learninglog-kit-v0.3.0.zip[web,gemini]</code> 로 바로 설치할 수 있습니다.</p>
+<p><code>pip install ./learninglog-kit-v0.3.1.zip[web,gemini]</code> 로 바로 설치할 수 있습니다.</p>
 </blockquote>
 <hr>
 <h2 id="가장-쉬운-시작--웹-ui">가장 쉬운 시작 — 웹 UI<a hidden class="anchor" aria-hidden="true" href="#가장-쉬운-시작--웹-ui">#</a></h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install <span style="color:#e6db74">&#34;./learninglog-kit-v0.3.0.zip[web,gemini]&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install <span style="color:#e6db74">&#34;./learninglog-kit-v0.3.1.zip[web,gemini]&#34;</span>
 </span></span><span style="display:flex;"><span>learninglog ui
 </span></span></code></pre></div><p>브라우저(<code>http://127.0.0.1:8765</code>)가 열리면:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>1. [폴더 구조 생성] 클릭        → 작업 폴더 자동 세팅
@@ -298,6 +298,15 @@
 </span></span><span style="display:flex;"><span>extract  : LLM 처리 → 사실 추출 + 워킹 노트 + 블로그 초안
 </span></span><span style="display:flex;"><span>publish  : draft:false + ai_assisted 마킹 → 블로그로 복사 + 빌드 + 발행
 </span></span></code></pre></div><p>각 단계는 상태 장부(CSV)로 추적되어, 이미 처리한 노트는 다시 처리하지 않는다.</p>
+<hr>
+<h2 id="삭제--정리">삭제 / 정리<a hidden class="anchor" aria-hidden="true" href="#삭제--정리">#</a></h2>
+<p>깔끔하게 지우고 싶을 때:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>learninglog clean             <span style="color:#75715e"># 생성물만 삭제</span>
+</span></span><span style="display:flex;"><span>learninglog clean --all -y    <span style="color:#75715e"># 설정·API키까지 전부 삭제</span>
+</span></span><span style="display:flex;"><span>pip uninstall learninglog-kit <span style="color:#75715e"># 패키지 제거</span>
+</span></span></code></pre></div><blockquote>
+<p><code>00_inbox/</code> 의 원본 노트는 <strong>자동 삭제되지 않습니다.</strong> 안전하게 보존됩니다.</p>
+</blockquote>
 <hr>
 <h2 id="실습--하루-학습-기록-흐름">실습 — 하루 학습 기록 흐름<a hidden class="anchor" aria-hidden="true" href="#실습--하루-학습-기록-흐름">#</a></h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>오전 수업 → Gemini에게 &#34;오늘 배운 것 정리해줘&#34; → PN_날짜_01_주제.md
