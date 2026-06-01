@@ -6,8 +6,22 @@
     <description>Recent content in Pandas on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Wed, 27 May 2026 04:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 01 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/pandas/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>pandas.read_csv() 함수 이해하기: 초보자를 위한 가이드</title>
+      <link>https://Han-think.github.io/projects/local-tool-distribution-design/</link>
+      <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/local-tool-distribution-design/</guid>
+      <description>pandas 라이브러리의 read_csv 함수를 사용하면서 겪었던 혼란과 핵심적인 이해 포인트를 정리했습니다.</description>
+    </item>
+    <item>
+      <title>데이터 읽기의 미묘함: `pandas.read_csv()` 이해하기</title>
+      <link>https://Han-think.github.io/learning/pandas-read-csv-parameter-design/</link>
+      <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/pandas-read-csv-parameter-design/</guid>
+      <description>학습 과정에서 `pandas.read_csv()` 함수의 복잡한 매개변수들에 대한 이해와 혼란스러웠던 부분들을 정리합니다.</description>
+    </item>
     <item>
       <title>[데이터] pandas · numpy · matplotlib 로컬 AI 연동 환경</title>
       <link>https://Han-think.github.io/posts/dataset/pandas-ai-env/</link>
