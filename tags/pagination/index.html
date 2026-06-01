@@ -163,7 +163,7 @@
 하지만 실제로 코드가 하는 일은 “브라우저가 하는 것을 그대로 따라 하는 것” 입니다.
 브라우저가 주소 치고 → 페이지 받고 → 내용 읽는 것처럼요.
 1. 크롤러가 페이지를 넘기는 방법 — URL 패턴 브라우저로 books.toscrape.com을 직접 열어보면 이런 URL이 보입니다:
-http://books.toscrape.com/catalogue/page-1.html ← 1페이지http://books.toscrape.com/catalogue/page-2.html ← 2페이지http://books.toscrape.com/catalogue/page-3.html ← 3페이지 패턴이 보이죠? 숫자만 바뀝니다.
+http://books.toscrape.com/catalogue/page-1.html ← 1페이지 http://books.toscrape.com/catalogue/page-2.html ← 2페이지 http://books.toscrape.com/catalogue/page-3.html ← 3페이지 패턴이 보이죠? 숫자만 바뀝니다.
 크롤러는 이 규칙을 이용해서 반복문으로 URL을 만들어냅니다:
 for page_num in range(1, 6): # 1, 2, 3, 4, 5 url = f&#34;http://books.toscrape.com/catalogue/page-{page_num}.html&#34; # → 이 주소로 요청을 보냄 이게 전부입니다. 페이지 넘기기 = URL 숫자 바꾸기.
 ...</p>
