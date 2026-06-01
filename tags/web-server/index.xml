@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Web-Server on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/web-server/</link>
+    <description>Recent content in Web-Server on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Sat, 30 May 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/web-server/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>웹 서버, HTTP, GitHub Pages 이해하기: 기초 개념 정리</title>
+      <link>https://Han-think.github.io/learning/web-server-http-github-pages/</link>
+      <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/web-server-http-github-pages/</guid>
+      <description>웹 서버, HTTP 프로토콜, 그리고 GitHub Pages와 Hugo 블로그 설정의 기초 개념을 이해하고 실습 예시를 통해 초보자도 쉽게 접근할 수 있도록 정리.</description>
+    </item>
+  </channel>
+</rss>
