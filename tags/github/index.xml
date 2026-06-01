@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>GitHub on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/github/</link>
+    <description>Recent content in GitHub on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Mon, 01 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/github/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GitHub 저장소 생성 및 기본 작업: 초보자를 위한 실습 노트</title>
+      <link>https://Han-think.github.io/practice/github-clone-commit-push/</link>
+      <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/github-clone-commit-push/</guid>
+      <description>GitHub를 처음 접하는 사용자를 위한 저장소 생성부터 기본 명령어 실습까지의 이해와 혼란 사항 정리</description>
+    </item>
+  </channel>
+</rss>

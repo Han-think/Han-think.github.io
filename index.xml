@@ -6,8 +6,50 @@
     <description>Recent content on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Sun, 31 May 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 01 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Colab와 로컬 Python 환경: 버전 호환성 혼란 해소 가이드</title>
+      <link>https://Han-think.github.io/practice/colab-local-environment-and-sources/</link>
+      <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/colab-local-environment-and-sources/</guid>
+      <description>Python 버전 호환성 문제로 인한 혼란을 해결하고, Colab과 로컬 환경을 효과적으로 활용하는 방법을 안내합니다.</description>
+    </item>
+    <item>
+      <title>GitHub 저장소 생성 및 기본 작업: 초보자를 위한 실습 노트</title>
+      <link>https://Han-think.github.io/practice/github-clone-commit-push/</link>
+      <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/github-clone-commit-push/</guid>
+      <description>GitHub를 처음 접하는 사용자를 위한 저장소 생성부터 기본 명령어 실습까지의 이해와 혼란 사항 정리</description>
+    </item>
+    <item>
+      <title>Python f-string 이해와 실습 노트</title>
+      <link>https://Han-think.github.io/learning/fstring-gugudan-and-output-formatting/</link>
+      <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/fstring-gugudan-and-output-formatting/</guid>
+      <description>f-string을 통한 문자열 포맷팅 이해와 실제 코딩에서의 활용 방법에 대한 초보자 가이드</description>
+    </item>
+    <item>
+      <title>While 루프 이해하기: 초보자를 위한 가이드</title>
+      <link>https://Han-think.github.io/learning/while-break-fizzbuzz-control-flow/</link>
+      <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/while-break-fizzbuzz-control-flow/</guid>
+      <description>이 글에서는 while 루프의 기본 개념과 실제 프로그래밍에서의 적용 방법을 초보자 눈높이에서 설명합니다. 특히 종료 조건 설정과 변수 업데이트의 중요성에 초점을 맞춥니다.</description>
+    </item>
+    <item>
+      <title>초보자를 위한 Python 반복문 이해: 혼동 포인트와 정리</title>
+      <link>https://Han-think.github.io/learning/for-loop-range-accumulator-print/</link>
+      <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/for-loop-range-accumulator-print/</guid>
+      <description>Python에서 반복문을 이해하는 과정에서 겪은 혼동 포인트와 그에 대한 정리된 이해를 공유합니다.</description>
+    </item>
+    <item>
+      <title>초보자를 위한 반복문 이해와 실제 적용: 파일 자동 처리 시스템 구축</title>
+      <link>https://Han-think.github.io/projects/learninglog-kit-loop-automation-idea/</link>
+      <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/learninglog-kit-loop-automation-idea/</guid>
+      <description>이 글에서는 반복문의 기본 개념을 설명하고, 실제 프로젝트인 &amp;#39;LearningLog Kit&amp;#39;에서 파일 자동 처리를 위한 반복문 적용 방법을 자세히 다룹니다.</description>
+    </item>
     <item>
       <title>[환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인</title>
       <link>https://Han-think.github.io/posts/setup/learninglog-kit/</link>
