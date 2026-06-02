@@ -6,21 +6,6 @@
     <description>Recent content in 프로젝트 노트 on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Mon, 01 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/projects/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>초보자를 위한 반복문 이해와 실제 적용: 파일 자동 처리 시스템 구축</title>
-      <link>https://Han-think.github.io/projects/learninglog-kit-loop-automation-idea/</link>
-      <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/projects/learninglog-kit-loop-automation-idea/</guid>
-      <description>이 글에서는 반복문의 기본 개념을 설명하고, 실제 프로젝트인 &amp;#39;LearningLog Kit&amp;#39;에서 파일 자동 처리를 위한 반복문 적용 방법을 자세히 다룹니다.</description>
-    </item>
-    <item>
-      <title>LearningLog와 TableCard — 학습 기록을 프로젝트 구조로 만드는 법</title>
-      <link>https://Han-think.github.io/projects/learninglog-tablecard-workflow/</link>
-      <pubDate>Thu, 28 May 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/projects/learninglog-tablecard-workflow/</guid>
-      <description>수업 노트, PDF, 대화 기록이 쌓여도 흘려보내지 않기 위해 만든 학습 파이프라인. LearningLog와 TableCard의 역할 분리, 그리고 상태 장부 시스템에 대한 기록.</description>
-    </item>
   </channel>
 </rss>
