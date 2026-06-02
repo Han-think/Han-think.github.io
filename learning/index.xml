@@ -6,8 +6,36 @@
     <description>Recent content in 학습 기록 on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Mon, 01 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 02 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>초보자를 위한 `__init__`, `self`, 그리고 Docstring 이해하기</title>
+      <link>https://Han-think.github.io/learning/python-init-self-docstring-attributes/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-init-self-docstring-attributes/</guid>
+      <description>Python 클래스에서 `__init__`, `self`, 그리고 Docstring의 핵심 개념을 이해하고 실습하며 배우는 초보자 가이드.</description>
+    </item>
+    <item>
+      <title>클래스 메서드 이해하기: 초보자를 위한 가이드</title>
+      <link>https://Han-think.github.io/learning/python-methods-projects-behavior/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-methods-projects-behavior/</guid>
+      <description>클래스 메서드의 본질과 활용 방법을 초보자 눈높이에서 이해해보는 가이드.</description>
+    </item>
+    <item>
+      <title>파이썬 스코프와 shadowing 이해하기: 초보자를 위한 전역과 지역 변수 혼동 해소</title>
+      <link>https://Han-think.github.io/learning/python-scope-global-shadowing/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-scope-global-shadowing/</guid>
+      <description>파이썬에서 전역 변수와 지역 변수의 차이를 이해하고, 함수 내에서 변수 수정 시 발생하는 &amp;#39;UnboundLocalError&amp;#39;를 어떻게 피할 수 있는지 초보자 관점에서 설명합니다.</description>
+    </item>
+    <item>
+      <title>파이썬 클래스 이해하기: 초보자 가이드 (파트 1)</title>
+      <link>https://Han-think.github.io/learning/python-class-instance-basic/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-class-instance-basic/</guid>
+      <description>파이썬 클래스의 기본 개념을 이해하고, 인스턴스의 독립성을 실습을 통해 살펴보는 가이드.</description>
+    </item>
     <item>
       <title>Python f-string 이해와 실습 노트</title>
       <link>https://Han-think.github.io/learning/fstring-gugudan-and-output-formatting/</link>
