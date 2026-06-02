@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>python-scope-global-shadowing | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="python-scope-global-shadowing 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/python-scope-global-shadowing/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/python-scope-global-shadowing/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/python-scope-global-shadowing/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="python-scope-global-shadowing">
+  <meta property="og:description" content="python-scope-global-shadowing 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-02T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-02T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="python-scope-global-shadowing">
+  <meta name="twitter:description" content="python-scope-global-shadowing 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "python-scope-global-shadowing",
+      "item": "https://Han-think.github.io/learning/python-scope-global-shadowing/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "python-scope-global-shadowing",
+  "name": "python-scope-global-shadowing",
+  "description": "python-scope-global-shadowing 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 스코프 이해 Shadowing global 키워드 지역 변수 총평 1. 스코프 이해 왜 이걸 보게 됐나 초보 학습자로서 전역 변수의 수정 방법과 스코프 이해 부족으로 인해 UnboundLocalError 오류를 경험하며 혼란을 겪었습니다. 이를 통해 변수의 스코프와 global 키워드의 중요성을 깊이 이해하게 되었습니다.\n내가 헷갈린 지점 전역 변수 count를 함수 내에서 직접 수정하려고 했을 때 발생한 UnboundLocalError 오류 메시지와 그 원인을 이해하는 데 어려움을 겪었습니다. 특히 함수 내에서 변수를 수정할 때 global 키워드의 필요성을 깨달았습니다.\n시도한 코드 / 예시 count = 0 # 전역 변수 def increase(): global count # 전역 변수 수정 선언 count += 1 increase() print(count) # 출력: 1 결과와 해석 함수 increase를 호출한 후 전역 변수 count의 값이 1로 업데이트되어 출력됩니다.\n정리된 이해 스코프 이해를 통해 전역 변수와 지역 변수의 차이를 파악하고, 함수 내에서 전역 변수를 수정하려면 global 키워드를 사용해야 함을 배웠습니다. 또한 변수 이름 겹침으로 인한 shadowing 현상과 이를 피하는 방법에 대해서도 학습했습니다.\n2. Shadowing 왜 이걸 보게 됐나 초보 학습자로서 전역 변수의 수정 방법을 이해하는 데 어려움을 겪었으며, 특히 UnboundLocalError 오류 메시지를 해석하는 데 혼란을 느꼈습니다. 이를 통해 스코프와 변수의 사용에 대한 깊은 이해가 필요함을 깨달았습니다.\n내가 헷갈린 지점 전역 변수 count가 함수 내에서 직접 수정될 수 있다고 생각했으나, 파이썬의 문법 규칙에 따라 global 키워드 없이는 오류가 발생한다는 점이 혼란스러웠습니다. 또한 매개변수와 전역 변수 간의 차이를 명확히 구분하는 데 시간이 걸렸습니다.\n시도한 코드 / 예시 count = 0 # 전역 변수 def increase(): global count # 전역 변수 수정을 명시 count += 1 increase() print(count) 결과와 해석 출력: 1\n함수 호출 후 전역 변수 count의 값이 1로 업데이트되었습니다.\n정리된 이해 변수의 스코프 이해와 global 키워드의 중요성을 깨달았습니다. 전역 변수를 함수 내에서 수정하려면 global 키워드를 사용해야 하며, 이를 통해 변수 덮어쓰기(Shadowing) 현상을 이해하고 안전한 코딩 방법을 배웠습니다.\n3. global 키워드 왜 이걸 보게 됐나 초보자로서 전역 변수와 함수 내 변수의 상호작용에 대한 이해 부족으로 인해 UnboundLocalError를 경험하며, 전역 변수 수정 방법을 학습하게 되었습니다.\n내가 헷갈린 지점 전역 변수 count가 함수 내에서 자연스럽게 업데이트될 것으로 예상했으나, UnboundLocalError로 인해 파이썬의 스코프 규칙에 대한 혼란을 겪었습니다. 특히 global 키워드의 필요성과 shadowing 현상에 대해 명확히 이해하는 데 시간이 걸렸습니다.\n시도한 코드 / 예시 count = 0 # 전역 변수 def increase(): global count # 전역 변수 수정을 명시 count += 1 increase() print(count) 결과와 해석 출력: 1\n추가 호출 시 출력: 2\n정리된 이해 전역 변수 수정을 위해 global 키워드를 사용하는 방법을 배웠습니다. 함수 내에서 동일한 이름의 변수가 지역 변수로 shadowing 되어 전역 변수 접근 시 오류가 발생할 수 있다는 점을 이해했습니다. 이를 통해 변수 스코프 관리와 안전한 코딩 관행의 중요성을 깨달았습니다.\n4. 지역 변수 왜 이걸 보게 됐나 지역 변수와 전역 변수의 차이를 이해하고, 함수 내에서 전역 변수를 수정하려면 global 키워드를 적절히 사용해야 하는 이유를 파악하고자 합니다. 또한 shadowing 현상이 어떻게 변수의 스코프에 영향을 미치는지 알아보고자 합니다.\n내가 헷갈린 지점 처음에는 함수 내에서 전역 변수를 직접 수정하려다 UnboundLocalError가 발생해 혼란스러웠습니다. 전역 변수와 함수 내 매개변수 간의 차이를 명확히 이해하지 못해 코드의 동작 예측이 어려웠습니다.\n시도한 코드 / 예시 # 전역 변수 초기화 global_count = 10 def modify_global(): global global_count # 전역 변수 수정을 명시 global_count += 5 modify_global() print(f'전역 변수 수정 후 값: {global_count}') # 출력: 전역 변수 수정 후 값: 15 # shadowing 예시 global_var = 20 def shadow_example(local_var): local_var += 10 # 지역 변수 수정 print(f'함수 내 local_var: {local_var}') # 출력: 함수 내 local_var: 30 print(f'전역 변수 global_var: {global_var}') # 출력: 전역 변수 global_var: 20 shadow_example(global_var) 결과와 해석 첫 번째 코드 예시에서 modify_global 함수를 호출한 후 global_count의 값이 15로 성공적으로 업데이트되었습니다. 두 번째 코드 예시에서는 함수 내에서 매개변수 local_var를 사용하여 전역 변수 global_var와 이름이 겹치지만, 전역 변수는 수정되지 않고 shadowing 현상으로 인해 함수 내에서만 local_var가 변경되었습니다.\n첫 번째 코드 출력: 전역 변수 수정 후 값: 15 두 번째 코드 출력: 함수 내 local_var: 30 전역 변수 global_var: 20 정리된 이해 지역 변수와 전역 변수의 스코프 차이를 이해하고, 함수 내에서 전역 변수를 수정하려면 global 키워드를 사용해야 함을 배웠습니다. shadowing 현상으로 인해 함수 내에서 매개변수 이름이 전역 변수와 겹치면 전역 변수가 숨겨지고 지역 변수만 참조되는 것을 확인했습니다. 이러한 지식은 안전하고 예측 가능한 코드 작성에 필수적입니다.\n총평 오늘 전체에서 배운 것 스코프 이해와 global 키워드의 중요성을 파악했으며, 지역 변수와 전역 변수의 차이점과 shadowing 현상을 명확히 구분할 수 있게 되었습니다.\n다음에 조심할 것 함수 내에서 전역 변수를 수정하려면 반드시 global 키워드를 사용해야 하며, 이를 무시하면 UnboundLocalError가 발생할 수 있다는 점에 주의해야 합니다. 또한, 변수 이름 겹침으로 인한 shadowing 현상은 의도치 않은 코드 동작을 초래할 수 있습니다.\n다음 복습 주제 실습 예시를 통해 스코프와 shadowing의 실제 적용을 이해했습니다. 매개변수를 활용한 전역 변수 수정 방법과 함수 내 지역 변수의 독립성을 확인하며, 안전한 코딩 관행의 중요성을 다시 한번 확인했습니다.\n",
+  "wordCount" : "744",
+  "inLanguage": "en",
+  "datePublished": "2026-06-02T00:00:00Z",
+  "dateModified": "2026-06-02T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/python-scope-global-shadowing/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/posts/" title="글">
+                    <span>글</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      python-scope-global-shadowing
+    </h1>
+    <div class="post-description">
+      python-scope-global-shadowing 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EC%8A%A4%EC%BD%94%ED%94%84-%EC%9D%B4%ED%95%B4">스코프 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-shadowing">Shadowing</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-global-%ED%82%A4%EC%9B%8C%EB%93%9C">global 키워드</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EC%A7%80%EC%97%AD-%EB%B3%80%EC%88%98">지역 변수</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-스코프-이해">1. 스코프 이해<a hidden class="anchor" aria-hidden="true" href="#1-스코프-이해">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>초보 학습자로서 전역 변수의 수정 방법과 스코프 이해 부족으로 인해 <code>UnboundLocalError</code> 오류를 경험하며 혼란을 겪었습니다. 이를 통해 변수의 스코프와 <code>global</code> 키워드의 중요성을 깊이 이해하게 되었습니다.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>전역 변수 <code>count</code>를 함수 내에서 직접 수정하려고 했을 때 발생한 <code>UnboundLocalError</code> 오류 메시지와 그 원인을 이해하는 데 어려움을 겪었습니다. 특히 함수 내에서 변수를 수정할 때 <code>global</code> 키워드의 필요성을 깨달았습니다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>count <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>  <span style="color:#75715e"># 전역 변수</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">increase</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">global</span> count  <span style="color:#75715e"># 전역 변수 수정 선언</span>
+</span></span><span style="display:flex;"><span>    count <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>increase()
+</span></span><span style="display:flex;"><span>print(count)  <span style="color:#75715e"># 출력: 1</span>
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p>함수 <code>increase</code>를 호출한 후 전역 변수 <code>count</code>의 값이 1로 업데이트되어 출력됩니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>스코프 이해를 통해 전역 변수와 지역 변수의 차이를 파악하고, 함수 내에서 전역 변수를 수정하려면 <code>global</code> 키워드를 사용해야 함을 배웠습니다. 또한 변수 이름 겹침으로 인한 shadowing 현상과 이를 피하는 방법에 대해서도 학습했습니다.</p>
+<h2 id="2-shadowing">2. Shadowing<a hidden class="anchor" aria-hidden="true" href="#2-shadowing">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>초보 학습자로서 전역 변수의 수정 방법을 이해하는 데 어려움을 겪었으며, 특히 <code>UnboundLocalError</code> 오류 메시지를 해석하는 데 혼란을 느꼈습니다. 이를 통해 스코프와 변수의 사용에 대한 깊은 이해가 필요함을 깨달았습니다.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>전역 변수 <code>count</code>가 함수 내에서 직접 수정될 수 있다고 생각했으나, 파이썬의 문법 규칙에 따라 <code>global</code> 키워드 없이는 오류가 발생한다는 점이 혼란스러웠습니다. 또한 매개변수와 전역 변수 간의 차이를 명확히 구분하는 데 시간이 걸렸습니다.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>count <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>  <span style="color:#75715e"># 전역 변수</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">increase</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">global</span> count  <span style="color:#75715e"># 전역 변수 수정을 명시</span>
+</span></span><span style="display:flex;"><span>    count <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>increase()
+</span></span><span style="display:flex;"><span>print(count)
+</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p>출력: 1</p>
+<p>함수 호출 후 전역 변수 <code>count</code>의 값이 1로 업데이트되었습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>변수의 스코프 이해와 <code>global</code> 키워드의 중요성을 깨달았습니다. 전역 변수를 함수 내에서 수정하려면 <code>global</code> 키워드를 사용해야 하며, 이를 통해 변수 덮어쓰기(Shadowing) 현상을 이해하고 안전한 코딩 방법을 배웠습니다.</p>
+<h2 id="3-global-키워드">3. global 키워드<a hidden class="anchor" aria-hidden="true" href="#3-global-키워드">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>초보자로서 전역 변수와 함수 내 변수의 상호작용에 대한 이해 부족으로 인해 <code>UnboundLocalError</code>를 경험하며, 전역 변수 수정 방법을 학습하게 되었습니다.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>전역 변수 <code>count</code>가 함수 내에서 자연스럽게 업데이트될 것으로 예상했으나, <code>UnboundLocalError</code>로 인해 파이썬의 스코프 규칙에 대한 혼란을 겪었습니다. 특히 <code>global</code> 키워드의 필요성과 shadowing 현상에 대해 명확히 이해하는 데 시간이 걸렸습니다.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>count <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>  <span style="color:#75715e"># 전역 변수</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">increase</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">global</span> count  <span style="color:#75715e"># 전역 변수 수정을 명시</span>
+</span></span><span style="display:flex;"><span>    count <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>increase()
+</span></span><span style="display:flex;"><span>print(count)
+</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p>출력: 1</p>
+<p>추가 호출 시 출력: 2</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>전역 변수 수정을 위해 <code>global</code> 키워드를 사용하는 방법을 배웠습니다. 함수 내에서 동일한 이름의 변수가 지역 변수로 shadowing 되어 전역 변수 접근 시 오류가 발생할 수 있다는 점을 이해했습니다. 이를 통해 변수 스코프 관리와 안전한 코딩 관행의 중요성을 깨달았습니다.</p>
+<h2 id="4-지역-변수">4. 지역 변수<a hidden class="anchor" aria-hidden="true" href="#4-지역-변수">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>지역 변수와 전역 변수의 차이를 이해하고, 함수 내에서 전역 변수를 수정하려면 <code>global</code> 키워드를 적절히 사용해야 하는 이유를 파악하고자 합니다. 또한 shadowing 현상이 어떻게 변수의 스코프에 영향을 미치는지 알아보고자 합니다.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>처음에는 함수 내에서 전역 변수를 직접 수정하려다 <code>UnboundLocalError</code>가 발생해 혼란스러웠습니다. 전역 변수와 함수 내 매개변수 간의 차이를 명확히 이해하지 못해 코드의 동작 예측이 어려웠습니다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 전역 변수 초기화</span>
+</span></span><span style="display:flex;"><span>global_count <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">modify_global</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">global</span> global_count  <span style="color:#75715e"># 전역 변수 수정을 명시</span>
+</span></span><span style="display:flex;"><span>    global_count <span style="color:#f92672">+=</span> <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>modify_global()
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;전역 변수 수정 후 값: </span><span style="color:#e6db74">{</span>global_count<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)  <span style="color:#75715e"># 출력: 전역 변수 수정 후 값: 15</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># shadowing 예시</span>
+</span></span><span style="display:flex;"><span>global_var <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">shadow_example</span>(local_var):
+</span></span><span style="display:flex;"><span>    local_var <span style="color:#f92672">+=</span> <span style="color:#ae81ff">10</span>  <span style="color:#75715e"># 지역 변수 수정</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;함수 내 local_var: </span><span style="color:#e6db74">{</span>local_var<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)  <span style="color:#75715e"># 출력: 함수 내 local_var: 30</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;전역 변수 global_var: </span><span style="color:#e6db74">{</span>global_var<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)  <span style="color:#75715e"># 출력: 전역 변수 global_var: 20</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>shadow_example(global_var)
+</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<p>첫 번째 코드 예시에서 <code>modify_global</code> 함수를 호출한 후 <code>global_count</code>의 값이 15로 성공적으로 업데이트되었습니다. 두 번째 코드 예시에서는 함수 내에서 매개변수 <code>local_var</code>를 사용하여 전역 변수 <code>global_var</code>와 이름이 겹치지만, 전역 변수는 수정되지 않고 shadowing 현상으로 인해 함수 내에서만 <code>local_var</code>가 변경되었습니다.</p>
+<ul>
+<li>첫 번째 코드 출력: <code>전역 변수 수정 후 값: 15</code></li>
+<li>두 번째 코드 출력:
+<pre tabindex="0"><code>함수 내 local_var: 30
+전역 변수 global_var: 20
+</code></pre></li>
+</ul>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>지역 변수와 전역 변수의 스코프 차이를 이해하고, 함수 내에서 전역 변수를 수정하려면 <code>global</code> 키워드를 사용해야 함을 배웠습니다. shadowing 현상으로 인해 함수 내에서 매개변수 이름이 전역 변수와 겹치면 전역 변수가 숨겨지고 지역 변수만 참조되는 것을 확인했습니다. 이러한 지식은 안전하고 예측 가능한 코드 작성에 필수적입니다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>스코프 이해와 <code>global</code> 키워드의 중요성을 파악했으며, 지역 변수와 전역 변수의 차이점과 shadowing 현상을 명확히 구분할 수 있게 되었습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>함수 내에서 전역 변수를 수정하려면 반드시 <code>global</code> 키워드를 사용해야 하며, 이를 무시하면 <code>UnboundLocalError</code>가 발생할 수 있다는 점에 주의해야 합니다. 또한, 변수 이름 겹침으로 인한 shadowing 현상은 의도치 않은 코드 동작을 초래할 수 있습니다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>실습 예시를 통해 스코프와 shadowing의 실제 적용을 이해했습니다. 매개변수를 활용한 전역 변수 수정 방법과 함수 내 지역 변수의 독립성을 확인하며, 안전한 코딩 관행의 중요성을 다시 한번 확인했습니다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/python-operations-input-indexing-slicing/">
+    <span class="title">« Prev</span>
+    <span>python-operations-input-indexing-slicing</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/today-learning-personal-notes/">
+    <span class="title">Next »</span>
+    <span>today-learning-personal-notes</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

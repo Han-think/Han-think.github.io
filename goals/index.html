@@ -174,18 +174,18 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">LearningLog 파이프라인 이해 및 적용 노트
+    <h2 class="entry-hint-parent">official-docs-llm-design-and-original-structure
     </h2>
   </header>
   <div class="entry-content">
-    <p>목차 파이프라인 구조 이해 총평 1. 파이프라인 구조 이해 왜 이걸 보게 됐나 LearningLog 파이프라인의 구조를 이해하고 실제 적용 방법을 익히기 위해, 기존 데이터 처리 파이프라인과 나만의 고유한 파이프라인 구축 방법을 알아보고자 했습니다. 특히, 다양한 단계를 효과적으로 관리하고 모니터링하는 방법에 관심이 있었습니다.
-내가 헷갈렸던 지점 공식 문서가 이미 확립된 기술이나 라이브러리에 대한 가이드라인을 제공하는 것은 이해했으나, 새로운 구조나 파이프라인 설계에 대한 명확한 지침이 부족했습니다. 실험 단계와 품질 보증 기준을 어떻게 설정할지에 대한 구체적인 방법이 명확하지 않았습니다. 시도한 코드 / 예시 실험 로그 기록: 각 단계별 실행 로그를 체계적으로 기록하기 위한 기본 설정 코드를 작성했습니다. # 실험 로그 기록 코드 예시 import logging logging.basicConfig(filename=&#39;pipeline_log.log&#39;, level=logging.INFO) def run_stage(stage_name): logging.info(f&#34;시작: {stage_name}&#34;) # 실제 실행 코드 예시 print(f&#34;실행 중: {stage_name}&#34;) # 실제 코드로 대체 logging.info(f&#34;완료: {stage_name}&#34;) 품질 보증 기준 설정: YAML 파일을 사용해 각 단계의 예상 결과와 실제 결과를 비교하는 기준을 정의했습니다. # 예시 QA 기준 설정 QA_CRITERIA: - stage: 데이터 불러오기 expected: SUCCESS actual: SUCCESS notes: &#34;데이터 불러오기 성공&#34; - stage: 데이터 처리 expected: SUCCESS actual: ERROR notes: &#34;데이터 처리 중 오류 발생&#34; 결과와 해석 실험 로그 기록과 QA 기준 설정을 통해 각 파이프라인 단계의 실행 상태와 결과를 명확히
+    <p>목차 공식 문서 검증 자체 검증 기준 설정 실험 로그 활용 실패 사례 분석 총평 1. 공식 문서 검증 왜 이걸 보게 됐나 공식 문서가 존재하는 기술과 그렇지 않은 고유 구조를 구분하여 검증 방법을 이해하고 적용하기 위함입니다. 기존 기술은 문서 기준으로 학습하고, 새로운 구조는 실제 실행 결과와 경험을 바탕으로 검증하는 접근법을 명확히 하기 위함입니다.
+내가 헷갈린 지점 공식 문서가 없는 새로운 구조나 기술에 대해 검증 기준을 어떻게 설정해야 할지 모호함이 있었습니다. 특히, 실험적 접근과 실제 적용 사례를 통해 검증 방법을 구체화하는 과정에서 혼란이 있었습니다.
 ...</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>1 min</span></footer>
-  <a class="entry-link" aria-label="post link to LearningLog 파이프라인 이해 및 적용 노트" href="https://Han-think.github.io/goals/official-docs-llm-design-and-original-structure/"></a>
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+  <a class="entry-link" aria-label="post link to official-docs-llm-design-and-original-structure" href="https://Han-think.github.io/goals/official-docs-llm-design-and-original-structure/"></a>
 </article>
     </main>
     

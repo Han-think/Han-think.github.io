@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>python-magic-methods-str-repr | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="python-magic-methods-str-repr 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/python-magic-methods-str-repr/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/python-magic-methods-str-repr/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/python-magic-methods-str-repr/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="python-magic-methods-str-repr">
+  <meta property="og:description" content="python-magic-methods-str-repr 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-02T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-02T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="python-magic-methods-str-repr">
+  <meta name="twitter:description" content="python-magic-methods-str-repr 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "python-magic-methods-str-repr",
+      "item": "https://Han-think.github.io/learning/python-magic-methods-str-repr/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "python-magic-methods-str-repr",
+  "name": "python-magic-methods-str-repr",
+  "description": "python-magic-methods-str-repr 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 str 메서드 1. str 메서드 왜 이걸 보게 됐나 객체 출력 시 메모리 주소 대신 객체의 핵심 정보를 직관적으로 보여주기 위해 __str__ 메서드의 중요성을 이해하고자 했습니다. 이를 통해 개발자와 사용자 모두가 객체의 상태를 쉽게 파악할 수 있도록 하는 방법을 학습했습니다.\n내가 헷갈린 지점 처음에는 객체 출력 결과가 메모리 주소만 표시되어 객체의 실제 정보를 얻는 데 어려움을 겪었습니다. 이로 인해 객체의 상태를 직관적으로 이해하는 데 어려움이 있었습니다.\n시도한 코드 / 예시 class TeamMember: def __init__(self, name, role, salary): self.name = name self.role = role self.salary = salary def __str__(self): return f'{self.role} {self.name}' def __repr__(self): return f'TeamMember(name=\"{self.name}\", role=\"{self.role}\", salary={self.salary})' # 객체 생성 및 출력 alice = TeamMember(name=\"Alice\", role=\"시니어 개발자\", salary=6000) print(str(alice)) # 출력: 시니어 개발자 Alice print(repr(alice)) # 출력: TeamMember(name='Alice', role='시니어 개발자', salary=6000)``` 결과와 해석 출력 예시:\nstr(alice): 시니어 개발자 Alice repr(alice): TeamMember(name=‘Alice’, role=‘시니어 개발자’, salary=6000) 정리된 이해 이 학습을 통해 __str__ 메서드는 객체의 주요 정보를 사용자 친화적인 형식으로 출력하는 데 중점을 둔다는 것을 깨달았습니다. 반면 __repr__ 메서드는 객체의 정확한 상태를 개발자에게 제공하는 데 초점을 맞추고 있음을 확인했습니다.\n2. repr 메서드 왜 이걸 보게 됐나 정리 필요.\n내가 헷갈린 지점 정리 필요.\n시도한 코드 / 예시 예시 없음.\n결과와 해석 정리 필요.\n정리된 이해 정리 필요.\n3. 사용자 친화적 출력 왜 이걸 보게 됐나 정리 필요.\n내가 헷갈린 지점 정리 필요.\n시도한 코드 / 예시 예시 없음.\n결과와 해석 정리 필요.\n정리된 이해 정리 필요.\n4. 개발자 정보 출력 왜 이걸 보게 됐나 개발자로서 객체의 상태를 직관적으로 이해하고 싶었지만, 기본 출력이 메모리 주소만 보여주어 정보 파악이 어려웠습니다. 이를 해결하기 위해 사용자 친화적인 정보 출력과 상세한 객체 상태 확인을 위한 메서드를 이해하고 적용하고자 했습니다.\n내가 헷갈린 지점 처음에는 __str__과 __repr__의 차이점을 명확히 이해하지 못해 객체 출력 결과가 왜 그렇게 나오는지 혼란스러웠습니다. 특히, 메모리 주소만 출력되는 이유를 파악하는 데 어려움이 있었습니다.\n시도한 코드 / 예시 class DeveloperInfo: def __init__(self, name, role, experience_years) self.name = name self.role = role self.experience_years = experience_years def __str__(self): return f'이름: {self.name}, 역할: {self.role}, 경력: {self.experience_years}년' def __repr__(self): return f'DeveloperInfo(name=\"{self.name}\", role=\"{self.role}\", experience_years={self.experience_years})' # 예시 객체 생성 john = DeveloperInfo(name=\"John\", role=\"프론트엔드 개발자\", experience_years=5) # 출력 테스트 print(str(john)) # 출력: 이름: John, 역할: 프론트엔드 개발자, 경력: 5년 print(repr(john)) # 출력: DeveloperInfo(name='John', role='프론트엔드 개발자', experience_years=5) 결과와 해석 위 코드를 실행하면, str(john)은 사용자 친화적인 정보를 출력하고 (이름: John, 역할: 프론트엔드 개발자, 경력: 5년), repr(john)은 객체의 상세 정보를 포함한 공식적인 문자열 표현을 제공합니다 (DeveloperInfo(name='John', role='프론트엔드 개발자', experience_years=5)).\n정리된 이해 이 개념을 이해함으로써, 개발자 정보를 출력할 때 사용자 친화적인 __str__ 메서드와 상세한 상태 확인을 위한 __repr__ 메서드를 적절히 활용할 수 있게 되었습니다. 이를 통해 코드 가독성과 디버깅 효율성이 향상되었습니다.\n총평 오늘 전체에서 배운 것 str 메서드는 사용자 친화적인 객체 정보 출력을 위해, repr 메서드는 개발자에게 객체의 상세 상태를 보여주기 위해 각각 사용됨을 이해했습니다.\n다음에 조심할 것 혼란을 피하기 위해 객체 출력 시 str() 함수를 사용하여 사용자 친화적인 정보를 확인하는 것이 중요합니다.\n다음 복습 주제 오늘 배운 내용을 통해 객체의 정보를 효과적으로 사용자와 개발자 모두에게 전달하는 방법을 익혔습니다. 특히, 실제 코드 예시를 통해 개념을 명확히 이해할 수 있었습니다.\n",
+  "wordCount" : "482",
+  "inLanguage": "en",
+  "datePublished": "2026-06-02T00:00:00Z",
+  "dateModified": "2026-06-02T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/python-magic-methods-str-repr/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/posts/" title="글">
+                    <span>글</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      python-magic-methods-str-repr
+    </h1>
+    <div class="post-description">
+      python-magic-methods-str-repr 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>3 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-str-%EB%A9%94%EC%84%9C%EB%93%9C"><strong>str</strong> 메서드</a></li>
+</ol>
+</li>
+</ul>
+<h2 id="1-str-메서드">1. <strong>str</strong> 메서드<a hidden class="anchor" aria-hidden="true" href="#1-str-메서드">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>객체 출력 시 메모리 주소 대신 객체의 핵심 정보를 직관적으로 보여주기 위해 <code>__str__</code> 메서드의 중요성을 이해하고자 했습니다. 이를 통해 개발자와 사용자 모두가 객체의 상태를 쉽게 파악할 수 있도록 하는 방법을 학습했습니다.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>처음에는 객체 출력 결과가 메모리 주소만 표시되어 객체의 실제 정보를 얻는 데 어려움을 겪었습니다. 이로 인해 객체의 상태를 직관적으로 이해하는 데 어려움이 있었습니다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TeamMember</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, name, role, salary):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>name <span style="color:#f92672">=</span> name
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>role <span style="color:#f92672">=</span> role
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>salary <span style="color:#f92672">=</span> salary
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__str__</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>self<span style="color:#f92672">.</span>role<span style="color:#e6db74">}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{</span>self<span style="color:#f92672">.</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__repr__</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;TeamMember(name=&#34;</span><span style="color:#e6db74">{</span>self<span style="color:#f92672">.</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;, role=&#34;</span><span style="color:#e6db74">{</span>self<span style="color:#f92672">.</span>role<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;, salary=</span><span style="color:#e6db74">{</span>self<span style="color:#f92672">.</span>salary<span style="color:#e6db74">}</span><span style="color:#e6db74">)&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 객체 생성 및 출력</span>
+</span></span><span style="display:flex;"><span>alice <span style="color:#f92672">=</span> TeamMember(name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Alice&#34;</span>, role<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;시니어 개발자&#34;</span>, salary<span style="color:#f92672">=</span><span style="color:#ae81ff">6000</span>)
+</span></span><span style="display:flex;"><span>print(str(alice))  <span style="color:#75715e"># 출력: 시니어 개발자 Alice</span>
+</span></span><span style="display:flex;"><span>print(repr(alice))  <span style="color:#75715e"># 출력: TeamMember(name=&#39;Alice&#39;, role=&#39;시니어 개발자&#39;, salary=6000)```</span>
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p>출력 예시:</p>
+<ul>
+<li><code>str(alice)</code>: 시니어 개발자 Alice</li>
+<li><code>repr(alice)</code>: TeamMember(name=&lsquo;Alice&rsquo;, role=&lsquo;시니어 개발자&rsquo;, salary=6000)</li>
+</ul>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>이 학습을 통해 <code>__str__</code> 메서드는 객체의 주요 정보를 사용자 친화적인 형식으로 출력하는 데 중점을 둔다는 것을 깨달았습니다. 반면 <code>__repr__</code> 메서드는 객체의 정확한 상태를 개발자에게 제공하는 데 초점을 맞추고 있음을 확인했습니다.</p>
+<h2 id="2-repr-메서드">2. <strong>repr</strong> 메서드<a hidden class="anchor" aria-hidden="true" href="#2-repr-메서드">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>정리 필요.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>정리 필요.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<p>예시 없음.</p>
+<h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p>정리 필요.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>정리 필요.</p>
+<h2 id="3-사용자-친화적-출력">3. 사용자 친화적 출력<a hidden class="anchor" aria-hidden="true" href="#3-사용자-친화적-출력">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>정리 필요.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>정리 필요.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<p>예시 없음.</p>
+<h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p>정리 필요.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>정리 필요.</p>
+<h2 id="4-개발자-정보-출력">4. 개발자 정보 출력<a hidden class="anchor" aria-hidden="true" href="#4-개발자-정보-출력">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>개발자로서 객체의 상태를 직관적으로 이해하고 싶었지만, 기본 출력이 메모리 주소만 보여주어 정보 파악이 어려웠습니다. 이를 해결하기 위해 사용자 친화적인 정보 출력과 상세한 객체 상태 확인을 위한 메서드를 이해하고 적용하고자 했습니다.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>처음에는 <code>__str__</code>과 <code>__repr__</code>의 차이점을 명확히 이해하지 못해 객체 출력 결과가 왜 그렇게 나오는지 혼란스러웠습니다. 특히, 메모리 주소만 출력되는 이유를 파악하는 데 어려움이 있었습니다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DeveloperInfo</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, name, role, experience_years)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>name <span style="color:#f92672">=</span> name
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>role <span style="color:#f92672">=</span> role
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>experience_years <span style="color:#f92672">=</span> experience_years
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__str__</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;이름: </span><span style="color:#e6db74">{</span>self<span style="color:#f92672">.</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74">, 역할: </span><span style="color:#e6db74">{</span>self<span style="color:#f92672">.</span>role<span style="color:#e6db74">}</span><span style="color:#e6db74">, 경력: </span><span style="color:#e6db74">{</span>self<span style="color:#f92672">.</span>experience_years<span style="color:#e6db74">}</span><span style="color:#e6db74">년&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__repr__</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;DeveloperInfo(name=&#34;</span><span style="color:#e6db74">{</span>self<span style="color:#f92672">.</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;, role=&#34;</span><span style="color:#e6db74">{</span>self<span style="color:#f92672">.</span>role<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;, experience_years=</span><span style="color:#e6db74">{</span>self<span style="color:#f92672">.</span>experience_years<span style="color:#e6db74">}</span><span style="color:#e6db74">)&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 예시 객체 생성</span>
+</span></span><span style="display:flex;"><span>john <span style="color:#f92672">=</span> DeveloperInfo(name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;John&#34;</span>, role<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;프론트엔드 개발자&#34;</span>, experience_years<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 출력 테스트</span>
+</span></span><span style="display:flex;"><span>print(str(john))  <span style="color:#75715e"># 출력: 이름: John, 역할: 프론트엔드 개발자, 경력: 5년</span>
+</span></span><span style="display:flex;"><span>print(repr(john))  <span style="color:#75715e"># 출력: DeveloperInfo(name=&#39;John&#39;, role=&#39;프론트엔드 개발자&#39;, experience_years=5)</span>
+</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<p>위 코드를 실행하면, <code>str(john)</code>은 사용자 친화적인 정보를 출력하고 (<code>이름: John, 역할: 프론트엔드 개발자, 경력: 5년</code>), <code>repr(john)</code>은 객체의 상세 정보를 포함한 공식적인 문자열 표현을 제공합니다 (<code>DeveloperInfo(name='John', role='프론트엔드 개발자', experience_years=5)</code>).</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>이 개념을 이해함으로써, 개발자 정보를 출력할 때 사용자 친화적인 <code>__str__</code> 메서드와 상세한 상태 확인을 위한 <code>__repr__</code> 메서드를 적절히 활용할 수 있게 되었습니다. 이를 통해 코드 가독성과 디버깅 효율성이 향상되었습니다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p><strong>str</strong> 메서드는 사용자 친화적인 객체 정보 출력을 위해, <strong>repr</strong> 메서드는 개발자에게 객체의 상세 상태를 보여주기 위해 각각 사용됨을 이해했습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>혼란을 피하기 위해 객체 출력 시 str() 함수를 사용하여 사용자 친화적인 정보를 확인하는 것이 중요합니다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>오늘 배운 내용을 통해 객체의 정보를 효과적으로 사용자와 개발자 모두에게 전달하는 방법을 익혔습니다. 특히, 실제 코드 예시를 통해 개념을 명확히 이해할 수 있었습니다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/python-isinstance-issubclass-polymorphism/">
+    <span class="title">« Prev</span>
+    <span>python-isinstance-issubclass-polymorphism</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/python-methods-split-join-tuple-dict/">
+    <span class="title">Next »</span>
+    <span>python-methods-split-join-tuple-dict</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

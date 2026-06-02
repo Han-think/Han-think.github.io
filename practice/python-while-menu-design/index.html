@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>python-while-menu-design | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="python-while-menu-design 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/practice/python-while-menu-design/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/practice/python-while-menu-design/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/practice/python-while-menu-design/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="python-while-menu-design">
+  <meta property="og:description" content="python-while-menu-design 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="practice">
+    <meta property="article:published_time" content="2026-06-02T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-02T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="python-while-menu-design">
+  <meta name="twitter:description" content="python-while-menu-design 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "실습 기록",
+      "item": "https://Han-think.github.io/practice/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "python-while-menu-design",
+      "item": "https://Han-think.github.io/practice/python-while-menu-design/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "python-while-menu-design",
+  "name": "python-while-menu-design",
+  "description": "python-while-menu-design 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 메뉴형 프로그램 구조 함수 선택 실행 1. 메뉴형 프로그램 구조 왜 이걸 보게 됐나 메뉴형 프로그램 구조를 이해함으로써 사용자와의 상호작용을 효과적으로 설계하고 관리할 수 있습니다. 특히 while 루프와 함께 사용하면 프로그램이 사용자의 입력에 따라 유연하게 반응하고 필요한 작업을 반복적으로 수행할 수 있습니다.\n내가 헷갈린 지점 처음에는 while True 루프가 어떻게 사용자의 종료 조건까지 계속 실행되는지 이해하는 데 어려움이 있었습니다. 하지만 메뉴 기반 프로그램에서 사용자의 선택에 따라 다양한 기능을 실행하는 구조를 이해하면서 이러한 루프의 역할이 명확해졌습니다.\n시도한 코드 / 예시 def main(): company = setup_initial_data() # 초기 데이터 세팅 while True: # 메뉴 출력 for i, menu in enumerate(MAIN_MENU, 1): # 메뉴 번호와 함께 메뉴 항목 출력 print(f'[{i}] {menu}') # 사용자 입력 받기 try: choice = int(input( 결과와 해석 정리 필요.\n정리된 이해 정리 필요.\n2. while 루프 반복 왜 이걸 보게 됐나 정리 필요.\n내가 헷갈린 지점 정리 필요.\n시도한 코드 / 예시 예시 없음.\n결과와 해석 정리 필요.\n정리된 이해 정리 필요.\n3. 사용자 입력 처리 왜 이걸 보게 됐나 사용자 입력을 효과적으로 처리하고 프로그램의 유연성을 높이기 위해 while 루프와 메뉴 기반의 반복 구조를 이해하는 것이 중요합니다. 특히, 사용자의 선택에 따라 다양한 동작을 수행하는 프로그램에서 이러한 구조는 필수적입니다.\n내가 헷갈린 지점 처음에는 while True 루프가 무한 반복처럼 보였지만, 실제 사용자 입력에 따라 종료 조건을 설정함으로써 프로그램의 제어 흐름을 명확히 이해하게 되었습니다. 사용자 입력이 프로그램의 흐름을 어떻게 바꿀 수 있는지에 대해 혼란스러웠습니다.\n시도한 코드 / 예시 def main(): # 코드 완성 company = setup_initial_data() # 초기 데이터 세팅 while True: # 메뉴 출력 for i, name in enumerate(MAIN_MENU, 1): # 메뉴 항목 출력 print(f'[{i}] {name}') # 사용자 입력 받기 try: choice = int(input( 결과와 해석 정리 필요.\n정리된 이해 정리 필요.\n4. 함수 선택 실행 왜 이걸 보게 됐나 함수 선택 실행 과정을 이해함으로써 사용자와 상호작용하는 프로그램의 효율적인 설계와 관리가 가능해집니다. 특히 while 루프와 함께 사용하면 사용자의 지속적인 참여를 유도하고 다양한 기능을 선택적으로 실행할 수 있습니다.\n내가 헷갈린 지점 처음에는 while True 루프가 무한히 실행되는 것처럼 보였지만, 사용자의 종료 입력에 따라 루프가 종료되는 방식을 이해하면서 프로그램의 유연성과 사용자 친화적인 설계에 대한 이해가 깊어졌습니다.\n시도한 코드 / 예시 def main(): company = setup_initial_data() # 초기 데이터 세팅 while True: # 메뉴 출력 for i, name in enumerate(MAIN_MENU, 1): # MAIN_MENU 정의 필요 print(f'[{i}] {name}') # 사용자 입력 받기 choice = int(input( 결과와 해석 정리 필요.\n정리된 이해 정리 필요.\n총평 오늘 전체에서 배운 것 메뉴형 프로그램 구조와 while 루프를 활용한 반복적 사용자 인터페이스 구현 방법을 이해했습니다. 특히, 초기 설정부터 종료 조건까지의 단계별 프로세스와 각 단계에서의 함수 선택 및 실행 메커니즘을 구체적으로 파악했습니다.\n다음에 조심할 것 while True 루프 내에서 사용자 입력과 종료 조건 설정의 중요성을 명확히 인지해야 합니다. 잘못된 종료 조건 설정은 무한 루프에 빠질 위험이 있습니다.\n다음 복습 주제 코드 예시를 통해 실제 적용 사례를 이해함으로써 이론적 지식을 실무에 적용하는 능력을 향상시켰습니다. break 문을 통한 루프 제어와 다양한 함수 연결 방식에 대한 이해가 깊어졌습니다.\n",
+  "wordCount" : "465",
+  "inLanguage": "en",
+  "datePublished": "2026-06-02T00:00:00Z",
+  "dateModified": "2026-06-02T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/practice/python-while-menu-design/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/posts/" title="글">
+                    <span>글</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      python-while-menu-design
+    </h1>
+    <div class="post-description">
+      python-while-menu-design 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>3 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EB%A9%94%EB%89%B4%ED%98%95-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8-%EA%B5%AC%EC%A1%B0">메뉴형 프로그램 구조</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%ED%95%A8%EC%88%98-%EC%84%A0%ED%83%9D-%EC%8B%A4%ED%96%89">함수 선택 실행</a></li>
+</ol>
+</li>
+</ul>
+<h2 id="1-메뉴형-프로그램-구조">1. 메뉴형 프로그램 구조<a hidden class="anchor" aria-hidden="true" href="#1-메뉴형-프로그램-구조">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>메뉴형 프로그램 구조를 이해함으로써 사용자와의 상호작용을 효과적으로 설계하고 관리할 수 있습니다. 특히 <code>while</code> 루프와 함께 사용하면 프로그램이 사용자의 입력에 따라 유연하게 반응하고 필요한 작업을 반복적으로 수행할 수 있습니다.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>처음에는 <code>while True</code> 루프가 어떻게 사용자의 종료 조건까지 계속 실행되는지 이해하는 데 어려움이 있었습니다. 하지만 메뉴 기반 프로그램에서 사용자의 선택에 따라 다양한 기능을 실행하는 구조를 이해하면서 이러한 루프의 역할이 명확해졌습니다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    company <span style="color:#f92672">=</span> setup_initial_data()  <span style="color:#75715e"># 초기 데이터 세팅</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 메뉴 출력</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> i, menu <span style="color:#f92672">in</span> enumerate(MAIN_MENU, <span style="color:#ae81ff">1</span>):  <span style="color:#75715e"># 메뉴 번호와 함께 메뉴 항목 출력</span>
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;[</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">] </span><span style="color:#e6db74">{</span>menu<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 사용자 입력 받기</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            choice <span style="color:#f92672">=</span> int(input(
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p>정리 필요.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>정리 필요.</p>
+<h2 id="2-while-루프-반복">2. while 루프 반복<a hidden class="anchor" aria-hidden="true" href="#2-while-루프-반복">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>정리 필요.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>정리 필요.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<p>예시 없음.</p>
+<h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p>정리 필요.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>정리 필요.</p>
+<h2 id="3-사용자-입력-처리">3. 사용자 입력 처리<a hidden class="anchor" aria-hidden="true" href="#3-사용자-입력-처리">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>사용자 입력을 효과적으로 처리하고 프로그램의 유연성을 높이기 위해 <code>while</code> 루프와 메뉴 기반의 반복 구조를 이해하는 것이 중요합니다. 특히, 사용자의 선택에 따라 다양한 동작을 수행하는 프로그램에서 이러한 구조는 필수적입니다.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>처음에는 <code>while True</code> 루프가 무한 반복처럼 보였지만, 실제 사용자 입력에 따라 종료 조건을 설정함으로써 프로그램의 제어 흐름을 명확히 이해하게 되었습니다. 사용자 입력이 프로그램의 흐름을 어떻게 바꿀 수 있는지에 대해 혼란스러웠습니다.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():  <span style="color:#75715e"># 코드 완성</span>
+</span></span><span style="display:flex;"><span>    company <span style="color:#f92672">=</span> setup_initial_data()  <span style="color:#75715e"># 초기 데이터 세팅</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 메뉴 출력</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> i, name <span style="color:#f92672">in</span> enumerate(MAIN_MENU, <span style="color:#ae81ff">1</span>):  <span style="color:#75715e"># 메뉴 항목 출력</span>
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;[</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">] </span><span style="color:#e6db74">{</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 사용자 입력 받기</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            choice <span style="color:#f92672">=</span> int(input(
+</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p>정리 필요.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>정리 필요.</p>
+<h2 id="4-함수-선택-실행">4. 함수 선택 실행<a hidden class="anchor" aria-hidden="true" href="#4-함수-선택-실행">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>함수 선택 실행 과정을 이해함으로써 사용자와 상호작용하는 프로그램의 효율적인 설계와 관리가 가능해집니다. 특히 <code>while</code> 루프와 함께 사용하면 사용자의 지속적인 참여를 유도하고 다양한 기능을 선택적으로 실행할 수 있습니다.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>처음에는 <code>while True</code> 루프가 무한히 실행되는 것처럼 보였지만, 사용자의 종료 입력에 따라 루프가 종료되는 방식을 이해하면서 프로그램의 유연성과 사용자 친화적인 설계에 대한 이해가 깊어졌습니다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    company <span style="color:#f92672">=</span> setup_initial_data()  <span style="color:#75715e"># 초기 데이터 세팅</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 메뉴 출력</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> i, name <span style="color:#f92672">in</span> enumerate(MAIN_MENU, <span style="color:#ae81ff">1</span>):  <span style="color:#75715e"># MAIN_MENU 정의 필요</span>
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;[</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">] </span><span style="color:#e6db74">{</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 사용자 입력 받기</span>
+</span></span><span style="display:flex;"><span>        choice <span style="color:#f92672">=</span> int(input(
+</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<p>정리 필요.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>정리 필요.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>메뉴형 프로그램 구조와 <code>while</code> 루프를 활용한 반복적 사용자 인터페이스 구현 방법을 이해했습니다. 특히, 초기 설정부터 종료 조건까지의 단계별 프로세스와 각 단계에서의 함수 선택 및 실행 메커니즘을 구체적으로 파악했습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p><code>while True</code> 루프 내에서 사용자 입력과 종료 조건 설정의 중요성을 명확히 인지해야 합니다. 잘못된 종료 조건 설정은 무한 루프에 빠질 위험이 있습니다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>코드 예시를 통해 실제 적용 사례를 이해함으로써 이론적 지식을 실무에 적용하는 능력을 향상시켰습니다. <code>break</code> 문을 통한 루프 제어와 다양한 함수 연결 방식에 대한 이해가 깊어졌습니다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

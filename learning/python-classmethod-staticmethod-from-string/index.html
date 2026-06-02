@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>python-classmethod-staticmethod-from-string | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="python-classmethod-staticmethod-from-string 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/python-classmethod-staticmethod-from-string/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/python-classmethod-staticmethod-from-string/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/python-classmethod-staticmethod-from-string/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="python-classmethod-staticmethod-from-string">
+  <meta property="og:description" content="python-classmethod-staticmethod-from-string 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-02T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-02T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="python-classmethod-staticmethod-from-string">
+  <meta name="twitter:description" content="python-classmethod-staticmethod-from-string 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "python-classmethod-staticmethod-from-string",
+      "item": "https://Han-think.github.io/learning/python-classmethod-staticmethod-from-string/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "python-classmethod-staticmethod-from-string",
+  "name": "python-classmethod-staticmethod-from-string",
+  "description": "python-classmethod-staticmethod-from-string 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 클래스 메서드 정적 메서드 대체 생성자 클래스 변수 총평 1. 클래스 메서드 왜 이걸 보게 됐나 클래스 메서드를 사용하면 클래스 수준의 데이터를 조작하거나 접근할 수 있어, 여러 인스턴스 간에 공통적으로 적용되는 동작을 쉽게 관리할 수 있습니다. 이를 통해 코드의 가독성과 유지보수성이 향상됩니다.\n내가 헷갈린 지점 처음에는 cls 매개변수의 역할을 정확히 이해하지 못해 클래스 메서드를 어떻게 작성해야 할지 혼란스러웠습니다. 그러나 cls가 현재 클래스 자체를 참조한다는 것을 알게 되면서 개념이 명확해졌습니다.\n시도한 코드 / 예시 class TeamMember: company_name = \"TechCorp\" # 클래스 변수 total_members = 0 # 클래스 변수 def __init__(self, name, role, salary): self.name = name self.role = role self.salary = salary # 클래스 변수 업데이트 TeamMember.total_members += 1 @classmethod def get_total_members(cls): # 클래스 전체 멤버 수 반환 return cls.total_members @classmethod def from_string(cls, member_data): # 문자열 데이터를 이용해 새로운 TeamMember 인스턴스 생성 # 예시: member_data = \"John Doe, Manager, 70000\" name, role, salary = member_data.split(', ') # 데이터 분리 로직 필요 return cls(name, role, salary) # 예시 사용 member1 = TeamMember('Alice', 'Developer', 60000) member2 = TeamMember('Bob', 'Designer', 65000) print(TeamMember.get_total_members()) # 출력: 2 # 대체 생성자 사용 예시 new_member = TeamMember.from_string('Charlie, Analyst, 68000') print(new_member.name) # 출력: Charlie 결과와 해석 get_total_members() 출력: 2 new_member.name 출력: Charlie 정리된 이해 클래스 메서드는 클래스 수준의 데이터를 조작하는 데 사용되며, cls 매개변수를 통해 클래스 변수에 접근하거나 수정할 수 있습니다. 또한, from_string과 같은 대체 생성자 메서드는 문자열 데이터를 이용해 클래스 인스턴스를 동적으로 생성하는 데 유용합니다. 이러한 기법들은 코드의 유연성과 재사용성을 높입니다.\n2. 정적 메서드 왜 이걸 보게 됐나 정적 메서드는 클래스 내에서 공유되는 기능을 제공하며, 인스턴스나 클래스 상태에 직접 의존하지 않아 독립적으로 사용될 수 있다는 점을 이해하고 싶습니다.\n내가 헷갈린 지점 처음에는 정적 메서드가 언제 사용되는지 명확하지 않았습니다. 특히, 클래스 변수나 인스턴스 변수에 직접 접근하지 않고도 유용한 기능을 제공할 수 있다는 점이 흥미로웠습니다.\n시도한 코드 / 예시 class Calculator: total_operations = 0 # 클래스 변수 def __init__(self): pass # 인스턴스 생성 시 초기화 필요 없음 def add(self, a, b) -\u003e int: result = a + b self.total_operations += 1 # 인스턴스 메서드 예시 return result @classmethod def get_total_operations(cls) -\u003e int: # 정적 메서드 예시: 클래스 변수 접근 return cls.total_operations # 사용 예시 calc = Calculator() print(calc.add(5, 3)) # 출력: 8 print(Calculator.get_total_operations()) # 출력: 1 결과와 해석 위 코드에서 Calculator 클래스는 정적 메서드 get_total_operations를 통해 클래스 변수 total_operations의 값을 반환합니다. 이 메서드는 인스턴스 생성 없이도 클래스 전체의 연산 횟수를 추적할 수 있게 해줍니다. 인스턴스 메서드 add는 각 연산마다 total_operations를 증가시킵니다.\n정리된 이해 정적 메서드는 클래스 변수를 조작하거나 클래스 수준의 정보를 제공하는 데 이상적입니다. 이 메서드들은 인스턴스에 의존하지 않으므로, 클래스 자체의 동작을 지원하거나 공유된 데이터를 관리하는 데 유용합니다.\n3. 대체 생성자 왜 이걸 보게 됐나 대체 생성자는 클래스 인스턴스를 특정 형식의 문자열 데이터로부터 생성하는 데 사용되며, 이는 데이터의 유연한 생성과 초기화를 가능하게 해줍니다. 특히, 외부 데이터 소스에서 직접 객체를 생성할 때 유용합니다.\n내가 헷갈린 지점 처음에는 문자열로부터 객체를 어떻게 생성하는지 이해하는 데 어려움이 있었습니다. 하지만 from_string 메서드가 어떻게 클래스의 초기화 과정을 단순화하고, 다양한 형식의 입력 데이터를 처리하는지 이해하게 되었습니다.\n시도한 코드 / 예시 class TeamMember: company_name = \"TechCorp\" # 클래스 변수 total_members = 0 # 클래스 변수 def __init__(self, name, role, salary): self.name = name self.role = role self.salary = salary # 클래스 변수 업데이트 TeamMember.total_members += 1 @classmethod def get_total_members(cls): # 클래스 전체 멤버 수 반환 return cls.total_members @classmethod def from_string(cls, member_data): # 문자열 데이터 예시: \"John Doe, Developer, 70000\" name, role, salary = member_data.split(', ') return cls(name.strip(), role.strip(), float(salary.strip())) # 예시 사용 member_info = \"Jane Smith, Manager, 90000\" new_member = TeamMember.from_string(member_info) print(f\"Created Member: {new_member.name}, Role: {new_member.role}, Salary: {new_member.salary}\") print(f\"Total Members: {TeamMember.get_total_members()}\") 결과와 해석 Created Member: Jane Smith, Role: Manager, Salary: 90000 Total Members: 2 정리된 이해 대체 생성자 메서드 from_string을 통해 TeamMember 클래스는 문자열 데이터를 받아 새 인스턴스를 생성할 수 있습니다. 이는 외부 데이터를 직접적으로 객체로 변환하는 데 유용하며, 클래스의 유연성을 크게 향상시킵니다. 예제에서는 문자열 `\n4. 클래스 변수 왜 이걸 보게 됐나 클래스 변수와 클래스 메서드를 이해함으로써, 여러 객체 간에 공유되는 데이터와 동작을 효과적으로 관리할 수 있습니다. 특히, 인스턴스별로 독립적인 데이터를 다루는 것과 달리 클래스 수준에서의 데이터 변경은 모든 인스턴스에 영향을 미칩니다. 이를 통해 코드의 일관성과 유지보수성이 향상됩니다.\n내가 헷갈린 지점 처음에는 cls 매개변수의 역할과 클래스 메서드가 어떻게 클래스 수준의 데이터에 접근하는지 명확히 이해하지 못했습니다. 특히, 클래스 변수를 직접 수정하는 방법과 이를 통해 전체 클래스 인스턴스에 영향을 미치는 메커니즘이 헷갈렸습니다.\n시도한 코드 / 예시 class TeamMember: company_name = \"TechCorp\" # 클래스 변수 total_members = 0 # 클래스 변수 def __init__(self, name, role, salary): self.name = name self.role = role self.salary = salary # 클래스 변수 업데이트 TeamMember.total_members += 1 @classmethod def get_total_members(cls): # 클래스 전체 멤버 수 반환 return cls.total_members @classmethod def from_string(cls, member_data): # 문자열 데이터를 이용해 새로운 TeamMember 인스턴스 생성 # 예시: member_data=\"John Doe, Manager, 80000\" name, role, salary = member_data.split(', ') # 실제 구현에서는 더 정교한 파싱 필요 return cls(name, role, salary) # 예시 사용 member1 = TeamMember('Alice', 'Developer', 70000) member2 = TeamMember('Bob', 'Designer', 75000) print(TeamMember.get_total_members()) # 출력: 2 # 문자열로부터 생성자 사용 예시 new_member = TeamMember.from_string('Charlie, Analyst, 65000') print(new_member.name) # 출력: Charlie 결과와 해석 TeamMember.get_total_members() -\u003e 3 new_member.name -\u003e Charlie 정리된 이해 이 예제는 TeamMember 클래스에서 클래스 변수 total_members를 업데이트하고 접근하는 클래스 메서드와 대체 생성자 from_string을 보여줍니다. get_total_members 클래스 메서드는 현재 클래스의 멤버 수를 반환하고, from_string은 문자열 데이터를 이용해 새로운 TeamMember 인스턴스를 생성합니다. 이를 통해 클래스 수준의 데이터 관리와 유연한 객체 생성이 가능해집니다.\n총평 오늘 전체에서 배운 것 클래스 메서드와 정적 메서드의 구분 및 클래스 변수 관리 방법 이해, 대체 생성자의 구현 방법 파악. 특히 cls 매개변수의 역할 명확히 파악.\n다음에 조심할 것 클래스 이름 오류 주의 필요: 클래스 이름과 변수 이름 혼동 방지, cls 매개변수의 정확한 이해 중요.\n다음 복습 주제 실습을 통해 클래스 메서드와 대체 생성자 활용법 익히기. 향후 다양한 클래스 설계 시 이러한 개념 적용 연습 권장.\n",
+  "wordCount" : "928",
+  "inLanguage": "en",
+  "datePublished": "2026-06-02T00:00:00Z",
+  "dateModified": "2026-06-02T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/python-classmethod-staticmethod-from-string/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/posts/" title="글">
+                    <span>글</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      python-classmethod-staticmethod-from-string
+    </h1>
+    <div class="post-description">
+      python-classmethod-staticmethod-from-string 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%ED%81%B4%EB%9E%98%EC%8A%A4-%EB%A9%94%EC%84%9C%EB%93%9C">클래스 메서드</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%A0%95%EC%A0%81-%EB%A9%94%EC%84%9C%EB%93%9C">정적 메서드</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EB%8C%80%EC%B2%B4-%EC%83%9D%EC%84%B1%EC%9E%90">대체 생성자</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%ED%81%B4%EB%9E%98%EC%8A%A4-%EB%B3%80%EC%88%98">클래스 변수</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-클래스-메서드">1. 클래스 메서드<a hidden class="anchor" aria-hidden="true" href="#1-클래스-메서드">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>클래스 메서드를 사용하면 클래스 수준의 데이터를 조작하거나 접근할 수 있어, 여러 인스턴스 간에 공통적으로 적용되는 동작을 쉽게 관리할 수 있습니다. 이를 통해 코드의 가독성과 유지보수성이 향상됩니다.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>처음에는 <code>cls</code> 매개변수의 역할을 정확히 이해하지 못해 클래스 메서드를 어떻게 작성해야 할지 혼란스러웠습니다. 그러나 <code>cls</code>가 현재 클래스 자체를 참조한다는 것을 알게 되면서 개념이 명확해졌습니다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TeamMember</span>:
+</span></span><span style="display:flex;"><span>    company_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;TechCorp&#34;</span>  <span style="color:#75715e"># 클래스 변수</span>
+</span></span><span style="display:flex;"><span>    total_members <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>          <span style="color:#75715e"># 클래스 변수</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, name, role, salary):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>name <span style="color:#f92672">=</span> name
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>role <span style="color:#f92672">=</span> role
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>salary <span style="color:#f92672">=</span> salary
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 클래스 변수 업데이트</span>
+</span></span><span style="display:flex;"><span>        TeamMember<span style="color:#f92672">.</span>total_members <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@classmethod</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_total_members</span>(cls):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 클래스 전체 멤버 수 반환</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> cls<span style="color:#f92672">.</span>total_members
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@classmethod</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">from_string</span>(cls, member_data):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 문자열 데이터를 이용해 새로운 TeamMember 인스턴스 생성</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 예시: member_data = &#34;John Doe, Manager, 70000&#34;</span>
+</span></span><span style="display:flex;"><span>        name, role, salary <span style="color:#f92672">=</span> member_data<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;, &#39;</span>)  <span style="color:#75715e"># 데이터 분리 로직 필요</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> cls(name, role, salary)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 예시 사용</span>
+</span></span><span style="display:flex;"><span>member1 <span style="color:#f92672">=</span> TeamMember(<span style="color:#e6db74">&#39;Alice&#39;</span>, <span style="color:#e6db74">&#39;Developer&#39;</span>, <span style="color:#ae81ff">60000</span>)
+</span></span><span style="display:flex;"><span>member2 <span style="color:#f92672">=</span> TeamMember(<span style="color:#e6db74">&#39;Bob&#39;</span>, <span style="color:#e6db74">&#39;Designer&#39;</span>, <span style="color:#ae81ff">65000</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(TeamMember<span style="color:#f92672">.</span>get_total_members())  <span style="color:#75715e"># 출력: 2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 대체 생성자 사용 예시</span>
+</span></span><span style="display:flex;"><span>new_member <span style="color:#f92672">=</span> TeamMember<span style="color:#f92672">.</span>from_string(<span style="color:#e6db74">&#39;Charlie, Analyst, 68000&#39;</span>)
+</span></span><span style="display:flex;"><span>print(new_member<span style="color:#f92672">.</span>name)  <span style="color:#75715e"># 출력: Charlie</span>
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>get_total_members() 출력: 2
+</span></span><span style="display:flex;"><span>new_member.name 출력: Charlie
+</span></span></code></pre></div><h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>클래스 메서드는 클래스 수준의 데이터를 조작하는 데 사용되며, <code>cls</code> 매개변수를 통해 클래스 변수에 접근하거나 수정할 수 있습니다. 또한, <code>from_string</code>과 같은 대체 생성자 메서드는 문자열 데이터를 이용해 클래스 인스턴스를 동적으로 생성하는 데 유용합니다. 이러한 기법들은 코드의 유연성과 재사용성을 높입니다.</p>
+<h2 id="2-정적-메서드">2. 정적 메서드<a hidden class="anchor" aria-hidden="true" href="#2-정적-메서드">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>정적 메서드는 클래스 내에서 공유되는 기능을 제공하며, 인스턴스나 클래스 상태에 직접 의존하지 않아 독립적으로 사용될 수 있다는 점을 이해하고 싶습니다.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>처음에는 정적 메서드가 언제 사용되는지 명확하지 않았습니다. 특히, 클래스 변수나 인스턴스 변수에 직접 접근하지 않고도 유용한 기능을 제공할 수 있다는 점이 흥미로웠습니다.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Calculator</span>:
+</span></span><span style="display:flex;"><span>    total_operations <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>  <span style="color:#75715e"># 클래스 변수</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>  <span style="color:#75715e"># 인스턴스 생성 시 초기화 필요 없음</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add</span>(self, a, b) <span style="color:#f92672">-&gt;</span> int:
+</span></span><span style="display:flex;"><span>        result <span style="color:#f92672">=</span> a <span style="color:#f92672">+</span> b
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>total_operations <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>  <span style="color:#75715e"># 인스턴스 메서드 예시</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> result
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@classmethod</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_total_operations</span>(cls) <span style="color:#f92672">-&gt;</span> int:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 정적 메서드 예시: 클래스 변수 접근</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> cls<span style="color:#f92672">.</span>total_operations
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 사용 예시</span>
+</span></span><span style="display:flex;"><span>calc <span style="color:#f92672">=</span> Calculator()
+</span></span><span style="display:flex;"><span>print(calc<span style="color:#f92672">.</span>add(<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">3</span>))  <span style="color:#75715e"># 출력: 8</span>
+</span></span><span style="display:flex;"><span>print(Calculator<span style="color:#f92672">.</span>get_total_operations())  <span style="color:#75715e"># 출력: 1</span>
+</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p>위 코드에서 <code>Calculator</code> 클래스는 정적 메서드 <code>get_total_operations</code>를 통해 클래스 변수 <code>total_operations</code>의 값을 반환합니다. 이 메서드는 인스턴스 생성 없이도 클래스 전체의 연산 횟수를 추적할 수 있게 해줍니다. 인스턴스 메서드 <code>add</code>는 각 연산마다 <code>total_operations</code>를 증가시킵니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>정적 메서드는 클래스 변수를 조작하거나 클래스 수준의 정보를 제공하는 데 이상적입니다. 이 메서드들은 인스턴스에 의존하지 않으므로, 클래스 자체의 동작을 지원하거나 공유된 데이터를 관리하는 데 유용합니다.</p>
+<h2 id="3-대체-생성자">3. 대체 생성자<a hidden class="anchor" aria-hidden="true" href="#3-대체-생성자">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>대체 생성자는 클래스 인스턴스를 특정 형식의 문자열 데이터로부터 생성하는 데 사용되며, 이는 데이터의 유연한 생성과 초기화를 가능하게 해줍니다. 특히, 외부 데이터 소스에서 직접 객체를 생성할 때 유용합니다.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>처음에는 문자열로부터 객체를 어떻게 생성하는지 이해하는 데 어려움이 있었습니다. 하지만 <code>from_string</code> 메서드가 어떻게 클래스의 초기화 과정을 단순화하고, 다양한 형식의 입력 데이터를 처리하는지 이해하게 되었습니다.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TeamMember</span>:
+</span></span><span style="display:flex;"><span>    company_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;TechCorp&#34;</span>  <span style="color:#75715e"># 클래스 변수</span>
+</span></span><span style="display:flex;"><span>    total_members <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>            <span style="color:#75715e"># 클래스 변수</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, name, role, salary):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>name <span style="color:#f92672">=</span> name
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>role <span style="color:#f92672">=</span> role
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>salary <span style="color:#f92672">=</span> salary
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 클래스 변수 업데이트</span>
+</span></span><span style="display:flex;"><span>        TeamMember<span style="color:#f92672">.</span>total_members <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@classmethod</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_total_members</span>(cls):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 클래스 전체 멤버 수 반환</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> cls<span style="color:#f92672">.</span>total_members
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@classmethod</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">from_string</span>(cls, member_data):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 문자열 데이터 예시: &#34;John Doe, Developer, 70000&#34;</span>
+</span></span><span style="display:flex;"><span>        name, role, salary <span style="color:#f92672">=</span> member_data<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;, &#39;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> cls(name<span style="color:#f92672">.</span>strip(), role<span style="color:#f92672">.</span>strip(), float(salary<span style="color:#f92672">.</span>strip()))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 예시 사용</span>
+</span></span><span style="display:flex;"><span>member_info <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Jane Smith, Manager, 90000&#34;</span>
+</span></span><span style="display:flex;"><span>new_member <span style="color:#f92672">=</span> TeamMember<span style="color:#f92672">.</span>from_string(member_info)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Created Member: </span><span style="color:#e6db74">{</span>new_member<span style="color:#f92672">.</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74">, Role: </span><span style="color:#e6db74">{</span>new_member<span style="color:#f92672">.</span>role<span style="color:#e6db74">}</span><span style="color:#e6db74">, Salary: </span><span style="color:#e6db74">{</span>new_member<span style="color:#f92672">.</span>salary<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Total Members: </span><span style="color:#e6db74">{</span>TeamMember<span style="color:#f92672">.</span>get_total_members()<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>Created Member: Jane Smith, Role: Manager, Salary: 90000
+</span></span><span style="display:flex;"><span>Total Members: 2
+</span></span></code></pre></div><h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>대체 생성자 메서드 <code>from_string</code>을 통해 <code>TeamMember</code> 클래스는 문자열 데이터를 받아 새 인스턴스를 생성할 수 있습니다. 이는 외부 데이터를 직접적으로 객체로 변환하는 데 유용하며, 클래스의 유연성을 크게 향상시킵니다. 예제에서는 문자열 `</p>
+<h2 id="4-클래스-변수">4. 클래스 변수<a hidden class="anchor" aria-hidden="true" href="#4-클래스-변수">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>클래스 변수와 클래스 메서드를 이해함으로써, 여러 객체 간에 공유되는 데이터와 동작을 효과적으로 관리할 수 있습니다. 특히, 인스턴스별로 독립적인 데이터를 다루는 것과 달리 클래스 수준에서의 데이터 변경은 모든 인스턴스에 영향을 미칩니다. 이를 통해 코드의 일관성과 유지보수성이 향상됩니다.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>처음에는 <code>cls</code> 매개변수의 역할과 클래스 메서드가 어떻게 클래스 수준의 데이터에 접근하는지 명확히 이해하지 못했습니다. 특히, 클래스 변수를 직접 수정하는 방법과 이를 통해 전체 클래스 인스턴스에 영향을 미치는 메커니즘이 헷갈렸습니다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TeamMember</span>:
+</span></span><span style="display:flex;"><span>    company_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;TechCorp&#34;</span>  <span style="color:#75715e"># 클래스 변수</span>
+</span></span><span style="display:flex;"><span>    total_members <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>          <span style="color:#75715e"># 클래스 변수</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, name, role, salary):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>name <span style="color:#f92672">=</span> name
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>role <span style="color:#f92672">=</span> role
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>salary <span style="color:#f92672">=</span> salary
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 클래스 변수 업데이트</span>
+</span></span><span style="display:flex;"><span>        TeamMember<span style="color:#f92672">.</span>total_members <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@classmethod</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_total_members</span>(cls):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 클래스 전체 멤버 수 반환</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> cls<span style="color:#f92672">.</span>total_members
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@classmethod</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">from_string</span>(cls, member_data):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 문자열 데이터를 이용해 새로운 TeamMember 인스턴스 생성</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 예시: member_data=&#34;John Doe, Manager, 80000&#34;</span>
+</span></span><span style="display:flex;"><span>        name, role, salary <span style="color:#f92672">=</span> member_data<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;, &#39;</span>)  <span style="color:#75715e"># 실제 구현에서는 더 정교한 파싱 필요</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> cls(name, role, salary)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 예시 사용</span>
+</span></span><span style="display:flex;"><span>member1 <span style="color:#f92672">=</span> TeamMember(<span style="color:#e6db74">&#39;Alice&#39;</span>, <span style="color:#e6db74">&#39;Developer&#39;</span>, <span style="color:#ae81ff">70000</span>)
+</span></span><span style="display:flex;"><span>member2 <span style="color:#f92672">=</span> TeamMember(<span style="color:#e6db74">&#39;Bob&#39;</span>, <span style="color:#e6db74">&#39;Designer&#39;</span>, <span style="color:#ae81ff">75000</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(TeamMember<span style="color:#f92672">.</span>get_total_members())  <span style="color:#75715e"># 출력: 2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 문자열로부터 생성자 사용 예시</span>
+</span></span><span style="display:flex;"><span>new_member <span style="color:#f92672">=</span> TeamMember<span style="color:#f92672">.</span>from_string(<span style="color:#e6db74">&#39;Charlie, Analyst, 65000&#39;</span>)
+</span></span><span style="display:flex;"><span>print(new_member<span style="color:#f92672">.</span>name)  <span style="color:#75715e"># 출력: Charlie</span>
+</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>TeamMember.get_total_members() -&gt; 3
+</span></span><span style="display:flex;"><span>new_member.name -&gt; Charlie
+</span></span></code></pre></div><h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>이 예제는 <code>TeamMember</code> 클래스에서 클래스 변수 <code>total_members</code>를 업데이트하고 접근하는 클래스 메서드와 대체 생성자 <code>from_string</code>을 보여줍니다. <code>get_total_members</code> 클래스 메서드는 현재 클래스의 멤버 수를 반환하고, <code>from_string</code>은 문자열 데이터를 이용해 새로운 <code>TeamMember</code> 인스턴스를 생성합니다. 이를 통해 클래스 수준의 데이터 관리와 유연한 객체 생성이 가능해집니다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>클래스 메서드와 정적 메서드의 구분 및 클래스 변수 관리 방법 이해, 대체 생성자의 구현 방법 파악. 특히 <code>cls</code> 매개변수의 역할 명확히 파악.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>클래스 이름 오류 주의 필요: 클래스 이름과 변수 이름 혼동 방지, <code>cls</code> 매개변수의 정확한 이해 중요.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>실습을 통해 클래스 메서드와 대체 생성자 활용법 익히기. 향후 다양한 클래스 설계 시 이러한 개념 적용 연습 권장.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/python-class-variables-instance-variables/">
+    <span class="title">« Prev</span>
+    <span>python-class-variables-instance-variables</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/python-function-return-parameters/">
+    <span class="title">Next »</span>
+    <span>python-function-return-parameters</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

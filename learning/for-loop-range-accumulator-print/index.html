@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>for-loop-range-accumulator-print | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="for-loop-range-accumulator-print 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/for-loop-range-accumulator-print/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/for-loop-range-accumulator-print/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/for-loop-range-accumulator-print/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="for-loop-range-accumulator-print">
+  <meta property="og:description" content="for-loop-range-accumulator-print 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-02T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-02T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="for-loop-range-accumulator-print">
+  <meta name="twitter:description" content="for-loop-range-accumulator-print 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "for-loop-range-accumulator-print",
+      "item": "https://Han-think.github.io/learning/for-loop-range-accumulator-print/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "for-loop-range-accumulator-print",
+  "name": "for-loop-range-accumulator-print",
+  "description": "for-loop-range-accumulator-print 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 반복문 작동 원리 누적 변수 활용 리스트 길이 이해 변수 역할 구분 총평 1. 반복문 작동 원리 왜 이걸 보게 됐나 반복문 내에서 변수의 역할과 range() 함수의 동작 원리를 명확히 이해하는 것이 프로그래밍 기초를 다지는 데 중요합니다. 특히, 각 단계에서 변수가 어떤 값을 가지는지 파악하는 능력은 반복문 활용의 핵심입니다.\n내가 헷갈린 지점 학습 초기에는 for 루프 내에서 변수 i의 역할과 range() 함수의 범위 설정에 대한 혼란이 있었습니다. 특히, range() 함수의 끝 숫자가 포함되는지 여부와 누적 변수의 필요성 및 구현 방법에 대한 이해가 부족했습니다.\n시도한 코드 / 예시 # 반복문 내 변수 역할 예시 fruits = ['사과', '바나나', '포도'] for index, fruit in enumerate(fruits): # index: 반복 단계의 순서를 나타냄 print(f'순서: {index}, 과일: {fruit}') # range() 함수 예시 for i in range(1, 6): # 결과: 1, 2, 3, 4, 5 print(i) # 누적 변수 예시 scores = [85, 90, 78, 92] total = 0 for score in scores: total += score print(f'누적 합계: {total}') 결과와 해석 순서: 0, 과일: 사과 순서: 1, 과일: 바나나 순서: 2, 과일: 포도 1 2 3 4 누적 합계: 85 누적 합계: 175 누적 합계: 253 누적 합계: 345 정리된 이해 반복문 내에서 변수의 역할을 이해하고, range() 함수의 동작 방식을 파악하는 것이 중요합니다. for 루프를 통해 리스트의 각 요소를 순차적으로 처리하며, range()는 지정된 범위 내의 숫자를 생성합니다. 또한, 누적 변수를 사용하여 반복 과정에서 값을 점진적으로 더하는 방법을 익혀 프로그래밍 문제 해결 능력을 향상시킬 수 있습니다.\n2. 누적 변수 활용 왜 이걸 보게 됐나 누적 변수는 반복적인 작업에서 값을 점진적으로 더하거나 누적시키는 데 필수적이며, 특히 리스트의 합계나 평균 계산 등에서 유용하게 사용됩니다. 이를 이해함으로써 복잡한 데이터 처리 과정을 단순화하고 효율적으로 관리할 수 있습니다.\n내가 헷갈린 지점 처음에는 누적 변수의 필요성과 구체적인 구현 방법에 대해 혼란스러웠습니다. 특히, 각 반복 단계에서 어떻게 값을 누적시키는지와 왜 특정 변수를 사용해야 하는지 명확히 이해하는 데 시간이 걸렸습니다.\n시도한 코드 / 예시 scores = [85, 90, 78, 92] total = 0 # 누적 변수 초기화 for score in scores: total += score # 각 점수를 누적 print('합계:', total) print('평균:', total / len(scores)) 결과와 해석 합계: 325 평균: 81.25\n정리된 이해 누적 변수를 활용하면 리스트 내의 값을 순차적으로 더해 합계를 쉽게 계산할 수 있습니다. 위 코드 예시에서는 scores 리스트의 각 점수를 total 변수에 누적시켜 합계와 평균을 구합니다. 이를 통해 반복문 내에서 값을 점진적으로 누적시키는 방법을 이해할 수 있습니다.\n3. 리스트 길이 이해 왜 이걸 보게 됐나 리스트 내에서 반복 변수의 역할과 range() 함수의 동작 원리를 명확히 이해하는 것이 프로그래밍에서 필수적입니다. 특히 초보자에게는 반복 과정과 누적 변수의 개념이 직관적으로 다가오지 않을 수 있습니다.\n내가 헷갈린 지점 변수 i의 변화 과정과 range() 함수의 범위 설정, 그리고 누적 변수를 사용한 합계 계산 방법에 대한 혼란이 가장 컸습니다. 특히, 각 반복 단계에서 변수의 상태 변화와 리스트의 길이 계산 방법이 명확하지 않았습니다.\n시도한 코드 / 예시 # 반복 변수 이해 예시 numbers = [10, 20, 30] for i in numbers: print(f'반복 단계: {i}, 현재 인덱스: {i}') # range() 함수 이해 예시 for i in range(1, 5) print(i) # 결과: 1, 2, 3, 4 # 누적 변수 예시 scores = [85, 90, 78, 92] total = 0 for score in scores: total += score print(f'누적 합계: {total}') print('최종 합계:', total) 결과와 해석 반복 단계: 10, 현재 인덱스: 0 반복 단계: 20, 현재 인덱스: 1 반복 단계: 30, 현재 인덱스: 2 1 2 3 누적 합계: 85 누적 합계: 175 누적 합계: 253 최종 합계: 253 최종 합계: 253 정리된 이해 리스트 내에서 for 루프를 통해 각 요소에 접근하고, range() 함수를 이용해 특정 범위의 숫자를 생성하는 방법을 이해했습니다. 또한, 누적 변수를 활용해 리스트의 요소들을 순차적으로 더하는 과정을 실습을 통해 명확히 파악했습니다. 이러한 이해는 반복문과 누적 연산의 기본 원리를 확실히 다지는 데 도움이 됩니다.\n4. 변수 역할 구분 왜 이걸 보게 됐나 변수 역할 구분은 프로그래밍에서 특히 반복문과 관련된 개념 이해에 핵심적입니다. 혼란스러운 부분을 명확히 하여 코드 작성 능력을 향상시키기 위함입니다.\n내가 헷갈린 지점 학습자들은 for 루프 내의 변수 i, range() 함수의 작동 방식, 그리고 누적 변수의 필요성에 대해 혼동을 겪습니다. 특히 각 변수의 역할과 그들이 코드 내에서 어떻게 상호작용하는지 이해하는 데 어려움이 있습니다.\n시도한 코드 / 예시 # for 루프 내 변수 i의 역할 예시 numbers = [10, 20, 30] for i in numbers: print(f'현재 인덱스: {i}, 값: {numbers[i]}') # range() 함수의 범위 이해 예시 for i in range(1, 5) print(i) # 출력: 1 2 3 4 # 누적 변수를 사용한 합계 계산 예시 scores = [85, 90, 78, 92] total = 0 for score in scores: total += score print('합계:', total) 결과와 해석 현재 인덱스: 0, 값: 10 현재 인덱스: 1, 값: 20 현재 인덱스: 2, 값: 30 1 2 3 4 합계: 315 정리된 이해 이 항목들은 학습자들이 for 루프 내에서 변수의 역할을 명확히 이해하고, range() 함수의 동작 원리를 파악하며, 누적 변수를 통해 데이터를 효과적으로 처리하는 방법을 배우도록 돕습니다. 각 코드 예시는 실제 적용 사례를 통해 개념을 구체화하고, 혼란스러운 부분을 해결하는 데 초점을 맞춥니다.\n총평 오늘 전체에서 배운 것 반복문 작동 원리와 누적 변수의 활용 방법을 이해했으며, for 루프 내 변수 역할과 range() 함수의 범위 이해를 확실히 했습니다. 리스트 길이와 변수 구분에 대한 혼동도 일부 해소되었습니다.\n다음에 조심할 것 변수 이름 혼동과 range() 함수의 포함 여부에 대한 주의가 필요합니다. 특히 누적 변수 구현 시 코드 완성 과정에서의 오류를 주의해야 합니다.\n다음 복습 주제 핵심 개념을 실습 예시와 함께 정리하여 반복문과 누적 변수의 실제 적용 방법을 명확히 이해했습니다. 초보자 관점에서 용어 혼동 해소와 구체적인 코드 예시를 통해 학습 효과를 높였습니다.\n",
+  "wordCount" : "871",
+  "inLanguage": "en",
+  "datePublished": "2026-06-02T00:00:00Z",
+  "dateModified": "2026-06-02T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/for-loop-range-accumulator-print/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/posts/" title="글">
+                    <span>글</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      for-loop-range-accumulator-print
+    </h1>
+    <div class="post-description">
+      for-loop-range-accumulator-print 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EB%B0%98%EB%B3%B5%EB%AC%B8-%EC%9E%91%EB%8F%99-%EC%9B%90%EB%A6%AC">반복문 작동 원리</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EB%88%84%EC%A0%81-%EB%B3%80%EC%88%98-%ED%99%9C%EC%9A%A9">누적 변수 활용</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EB%A6%AC%EC%8A%A4%ED%8A%B8-%EA%B8%B8%EC%9D%B4-%EC%9D%B4%ED%95%B4">리스트 길이 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EB%B3%80%EC%88%98-%EC%97%AD%ED%95%A0-%EA%B5%AC%EB%B6%84">변수 역할 구분</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-반복문-작동-원리">1. 반복문 작동 원리<a hidden class="anchor" aria-hidden="true" href="#1-반복문-작동-원리">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>반복문 내에서 변수의 역할과 <code>range()</code> 함수의 동작 원리를 명확히 이해하는 것이 프로그래밍 기초를 다지는 데 중요합니다. 특히, 각 단계에서 변수가 어떤 값을 가지는지 파악하는 능력은 반복문 활용의 핵심입니다.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>학습 초기에는 <code>for</code> 루프 내에서 변수 <code>i</code>의 역할과 <code>range()</code> 함수의 범위 설정에 대한 혼란이 있었습니다. 특히, <code>range()</code> 함수의 끝 숫자가 포함되는지 여부와 누적 변수의 필요성 및 구현 방법에 대한 이해가 부족했습니다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 반복문 내 변수 역할 예시</span>
+</span></span><span style="display:flex;"><span>fruits <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;사과&#39;</span>, <span style="color:#e6db74">&#39;바나나&#39;</span>, <span style="color:#e6db74">&#39;포도&#39;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> index, fruit <span style="color:#f92672">in</span> enumerate(fruits):  <span style="color:#75715e"># index: 반복 단계의 순서를 나타냄</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;순서: </span><span style="color:#e6db74">{</span>index<span style="color:#e6db74">}</span><span style="color:#e6db74">, 과일: </span><span style="color:#e6db74">{</span>fruit<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># range() 함수 예시</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">6</span>):  <span style="color:#75715e"># 결과: 1, 2, 3, 4, 5</span>
+</span></span><span style="display:flex;"><span>    print(i)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 누적 변수 예시</span>
+</span></span><span style="display:flex;"><span>scores <span style="color:#f92672">=</span> [<span style="color:#ae81ff">85</span>, <span style="color:#ae81ff">90</span>, <span style="color:#ae81ff">78</span>, <span style="color:#ae81ff">92</span>]
+</span></span><span style="display:flex;"><span>total <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> score <span style="color:#f92672">in</span> scores:
+</span></span><span style="display:flex;"><span>    total <span style="color:#f92672">+=</span> score
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;누적 합계: </span><span style="color:#e6db74">{</span>total<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<pre tabindex="0"><code>순서: 0, 과일: 사과
+순서: 1, 과일: 바나나
+순서: 2, 과일: 포도
+1
+2
+3
+4
+누적 합계: 85
+누적 합계: 175
+누적 합계: 253
+누적 합계: 345
+</code></pre><h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>반복문 내에서 변수의 역할을 이해하고, <code>range()</code> 함수의 동작 방식을 파악하는 것이 중요합니다. <code>for</code> 루프를 통해 리스트의 각 요소를 순차적으로 처리하며, <code>range()</code>는 지정된 범위 내의 숫자를 생성합니다. 또한, 누적 변수를 사용하여 반복 과정에서 값을 점진적으로 더하는 방법을 익혀 프로그래밍 문제 해결 능력을 향상시킬 수 있습니다.</p>
+<h2 id="2-누적-변수-활용">2. 누적 변수 활용<a hidden class="anchor" aria-hidden="true" href="#2-누적-변수-활용">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>누적 변수는 반복적인 작업에서 값을 점진적으로 더하거나 누적시키는 데 필수적이며, 특히 리스트의 합계나 평균 계산 등에서 유용하게 사용됩니다. 이를 이해함으로써 복잡한 데이터 처리 과정을 단순화하고 효율적으로 관리할 수 있습니다.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>처음에는 누적 변수의 필요성과 구체적인 구현 방법에 대해 혼란스러웠습니다. 특히, 각 반복 단계에서 어떻게 값을 누적시키는지와 왜 특정 변수를 사용해야 하는지 명확히 이해하는 데 시간이 걸렸습니다.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>scores <span style="color:#f92672">=</span> [<span style="color:#ae81ff">85</span>, <span style="color:#ae81ff">90</span>, <span style="color:#ae81ff">78</span>, <span style="color:#ae81ff">92</span>]
+</span></span><span style="display:flex;"><span>total <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>  <span style="color:#75715e"># 누적 변수 초기화</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> score <span style="color:#f92672">in</span> scores:
+</span></span><span style="display:flex;"><span>    total <span style="color:#f92672">+=</span> score  <span style="color:#75715e"># 각 점수를 누적</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#39;합계:&#39;</span>, total)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#39;평균:&#39;</span>, total <span style="color:#f92672">/</span> len(scores))
+</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p>합계: 325
+평균: 81.25</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>누적 변수를 활용하면 리스트 내의 값을 순차적으로 더해 합계를 쉽게 계산할 수 있습니다. 위 코드 예시에서는 <code>scores</code> 리스트의 각 점수를 <code>total</code> 변수에 누적시켜 합계와 평균을 구합니다. 이를 통해 반복문 내에서 값을 점진적으로 누적시키는 방법을 이해할 수 있습니다.</p>
+<h2 id="3-리스트-길이-이해">3. 리스트 길이 이해<a hidden class="anchor" aria-hidden="true" href="#3-리스트-길이-이해">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>리스트 내에서 반복 변수의 역할과 <code>range()</code> 함수의 동작 원리를 명확히 이해하는 것이 프로그래밍에서 필수적입니다. 특히 초보자에게는 반복 과정과 누적 변수의 개념이 직관적으로 다가오지 않을 수 있습니다.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>변수 <code>i</code>의 변화 과정과 <code>range()</code> 함수의 범위 설정, 그리고 누적 변수를 사용한 합계 계산 방법에 대한 혼란이 가장 컸습니다. 특히, 각 반복 단계에서 변수의 상태 변화와 리스트의 길이 계산 방법이 명확하지 않았습니다.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 반복 변수 이해 예시</span>
+</span></span><span style="display:flex;"><span>numbers <span style="color:#f92672">=</span> [<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">30</span>]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> numbers:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;반복 단계: </span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">, 현재 인덱스: </span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># range() 함수 이해 예시</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">5</span>)
+</span></span><span style="display:flex;"><span>    print(i)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 결과: 1, 2, 3, 4</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 누적 변수 예시</span>
+</span></span><span style="display:flex;"><span>scores <span style="color:#f92672">=</span> [<span style="color:#ae81ff">85</span>, <span style="color:#ae81ff">90</span>, <span style="color:#ae81ff">78</span>, <span style="color:#ae81ff">92</span>]
+</span></span><span style="display:flex;"><span>total <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> score <span style="color:#f92672">in</span> scores:
+</span></span><span style="display:flex;"><span>    total <span style="color:#f92672">+=</span> score
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;누적 합계: </span><span style="color:#e6db74">{</span>total<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#39;최종 합계:&#39;</span>, total)
+</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<pre tabindex="0"><code>반복 단계: 10, 현재 인덱스: 0
+반복 단계: 20, 현재 인덱스: 1
+반복 단계: 30, 현재 인덱스: 2
+1
+2
+3
+누적 합계: 85
+누적 합계: 175
+누적 합계: 253
+최종 합계: 253
+최종 합계: 253
+</code></pre><h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>리스트 내에서 <code>for</code> 루프를 통해 각 요소에 접근하고, <code>range()</code> 함수를 이용해 특정 범위의 숫자를 생성하는 방법을 이해했습니다. 또한, 누적 변수를 활용해 리스트의 요소들을 순차적으로 더하는 과정을 실습을 통해 명확히 파악했습니다. 이러한 이해는 반복문과 누적 연산의 기본 원리를 확실히 다지는 데 도움이 됩니다.</p>
+<h2 id="4-변수-역할-구분">4. 변수 역할 구분<a hidden class="anchor" aria-hidden="true" href="#4-변수-역할-구분">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>변수 역할 구분은 프로그래밍에서 특히 반복문과 관련된 개념 이해에 핵심적입니다. 혼란스러운 부분을 명확히 하여 코드 작성 능력을 향상시키기 위함입니다.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>학습자들은 <code>for</code> 루프 내의 변수 <code>i</code>, <code>range()</code> 함수의 작동 방식, 그리고 누적 변수의 필요성에 대해 혼동을 겪습니다. 특히 각 변수의 역할과 그들이 코드 내에서 어떻게 상호작용하는지 이해하는 데 어려움이 있습니다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># for 루프 내 변수 i의 역할 예시</span>
+</span></span><span style="display:flex;"><span>numbers <span style="color:#f92672">=</span> [<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">30</span>]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> numbers:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;현재 인덱스: </span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">, 값: </span><span style="color:#e6db74">{</span>numbers[i]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># range() 함수의 범위 이해 예시</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">5</span>)
+</span></span><span style="display:flex;"><span>    print(i)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 출력: 1 2 3 4</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 누적 변수를 사용한 합계 계산 예시</span>
+</span></span><span style="display:flex;"><span>scores <span style="color:#f92672">=</span> [<span style="color:#ae81ff">85</span>, <span style="color:#ae81ff">90</span>, <span style="color:#ae81ff">78</span>, <span style="color:#ae81ff">92</span>]
+</span></span><span style="display:flex;"><span>total <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> score <span style="color:#f92672">in</span> scores:
+</span></span><span style="display:flex;"><span>    total <span style="color:#f92672">+=</span> score
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#39;합계:&#39;</span>, total)
+</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<pre tabindex="0"><code>현재 인덱스: 0, 값: 10
+현재 인덱스: 1, 값: 20
+현재 인덱스: 2, 값: 30
+1
+2
+3
+4
+합계: 315
+</code></pre><h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>이 항목들은 학습자들이 <code>for</code> 루프 내에서 변수의 역할을 명확히 이해하고, <code>range()</code> 함수의 동작 원리를 파악하며, 누적 변수를 통해 데이터를 효과적으로 처리하는 방법을 배우도록 돕습니다. 각 코드 예시는 실제 적용 사례를 통해 개념을 구체화하고, 혼란스러운 부분을 해결하는 데 초점을 맞춥니다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>반복문 작동 원리와 누적 변수의 활용 방법을 이해했으며, <code>for</code> 루프 내 변수 역할과 <code>range()</code> 함수의 범위 이해를 확실히 했습니다. 리스트 길이와 변수 구분에 대한 혼동도 일부 해소되었습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>변수 이름 혼동과 <code>range()</code> 함수의 포함 여부에 대한 주의가 필요합니다. 특히 누적 변수 구현 시 코드 완성 과정에서의 오류를 주의해야 합니다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>핵심 개념을 실습 예시와 함께 정리하여 반복문과 누적 변수의 실제 적용 방법을 명확히 이해했습니다. 초보자 관점에서 용어 혼동 해소와 구체적인 코드 예시를 통해 학습 효과를 높였습니다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/conditions-boolean-bmi-gate-thinking/">
+    <span class="title">« Prev</span>
+    <span>conditions-boolean-bmi-gate-thinking</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/fstring-gugudan-and-output-formatting/">
+    <span class="title">Next »</span>
+    <span>fstring-gugudan-and-output-formatting</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
