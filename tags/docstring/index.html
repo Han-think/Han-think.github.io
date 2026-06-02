@@ -154,6 +154,24 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">초보자 워킹 노트: 모듈, 진입점, Docstring 이해하기
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 모듈화 이해하기 총평 1. 모듈화 이해하기 왜 이걸 보게 됐나 프로젝트 규모가 커지면서 코드 관리가 어려워져 효율적인 코드 구조에 대해 학습하기 시작했습니다.
+내가 헷갈린 지점 모듈화의 실제 이점과 구조를 명확히 이해하지 못했습니다.
+시도한 코드 / 예시 다음과 같이 간단한 모듈 구조를 직접 만들어 보았습니다.
+# calculator.py def add(a, b): return a &#43; b # string_utils.py def count_words(text): return len(text.split()) def count_chars(text): return len(text) def reverse_string(s): return s[::-1] def is_palindrome(s): return s == s[::-1] # main.py import calculator from string_utils import count_words, count_chars, reverse_string, is_palindrome def main(): print(&#34;계산 결과:&#34;, calculator.add(5, 3)) print(&#34;단어 개수:&#34;, count_words(&#34;안녕하세요&#34;)) print(&#34;문자 개수:&#34;, count_chars(&#34;안녕하세요&#34;)) print(&#34;뒤집힌 문자열:&#34;, reverse_string(&#34;python&#34;)) print(&#34;팔진수 확인:&#34;, is_palindrome(&#34;level&#34;)) if __name__ == &#34;__main__&#34;: main() 결과와 해석 코드의 재사용성이 향상되었고, 각 모듈이 독립적으로 관리될 수 있다는 것을 확인할 수 있었습니다. 유지보수와 확장성도 향상되었습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>1 min</span></footer>
+  <a class="entry-link" aria-label="post link to 초보자 워킹 노트: 모듈, 진입점, Docstring 이해하기" href="https://Han-think.github.io/learning/python-modules-entrypoint-docstring/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">초보자를 위한 `__init__`, `self`, 그리고 Docstring 이해하기
     </h2>
   </header>

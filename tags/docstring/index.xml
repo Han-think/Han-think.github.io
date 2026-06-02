@@ -9,6 +9,13 @@
     <lastBuildDate>Tue, 02 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/docstring/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>초보자 워킹 노트: 모듈, 진입점, Docstring 이해하기</title>
+      <link>https://Han-think.github.io/learning/python-modules-entrypoint-docstring/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-modules-entrypoint-docstring/</guid>
+      <description>모듈, 진입점, Docstring에 대한 초보자 수준의 이해와 학습 경험 정리</description>
+    </item>
+    <item>
       <title>초보자를 위한 `__init__`, `self`, 그리고 Docstring 이해하기</title>
       <link>https://Han-think.github.io/learning/python-init-self-docstring-attributes/</link>
       <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>

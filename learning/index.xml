@@ -9,6 +9,41 @@
     <lastBuildDate>Tue, 02 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/learning/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>`__str__`과 `__repr__` 이해하기 - 초보 개발자 가이드</title>
+      <link>https://Han-think.github.io/learning/python-magic-methods-str-repr/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-magic-methods-str-repr/</guid>
+      <description>Python에서 `__str__`과 `__repr__` 메서드의 차이점과 활용 방법을 초보 개발자 관점에서 설명합니다.</description>
+    </item>
+    <item>
+      <title>pandas-read-csv-parameter-design</title>
+      <link>https://Han-think.github.io/learning/pandas-read-csv-parameter-design/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/pandas-read-csv-parameter-design/</guid>
+      <description>pandas-read-csv-parameter-design 학습 정리</description>
+    </item>
+    <item>
+      <title>다형성 이해하기: `type()`, `isinstance()`, `issubclass()` 실습 노트</title>
+      <link>https://Han-think.github.io/learning/python-isinstance-issubclass-polymorphism/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-isinstance-issubclass-polymorphism/</guid>
+      <description>초보자를 위한 다형성 이해와 실습 노트: `type()`, `isinstance()`, `issubclass()`에 대한 설명 및 실제 코드 예시</description>
+    </item>
+    <item>
+      <title>상속 이해: 부서 트리 구조 실습 노트</title>
+      <link>https://Han-think.github.io/learning/python-inheritance-department-tree/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-inheritance-department-tree/</guid>
+      <description>상속 구조를 활용한 부서 트리 모델 구축 경험과 학습 내용 정리</description>
+    </item>
+    <item>
+      <title>초보자 워킹 노트: 모듈, 진입점, Docstring 이해하기</title>
+      <link>https://Han-think.github.io/learning/python-modules-entrypoint-docstring/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-modules-entrypoint-docstring/</guid>
+      <description>모듈, 진입점, Docstring에 대한 초보자 수준의 이해와 학습 경험 정리</description>
+    </item>
+    <item>
       <title>초보자를 위한 `__init__`, `self`, 그리고 Docstring 이해하기</title>
       <link>https://Han-think.github.io/learning/python-init-self-docstring-attributes/</link>
       <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
@@ -23,6 +58,13 @@
       <description>클래스 메서드의 본질과 활용 방법을 초보자 눈높이에서 이해해보는 가이드.</description>
     </item>
     <item>
+      <title>클래스 메서드, 정적 메서드 및 대체 생성자 이해하기</title>
+      <link>https://Han-think.github.io/learning/python-classmethod-staticmethod-from-string/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-classmethod-staticmethod-from-string/</guid>
+      <description>초보자를 위한 클래스 메서드, 정적 메서드 그리고 대체 생성자에 대한 학습 노트</description>
+    </item>
+    <item>
       <title>파이썬 스코프와 shadowing 이해하기: 초보자를 위한 전역과 지역 변수 혼동 해소</title>
       <link>https://Han-think.github.io/learning/python-scope-global-shadowing/</link>
       <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
@@ -35,6 +77,57 @@
       <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/learning/python-class-instance-basic/</guid>
       <description>파이썬 클래스의 기본 개념을 이해하고, 인스턴스의 독립성을 실습을 통해 살펴보는 가이드.</description>
+    </item>
+    <item>
+      <title>학습 노트</title>
+      <link>https://Han-think.github.io/learning/python-class-variables-instance-variables/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-class-variables-instance-variables/</guid>
+      <description>&lt;h2 id=&#34;목차&#34;&gt;목차&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;#1-%ED%81%B4%EB%9E%98%EC%8A%A4-%EB%B3%80%EC%88%98-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0&#34;&gt;클래스 변수 이해하기&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%EC%B4%9D%ED%8F%89&#34;&gt;총평&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;1-클래스-변수-이해하기&#34;&gt;1. 클래스 변수 이해하기&lt;/h2&gt;
+&lt;h3 id=&#34;왜-이걸-보게-됐나&#34;&gt;왜 이걸 보게 됐나&lt;/h3&gt;
+&lt;p&gt;팀 프로젝트에서 팀원들의 정보를 클래스로 관리하려고 했지만, &lt;code&gt;total_members&lt;/code&gt; 변수의 동작이 예상과 다르게 작동하여 혼란이 생겼습니다. 특히 변수 이름의 일관성 문제로 인해 오류가 발생했음을 깨닫게 되었습니다.&lt;/p&gt;
+&lt;h3 id=&#34;내가-헷갈린-지점&#34;&gt;내가 헷갈린 지점&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;클래스 내에서 &lt;code&gt;total_members&lt;/code&gt;와 유사한 이름의 변수들이 존재했는데, 이들이 어떻게 구분되고 공유되는지 명확하지 않았습니다. 특히 &lt;code&gt;TeamMembers&lt;/code&gt;와 같은 이름이 있었음에도 불구하고 코드가 제대로 동작하지 않는 것을 보고, 이름 유사성만으로 변수가 동일하게 인식되는 것으로 오해했습니다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;시도한-코드--예시&#34;&gt;시도한 코드 / 예시&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;TeamMember&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;# 클래스 변수: 모든 팀원이 공유하는 정보&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    company_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;앨리스 회사&amp;#34;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# 클래스 변수 예시&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    total_members &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# 전체 팀원 수 카운트&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;__init__&lt;/span&gt;(self, name, role, salary):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# 각 인스턴스의 고유 데이터&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; name  &lt;span style=&#34;color:#75715e&#34;&gt;# 인스턴스 변수 예시&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;role &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; role
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;salary &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; salary
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# 클래스 변수 업데이트&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        TeamMember&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;total_members &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# 클래스 변수 직접 참조&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;introduce&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        print(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;[&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;company_name&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;] &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;role&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;name&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; (연봉: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;salary&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;만원)&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 인스턴스 생성&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;alice &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; TeamMember(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Alice&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;시니어 개발자&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;6000&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;bob &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; TeamMember(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Bob&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;주니어 기획자&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;3800&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 인스턴스 메소드 호출&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;alice&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;introduce()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;bob&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;introduce()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 클래스 변수 출력&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;현재 총 팀원 수: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;TeamMember&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;total_members&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;명&amp;#34;&lt;/span&gt;)  &lt;span style=&#34;color:#75715e&#34;&gt;# 클래스 변수 출력&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;결과와-해석&#34;&gt;결과와 해석&lt;/h3&gt;
+&lt;p&gt;코드를 실행했을 때, 각 팀원 객체가 생성될 때마다 &lt;code&gt;total_members&lt;/code&gt; 값이 올바르게 증가하는 것을 확인했습니다. 이는 클래스 변수가 모든 인스턴스에서 공유되고 수정될 수 있음을&lt;/p&gt;</description>
     </item>
     <item>
       <title>Python f-string 이해와 실습 노트</title>
@@ -63,13 +156,6 @@
       <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/learning/while-break-fizzbuzz-control-flow/</guid>
       <description>이 글에서는 while 루프의 기본 개념과 실제 프로그래밍에서의 적용 방법을 초보자 눈높이에서 설명합니다. 특히 종료 조건 설정과 변수 업데이트의 중요성에 초점을 맞춥니다.</description>
-    </item>
-    <item>
-      <title>데이터 읽기의 미묘함: `pandas.read_csv()` 이해하기</title>
-      <link>https://Han-think.github.io/learning/pandas-read-csv-parameter-design/</link>
-      <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/learning/pandas-read-csv-parameter-design/</guid>
-      <description>학습 과정에서 `pandas.read_csv()` 함수의 복잡한 매개변수들에 대한 이해와 혼란스러웠던 부분들을 정리합니다.</description>
     </item>
     <item>
       <title>초보자를 위한 Python 반복문 이해: 혼동 포인트와 정리</title>

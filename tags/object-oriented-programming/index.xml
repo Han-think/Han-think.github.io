@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Object-Oriented Programming on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/object-oriented-programming/</link>
+    <description>Recent content in Object-Oriented Programming on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Tue, 02 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/object-oriented-programming/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>다형성 이해하기: `type()`, `isinstance()`, `issubclass()` 실습 노트</title>
+      <link>https://Han-think.github.io/learning/python-isinstance-issubclass-polymorphism/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-isinstance-issubclass-polymorphism/</guid>
+      <description>초보자를 위한 다형성 이해와 실습 노트: `type()`, `isinstance()`, `issubclass()`에 대한 설명 및 실제 코드 예시</description>
+    </item>
+    <item>
+      <title>상속 이해: 부서 트리 구조 실습 노트</title>
+      <link>https://Han-think.github.io/learning/python-inheritance-department-tree/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-inheritance-department-tree/</guid>
+      <description>상속 구조를 활용한 부서 트리 모델 구축 경험과 학습 내용 정리</description>
+    </item>
+  </channel>
+</rss>

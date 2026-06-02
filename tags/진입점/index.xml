@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>진입점 on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/%EC%A7%84%EC%9E%85%EC%A0%90/</link>
+    <description>Recent content in 진입점 on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Tue, 02 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/%EC%A7%84%EC%9E%85%EC%A0%90/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>초보자 워킹 노트: 모듈, 진입점, Docstring 이해하기</title>
+      <link>https://Han-think.github.io/learning/python-modules-entrypoint-docstring/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-modules-entrypoint-docstring/</guid>
+      <description>모듈, 진입점, Docstring에 대한 초보자 수준의 이해와 학습 경험 정리</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>While 루프 on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/while-%EB%A3%A8%ED%94%84/</link>
+    <description>Recent content in While 루프 on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Fri, 02 Jun 2023 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/while-%EB%A3%A8%ED%94%84/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>초보자를 위한 `while` 루프와 메뉴형 프로그램 설계 이해 가이드</title>
+      <link>https://Han-think.github.io/practice/python-while-menu-design/</link>
+      <pubDate>Fri, 02 Jun 2023 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/python-while-menu-design/</guid>
+      <description>초보자를 위한 `while` 루프와 메뉴형 프로그램 설계에 대한 이해와 실습 가이드</description>
+    </item>
+  </channel>
+</rss>
