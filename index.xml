@@ -6,8 +6,15 @@
     <description>Recent content on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Sun, 31 May 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 02 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LearningLog 파이프라인 이해 및 적용 노트</title>
+      <link>https://Han-think.github.io/goals/official-docs-llm-design-and-original-structure/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/goals/official-docs-llm-design-and-original-structure/</guid>
+      <description>초보자 관점에서 LearningLog 파이프라인 구조 이해와 실제 적용 방법에 대한 학습 노트</description>
+    </item>
     <item>
       <title>[환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인</title>
       <link>https://Han-think.github.io/posts/setup/learninglog-kit/</link>
