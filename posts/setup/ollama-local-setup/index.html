@@ -138,8 +138,8 @@
   "keywords": [
     "ollama", "local-ai", "windows", "recipe", "llm"
   ],
-  "articleBody": "왜 로컬 LLM인가 API 비용, 프라이버시, 응답 속도. 이 세 가지가 로컬 LLM을 선택하는 이유다. Ollama는 이 세 가지를 가장 낮은 진입 장벽으로 해결한다.\n준비물 항목 최소 사양 RAM 8 GB (4b 모델 기준) VRAM 4 GB (GPU 가속 시) 디스크 모델 크기 × 2 여유 OS Windows 10 22H2 이상 설치 # 1. Ollama 공식 설치 # https://ollama.com/download 에서 Windows 버전 다운로드 후 실행 # 2. 설치 확인 ollama --version # 3. 서버 실행 (백그라운드) ollama serve 모델 내려받기 # 가벼운 4B 모델 (추천 시작점) ollama pull qwen3:4b-instruct # 좀 더 나은 품질 ollama pull gemma3:4b # 고품질 (24B — 16GB RAM 이상) ollama pull mistral:24b GPU 가속 확인 ollama run qwen3:4b-instruct \"GPU 사용 중인가?\" # 응답 속도로 GPU 가속 여부 체감 가능 Intel Arc GPU의 경우 별도 설정이 필요할 수 있다. → PyRecipe 를 사용하면 환경별 최적 패키지를 자동 추천해준다.\nAPI로 접근하기 Ollama는 localhost:11434에서 HTTP API를 제공한다.\ncurl http://localhost:11434/api/generate -d '{ \"model\": \"qwen3:4b-instruct\", \"prompt\": \"안녕\", \"stream\": false }' Python:\nimport requests res = requests.post(\"http://localhost:11434/api/generate\", json={ \"model\": \"qwen3:4b-instruct\", \"prompt\": \"파이썬으로 피보나치 수열을 만들어줘\", \"stream\": False }) print(res.json()[\"response\"]) 다음 단계 Python 프로젝트에 연결 → langchain-community, ollama 패키지 환경 자동 진단 → PyRecipe 사용 창작 파이프라인 구축 → 음악·이미지 AI와 결합 ",
-  "wordCount" : "200",
+  "articleBody": "왜 로컬 LLM인가 API 비용, 프라이버시, 응답 속도. 이 세 가지가 로컬 LLM을 선택하는 이유다. Ollama는 이 세 가지를 가장 낮은 진입 장벽으로 해결한다.\n준비물 항목 최소 사양 RAM 8 GB (4b 모델 기준) VRAM 4 GB (GPU 가속 시) 디스크 모델 크기 × 2 여유 OS Windows 10 22H2 이상 설치 # 1. Ollama 공식 설치 # https://ollama.com/download 에서 Windows 버전 다운로드 후 실행 # 2. 설치 확인 ollama --version # 3. 서버 실행 (백그라운드) ollama serve 모델 내려받기 # 가벼운 4B 모델 (추천 시작점) ollama pull qwen3:4b-instruct # 좀 더 나은 품질 ollama pull gemma3:4b # 고품질 (24B — 16GB RAM 이상) ollama pull mistral:24b GPU 가속 확인 ollama run qwen3:4b-instruct \"GPU 사용 중인가?\" # 응답 속도로 GPU 가속 여부 체감 가능 Intel Arc GPU의 경우 별도 설정이 필요할 수 있다. → PyRecipe 를 사용하면 환경별 최적 패키지를 자동 추천해준다.\nAPI로 접근하기 Ollama는 localhost:11434에서 HTTP API를 제공한다.\ncurl http://localhost:11434/api/generate -d '{ \"model\": \"qwen3:4b-instruct\", \"prompt\": \"안녕\", \"stream\": false }' Python:\nimport requests res = requests.post(\"http://localhost:11434/api/generate\", json={ \"model\": \"qwen3:4b-instruct\", \"prompt\": \"파이썬으로 피보나치 수열을 만들어줘\", \"stream\": False }) print(res.json()[\"response\"]) 다음 단계 Python 프로젝트에 연결 → langchain-community, ollama 패키지 환경 자동 진단 → PyRecipe 사용 창작 파이프라인 구축 → 음악·이미지 AI와 결합 🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "220",
   "inLanguage": "en",
   "datePublished": "2026-05-27T01:00:00+09:00",
   "dateModified": "2026-05-27T01:00:00+09:00",
@@ -223,7 +223,7 @@
     </div>
     <div class="post-meta">
 
-<span title='2026-05-27 01:00:00 +0900 KST'>2026년 5월 27일</span>&nbsp;·&nbsp;<span>1 min</span>
+<span title='2026-05-27 01:00:00 +0900 KST'>2026년 5월 27일</span>&nbsp;·&nbsp;<span>2 min</span>
 
 </div>
   </header> 
@@ -308,6 +308,11 @@ Ollama는 이 세 가지를 가장 낮은 진입 장벽으로 해결한다.</p>
 <li><strong>환경 자동 진단</strong> → PyRecipe 사용</li>
 <li><strong>창작 파이프라인 구축</strong> → 음악·이미지 AI와 결합</li>
 </ul>
+<hr>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
 
 
   </div>

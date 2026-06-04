@@ -198,7 +198,8 @@ for page_num in range(1, 6): # 1, 2, 3, 4, 5 url = f&#34;http://books.toscrape.c
   </header>
   <div class="entry-content">
     <p>데이터 &#43; 로컬 AI의 조합 분석 파이프라인에 LLM을 붙이는 것이 점점 자연스러워지고 있다. pandas로 데이터를 가공하고, 로컬 LLM으로 해석·요약하는 흐름이다.
-기본 환경 구성 conda create -n data-ai python=3.11 -y conda activate data-ai # 데이터 분석 핵심 conda install pandas=2.2.1 numpy=1.26.4 matplotlib=3.8.3 seaborn -y # Jupyter conda install jupyter jupyterlab -y # Ollama 연동 pip install ollama requests 검증된 버전 조합 패키지 버전 비고 Python 3.11.8 3.12 일부 호환성 이슈 pandas 2.2.1 안정적 numpy 1.26.4 pandas와 궁합 최적 matplotlib 3.8.3 seaborn 0.13과 호환 scikit-learn 1.4.1 추가 선택 로컬 LLM으로 데이터 해석하기 import pandas as pd import requests df = pd.read_csv(&#34;data.csv&#34;) summary = df.describe().to_string() # Ollama 로컬 LLM에 전달 response = requests.post( &#34;http://localhost:11434/api/generate&#34;, json={ &#34;model&#34;: &#34;qwen3:4b-instruct&#34;, &#34;prompt&#34;: f&#34;다음 데이터 요약을 분석해줘:\n{summary}&#34;, &#34;stream&#34;: False } ) print(response.json()[&#34;response&#34;]) 시각화 &#43; LLM 해석 자동화 import matplotlib.pyplot as plt # 그래프 생성 fig, ax = plt.subplots() df.plot(ax=ax) plt.savefig(&#34;chart.png&#34;) # 그래프 설명 요청 (멀티모달 모델 사용 시) # llava:7b 같은 비전 모델과 연동 가능 다음 ChromaDB를 이용한 벡터 검색 &#43; LLM RAG 파이프라인 pandas 데이터프레임을 LLM 컨텍스트로 변환하는 패턴 </p>
+기본 환경 구성 conda create -n data-ai python=3.11 -y conda activate data-ai # 데이터 분석 핵심 conda install pandas=2.2.1 numpy=1.26.4 matplotlib=3.8.3 seaborn -y # Jupyter conda install jupyter jupyterlab -y # Ollama 연동 pip install ollama requests 검증된 버전 조합 패키지 버전 비고 Python 3.11.8 3.12 일부 호환성 이슈 pandas 2.2.1 안정적 numpy 1.26.4 pandas와 궁합 최적 matplotlib 3.8.3 seaborn 0.13과 호환 scikit-learn 1.4.1 추가 선택 로컬 LLM으로 데이터 해석하기 import pandas as pd import requests df = pd.read_csv(&#34;data.csv&#34;) summary = df.describe().to_string() # Ollama 로컬 LLM에 전달 response = requests.post( &#34;http://localhost:11434/api/generate&#34;, json={ &#34;model&#34;: &#34;qwen3:4b-instruct&#34;, &#34;prompt&#34;: f&#34;다음 데이터 요약을 분석해줘:\n{summary}&#34;, &#34;stream&#34;: False } ) print(response.json()[&#34;response&#34;]) 시각화 &#43; LLM 해석 자동화 import matplotlib.pyplot as plt # 그래프 생성 fig, ax = plt.subplots() df.plot(ax=ax) plt.savefig(&#34;chart.png&#34;) # 그래프 설명 요청 (멀티모달 모델 사용 시) # llava:7b 같은 비전 모델과 연동 가능 다음 ChromaDB를 이용한 벡터 검색 &#43; LLM RAG 파이프라인 pandas 데이터프레임을 LLM 컨텍스트로 변환하는 패턴 🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).
+...</p>
   </div>
   <footer class="entry-footer">
 
@@ -231,7 +232,7 @@ conda create -n wan21 python=3.11 -y conda activate wan21 pip install torch==2.4
   <div class="entry-content">
     <p>목표 Intel Arc GPU(A770, A750, 내장 Arc 포함)에서 Stable Diffusion을 실행한다. NVIDIA 없이도 가능하다. 단, 환경 설정이 까다롭다.
 이 레시피의 전제 Windows 11 (22H2&#43;) Intel Arc GPU (드라이버 최신 버전) Python 3.11 (3.12는 일부 패키지 미지원) conda 환경 권장 환경 구성 # conda 환경 생성 conda create -n sd-ipex python=3.11 -y conda activate sd-ipex # Intel Extension for PyTorch (IPEX) 설치 pip install torch==2.1.0 torchvision==0.16.0 --index-url https://download.pytorch.org/whl/cpu pip install intel_extension_for_pytorch==2.1.10&#43;xpu --extra-index-url https://pytorch-extension.intel.com/release-whl/stable/xpu/us/ # diffusers 및 관련 패키지 pip install diffusers==0.25.1 transformers==4.37.2 accelerate==0.26.1 pip install invisible-watermark safetensors omegaconf 동작 확인 import torch import intel_extension_for_pytorch as ipex # XPU (Intel GPU) 감지 print(torch.xpu.is_available()) # True여야 함 print(torch.xpu.device_count()) # 사용 가능한 XPU 수 이미지 생성 예제 import torch import intel_extension_for_pytorch as ipex from diffusers import StableDiffusionPipeline device = &#34;xpu&#34; if torch.xpu.is_available() else &#34;cpu&#34; pipe = StableDiffusionPipeline.from_pretrained( &#34;runwayml/stable-diffusion-v1-5&#34;, torch_dtype=torch.float16 if device == &#34;xpu&#34; else torch.float32 ) pipe = pipe.to(device) # 첫 실행은 모델 다운로드로 시간 걸림 (~4GB) image = pipe( &#34;a serene Korean traditional garden, ink painting style&#34;, num_inference_steps=20, guidance_scale=7.5 ).images[0] image.save(&#34;output.png&#34;) 알려진 문제 증상 원인 해결 xpu not available 드라이버 미설치 Intel Arc 드라이버 재설치 OOM 오류 VRAM 부족 num_inference_steps 줄이기 느린 속도 CPU fallback XPU 확인 후 재시도 다음 SDXL, ControlNet, LoRA 적용은 별도 레시피로 다룰 예정이다. 이 레시피를 기반으로 환경 확인 → PyRecipe 활용 권장.
-</p>
+...</p>
   </div>
   <footer class="entry-footer">
 
@@ -251,7 +252,7 @@ conda create -n wan21 python=3.11 -y conda activate wan21 pip install torch==2.4
   </div>
   <footer class="entry-footer">
 
-<span title='2026-05-27 01:00:00 +0900 KST'>2026년 5월 27일</span>&nbsp;·&nbsp;<span>1 min</span></footer>
+<span title='2026-05-27 01:00:00 +0900 KST'>2026년 5월 27일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
   <a class="entry-link" aria-label="post link to [LLM] Ollama 로컬 설치 — Windows에서 모델 내려받고 바로 쓰기" href="https://Han-think.github.io/posts/setup/ollama-local-setup/"></a>
 </article>
 

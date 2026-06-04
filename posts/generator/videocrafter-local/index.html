@@ -137,8 +137,8 @@
   "keywords": [
     "video-ai", "videocrafter", "local-ai", "recipe"
   ],
-  "articleBody": "로컬 영상 AI의 현실 이미지 생성과 달리 영상 생성은 요구 사양이 훨씬 높다. 그럼에도 로컬에서 돌릴 수 있는 방법들이 존재한다.\n선택지 비교 도구 필요 VRAM 특징 VideoCrafter2 12GB+ 오픈소스, 품질 양호 AnimateDiff 8GB Stable Diffusion 기반 CogVideoX 16GB+ 텍스트→영상, 고품질 Wan2.1 8GB (FP8) 가성비 최강, 권장 현재 가장 현실적인 선택: Wan2.1 메모리 효율이 뛰어나고 품질이 안정적이다.\nconda create -n wan21 python=3.11 -y conda activate wan21 pip install torch==2.4.0 torchvision --index-url https://download.pytorch.org/whl/cu124 pip install diffusers transformers accelerate pip install huggingface_hub from diffusers import WanPipeline import torch pipe = WanPipeline.from_pretrained( \"Wan-AI/Wan2.1-T2V-1.3B\", torch_dtype=torch.float16 ).to(\"cuda\") frames = pipe( prompt=\"A cat walking through a Korean traditional market\", num_frames=25, num_inference_steps=20 ).frames[0] Intel Arc에서는? 현재(2026년 5월) Intel Arc에서의 영상 생성은 공식 지원이 제한적이다. CPU로 실행은 가능하지만 실용적인 속도는 아니다.\nNVIDIA GPU 환경이 있다면 Wan2.1 또는 AnimateDiff를 권장.\n다음 업데이트 실제 환경 구성 검증 후 단계별 레시피를 추가할 예정. 현재 Intel Arc + IPEX 영상 파이프라인을 테스트 중.\n",
-  "wordCount" : "150",
+  "articleBody": "로컬 영상 AI의 현실 이미지 생성과 달리 영상 생성은 요구 사양이 훨씬 높다. 그럼에도 로컬에서 돌릴 수 있는 방법들이 존재한다.\n선택지 비교 도구 필요 VRAM 특징 VideoCrafter2 12GB+ 오픈소스, 품질 양호 AnimateDiff 8GB Stable Diffusion 기반 CogVideoX 16GB+ 텍스트→영상, 고품질 Wan2.1 8GB (FP8) 가성비 최강, 권장 현재 가장 현실적인 선택: Wan2.1 메모리 효율이 뛰어나고 품질이 안정적이다.\nconda create -n wan21 python=3.11 -y conda activate wan21 pip install torch==2.4.0 torchvision --index-url https://download.pytorch.org/whl/cu124 pip install diffusers transformers accelerate pip install huggingface_hub from diffusers import WanPipeline import torch pipe = WanPipeline.from_pretrained( \"Wan-AI/Wan2.1-T2V-1.3B\", torch_dtype=torch.float16 ).to(\"cuda\") frames = pipe( prompt=\"A cat walking through a Korean traditional market\", num_frames=25, num_inference_steps=20 ).frames[0] Intel Arc에서는? 현재(2026년 5월) Intel Arc에서의 영상 생성은 공식 지원이 제한적이다. CPU로 실행은 가능하지만 실용적인 속도는 아니다.\nNVIDIA GPU 환경이 있다면 Wan2.1 또는 AnimateDiff를 권장.\n다음 업데이트 실제 환경 구성 검증 후 단계별 레시피를 추가할 예정. 현재 Intel Arc + IPEX 영상 파이프라인을 테스트 중.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "170",
   "inLanguage": "en",
   "datePublished": "2026-05-27T03:00:00+09:00",
   "dateModified": "2026-05-27T03:00:00+09:00",
@@ -293,6 +293,11 @@ CPU로 실행은 가능하지만 실용적인 속도는 아니다.</p>
 <h2 id="다음-업데이트">다음 업데이트<a hidden class="anchor" aria-hidden="true" href="#다음-업데이트">#</a></h2>
 <p>실제 환경 구성 검증 후 단계별 레시피를 추가할 예정.
 현재 Intel Arc + IPEX 영상 파이프라인을 테스트 중.</p>
+<hr>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
 
 
   </div>
