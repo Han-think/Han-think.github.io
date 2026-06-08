@@ -6,43 +6,8 @@
     <description>Recent content in Python on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Mon, 08 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 31 May 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>초보자를 위한 `classmap-hanthink` 프로젝트 이해하기</title>
-      <link>https://Han-think.github.io/projects/classmap-project-design/</link>
-      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/projects/classmap-project-design/</guid>
-      <description>초보자 관점에서 `classmap-hanthink` 프로젝트의 핵심 개념과 실습 방법을 탐색합니다.</description>
-    </item>
-    <item>
-      <title>enumerate() 함수 활용: 순번과 값 함께 출력하기</title>
-      <link>https://Han-think.github.io/learning/enumerate-rank-output/</link>
-      <pubDate>Thu, 04 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/learning/enumerate-rank-output/</guid>
-      <description>enumerate() 함수를 이용한 리스트 요소와 인덱스 함께 출력 방법에 대한 학습 경험과 이해.</description>
-    </item>
-    <item>
-      <title>Python 패키지 배포 환경 구성 이해하기</title>
-      <link>https://Han-think.github.io/projects/python-package-environment-reference/</link>
-      <pubDate>Thu, 04 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/projects/python-package-environment-reference/</guid>
-      <description>Python 패키지를 배포하기 위한 환경 구성 요소 이해 및 실습 가이드</description>
-    </item>
-    <item>
-      <title>리스트 컴프리헨션에서 `if`와 `if-else` 이해하기</title>
-      <link>https://Han-think.github.io/learning/list-comprehension-filter-transform/</link>
-      <pubDate>Thu, 04 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/learning/list-comprehension-filter-transform/</guid>
-      <description>리스트 컴프리헨션 내에서 `if`와 `if-else`의 사용법과 차이점에 대한 학습 노트</description>
-    </item>
-    <item>
-      <title>초보자를 위한 pip 및 requirements.txt 이해하기</title>
-      <link>https://Han-think.github.io/practice/pip-requirements-file-installation/</link>
-      <pubDate>Thu, 04 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/practice/pip-requirements-file-installation/</guid>
-      <description>pip 명령어와 requirements.txt 파일을 활용한 Python 패키지 관리 방법 이해하기</description>
-    </item>
     <item>
       <title>[환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인</title>
       <link>https://Han-think.github.io/posts/setup/learninglog-kit/</link>
