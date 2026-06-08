@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>프로젝트 이해 on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%9D%B4%ED%95%B4/</link>
+    <description>Recent content in 프로젝트 이해 on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Mon, 08 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%9D%B4%ED%95%B4/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>초보자를 위한 `classmap-hanthink` 프로젝트 이해하기</title>
+      <link>https://Han-think.github.io/projects/classmap-project-design/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/classmap-project-design/</guid>
+      <description>초보자 관점에서 `classmap-hanthink` 프로젝트의 핵심 개념과 실습 방법을 탐색합니다.</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>SQLTools | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/tags/sqltools/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://Han-think.github.io/tags/sqltools/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/tags/sqltools/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/tags/sqltools/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="SQLTools">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="website">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="SQLTools">
+
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/posts/" title="글">
+                    <span>글</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header">
+  <h1>
+    SQLTools
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">SQLite와 VS Code SQLTools 환경 설정 가이드
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 SQLite 데이터베이스 이해하기 총평 1. SQLite 데이터베이스 이해하기 왜 이걸 보게 됐나 프로젝트에서 로컬 데이터베이스 관리가 필요하게 되어 SQLite와 그 사용 환경인 VS Code 및 SQLTools에 대해 학습하게 되었습니다. 효율적인 데이터 관리와 쿼리 실행을 위해 이러한 도구들이 어떻게 연동되는지 알고 싶었습니다.
+내가 헷갈렸던 지점 SQLite 용어의 정확한 발음과 의미: 초기에 ‘SQLite’의 발음과 정확한 개념 이해에 어려움이 있었습니다. VS Code 확장팩의 역할과 설치 방법: VS Code 내에서 SQLTools 확장팩과 SQLite 드라이버를 어떻게 설치하고 사용하는지 명확하게 파악하지 못했습니다. 시도한 코드 / 예시 SQLite 데이터베이스 생성: # 명령 프롬프트 또는 터미널 실행 sqlite3 sample.db # &#39;sample.db&#39; 파일 생성 VS Code에 확장팩 설치: VS Code에서 Extensions 탭으로 이동 SQLTools 검색 후 설치 추가로 SQLite Driver 확장팩도 설치 결과와 해석 확장팩 설치 후 VS Code 내에서 SQLite 데이터베이스 파일을 성공적으로 열고 쿼리를 실행할 수 있었습니다. 이 과정을 통해 SQLite의 간편한 설치와 관리 방식, 그리고 VS Code와 SQLTools의 통합 사용 방법을 이해할 수 있었습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-08 00:00:00 +0000 UTC'>2026년 6월 8일</span>&nbsp;·&nbsp;<span>1 min</span></footer>
+  <a class="entry-link" aria-label="post link to SQLite와 VS Code SQLTools 환경 설정 가이드" href="https://Han-think.github.io/practice/sqlite-sqltools-nextweek/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">SQLTools와 SQLite를 활용한 데이터베이스 기초 학습 노트
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 SQL 명령어의 기본 실행 이해 총평 1. SQL 명령어의 기본 실행 이해 왜 이걸 보게 됐나 SQL (Structured Query Language)을 활용한 데이터베이스 관리에 대한 기초를 다지고자 이 개념을 학습하게 되었습니다. 특히, 실시간 코딩 도구인 SQLTools를 활용하여 SQLite 데이터베이스를 다루는 방법을 익히고자 했습니다.
+내가 헷갈린 지점 명령어 순서 오류: 테이블 생성(CREATE TABLE) 이후에 바로 데이터 조회(SELECT)를 시도했을 때 오류가 발생하는 이유를 이해하지 못했습니다. 결과 없음 인식: SQL 쿼리가 정상적으로 실행되었음에도 불구하고 결과가 나타나지 않거나 오류 메시지가 표시되는 상황에서 어떻게 대처해야 하는지 혼란스러웠습니다. 시도한 코드 / 예시 -- 테이블 생성 시도 (오류 발생) CREATE TABLE IF NOT EXISTS example_table ( id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL ); -- 바로 조회 시도 (오류 발생) SELECT * FROM example_table WHERE id = 1; -- 이 쿼리 실행 전에 데이터 삽입이 필요 -- 올바른 순서로 실행 CREATE TABLE IF NOT EXISTS example_table ( id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL ); INSERT INTO example_table (name) VALUES (&#39;학습노트&#39;); -- 데이터 삽입 SELECT * FROM example_table WHERE id = LAST_INSERT_ROWID(); -- 최신 삽입된 행 조회 결과와 해석 오류 원인 확인: 테이블 생성 후 데이터 삽입 없이 조회를 시도한 결과 오류가 발생한 것을 확인했습니다. 명령어의 실행 순서가 중요함을 깨달았습니다. 데이터 삽입 후 조회: 테이블에 데이터를 먼저 삽입한 후에 조회를 시도하니 원하는 결과를 얻을 수 있었습니다. 정리된 이해 명령어 실행 순서: 총평 오늘 전체에서 배운 것 정리 필요.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-08 00:00:00 +0000 UTC'>2026년 6월 8일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
+  <a class="entry-link" aria-label="post link to SQLTools와 SQLite를 활용한 데이터베이스 기초 학습 노트" href="https://Han-think.github.io/practice/sqltools-selected-query-execution/"></a>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

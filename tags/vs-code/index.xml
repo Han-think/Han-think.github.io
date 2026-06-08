@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>VS Code on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/vs-code/</link>
+    <description>Recent content in VS Code on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Mon, 08 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/vs-code/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SQLite와 VS Code SQLTools 환경 설정 가이드</title>
+      <link>https://Han-think.github.io/practice/sqlite-sqltools-nextweek/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/sqlite-sqltools-nextweek/</guid>
+      <description>VS Code를 이용한 SQLite 데이터베이스 환경 설정 가이드와 학습 경험 공유</description>
+    </item>
+  </channel>
+</rss>

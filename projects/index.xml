@@ -6,8 +6,42 @@
     <description>Recent content in 프로젝트 노트 on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Tue, 02 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 08 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/projects/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>초보자를 위한 `classmap-hanthink` 프로젝트 이해하기</title>
+      <link>https://Han-think.github.io/projects/classmap-project-design/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/classmap-project-design/</guid>
+      <description>초보자 관점에서 `classmap-hanthink` 프로젝트의 핵심 개념과 실습 방법을 탐색합니다.</description>
+    </item>
+    <item>
+      <title>학습 노트</title>
+      <link>https://Han-think.github.io/projects/hallucination-symbolic-control/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/hallucination-symbolic-control/</guid>
+      <description>&lt;h2 id=&#34;목차&#34;&gt;목차&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;#1-%ED%95%A0%EB%A3%A8%EC%8B%9C%EB%84%A4%EC%9D%B4%EC%85%98-%EC%9D%B4%ED%95%B4&#34;&gt;할루시네이션 이해&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%EC%B4%9D%ED%8F%89&#34;&gt;총평&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;1-할루시네이션-이해&#34;&gt;1. 할루시네이션 이해&lt;/h2&gt;
+&lt;h3 id=&#34;왜-이걸-보게-됐나&#34;&gt;왜 이걸 보게 됐나&lt;/h3&gt;
+&lt;p&gt;할루시네이션은 AI 모델이 제공하는 답변 중에서 사실과 부합하지 않거나 논리적으로 일관성이 없는 내용이 포함되는 현상입니다. 이 문제를 이해하고 제어하는 것은 AI 신뢰성과 정확성을 높이는 데 필수적입니다. 특히 실용적인 프로젝트에서 이러한 오류를 최소화하는 방법을 알아보고자 했습니다.&lt;/p&gt;
+&lt;h3 id=&#34;내가-헷갈렸던-지점&#34;&gt;내가 헷갈렸던 지점&lt;/h3&gt;
+&lt;p&gt;초기에는 할루시네이션을 완전히 제거하는 것이 가능하다고 생각했습니다. 특히 RLHF (Reinforcement Learning with Human Feedback)와 정교한 프롬프트 설계를 통해 모든 유형의 할루시네이션을 막을 수 있다고 오해했습니다. 또한 친절하면서도 사실적인 오류가 포함된 답변이 얼마나 위험한지 간과했습니다.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Python 패키지 배포 환경 구성 이해하기</title>
+      <link>https://Han-think.github.io/projects/python-package-environment-reference/</link>
+      <pubDate>Thu, 04 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/python-package-environment-reference/</guid>
+      <description>Python 패키지를 배포하기 위한 환경 구성 요소 이해 및 실습 가이드</description>
+    </item>
     <item>
       <title>learninglog-kit-loop-automation-idea</title>
       <link>https://Han-think.github.io/projects/learninglog-kit-loop-automation-idea/</link>

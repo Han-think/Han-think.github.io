@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>학습 노트 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="목차
+
+
+
+SCQA 구조 이해
+
+
+총평
+
+1. SCQA 구조 이해
+왜 이걸 보게 됐나
+SCQA 모델을 통해 문제 해결 접근법을 체계적으로 배우고자 했습니다. 특히 실제 상황에서의 적용 능력을 향상시키기 위해 이 구조를 깊이 이해하려 노력했습니다.
+내가 헷갈린 지점
+초기에는 Complication 단계를 단순히 문제의 배경이나 상황 설명으로 이해했습니다. 그러나 Complication은 문제의 핵심 긴장 요소를 명확하게 드러내는 역할이 중요함을 깨달았습니다. 예를 들어, 단순히 &ldquo;결과가 좋지 않았다&quot;보다는 &ldquo;기대와 달리 지속적인 실패가 발생하는 원인을 파악해야 한다&quot;는 식의 심층적인 분석이 필요함을 이해하지 못했습니다.">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/minto-scqa-mece/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/minto-scqa-mece/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/minto-scqa-mece/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="학습 노트">
+  <meta property="og:description" content="목차 SCQA 구조 이해 총평 1. SCQA 구조 이해 왜 이걸 보게 됐나 SCQA 모델을 통해 문제 해결 접근법을 체계적으로 배우고자 했습니다. 특히 실제 상황에서의 적용 능력을 향상시키기 위해 이 구조를 깊이 이해하려 노력했습니다.
+내가 헷갈린 지점 초기에는 Complication 단계를 단순히 문제의 배경이나 상황 설명으로 이해했습니다. 그러나 Complication은 문제의 핵심 긴장 요소를 명확하게 드러내는 역할이 중요함을 깨달았습니다. 예를 들어, 단순히 “결과가 좋지 않았다&#34;보다는 “기대와 달리 지속적인 실패가 발생하는 원인을 파악해야 한다&#34;는 식의 심층적인 분석이 필요함을 이해하지 못했습니다.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-08T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-08T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="학습 노트">
+  <meta name="twitter:description" content="목차 SCQA 구조 이해 총평 1. SCQA 구조 이해 왜 이걸 보게 됐나 SCQA 모델을 통해 문제 해결 접근법을 체계적으로 배우고자 했습니다. 특히 실제 상황에서의 적용 능력을 향상시키기 위해 이 구조를 깊이 이해하려 노력했습니다.
+내가 헷갈린 지점 초기에는 Complication 단계를 단순히 문제의 배경이나 상황 설명으로 이해했습니다. 그러나 Complication은 문제의 핵심 긴장 요소를 명확하게 드러내는 역할이 중요함을 깨달았습니다. 예를 들어, 단순히 “결과가 좋지 않았다&#34;보다는 “기대와 달리 지속적인 실패가 발생하는 원인을 파악해야 한다&#34;는 식의 심층적인 분석이 필요함을 이해하지 못했습니다.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "학습 노트",
+      "item": "https://Han-think.github.io/learning/minto-scqa-mece/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "학습 노트",
+  "name": "학습 노트",
+  "description": "목차 SCQA 구조 이해 총평 1. SCQA 구조 이해 왜 이걸 보게 됐나 SCQA 모델을 통해 문제 해결 접근법을 체계적으로 배우고자 했습니다. 특히 실제 상황에서의 적용 능력을 향상시키기 위해 이 구조를 깊이 이해하려 노력했습니다.\n내가 헷갈린 지점 초기에는 Complication 단계를 단순히 문제의 배경이나 상황 설명으로 이해했습니다. 그러나 Complication은 문제의 핵심 긴장 요소를 명확하게 드러내는 역할이 중요함을 깨달았습니다. 예를 들어, 단순히 \u0026ldquo;결과가 좋지 않았다\u0026quot;보다는 \u0026ldquo;기대와 달리 지속적인 실패가 발생하는 원인을 파악해야 한다\u0026quot;는 식의 심층적인 분석이 필요함을 이해하지 못했습니다.\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 SCQA 구조 이해 총평 1. SCQA 구조 이해 왜 이걸 보게 됐나 SCQA 모델을 통해 문제 해결 접근법을 체계적으로 배우고자 했습니다. 특히 실제 상황에서의 적용 능력을 향상시키기 위해 이 구조를 깊이 이해하려 노력했습니다.\n내가 헷갈린 지점 초기에는 Complication 단계를 단순히 문제의 배경이나 상황 설명으로 이해했습니다. 그러나 Complication은 문제의 핵심 긴장 요소를 명확하게 드러내는 역할이 중요함을 깨달았습니다. 예를 들어, 단순히 “결과가 좋지 않았다\"보다는 “기대와 달리 지속적인 실패가 발생하는 원인을 파악해야 한다\"는 식의 심층적인 분석이 필요함을 이해하지 못했습니다.\n시도한 코드 / 예시 다음은 소개팅 사례를 SCQA 구조에 적용해 본 예시입니다:\nSituation (S) 회사 동료와의 소개팅 결과 애프터 데이트가 전혀 성사되지 않았다.\nComplication (C) 기대 조건에 비해 실제 반응이 현저히 나빴다. 입사한 지 얼마 되지 않은 신입사원인데도 불구하고, 시장 반응이 예상보다 훨씬 저조하다.\nQuestion (Q) 왜 애프터 데이트에 대한 반응이 이렇게 저조한 걸까?\nAnswer (A) 기대 수준에 미치지 못하는 반응의 원인을 분석하고, 개선 방안을 제시해야 한다. 예를 들어, 개인의 이미지나 대화 기술을 평가해보는 등의 조치가 필요할 수 있다.\n결과와 해석 이 예시를 통해 SCQA 구조가 문제 해결 과정에서 중요한 역할을 한다는 것을 확인할 수 있었습니다. 특히 Complication 부분을 명확하게 정의함으로써 핵심 문제를 파악하는 데 효과적임을 경험했습니다.\n정리된 이해 SCQA는 문제 해결을 위한 구조적 도구로서, 각 단계가 서로 연결되어 문제를 체계적으로 분석하고 해결 방안을 도출하는 데 사용됩니다:\nSituation (S): 현재 상황을 명확히 제시합니다. Complication (C): 심층적인 문제나 긴장 요소를 구체적으로 드러냅니다. Question (Q): Complication에서 자연스럽게 발생하는 핵심 질문을 형성합니다. **Answer (A 총평 오늘 전체에서 배운 것 정리 필요.\n다음에 조심할 것 정리 필요.\n다음 복습 주제 정리 필요.\n",
+  "wordCount" : "245",
+  "inLanguage": "en",
+  "datePublished": "2026-06-08T00:00:00Z",
+  "dateModified": "2026-06-08T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/minto-scqa-mece/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/posts/" title="글">
+                    <span>글</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      학습 노트
+    </h1>
+    <div class="post-meta">
+
+<span title='2026-06-08 00:00:00 +0000 UTC'>2026년 6월 8일</span>&nbsp;·&nbsp;<span>2 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-scqa-%EA%B5%AC%EC%A1%B0-%EC%9D%B4%ED%95%B4">SCQA 구조 이해</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-scqa-구조-이해">1. SCQA 구조 이해<a hidden class="anchor" aria-hidden="true" href="#1-scqa-구조-이해">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>SCQA 모델을 통해 문제 해결 접근법을 체계적으로 배우고자 했습니다. 특히 실제 상황에서의 적용 능력을 향상시키기 위해 이 구조를 깊이 이해하려 노력했습니다.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>초기에는 <strong>Complication 단계</strong>를 단순히 문제의 배경이나 상황 설명으로 이해했습니다. 그러나 Complication은 문제의 핵심 긴장 요소를 명확하게 드러내는 역할이 중요함을 깨달았습니다. 예를 들어, 단순히 &ldquo;결과가 좋지 않았다&quot;보다는 &ldquo;기대와 달리 지속적인 실패가 발생하는 원인을 파악해야 한다&quot;는 식의 심층적인 분석이 필요함을 이해하지 못했습니다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<p>다음은 소개팅 사례를 SCQA 구조에 적용해 본 예시입니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plaintext" data-lang="plaintext"></code></pre></div><h3 id="situation-s">Situation (S)<a hidden class="anchor" aria-hidden="true" href="#situation-s">#</a></h3>
+<p>회사 동료와의 소개팅 결과 애프터 데이트가 전혀 성사되지 않았다.</p>
+<h3 id="complication-c">Complication (C)<a hidden class="anchor" aria-hidden="true" href="#complication-c">#</a></h3>
+<p>기대 조건에 비해 실제 반응이 현저히 나빴다. 입사한 지 얼마 되지 않은 신입사원인데도 불구하고, 시장 반응이 예상보다 훨씬 저조하다.</p>
+<h3 id="question-q">Question (Q)<a hidden class="anchor" aria-hidden="true" href="#question-q">#</a></h3>
+<p>왜 애프터 데이트에 대한 반응이 이렇게 저조한 걸까?</p>
+<h3 id="answer-a">Answer (A)<a hidden class="anchor" aria-hidden="true" href="#answer-a">#</a></h3>
+<p>기대 수준에 미치지 못하는 반응의 원인을 분석하고, 개선 방안을 제시해야 한다. 예를 들어, 개인의 이미지나 대화 기술을 평가해보는 등의 조치가 필요할 수 있다.</p>
+<pre tabindex="0"><code></code></pre><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p>이 예시를 통해 SCQA 구조가 문제 해결 과정에서 중요한 역할을 한다는 것을 확인할 수 있었습니다. 특히 Complication 부분을 명확하게 정의함으로써 핵심 문제를 파악하는 데 효과적임을 경험했습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>SCQA는 문제 해결을 위한 구조적 도구로서, 각 단계가 서로 연결되어 문제를 체계적으로 분석하고 해결 방안을 도출하는 데 사용됩니다:</p>
+<ul>
+<li><strong>Situation (S)</strong>: 현재 상황을 명확히 제시합니다.</li>
+<li><strong>Complication (C)</strong>: 심층적인 문제나 긴장 요소를 구체적으로 드러냅니다.</li>
+<li><strong>Question (Q)</strong>: Complication에서 자연스럽게 발생하는 핵심 질문을 형성합니다.</li>
+<li>**Answer (A</li>
+</ul>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>정리 필요.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>정리 필요.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>정리 필요.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/sqlite-select-crud-basics/">
+    <span class="title">« Prev</span>
+    <span>SQLite SELECT와 CRUD 기본 문법 이해하기</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/pm-05-erd-reading-training/">
+    <span class="title">Next »</span>
+    <span>학습 노트</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

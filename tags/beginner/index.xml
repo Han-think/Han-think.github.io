@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Beginner on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/beginner/</link>
+    <description>Recent content in Beginner on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Thu, 04 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/beginner/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>파이썬 라이브러리 선택과 활용: 초보자 가이드</title>
+      <link>https://Han-think.github.io/learning/library-ecosystem-selection/</link>
+      <pubDate>Thu, 04 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/library-ecosystem-selection/</guid>
+      <description>파이썬 라이브러리 선택과 활용에 대한 초보자를 위한 실용적 가이드</description>
+    </item>
+    <item>
+      <title>함수 구조 이해와 테스트 가능한 코드 작성 가이드</title>
+      <link>https://Han-think.github.io/learning/function-structure-and-testable-code/</link>
+      <pubDate>Thu, 04 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/function-structure-and-testable-code/</guid>
+      <description>초보자를 위한 함수 구조와 테스트 가능한 코드 작성 방법에 대한 이해 및 실습 가이드</description>
+    </item>
+  </channel>
+</rss>
