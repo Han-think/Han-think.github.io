@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>[음악 AI] Magenta — 처음 만난 AI 작곡, 그리고 벽 | Han-think Blog</title>
+<meta name="keywords" content="magenta, conda, midi, music-ai, google, recipe, rnn">
+<meta name="description" content="Google Magenta로 시작한 AI 작곡 여정 · 실패와 돌파구 · 검증된 로컬 환경 레시피">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/projects/magenta-music-conda/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/projects/magenta-music-conda/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/projects/magenta-music-conda/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="[음악 AI] Magenta — 처음 만난 AI 작곡, 그리고 벽">
+  <meta property="og:description" content="Google Magenta로 시작한 AI 작곡 여정 · 실패와 돌파구 · 검증된 로컬 환경 레시피">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2026-05-27T00:00:00+09:00">
+    <meta property="article:modified_time" content="2026-05-27T00:00:00+09:00">
+    <meta property="article:tag" content="Magenta">
+    <meta property="article:tag" content="Conda">
+    <meta property="article:tag" content="Midi">
+    <meta property="article:tag" content="Music-Ai">
+    <meta property="article:tag" content="Google">
+    <meta property="article:tag" content="Recipe">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="[음악 AI] Magenta — 처음 만난 AI 작곡, 그리고 벽">
+  <meta name="twitter:description" content="Google Magenta로 시작한 AI 작곡 여정 · 실패와 돌파구 · 검증된 로컬 환경 레시피">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "프로젝트 노트",
+      "item": "https://Han-think.github.io/projects/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "[음악 AI] Magenta — 처음 만난 AI 작곡, 그리고 벽",
+      "item": "https://Han-think.github.io/projects/magenta-music-conda/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "[음악 AI] Magenta — 처음 만난 AI 작곡, 그리고 벽",
+  "name": "[음악 AI] Magenta — 처음 만난 AI 작곡, 그리고 벽",
+  "description": "Google Magenta로 시작한 AI 작곡 여정 · 실패와 돌파구 · 검증된 로컬 환경 레시피",
+  "keywords": [
+    "magenta", "conda", "midi", "music-ai", "google", "recipe", "rnn"
+  ],
+  "articleBody": "왜 Magenta였는가 AI가 예술을 만들 수 있는가?\nGoogle Brain 팀이 2016년 이 질문을 들고 나왔습니다. 그게 Magenta입니다.\n접근 방식은 이랬습니다.\n스칼라 함수 기반 + RNN (순환 신경망) + 딥러닝 + 머신러닝 조합 → 학습 출력을 예술(음악/그림)로 단순히 “AI가 소리를 낸다\"가 아니라, 학습한 패턴의 출력이 음악적 구조를 갖추는 것을 목표로 했습니다.\n처음 이걸 알았을 때, 직접 해보고 싶었습니다.\n첫 번째 벽 — NVIDIA 필수 설치를 시작했습니다. 그런데 바로 막혔습니다.\nCUDA → NVIDIA GPU 필수 NVIDIA가 없으면 사실상 진행이 안 됐습니다. 당시엔 NVIDIA 없이 로컬 AI를 돌리는 방법이 거의 공유되지 않던 시절이었습니다.\n두 번째 시도 — Jetson Nano 엣지 디바이스로 우회해보려 했습니다. NVIDIA Jetson Nano.\n그런데 여기서도 막혔습니다.\nTensorFlow → Jetson Nano 환경에서 설치/동작 불가 Magenta는 TensorFlow에 깊이 의존합니다. Jetson Nano의 ARM 환경 + 당시 TF 버전 조합이 맞지 않았습니다.\n결국 포기했습니다.\n2년 후 — 돌파구 시간이 지나 HuggingFace를 뒤지다가 발견했습니다.\nSkyTNT/midi-model\nMagenta의 RNN 방식이 아닌 Transformer 기반 MIDI 생성 모델입니다. 핵심은 두 가지였습니다.\n① Seed 방식 생성\n이미 학습된 모델을 HuggingFace에서 다운로드 Python 함수 형태로 출력만 하는 구조 GPU 없이 CPU로 동작 가능한 가벼운 모델 ② ABC 악보 형식 → MIDI 출력\nABC notation (텍스트 기반 악보 표기법)으로 출력 MIDI 파일로 저장 웹페이지에서 바로 재생 가능 HuggingFace 모델 로드 → seed 입력 → ABC 출력 → MIDI 변환 → 웹 재생 GPU 없이, 로컬에서, 실제로 돌아갔습니다.\nMagenta가 “왜 AI 음악인가\"를 알게 해줬다면,\nmidi_composer는 “GPU 없이도 된다\"는 걸 알게 해줬습니다.\n⚠️ ONNX 방식으로 Intel 가속을 지원하지만,\nCUDA 요구 조건이 걸리는 경우가 있어 환경에 따라 다릅니다.\nXPU(Intel Arc + IPEX) 조합으로 우회하는 방법이 현실적입니다.\n더 깊이 — LoRA 튜닝 기본 모델에서 한 단계 더 나아갔습니다.\nJupyter Notebook + Google Colab A100 → 내 데이터로 LoRA 파인튜닝 → 로컬에서 튜닝된 모델 연결 내가 원하는 스타일로 튜닝한 모델을 로컬에서 직접 쓸 수 있게 됐습니다.\n환경 레시피 (검증 완료) # Python 3.9 권장 (3.11+ 에서 오류 가능) conda create -n magenta python=3.9 -y conda activate magenta # Magenta 설치 pip install magenta # 확인 python -c \"import magenta; print(magenta.__version__)\" 패키지 조합:\n패키지 역할 필수 magenta 핵심 라이브러리 ✅ tensorflow 자동 설치 (magenta 의존) ✅ note-seq MIDI 처리 ✅ pretty-midi MIDI 분석/편집 선택 pyfluidsynth MIDI → 오디오 변환 선택 ⚠️ conda 권장 이유\nTensorFlow 의존성이 복잡합니다.\npip + venv만으론 충돌 가능성이 높습니다.\n이 경험이 준 것 Magenta → midi_composer를 거치며 알게 된 것들:\nGPU 없이도 가능한 구조가 있다 → CPU용 경량 모델, Transformer 기반 HuggingFace가 탐색 공간이다 → 검색하면 나온다, 단 찾는 법을 알아야 한다 ABC → MIDI → 오디오 변환 파이프라인 → 나중에 AudioCraft, MusicGen으로 이어짐 그리고 Intel 환경의 가능성을 발견하기 시작했습니다.\n처음: NVIDIA 없으면 불가 ↓ Intel IPEX 발견 → Intel GPU(Arc)에서 가속 가능 ↓ OpenVINO + NPU 지원 → AI Boost NPU 활용 ↓ XPU 통합 → CPU + iGPU + NPU 전부 활용 ↓ 지금: Intel Core Ultra 125H 환경에서 로컬 소설 생성 모델 극한 구현 중 이 여정이 지금 이 블로그의 출발점입니다. “방법이 없어서 직접 찾았다” — 그 경험을 기록합니다.\n검증 정보 항목 내용 검증 환경 Windows · conda · Python 3.9 GPU CPU only 동작 확인 검증일 2026-05-27 상태 ✅ 동작 확인 다음 글: AudioCraft / MusicGen — Magenta 이후의 음악 AI\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "531",
+  "inLanguage": "en",
+  "datePublished": "2026-05-27T00:00:00+09:00",
+  "dateModified": "2026-05-27T00:00:00+09:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/projects/magenta-music-conda/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/posts/" title="글">
+                    <span>글</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      [음악 AI] Magenta — 처음 만난 AI 작곡, 그리고 벽
+    </h1>
+    <div class="post-description">
+      Google Magenta로 시작한 AI 작곡 여정 · 실패와 돌파구 · 검증된 로컬 환경 레시피
+    </div>
+    <div class="post-meta">
+
+<span title='2026-05-27 00:00:00 +0900 KST'>2026년 5월 27일</span>&nbsp;·&nbsp;<span>3 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="왜-magenta였는가">왜 Magenta였는가<a hidden class="anchor" aria-hidden="true" href="#왜-magenta였는가">#</a></h2>
+<p>AI가 예술을 만들 수 있는가?</p>
+<p>Google Brain 팀이 2016년 이 질문을 들고 나왔습니다.
+그게 <strong>Magenta</strong>입니다.</p>
+<p>접근 방식은 이랬습니다.</p>
+<pre tabindex="0"><code>스칼라 함수 기반
++ RNN (순환 신경망)
++ 딥러닝 + 머신러닝 조합
+→ 학습 출력을 예술(음악/그림)로
+</code></pre><p>단순히 &ldquo;AI가 소리를 낸다&quot;가 아니라,
+학습한 패턴의 출력이 음악적 구조를 갖추는 것을
+목표로 했습니다.</p>
+<p>처음 이걸 알았을 때, 직접 해보고 싶었습니다.</p>
+<hr>
+<h2 id="첫-번째-벽--nvidia-필수">첫 번째 벽 — NVIDIA 필수<a hidden class="anchor" aria-hidden="true" href="#첫-번째-벽--nvidia-필수">#</a></h2>
+<p>설치를 시작했습니다.
+그런데 바로 막혔습니다.</p>
+<pre tabindex="0"><code>CUDA → NVIDIA GPU 필수
+</code></pre><p>NVIDIA가 없으면 사실상 진행이 안 됐습니다.
+당시엔 NVIDIA 없이 로컬 AI를 돌리는 방법이
+거의 공유되지 않던 시절이었습니다.</p>
+<hr>
+<h2 id="두-번째-시도--jetson-nano">두 번째 시도 — Jetson Nano<a hidden class="anchor" aria-hidden="true" href="#두-번째-시도--jetson-nano">#</a></h2>
+<p>엣지 디바이스로 우회해보려 했습니다.
+NVIDIA Jetson Nano.</p>
+<p>그런데 여기서도 막혔습니다.</p>
+<pre tabindex="0"><code>TensorFlow → Jetson Nano 환경에서 설치/동작 불가
+</code></pre><p>Magenta는 TensorFlow에 깊이 의존합니다.
+Jetson Nano의 ARM 환경 + 당시 TF 버전 조합이
+맞지 않았습니다.</p>
+<p>결국 포기했습니다.</p>
+<hr>
+<h2 id="2년-후--돌파구">2년 후 — 돌파구<a hidden class="anchor" aria-hidden="true" href="#2년-후--돌파구">#</a></h2>
+<p>시간이 지나 HuggingFace를 뒤지다가 발견했습니다.</p>
+<p><strong><a href="https://github.com/SkyTNT/midi-model">SkyTNT/midi-model</a></strong></p>
+<p>Magenta의 RNN 방식이 아닌 <strong>Transformer 기반</strong> MIDI 생성 모델입니다.
+핵심은 두 가지였습니다.</p>
+<p><strong>① Seed 방식 생성</strong></p>
+<ul>
+<li>이미 학습된 모델을 HuggingFace에서 다운로드</li>
+<li>Python 함수 형태로 출력만 하는 구조</li>
+<li>GPU 없이 <strong>CPU로 동작</strong> 가능한 가벼운 모델</li>
+</ul>
+<p><strong>② ABC 악보 형식 → MIDI 출력</strong></p>
+<ul>
+<li>ABC notation (텍스트 기반 악보 표기법)으로 출력</li>
+<li>MIDI 파일로 저장</li>
+<li>웹페이지에서 바로 재생 가능</li>
+</ul>
+<pre tabindex="0"><code>HuggingFace 모델 로드 → seed 입력 → ABC 출력 → MIDI 변환 → 웹 재생
+</code></pre><p>GPU 없이, 로컬에서, 실제로 돌아갔습니다.</p>
+<blockquote>
+<p>Magenta가 &ldquo;왜 AI 음악인가&quot;를 알게 해줬다면,<br>
+midi_composer는 &ldquo;GPU 없이도 된다&quot;는 걸 알게 해줬습니다.</p>
+</blockquote>
+<blockquote>
+<p>⚠️ ONNX 방식으로 Intel 가속을 지원하지만,<br>
+CUDA 요구 조건이 걸리는 경우가 있어 환경에 따라 다릅니다.<br>
+XPU(Intel Arc + IPEX) 조합으로 우회하는 방법이 현실적입니다.</p>
+</blockquote>
+<hr>
+<h2 id="더-깊이--lora-튜닝">더 깊이 — LoRA 튜닝<a hidden class="anchor" aria-hidden="true" href="#더-깊이--lora-튜닝">#</a></h2>
+<p>기본 모델에서 한 단계 더 나아갔습니다.</p>
+<pre tabindex="0"><code>Jupyter Notebook
++ Google Colab A100
+→ 내 데이터로 LoRA 파인튜닝
+→ 로컬에서 튜닝된 모델 연결
+</code></pre><p>내가 원하는 스타일로 튜닝한 모델을
+로컬에서 직접 쓸 수 있게 됐습니다.</p>
+<hr>
+<h2 id="환경-레시피-검증-완료">환경 레시피 (검증 완료)<a hidden class="anchor" aria-hidden="true" href="#환경-레시피-검증-완료">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Python 3.9 권장 (3.11+ 에서 오류 가능)</span>
+</span></span><span style="display:flex;"><span>conda create -n magenta python<span style="color:#f92672">=</span>3.9 -y
+</span></span><span style="display:flex;"><span>conda activate magenta
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Magenta 설치</span>
+</span></span><span style="display:flex;"><span>pip install magenta
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 확인</span>
+</span></span><span style="display:flex;"><span>python -c <span style="color:#e6db74">&#34;import magenta; print(magenta.__version__)&#34;</span>
+</span></span></code></pre></div><p><strong>패키지 조합:</strong></p>
+<table>
+	<thead>
+			<tr>
+					<th>패키지</th>
+					<th>역할</th>
+					<th>필수</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>magenta</td>
+					<td>핵심 라이브러리</td>
+					<td>✅</td>
+			</tr>
+			<tr>
+					<td>tensorflow</td>
+					<td>자동 설치 (magenta 의존)</td>
+					<td>✅</td>
+			</tr>
+			<tr>
+					<td>note-seq</td>
+					<td>MIDI 처리</td>
+					<td>✅</td>
+			</tr>
+			<tr>
+					<td>pretty-midi</td>
+					<td>MIDI 분석/편집</td>
+					<td>선택</td>
+			</tr>
+			<tr>
+					<td>pyfluidsynth</td>
+					<td>MIDI → 오디오 변환</td>
+					<td>선택</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>⚠️ <strong>conda 권장 이유</strong><br>
+TensorFlow 의존성이 복잡합니다.<br>
+pip + venv만으론 충돌 가능성이 높습니다.</p>
+</blockquote>
+<hr>
+<h2 id="이-경험이-준-것">이 경험이 준 것<a hidden class="anchor" aria-hidden="true" href="#이-경험이-준-것">#</a></h2>
+<p>Magenta → midi_composer를 거치며 알게 된 것들:</p>
+<pre tabindex="0"><code>GPU 없이도 가능한 구조가 있다
+→ CPU용 경량 모델, Transformer 기반
+
+HuggingFace가 탐색 공간이다
+→ 검색하면 나온다, 단 찾는 법을 알아야 한다
+
+ABC → MIDI → 오디오 변환 파이프라인
+→ 나중에 AudioCraft, MusicGen으로 이어짐
+</code></pre><p>그리고 Intel 환경의 가능성을 발견하기 시작했습니다.</p>
+<pre tabindex="0"><code>처음: NVIDIA 없으면 불가
+↓
+Intel IPEX 발견 → Intel GPU(Arc)에서 가속 가능
+↓
+OpenVINO + NPU 지원 → AI Boost NPU 활용
+↓
+XPU 통합 → CPU + iGPU + NPU 전부 활용
+↓
+지금: Intel Core Ultra 125H 환경에서
+      로컬 소설 생성 모델 극한 구현 중
+</code></pre><p>이 여정이 지금 이 블로그의 출발점입니다.
+&ldquo;방법이 없어서 직접 찾았다&rdquo; — 그 경험을 기록합니다.</p>
+<hr>
+<h2 id="검증-정보">검증 정보<a hidden class="anchor" aria-hidden="true" href="#검증-정보">#</a></h2>
+<table>
+	<thead>
+			<tr>
+					<th>항목</th>
+					<th>내용</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>검증 환경</td>
+					<td>Windows · conda · Python 3.9</td>
+			</tr>
+			<tr>
+					<td>GPU</td>
+					<td>CPU only 동작 확인</td>
+			</tr>
+			<tr>
+					<td>검증일</td>
+					<td>2026-05-27</td>
+			</tr>
+			<tr>
+					<td>상태</td>
+					<td>✅ 동작 확인</td>
+			</tr>
+	</tbody>
+</table>
+<hr>
+<p><em>다음 글: AudioCraft / MusicGen — Magenta 이후의 음악 AI</em></p>
+<hr>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/magenta/">Magenta</a></li>
+      <li><a href="https://Han-think.github.io/tags/conda/">Conda</a></li>
+      <li><a href="https://Han-think.github.io/tags/midi/">Midi</a></li>
+      <li><a href="https://Han-think.github.io/tags/music-ai/">Music-Ai</a></li>
+      <li><a href="https://Han-think.github.io/tags/google/">Google</a></li>
+      <li><a href="https://Han-think.github.io/tags/recipe/">Recipe</a></li>
+      <li><a href="https://Han-think.github.io/tags/rnn/">Rnn</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

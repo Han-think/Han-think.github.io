@@ -9,6 +9,13 @@
     <lastBuildDate>Tue, 09 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/learning/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>consulting-report-prompting</title>
+      <link>https://Han-think.github.io/learning/consulting-report-prompting/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/consulting-report-prompting/</guid>
+      <description>consulting-report-prompting 학습 정리</description>
+    </item>
+    <item>
       <title>erd-crows-foot-chinook</title>
       <link>https://Han-think.github.io/learning/erd-crows-foot-chinook/</link>
       <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
@@ -23,6 +30,34 @@
       <description>minto-scqa-mece 학습 정리</description>
     </item>
     <item>
+      <title>pm-01-select-query-practice</title>
+      <link>https://Han-think.github.io/learning/pm-01-select-query-practice/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/pm-01-select-query-practice/</guid>
+      <description>pm-01-select-query-practice 학습 정리</description>
+    </item>
+    <item>
+      <title>pm-02-select-mistakes-and-fixes</title>
+      <link>https://Han-think.github.io/learning/pm-02-select-mistakes-and-fixes/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/pm-02-select-mistakes-and-fixes/</guid>
+      <description>pm-02-select-mistakes-and-fixes 학습 정리</description>
+    </item>
+    <item>
+      <title>pm-03-dml-insert-update-delete</title>
+      <link>https://Han-think.github.io/learning/pm-03-dml-insert-update-delete/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/pm-03-dml-insert-update-delete/</guid>
+      <description>pm-03-dml-insert-update-delete 학습 정리</description>
+    </item>
+    <item>
+      <title>pm-04-book-table-review-queries</title>
+      <link>https://Han-think.github.io/learning/pm-04-book-table-review-queries/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/pm-04-book-table-review-queries/</guid>
+      <description>pm-04-book-table-review-queries 학습 정리</description>
+    </item>
+    <item>
       <title>pm-05-erd-reading-training</title>
       <link>https://Han-think.github.io/learning/pm-05-erd-reading-training/</link>
       <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
@@ -35,6 +70,34 @@
       <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/learning/rlhf-good-bad-response/</guid>
       <description>rlhf-good-bad-response 학습 정리</description>
+    </item>
+    <item>
+      <title>sqlite-learning-resources-and-notion-export</title>
+      <link>https://Han-think.github.io/learning/sqlite-learning-resources-and-notion-export/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/sqlite-learning-resources-and-notion-export/</guid>
+      <description>sqlite-learning-resources-and-notion-export 학습 정리</description>
+    </item>
+    <item>
+      <title>sqlite-sqltools-nextweek</title>
+      <link>https://Han-think.github.io/learning/sqlite-sqltools-nextweek/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/sqlite-sqltools-nextweek/</guid>
+      <description>sqlite-sqltools-nextweek 학습 정리</description>
+    </item>
+    <item>
+      <title>sqltools-selected-query-execution</title>
+      <link>https://Han-think.github.io/learning/sqltools-selected-query-execution/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/sqltools-selected-query-execution/</guid>
+      <description>sqltools-selected-query-execution 학습 정리</description>
+    </item>
+    <item>
+      <title>chinook-classicmodels-sample-db</title>
+      <link>https://Han-think.github.io/learning/chinook-classicmodels-sample-db/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/chinook-classicmodels-sample-db/</guid>
+      <description>chinook-classicmodels-sample-db 학습 정리</description>
     </item>
     <item>
       <title>data-cleaning-dict-comprehension-sorted-lambda</title>
@@ -72,6 +135,20 @@
       <description>function-structure-and-testable-code 학습 정리</description>
     </item>
     <item>
+      <title>git-bash-pypi-failure-recovery</title>
+      <link>https://Han-think.github.io/learning/git-bash-pypi-failure-recovery/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/git-bash-pypi-failure-recovery/</guid>
+      <description>git-bash-pypi-failure-recovery 학습 정리</description>
+    </item>
+    <item>
+      <title>github-clone-commit-push</title>
+      <link>https://Han-think.github.io/learning/github-clone-commit-push/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/github-clone-commit-push/</guid>
+      <description>github-clone-commit-push 학습 정리</description>
+    </item>
+    <item>
       <title>import-alias-namespace-api-reference</title>
       <link>https://Han-think.github.io/learning/import-alias-namespace-api-reference/</link>
       <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
@@ -98,6 +175,13 @@
       <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/learning/pandas-read-csv-parameter-design/</guid>
       <description>pandas-read-csv-parameter-design 학습 정리</description>
+    </item>
+    <item>
+      <title>python-animated-method-experiment</title>
+      <link>https://Han-think.github.io/learning/python-animated-method-experiment/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-animated-method-experiment/</guid>
+      <description>python-animated-method-experiment 학습 정리</description>
     </item>
     <item>
       <title>python-basic-types-print-variables</title>
@@ -147,6 +231,13 @@
       <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/learning/python-operations-input-indexing-slicing/</guid>
       <description>python-operations-input-indexing-slicing 학습 정리</description>
+    </item>
+    <item>
+      <title>python-while-menu-design</title>
+      <link>https://Han-think.github.io/learning/python-while-menu-design/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-while-menu-design/</guid>
+      <description>python-while-menu-design 학습 정리</description>
     </item>
     <item>
       <title>SQLite 입문 오전: SQLTools 실행부터 ERD까지</title>
@@ -287,6 +378,16 @@
       <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/learning/while-break-fizzbuzz-control-flow/</guid>
       <description>while-break-fizzbuzz-control-flow 학습 정리</description>
+    </item>
+    <item>
+      <title>첫번째 글</title>
+      <link>https://Han-think.github.io/learning/%EC%B2%AB%EB%B2%88%EC%A7%B8-%EA%B8%80/</link>
+      <pubDate>Wed, 27 May 2026 09:02:57 +0900</pubDate>
+      <guid>https://Han-think.github.io/learning/%EC%B2%AB%EB%B2%88%EC%A7%B8-%EA%B8%80/</guid>
+      <description>&lt;h2 id=&#34;안녕하세요&#34;&gt;안녕하세요!&lt;/h2&gt;
+&lt;p&gt;Hugo와 GitHub Pages로 블로그를 시작했습니다.&lt;/p&gt;
+&lt;p&gt;이 블로그는 로컬 AI, 개발, 그리고 만들어가는 것들을 기록하는 공간입니다.&lt;/p&gt;
+&lt;p&gt;앞으로 잘 부탁드립니다 🙂&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

@@ -10,9 +10,9 @@
     <atom:link href="https://Han-think.github.io/tags/web-scraping/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>BookCrawler — 웹 크롤링부터 블로그 자동 발행까지</title>
-      <link>https://Han-think.github.io/posts/dataset/bookcrawler-pipeline/</link>
+      <link>https://Han-think.github.io/projects/bookcrawler-pipeline/</link>
       <pubDate>Wed, 27 May 2026 10:00:00 +0900</pubDate>
-      <guid>https://Han-think.github.io/posts/dataset/bookcrawler-pipeline/</guid>
+      <guid>https://Han-think.github.io/projects/bookcrawler-pipeline/</guid>
       <description>&lt;a href=&#34;https://Han-think.github.io/downloads/bookcrawler.zip&#34; class=&#34;dl-btn&#34; download&gt;
   ⬇ BookCrawler 소스 다운로드 (ZIP · 전체 파이프라인)
 &lt;/a&gt;
@@ -55,9 +55,9 @@
     </item>
     <item>
       <title>크롤링은 어떻게 페이지를 넘어가나 — 명령어와 구조로 읽는 웹 수집</title>
-      <link>https://Han-think.github.io/posts/dataset/how-crawling-works/</link>
+      <link>https://Han-think.github.io/projects/how-crawling-works/</link>
       <pubDate>Wed, 27 May 2026 09:00:00 +0900</pubDate>
-      <guid>https://Han-think.github.io/posts/dataset/how-crawling-works/</guid>
+      <guid>https://Han-think.github.io/projects/how-crawling-works/</guid>
       <description>겁나 살벌해 보이는 웹 크롤링. 사실 URL 규칙 하나 잡으면 끝입니다. 페이지네이션 구조부터 데이터 저장까지, 코드가 실제로 뭘 하는지 단계별로 읽어봅니다.</description>
     </item>
   </channel>

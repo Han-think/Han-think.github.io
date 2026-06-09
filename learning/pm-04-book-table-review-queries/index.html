@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>pm-04-book-table-review-queries | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="pm-04-book-table-review-queries 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/pm-04-book-table-review-queries/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/pm-04-book-table-review-queries/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/pm-04-book-table-review-queries/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="pm-04-book-table-review-queries">
+  <meta property="og:description" content="pm-04-book-table-review-queries 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-09T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-09T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="pm-04-book-table-review-queries">
+  <meta name="twitter:description" content="pm-04-book-table-review-queries 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "pm-04-book-table-review-queries",
+      "item": "https://Han-think.github.io/learning/pm-04-book-table-review-queries/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "pm-04-book-table-review-queries",
+  "name": "pm-04-book-table-review-queries",
+  "description": "pm-04-book-table-review-queries 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 데이터 변화 LIKE 연산자 WHERE 절 ORDER BY 총평 1. 데이터 변화 왜 이걸 보게 됐나 DELETE 명령어를 실행하고 나서 SELECT 결과가 달라지는 것을 보고, 데이터베이스의 상태가 쿼리 실행 결과에 직접적으로 영향을 미친다는 것을 깨달았습니다. 이전에는 데이터가 항상 존재한다고 생각하고 쿼리를 짰었는데, 데이터 변경이 결과에 영향을 주는 것을 알게 되면서 데이터베이스의 상태를 고려하는 쿼리 작성의 중요성을 인지하게 되었습니다.\n내가 헷갈린 지점 DELETE 명령을 실행했는데, 그 뒤에 바로 SELECT 쿼리를 돌려보니 데이터가 사라져서 당황스러웠어요. 마치 데이터베이스의 내용이 갑자기 변하는 마법처럼 느껴졌었죠. 데이터의 일관성을 당연하게 생각해서, 쿼리 실행 순서에 따른 결과 변화를 예상하지 못했습니다.\n시도한 코드 / 예시 -- DELETE 명령을 실행한 후 SELECT 쿼리를 실행했을 때 결과가 달라지는 예시 DELETE FROM book WHERE id = 1; SELECT * FROM book; 결과와 해석 DELETE 명령을 실행하여 book 테이블에서 특정 레코드를 삭제한 후 SELECT 쿼리를 실행했을 때, 삭제된 레코드가 결과에 나타나지 않는 것을 확인했습니다. 이는 데이터베이스의 내용은 실시간으로 반영된다는 점을 보여주며, 쿼리 실행 시점의 데이터 상태에 따라 결과가 달라질 수 있다는 것을 알게 되었습니다. 따라서 데이터 변화를 고려하여 쿼리를 다시 실행해야 정확한 결과를 얻을 수 있습니다.\n정리된 이해 데이터베이스의 내용은 변경될 수 있으며, DELETE 명령을 실행하면 데이터가 실제로 삭제됩니다. 따라서 SELECT 쿼리를 다시 실행하면 삭제된 데이터는 결과에 포함되지 않아 이전과는 다른 결과를 보여줄 수 있습니다. 데이터 변경은 쿼리 결과에 직접적인 영향을 미치므로 항상 유념해야 합니다.\n2. LIKE 연산자 왜 이걸 보게 됐나 제목에 특정 단어가 들어간 책을 검색하는 쿼리를 작성하려고 할 때, 예상했던 결과가 나오지 않아서 원인이 무엇인지 파악하려고 했습니다. 특히 제목에 ‘the’라는 단어가 포함된 책을 찾으려고 했는데, 대소문자 구분을 어떻게 해야 하는지 몰라서 검색이 제대로 되지 않았습니다. 그래서 LIKE 연산자의 활용법과 SQLite의 대소문자 구분 방식을 배우게 되었습니다.\n내가 헷갈린 지점 처음에 LIKE 연산자를 사용할 때, 데이터베이스마다 대소문자 구분이 어떻게 달라지는지 몰라서 조건을 정확하게 설정하는 데 어려움을 겪었습니다. 예상과 달리 검색 결과가 나오지 않아서, WHERE절 전체를 다시 확인하는 번거로움이 있었습니다. 또한, 와일드카드 문자(%)의 위치에 따라 검색 결과가 달라지는 점도 처음에는 직관적으로 이해하지 못했습니다.\n시도한 코드 / 예시 SELECT * FROM book WHERE title LIKE '%the%'; 결과와 해석 LIKE 연산자를 사용하여 제목에 ’the’가 포함된 책을 검색해봤는데, SQLite는 대소문자를 구분하지 않아서 ‘The’나 ’the’ 모두 검색할 수 있었습니다. 쿼리 SELECT * FROM book WHERE title LIKE '%the%'를 실행했을 때, 제목에 ’the’가 들어간 책들이 결과로 나왔고, 이는 LIKE 연산자가 패턴 매칭을 통해 데이터를 찾는데 유용하다는 것을 보여줍니다. 이렇게 패턴 검색을 통해 원하는 데이터를 효율적으로 찾을 수 있다는 점이 인상 깊었습니다.\n정리된 이해 SQLite에서 LIKE 연산자를 사용하면 특정 패턴을 포함하는 데이터를 찾을 수 있는데, 중요한 점은 SQLite가 대소문자를 구분하지 않기 때문에 % 기호를 활용하여 원하는 패턴을 검색할 수 있습니다. 예를 들어, 제목에 “the\"가 포함된 책을 찾을 때는 '%' || 'the' || '%'와 같이 문자열 결합을 사용할 필요 없이 바로 '%the%'로 쿼리를 작성할 수 있습니다. 이를 통해 문자열 검색 조건을 유연하게 설정할 수 있습니다.\n3. WHERE 절 왜 이걸 보게 됐나 데이터를 추출하는 쿼리를 작성하다 보면, 전체 데이터가 아닌 특정 조건에 맞는 데이터만 보고 싶을 때가 많았어요. 그래서 ‘WHERE 절’을 배우게 됐는데, 원하는 조건만 걸러서 필요한 정보만 보여주는 방법을 익히게 되니 데이터 분석의 기본이 되는 중요한 개념이라는 걸 알게 됐습니다. 예를 들어, 특정 가격 이상의 책만 보여주거나, 제목에 특정 단어가 포함된 책만 검색할 수 있게 됐죠.\n내가 헷갈린 지점 처음에 WHERE 절을 사용할 때 어떤 조건을 정확히 어떻게 표현해야 하는지 막연하게 느껴졌어요. 단순한 숫자 비교는 이해했지만, 문자열 패턴 매칭이나 여러 조건을 조합하는 방식은 어떻게 해야 하는지 감이 잘 안 잡혔습니다. 특히, AND와 OR을 어떻게 활용해야 하는지에 대한 이해가 부족해서, 원하는 결과를 얻기 어려웠어요.\n시도한 코드 / 예시 SELECT * FROM book WHERE price \u003e= 40; 결과와 해석 WHERE 절은 특정 조건을 만족하는 데이터만 선택하는 데 사용돼요. 예를 들어, WHERE price \u003e 100 조건을 사용하면 가격이 100보다 큰 책만 결과로 보여줘서, 원하는 조건에 맞는 데이터만 빠르게 찾을 수 있었어요. 이 기능을 활용하여 특정 가격대 또는 특정 키워드를 포함하는 책을 필터링하는 연습을 했답니다.\n정리된 이해 WHERE 절은 테이블에서 특정 조건을 만족하는 데이터만 선택할 수 있도록 해주는 핵심적인 기능입니다. 조건을 명확히 설정해야 원하는 데이터만 얻을 수 있으며, 조건에는 다양한 비교 연산자와 패턴 매칭을 활용할 수 있습니다. 이를 통해 데이터의 일부분만 조회하여 분석하거나 필요한 정보만 추출할 수 있습니다.\n4. ORDER BY 왜 이걸 보게 됐나 책 정보 테이블에서 데이터를 나열할 때, 원하는 순서대로 보여줘야 했기 때문에 ORDER BY를 배우게 됐어. 예를 들어, 가격이 높은 책부터 낮은 책 순으로 보여주거나, 출판일이 최근 순으로 정렬해서 보여주는 등 다양한 방식으로 정렬할 필요가 있었거든. 정렬 기능을 사용하면 데이터를 훨씬 효율적으로 분석하고 활용할 수 있다는 것을 깨달았어.\n내가 헷갈린 지점 처음에 ORDER BY를 사용할 때 어떤 컬럼을 기준으로 정렬할지 정확히 이해하지 못해서, 결과가 예상과 다르게 나오곤 했습니다. 특히 ASC와 DESC의 의미를 명확히 몰라서 오름차순, 내림차순 정렬을 제대로 활용하지 못했습니다. 다른 컬럼을 기준으로 정렬하는 방법도 처음에는 어떻게 적용해야 할지 막막했습니다.\n시도한 코드 / 예시 SELECT * FROM book ORDER BY price DESC; 결과와 해석 ORDER BY price DESC를 사용했을 때, 책 테이블의 모든 책 정보가 가격을 기준으로 내림차순으로 정렬되어 나타났습니다. 즉, 가격이 가장 높은 책부터 낮은 책 순으로 결과가 표시되었고, 이 명령어를 통해 특정 기준에 따라 데이터를 정렬하는 방법을 익힐 수 있었습니다. 이를 통해 원하는 정보의 순서대로 데이터를 확인하고 분석하는 것이 가능하다는 것을 알게 되었습니다.\n정리된 이해 ORDER BY절은 SELECT 결과의 순서를 정렬하는 데 사용되며, ASC는 오름차순, DESC는 내림차순으로 정렬할 수 있습니다. 예를 들어 가격을 기준으로 책 목록을 높은 가격부터 낮은 가격 순서로 보여주고 싶다면 ORDER BY price DESC를 사용합니다. 이를 통해 원하는 기준으로 데이터를 정렬하여 분석하거나 사용자에게 보여줄 수 있습니다.\n총평 오늘 전체에서 배운 것 DELETE 명령을 사용한 후 SELECT 쿼리의 결과가 달라지는 점을 이해하게 되었고, SQLite의 LIKE 연산자가 대소문자를 구분하지 않는다는 사실을 알게 되어 검색 조건을 더 효과적으로 설정할 수 있게 되었습니다. 또한 WHERE절과 ORDER BY절을 활용하여 데이터를 필터링하고 정렬하는 방법을 다시 한번 복습했습니다.\n다음에 조심할 것 DELETE 문 실행 후 SELECT 쿼리 결과가 달라지는 것을 항상 기억하고, 데이터가 변경될 때마다 다시 확인해야겠다. LIKE 연산자를 사용할 때는 대소문자 구분을 고려하지 않는다는 점을 명심하고, 검색 조건을 설정할 때 주의해야겠다.\n다음 복습 주제 LIKE 연산자의 대소문자 구분 규칙을 좀 더 확실하게 이해하고, 다양한 WHERE 절 조건을 조합하는 연습을 해야겠다. 또한, ORDER BY 절을 활용하여 복합적인 정렬 조건을 만들어보는 것도 필요할 것 같다.\n",
+  "wordCount" : "974",
+  "inLanguage": "en",
+  "datePublished": "2026-06-09T00:00:00Z",
+  "dateModified": "2026-06-09T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/pm-04-book-table-review-queries/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/posts/" title="글">
+                    <span>글</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      pm-04-book-table-review-queries
+    </h1>
+    <div class="post-description">
+      pm-04-book-table-review-queries 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B3%80%ED%99%94">데이터 변화</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-like-%EC%97%B0%EC%82%B0%EC%9E%90">LIKE 연산자</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-where-%EC%A0%88">WHERE 절</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-order-by">ORDER BY</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-데이터-변화">1. 데이터 변화<a hidden class="anchor" aria-hidden="true" href="#1-데이터-변화">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p><code>DELETE</code> 명령어를 실행하고 나서 <code>SELECT</code> 결과가 달라지는 것을 보고, 데이터베이스의 상태가 쿼리 실행 결과에 직접적으로 영향을 미친다는 것을 깨달았습니다. 이전에는 데이터가 항상 존재한다고 생각하고 쿼리를 짰었는데, 데이터 변경이 결과에 영향을 주는 것을 알게 되면서 데이터베이스의 상태를 고려하는 쿼리 작성의 중요성을 인지하게 되었습니다.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p><code>DELETE</code> 명령을 실행했는데, 그 뒤에 바로 <code>SELECT</code> 쿼리를 돌려보니 데이터가 사라져서 당황스러웠어요. 마치 데이터베이스의 내용이 갑자기 변하는 마법처럼 느껴졌었죠. 데이터의 일관성을 당연하게 생각해서, 쿼리 실행 순서에 따른 결과 변화를 예상하지 못했습니다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- DELETE 명령을 실행한 후 SELECT 쿼리를 실행했을 때 결과가 달라지는 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">DELETE</span> <span style="color:#66d9ef">FROM</span> book <span style="color:#66d9ef">WHERE</span> id <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> book;
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p><code>DELETE</code> 명령을 실행하여 <code>book</code> 테이블에서 특정 레코드를 삭제한 후 <code>SELECT</code> 쿼리를 실행했을 때, 삭제된 레코드가 결과에 나타나지 않는 것을 확인했습니다. 이는 데이터베이스의 내용은 실시간으로 반영된다는 점을 보여주며, 쿼리 실행 시점의 데이터 상태에 따라 결과가 달라질 수 있다는 것을 알게 되었습니다. 따라서 데이터 변화를 고려하여 쿼리를 다시 실행해야 정확한 결과를 얻을 수 있습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>데이터베이스의 내용은 변경될 수 있으며, <code>DELETE</code> 명령을 실행하면 데이터가 실제로 삭제됩니다. 따라서 <code>SELECT</code> 쿼리를 다시 실행하면 삭제된 데이터는 결과에 포함되지 않아 이전과는 다른 결과를 보여줄 수 있습니다. 데이터 변경은 쿼리 결과에 직접적인 영향을 미치므로 항상 유념해야 합니다.</p>
+<h2 id="2-like-연산자">2. LIKE 연산자<a hidden class="anchor" aria-hidden="true" href="#2-like-연산자">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>제목에 특정 단어가 들어간 책을 검색하는 쿼리를 작성하려고 할 때, 예상했던 결과가 나오지 않아서 원인이 무엇인지 파악하려고 했습니다. 특히 제목에 ‘the’라는 단어가 포함된 책을 찾으려고 했는데, 대소문자 구분을 어떻게 해야 하는지 몰라서 검색이 제대로 되지 않았습니다. 그래서 <code>LIKE</code> 연산자의 활용법과 SQLite의 대소문자 구분 방식을 배우게 되었습니다.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>처음에 LIKE 연산자를 사용할 때, 데이터베이스마다 대소문자 구분이 어떻게 달라지는지 몰라서 조건을 정확하게 설정하는 데 어려움을 겪었습니다. 예상과 달리 검색 결과가 나오지 않아서, WHERE절 전체를 다시 확인하는 번거로움이 있었습니다. 또한, 와일드카드 문자(%)의 위치에 따라 검색 결과가 달라지는 점도 처음에는 직관적으로 이해하지 못했습니다.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> book <span style="color:#66d9ef">WHERE</span> title <span style="color:#66d9ef">LIKE</span> <span style="color:#e6db74">&#39;%the%&#39;</span>;
+</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p><code>LIKE</code> 연산자를 사용하여 제목에 &rsquo;the&rsquo;가 포함된 책을 검색해봤는데, SQLite는 대소문자를 구분하지 않아서 &lsquo;The&rsquo;나 &rsquo;the&rsquo; 모두 검색할 수 있었습니다.  쿼리 <code>SELECT * FROM book WHERE title LIKE '%the%'</code>를 실행했을 때, 제목에 &rsquo;the&rsquo;가 들어간 책들이 결과로 나왔고, 이는 <code>LIKE</code> 연산자가 패턴 매칭을 통해 데이터를 찾는데 유용하다는 것을 보여줍니다.  이렇게 패턴 검색을 통해 원하는 데이터를 효율적으로 찾을 수 있다는 점이 인상 깊었습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>SQLite에서 <code>LIKE</code> 연산자를 사용하면 특정 패턴을 포함하는 데이터를 찾을 수 있는데, 중요한 점은 SQLite가 대소문자를 구분하지 않기 때문에 <code>%</code> 기호를 활용하여 원하는 패턴을 검색할 수 있습니다. 예를 들어, 제목에 &ldquo;the&quot;가 포함된 책을 찾을 때는 <code>'%' || 'the' || '%'</code>와 같이 문자열 결합을 사용할 필요 없이 바로 <code>'%the%'</code>로 쿼리를 작성할 수 있습니다. 이를 통해 문자열 검색 조건을 유연하게 설정할 수 있습니다.</p>
+<h2 id="3-where-절">3. WHERE 절<a hidden class="anchor" aria-hidden="true" href="#3-where-절">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>데이터를 추출하는 쿼리를 작성하다 보면, 전체 데이터가 아닌 특정 조건에 맞는 데이터만 보고 싶을 때가 많았어요. 그래서 ‘WHERE 절’을 배우게 됐는데, 원하는 조건만 걸러서 필요한 정보만 보여주는 방법을 익히게 되니 데이터 분석의 기본이 되는 중요한 개념이라는 걸 알게 됐습니다. 예를 들어, 특정 가격 이상의 책만 보여주거나, 제목에 특정 단어가 포함된 책만 검색할 수 있게 됐죠.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>처음에 WHERE 절을 사용할 때 어떤 조건을 정확히 어떻게 표현해야 하는지 막연하게 느껴졌어요. 단순한 숫자 비교는 이해했지만, 문자열 패턴 매칭이나 여러 조건을 조합하는 방식은 어떻게 해야 하는지 감이 잘 안 잡혔습니다. 특히, AND와 OR을 어떻게 활용해야 하는지에 대한 이해가 부족해서, 원하는 결과를 얻기 어려웠어요.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> book <span style="color:#66d9ef">WHERE</span> price <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">40</span>;
+</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p><code>WHERE</code> 절은 특정 조건을 만족하는 데이터만 선택하는 데 사용돼요. 예를 들어, <code>WHERE price &gt; 100</code> 조건을 사용하면 가격이 100보다 큰 책만 결과로 보여줘서, 원하는 조건에 맞는 데이터만 빠르게 찾을 수 있었어요. 이 기능을 활용하여 특정 가격대 또는 특정 키워드를 포함하는 책을 필터링하는 연습을 했답니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>WHERE 절은 테이블에서 특정 조건을 만족하는 데이터만 선택할 수 있도록 해주는 핵심적인 기능입니다. 조건을 명확히 설정해야 원하는 데이터만 얻을 수 있으며, 조건에는 다양한 비교 연산자와 패턴 매칭을 활용할 수 있습니다. 이를 통해 데이터의 일부분만 조회하여 분석하거나 필요한 정보만 추출할 수 있습니다.</p>
+<h2 id="4-order-by">4. ORDER BY<a hidden class="anchor" aria-hidden="true" href="#4-order-by">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>책 정보 테이블에서 데이터를 나열할 때, 원하는 순서대로 보여줘야 했기 때문에 <code>ORDER BY</code>를 배우게 됐어. 예를 들어, 가격이 높은 책부터 낮은 책 순으로 보여주거나, 출판일이 최근 순으로 정렬해서 보여주는 등 다양한 방식으로 정렬할 필요가 있었거든. 정렬 기능을 사용하면 데이터를 훨씬 효율적으로 분석하고 활용할 수 있다는 것을 깨달았어.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>처음에 <code>ORDER BY</code>를 사용할 때 어떤 컬럼을 기준으로 정렬할지 정확히 이해하지 못해서, 결과가 예상과 다르게 나오곤 했습니다. 특히 <code>ASC</code>와 <code>DESC</code>의 의미를 명확히 몰라서 오름차순, 내림차순 정렬을 제대로 활용하지 못했습니다. 다른 컬럼을 기준으로 정렬하는 방법도 처음에는 어떻게 적용해야 할지 막막했습니다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> book <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> price <span style="color:#66d9ef">DESC</span>;
+</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<p><code>ORDER BY price DESC</code>를 사용했을 때, 책 테이블의 모든 책 정보가 가격을 기준으로 내림차순으로 정렬되어 나타났습니다. 즉, 가격이 가장 높은 책부터 낮은 책 순으로 결과가 표시되었고, 이 명령어를 통해 특정 기준에 따라 데이터를 정렬하는 방법을 익힐 수 있었습니다. 이를 통해 원하는 정보의 순서대로 데이터를 확인하고 분석하는 것이 가능하다는 것을 알게 되었습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p><code>ORDER BY</code>절은 <code>SELECT</code> 결과의 순서를 정렬하는 데 사용되며, <code>ASC</code>는 오름차순, <code>DESC</code>는 내림차순으로 정렬할 수 있습니다. 예를 들어 가격을 기준으로 책 목록을 높은 가격부터 낮은 가격 순서로 보여주고 싶다면 <code>ORDER BY price DESC</code>를 사용합니다. 이를 통해 원하는 기준으로 데이터를 정렬하여 분석하거나 사용자에게 보여줄 수 있습니다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p><code>DELETE</code> 명령을 사용한 후 <code>SELECT</code> 쿼리의 결과가 달라지는 점을 이해하게 되었고, SQLite의 <code>LIKE</code> 연산자가 대소문자를 구분하지 않는다는 사실을 알게 되어 검색 조건을 더 효과적으로 설정할 수 있게 되었습니다. 또한 <code>WHERE</code>절과 <code>ORDER BY</code>절을 활용하여 데이터를 필터링하고 정렬하는 방법을 다시 한번 복습했습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>DELETE 문 실행 후 SELECT 쿼리 결과가 달라지는 것을 항상 기억하고, 데이터가 변경될 때마다 다시 확인해야겠다. LIKE 연산자를 사용할 때는 대소문자 구분을 고려하지 않는다는 점을 명심하고, 검색 조건을 설정할 때 주의해야겠다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>LIKE 연산자의 대소문자 구분 규칙을 좀 더 확실하게 이해하고, 다양한 <code>WHERE</code> 절 조건을 조합하는 연습을 해야겠다. 또한, <code>ORDER BY</code> 절을 활용하여 복합적인 정렬 조건을 만들어보는 것도 필요할 것 같다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/pm-03-dml-insert-update-delete/">
+    <span class="title">« Prev</span>
+    <span>pm-03-dml-insert-update-delete</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/pm-05-erd-reading-training/">
+    <span class="title">Next »</span>
+    <span>pm-05-erd-reading-training</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
