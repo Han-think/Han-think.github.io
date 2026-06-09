@@ -10,24 +10,10 @@
     <atom:link href="https://Han-think.github.io/tags/ollama/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인</title>
-      <link>https://Han-think.github.io/projects/learninglog-kit/</link>
+      <link>https://Han-think.github.io/learning/learninglog-kit/</link>
       <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/projects/learninglog-kit/</guid>
+      <guid>https://Han-think.github.io/learning/learninglog-kit/</guid>
       <description>강의자료와 개인 학습 노트(.md)를 폴더에 넣으면 LLM이 정리 → 블로그 초안 → 발행까지 자동으로 해주는 파이프라인 도구. pip 설치 &#43; 웹 UI로 시작. v0.5.0.</description>
-    </item>
-    <item>
-      <title>[LLM] Ollama 로컬 설치 — Windows에서 모델 내려받고 바로 쓰기</title>
-      <link>https://Han-think.github.io/projects/ollama-local-setup/</link>
-      <pubDate>Wed, 27 May 2026 01:00:00 +0900</pubDate>
-      <guid>https://Han-think.github.io/projects/ollama-local-setup/</guid>
-      <description>Windows 환경에서 Ollama를 설치하고 로컬 LLM을 띄우는 최단 경로 · GPU 감지부터 모델 실행까지</description>
-    </item>
-    <item>
-      <title>[도구] PyRecipe — 로컬 AI 환경 추천기 설계와 구현</title>
-      <link>https://Han-think.github.io/projects/pyrecipe-architecture/</link>
-      <pubDate>Wed, 27 May 2026 00:00:00 +0900</pubDate>
-      <guid>https://Han-think.github.io/projects/pyrecipe-architecture/</guid>
-      <description>로컬 LLM으로 Python 패키지 버전 조합을 추천하는 단일 HTML 도구 · 아키텍처 설계부터 JSON 파싱 엣지케이스 해결까지</description>
     </item>
   </channel>
 </rss>

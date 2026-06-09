@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>[환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인 | Han-think Blog</title>
+<meta name="keywords" content="python, llm, automation, gemini, ollama, hugo, pipeline">
+<meta name="description" content="강의자료와 개인 학습 노트(.md)를 폴더에 넣으면 LLM이 정리 → 블로그 초안 → 발행까지 자동으로 해주는 파이프라인 도구. pip 설치 &#43; 웹 UI로 시작. v0.5.0.">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/learninglog-kit/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/learninglog-kit/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/learninglog-kit/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="[환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인">
+  <meta property="og:description" content="강의자료와 개인 학습 노트(.md)를 폴더에 넣으면 LLM이 정리 → 블로그 초안 → 발행까지 자동으로 해주는 파이프라인 도구. pip 설치 &#43; 웹 UI로 시작. v0.5.0.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-05-30T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-05-31T00:00:00+00:00">
+    <meta property="article:tag" content="Python">
+    <meta property="article:tag" content="Llm">
+    <meta property="article:tag" content="Automation">
+    <meta property="article:tag" content="Gemini">
+    <meta property="article:tag" content="Ollama">
+    <meta property="article:tag" content="Hugo">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="[환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인">
+  <meta name="twitter:description" content="강의자료와 개인 학습 노트(.md)를 폴더에 넣으면 LLM이 정리 → 블로그 초안 → 발행까지 자동으로 해주는 파이프라인 도구. pip 설치 &#43; 웹 UI로 시작. v0.5.0.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "[환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인",
+      "item": "https://Han-think.github.io/learning/learninglog-kit/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "[환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인",
+  "name": "[환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인",
+  "description": "강의자료와 개인 학습 노트(.md)를 폴더에 넣으면 LLM이 정리 → 블로그 초안 → 발행까지 자동으로 해주는 파이프라인 도구. pip 설치 + 웹 UI로 시작. v0.5.0.",
+  "keywords": [
+    "python", "llm", "automation", "gemini", "ollama", "hugo", "pipeline"
+  ],
+  "articleBody": " v0.5.0 업데이트 (2026-06-01) — PDF/ipynb/md 새 파일 감지, hash 중복 방지, public_policy 자동 부여, intake 실행 리포트, 블로그/GitHub 주소 입력 UI, 명시적 GitHub push 버튼을 추가했습니다. 소스: github.com/Han-think/learninglog-kit\n무엇을 만드나 매일 배운 것을 기록하고 싶지만, 정리하고 블로그에 올리는 과정이 번거롭다.\nLearningLog Kit은 그 과정을 자동화한다.\n00_inbox/personal_notes/ 에 노트(.md)를 넣는다 ↓ LLM (Gemini / Groq / Ollama) 사실 추출 → 워킹 노트 → 블로그 초안 ↓ 블로그 발행 (draft → publish) 설치부터 발행까지 버튼 클릭만으로 가능하다. 단, 그 전에 몇 가지 환경이 미리 갖춰져 있어야 한다(아래 사전 준비물 참고).\n⚠️ 먼저 — 사전 준비물 (이게 없으면 동작하지 않습니다) 이 도구는 “노트 → 블로그\"를 잇는 다리 역할만 한다. 양 끝의 환경은 직접 갖춰야 한다.\n준비물 필요한 이유 확인 명령 Python 3.10+ 도구 본체가 파이썬 python --version pip 패키지 설치 pip --version Hugo (extended) 블로그 빌드(publish 단계) hugo version Git GitHub Pages 등에 발행 git --version 블로그 소스 폴더 발행 대상 (Hugo/Jekyll 사이트) 직접 준비 LLM API 키 또는 Ollama 노트 정리(extract 단계) 아래 참고 핵심: intake·extract(노트 정리)까지는 LLM만 있으면 되지만, publish(블로그 발행)는 Hugo가 설치되어 있고 발행할 블로그 소스 폴더가 준비되어 있어야 동작한다. Hugo가 없으면 빌드 단계를 건너뛰고, 블로그 폴더 경로(config.yaml의 blog.source_path)가 잘못되면 발행이 멈춘다.\nHugo 설치: gohugo.io/installation — 반드시 extended 버전 블로그가 아직 없다면: Hugo로 사이트를 먼저 만들고(hugo new site), 테마를 설치한 뒤 이 도구를 연결한다 블로그 연동이 필요 없다면: publish 없이 extract까지만 써서 정리된 노트(03_working_notes/)만 활용해도 된다 다운로드 ⬇ LearningLog Kit 다운로드 (ZIP · v0.5.0) pip install ./learninglog-kit-v0.5.0.zip[web,gemini] 로 바로 설치할 수 있습니다. 소스 코드: github.com/Han-think/learninglog-kit\n가장 쉬운 시작 — 웹 UI pip install \"./learninglog-kit-v0.5.0.zip[web,gemini]\" learninglog ui 브라우저(http://127.0.0.1:8765)가 열리면:\n1. [폴더 구조 생성] 클릭 → 작업 폴더 자동 세팅 2. Gemini 선택 → API 키 붙여넣기 → [저장 + 테스트] 3. 블로그 소스 폴더 / GitHub repo URL / Pages URL 입력 4. 00_inbox/lectures/ 에 PDF·ipynb, 00_inbox/personal_notes/ 에 내 노트(.md) 넣기 5. [① intake] → [② extract] → [③ publish] → [④ GitHub push] 클릭 터미널 명령을 몰라도 됩니다. 설치·설정·실행이 전부 화면 안에서 끝납니다.\n⚠️ 초보자 편의를 위해 API 키는 config.yaml 저장을 기본값으로 둡니다. .learninglog/config.yaml은 GitHub에 올리면 안 됩니다.\nAPI 키는 어디서 — Gemini 무료 가장 간단한 무료 옵션은 Google Gemini입니다.\n1. https://aistudio.google.com/app/apikey 접속 (구글 계정) 2. [Create API key] 클릭 3. 생성된 키 복사 → 웹 UI에 붙여넣기 키 형식은 AIzaSy... 또는 새 형식 AQ.... 둘 다 지원합니다.\n무료 한도: 하루 1,500회 요청 (매일 자정 초기화). 개인 학습 노트에는 충분합니다.\n⚠️ API 키는 메신저·GitHub·SNS에 공유하지 마세요.\n헷갈렸던 것 — 로컬 vs 클라우드 처음엔 “로컬 모델(Ollama)을 꼭 깔아야 하나?” 싶었다.\n정리하면 선택지는 세 가지다.\n방식 비용 특징 Gemini / Groq 무료 (한도) 설치 불필요, API 키만. 빠름 Ollama 완전 무료 로컬 실행, 인터넷 불필요, 프라이버시 핵심: 클라우드 API는 컨텍스트가 커서 긴 노트도 한 번에 처리되고, 로컬은 데이터가 PC를 벗어나지 않는다. 목적에 따라 고르면 된다.\n정리된 이해 — 파이프라인 구조 intake : 00_inbox 스캔 → 등록 (중복 자동 감지) extract : LLM 처리 → 사실 추출 + 워킹 노트 + 블로그 초안 publish : draft:false + ai_assisted 마킹 → 블로그로 복사 + 빌드 + 발행 각 단계는 상태 장부(CSV)로 추적되어, 이미 처리한 노트는 다시 처리하지 않는다.\n반복문 수업 예시 intake 단계는 반복문이 실제 자동화에서 어떻게 쓰이는지 보여준다.\nfor file in inbox_files: check_duplicate_hash(file) classify_file_type(file) register_source(file) 폴더 안 파일을 하나씩 훑고, PDF인지 ipynb인지 md인지 조건문으로 나누고, registry와 실행 리포트에 결과를 남긴다. 즉 반복문은 숫자 출력이 아니라 학습 자료를 처리하는 컨베이어 벨트가 된다.\nv0.5.0 기준 기본 안전 규칙:\n강의 PDF: internal-only ipynb 실습 파일: private 내가 재작성한 md 노트: partial-public 블로그 draft: 검토 후 public 실행 리포트: 09_reports/RUN_..._intake_report.md 설치 ↔ 제거 (install ↔ uninstall) 개념 명령 설치 pip install \"...learninglog-kit-v0.5.0.zip[web,gemini]\" 데이터만 정리 (재시작용) learninglog clean 완전 제거 (프로그램+데이터) learninglog uninstall learninglog clean # 생성 데이터만 정리 (패키지 유지) learninglog uninstall # 데이터 정리 + 패키지 제거 (한 번에) 00_inbox/ 의 원본 노트는 어떤 경우에도 자동 삭제되지 않습니다. 안전하게 보존됩니다.\n실습 — 하루 학습 기록 흐름 오전 수업 → Gemini에게 \"오늘 배운 것 정리해줘\" → PN_날짜_01_주제.md 오후 수업 → 같은 방식 → PN_날짜_02_주제.md 수업 후: learninglog ui → [intake] → [extract] → [publish] → 오늘 학습 2편이 블로그에 자동 발행 한 번에 다 넣기보다 강의 시간 단위로 나눠 정리하는 것을 권장합니다. LLM이 맥락을 더 정확히 처리합니다.\n초보자 키워드 파이프라인(pipeline): 입력 → 처리 → 출력이 단계로 이어진 자동 흐름. 검색어 data pipeline API 키(API key): 외부 AI 서비스를 쓸 때 신원을 증명하는 비밀 문자열. 검색어 gemini api key front matter: 마크다운 글 맨 위 --- 사이의 설정(제목·날짜·카테고리). 검색어 hugo front matter 다음 복습 LLM provider별 무료 한도 비교 Ollama 로컬 모델 컨텍스트(num_ctx) 조정 한/영 자동 생성 (다국어 발행) 이 글과 도구는 학습 기록 자동화 실험의 결과물입니다. 도구를 직접 설치해 본인의 학습 노트로 시험해 보세요.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "777",
+  "inLanguage": "en",
+  "datePublished": "2026-05-30T00:00:00Z",
+  "dateModified": "2026-05-31T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/learninglog-kit/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      [환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인
+    </h1>
+    <div class="post-description">
+      강의자료와 개인 학습 노트(.md)를 폴더에 넣으면 LLM이 정리 → 블로그 초안 → 발행까지 자동으로 해주는 파이프라인 도구. pip 설치 &#43; 웹 UI로 시작. v0.5.0.
+    </div>
+    <div class="post-meta">
+
+<span title='2026-05-30 00:00:00 +0000 UTC'>2026년 5월 30일</span>&nbsp;·&nbsp;<span>4 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><blockquote>
+<p><strong>v0.5.0 업데이트 (2026-06-01)</strong> — PDF/ipynb/md 새 파일 감지, hash 중복 방지, public_policy 자동 부여, intake 실행 리포트, 블로그/GitHub 주소 입력 UI, 명시적 GitHub push 버튼을 추가했습니다. 소스: <a href="https://github.com/Han-think/learninglog-kit">github.com/Han-think/learninglog-kit</a></p>
+</blockquote>
+<h2 id="무엇을-만드나">무엇을 만드나<a hidden class="anchor" aria-hidden="true" href="#무엇을-만드나">#</a></h2>
+<p>매일 배운 것을 기록하고 싶지만, 정리하고 블로그에 올리는 과정이 번거롭다.</p>
+<p><strong>LearningLog Kit</strong>은 그 과정을 자동화한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>00_inbox/personal_notes/ 에 노트(.md)를 넣는다
+</span></span><span style="display:flex;"><span>        ↓  LLM (Gemini / Groq / Ollama)
+</span></span><span style="display:flex;"><span>사실 추출 → 워킹 노트 → 블로그 초안
+</span></span><span style="display:flex;"><span>        ↓
+</span></span><span style="display:flex;"><span>블로그 발행 (draft → publish)
+</span></span></code></pre></div><p>설치부터 발행까지 <strong>버튼 클릭만으로</strong> 가능하다. 단, 그 전에 <strong>몇 가지 환경이 미리 갖춰져 있어야</strong> 한다(아래 사전 준비물 참고).</p>
+<hr>
+<h2 id="-먼저--사전-준비물-이게-없으면-동작하지-않습니다">⚠️ 먼저 — 사전 준비물 (이게 없으면 동작하지 않습니다)<a hidden class="anchor" aria-hidden="true" href="#-먼저--사전-준비물-이게-없으면-동작하지-않습니다">#</a></h2>
+<p>이 도구는 &ldquo;노트 → 블로그&quot;를 잇는 <strong>다리</strong> 역할만 한다. 양 끝의 환경은 직접 갖춰야 한다.</p>
+<table>
+	<thead>
+			<tr>
+					<th>준비물</th>
+					<th>필요한 이유</th>
+					<th>확인 명령</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>Python 3.10+</strong></td>
+					<td>도구 본체가 파이썬</td>
+					<td><code>python --version</code></td>
+			</tr>
+			<tr>
+					<td><strong>pip</strong></td>
+					<td>패키지 설치</td>
+					<td><code>pip --version</code></td>
+			</tr>
+			<tr>
+					<td><strong>Hugo (extended)</strong></td>
+					<td>블로그 빌드(<code>publish</code> 단계)</td>
+					<td><code>hugo version</code></td>
+			</tr>
+			<tr>
+					<td><strong>Git</strong></td>
+					<td>GitHub Pages 등에 발행</td>
+					<td><code>git --version</code></td>
+			</tr>
+			<tr>
+					<td><strong>블로그 소스 폴더</strong></td>
+					<td>발행 대상 (Hugo/Jekyll 사이트)</td>
+					<td>직접 준비</td>
+			</tr>
+			<tr>
+					<td><strong>LLM API 키 또는 Ollama</strong></td>
+					<td>노트 정리(<code>extract</code> 단계)</td>
+					<td>아래 참고</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p><strong>핵심:</strong> <code>intake</code>·<code>extract</code>(노트 정리)까지는 LLM만 있으면 되지만, <strong><code>publish</code>(블로그 발행)는 Hugo가 설치되어 있고 발행할 블로그 소스 폴더가 준비되어 있어야</strong> 동작한다. Hugo가 없으면 빌드 단계를 건너뛰고, 블로그 폴더 경로(<code>config.yaml</code>의 <code>blog.source_path</code>)가 잘못되면 발행이 멈춘다.</p>
+</blockquote>
+<ul>
+<li>Hugo 설치: <a href="https://gohugo.io/installation/">gohugo.io/installation</a> — 반드시 <strong>extended</strong> 버전</li>
+<li>블로그가 아직 없다면: Hugo로 사이트를 먼저 만들고(<code>hugo new site</code>), 테마를 설치한 뒤 이 도구를 연결한다</li>
+<li>블로그 연동이 필요 없다면: <code>publish</code> 없이 <code>extract</code>까지만 써서 정리된 노트(<code>03_working_notes/</code>)만 활용해도 된다</li>
+</ul>
+<hr>
+<h2 id="다운로드">다운로드<a hidden class="anchor" aria-hidden="true" href="#다운로드">#</a></h2>
+
+<a href="/downloads/learninglog-kit-v0.5.0.zip" class="dl-btn" download>
+  ⬇ LearningLog Kit 다운로드 (ZIP · v0.5.0)
+</a>
+
+<blockquote>
+<p><code>pip install ./learninglog-kit-v0.5.0.zip[web,gemini]</code> 로 바로 설치할 수 있습니다.
+소스 코드: <a href="https://github.com/Han-think/learninglog-kit">github.com/Han-think/learninglog-kit</a></p>
+</blockquote>
+<hr>
+<h2 id="가장-쉬운-시작--웹-ui">가장 쉬운 시작 — 웹 UI<a hidden class="anchor" aria-hidden="true" href="#가장-쉬운-시작--웹-ui">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install <span style="color:#e6db74">&#34;./learninglog-kit-v0.5.0.zip[web,gemini]&#34;</span>
+</span></span><span style="display:flex;"><span>learninglog ui
+</span></span></code></pre></div><p>브라우저(<code>http://127.0.0.1:8765</code>)가 열리면:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>1. [폴더 구조 생성] 클릭        → 작업 폴더 자동 세팅
+</span></span><span style="display:flex;"><span>2. Gemini 선택 → API 키 붙여넣기 → [저장 + 테스트]
+</span></span><span style="display:flex;"><span>3. 블로그 소스 폴더 / GitHub repo URL / Pages URL 입력
+</span></span><span style="display:flex;"><span>4. 00_inbox/lectures/ 에 PDF·ipynb, 00_inbox/personal_notes/ 에 내 노트(.md) 넣기
+</span></span><span style="display:flex;"><span>5. [① intake] → [② extract] → [③ publish] → [④ GitHub push] 클릭
+</span></span></code></pre></div><p>터미널 명령을 몰라도 됩니다. 설치·설정·실행이 전부 화면 안에서 끝납니다.</p>
+<blockquote>
+<p>⚠️ 초보자 편의를 위해 API 키는 <code>config.yaml</code> 저장을 기본값으로 둡니다. <code>.learninglog/config.yaml</code>은 GitHub에 올리면 안 됩니다.</p>
+</blockquote>
+<hr>
+<h2 id="api-키는-어디서--gemini-무료">API 키는 어디서 — Gemini 무료<a hidden class="anchor" aria-hidden="true" href="#api-키는-어디서--gemini-무료">#</a></h2>
+<p>가장 간단한 무료 옵션은 <strong>Google Gemini</strong>입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>1. https://aistudio.google.com/app/apikey  접속 (구글 계정)
+</span></span><span style="display:flex;"><span>2. [Create API key] 클릭
+</span></span><span style="display:flex;"><span>3. 생성된 키 복사 → 웹 UI에 붙여넣기
+</span></span></code></pre></div><blockquote>
+<p>키 형식은 <code>AIzaSy...</code> 또는 새 형식 <code>AQ....</code> 둘 다 지원합니다.</p>
+</blockquote>
+<p><strong>무료 한도:</strong> 하루 1,500회 요청 (매일 자정 초기화). 개인 학습 노트에는 충분합니다.</p>
+<blockquote>
+<p>⚠️ API 키는 메신저·GitHub·SNS에 공유하지 마세요.</p>
+</blockquote>
+<hr>
+<h2 id="헷갈렸던-것--로컬-vs-클라우드">헷갈렸던 것 — 로컬 vs 클라우드<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-것--로컬-vs-클라우드">#</a></h2>
+<p>처음엔 &ldquo;로컬 모델(Ollama)을 꼭 깔아야 하나?&rdquo; 싶었다.</p>
+<p>정리하면 선택지는 세 가지다.</p>
+<table>
+	<thead>
+			<tr>
+					<th>방식</th>
+					<th>비용</th>
+					<th>특징</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Gemini / Groq</td>
+					<td>무료 (한도)</td>
+					<td>설치 불필요, API 키만. 빠름</td>
+			</tr>
+			<tr>
+					<td>Ollama</td>
+					<td>완전 무료</td>
+					<td>로컬 실행, 인터넷 불필요, 프라이버시</td>
+			</tr>
+	</tbody>
+</table>
+<p><strong>핵심:</strong> 클라우드 API는 컨텍스트가 커서 긴 노트도 한 번에 처리되고, 로컬은 데이터가 PC를 벗어나지 않는다. 목적에 따라 고르면 된다.</p>
+<hr>
+<h2 id="정리된-이해--파이프라인-구조">정리된 이해 — 파이프라인 구조<a hidden class="anchor" aria-hidden="true" href="#정리된-이해--파이프라인-구조">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>intake   : 00_inbox 스캔 → 등록 (중복 자동 감지)
+</span></span><span style="display:flex;"><span>extract  : LLM 처리 → 사실 추출 + 워킹 노트 + 블로그 초안
+</span></span><span style="display:flex;"><span>publish  : draft:false + ai_assisted 마킹 → 블로그로 복사 + 빌드 + 발행
+</span></span></code></pre></div><p>각 단계는 상태 장부(CSV)로 추적되어, 이미 처리한 노트는 다시 처리하지 않는다.</p>
+<h3 id="반복문-수업-예시">반복문 수업 예시<a hidden class="anchor" aria-hidden="true" href="#반복문-수업-예시">#</a></h3>
+<p><code>intake</code> 단계는 반복문이 실제 자동화에서 어떻게 쓰이는지 보여준다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> file <span style="color:#f92672">in</span> inbox_files:
+</span></span><span style="display:flex;"><span>    check_duplicate_hash(file)
+</span></span><span style="display:flex;"><span>    classify_file_type(file)
+</span></span><span style="display:flex;"><span>    register_source(file)
+</span></span></code></pre></div><p>폴더 안 파일을 하나씩 훑고, PDF인지 ipynb인지 md인지 조건문으로 나누고, registry와 실행 리포트에 결과를 남긴다. 즉 반복문은 숫자 출력이 아니라 학습 자료를 처리하는 컨베이어 벨트가 된다.</p>
+<p>v0.5.0 기준 기본 안전 규칙:</p>
+<ul>
+<li>강의 PDF: <code>internal-only</code></li>
+<li>ipynb 실습 파일: <code>private</code></li>
+<li>내가 재작성한 md 노트: <code>partial-public</code></li>
+<li>블로그 draft: 검토 후 <code>public</code></li>
+<li>실행 리포트: <code>09_reports/RUN_..._intake_report.md</code></li>
+</ul>
+<hr>
+<h2 id="설치--제거-install--uninstall">설치 ↔ 제거 (install ↔ uninstall)<a hidden class="anchor" aria-hidden="true" href="#설치--제거-install--uninstall">#</a></h2>
+<table>
+	<thead>
+			<tr>
+					<th>개념</th>
+					<th>명령</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>설치</td>
+					<td><code>pip install &quot;...learninglog-kit-v0.5.0.zip[web,gemini]&quot;</code></td>
+			</tr>
+			<tr>
+					<td>데이터만 정리 (재시작용)</td>
+					<td><code>learninglog clean</code></td>
+			</tr>
+			<tr>
+					<td>완전 제거 (프로그램+데이터)</td>
+					<td><code>learninglog uninstall</code></td>
+			</tr>
+	</tbody>
+</table>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>learninglog clean             <span style="color:#75715e"># 생성 데이터만 정리 (패키지 유지)</span>
+</span></span><span style="display:flex;"><span>learninglog uninstall         <span style="color:#75715e"># 데이터 정리 + 패키지 제거 (한 번에)</span>
+</span></span></code></pre></div><blockquote>
+<p><code>00_inbox/</code> 의 원본 노트는 <strong>어떤 경우에도 자동 삭제되지 않습니다.</strong> 안전하게 보존됩니다.</p>
+</blockquote>
+<hr>
+<h2 id="실습--하루-학습-기록-흐름">실습 — 하루 학습 기록 흐름<a hidden class="anchor" aria-hidden="true" href="#실습--하루-학습-기록-흐름">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>오전 수업 → Gemini에게 &#34;오늘 배운 것 정리해줘&#34; → PN_날짜_01_주제.md
+</span></span><span style="display:flex;"><span>오후 수업 → 같은 방식                          → PN_날짜_02_주제.md
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>수업 후:
+</span></span><span style="display:flex;"><span>learninglog ui → [intake] → [extract] → [publish]
+</span></span><span style="display:flex;"><span>→ 오늘 학습 2편이 블로그에 자동 발행
+</span></span></code></pre></div><blockquote>
+<p>한 번에 다 넣기보다 <strong>강의 시간 단위로 나눠</strong> 정리하는 것을 권장합니다. LLM이 맥락을 더 정확히 처리합니다.</p>
+</blockquote>
+<hr>
+<h2 id="초보자-키워드">초보자 키워드<a hidden class="anchor" aria-hidden="true" href="#초보자-키워드">#</a></h2>
+<ul>
+<li><strong>파이프라인(pipeline)</strong>: 입력 → 처리 → 출력이 단계로 이어진 자동 흐름. 검색어 <code>data pipeline</code></li>
+<li><strong>API 키(API key)</strong>: 외부 AI 서비스를 쓸 때 신원을 증명하는 비밀 문자열. 검색어 <code>gemini api key</code></li>
+<li><strong>front matter</strong>: 마크다운 글 맨 위 <code>---</code> 사이의 설정(제목·날짜·카테고리). 검색어 <code>hugo front matter</code></li>
+</ul>
+<hr>
+<h2 id="다음-복습">다음 복습<a hidden class="anchor" aria-hidden="true" href="#다음-복습">#</a></h2>
+<ul>
+<li>LLM provider별 무료 한도 비교</li>
+<li>Ollama 로컬 모델 컨텍스트(num_ctx) 조정</li>
+<li>한/영 자동 생성 (다국어 발행)</li>
+</ul>
+<hr>
+<blockquote>
+<p>이 글과 도구는 학습 기록 자동화 실험의 결과물입니다. 도구를 직접 설치해 본인의 학습 노트로 시험해 보세요.</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/python/">Python</a></li>
+      <li><a href="https://Han-think.github.io/tags/llm/">Llm</a></li>
+      <li><a href="https://Han-think.github.io/tags/automation/">Automation</a></li>
+      <li><a href="https://Han-think.github.io/tags/gemini/">Gemini</a></li>
+      <li><a href="https://Han-think.github.io/tags/ollama/">Ollama</a></li>
+      <li><a href="https://Han-think.github.io/tags/hugo/">Hugo</a></li>
+      <li><a href="https://Han-think.github.io/tags/pipeline/">Pipeline</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/while-break-fizzbuzz-control-flow/">
+    <span class="title">« Prev</span>
+    <span>while-break-fizzbuzz-control-flow</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/%EC%B2%AB%EB%B2%88%EC%A7%B8-%EA%B8%80/">
+    <span class="title">Next »</span>
+    <span>첫번째 글</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

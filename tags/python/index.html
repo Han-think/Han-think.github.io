@@ -128,11 +128,6 @@
                 </a>
             </li>
             <li>
-                <a href="https://Han-think.github.io/projects/" title="프로젝트">
-                    <span>프로젝트</span>
-                </a>
-            </li>
-            <li>
                 <a href="https://Han-think.github.io/search/" title="검색">
                     <span>검색</span>
                 </a>
@@ -162,46 +157,7 @@ LearningLog Kit은 그 과정을 자동화한다.
   <footer class="entry-footer">
 
 <span title='2026-05-30 00:00:00 +0000 UTC'>2026년 5월 30일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
-  <a class="entry-link" aria-label="post link to [환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인" href="https://Han-think.github.io/projects/learninglog-kit/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">BookCrawler — 웹 크롤링부터 블로그 자동 발행까지
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p> ⬇ BookCrawler 소스 다운로드 (ZIP · 전체 파이프라인) 개요 books.toscrape.com에서 책 정보를 수집해 Hugo 블로그에 5분 간격으로 자동 발행하는 파이프라인입니다.
-스크레이핑 → 변환 → Git 자동화 → 스케줄링까지 전 과정을 Python 모듈로 구성했습니다.
-파이프라인 구조 run.py (진입점 · argparse) │ ├─ pipeline.py (오케스트레이터) │ ├─ PHASE 1 ─ scraper.py ← requests &#43; BeautifulSoup4 │ │ queue_manager.py ← books.json / queue.json 관리 │ │ │ └─ PHASE 2 ─ scheduler.py ← schedule 라이브러리 (5분 주기) │ converter.py ← dict → Hugo .md (TOML front matter) │ publisher.py ← Hugo build &#43; git push (subprocess) │ └─ config.py (URL, 경로, 상수 중앙 관리) 모듈별 역할 scraper.py — 수집 (requests &#43; BeautifulSoup4) from scraper import scrape_books_with_details books = scrape_books_with_details(pages=5, limit=10) # [{&#34;title&#34;: &#34;...&#34;, &#34;price&#34;: 12.34, &#34;rating&#34;: 4, &#34;category&#34;: &#34;Mystery&#34;, ...}, ...] page-{N}.html 목록 → article.product_pod 파싱 상세 페이지 → 카테고리(breadcrumb), 설명, UPC 추출 requests.Session 재사용 &#43; time.sleep(1) (예의 바른 크롤링) converter.py — 변환 from converter import save_markdown from datetime import datetime, timezone, timedelta path = save_markdown(book, pub_date=datetime.now(timezone(timedelta(hours=9)))) # → content/posts/book-reviews/2026-05-27_a-light-in-the-attic.md Hugo TOML front matter 생성:
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-05-27 10:00:00 +0900 KST'>2026년 5월 27일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
-  <a class="entry-link" aria-label="post link to BookCrawler — 웹 크롤링부터 블로그 자동 발행까지" href="https://Han-think.github.io/projects/bookcrawler-pipeline/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">크롤링은 어떻게 페이지를 넘어가나 — 명령어와 구조로 읽는 웹 수집
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p> 이 글의 관점
-크롤링 코드를 처음 보면 복잡해 보입니다.
-하지만 실제로 코드가 하는 일은 “브라우저가 하는 것을 그대로 따라 하는 것” 입니다.
-브라우저가 주소 치고 → 페이지 받고 → 내용 읽는 것처럼요.
-1. 크롤러가 페이지를 넘기는 방법 — URL 패턴 브라우저로 books.toscrape.com을 직접 열어보면 이런 URL이 보입니다:
-http://books.toscrape.com/catalogue/page-1.html ← 1페이지 http://books.toscrape.com/catalogue/page-2.html ← 2페이지 http://books.toscrape.com/catalogue/page-3.html ← 3페이지 패턴이 보이죠? 숫자만 바뀝니다.
-크롤러는 이 규칙을 이용해서 반복문으로 URL을 만들어냅니다:
-for page_num in range(1, 6): # 1, 2, 3, 4, 5 url = f&#34;http://books.toscrape.com/catalogue/page-{page_num}.html&#34; # → 이 주소로 요청을 보냄 이게 전부입니다. 페이지 넘기기 = URL 숫자 바꾸기.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-05-27 09:00:00 +0900 KST'>2026년 5월 27일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
-  <a class="entry-link" aria-label="post link to 크롤링은 어떻게 페이지를 넘어가나 — 명령어와 구조로 읽는 웹 수집" href="https://Han-think.github.io/projects/how-crawling-works/"></a>
+  <a class="entry-link" aria-label="post link to [환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인" href="https://Han-think.github.io/learning/learninglog-kit/"></a>
 </article>
     </main>
     
