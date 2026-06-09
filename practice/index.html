@@ -174,17 +174,166 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Streamlit Toast 실습과 환경 적응
+    <h2 class="entry-hint-parent">consulting-report-prompting
     </h2>
   </header>
   <div class="entry-content">
-    <p>목차 Streamlit Toast 기본 사용법 환경 및 버전 확인과 문제 해결 전략 총평 1. Streamlit Toast 기본 사용법 왜 이걸 보게 됐나 Streamlit 애플리케이션에서 사용자 피드백을 제공하기 위해 Toast 메시지 기능을 탐색하고자 했습니다. 내가 헷갈린 지점 공식 문서에 나열된 다양한 옵션들이 실제 실습 환경에서 일관되게 작동하지 않았습니다. 특히 여러 토스트 메시지를 동시에 표시하는 기능이 불안정했습니다. 시도한 코드 / 예시 if st.button(&#34;여러 개 토스트 표시&#34;): st.toast(&#34;첫 번째 메시지&#34;) st.toast(&#34;두 번째 메시지&#34;) st.toast(&#34;작업 완료&#34;) 결과와 해석 예상과 달리 일부 토스트 메시지만 표시되거나 전혀 표시되지 않는 문제 발생. 이는 환경 설정이나 Streamlit 버전 차이 때문일 수 있다는 추측이 들었습니다. 정리된 이해 Toast 메시지의 일관된 동작이 환경 설정이나 버전에 크게 영향을 받는다는 점을 인지하였습니다. 2. 환경 및 버전 확인과 문제 해결 전략 왜 이걸 보게 됐나 혼란스러운 동작 원인을 파악하고 해결 방안을 모색하기 위해 환경 설정과 Streamlit 버전을 확인하였습니다. 내가 헷갈린 지점 실제 코드에는 문제가 없는 것으로 보였지만, 환경과 버전 차이로 인해 예상과 다른 결과가 나타났습니다. 시도한 코드 / 예시 python3 -c &#34;import streamlit as st; print(st.__version__)&#34; 결과와 해석 현재 사용 중인 Streamlit 버전을 확인하여 문서와 일치하는지 확인하였습니다. 버전 차이가 문제의 원인일 가능성이 높다는 결론을 내렸습니다. 정리된 이해 정확한 버전 확인과 기본 기능 검증을 통해 문제 원인을 명확히 파악할 수 있음을 확인하였습니다. 총평 오늘 전체에서 배운 것 Streamlit Toast </p>
+    <p>목차 보고서 유형별 톤 차이 MECE 기법 SCQA 구조 컨설팅 언어 총평 1. 보고서 유형별 톤 차이 왜 이걸 보게 됐나 강사님께서 시연하신 보고서가 너무 긍정적이고 완곡한 표현으로만 채워져서 실제 문제 상황을 제대로 진단하고 해결책을 제시하는 데 한계가 있다는 느낌을 받았어요. 그래서 실제 문제 상황에 따라 보고서의 톤을 다르게 가져가야 한다는 것을 깨닫고, 내부 분석용 보고서와 의뢰인에게 전달하는 보고서의 톤 차이를 이해하게 됐죠. 앞으로는 상황에 맞게 적절한 톤을 선택해서 문제 해결에 도움이 되는 보고서를 작성해야 할 것 같아요.
+...</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-06-04 00:00:00 +0000 UTC'>2026년 6월 4일</span>&nbsp;·&nbsp;<span>1 min</span></footer>
-  <a class="entry-link" aria-label="post link to Streamlit Toast 실습과 환경 적응" href="https://Han-think.github.io/practice/streamlit-toast-document-verification/"></a>
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>7 min</span></footer>
+  <a class="entry-link" aria-label="post link to consulting-report-prompting" href="https://Han-think.github.io/practice/consulting-report-prompting/"></a>
 </article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">pm-01-select-query-practice
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 OR 조건 LIKE 와일드카드 SQL 기본 문법 범위 조건 총평 1. OR 조건 왜 이걸 보게 됐나 처음에는 여러 조건을 연결해서 데이터 필터링하는 방법을 OR을 여러 번 사용해서 표현하려고 했는데, 너무 번거롭고 가독성이 떨어진다는 것을 깨달았어. 그래서 여러 값을 비교할 때 IN을 사용하는 것이 훨씬 효율적이라는 것을 알게 되었지. 좀 더 깔끔하고 간결하게 SQL 쿼리를 작성하고 싶어서 OR 대신 IN을 배우게 됐어.
+내가 헷갈린 지점 처음에는 OR을 여러 번 사용해서 여러 조건을 연결하는 게 맞는 줄 알았어. 예를 들어, 여러 나라를 포함시키려고 OR을 계속 이어썼지. 그런데 나중에 IN 키워드를 알게 되면서 훨씬 간결하게 표현할 수 있다는 것을 깨달았어.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to pm-01-select-query-practice" href="https://Han-think.github.io/practice/pm-01-select-query-practice/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">pm-02-select-mistakes-and-fixes
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 숫자 비교 오류 LIKE 연산자 ORDER BY 컬럼 데이터 정렬 총평 1. 숫자 비교 오류 왜 이걸 보게 됐나 SQL 실습을 하면서 숫자를 비교할 때, 실수로 문자열처럼 따옴표를 사용해서 오류가 발생했어. SQL은 숫자 리터럴을 그냥 사용해야 한다는 점을 간과했지. 이 실수를 통해 SQL에서 숫자와 문자열 비교의 차이점을 확실히 이해하게 됐어.
+내가 헷갈린 지점 숫자를 비교할 때 따옴표를 붙여야 한다고 생각했는데, 데이터베이스는 숫자를 문자열로 인식하는지 몰랐어요. 따옴표가 문자열 비교에 쓰이는 건 알았지만, 숫자 비교에도 적용해야 한다는 점이 헷갈렸고, 그 결과 예상치 못한 오류가 발생했습니다. 숫자는 숫자 그대로 비교해야 한다는 걸 깨닫고 코드를 수정했더니 문제가 해결되었습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to pm-02-select-mistakes-and-fixes" href="https://Han-think.github.io/practice/pm-02-select-mistakes-and-fixes/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">pm-03-dml-insert-update-delete
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 INSERT 문법 UPDATE 연산 DELETE 구문 WHERE 절 총평 1. INSERT 문법 왜 이걸 보게 됐나 SQLite 실습을 시작하면서 데이터 테이블에 새로운 정보를 추가하는 가장 기본적인 방법인 INSERT 문법을 익히게 되었어. 처음에 컬럼 순서나 작은따옴표 처리 때문에 어려움을 겪었지만, 기본적인 문법을 이해하고 연습하면서 데이터 추가 작업을 효과적으로 수행할 수 있게 되었어. INSERT 문법은 데이터베이스를 관리하고 활용하는 데 필수적인 요소라는 것을 깨달았어.
+내가 헷갈린 지점 INSERT 문을 쓸 때 컬럼과 값의 순서가 헷갈리는 경우가 많았고, 특히 문자열 안에 작은따옴표를 넣는 방식이 어떻게 해야 하는지 고민했습니다. ‘It’s’처럼 작은따옴표가 포함된 문자열을 입력할 때 작은따옴표를 두 번 사용해야 한다는 점을 깨닫지 못해 삽질했습니다. 컬럼 순서, 값 순서, 그리고 작은따옴표 처리 모두 숙지해야 하는 부분이라는 것을 알게 되었습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to pm-03-dml-insert-update-delete" href="https://Han-think.github.io/practice/pm-03-dml-insert-update-delete/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">pm-04-book-table-review-queries
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 데이터 변화 LIKE 연산자 WHERE 절 ORDER BY 총평 1. 데이터 변화 왜 이걸 보게 됐나 DELETE 명령어를 실행하고 나서 SELECT 결과가 달라지는 것을 보고, 데이터베이스의 상태가 쿼리 실행 결과에 직접적으로 영향을 미친다는 것을 깨달았습니다. 이전에는 데이터가 항상 존재한다고 생각하고 쿼리를 짰었는데, 데이터 변경이 결과에 영향을 주는 것을 알게 되면서 데이터베이스의 상태를 고려하는 쿼리 작성의 중요성을 인지하게 되었습니다.
+내가 헷갈린 지점 DELETE 명령을 실행했는데, 그 뒤에 바로 SELECT 쿼리를 돌려보니 데이터가 사라져서 당황스러웠어요. 마치 데이터베이스의 내용이 갑자기 변하는 마법처럼 느껴졌었죠. 데이터의 일관성을 당연하게 생각해서, 쿼리 실행 순서에 따른 결과 변화를 예상하지 못했습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to pm-04-book-table-review-queries" href="https://Han-think.github.io/practice/pm-04-book-table-review-queries/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">sqlite-learning-resources-and-notion-export
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 SQLite 샘플 DB ERD (엔티티-관계 다이어그램) Notion 링크 접근 PDF 저장 총평 1. SQLite 샘플 DB 왜 이걸 보게 됐나 SQLite는 데이터베이스 기초를 다지는 데 유용하고, 샘플 데이터베이스는 실제 환경에서의 복잡성을 줄여 학습 진도를 높이는 데 도움을 줘요. 특히 Chinook 샘플 데이터베이스는 다양한 테이블과 관계를 포함하고 있어, 실제 데이터베이스 설계 및 쿼리 작성 연습에 적합합니다. 이를 통해 SQLite를 활용한 데이터베이스 작업의 기본 원리를 익히고, 실무 적용 가능성을 높일 수 있습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to sqlite-learning-resources-and-notion-export" href="https://Han-think.github.io/practice/sqlite-learning-resources-and-notion-export/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">sqlite-sqltools-nextweek
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 VS Code 작업 공간 SQLite 데이터베이스 SQLTools 확장팩 SQLite 드라이버 총평 1. VS Code 작업 공간 왜 이걸 보게 됐나 처음에는 제가 익숙한 다른 편집기를 주로 사용해 왔기 때문에, 교육 환경에서 VS Code를 사용해야 한다는 점이 낯설었습니다. 하지만 모든 학생이 동일한 환경에서 작업하도록 강제하기 위해 VS Code가 표준 작업 공간으로 지정되었고, 이를 통해 강의 내용 이해와 문제 해결 과정에서 혼란을 줄이고자 합니다. VS Code를 활용하면 선생님과 제가 동일한 환경에서 동일한 도구를 사용하며 학습할 수 있게 됩니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to sqlite-sqltools-nextweek" href="https://Han-think.github.io/practice/sqlite-sqltools-nextweek/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">sqltools-selected-query-execution
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 SQL 기본 명령어 선택 영역 실행 실행 순서 데이터베이스 활용 총평 1. SQL 기본 명령어 왜 이걸 보게 됐나 개인 학습 기록을 효율적으로 관리하고 싶어서, 데이터베이스를 활용하는 방법을 익히기로 했어. 간단한 SQL 명령어를 통해 노트를 저장하고 조회하는 기능을 구현하면, 훨씬 체계적으로 학습 내용을 정리하고 복습할 수 있을 것 같아. 앞으로 LearningLog 시스템 구축에 이 기본 명령어들이 필수적으로 사용될 예정이라, 지금부터 확실히 다져놓아야 해.
+내가 헷갈린 지점 처음에는 SQL 문법 오류가 나서 실행이 안 될 때마다 문법에 문제가 있다고 생각했는데, 테이블이 생성되지 않은 상태에서 바로 조회하려고 해서 오류가 났던 것 같아. 그리고 전체 파일을 다 실행해야 한다고 생각해서, 필요한 부분만 선택해서 실행할 수 있다는 점이 신기했다. 명령어를 순서대로 실행해야 한다는 점을 명확하게 인지하지 못해서 삽질을 했던 것 같아.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to sqltools-selected-query-execution" href="https://Han-think.github.io/practice/sqltools-selected-query-execution/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">ai-tools-cursor-perplexity-qwen
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 코드 편집 정보 검색 로컬 코드 보조 프로젝트 수정 총평 1. 코드 편집 왜 이걸 보게 됐나 코딩 실력이 부족해서, 간단한 코드 수정에도 어려움을 느끼고 있던 차에 이 도구들을 알게 됐어. 특히 실시간 코드 제안 기능이 있는 도구는 기존에 비해 훨씬 빠르게 코드를 수정하고 배울 수 있을 것 같다는 기대감을 갖게 했지. 앞으로 생산성을 높이고, 코딩 학습 속도를 올리기 위해 이 도구들에 대한 이해는 필수적이라고 생각했어.
+내가 헷갈린 지점 처음에는 Cursor가 단순히 코드 자동 완성 기능만 제공하는 줄 알았습니다. 단순히 자동 완성 기능 이상의 적극적인 코드 편집 기능이 있다는 점, 그리고 명령어를 통해 구체적인 수정 방향을 제시할 수 있다는 점이 신기했습니다. 이전에는 IDE의 자동 완성 기능 정도로 생각했지만, 훨씬 더 능동적인 코드 수정 도구라는 것을 알게 되었습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-08 00:00:00 +0000 UTC'>2026년 6월 8일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to ai-tools-cursor-perplexity-qwen" href="https://Han-think.github.io/practice/ai-tools-cursor-perplexity-qwen/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">chinook-classicmodels-sample-db
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 샘플 데이터베이스 관계형 데이터베이스 테이블 구조 판매 관계 총평 1. 샘플 데이터베이스 왜 이걸 보게 됐나 SQL 실습을 통해 데이터베이스를 다루는 감각을 익히고, 실제 업무에서 활용될 수 있는 데이터 분석 능력을 키우기 위해 샘플 데이터베이스를 공부하게 됐어. Chinook과 ClassicModels는 다양한 규모와 주제를 가진 데이터베이스를 경험하며, SQL 쿼리 작성 및 데이터 조작에 대한 이해도를 높이는 데 도움이 될 것 같아. 특히 관계형 데이터베이스의 기본 원리를 실질적으로 적용해보고 싶었어.
+내가 헷갈린 지점 샘플 데이터베이스라는 이름에 너무 집중해서, 실제 데이터베이스와 얼마나 차이가 나는지, 어떤 규모로 활용해야 하는지 불확실했습니다. 특히 두 개의 데이터베이스 파일을 동시에 제시했을 때, 어느 것을 중심으로 실습해야 할지 판단하기 어려웠고, 강의 자료에서 Chinook DB가 더 중요하게 다뤄진다는 언급은 혼란을 가중시켰습니다. 처음에는 어떤 목적을 가지고 만들어진 데이터베이스인지 명확하게 파악하지 못했습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-08 00:00:00 +0000 UTC'>2026년 6월 8일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to chinook-classicmodels-sample-db" href="https://Han-think.github.io/practice/chinook-classicmodels-sample-db/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="next" href="https://Han-think.github.io/practice/page/2/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
     </main>
     
 <footer class="footer">

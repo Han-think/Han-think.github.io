@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>SQLite 입문 오후: SELECT 실습부터 DML과 ERD 읽기까지 | Han-think Blog</title>
+<meta name="keywords" content="sqlite, sql, select, dml, insert, update, delete, erd, beginner">
+<meta name="description" content="chinook.db와 book 테이블로 SELECT 기본기, 자주 한 실수 교정, INSERT/UPDATE/DELETE, ERD 읽기를 실습한 오후 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-06-08-pm-sql-select-dml-erd/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-06-08-pm-sql-select-dml-erd/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-06-08-pm-sql-select-dml-erd/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="SQLite 입문 오후: SELECT 실습부터 DML과 ERD 읽기까지">
+  <meta property="og:description" content="chinook.db와 book 테이블로 SELECT 기본기, 자주 한 실수 교정, INSERT/UPDATE/DELETE, ERD 읽기를 실습한 오후 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-08T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-08T00:00:00+00:00">
+    <meta property="article:tag" content="Sqlite">
+    <meta property="article:tag" content="Sql">
+    <meta property="article:tag" content="Select">
+    <meta property="article:tag" content="Dml">
+    <meta property="article:tag" content="Insert">
+    <meta property="article:tag" content="Update">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="SQLite 입문 오후: SELECT 실습부터 DML과 ERD 읽기까지">
+  <meta name="twitter:description" content="chinook.db와 book 테이블로 SELECT 기본기, 자주 한 실수 교정, INSERT/UPDATE/DELETE, ERD 읽기를 실습한 오후 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "SQLite 입문 오후: SELECT 실습부터 DML과 ERD 읽기까지",
+      "item": "https://Han-think.github.io/learning/2026-06-08-pm-sql-select-dml-erd/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "SQLite 입문 오후: SELECT 실습부터 DML과 ERD 읽기까지",
+  "name": "SQLite 입문 오후: SELECT 실습부터 DML과 ERD 읽기까지",
+  "description": "chinook.db와 book 테이블로 SELECT 기본기, 자주 한 실수 교정, INSERT/UPDATE/DELETE, ERD 읽기를 실습한 오후 정리",
+  "keywords": [
+    "sqlite", "sql", "select", "dml", "insert", "update", "delete", "erd", "beginner"
+  ],
+  "articleBody": "목차 SELECT 기본기 실습 SELECT에서 자주 한 실수와 교정 DML 실습: INSERT, UPDATE, DELETE book 테이블로 SELECT 복습 ERD를 보고 쿼리를 만드는 훈련 총평 1. SELECT 기본기 실습 무엇을 배웠나 오후에는 chinook.db를 기준으로 SELECT 기본 문법을 직접 타이핑했다. 실습 범위는 SELECT, DISTINCT, WHERE, AND/OR/NOT, BETWEEN, IN/NOT IN, LIKE, ORDER BY, LIMIT였다.\nSELECT 컬럼명 FROM 테이블명 WHERE 조건 ORDER BY 정렬기준 LIMIT 개수; 헷갈렸던 점 같은 컬럼에 여러 후보 값을 비교할 때 OR을 계속 붙이려 했는데, 이럴 땐 IN이 더 짧고 읽기 좋다. 또 LIKE의 % 위치 감각이 헷갈렸다.\n'K%' = K로 시작 '%Live' = Live로 끝남 '%Love%' = 중간 어디든 Love 포함 정리된 이해 문제별 핵심 답안을 모으면 SELECT의 기본기가 한눈에 들어온다.\n-- 고객 국가 중복 제거 SELECT DISTINCT Country FROM customers; -- 미국 또는 캐나다 고객 SELECT * FROM customers WHERE Country IN ('USA', 'Canada'); -- 금액 5~10 사이 인보이스 SELECT * FROM invoices WHERE Total BETWEEN 5 AND 10; -- 가장 비싼 곡 10개 SELECT Name AS \"곡 이름\", UnitPrice AS \"단가\" FROM tracks ORDER BY UnitPrice DESC LIMIT 10; 2. SELECT에서 자주 한 실수와 교정 무엇을 배웠나 SQL은 문법이 짧아 보이지만 작은 오타와 패턴 차이가 결과를 크게 바꾼다. 오늘 실습에서 세 가지 교정 포인트가 있었다.\n헷갈렸던 점 첫째, 숫자 비교에 따옴표를 붙였다. 둘째, LIKE 'K%'(시작)와 LIKE '%K%'(포함)를 혼동했다. 셋째, “가장 비싼 곡부터\"인데 가격이 아니라 이름 기준으로 정렬했다.\n-- (잘못) 숫자에 따옴표 SELECT * FROM tracks WHERE UnitPrice \u003e '0.99' LIMIT 10; -- (교정) 숫자는 따옴표 없이 SELECT * FROM tracks WHERE UnitPrice \u003e 0.99 LIMIT 10; 정리된 이해 실수 방지 공식을 한 덩어리로 외워 두면 같은 함정을 덜 밟는다.\n숫자 비교 = 따옴표 없이 문자 비교 = 작은따옴표 사용 시작 검색 = '문자%' 끝 검색 = '%문자' 포함 검색 = '%문자%' 정렬 기준 = 문제에서 요구한 기준 컬럼 상위 N개 = ORDER BY + LIMIT 응애 단계에서 이런 실수를 밟는 것은 정상이고, 기록해 두면 나중에 쿼리 검증 규칙으로도 쓸 수 있다.\n3. DML 실습: INSERT, UPDATE, DELETE 무엇을 배웠나 오후 후반에는 book 테이블로 DML을 실습했다. DML은 데이터를 실제로 바꾸는 명령이다. SELECT가 조회라면 DML은 장부를 직접 고치는 행위다.\nINSERT = 새 줄 추가 UPDATE = 기존 줄 수정 DELETE = 줄 삭제 헷갈렸던 점 INSERT에서 컬럼 순서와 값 순서가 헷갈렸고, 문자열 안의 작은따옴표 처리도 주의가 필요했다(It's → 'It''s'). DELETE에 SET을 쓰는 실수도 했다.\nINSERT INTO book (title, category, price, rating, stock) VALUES ('It''s Only the Himalayas', 'Travel', 45.17, 2, 19); -- (잘못) DELETE 에 SET -- DELETE book SET rating = 1; -- (맞음) DELETE FROM book WHERE rating = 1; 정리된 이해 DML에서 가장 중요한 것은 WHERE다. WHERE를 빠뜨리면 전체가 수정되거나 삭제된다. 그래서 삭제·수정 전에는 항상 SELECT로 대상을 먼저 조준한다.\n-- 먼저 조준 SELECT * FROM book WHERE stock \u003c 16; -- 확인 후 실행 DELETE FROM book WHERE stock \u003c 16; 실제 프로젝트에서는 DELETE 대신 status = 'archived' 같은 소프트 삭제가 더 안전할 수 있다.\n4. book 테이블로 SELECT 복습 무엇을 배웠나 DML로 데이터를 바꾼 뒤 book 테이블로 SELECT를 다시 복습했다. 복습 범위는 DISTINCT, 비교 연산자, LIKE, ORDER BY였다.\n헷갈렸던 점 DML 이후에는 데이터 상태가 바뀐다. 그래서 DELETE를 실행한 뒤에는 같은 SELECT라도 결과가 달라진다. “같은 질문이라도 실행 시점에 따라 답이 바뀐다\"는 점이 새삼 와닿았다.\n정리된 이해 컬럼의 성격에 따라 쓰는 연산자가 달라진다는 감각이 잡혔다.\nSELECT DISTINCT category FROM book; -- 분류 컬럼 → DISTINCT SELECT * FROM book WHERE price \u003e= 40; -- 숫자 컬럼 → 비교 연산 SELECT * FROM book WHERE title LIKE '%the%'; -- 문자열 컬럼 → LIKE SELECT * FROM book ORDER BY price DESC; -- 정렬 기준 → ORDER BY SQLite의 LIKE는 기본적으로 영문 대소문자를 크게 구분하지 않아 '%the%'로도 The를 찾을 수 있다.\n5. ERD를 보고 쿼리를 만드는 훈련 무엇을 배웠나 ERD는 단순 그림이 아니라 어느 테이블에서 어떤 데이터를 가져올지 찾는 지도다. 보는 순서가 있다.\n1. 테이블 이름을 본다. 2. 각 테이블의 Primary Key를 찾는다. 3. Foreign Key가 어디를 가리키는지 본다. 4. 1:N 관계인지 확인한다. 5. 원하는 데이터가 어느 테이블에 있는지 찾는다. 6. 필요한 테이블을 JOIN으로 연결한다. 헷갈렸던 점 ERD를 처음 보면 트리처럼 보이지만 실제로는 회로도에 가깝다. 테이블은 부품, PK는 고유 단자, FK는 다른 부품으로 가는 선, JOIN은 그 선을 따라 데이터를 결합하는 작업이다.\n정리된 이해 원하는 정보가 한 테이블에 없으면 ERD에서 연결 키를 찾아 JOIN한다. 예를 들어 아티스트 이름과 앨범 제목을 함께 보려면 두 테이블을 잇는다.\nSELECT artists.Name, albums.Title FROM artists JOIN albums ON artists.ArtistId = albums.ArtistId; ERD는 데이터베이스 던전의 미니맵이다. 처음엔 무섭지만 계속 보면 길이 보인다.\n총평 오늘 오후 전체에서 배운 것 SELECT 기본기(DISTINCT/WHERE/IN/LIKE/ORDER BY)를 직접 타이핑하며 익히고, 자주 하는 실수를 교정 규칙으로 정리했다. 이어서 INSERT/UPDATE/DELETE로 데이터를 직접 바꾸는 DML을 다루고, ERD를 보고 어떤 테이블을 연결할지 읽는 훈련까지 했다. 조회에서 조작, 그리고 관계 읽기로 이어지는 하루였다.\n다음에 조심할 것 DML에서 WHERE를 빠뜨리지 않기. 삭제·수정 전에는 반드시 SELECT로 대상을 먼저 확인한다. 숫자/문자 리터럴과 LIKE 패턴 위치도 계속 의식한다.\n다음 복습 주제 ERD를 보고 JOIN 쿼리를 직접 작성하는 연습, 그리고 트랜잭션 개념과 소프트 삭제 패턴을 이어서 살펴본다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "816",
+  "inLanguage": "en",
+  "datePublished": "2026-06-08T00:00:00Z",
+  "dateModified": "2026-06-08T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-06-08-pm-sql-select-dml-erd/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/posts/" title="글">
+                    <span>글</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      SQLite 입문 오후: SELECT 실습부터 DML과 ERD 읽기까지
+    </h1>
+    <div class="post-description">
+      chinook.db와 book 테이블로 SELECT 기본기, 자주 한 실수 교정, INSERT/UPDATE/DELETE, ERD 읽기를 실습한 오후 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-08 00:00:00 +0000 UTC'>2026년 6월 8일</span>&nbsp;·&nbsp;<span>4 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-select-%EA%B8%B0%EB%B3%B8%EA%B8%B0-%EC%8B%A4%EC%8A%B5">SELECT 기본기 실습</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-select%EC%97%90%EC%84%9C-%EC%9E%90%EC%A3%BC-%ED%95%9C-%EC%8B%A4%EC%88%98%EC%99%80-%EA%B5%90%EC%A0%95">SELECT에서 자주 한 실수와 교정</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-dml-%EC%8B%A4%EC%8A%B5-insert-update-delete">DML 실습: INSERT, UPDATE, DELETE</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-book-%ED%85%8C%EC%9D%B4%EB%B8%94%EB%A1%9C-select-%EB%B3%B5%EC%8A%B5">book 테이블로 SELECT 복습</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-erd%EB%A5%BC-%EB%B3%B4%EA%B3%A0-%EC%BF%BC%EB%A6%AC%EB%A5%BC-%EB%A7%8C%EB%93%9C%EB%8A%94-%ED%9B%88%EB%A0%A8">ERD를 보고 쿼리를 만드는 훈련</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-select-기본기-실습">1. SELECT 기본기 실습<a hidden class="anchor" aria-hidden="true" href="#1-select-기본기-실습">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>오후에는 <code>chinook.db</code>를 기준으로 SELECT 기본 문법을 직접 타이핑했다. 실습 범위는 <code>SELECT</code>, <code>DISTINCT</code>, <code>WHERE</code>, <code>AND/OR/NOT</code>, <code>BETWEEN</code>, <code>IN/NOT IN</code>, <code>LIKE</code>, <code>ORDER BY</code>, <code>LIMIT</code>였다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#960050;background-color:#1e0010">컬럼명</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> <span style="color:#960050;background-color:#1e0010">테이블명</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> <span style="color:#960050;background-color:#1e0010">조건</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#960050;background-color:#1e0010">정렬기준</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">LIMIT</span> <span style="color:#960050;background-color:#1e0010">개수</span>;
+</span></span></code></pre></div><h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>같은 컬럼에 여러 후보 값을 비교할 때 <code>OR</code>을 계속 붙이려 했는데, 이럴 땐 <code>IN</code>이 더 짧고 읽기 좋다. 또 <code>LIKE</code>의 <code>%</code> 위치 감각이 헷갈렸다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>&#39;K%&#39;     = K로 시작
+</span></span><span style="display:flex;"><span>&#39;%Live&#39;  = Live로 끝남
+</span></span><span style="display:flex;"><span>&#39;%Love%&#39; = 중간 어디든 Love 포함
+</span></span></code></pre></div><h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>문제별 핵심 답안을 모으면 SELECT의 기본기가 한눈에 들어온다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 고객 국가 중복 제거
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">DISTINCT</span> Country
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> customers;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 미국 또는 캐나다 고객
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> customers
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> Country <span style="color:#66d9ef">IN</span> (<span style="color:#e6db74">&#39;USA&#39;</span>, <span style="color:#e6db74">&#39;Canada&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 금액 5~10 사이 인보이스
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> invoices
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> Total <span style="color:#66d9ef">BETWEEN</span> <span style="color:#ae81ff">5</span> <span style="color:#66d9ef">AND</span> <span style="color:#ae81ff">10</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 가장 비싼 곡 10개
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    Name <span style="color:#66d9ef">AS</span> <span style="color:#e6db74">&#34;곡 이름&#34;</span>,
+</span></span><span style="display:flex;"><span>    UnitPrice <span style="color:#66d9ef">AS</span> <span style="color:#e6db74">&#34;단가&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> tracks
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> UnitPrice <span style="color:#66d9ef">DESC</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">10</span>;
+</span></span></code></pre></div><h2 id="2-select에서-자주-한-실수와-교정">2. SELECT에서 자주 한 실수와 교정<a hidden class="anchor" aria-hidden="true" href="#2-select에서-자주-한-실수와-교정">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>SQL은 문법이 짧아 보이지만 작은 오타와 패턴 차이가 결과를 크게 바꾼다. 오늘 실습에서 세 가지 교정 포인트가 있었다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>첫째, 숫자 비교에 따옴표를 붙였다. 둘째, <code>LIKE 'K%'</code>(시작)와 <code>LIKE '%K%'</code>(포함)를 혼동했다. 셋째, &ldquo;가장 비싼 곡부터&quot;인데 가격이 아니라 이름 기준으로 정렬했다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- (잘못) 숫자에 따옴표
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> tracks <span style="color:#66d9ef">WHERE</span> UnitPrice <span style="color:#f92672">&gt;</span> <span style="color:#e6db74">&#39;0.99&#39;</span> <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">10</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- (교정) 숫자는 따옴표 없이
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> tracks <span style="color:#66d9ef">WHERE</span> UnitPrice <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">99</span> <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">10</span>;
+</span></span></code></pre></div><h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>실수 방지 공식을 한 덩어리로 외워 두면 같은 함정을 덜 밟는다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>숫자 비교 = 따옴표 없이
+</span></span><span style="display:flex;"><span>문자 비교 = 작은따옴표 사용
+</span></span><span style="display:flex;"><span>시작 검색 = &#39;문자%&#39;
+</span></span><span style="display:flex;"><span>끝 검색   = &#39;%문자&#39;
+</span></span><span style="display:flex;"><span>포함 검색 = &#39;%문자%&#39;
+</span></span><span style="display:flex;"><span>정렬 기준 = 문제에서 요구한 기준 컬럼
+</span></span><span style="display:flex;"><span>상위 N개  = ORDER BY + LIMIT
+</span></span></code></pre></div><p>응애 단계에서 이런 실수를 밟는 것은 정상이고, 기록해 두면 나중에 쿼리 검증 규칙으로도 쓸 수 있다.</p>
+<h2 id="3-dml-실습-insert-update-delete">3. DML 실습: INSERT, UPDATE, DELETE<a hidden class="anchor" aria-hidden="true" href="#3-dml-실습-insert-update-delete">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>오후 후반에는 <code>book</code> 테이블로 DML을 실습했다. DML은 데이터를 실제로 바꾸는 명령이다. <code>SELECT</code>가 조회라면 DML은 장부를 직접 고치는 행위다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>INSERT = 새 줄 추가
+</span></span><span style="display:flex;"><span>UPDATE = 기존 줄 수정
+</span></span><span style="display:flex;"><span>DELETE = 줄 삭제
+</span></span></code></pre></div><h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p><code>INSERT</code>에서 컬럼 순서와 값 순서가 헷갈렸고, 문자열 안의 작은따옴표 처리도 주의가 필요했다(<code>It's</code> → <code>'It''s'</code>). <code>DELETE</code>에 <code>SET</code>을 쓰는 실수도 했다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> book (title, category, price, rating, stock)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;It&#39;&#39;s Only the Himalayas&#39;</span>, <span style="color:#e6db74">&#39;Travel&#39;</span>, <span style="color:#ae81ff">45</span>.<span style="color:#ae81ff">17</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">19</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- (잘못) DELETE 에 SET
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">-- DELETE book SET rating = 1;
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- (맞음)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">DELETE</span> <span style="color:#66d9ef">FROM</span> book
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> rating <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span></code></pre></div><h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>DML에서 가장 중요한 것은 <code>WHERE</code>다. <code>WHERE</code>를 빠뜨리면 전체가 수정되거나 삭제된다. 그래서 삭제·수정 전에는 항상 <code>SELECT</code>로 대상을 먼저 조준한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 먼저 조준
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> book <span style="color:#66d9ef">WHERE</span> stock <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">16</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 확인 후 실행
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">DELETE</span> <span style="color:#66d9ef">FROM</span> book <span style="color:#66d9ef">WHERE</span> stock <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">16</span>;
+</span></span></code></pre></div><p>실제 프로젝트에서는 <code>DELETE</code> 대신 <code>status = 'archived'</code> 같은 소프트 삭제가 더 안전할 수 있다.</p>
+<h2 id="4-book-테이블로-select-복습">4. book 테이블로 SELECT 복습<a hidden class="anchor" aria-hidden="true" href="#4-book-테이블로-select-복습">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>DML로 데이터를 바꾼 뒤 <code>book</code> 테이블로 SELECT를 다시 복습했다. 복습 범위는 <code>DISTINCT</code>, 비교 연산자, <code>LIKE</code>, <code>ORDER BY</code>였다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>DML 이후에는 데이터 상태가 바뀐다. 그래서 <code>DELETE</code>를 실행한 뒤에는 같은 SELECT라도 결과가 달라진다. &ldquo;같은 질문이라도 실행 시점에 따라 답이 바뀐다&quot;는 점이 새삼 와닿았다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>컬럼의 성격에 따라 쓰는 연산자가 달라진다는 감각이 잡혔다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">DISTINCT</span> category <span style="color:#66d9ef">FROM</span> book;          <span style="color:#75715e">-- 분류 컬럼 → DISTINCT
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> book <span style="color:#66d9ef">WHERE</span> price <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">40</span>;        <span style="color:#75715e">-- 숫자 컬럼 → 비교 연산
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> book <span style="color:#66d9ef">WHERE</span> title <span style="color:#66d9ef">LIKE</span> <span style="color:#e6db74">&#39;%the%&#39;</span>; <span style="color:#75715e">-- 문자열 컬럼 → LIKE
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> book <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> price <span style="color:#66d9ef">DESC</span>;      <span style="color:#75715e">-- 정렬 기준 → ORDER BY
+</span></span></span></code></pre></div><p>SQLite의 <code>LIKE</code>는 기본적으로 영문 대소문자를 크게 구분하지 않아 <code>'%the%'</code>로도 <code>The</code>를 찾을 수 있다.</p>
+<h2 id="5-erd를-보고-쿼리를-만드는-훈련">5. ERD를 보고 쿼리를 만드는 훈련<a hidden class="anchor" aria-hidden="true" href="#5-erd를-보고-쿼리를-만드는-훈련">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>ERD는 단순 그림이 아니라 <strong>어느 테이블에서 어떤 데이터를 가져올지 찾는 지도</strong>다. 보는 순서가 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>1. 테이블 이름을 본다.
+</span></span><span style="display:flex;"><span>2. 각 테이블의 Primary Key를 찾는다.
+</span></span><span style="display:flex;"><span>3. Foreign Key가 어디를 가리키는지 본다.
+</span></span><span style="display:flex;"><span>4. 1:N 관계인지 확인한다.
+</span></span><span style="display:flex;"><span>5. 원하는 데이터가 어느 테이블에 있는지 찾는다.
+</span></span><span style="display:flex;"><span>6. 필요한 테이블을 JOIN으로 연결한다.
+</span></span></code></pre></div><h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>ERD를 처음 보면 트리처럼 보이지만 실제로는 회로도에 가깝다. 테이블은 부품, PK는 고유 단자, FK는 다른 부품으로 가는 선, JOIN은 그 선을 따라 데이터를 결합하는 작업이다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>원하는 정보가 한 테이블에 없으면 ERD에서 연결 키를 찾아 JOIN한다. 예를 들어 아티스트 이름과 앨범 제목을 함께 보려면 두 테이블을 잇는다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    artists.Name,
+</span></span><span style="display:flex;"><span>    albums.Title
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> artists
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">JOIN</span> albums
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ON</span> artists.ArtistId <span style="color:#f92672">=</span> albums.ArtistId;
+</span></span></code></pre></div><p>ERD는 데이터베이스 던전의 미니맵이다. 처음엔 무섭지만 계속 보면 길이 보인다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>SELECT 기본기(DISTINCT/WHERE/IN/LIKE/ORDER BY)를 직접 타이핑하며 익히고, 자주 하는 실수를 교정 규칙으로 정리했다. 이어서 INSERT/UPDATE/DELETE로 데이터를 직접 바꾸는 DML을 다루고, ERD를 보고 어떤 테이블을 연결할지 읽는 훈련까지 했다. 조회에서 조작, 그리고 관계 읽기로 이어지는 하루였다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>DML에서 <code>WHERE</code>를 빠뜨리지 않기. 삭제·수정 전에는 반드시 <code>SELECT</code>로 대상을 먼저 확인한다. 숫자/문자 리터럴과 <code>LIKE</code> 패턴 위치도 계속 의식한다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>ERD를 보고 JOIN 쿼리를 직접 작성하는 연습, 그리고 트랜잭션 개념과 소프트 삭제 패턴을 이어서 살펴본다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/sqlite/">Sqlite</a></li>
+      <li><a href="https://Han-think.github.io/tags/sql/">Sql</a></li>
+      <li><a href="https://Han-think.github.io/tags/select/">Select</a></li>
+      <li><a href="https://Han-think.github.io/tags/dml/">Dml</a></li>
+      <li><a href="https://Han-think.github.io/tags/insert/">Insert</a></li>
+      <li><a href="https://Han-think.github.io/tags/update/">Update</a></li>
+      <li><a href="https://Han-think.github.io/tags/delete/">Delete</a></li>
+      <li><a href="https://Han-think.github.io/tags/erd/">Erd</a></li>
+      <li><a href="https://Han-think.github.io/tags/beginner/">Beginner</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-06-08-am-sqlite-foundations/">
+    <span class="title">« Prev</span>
+    <span>SQLite 입문 오전: SQLTools 실행부터 ERD까지</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/validation-report/">
+    <span class="title">Next »</span>
+    <span>validation-report</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

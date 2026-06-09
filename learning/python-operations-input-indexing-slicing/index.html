@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>python-operations-input-indexing-slicing | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="python-operations-input-indexing-slicing 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/python-operations-input-indexing-slicing/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/python-operations-input-indexing-slicing/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/python-operations-input-indexing-slicing/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="python-operations-input-indexing-slicing">
+  <meta property="og:description" content="python-operations-input-indexing-slicing 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-08T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-08T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="python-operations-input-indexing-slicing">
+  <meta name="twitter:description" content="python-operations-input-indexing-slicing 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "python-operations-input-indexing-slicing",
+      "item": "https://Han-think.github.io/learning/python-operations-input-indexing-slicing/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "python-operations-input-indexing-slicing",
+  "name": "python-operations-input-indexing-slicing",
+  "description": "python-operations-input-indexing-slicing 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 타입 캐스팅 인덱싱 슬라이싱 연산자 타입 변환 총평 1. 타입 캐스팅 왜 이걸 보게 됐나 타입 캐스팅은 Python에서 사용자 입력이나 다양한 자료형 간의 연산을 원활하게 수행하기 위해 필수적입니다. 특히 문자열로 입력받은 값을 숫자로 변환하지 않으면 연산 오류가 발생할 수 있어, 이를 이해하고 적절히 적용하는 것이 중요합니다.\n내가 헷갈린 지점 초보자들은 input() 함수로 받은 문자열을 숫자로 처리할 때 타입 변환의 필요성을 간과하거나, 잘못된 타입 변환으로 인한 오류를 이해하는 데 어려움을 겪습니다. 또한, 인덱싱과 슬라이싱의 기본 개념과 사용법에 대한 명확한 이해가 부족하여 코드 실행 시 예상치 못한 결과를 얻게 됩니다.\n시도한 코드 / 예시 # 타입 캐스팅 예시 number1 = input('첫 번째 숫자를 입력하세요: ') number2 = input('두 번째 숫자를 입력하세요: ') try: num1 = int(number1) num2 = int(number2) sum_result = num1 + num2 print(f'합계: {sum_result}') except ValueError: print('올바른 숫자를 입력해주세요.') # 인덱싱과 슬라이싱 예시 my_list = ['apple', 'banana', 'cherry', 'date'] print(my_list[0]) # 첫 번째 요소 출력: 'apple' print(my_list[1:3]) # 두 번째와 세 번째 요소 슬라이싱 출력: ['banana', 'cherry'] 결과와 해석 합계: [입력된 숫자들의 합] apple ['banana', 'cherry'] 정리된 이해 타입 캐스팅은 문자열 입력을 숫자로 변환하여 정확한 연산을 가능하게 합니다. input() 함수로 받은 값은 문자열이므로, int() 또는 float()를 사용해 타입을 변환해야 합니다. 또한, 인덱싱은 리스트나 문자열에서 특정 위치의 값을 가져오고, 슬라이싱은 지정된 범위의 값을 추출하는 데 사용됩니다. 이러한 개념을 이해하고 적용하면 Python에서 다양한 데이터 처리 작업을 효과적으로 수행할 수 있습니다.\n2. 인덱싱 왜 이걸 보게 됐나 인덱싱과 슬라이싱은 데이터 구조에서 특정 부분을 효율적으로 접근하고 조작하는 데 필수적인 개념으로, 초보자에게는 인덱스의 시작이 0이라는 점과 슬라이싱의 범위 설정이 혼란스러울 수 있습니다.\n내가 헷갈린 지점 특히, 슬라이싱에서 마지막 인덱스가 포함되지 않는다는 점과 인덱스 범위를 벗어나는 오류에 대한 이해 부족이 혼란의 주요 원인입니다.\n시도한 코드 / 예시 # 인덱싱 예시 my_list = ['apple', 'banana', 'cherry', 'date'] print(my_list[1]) # 출력: 'banana' print(my_list[-1]) # 출력: 'date' # 슬라이싱 예시 print(my_list[1:3]) # 출력: ['banana', 'cherry'] print(my_list[:2]) # 출력: ['apple', 'banana'] print(my_list[2:]) # 출력: ['cherry', 'date'] 결과와 해석 인덱스 1은 리스트의 두 번째 요소인 'banana'를 반환하고, -1은 마지막 요소인 'date'를 반환합니다. 슬라이싱 [1:3]은 인덱스 1부터 3 미만까지의 요소를 포함하여 ['banana', 'cherry']를 반환합니다. 슬라이싱의 범위 설정은 시작 인덱스를 포함하고 끝 인덱스는 포함하지 않는다는 점을 확인할 수 있습니다.\n정리된 이해 인덱싱과 슬라이싱을 통해 리스트나 문자열에서 원하는 부분을 정확하게 추출할 수 있습니다. 인덱스는 0부터 시작하며, 슬라이싱은 [시작:끝] 형식으로 특정 범위의 데이터를 가져옵니다. 주의할 점은 슬라이싱의 끝 인덱스는 포함되지 않는다는 것입니다.\n3. 슬라이싱 왜 이걸 보게 됐나 슬라이싱은 Python에서 리스트나 문자열에서 특정 부분을 추출하는 강력한 도구로, 데이터의 효율적인 처리와 분석에 필수적이다. 이를 이해함으로써 데이터 조작 능력이 향상된다.\n내가 헷갈린 지점 초보자들은 슬라이싱의 시작과 끝 인덱스 규칙, 특히 끝 인덱스가 포함되지 않는 점에 대해 혼란스러워한다. 또한, 스텝 값을 이용한 슬라이싱의 활용법에 대해 명확한 이해가 부족할 수 있다.\n시도한 코드 / 예시 # 문자열 슬라이싱 예시 text = 'Hello, World!' print(text[7:12]) # 출력: 'World' print(text[7::2]) # 출력: 'Wrd' # 리스트 슬라이싱 예시 numbers = [10, 20, 30, 40, 50] print(numbers[1:4]) # 출력: [20, 30, 40] print(numbers[::2]) # 출력: [10, 30, 50] 결과와 해석 ‘Hello, World! Wrd [20, 30, 40] [10, 30, 50]’\n정리된 이해 슬라이싱은 [시작:끝:스텝] 형식으로 사용되며, 끝 인덱스는 포함되지 않고 스텝 값을 통해 특정 간격의 요소를 추출할 수 있다. 이를 통해 데이터의 부분 집합을 쉽게 다룰 수 있다.\n4. 연산자 타입 변환 왜 이걸 보게 됐나 Python에서 다양한 자료형 간의 연산과 타입 변환 메커니즘을 이해하는 것이 중요하며, 특히 사용자 입력과 숫자 연산 간의 타입 불일치로 인한 오류를 피하는 방법을 알아야 합니다. 또한, 문자열과 숫자의 연산 차이와 인덱싱, 슬라이싱의 정확한 사용법을 파악해야 코드의 예측 가능성과 안정성이 높아집니다.\n내가 헷갈린 지점 초보자로서 input()으로 받은 문자열을 숫자로 변환하지 않으면 연산 오류가 발생하고, 문자열 연결과 숫자 덧셈의 차이로 인해 예상치 못한 결과를 얻는 것이 혼란스러웠습니다. 또한, 인덱싱과 슬라이싱의 기본 개념과 범위 설정에 대한 이해 부족으로 인해 코드 작성 시 오류가 발생했습니다.\n시도한 코드 / 예시 # 사용자 입력을 숫자로 변환하여 덧셈 수행 user_input = input('숫자를 입력하세요: ') try: number = int(user_input) result = number + 5 print(f'결과: {result}') except ValueError: print('올바른 숫자를 입력해주세요.') # 문자열 인덱싱과 슬라이싱 예시 text = 'Hello, World!' print(text[0]) # 'H' print(text[7:]) # 'World!' print(text[::2]) # 'Hlo ol!' 결과와 해석 결과: [7] World! Hlo ol! 사용자 입력 ‘7’에 대해 숫자로 변환 후 5를 더한 결과 ‘12’ 출력. 문자열 ‘Hello, World!‘에서: text[0]은 첫 번째 문자 ‘H’를 출력. text[7:]은 인덱스 7부터 끝까지의 부분 문자열 ‘World!‘을 출력. text[::2]는 문자열의 두 글자씩 건너뛰며 ‘Hlo ol!‘을 출력. 정리된 이해 이 항목들은 Python에서 자료형 간의 연산과 타입 변환의 중요성을 강조하며, 특히 사용자 입력 처리와 인덱싱, 슬라이싱의 기본 개념을 명확히 설명합니다. 이를 통해 초보자는 코드 실행 시 발생할 수 있는 오류를 예방하고, 다양한 데이터 구조를 효과적으로 다룰 수 있는 능력을 키울 수 있습니다.\n총평 오늘 전체에서 배운 것 타입 캐스팅의 중요성 이해, 숫자 연산 결과의 타입 변환 규칙 숙지, 인덱싱과 슬라이싱을 통한 데이터 접근 방법 명확히 파악\n다음에 조심할 것 입력 값의 기본 타입이 문자열임을 기억하고, 숫자 연산 시 타입 변환 필수, 슬라이싱 범위 설정 시 마지막 인덱스 미포함 이해 필요\n다음 복습 주제 학습을 통해 Python의 자료형에 따른 연산자 결과 차이와 타입 변환의 필요성을 명확히 이해하였으며, 특히 사용자 입력 처리와 리스트/문자열의 효율적인 데이터 접근 방법에 대한 실용적인 지식을 습득하였다.\n",
+  "wordCount" : "820",
+  "inLanguage": "en",
+  "datePublished": "2026-06-08T00:00:00Z",
+  "dateModified": "2026-06-08T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/python-operations-input-indexing-slicing/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/posts/" title="글">
+                    <span>글</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      python-operations-input-indexing-slicing
+    </h1>
+    <div class="post-description">
+      python-operations-input-indexing-slicing 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-08 00:00:00 +0000 UTC'>2026년 6월 8일</span>&nbsp;·&nbsp;<span>4 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%ED%83%80%EC%9E%85-%EC%BA%90%EC%8A%A4%ED%8C%85">타입 캐스팅</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%9D%B8%EB%8D%B1%EC%8B%B1">인덱싱</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%8A%AC%EB%9D%BC%EC%9D%B4%EC%8B%B1">슬라이싱</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EC%97%B0%EC%82%B0%EC%9E%90-%ED%83%80%EC%9E%85-%EB%B3%80%ED%99%98">연산자 타입 변환</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-타입-캐스팅">1. 타입 캐스팅<a hidden class="anchor" aria-hidden="true" href="#1-타입-캐스팅">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>타입 캐스팅은 Python에서 사용자 입력이나 다양한 자료형 간의 연산을 원활하게 수행하기 위해 필수적입니다. 특히 문자열로 입력받은 값을 숫자로 변환하지 않으면 연산 오류가 발생할 수 있어, 이를 이해하고 적절히 적용하는 것이 중요합니다.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>초보자들은 <code>input()</code> 함수로 받은 문자열을 숫자로 처리할 때 타입 변환의 필요성을 간과하거나, 잘못된 타입 변환으로 인한 오류를 이해하는 데 어려움을 겪습니다. 또한, 인덱싱과 슬라이싱의 기본 개념과 사용법에 대한 명확한 이해가 부족하여 코드 실행 시 예상치 못한 결과를 얻게 됩니다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 타입 캐스팅 예시</span>
+</span></span><span style="display:flex;"><span>number1 <span style="color:#f92672">=</span> input(<span style="color:#e6db74">&#39;첫 번째 숫자를 입력하세요: &#39;</span>)
+</span></span><span style="display:flex;"><span>number2 <span style="color:#f92672">=</span> input(<span style="color:#e6db74">&#39;두 번째 숫자를 입력하세요: &#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>    num1 <span style="color:#f92672">=</span> int(number1)
+</span></span><span style="display:flex;"><span>    num2 <span style="color:#f92672">=</span> int(number2)
+</span></span><span style="display:flex;"><span>    sum_result <span style="color:#f92672">=</span> num1 <span style="color:#f92672">+</span> num2
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;합계: </span><span style="color:#e6db74">{</span>sum_result<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">except</span> <span style="color:#a6e22e">ValueError</span>:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;올바른 숫자를 입력해주세요.&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 인덱싱과 슬라이싱 예시</span>
+</span></span><span style="display:flex;"><span>my_list <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;apple&#39;</span>, <span style="color:#e6db74">&#39;banana&#39;</span>, <span style="color:#e6db74">&#39;cherry&#39;</span>, <span style="color:#e6db74">&#39;date&#39;</span>]
+</span></span><span style="display:flex;"><span>print(my_list[<span style="color:#ae81ff">0</span>])  <span style="color:#75715e"># 첫 번째 요소 출력: &#39;apple&#39;</span>
+</span></span><span style="display:flex;"><span>print(my_list[<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">3</span>])  <span style="color:#75715e"># 두 번째와 세 번째 요소 슬라이싱 출력: [&#39;banana&#39;, &#39;cherry&#39;]</span>
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<pre tabindex="0"><code>합계: [입력된 숫자들의 합]
+apple
+[&#39;banana&#39;, &#39;cherry&#39;]
+</code></pre><h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>타입 캐스팅은 문자열 입력을 숫자로 변환하여 정확한 연산을 가능하게 합니다. <code>input()</code> 함수로 받은 값은 문자열이므로, <code>int()</code> 또는 <code>float()</code>를 사용해 타입을 변환해야 합니다. 또한, 인덱싱은 리스트나 문자열에서 특정 위치의 값을 가져오고, 슬라이싱은 지정된 범위의 값을 추출하는 데 사용됩니다. 이러한 개념을 이해하고 적용하면 Python에서 다양한 데이터 처리 작업을 효과적으로 수행할 수 있습니다.</p>
+<h2 id="2-인덱싱">2. 인덱싱<a hidden class="anchor" aria-hidden="true" href="#2-인덱싱">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>인덱싱과 슬라이싱은 데이터 구조에서 특정 부분을 효율적으로 접근하고 조작하는 데 필수적인 개념으로, 초보자에게는 인덱스의 시작이 0이라는 점과 슬라이싱의 범위 설정이 혼란스러울 수 있습니다.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>특히, 슬라이싱에서 마지막 인덱스가 포함되지 않는다는 점과 인덱스 범위를 벗어나는 오류에 대한 이해 부족이 혼란의 주요 원인입니다.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 인덱싱 예시</span>
+</span></span><span style="display:flex;"><span>my_list <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;apple&#39;</span>, <span style="color:#e6db74">&#39;banana&#39;</span>, <span style="color:#e6db74">&#39;cherry&#39;</span>, <span style="color:#e6db74">&#39;date&#39;</span>]
+</span></span><span style="display:flex;"><span>print(my_list[<span style="color:#ae81ff">1</span>])  <span style="color:#75715e"># 출력: &#39;banana&#39;</span>
+</span></span><span style="display:flex;"><span>print(my_list[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]) <span style="color:#75715e"># 출력: &#39;date&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 슬라이싱 예시</span>
+</span></span><span style="display:flex;"><span>print(my_list[<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">3</span>])  <span style="color:#75715e"># 출력: [&#39;banana&#39;, &#39;cherry&#39;]</span>
+</span></span><span style="display:flex;"><span>print(my_list[:<span style="color:#ae81ff">2</span>])   <span style="color:#75715e"># 출력: [&#39;apple&#39;, &#39;banana&#39;]</span>
+</span></span><span style="display:flex;"><span>print(my_list[<span style="color:#ae81ff">2</span>:])   <span style="color:#75715e"># 출력: [&#39;cherry&#39;, &#39;date&#39;]</span>
+</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p>인덱스 <code>1</code>은 리스트의 두 번째 요소인 <code>'banana'</code>를 반환하고, <code>-1</code>은 마지막 요소인 <code>'date'</code>를 반환합니다. 슬라이싱 <code>[1:3]</code>은 인덱스 1부터 3 미만까지의 요소를 포함하여 <code>['banana', 'cherry']</code>를 반환합니다. 슬라이싱의 범위 설정은 시작 인덱스를 포함하고 끝 인덱스는 포함하지 않는다는 점을 확인할 수 있습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>인덱싱과 슬라이싱을 통해 리스트나 문자열에서 원하는 부분을 정확하게 추출할 수 있습니다. 인덱스는 0부터 시작하며, 슬라이싱은 <code>[시작:끝]</code> 형식으로 특정 범위의 데이터를 가져옵니다. 주의할 점은 슬라이싱의 끝 인덱스는 포함되지 않는다는 것입니다.</p>
+<h2 id="3-슬라이싱">3. 슬라이싱<a hidden class="anchor" aria-hidden="true" href="#3-슬라이싱">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>슬라이싱은 Python에서 리스트나 문자열에서 특정 부분을 추출하는 강력한 도구로, 데이터의 효율적인 처리와 분석에 필수적이다. 이를 이해함으로써 데이터 조작 능력이 향상된다.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>초보자들은 슬라이싱의 시작과 끝 인덱스 규칙, 특히 끝 인덱스가 포함되지 않는 점에 대해 혼란스러워한다. 또한, 스텝 값을 이용한 슬라이싱의 활용법에 대해 명확한 이해가 부족할 수 있다.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 문자열 슬라이싱 예시</span>
+</span></span><span style="display:flex;"><span>text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Hello, World!&#39;</span>
+</span></span><span style="display:flex;"><span>print(text[<span style="color:#ae81ff">7</span>:<span style="color:#ae81ff">12</span>])  <span style="color:#75715e"># 출력: &#39;World&#39;</span>
+</span></span><span style="display:flex;"><span>print(text[<span style="color:#ae81ff">7</span>::<span style="color:#ae81ff">2</span>])  <span style="color:#75715e"># 출력: &#39;Wrd&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 리스트 슬라이싱 예시</span>
+</span></span><span style="display:flex;"><span>numbers <span style="color:#f92672">=</span> [<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">30</span>, <span style="color:#ae81ff">40</span>, <span style="color:#ae81ff">50</span>]
+</span></span><span style="display:flex;"><span>print(numbers[<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4</span>])  <span style="color:#75715e"># 출력: [20, 30, 40]</span>
+</span></span><span style="display:flex;"><span>print(numbers[::<span style="color:#ae81ff">2</span>])  <span style="color:#75715e"># 출력: [10, 30, 50]</span>
+</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p>&lsquo;Hello, World!
+Wrd
+[20, 30, 40]
+[10, 30, 50]&rsquo;</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>슬라이싱은 <code>[시작:끝:스텝]</code> 형식으로 사용되며, 끝 인덱스는 포함되지 않고 스텝 값을 통해 특정 간격의 요소를 추출할 수 있다. 이를 통해 데이터의 부분 집합을 쉽게 다룰 수 있다.</p>
+<h2 id="4-연산자-타입-변환">4. 연산자 타입 변환<a hidden class="anchor" aria-hidden="true" href="#4-연산자-타입-변환">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>Python에서 다양한 자료형 간의 연산과 타입 변환 메커니즘을 이해하는 것이 중요하며, 특히 사용자 입력과 숫자 연산 간의 타입 불일치로 인한 오류를 피하는 방법을 알아야 합니다. 또한, 문자열과 숫자의 연산 차이와 인덱싱, 슬라이싱의 정확한 사용법을 파악해야 코드의 예측 가능성과 안정성이 높아집니다.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>초보자로서 <code>input()</code>으로 받은 문자열을 숫자로 변환하지 않으면 연산 오류가 발생하고, 문자열 연결과 숫자 덧셈의 차이로 인해 예상치 못한 결과를 얻는 것이 혼란스러웠습니다. 또한, 인덱싱과 슬라이싱의 기본 개념과 범위 설정에 대한 이해 부족으로 인해 코드 작성 시 오류가 발생했습니다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 사용자 입력을 숫자로 변환하여 덧셈 수행</span>
+</span></span><span style="display:flex;"><span>user_input <span style="color:#f92672">=</span> input(<span style="color:#e6db74">&#39;숫자를 입력하세요: &#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>    number <span style="color:#f92672">=</span> int(user_input)
+</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> number <span style="color:#f92672">+</span> <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;결과: </span><span style="color:#e6db74">{</span>result<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">except</span> <span style="color:#a6e22e">ValueError</span>:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;올바른 숫자를 입력해주세요.&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 문자열 인덱싱과 슬라이싱 예시</span>
+</span></span><span style="display:flex;"><span>text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Hello, World!&#39;</span>
+</span></span><span style="display:flex;"><span>print(text[<span style="color:#ae81ff">0</span>])       <span style="color:#75715e"># &#39;H&#39;</span>
+</span></span><span style="display:flex;"><span>print(text[<span style="color:#ae81ff">7</span>:])      <span style="color:#75715e"># &#39;World!&#39;</span>
+</span></span><span style="display:flex;"><span>print(text[::<span style="color:#ae81ff">2</span>])     <span style="color:#75715e"># &#39;Hlo ol!&#39;</span>
+</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<pre tabindex="0"><code>결과: [7]
+World!
+Hlo ol!
+</code></pre><ul>
+<li>사용자 입력 &lsquo;7&rsquo;에 대해 숫자로 변환 후 5를 더한 결과 &lsquo;12&rsquo; 출력.</li>
+<li>문자열 &lsquo;Hello, World!&lsquo;에서:
+<ul>
+<li><code>text[0]</code>은 첫 번째 문자 &lsquo;H&rsquo;를 출력.</li>
+<li><code>text[7:]</code>은 인덱스 7부터 끝까지의 부분 문자열 &lsquo;World!&lsquo;을 출력.</li>
+<li><code>text[::2]</code>는 문자열의 두 글자씩 건너뛰며 &lsquo;Hlo ol!&lsquo;을 출력.</li>
+</ul>
+</li>
+</ul>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>이 항목들은 Python에서 자료형 간의 연산과 타입 변환의 중요성을 강조하며, 특히 사용자 입력 처리와 인덱싱, 슬라이싱의 기본 개념을 명확히 설명합니다. 이를 통해 초보자는 코드 실행 시 발생할 수 있는 오류를 예방하고, 다양한 데이터 구조를 효과적으로 다룰 수 있는 능력을 키울 수 있습니다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>타입 캐스팅의 중요성 이해, 숫자 연산 결과의 타입 변환 규칙 숙지, 인덱싱과 슬라이싱을 통한 데이터 접근 방법 명확히 파악</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>입력 값의 기본 타입이 문자열임을 기억하고, 숫자 연산 시 타입 변환 필수, 슬라이싱 범위 설정 시 마지막 인덱스 미포함 이해 필요</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>학습을 통해 Python의 자료형에 따른 연산자 결과 차이와 타입 변환의 필요성을 명확히 이해하였으며, 특히 사용자 입력 처리와 리스트/문자열의 효율적인 데이터 접근 방법에 대한 실용적인 지식을 습득하였다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/python-methods-split-join-tuple-dict/">
+    <span class="title">« Prev</span>
+    <span>python-methods-split-join-tuple-dict</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-06-08-am-sqlite-foundations/">
+    <span class="title">Next »</span>
+    <span>SQLite 입문 오전: SQLTools 실행부터 ERD까지</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

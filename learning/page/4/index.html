@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>학습 기록 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="강의와 자료에서 배운 내용 — 내 혼란과 교정된 이해를 포함한 학습 노트">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://Han-think.github.io/learning/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="학습 기록">
+  <meta property="og:description" content="강의와 자료에서 배운 내용 — 내 혼란과 교정된 이해를 포함한 학습 노트">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="website">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="학습 기록">
+  <meta name="twitter:description" content="강의와 자료에서 배운 내용 — 내 혼란과 교정된 이해를 포함한 학습 노트">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }
+  ]
+}
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span class="active">학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/posts/" title="글">
+                    <span>글</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header">
+  <h1>
+    학습 기록
+  </h1>
+  <div class="post-description">
+    강의와 자료에서 배운 내용 — 내 혼란과 교정된 이해를 포함한 학습 노트
+  </div>
+</header>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">official-docs-error-messages-methods
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 에러 메시지 해석 타입 불일치 오류 리스트 인덱스 범위 코드 주변 코드 검토 총평 1. 에러 메시지 해석 왜 이걸 보게 됐나 에러 메시지는 단순히 오류 알림을 넘어 문제 해결의 핵심 단서를 제공하며, 이를 통해 코드의 문제점과 해결 방안을 파악할 수 있습니다. 초보자들은 이러한 메시지의 가치를 충분히 이해하지 못하고 무작정 코드를 수정하려는 경향이 있습니다.
+내가 헷갈린 지점 초보자들은 에러 메시지에서 제공하는 구체적인 오류 원인과 해결 방향을 정확히 파악하는 데 어려움을 겪습니다. 특히, 타입 불일치나 인덱스 범위 오류와 같은 세부적인 문제를 이해하는 데 시간이 걸립니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+  <a class="entry-link" aria-label="post link to official-docs-error-messages-methods" href="https://Han-think.github.io/learning/official-docs-error-messages-methods/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">python-class-instance-basic
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 클래스 설계도 인스턴스 생성 독립적 객체 속성 접근 제어 총평 1. 클래스 설계도 왜 이걸 보게 됐나 클래스 설계도를 통해 객체 지향 프로그래밍의 기본 개념을 이해하고자 함. 특히, 클래스와 인스턴스 간의 관계, 그리고 독립적인 객체 상태의 유지 방법을 명확히 파악하고자 함.
+내가 헷갈린 지점 클래스를 통해 생성된 인스턴스들이 서로 독립적인 데이터를 가질 수 있다는 점과 member1 is member2가 False로 출력되는 이유를 이해하는 데 어려움을 겪음. 또한, 클래스 정의와 객체 생성 과정의 구분, 속성과 메서드의 역할 특히 @property 데코레이터의 활용에 대한 명확한 이해 부족.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to python-class-instance-basic" href="https://Han-think.github.io/learning/python-class-instance-basic/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">python-class-variables-instance-variables
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 클래스 변수 인스턴스 변수 변수 이름 일치 데이터 공유 총평 1. 클래스 변수 왜 이걸 보게 됐나 클래스 변수는 여러 인스턴스 간에 공통 데이터를 공유해야 할 때 유용하며, 이를 통해 코드의 효율성과 유지보수성을 높일 수 있습니다. 예를 들어, 팀 내 모든 구성원이 공유하는 정보를 관리할 때 적합합니다.
+내가 헷갈린 지점 변수 이름의 미묘한 차이로 인해 예상치 못한 오류가 발생할 수 있다는 점이 혼란스러웠습니다. 특히 total_members와 같은 이름이 클래스 내에서 일관되게 사용되어야 함을 이해하는 것이 중요합니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to python-class-variables-instance-variables" href="https://Han-think.github.io/learning/python-class-variables-instance-variables/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">python-classmethod-staticmethod-from-string
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 클래스 메서드 정적 메서드 대체 생성자 클래스 변수 총평 1. 클래스 메서드 왜 이걸 보게 됐나 클래스 메서드를 사용하면 클래스 수준의 데이터를 조작하거나 접근할 수 있어, 여러 인스턴스 간에 공통적으로 적용되는 동작을 쉽게 관리할 수 있습니다. 이를 통해 코드의 가독성과 유지보수성이 향상됩니다.
+내가 헷갈린 지점 처음에는 cls 매개변수의 역할을 정확히 이해하지 못해 클래스 메서드를 어떻게 작성해야 할지 혼란스러웠습니다. 그러나 cls가 현재 클래스 자체를 참조한다는 것을 알게 되면서 개념이 명확해졌습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to python-classmethod-staticmethod-from-string" href="https://Han-think.github.io/learning/python-classmethod-staticmethod-from-string/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">python-isinstance-issubclass-polymorphism
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 클래스 상속 type() 확인 isinstance() 확인 issubclass() 확인 총평 1. 클래스 상속 왜 이걸 보게 됐나 클래스 상속을 통해 자식 클래스가 부모 클래스의 메서드를 물려받고 오버라이드할 수 있다는 점을 이해하는 것이 중요합니다. 이를 통해 코드의 재사용성과 유연성을 높일 수 있습니다. 특히 type(), isinstance(), issubclass() 함수를 통해 클래스 관계를 명확히 파악할 수 있습니다.
+내가 헷갈린 지점 상속 관계에서 자식 클래스가 부모 클래스의 메서드를 어떻게 확장하거나 덮어쓰는지, 그리고 이러한 관계가 객체의 타입 확인에 어떻게 영향을 미치는지 이해하는 데 어려움이 있었습니다. 특히 DevTeam이 Department의 하위 클래스임에도 불구하고 특정 메서드 동작이 어떻게 달라지는지 명확히 파악하는 것이 헷갈렸습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+  <a class="entry-link" aria-label="post link to python-isinstance-issubclass-polymorphism" href="https://Han-think.github.io/learning/python-isinstance-issubclass-polymorphism/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">python-modules-entrypoint-docstring
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 모듈화 진입점 Docstring 함수 import 총평 1. 모듈화 왜 이걸 보게 됐나 모듈화를 이해함으로써 코드의 효율적인 관리와 재사용성을 향상시키는 방법을 배웠습니다. 이를 통해 복잡한 프로젝트를 더 작은, 관리하기 쉬운 부분으로 나눌 수 있게 되었습니다.
+내가 헷갈린 지점 처음에는 모듈화의 실질적인 이점과 import 문 사용 시 주의해야 할 사항들에 대해 명확히 이해하지 못했습니다. 특히, import와 from ... import ...의 선택 기준이 모호했습니다. 또한, Docstring의 중요성과 실제 활용 방법에 대해 더 깊이 이해하고자 했습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+  <a class="entry-link" aria-label="post link to python-modules-entrypoint-docstring" href="https://Han-think.github.io/learning/python-modules-entrypoint-docstring/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">python-scope-global-shadowing
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 스코프 이해 Shadowing global 키워드 지역 변수 총평 1. 스코프 이해 왜 이걸 보게 됐나 초보 학습자로서 전역 변수의 수정 방법과 스코프 이해 부족으로 인해 UnboundLocalError 오류를 경험하며 혼란을 겪었습니다. 이를 통해 변수의 스코프와 global 키워드의 중요성을 깊이 이해하게 되었습니다.
+내가 헷갈린 지점 전역 변수 count를 함수 내에서 직접 수정하려고 했을 때 발생한 UnboundLocalError 오류 메시지와 그 원인을 이해하는 데 어려움을 겪었습니다. 특히 함수 내에서 변수를 수정할 때 global 키워드의 필요성을 깨달았습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+  <a class="entry-link" aria-label="post link to python-scope-global-shadowing" href="https://Han-think.github.io/learning/python-scope-global-shadowing/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">today-learning-personal-notes
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 Git 명령어 적용 Markdown 기본 문법 1. Git 명령어 적용 왜 이걸 보게 됐나 Git 명령어를 실제 프로젝트 관리에 어떻게 적용할 수 있는지 이해하고자 합니다.
+내가 헷갈린 지점 특히 mkdir -p, touch, echo, &gt;, &gt;&gt; 명령어의 구체적인 사용 사례와 그 차이점에 대해 명확한 이해가 필요합니다.
+시도한 코드 / 예시 # 중첩 폴더 생성 mkdir -p my_project/docs/tutorials/beginner # 빈 파일 생성 touch my_notes.md # 텍스트 파일에 내용 추가 echo &#34;첫 번째 줄&#34; &gt; my_notes.md echo &#34;두 번째 줄&#34; &gt;&gt; my_notes.md 결과와 해석 위 명령어 실행 결과:
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+  <a class="entry-link" aria-label="post link to today-learning-personal-notes" href="https://Han-think.github.io/learning/today-learning-personal-notes/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">uv-environment-setup
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 uv 환경 설정 pyproject.toml 의존성 uv sync 동기화 uv.lock 버전 관리 총평 1. uv 환경 설정 왜 이걸 보게 됐나 uv 환경 설정의 핵심 개념과 실제 적용 과정을 이해하기 위해 초보자의 혼란 포인트와 그 해결 방법을 설명합니다. 이를 통해 학습자가 uv 도구를 효과적으로 사용할 수 있도록 안내합니다.
+내가 헷갈린 지점 학습자들은 uv의 역할, 관련 설정 파일의 기능, 그리고 명령어의 구체적인 작동 방식에 대해 혼란스러워했습니다. 특히 실행 환경과 파일 구조에 대한 이해 부족이 주요한 문제점이었습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+  <a class="entry-link" aria-label="post link to uv-environment-setup" href="https://Han-think.github.io/learning/uv-environment-setup/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">while-break-fizzbuzz-control-flow
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 종료 조건 설정 변수 업데이트 break 문 활용 조건 순서 총평 1. 종료 조건 설정 왜 이걸 보게 됐나 종료 조건 설정은 프로그램이 무한 루프에 빠지지 않고 정확한 작업을 완료하도록 하는 핵심 요소입니다. 이를 이해함으로써 반복적인 작업을 효율적으로 제어할 수 있습니다.
+내가 헷갈린 지점 초보자로서 while 루프 내에서 변수를 어떻게 업데이트해야 정확한 종료 조건을 만족시키는지, 그리고 break 문이 언제 사용되는지에 대한 이해가 부족했습니다. 특히, 조건문과 반복문이 복합적으로 사용될 때 전체 흐름을 파악하는 데 어려움이 있었습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+  <a class="entry-link" aria-label="post link to while-break-fizzbuzz-control-flow" href="https://Han-think.github.io/learning/while-break-fizzbuzz-control-flow/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="https://Han-think.github.io/learning/page/3/">
+      «&nbsp;Prev&nbsp;
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

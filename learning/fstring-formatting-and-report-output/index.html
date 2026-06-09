@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>fstring-formatting-and-report-output | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="fstring-formatting-and-report-output 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/fstring-formatting-and-report-output/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/fstring-formatting-and-report-output/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/fstring-formatting-and-report-output/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="fstring-formatting-and-report-output">
+  <meta property="og:description" content="fstring-formatting-and-report-output 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-08T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-08T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="fstring-formatting-and-report-output">
+  <meta name="twitter:description" content="fstring-formatting-and-report-output 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "fstring-formatting-and-report-output",
+      "item": "https://Han-think.github.io/learning/fstring-formatting-and-report-output/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "fstring-formatting-and-report-output",
+  "name": "fstring-formatting-and-report-output",
+  "description": "fstring-formatting-and-report-output 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 f-string 포맷팅 왼쪽 정렬 포맷 오른쪽 정렬 포맷 천 단위 쉼표 총평 1. f-string 포맷팅 왜 이걸 보게 됐나 f-string은 단순히 변수 삽입을 넘어 데이터의 가독성을 높이는 포맷팅 기능을 제공하여, 숫자 정렬 및 천 단위 구분자 삽입 등 다양한 표현이 가능함을 이해하고자 합니다.\n내가 헷갈린 지점 포맷 옵션 (:\u003c, :\u003e, ,)의 구체적인 작동 방식과 적용 방법에 대해 명확한 이해가 필요했습니다. 특히 숫자 정렬과 천 단위 구분자의 효과를 정확히 파악하는 데 어려움이 있었습니다.\n시도한 코드 / 예시 # 팀 데이터 리스트 정의 teams = [ ('개발팀', 3, 16900), ('기획팀', 2, 9500), ('영업팀', 2, 9700), ('분석팀', 2, 9700), ] # 헤더 출력 print(f'팀명:\u003c8 팀인원:\u003e4 연봉합계(만원):\u003e14') # 테이블 헤더 설정 print('-' * 30) # 구분선 출력 # 팀 데이터 출력 for team_name, count, total in teams: print(f'{team_name:\u003c8} {count:\u003e4} {total:\u003e14,}') # 각 팀 데이터 포맷팅 및 출력 결과와 해석 팀명: 팀인원 연봉합계(만원): ------------------------------ 개발팀 3 16,900 기획팀 2 9,500 영업팀 2 9,700 분석팀 2 9,700 ------------------------------ 정리된 이해 f-string을 사용하여 팀 데이터를 테이블 형태로 가독성 있게 출력하는 방법을 실습했습니다. :\u003c, :\u003e, , 옵션을 통해 숫자 정렬과 천 단위 구분자를 적용하여 데이터의 시각적 표현을 향상시켰습니다.\n2. 왼쪽 정렬 포맷 왜 이걸 보게 됐나 왼쪽 정렬 포맷은 데이터 표의 일관성과 가독성을 높이기 위해 사용되며, 특히 팀 이름이나 팀명과 같은 텍스트 데이터를 일정한 너비로 정렬하여 시각적으로 깔끔하게 표현할 수 있습니다. 이를 통해 사용자는 정보를 빠르게 파악할 수 있습니다.\n내가 헷갈린 지점 처음에는 :",
+  "wordCount" : "810",
+  "inLanguage": "en",
+  "datePublished": "2026-06-08T00:00:00Z",
+  "dateModified": "2026-06-08T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/fstring-formatting-and-report-output/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/posts/" title="글">
+                    <span>글</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      fstring-formatting-and-report-output
+    </h1>
+    <div class="post-description">
+      fstring-formatting-and-report-output 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-08 00:00:00 +0000 UTC'>2026년 6월 8일</span>&nbsp;·&nbsp;<span>4 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-f-string-%ED%8F%AC%EB%A7%B7%ED%8C%85">f-string 포맷팅</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%99%BC%EC%AA%BD-%EC%A0%95%EB%A0%AC-%ED%8F%AC%EB%A7%B7">왼쪽 정렬 포맷</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%98%A4%EB%A5%B8%EC%AA%BD-%EC%A0%95%EB%A0%AC-%ED%8F%AC%EB%A7%B7">오른쪽 정렬 포맷</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EC%B2%9C-%EB%8B%A8%EC%9C%84-%EC%89%BC%ED%91%9C">천 단위 쉼표</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-f-string-포맷팅">1. f-string 포맷팅<a hidden class="anchor" aria-hidden="true" href="#1-f-string-포맷팅">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>f-string은 단순히 변수 삽입을 넘어 데이터의 가독성을 높이는 포맷팅 기능을 제공하여, 숫자 정렬 및 천 단위 구분자 삽입 등 다양한 표현이 가능함을 이해하고자 합니다.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>포맷 옵션 (<code>:&lt;</code>, <code>:&gt;</code>, <code>,</code>)의 구체적인 작동 방식과 적용 방법에 대해 명확한 이해가 필요했습니다. 특히 숫자 정렬과 천 단위 구분자의 효과를 정확히 파악하는 데 어려움이 있었습니다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 팀 데이터 리스트 정의</span>
+</span></span><span style="display:flex;"><span>teams <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;개발팀&#39;</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">16900</span>),
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;기획팀&#39;</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">9500</span>),
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;영업팀&#39;</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">9700</span>),
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;분석팀&#39;</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">9700</span>),
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 헤더 출력</span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;팀명:&lt;8 팀인원:&gt;4 연봉합계(만원):&gt;14&#39;</span>)  <span style="color:#75715e"># 테이블 헤더 설정</span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#39;-&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">30</span>)  <span style="color:#75715e"># 구분선 출력</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 팀 데이터 출력</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> team_name, count, total <span style="color:#f92672">in</span> teams:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>team_name<span style="color:#e6db74">:</span><span style="color:#e6db74">&lt;8</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{</span>count<span style="color:#e6db74">:</span><span style="color:#e6db74">&gt;4</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{</span>total<span style="color:#e6db74">:</span><span style="color:#e6db74">&gt;14,</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)  <span style="color:#75715e"># 각 팀 데이터 포맷팅 및 출력</span>
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<pre tabindex="0"><code>팀명:     팀인원     연봉합계(만원):
+------------------------------
+개발팀     3          16,900
+기획팀    2          9,500
+영업팀    2          9,700
+분석팀    2          9,700
+------------------------------
+</code></pre><h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>f-string을 사용하여 팀 데이터를 테이블 형태로 가독성 있게 출력하는 방법을 실습했습니다. <code>:&lt;</code>, <code>:&gt;</code>, <code>,</code> 옵션을 통해 숫자 정렬과 천 단위 구분자를 적용하여 데이터의 시각적 표현을 향상시켰습니다.</p>
+<h2 id="2-왼쪽-정렬-포맷">2. 왼쪽 정렬 포맷<a hidden class="anchor" aria-hidden="true" href="#2-왼쪽-정렬-포맷">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>왼쪽 정렬 포맷은 데이터 표의 일관성과 가독성을 높이기 위해 사용되며, 특히 팀 이름이나 팀명과 같은 텍스트 데이터를 일정한 너비로 정렬하여 시각적으로 깔끔하게 표현할 수 있습니다. 이를 통해 사용자는 정보를 빠르게 파악할 수 있습니다.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>처음에는 <code>:&lt;N</code> 옵션이 정확히 어떤 역할을 하는지 이해하는 데 어려움이 있었습니다. 특히, 각 옵션이 실제 출력에서 어떻게 적용되는지 구체적인 예시 없이는 혼동이 따랐습니다. 그러나 실습을 통해 텍스트의 왼쪽 정렬이 어떻게 이루어지는지 명확히 이해할 수 있었습니다.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 팀 데이터 리스트 정의</span>
+</span></span><span style="display:flex;"><span>teams <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;개발팀&#39;</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">16900</span>),
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;기획팀&#39;</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">9500</span>),
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;영업팀&#39;</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">9700</span>),
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;분석팀&#39;</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">9700</span>),
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 헤더 출력</span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#39;팀명:&lt;8&#39;</span> <span style="color:#e6db74">&#39;인원&#39;</span>:<span style="color:#f92672">&gt;</span><span style="color:#ae81ff">4</span><span style="color:#e6db74">&#39; &#39;</span>연봉합계(만원)<span style="color:#e6db74">&#39;:&gt;14&#39;</span>)  <span style="color:#75715e"># 헤더 설정 시 직접 문자열 연결</span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#39;-&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">30</span>)  <span style="color:#75715e"># 구분선 출력</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 팀 데이터 출력</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> team_name, count, total <span style="color:#f92672">in</span> teams:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>team_name<span style="color:#e6db74">:</span><span style="color:#e6db74">&lt;8</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{</span>count<span style="color:#e6db74">:</span><span style="color:#e6db74">&gt;4</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{</span>total<span style="color:#e6db74">:</span><span style="color:#e6db74">&gt;14,</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)  <span style="color:#75715e"># 각 팀 데이터 포맷팅 및 출력</span>
+</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p>출력 결과:
+팀명         인원      연봉합계(만원)
+────────────────────────────────────
+개발팀         3         16,900
+기획팀         2          9,500
+영업팀         2          9,700
+분석팀         2          9,700</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>왼쪽 정렬 포맷은 특히 텍스트 데이터를 일정한 너비로 정렬하여 표 형식의 데이터 표현을 개선하는 데 효과적입니다. 위 코드 예시를 통해 팀명과 인원, 연봉합계를 왼쪽 정렬 및 오른쪽 정렬, 천 단위 쉼표 적용을 통해 가독성 높은 테이블을 생성할 수 있음을 확인할 수 있습니다.</p>
+<h2 id="3-오른쪽-정렬-포맷">3. 오른쪽 정렬 포맷<a hidden class="anchor" aria-hidden="true" href="#3-오른쪽-정렬-포맷">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>오른쪽 정렬 포맷은 데이터의 시각적 정리를 통해 가독성을 향상시키는 데 중요하며, 특히 숫자 데이터의 경우 천 단위 구분자와 함께 사용하면 더욱 효과적입니다. 이를 통해 보고서나 테이블 형태의 출력물이 더 명확해집니다.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>처음에는 다양한 포맷 옵션의 구체적인 적용 방법과 그 차이를 이해하는 데 어려움이 있었습니다. 특히 왼쪽과 오른쪽 정렬 옵션의 차이와 천 단위 구분자의 역할에 대해 명확히 파악하는 데 시간이 필요했습니다.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 팀 데이터 출력 예시</span>
+</span></span><span style="display:flex;"><span>teams <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;개발팀&#39;</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">16900</span>),
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;기획팀&#39;</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">9500</span>),
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;영업팀&#39;</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">9700</span>),
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;분석팀&#39;</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">9700</span>),
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 오른쪽 정렬 포맷팅 적용</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> team_name, count, total <span style="color:#f92672">in</span> teams:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>team_name<span style="color:#e6db74">:</span><span style="color:#e6db74">&gt;10</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{</span>count<span style="color:#e6db74">:</span><span style="color:#e6db74">&gt;3</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{</span>total<span style="color:#e6db74">:</span><span style="color:#e6db74">&gt;12,</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)  <span style="color:#75715e"># 팀명 오른쪽 정렬, 인원 왼쪽 정렬, 연봉합계 오른쪽 정렬 및 천 단위 구분자 적용</span>
+</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<h2 id="팀명----------인원-----연봉합계만원">출력 결과:
+팀명          인원     연봉합계(만원)</h2>
+<p>개발팀        3       16,900
+기획팀       2       9,500
+영업팀       2       9,700
+분석팀       2       9,700</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>오른쪽 정렬 포맷은 특히 숫자 데이터를 포함한 테이블 형식의 출력에서 가독성을 크게 향상시킵니다. <code>:&gt;N</code> 옵션을 사용하여 특정 열을 오른쪽 정렬하면 데이터의 일관성과 시각적 명확성이 개선되며, <code>,</code> 옵션은 숫자의 가독성을 더욱 높입니다.</p>
+<h2 id="4-천-단위-쉼표">4. 천 단위 쉼표<a hidden class="anchor" aria-hidden="true" href="#4-천-단위-쉼표">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>천 단위 쉼표 기능을 이해하고 실제 데이터 포맷팅에 적용하는 방법을 학습하여 숫자의 가독성을 높이는 방법을 익히고자 합니다.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>천 단위 쉼표 옵션 <code>,</code>가 어떻게 정확히 작동하는지와 다른 포맷 옵션들과의 차이점을 명확히 파악하는 데 어려움이 있었습니다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 팀 데이터 리스트 정의</span>
+</span></span><span style="display:flex;"><span>teams <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;개발팀&#39;</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">16900</span>),
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;기획팀&#39;</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">9500</span>),
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;영업팀&#39;</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">9700</span>),
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;분석팀&#39;</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">9700</span>),
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 천 단위 쉼표 적용 예시</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> team_name, count, total <span style="color:#f92672">in</span> teams:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>team_name<span style="color:#e6db74">:</span><span style="color:#e6db74">&lt;10</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{</span>count<span style="color:#e6db74">:</span><span style="color:#e6db74">&gt;6</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> $</span><span style="color:#e6db74">{</span>total<span style="color:#e6db74">:</span><span style="color:#e6db74">,</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)  <span style="color:#75715e"># 연봉합계에 천 단위 쉼표 적용</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 출력 결과 예시:</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 팀명    인원   연봉합계(€)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 개발팀   3      16,900</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 기획팀   2      9,500</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 영업팀   2      9,700</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 분석팀   2      9,700</span>
+</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<p>출력 결과:
+팀명    인원   연봉합계(€)
+개발팀   3      16,900
+기획팀   2      9,500
+영업팀   2      9,700
+분석팀   2      9,700</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>천 단위 쉼표 옵션 <code>,</code>를 사용하여 연봉합계를 가독성 있게 포맷팅하는 방법을 실습했습니다. 이를 통해 숫자 데이터가 더 직관적으로 표현되는 것을 확인할 수 있었습니다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>f-string을 이용해 변수 값 삽입 뿐 아니라 데이터 가독성을 높이는 포맷팅 기능을 익혔다. 왼쪽 정렬, 오른쪽 정렬, 천 단위 쉼표 기능을 포함한 다양한 포맷 옵션을 이해하고 적용할 수 있게 되었다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>포맷 옵션 <code>:&lt;N</code>, <code>:&gt;N</code>, <code>,</code>의 구체적인 작동 방식을 정확히 파악하는 것이 중요하다. 특히 숫자 정렬과 가독성 향상을 위한 쉼표 사용법에 주의해야 한다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>실습을 통해 f-string의 활용 범위를 확장하고 실제 데이터 출력 포맷팅에 적용하는 능력을 향상시켰다. 팀 데이터 예시를 통해 테이블 형태의 데이터 표현이 얼마나 효과적인지 확인했다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/enumerate-rank-output/">
+    <span class="title">« Prev</span>
+    <span>enumerate-rank-output</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/function-structure-and-testable-code/">
+    <span class="title">Next »</span>
+    <span>function-structure-and-testable-code</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

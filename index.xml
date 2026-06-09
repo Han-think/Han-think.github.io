@@ -6,8 +6,344 @@
     <description>Recent content on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Thu, 04 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 09 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>consulting-report-prompting</title>
+      <link>https://Han-think.github.io/practice/consulting-report-prompting/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/consulting-report-prompting/</guid>
+      <description>consulting-report-prompting 학습 정리</description>
+    </item>
+    <item>
+      <title>erd-crows-foot-chinook</title>
+      <link>https://Han-think.github.io/learning/erd-crows-foot-chinook/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/erd-crows-foot-chinook/</guid>
+      <description>erd-crows-foot-chinook 학습 정리</description>
+    </item>
+    <item>
+      <title>hallucination-symbolic-control</title>
+      <link>https://Han-think.github.io/projects/hallucination-symbolic-control/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/hallucination-symbolic-control/</guid>
+      <description>hallucination-symbolic-control 학습 정리</description>
+    </item>
+    <item>
+      <title>minto-scqa-mece</title>
+      <link>https://Han-think.github.io/learning/minto-scqa-mece/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/minto-scqa-mece/</guid>
+      <description>minto-scqa-mece 학습 정리</description>
+    </item>
+    <item>
+      <title>pm-01-select-query-practice</title>
+      <link>https://Han-think.github.io/practice/pm-01-select-query-practice/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/pm-01-select-query-practice/</guid>
+      <description>pm-01-select-query-practice 학습 정리</description>
+    </item>
+    <item>
+      <title>pm-02-select-mistakes-and-fixes</title>
+      <link>https://Han-think.github.io/practice/pm-02-select-mistakes-and-fixes/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/pm-02-select-mistakes-and-fixes/</guid>
+      <description>pm-02-select-mistakes-and-fixes 학습 정리</description>
+    </item>
+    <item>
+      <title>pm-03-dml-insert-update-delete</title>
+      <link>https://Han-think.github.io/practice/pm-03-dml-insert-update-delete/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/pm-03-dml-insert-update-delete/</guid>
+      <description>pm-03-dml-insert-update-delete 학습 정리</description>
+    </item>
+    <item>
+      <title>pm-04-book-table-review-queries</title>
+      <link>https://Han-think.github.io/practice/pm-04-book-table-review-queries/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/pm-04-book-table-review-queries/</guid>
+      <description>pm-04-book-table-review-queries 학습 정리</description>
+    </item>
+    <item>
+      <title>pm-05-erd-reading-training</title>
+      <link>https://Han-think.github.io/learning/pm-05-erd-reading-training/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/pm-05-erd-reading-training/</guid>
+      <description>pm-05-erd-reading-training 학습 정리</description>
+    </item>
+    <item>
+      <title>rlhf-good-bad-response</title>
+      <link>https://Han-think.github.io/learning/rlhf-good-bad-response/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/rlhf-good-bad-response/</guid>
+      <description>rlhf-good-bad-response 학습 정리</description>
+    </item>
+    <item>
+      <title>sqlite-learning-resources-and-notion-export</title>
+      <link>https://Han-think.github.io/practice/sqlite-learning-resources-and-notion-export/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/sqlite-learning-resources-and-notion-export/</guid>
+      <description>sqlite-learning-resources-and-notion-export 학습 정리</description>
+    </item>
+    <item>
+      <title>sqlite-sqltools-nextweek</title>
+      <link>https://Han-think.github.io/practice/sqlite-sqltools-nextweek/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/sqlite-sqltools-nextweek/</guid>
+      <description>sqlite-sqltools-nextweek 학습 정리</description>
+    </item>
+    <item>
+      <title>sqltools-selected-query-execution</title>
+      <link>https://Han-think.github.io/practice/sqltools-selected-query-execution/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/sqltools-selected-query-execution/</guid>
+      <description>sqltools-selected-query-execution 학습 정리</description>
+    </item>
+    <item>
+      <title>ai-tools-cursor-perplexity-qwen</title>
+      <link>https://Han-think.github.io/practice/ai-tools-cursor-perplexity-qwen/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/ai-tools-cursor-perplexity-qwen/</guid>
+      <description>ai-tools-cursor-perplexity-qwen 학습 정리</description>
+    </item>
+    <item>
+      <title>chinook-classicmodels-sample-db</title>
+      <link>https://Han-think.github.io/practice/chinook-classicmodels-sample-db/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/chinook-classicmodels-sample-db/</guid>
+      <description>chinook-classicmodels-sample-db 학습 정리</description>
+    </item>
+    <item>
+      <title>classmap-project-design</title>
+      <link>https://Han-think.github.io/projects/classmap-project-design/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/classmap-project-design/</guid>
+      <description>classmap-project-design 학습 정리</description>
+    </item>
+    <item>
+      <title>classmap-release-workflow</title>
+      <link>https://Han-think.github.io/practice/classmap-release-workflow/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/classmap-release-workflow/</guid>
+      <description>classmap-release-workflow 학습 정리</description>
+    </item>
+    <item>
+      <title>colab-local-environment-and-sources</title>
+      <link>https://Han-think.github.io/practice/colab-local-environment-and-sources/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/colab-local-environment-and-sources/</guid>
+      <description>colab-local-environment-and-sources 학습 정리</description>
+    </item>
+    <item>
+      <title>data-cleaning-dict-comprehension-sorted-lambda</title>
+      <link>https://Han-think.github.io/learning/data-cleaning-dict-comprehension-sorted-lambda/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/data-cleaning-dict-comprehension-sorted-lambda/</guid>
+      <description>data-cleaning-dict-comprehension-sorted-lambda 학습 정리</description>
+    </item>
+    <item>
+      <title>day-bridge-python-code-to-ecosystem</title>
+      <link>https://Han-think.github.io/learning/day-bridge-python-code-to-ecosystem/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/day-bridge-python-code-to-ecosystem/</guid>
+      <description>day-bridge-python-code-to-ecosystem 학습 정리</description>
+    </item>
+    <item>
+      <title>enumerate-rank-output</title>
+      <link>https://Han-think.github.io/learning/enumerate-rank-output/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/enumerate-rank-output/</guid>
+      <description>enumerate-rank-output 학습 정리</description>
+    </item>
+    <item>
+      <title>fstring-formatting-and-report-output</title>
+      <link>https://Han-think.github.io/learning/fstring-formatting-and-report-output/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/fstring-formatting-and-report-output/</guid>
+      <description>fstring-formatting-and-report-output 학습 정리</description>
+    </item>
+    <item>
+      <title>function-structure-and-testable-code</title>
+      <link>https://Han-think.github.io/learning/function-structure-and-testable-code/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/function-structure-and-testable-code/</guid>
+      <description>function-structure-and-testable-code 학습 정리</description>
+    </item>
+    <item>
+      <title>git-bash-pypi-failure-recovery</title>
+      <link>https://Han-think.github.io/practice/git-bash-pypi-failure-recovery/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/git-bash-pypi-failure-recovery/</guid>
+      <description>git-bash-pypi-failure-recovery 학습 정리</description>
+    </item>
+    <item>
+      <title>github-clone-commit-push</title>
+      <link>https://Han-think.github.io/practice/github-clone-commit-push/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/github-clone-commit-push/</guid>
+      <description>github-clone-commit-push 학습 정리</description>
+    </item>
+    <item>
+      <title>import-alias-namespace-api-reference</title>
+      <link>https://Han-think.github.io/learning/import-alias-namespace-api-reference/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/import-alias-namespace-api-reference/</guid>
+      <description>import-alias-namespace-api-reference 학습 정리</description>
+    </item>
+    <item>
+      <title>learninglog-kit-loop-automation-idea</title>
+      <link>https://Han-think.github.io/projects/learninglog-kit-loop-automation-idea/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/learninglog-kit-loop-automation-idea/</guid>
+      <description>learninglog-kit-loop-automation-idea 학습 정리</description>
+    </item>
+    <item>
+      <title>library-ecosystem-selection</title>
+      <link>https://Han-think.github.io/learning/library-ecosystem-selection/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/library-ecosystem-selection/</guid>
+      <description>library-ecosystem-selection 학습 정리</description>
+    </item>
+    <item>
+      <title>list-comprehension-filter-transform</title>
+      <link>https://Han-think.github.io/learning/list-comprehension-filter-transform/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/list-comprehension-filter-transform/</guid>
+      <description>list-comprehension-filter-transform 학습 정리</description>
+    </item>
+    <item>
+      <title>official-docs-llm-design-and-original-structure</title>
+      <link>https://Han-think.github.io/goals/official-docs-llm-design-and-original-structure/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/goals/official-docs-llm-design-and-original-structure/</guid>
+      <description>official-docs-llm-design-and-original-structure 학습 정리</description>
+    </item>
+    <item>
+      <title>pandas-read-csv-parameter-design</title>
+      <link>https://Han-think.github.io/learning/pandas-read-csv-parameter-design/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/pandas-read-csv-parameter-design/</guid>
+      <description>pandas-read-csv-parameter-design 학습 정리</description>
+    </item>
+    <item>
+      <title>pip-requirements-file-installation</title>
+      <link>https://Han-think.github.io/practice/pip-requirements-file-installation/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/pip-requirements-file-installation/</guid>
+      <description>pip-requirements-file-installation 학습 정리</description>
+    </item>
+    <item>
+      <title>python-animated-method-experiment</title>
+      <link>https://Han-think.github.io/practice/python-animated-method-experiment/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/python-animated-method-experiment/</guid>
+      <description>python-animated-method-experiment 학습 정리</description>
+    </item>
+    <item>
+      <title>python-basic-types-print-variables</title>
+      <link>https://Han-think.github.io/learning/python-basic-types-print-variables/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-basic-types-print-variables/</guid>
+      <description>python-basic-types-print-variables 학습 정리</description>
+    </item>
+    <item>
+      <title>python-function-return-parameters</title>
+      <link>https://Han-think.github.io/learning/python-function-return-parameters/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-function-return-parameters/</guid>
+      <description>python-function-return-parameters 학습 정리</description>
+    </item>
+    <item>
+      <title>python-inheritance-department-tree</title>
+      <link>https://Han-think.github.io/learning/python-inheritance-department-tree/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-inheritance-department-tree/</guid>
+      <description>python-inheritance-department-tree 학습 정리</description>
+    </item>
+    <item>
+      <title>python-init-self-docstring-attributes</title>
+      <link>https://Han-think.github.io/learning/python-init-self-docstring-attributes/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-init-self-docstring-attributes/</guid>
+      <description>python-init-self-docstring-attributes 학습 정리</description>
+    </item>
+    <item>
+      <title>python-magic-methods-str-repr</title>
+      <link>https://Han-think.github.io/learning/python-magic-methods-str-repr/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-magic-methods-str-repr/</guid>
+      <description>python-magic-methods-str-repr 학습 정리</description>
+    </item>
+    <item>
+      <title>python-methods-split-join-tuple-dict</title>
+      <link>https://Han-think.github.io/learning/python-methods-split-join-tuple-dict/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-methods-split-join-tuple-dict/</guid>
+      <description>python-methods-split-join-tuple-dict 학습 정리</description>
+    </item>
+    <item>
+      <title>python-operations-input-indexing-slicing</title>
+      <link>https://Han-think.github.io/learning/python-operations-input-indexing-slicing/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-operations-input-indexing-slicing/</guid>
+      <description>python-operations-input-indexing-slicing 학습 정리</description>
+    </item>
+    <item>
+      <title>python-package-environment-reference</title>
+      <link>https://Han-think.github.io/projects/python-package-environment-reference/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/python-package-environment-reference/</guid>
+      <description>python-package-environment-reference 학습 정리</description>
+    </item>
+    <item>
+      <title>python-package-release-workflow</title>
+      <link>https://Han-think.github.io/practice/python-package-release-workflow/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/python-package-release-workflow/</guid>
+      <description>python-package-release-workflow 학습 정리</description>
+    </item>
+    <item>
+      <title>python-while-menu-design</title>
+      <link>https://Han-think.github.io/practice/python-while-menu-design/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/python-while-menu-design/</guid>
+      <description>python-while-menu-design 학습 정리</description>
+    </item>
+    <item>
+      <title>SQLite 입문 오전: SQLTools 실행부터 ERD까지</title>
+      <link>https://Han-think.github.io/learning/2026-06-08-am-sqlite-foundations/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-08-am-sqlite-foundations/</guid>
+      <description>VS Code SQLTools로 SQLite를 다루며 SELECT/CRUD 기본기와 ERD·샘플 DB 구조를 익힌 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>SQLite 입문 오후: SELECT 실습부터 DML과 ERD 읽기까지</title>
+      <link>https://Han-think.github.io/learning/2026-06-08-pm-sql-select-dml-erd/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-08-pm-sql-select-dml-erd/</guid>
+      <description>chinook.db와 book 테이블로 SELECT 기본기, 자주 한 실수 교정, INSERT/UPDATE/DELETE, ERD 읽기를 실습한 오후 정리</description>
+    </item>
+    <item>
+      <title>validation-report</title>
+      <link>https://Han-think.github.io/learning/validation-report/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/validation-report/</guid>
+      <description>validation-report 학습 정리</description>
+    </item>
+    <item>
+      <title>virtual-environment-dependency-survival</title>
+      <link>https://Han-think.github.io/practice/virtual-environment-dependency-survival/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/practice/virtual-environment-dependency-survival/</guid>
+      <description>virtual-environment-dependency-survival 학습 정리</description>
+    </item>
+    <item>
+      <title>web-server-http-github-pages</title>
+      <link>https://Han-think.github.io/learning/web-server-http-github-pages/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/web-server-http-github-pages/</guid>
+      <description>web-server-http-github-pages 학습 정리</description>
+    </item>
     <item>
       <title>Streamlit Toast 실습과 환경 적응</title>
       <link>https://Han-think.github.io/practice/streamlit-toast-document-verification/</link>

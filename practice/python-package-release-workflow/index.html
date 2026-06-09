@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>python-package-release-workflow | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="python-package-release-workflow 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/practice/python-package-release-workflow/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/practice/python-package-release-workflow/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/practice/python-package-release-workflow/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="python-package-release-workflow">
+  <meta property="og:description" content="python-package-release-workflow 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="practice">
+    <meta property="article:published_time" content="2026-06-08T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-08T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="python-package-release-workflow">
+  <meta name="twitter:description" content="python-package-release-workflow 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "실습 기록",
+      "item": "https://Han-think.github.io/practice/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "python-package-release-workflow",
+      "item": "https://Han-think.github.io/practice/python-package-release-workflow/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "python-package-release-workflow",
+  "name": "python-package-release-workflow",
+  "description": "python-package-release-workflow 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 패키지 배포 과정 Git 태깅 하이픈/언더스코어 PyPI 패키지 이름 총평 1. 패키지 배포 과정 왜 이걸 보게 됐나 단순히 코드를 만들어서 끝내는 게 아니라, 패키지가 어떻게 만들어지고 발전해나가는지 전체 과정을 이해하고 싶어서 패키지 배포 과정을 배우게 됐어. 버전 관리 시스템을 이용해서 각 단계별 변경 사항을 기록하고, 다른 사람들과 공유할 수 있도록 PyPI에 올리는 방법을 익히면서 실제 소프트웨어 개발 흐름을 경험해보는 것이 중요하다고 생각했어. 앞으로 내가 만들던 코드를 제대로 관리하고 다른 사람들과 공유할 수 있게 되리라 믿어.\n내가 헷갈린 지점 패키지를 만드는 것만 생각해서 GitHub 저장소 이름, PyPI 패키지 이름, import 이름이 달라도 되는지 몰랐고, 하이픈과 언더스코어의 역할을 제대로 이해하지 못해서 오류가 발생할까 봐 걱정스러웠다. 단순히 최종 버전을 올리는 것뿐이라고 생각해서 각 단계의 Git 태그 이름 규칙이나 배포 과정을 상세하게 신경 쓰지 못했던 것 같아 아쉬웠다.\n시도한 코드 / 예시 # 예시: PyPI에 패키지 업로드 (setup.py 파일 활용) # 실제 값: python3 setup.py sdist upload 결과와 해석 Python 패키지 배포는 단순히 코드를 작성하는 것 외에 Git을 이용한 버전 관리, PyPI에 올리는 과정까지 포함하며, 저장소 이름, 패키지 이름, import 이름의 차이를 명확히 이해하는 것이 중요하다. 각 기능 추가 단계마다 commit과 tag를 생성하여 패키지의 성장 과정을 기록하고, 최종적으로 README와 릴리스 기록을 정리하는 것이 전체적인 배포 프로세스의 핵심이었다. 이러한 과정을 통해 코드 완성도뿐 아니라 패키지의 성장 과정을 체계적으로 관리하는 방법을 익힐 수 있었다.\n정리된 이해 패키지 배포는 코드 완성 외에 버전 관리와 기록을 체계적으로 관리하는 과정이라는 것을 깨달았다. 저장소 이름, PyPI 패키지 이름, import 이름 등의 형식이 다를 수 있다는 점을 주의해야 하며, 하이픈과 언더스코어의 차이가 중요하다는 것을 명확히 이해하게 되었다.\n2. Git 태깅 왜 이걸 보게 됐나 패키지 배포를 하면서 단순히 코드를 올리는 것만으로는 버전 관리를 제대로 할 수 없다는 걸 깨달았어. 각 기능 추가 단계마다 명확하게 기록하고, 나중에 업데이트나 오류 발생 시 추적 가능하도록 하기 위해 Git 태깅이 필요했던 거야. 마치 사진첩에 각 단계별로 사진을 찍어두는 것처럼, 패키지의 성장 과정을 남겨두기 위해 중요한 방법이라고 배웠어.\n내가 헷갈린 지점 ‘v0.1.0’, ‘v0.2.0’처럼 버전 숫자를 그냥 마음대로 달 수 있는 줄 알았는데, 의미 있는 변경사항이 있을 때마다 커밋 후 태그를 달아야 하는 거라는 걸 처음 깨달았어. 태그가 단순히 버전 숫자를 표시하는 것 이상의 의미, 즉 특정 시점의 코드 상태를 고정시키는 역할이라는 점을 이해하는 데 시간이 걸렸어. 그리고 태그를 달 때는 커밋 해시와 연결되어야 한다는 사실도 잊어버리기 쉬웠어.\n시도한 코드 / 예시 # 태그 생성: v0.1.0 # git tag v0.1.0 # git push origin v0.1.0 결과와 해석 Git 태깅은 특정 시점의 코드 상태를 ‘태그’라는 이름으로 붙여두는 기능인데, 주로 릴리스 버전을 관리할 때 사용한다. 각 기능 추가 버전을 v0.1.0, v0.2.0, v0.3.0처럼 태그로 지정하면서 패키지의 발전 과정을 기록할 수 있었다. 태그는 코드 변경 없이 특정 시점을 기억하는 일종의 스냅샷이라고 이해하면 쉽다.\n정리된 이해 Git 태깅은 패키지의 특정 시점(v0.1.0, v0.2.0 등)을 영구적으로 저장하는 중요한 방법이라는 걸 알게 되었어. 마치 사진을 찍듯이 코드의 상태를 기록해서 나중에 다시 돌아가거나 다른 개발자와 공유할 때 유용하게 쓸 수 있다는 점이 인상적이었어. 특히 버전 관리에 있어서 태그가 얼마나 중요한 역할을 하는지 깨달았어.\n3. 하이픈/언더스코어 왜 이걸 보게 됐나 패키지 배포를 하면서 패키지 이름, 저장소 이름, import 이름이 서로 다를 수 있다는 걸 처음 알게 됐어요. 하이픈과 언더스코어의 구분 없이 대충 사용하면 결국 import 오류나 배포 실패로 이어질 수 있다는 걸 깨달으면서, 이 차이를 제대로 알아야 패키지 관리의 기본을 지킬 수 있겠다는 생각을 했습니다. 앞으로는 네이밍 규칙을 꼼꼼히 확인하고 적용해야겠다고 다짐했어요.\n내가 헷갈린 지점 패키지 이름을 만들 때 하이픈과 언더스코어 중 어느 것을 써야 할지 몰라서 계속 고민했었어. 하이픈은 일반적으로 GitHub 저장소나 PyPI 패키지 이름으로 쓰이는 것 같고, 언더스코어는 파이썬 import 시 사용하는 이름으로 구분해야 하는 것 같다는 것을 뒤늦게 깨달았어. 이 두 기호의 쓰임새를 명확히 구분하지 못해서 계속해서 import 오류가 발생하는 줄 알았지.\n시도한 코드 / 예시 # GitHub 저장소 이름: mathlib-hanthink (하이픈 사용) # PyPI 패키지 이름: mathlib-hanthink (하이픈 사용) # Python import 이름: mathlib_hanthink (언더스코어 사용) 결과와 해석 패키지 이름과 import 이름에서 하이픈과 언더스코어는 명확히 다른 역할을 한다는 것을 깨달았습니다. GitHub 저장소나 PyPI 패키지 이름에는 하이픈을 사용하고, Python 코드 내에서 패키지를 불러올 때는 언더스코어를 사용해야 하는 점이 헷갈렸습니다. 이 차이를 제대로 이해하지 못하면 import 오류가 발생하거나 배포 과정에서 문제가 생길 수 있다는 것을 알게 되었습니다.\n정리된 이해 GitHub 저장소 이름과 PyPI 패키지 이름은 하이픈(-)을 사용하는 반면, Python import 이름은 언더스코어(_)를 사용한다는 점을 기억해야겠다. 이 둘의 차이를 명확히 구분하지 않으면 예상치 못한 오류가 발생할 수 있기에 앞으로는 이름 짓는 규칙을 주의해야겠다.\n4. PyPI 패키지 이름 왜 이걸 보게 됐나 패키지를 만들고 공유하는 과정에서 다른 개발자들이 내 라이브러리를 쉽게 찾고 설치할 수 있도록 하기 위해서는 PyPI에 등록해야 하는데, 이 때 사용하는 이름이 바로 PyPI 패키지 이름이라고 배웠어. 이 이름을 정확히 지어야 내 패키지가 PyPI에서 검색될 수 있고, 다른 사람들이 pip install 명령어로 설치할 수 있게 되는 거지. 패키지 이름은 다른 개발자가 내 라이브러리를 사용하도록 연결하는 중요한 역할을 한다고 생각했어.\n내가 헷갈린 지점 패키지 이름을 PyPI에 올릴 때 mathlib-hanthink 와 mathlib_hanthink 중 무엇을 써야 하는지 헷갈렸었어. GitHub 저장소 이름과 PyPI 패키지 이름이 같을 거라고 생각했지만, import 할 때 언더스코어가 붙는 것을 보고 혼란스러웠던 기억이 있어. 이 둘의 관계를 명확히 이해하지 못해서 처음에는 엉뚱한 이름으로 배포하려고 시도했던 것 같아.\n시도한 코드 / 예시 # PyPI 패키지 이름: mathlib-hanthink # 실제 값: mathlib-hanthink 결과와 해석 PyPI 패키지 이름은 PyPI 저장소에서 패키지를 찾고 설치할 때 사용되는 식별자인데, GitHub 저장소 이름이나 Python import 이름과 다를 수 있다는 걸 처음 알았다. mathlib-hanthink처럼 하이픈을 사용하는 이름은 PyPI에서 사용해야 하는 반면, mathlib_hanthink은 파이썬 코드에서 패키지를 불러올 때 사용하는 이름이다. 이 이름들이 일치하지 않으면 패키지 설치나 import 과정에서 오류가 발생할 수 있다는 점을 명확히 이해하게 되었다.\n정리된 이해 PyPI 패키지 이름은 파이썬 패키지를 배포할 때 사용하는 공식적인 이름으로, 저장소 이름이나 import 이름과 다르게 명확히 구분해야 한다. 이 이름은 사용자들이 pip install 명령어를 통해 내 패키지를 설치할 때 사용되는 중요한 정보이며, Pypi에 등록할 때 필수적으로 사용된다.\n총평 오늘 전체에서 배운 것 파이썬 패키지 배포는 단순히 코드를 만드는 것 이상으로, 버전 관리와 Git 태깅, 그리고 PyPI 패키지 이름과 import 이름의 규칙을 정확히 이해하는 것이 중요하다는 것을 알게 되었다. 특히 이름들 간의 규칙을 혼동하면 오류가 발생할 수 있으므로 주의해야 할 것 같다.\n다음에 조심할 것 패키지 이름과 import 이름의 규칙을 정확히 구분하고, 특히 하이픈과 언더스코어의 쓰임새를 명확히 기억해야겠다. PyPI에 올릴 때, 저장소 이름과 패키지 이름의 차이를 헷갈리지 않도록 주의해야겠다.\n다음 복습 주제 GitHub 저장소 이름과 PyPI 패키지 이름, import 이름의 규칙을 좀 더 명확하게 정리하고, 각 이름이 어떤 목적을 가지는지 더 깊이 이해해야겠다. 테스트 자동화와 지속적인 통합(CI) 시스템을 활용하는 방법도 알아봐야 할 것 같다.\n",
+  "wordCount" : "1019",
+  "inLanguage": "en",
+  "datePublished": "2026-06-08T00:00:00Z",
+  "dateModified": "2026-06-08T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/practice/python-package-release-workflow/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/posts/" title="글">
+                    <span>글</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      python-package-release-workflow
+    </h1>
+    <div class="post-description">
+      python-package-release-workflow 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-08 00:00:00 +0000 UTC'>2026년 6월 8일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%ED%8C%A8%ED%82%A4%EC%A7%80-%EB%B0%B0%ED%8F%AC-%EA%B3%BC%EC%A0%95">패키지 배포 과정</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-git-%ED%83%9C%EA%B9%85">Git 태깅</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%ED%95%98%EC%9D%B4%ED%94%88%EC%96%B8%EB%8D%94%EC%8A%A4%EC%BD%94%EC%96%B4">하이픈/언더스코어</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-pypi-%ED%8C%A8%ED%82%A4%EC%A7%80-%EC%9D%B4%EB%A6%84">PyPI 패키지 이름</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-패키지-배포-과정">1. 패키지 배포 과정<a hidden class="anchor" aria-hidden="true" href="#1-패키지-배포-과정">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>단순히 코드를 만들어서 끝내는 게 아니라, 패키지가 어떻게 만들어지고 발전해나가는지 전체 과정을 이해하고 싶어서 패키지 배포 과정을 배우게 됐어. 버전 관리 시스템을 이용해서 각 단계별 변경 사항을 기록하고, 다른 사람들과 공유할 수 있도록 PyPI에 올리는 방법을 익히면서 실제 소프트웨어 개발 흐름을 경험해보는 것이 중요하다고 생각했어. 앞으로 내가 만들던 코드를 제대로 관리하고 다른 사람들과 공유할 수 있게 되리라 믿어.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>패키지를 만드는 것만 생각해서 GitHub 저장소 이름, PyPI 패키지 이름, import 이름이 달라도 되는지 몰랐고, 하이픈과 언더스코어의 역할을 제대로 이해하지 못해서 오류가 발생할까 봐 걱정스러웠다. 단순히 최종 버전을 올리는 것뿐이라고 생각해서 각 단계의 Git 태그 이름 규칙이나 배포 과정을 상세하게 신경 쓰지 못했던 것 같아 아쉬웠다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 예시: PyPI에 패키지 업로드 (setup.py 파일 활용)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 실제 값:  python3 setup.py sdist upload</span>
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p>Python 패키지 배포는 단순히 코드를 작성하는 것 외에 Git을 이용한 버전 관리, PyPI에 올리는 과정까지 포함하며, 저장소 이름, 패키지 이름, import 이름의 차이를 명확히 이해하는 것이 중요하다. 각 기능 추가 단계마다 commit과 tag를 생성하여 패키지의 성장 과정을 기록하고, 최종적으로 README와 릴리스 기록을 정리하는 것이 전체적인 배포 프로세스의 핵심이었다. 이러한 과정을 통해 코드 완성도뿐 아니라 패키지의 성장 과정을 체계적으로 관리하는 방법을 익힐 수 있었다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>패키지 배포는 코드 완성 외에 버전 관리와 기록을 체계적으로 관리하는 과정이라는 것을 깨달았다. 저장소 이름, PyPI 패키지 이름, import 이름 등의 형식이 다를 수 있다는 점을 주의해야 하며, 하이픈과 언더스코어의 차이가 중요하다는 것을 명확히 이해하게 되었다.</p>
+<h2 id="2-git-태깅">2. Git 태깅<a hidden class="anchor" aria-hidden="true" href="#2-git-태깅">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>패키지 배포를 하면서 단순히 코드를 올리는 것만으로는 버전 관리를 제대로 할 수 없다는 걸 깨달았어. 각 기능 추가 단계마다 명확하게 기록하고, 나중에 업데이트나 오류 발생 시 추적 가능하도록 하기 위해 Git 태깅이 필요했던 거야. 마치 사진첩에 각 단계별로 사진을 찍어두는 것처럼, 패키지의 성장 과정을 남겨두기 위해 중요한 방법이라고 배웠어.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>&lsquo;v0.1.0&rsquo;, &lsquo;v0.2.0&rsquo;처럼 버전 숫자를 그냥 마음대로 달 수 있는 줄 알았는데, 의미 있는 변경사항이 있을 때마다 커밋 후 태그를 달아야 하는 거라는 걸 처음 깨달았어. 태그가 단순히 버전 숫자를 표시하는 것 이상의 의미, 즉 특정 시점의 코드 상태를 고정시키는 역할이라는 점을 이해하는 데 시간이 걸렸어. 그리고 태그를 달 때는 커밋 해시와 연결되어야 한다는 사실도 잊어버리기 쉬웠어.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 태그 생성: v0.1.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># git tag v0.1.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># git push origin v0.1.0</span>
+</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p>Git 태깅은 특정 시점의 코드 상태를 &lsquo;태그&rsquo;라는 이름으로 붙여두는 기능인데, 주로 릴리스 버전을 관리할 때 사용한다. 각 기능 추가 버전을 <code>v0.1.0</code>, <code>v0.2.0</code>, <code>v0.3.0</code>처럼 태그로 지정하면서 패키지의 발전 과정을 기록할 수 있었다. 태그는 코드 변경 없이 특정 시점을 기억하는 일종의 스냅샷이라고 이해하면 쉽다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>Git 태깅은 패키지의 특정 시점(v0.1.0, v0.2.0 등)을 영구적으로 저장하는 중요한 방법이라는 걸 알게 되었어. 마치 사진을 찍듯이 코드의 상태를 기록해서 나중에 다시 돌아가거나 다른 개발자와 공유할 때 유용하게 쓸 수 있다는 점이 인상적이었어. 특히 버전 관리에 있어서 태그가 얼마나 중요한 역할을 하는지 깨달았어.</p>
+<h2 id="3-하이픈언더스코어">3. 하이픈/언더스코어<a hidden class="anchor" aria-hidden="true" href="#3-하이픈언더스코어">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>패키지 배포를 하면서 패키지 이름, 저장소 이름, import 이름이 서로 다를 수 있다는 걸 처음 알게 됐어요. 하이픈과 언더스코어의 구분 없이 대충 사용하면 결국 import 오류나 배포 실패로 이어질 수 있다는 걸 깨달으면서, 이 차이를 제대로 알아야 패키지 관리의 기본을 지킬 수 있겠다는 생각을 했습니다. 앞으로는 네이밍 규칙을 꼼꼼히 확인하고 적용해야겠다고 다짐했어요.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>패키지 이름을 만들 때 하이픈과 언더스코어 중 어느 것을 써야 할지 몰라서 계속 고민했었어. 하이픈은 일반적으로 GitHub 저장소나 PyPI 패키지 이름으로 쓰이는 것 같고, 언더스코어는 파이썬 import 시 사용하는 이름으로 구분해야 하는 것 같다는 것을 뒤늦게 깨달았어. 이 두 기호의 쓰임새를 명확히 구분하지 못해서 계속해서 import 오류가 발생하는 줄 알았지.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># GitHub 저장소 이름: mathlib-hanthink (하이픈 사용)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># PyPI 패키지 이름: mathlib-hanthink (하이픈 사용)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Python import 이름: mathlib_hanthink (언더스코어 사용)</span>
+</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p>패키지 이름과 import 이름에서 하이픈과 언더스코어는 명확히 다른 역할을 한다는 것을 깨달았습니다. GitHub 저장소나 PyPI 패키지 이름에는 하이픈을 사용하고, Python 코드 내에서 패키지를 불러올 때는 언더스코어를 사용해야 하는 점이 헷갈렸습니다. 이 차이를 제대로 이해하지 못하면 import 오류가 발생하거나 배포 과정에서 문제가 생길 수 있다는 것을 알게 되었습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>GitHub 저장소 이름과 PyPI 패키지 이름은 하이픈(-)을 사용하는 반면, Python import 이름은 언더스코어(_)를 사용한다는 점을 기억해야겠다. 이 둘의 차이를 명확히 구분하지 않으면 예상치 못한 오류가 발생할 수 있기에 앞으로는 이름 짓는 규칙을 주의해야겠다.</p>
+<h2 id="4-pypi-패키지-이름">4. PyPI 패키지 이름<a hidden class="anchor" aria-hidden="true" href="#4-pypi-패키지-이름">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>패키지를 만들고 공유하는 과정에서 다른 개발자들이 내 라이브러리를 쉽게 찾고 설치할 수 있도록 하기 위해서는 PyPI에 등록해야 하는데, 이 때 사용하는 이름이 바로 PyPI 패키지 이름이라고 배웠어. 이 이름을 정확히 지어야 내 패키지가 PyPI에서 검색될 수 있고, 다른 사람들이 <code>pip install</code> 명령어로 설치할 수 있게 되는 거지. 패키지 이름은 다른 개발자가 내 라이브러리를 사용하도록 연결하는 중요한 역할을 한다고 생각했어.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>패키지 이름을 PyPI에 올릴 때 <code>mathlib-hanthink</code> 와 <code>mathlib_hanthink</code> 중 무엇을 써야 하는지 헷갈렸었어. GitHub 저장소 이름과 PyPI 패키지 이름이 같을 거라고 생각했지만, import 할 때 언더스코어가 붙는 것을 보고 혼란스러웠던 기억이 있어. 이 둘의 관계를 명확히 이해하지 못해서 처음에는 엉뚱한 이름으로 배포하려고 시도했던 것 같아.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># PyPI 패키지 이름: mathlib-hanthink</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 실제 값: mathlib-hanthink</span>
+</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<p>PyPI 패키지 이름은 PyPI 저장소에서 패키지를 찾고 설치할 때 사용되는 식별자인데, GitHub 저장소 이름이나 Python import 이름과 다를 수 있다는 걸 처음 알았다. <code>mathlib-hanthink</code>처럼 하이픈을 사용하는 이름은 PyPI에서 사용해야 하는 반면, <code>mathlib_hanthink</code>은 파이썬 코드에서 패키지를 불러올 때 사용하는 이름이다. 이 이름들이 일치하지 않으면 패키지 설치나 import 과정에서 오류가 발생할 수 있다는 점을 명확히 이해하게 되었다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>PyPI 패키지 이름은 파이썬 패키지를 배포할 때 사용하는 공식적인 이름으로, 저장소 이름이나 import 이름과 다르게 명확히 구분해야 한다. 이 이름은 사용자들이 <code>pip install</code> 명령어를 통해 내 패키지를 설치할 때 사용되는 중요한 정보이며, Pypi에 등록할 때 필수적으로 사용된다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>파이썬 패키지 배포는 단순히 코드를 만드는 것 이상으로, 버전 관리와 Git 태깅, 그리고 PyPI 패키지 이름과 import 이름의 규칙을 정확히 이해하는 것이 중요하다는 것을 알게 되었다. 특히 이름들 간의 규칙을 혼동하면 오류가 발생할 수 있으므로 주의해야 할 것 같다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>패키지 이름과 import 이름의 규칙을 정확히 구분하고, 특히 하이픈과 언더스코어의 쓰임새를 명확히 기억해야겠다. PyPI에 올릴 때, 저장소 이름과 패키지 이름의 차이를 헷갈리지 않도록 주의해야겠다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>GitHub 저장소 이름과 PyPI 패키지 이름, import 이름의 규칙을 좀 더 명확하게 정리하고, 각 이름이 어떤 목적을 가지는지 더 깊이 이해해야겠다. 테스트 자동화와 지속적인 통합(CI) 시스템을 활용하는 방법도 알아봐야 할 것 같다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

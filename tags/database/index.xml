@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Database on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/database/</link>
+    <description>Recent content in Database on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Mon, 08 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/database/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SQLite 입문 오전: SQLTools 실행부터 ERD까지</title>
+      <link>https://Han-think.github.io/learning/2026-06-08-am-sqlite-foundations/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-08-am-sqlite-foundations/</guid>
+      <description>VS Code SQLTools로 SQLite를 다루며 SELECT/CRUD 기본기와 ERD·샘플 DB 구조를 익힌 오전 학습 정리</description>
+    </item>
+  </channel>
+</rss>
