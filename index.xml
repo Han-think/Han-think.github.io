@@ -9,6 +9,27 @@
     <lastBuildDate>Tue, 09 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>am-01-sql-groupby-having</title>
+      <link>https://Han-think.github.io/learning/am-01-sql-groupby-having/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/am-01-sql-groupby-having/</guid>
+      <description>am-01-sql-groupby-having 학습 정리</description>
+    </item>
+    <item>
+      <title>am-02-sql-join-alias-erd</title>
+      <link>https://Han-think.github.io/learning/am-02-sql-join-alias-erd/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/am-02-sql-join-alias-erd/</guid>
+      <description>am-02-sql-join-alias-erd 학습 정리</description>
+    </item>
+    <item>
+      <title>am-03-sql-join-problem-solving</title>
+      <link>https://Han-think.github.io/learning/am-03-sql-join-problem-solving/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/am-03-sql-join-problem-solving/</guid>
+      <description>am-03-sql-join-problem-solving 학습 정리</description>
+    </item>
+    <item>
       <title>consulting-report-prompting</title>
       <link>https://Han-think.github.io/learning/consulting-report-prompting/</link>
       <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
@@ -60,6 +81,13 @@
       <description>minto-scqa-mece 학습 정리</description>
     </item>
     <item>
+      <title>pm-01-data-definition-erd-map</title>
+      <link>https://Han-think.github.io/learning/pm-01-data-definition-erd-map/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/pm-01-data-definition-erd-map/</guid>
+      <description>pm-01-data-definition-erd-map 학습 정리</description>
+    </item>
+    <item>
       <title>pm-01-select-query-practice</title>
       <link>https://Han-think.github.io/learning/pm-01-select-query-practice/</link>
       <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
@@ -74,6 +102,13 @@
       <description>pm-02-select-mistakes-and-fixes 학습 정리</description>
     </item>
     <item>
+      <title>pm-02-subquery-basic-single-multi</title>
+      <link>https://Han-think.github.io/learning/pm-02-subquery-basic-single-multi/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/pm-02-subquery-basic-single-multi/</guid>
+      <description>pm-02-subquery-basic-single-multi 학습 정리</description>
+    </item>
+    <item>
       <title>pm-03-dml-insert-update-delete</title>
       <link>https://Han-think.github.io/learning/pm-03-dml-insert-update-delete/</link>
       <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
@@ -81,11 +116,25 @@
       <description>pm-03-dml-insert-update-delete 학습 정리</description>
     </item>
     <item>
+      <title>pm-03-join-vs-subquery-choice</title>
+      <link>https://Han-think.github.io/learning/pm-03-join-vs-subquery-choice/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/pm-03-join-vs-subquery-choice/</guid>
+      <description>pm-03-join-vs-subquery-choice 학습 정리</description>
+    </item>
+    <item>
       <title>pm-04-book-table-review-queries</title>
       <link>https://Han-think.github.io/learning/pm-04-book-table-review-queries/</link>
       <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/learning/pm-04-book-table-review-queries/</guid>
       <description>pm-04-book-table-review-queries 학습 정리</description>
+    </item>
+    <item>
+      <title>pm-04-subquery-learning-friction</title>
+      <link>https://Han-think.github.io/learning/pm-04-subquery-learning-friction/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/pm-04-subquery-learning-friction/</guid>
+      <description>pm-04-subquery-learning-friction 학습 정리</description>
     </item>
     <item>
       <title>pm-05-erd-reading-training</title>

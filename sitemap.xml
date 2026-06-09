@@ -3,6 +3,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://Han-think.github.io/learning/am-01-sql-groupby-having/</loc>
+    <lastmod>2026-06-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/learning/am-02-sql-join-alias-erd/</loc>
+    <lastmod>2026-06-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/learning/am-03-sql-join-problem-solving/</loc>
+    <lastmod>2026-06-09T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://Han-think.github.io/learning/consulting-report-prompting/</loc>
     <lastmod>2026-06-09T00:00:00+00:00</lastmod>
   </url><url>
@@ -30,16 +39,28 @@
     <loc>https://Han-think.github.io/tags/ollama/</loc>
     <lastmod>2026-06-09T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://Han-think.github.io/learning/pm-01-data-definition-erd-map/</loc>
+    <lastmod>2026-06-09T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://Han-think.github.io/learning/pm-01-select-query-practice/</loc>
     <lastmod>2026-06-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/learning/pm-02-select-mistakes-and-fixes/</loc>
     <lastmod>2026-06-09T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://Han-think.github.io/learning/pm-02-subquery-basic-single-multi/</loc>
+    <lastmod>2026-06-09T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://Han-think.github.io/learning/pm-03-dml-insert-update-delete/</loc>
     <lastmod>2026-06-09T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://Han-think.github.io/learning/pm-03-join-vs-subquery-choice/</loc>
+    <lastmod>2026-06-09T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://Han-think.github.io/learning/pm-04-book-table-review-queries/</loc>
+    <lastmod>2026-06-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/learning/pm-04-subquery-learning-friction/</loc>
     <lastmod>2026-06-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/learning/pm-05-erd-reading-training/</loc>

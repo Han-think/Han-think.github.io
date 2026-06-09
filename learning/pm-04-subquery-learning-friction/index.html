@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>pm-04-subquery-learning-friction | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="pm-04-subquery-learning-friction 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/pm-04-subquery-learning-friction/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/pm-04-subquery-learning-friction/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/pm-04-subquery-learning-friction/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="pm-04-subquery-learning-friction">
+  <meta property="og:description" content="pm-04-subquery-learning-friction 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-09T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-09T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="pm-04-subquery-learning-friction">
+  <meta name="twitter:description" content="pm-04-subquery-learning-friction 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "pm-04-subquery-learning-friction",
+      "item": "https://Han-think.github.io/learning/pm-04-subquery-learning-friction/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "pm-04-subquery-learning-friction",
+  "name": "pm-04-subquery-learning-friction",
+  "description": "pm-04-subquery-learning-friction 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 메인쿼리 접근 방식 테이블 및 컬럼 연결 서브쿼리 접근법 서브쿼리 반환 값 총평 1. 메인쿼리 접근 방식 왜 이걸 보게 됐나 처음에는 문제를 풀 때 자연스럽게 단서를 찾고 해결해 나가는 방식에 익숙했기에, 서브쿼리를 사용할 때 메인 쿼리부터 접근해야 한다는 개념이 굉장히 어색하고 거꾸로 느껴졌습니다. 특히 서브쿼리의 결과값을 미리 넣는 듯한 느낌 때문에, 문제 해결의 논리적 흐름을 파악하기 어려웠던 거죠. 그래서 이 접근 방식을 이해하게 되면서 쿼리 작성 과정의 흐름을 잡을 수 있었습니다.\n내가 헷갈린 지점 서브쿼리를 처음 접했을 때 메인 쿼리부터 접근해야 한다는 점이 너무 이상하게 느껴졌다. 문제 해결에 익숙한 내게는 쿼리를 거꾸로 작성하는 것 같았고, 어떤 숫자나 조건을 미리 넣어버리는 것처럼 보였던 기억이 난다. 전체적인 흐름을 파악하기 전에 특정 값에 먼저 집중해야 한다는 점이 이해하기 어려웠다.\n시도한 코드 / 예시 SELECT Name FROM tracks WHERE AlbumId = 4; 결과와 해석 처음에는 WHERE AlbumId = 4 와 같이 특정 값을 쿼리 내에 바로 넣는 방식이 어색했지만, 서브쿼리 접근법을 따라 단서를 먼저 파악하고 필요한 값을 서브쿼리로 뽑아내는 과정을 거치니 메인쿼리가 어떤 데이터를 가르키는지 더 명확하게 이해하게 되었다. 이 방법을 통해 문제 해결의 전체적인 흐름을 파악하고, 쿼리 작성의 순서를 체계화할 수 있었다.\n정리된 이해 처음에는 문제 해결을 위한 단서를 먼저 찾는 나에게 메인쿼리부터 접근하는 서브쿼리 방식이 거꾸로 느껴졌지만, 최종 출력 항목과 테이블을 명확히 하고 필요한 정보를 단서로 활용하는 방식으로 접근하면 쿼리 작성 과정이 체계적으로 정리된다는 것을 깨달았다. 이 방법을 통해 쿼리가 어떤 결과를 보여줘야 하는지 명확히 파악하고 필요한 정보를 연결하여 효율적으로 문제를 해결할 수 있게 되었다.\n2. 테이블 및 컬럼 연결 왜 이걸 보게 됐나 처음에는 문제에서 주어진 정보와 테이블 간의 연결고리가 잘 안 보여서, 어떤 컬럼을 어디에서 가져와야 하는지 혼란스러웠다. 결국 테이블 구조와 각 컬럼의 역할을 정확히 이해하고, 문제의 단서가 어떤 테이블과 컬럼에 해당하는지 파악하는 과정이 필요하다는 것을 깨달았다. 이 부분에 대한 이해가 부족하면 쿼리가 돌아가지 않거나 예상치 못한 결과가 나오기 때문에 중요했다.\n내가 헷갈린 지점 처음에는 테이블과 컬럼들이 서로 어떻게 연결되는지, 특히 문제에서 요구하는 조건이 어떤 테이블의 어떤 컬럼과 연관되는지 파악하는 데 어려움을 느꼈습니다. 예를 들어, 고객 정보와 지원 담당자 정보를 연결해야 할 때 어떤 컬럼이 어떤 테이블에 있는지, 그리고 그 컬럼들이 어떻게 조건을 형성하는지 즉시 떠올리기 어려웠습니다. 단순한 테이블 목록을 암기하는 것만으로는 해결되지 않아, 쿼리의 논리적 흐름을 이해하고 테이블 간의 관계를 파악하는 것이 중요하다는 것을 깨달았습니다.\n시도한 코드 / 예시 SELECT Name FROM tracks WHERE AlbumId = 4; 결과와 해석 테이블과 컬럼을 정확하게 연결하는 연습을 위해 customers 테이블의 SupportRepId와 employees 테이블의 EmployeeId가 어떻게 연결되는지 확인하는 간단한 조인 쿼리를 작성해 보았는데, 예상대로 출력이 제대로 나오지 않았다. 테이블 구조를 다시 확인하고 컬럼 이름을 정확하게 입력하니 원하는 결과를 얻을 수 있었고, 테이블 간의 관계를 시각적으로 정리하는 것이 중요하다는 것을 깨달았다. 컬럼 이름만 정확히 아는 것보다 테이블 간의 관계를 이해하는 것이 더 중요했다.\n정리된 이해 테이블과 컬럼 연결이 어려웠던 이유는 문제에서 제시된 단서를 바탕으로 전체적인 흐름을 파악하는 데 집중하다 보니, 필요한 테이블이나 컬럼의 정확한 이름을 떠올리는 데 어려움이 있었습니다. 쿼리 작성 순서를 먼저 정하고, 문제에서 주어진 정보를 단계별로 템플릿에 적용하는 방식으로 접근하니 필요한 테이블과 컬럼을 연결하는 과정이 훨씬 수월해졌습니다.\n3. 서브쿼리 접근법 왜 이걸 보게 됐나 처음 서브쿼리를 접했을 때 문제 해결의 논리적인 흐름과 맞지 않아 어려움을 겪었기 때문에, 쿼리 작성 순서를 체계적으로 접근하는 방법을 배우게 되었어. 단순히 쿼리 작법을 익히는 것을 넘어, 복잡한 조건들을 파악하고 논리적으로 연결하는 능력을 키우기 위해 이 접근법이 필요했어. 이제는 이 템플릿을 활용하여 서브쿼리를 보다 자신 있게 다룰 수 있게 되었어.\n내가 헷갈린 지점 처음에는 메인 쿼리부터 시작해야 한다는 기존의 문제 해결 방식과 달리, 서브쿼리는 거꾸로 접근해야 한다는 점이 너무 헷갈렸어요. 특히 미리 숫자를 넣어서 조건으로 사용하는 부분이 이해가 안 되어서, 어떻게 접근해야 할지 막막했습니다. 서브쿼리가 어떤 값을 반환해야 하는지, 그리고 그 값이 메인쿼리에 어떻게 영향을 주는지 파악하는 데 어려움을 겪었습니다.\n시도한 코드 / 예시 SELECT albums.Title FROM albums WHERE albums.AlbumId IN (SELECT tracks.AlbumId FROM tracks WHERE tracks.GenreId IN (SELECT GenreId FROM genres WHERE genres.Name = 'Rock')); 결과와 해석 위에서 정리한 서브쿼리 접근법은 문제를 단계별로 분해하여 쿼리를 작성하도록 돕는 효과적인 방법이었다. 예를 들어, 특정 장르의 앨범 제목을 찾기 위해, 최종 출력(앨범 제목)부터 시작하여 필요한 조건과 테이블을 연결하는 방식으로 쿼리를 구성할 수 있었다. 이 방식 덕분에 복잡한 쿼리도 논리적으로 접근하여 작성할 수 있게 되었다.\n정리된 이해 서브쿼리는 문제 해결을 위해 전체 쿼리를 거꾸로 생각하며 접근해야 한다는 점이 핵심이었고, 이를 위해 최종 출력부터 시작하여 필요한 정보를 단계별로 정의하는 템플릿을 활용하여 어려움을 극복했습니다. 이 템플릿을 통해 서브쿼리가 어떤 값을 반환해야 하는지 명확히 파악하고, 이를 메인 쿼리에 어떻게 연결할 수 있는지 이해할 수 있었습니다.\n4. 서브쿼리 반환 값 왜 이걸 보게 됐나 처음 서브쿼리를 접했을 때, 어떤 값이 들어가야 할지 막막해서 쿼리가 제대로 작동하지 않았어요. 특히 메인 쿼리의 조건에 필요한 값을 어떻게 알아내야 할지 몰라, 서브쿼리가 어떤 값을 반환해야 하는지 명확히 정의하는 개념이 필요하게 됐습니다. 그래서 ‘서브쿼리 반환 값’을 이해하는 것이 쿼리 작성의 핵심이라는 것을 깨닫게 됐죠.\n내가 헷갈린 지점 서브쿼리가 어떤 값을 반환해야 하는지 이해하는 부분이 가장 어려웠다. 처음에는 서브쿼리가 단순하게 어떤 컬럼 값을 가져오는 것 이상으로, 메인 쿼리에 어떤 의미를 전달해야 하는지 파악하는 데 어려움을 느꼈다. 특히, 서브쿼리의 결과가 단일 값인지, 아니면 여러 개의 값으로 구성된 목록인지 판단하는 기준이 불분명했다.\n시도한 코드 / 예시 SELECT tracks.AlbumId 결과와 해석 서브쿼리가 어떤 값을 반환해야 하는지 명확히 하는 과정에서, 예를 들어 tracks.AlbumId가 여러 개의 AlbumId 목록을 반환해야 한다는 것을 깨달았을 때, IN 연산자를 사용할 수 있다는 아이디어가 떠올랐다. 이는 서브쿼리의 결과를 메인 쿼리의 조건에 활용하는 중요한 연결고리라는 것을 이해하게 해주었다. 이러한 작은 실습을 통해 서브쿼리가 단순한 조작이 아닌, 복잡한 데이터를 효율적으로 다루는 핵심 요소임을 알게 되었다.\n정리된 이해 서브쿼리 반환 값은 메인 쿼리의 조건으로 사용될 데이터, 즉 쿼리가 최종적으로 어떤 값을 계산하거나 비교하기 위해 필요한 정보를 의미한다. 이 값은 단일 값이 될 수도 있고, 여러 값을 포함하는 목록이 될 수도 있으며, 메인 쿼리의 조건절에 적절한 연산자와 함께 사용되어 최종 결과를 도출하는 데 중요한 역할을 한다.\n총평 오늘 전체에서 배운 것 서브쿼리를 작성할 때 메인 쿼리부터 접근하는 것이 어렵게 느껴졌지만, 단계별 템플릿을 활용하여 구조화된 접근법을 익혔다. 테이블 및 컬럼 연결에 어려움을 겪었지만, 쿼리 작성 과정을 체계화하여 문제 해결 능력이 향상되었다.\n다음에 조심할 것 테이블과 컬럼 이름 연결에 더 신경 써서, 자주 사용하는 테이블 관계를 빠르게 떠올릴 수 있도록 노력해야겠다. 서브쿼리의 반환 값 형태(단일 값 vs 목록)를 정확히 파악하는 것이 쿼리 작성의 핵심이라는 점을 잊지 말아야겠다.\n다음 복습 주제 서브쿼리 결과 형태가 단일 값인지 목록인지 판단하는 기준을 더 명확히 해야 할 것 같다. IN 연산자 외 다른 연산자를 사용할 때 서브쿼리의 반환 값 형태가 결과에 어떤 영향을 미치는지도 알아봐야겠다.\n",
+  "wordCount" : "1015",
+  "inLanguage": "en",
+  "datePublished": "2026-06-09T00:00:00Z",
+  "dateModified": "2026-06-09T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/pm-04-subquery-learning-friction/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      pm-04-subquery-learning-friction
+    </h1>
+    <div class="post-description">
+      pm-04-subquery-learning-friction 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EB%A9%94%EC%9D%B8%EC%BF%BC%EB%A6%AC-%EC%A0%91%EA%B7%BC-%EB%B0%A9%EC%8B%9D">메인쿼리 접근 방식</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%ED%85%8C%EC%9D%B4%EB%B8%94-%EB%B0%8F-%EC%BB%AC%EB%9F%BC-%EC%97%B0%EA%B2%B0">테이블 및 컬럼 연결</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC-%EC%A0%91%EA%B7%BC%EB%B2%95">서브쿼리 접근법</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC-%EB%B0%98%ED%99%98-%EA%B0%92">서브쿼리 반환 값</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-메인쿼리-접근-방식">1. 메인쿼리 접근 방식<a hidden class="anchor" aria-hidden="true" href="#1-메인쿼리-접근-방식">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>처음에는 문제를 풀 때 자연스럽게 단서를 찾고 해결해 나가는 방식에 익숙했기에, 서브쿼리를 사용할 때 메인 쿼리부터 접근해야 한다는 개념이 굉장히 어색하고 거꾸로 느껴졌습니다. 특히 서브쿼리의 결과값을 미리 넣는 듯한 느낌 때문에, 문제 해결의 논리적 흐름을 파악하기 어려웠던 거죠. 그래서 이 접근 방식을 이해하게 되면서 쿼리 작성 과정의 흐름을 잡을 수 있었습니다.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>서브쿼리를 처음 접했을 때 메인 쿼리부터 접근해야 한다는 점이 너무 이상하게 느껴졌다. 문제 해결에 익숙한 내게는 쿼리를 거꾸로 작성하는 것 같았고, 어떤 숫자나 조건을 미리 넣어버리는 것처럼 보였던 기억이 난다. 전체적인 흐름을 파악하기 전에 특정 값에 먼저 집중해야 한다는 점이 이해하기 어려웠다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> Name
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> tracks
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> AlbumId <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>;
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p>처음에는 <code>WHERE AlbumId = 4</code> 와 같이 특정 값을 쿼리 내에 바로 넣는 방식이 어색했지만, 서브쿼리 접근법을 따라 단서를 먼저 파악하고 필요한 값을 서브쿼리로 뽑아내는 과정을 거치니 메인쿼리가 어떤 데이터를 가르키는지 더 명확하게 이해하게 되었다. 이 방법을 통해 문제 해결의 전체적인 흐름을 파악하고, 쿼리 작성의 순서를 체계화할 수 있었다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>처음에는 문제 해결을 위한 단서를 먼저 찾는 나에게 메인쿼리부터 접근하는 서브쿼리 방식이 거꾸로 느껴졌지만, 최종 출력 항목과 테이블을 명확히 하고 필요한 정보를 단서로 활용하는 방식으로 접근하면 쿼리 작성 과정이 체계적으로 정리된다는 것을 깨달았다. 이 방법을 통해 쿼리가 어떤 결과를 보여줘야 하는지 명확히 파악하고 필요한 정보를 연결하여 효율적으로 문제를 해결할 수 있게 되었다.</p>
+<h2 id="2-테이블-및-컬럼-연결">2. 테이블 및 컬럼 연결<a hidden class="anchor" aria-hidden="true" href="#2-테이블-및-컬럼-연결">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>처음에는 문제에서 주어진 정보와 테이블 간의 연결고리가 잘 안 보여서, 어떤 컬럼을 어디에서 가져와야 하는지 혼란스러웠다. 결국 테이블 구조와 각 컬럼의 역할을 정확히 이해하고, 문제의 단서가 어떤 테이블과 컬럼에 해당하는지 파악하는 과정이 필요하다는 것을 깨달았다. 이 부분에 대한 이해가 부족하면 쿼리가 돌아가지 않거나 예상치 못한 결과가 나오기 때문에 중요했다.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>처음에는 테이블과 컬럼들이 서로 어떻게 연결되는지, 특히 문제에서 요구하는 조건이 어떤 테이블의 어떤 컬럼과 연관되는지 파악하는 데 어려움을 느꼈습니다. 예를 들어, 고객 정보와 지원 담당자 정보를 연결해야 할 때 어떤 컬럼이 어떤 테이블에 있는지, 그리고 그 컬럼들이 어떻게 조건을 형성하는지 즉시 떠올리기 어려웠습니다. 단순한 테이블 목록을 암기하는 것만으로는 해결되지 않아, 쿼리의 논리적 흐름을 이해하고 테이블 간의 관계를 파악하는 것이 중요하다는 것을 깨달았습니다.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> Name
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> tracks
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> AlbumId <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>;
+</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p>테이블과 컬럼을 정확하게 연결하는 연습을 위해 <code>customers</code> 테이블의 <code>SupportRepId</code>와 <code>employees</code> 테이블의 <code>EmployeeId</code>가 어떻게 연결되는지 확인하는 간단한 조인 쿼리를 작성해 보았는데, 예상대로 출력이 제대로 나오지 않았다. 테이블 구조를 다시 확인하고 컬럼 이름을 정확하게 입력하니 원하는 결과를 얻을 수 있었고, 테이블 간의 관계를 시각적으로 정리하는 것이 중요하다는 것을 깨달았다. 컬럼 이름만 정확히 아는 것보다 테이블 간의 관계를 이해하는 것이 더 중요했다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>테이블과 컬럼 연결이 어려웠던 이유는 문제에서 제시된 단서를 바탕으로 전체적인 흐름을 파악하는 데 집중하다 보니, 필요한 테이블이나 컬럼의 정확한 이름을 떠올리는 데 어려움이 있었습니다. 쿼리 작성 순서를 먼저 정하고, 문제에서 주어진 정보를 단계별로 템플릿에 적용하는 방식으로 접근하니 필요한 테이블과 컬럼을 연결하는 과정이 훨씬 수월해졌습니다.</p>
+<h2 id="3-서브쿼리-접근법">3. 서브쿼리 접근법<a hidden class="anchor" aria-hidden="true" href="#3-서브쿼리-접근법">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>처음 서브쿼리를 접했을 때 문제 해결의 논리적인 흐름과 맞지 않아 어려움을 겪었기 때문에, 쿼리 작성 순서를 체계적으로 접근하는 방법을 배우게 되었어. 단순히 쿼리 작법을 익히는 것을 넘어, 복잡한 조건들을 파악하고 논리적으로 연결하는 능력을 키우기 위해 이 접근법이 필요했어. 이제는 이 템플릿을 활용하여 서브쿼리를 보다 자신 있게 다룰 수 있게 되었어.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>처음에는 메인 쿼리부터 시작해야 한다는 기존의 문제 해결 방식과 달리, 서브쿼리는 거꾸로 접근해야 한다는 점이 너무 헷갈렸어요. 특히 미리 숫자를 넣어서 조건으로 사용하는 부분이 이해가 안 되어서, 어떻게 접근해야 할지 막막했습니다. 서브쿼리가 어떤 값을 반환해야 하는지, 그리고 그 값이 메인쿼리에 어떻게 영향을 주는지 파악하는 데 어려움을 겪었습니다.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>SELECT albums.Title
+</span></span><span style="display:flex;"><span>FROM albums
+</span></span><span style="display:flex;"><span>WHERE albums.AlbumId IN (SELECT tracks.AlbumId FROM tracks WHERE tracks.GenreId IN (SELECT GenreId FROM genres WHERE genres.Name = &#39;Rock&#39;));
+</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p>위에서 정리한 서브쿼리 접근법은 문제를 단계별로 분해하여 쿼리를 작성하도록 돕는 효과적인 방법이었다. 예를 들어, 특정 장르의 앨범 제목을 찾기 위해, 최종 출력(앨범 제목)부터 시작하여 필요한 조건과 테이블을 연결하는 방식으로 쿼리를 구성할 수 있었다. 이 방식 덕분에 복잡한 쿼리도 논리적으로 접근하여 작성할 수 있게 되었다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>서브쿼리는 문제 해결을 위해 전체 쿼리를 거꾸로 생각하며 접근해야 한다는 점이 핵심이었고, 이를 위해 최종 출력부터 시작하여 필요한 정보를 단계별로 정의하는 템플릿을 활용하여 어려움을 극복했습니다. 이 템플릿을 통해 서브쿼리가 어떤 값을 반환해야 하는지 명확히 파악하고, 이를 메인 쿼리에 어떻게 연결할 수 있는지 이해할 수 있었습니다.</p>
+<h2 id="4-서브쿼리-반환-값">4. 서브쿼리 반환 값<a hidden class="anchor" aria-hidden="true" href="#4-서브쿼리-반환-값">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>처음 서브쿼리를 접했을 때, 어떤 값이 들어가야 할지 막막해서 쿼리가 제대로 작동하지 않았어요. 특히 메인 쿼리의 조건에 필요한 값을 어떻게 알아내야 할지 몰라, 서브쿼리가 어떤 값을 반환해야 하는지 명확히 정의하는 개념이 필요하게 됐습니다. 그래서 &lsquo;서브쿼리 반환 값&rsquo;을 이해하는 것이 쿼리 작성의 핵심이라는 것을 깨닫게 됐죠.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>서브쿼리가 어떤 값을 반환해야 하는지 이해하는 부분이 가장 어려웠다. 처음에는 서브쿼리가 단순하게 어떤 컬럼 값을 가져오는 것 이상으로, 메인 쿼리에 어떤 의미를 전달해야 하는지 파악하는 데 어려움을 느꼈다. 특히, 서브쿼리의 결과가 단일 값인지, 아니면 여러 개의 값으로 구성된 목록인지 판단하는 기준이 불분명했다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> tracks.AlbumId
+</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<p>서브쿼리가 어떤 값을 반환해야 하는지 명확히 하는 과정에서, 예를 들어 <code>tracks.AlbumId</code>가 여러 개의 <code>AlbumId</code> 목록을 반환해야 한다는 것을 깨달았을 때, <code>IN</code> 연산자를 사용할 수 있다는 아이디어가 떠올랐다. 이는 서브쿼리의 결과를 메인 쿼리의 조건에 활용하는 중요한 연결고리라는 것을 이해하게 해주었다. 이러한 작은 실습을 통해 서브쿼리가 단순한 조작이 아닌, 복잡한 데이터를 효율적으로 다루는 핵심 요소임을 알게 되었다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>서브쿼리 반환 값은 메인 쿼리의 조건으로 사용될 데이터, 즉 쿼리가 최종적으로 어떤 값을 계산하거나 비교하기 위해 필요한 정보를 의미한다. 이 값은 단일 값이 될 수도 있고, 여러 값을 포함하는 목록이 될 수도 있으며, 메인 쿼리의 조건절에 적절한 연산자와 함께 사용되어 최종 결과를 도출하는 데 중요한 역할을 한다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>서브쿼리를 작성할 때 메인 쿼리부터 접근하는 것이 어렵게 느껴졌지만, 단계별 템플릿을 활용하여 구조화된 접근법을 익혔다. 테이블 및 컬럼 연결에 어려움을 겪었지만, 쿼리 작성 과정을 체계화하여 문제 해결 능력이 향상되었다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>테이블과 컬럼 이름 연결에 더 신경 써서, 자주 사용하는 테이블 관계를 빠르게 떠올릴 수 있도록 노력해야겠다. 서브쿼리의 반환 값 형태(단일 값 vs 목록)를 정확히 파악하는 것이 쿼리 작성의 핵심이라는 점을 잊지 말아야겠다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>서브쿼리 결과 형태가 단일 값인지 목록인지 판단하는 기준을 더 명확히 해야 할 것 같다. IN 연산자 외 다른 연산자를 사용할 때 서브쿼리의 반환 값 형태가 결과에 어떤 영향을 미치는지도 알아봐야겠다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/pm-04-book-table-review-queries/">
+    <span class="title">« Prev</span>
+    <span>pm-04-book-table-review-queries</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/pm-05-erd-reading-training/">
+    <span class="title">Next »</span>
+    <span>pm-05-erd-reading-training</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
