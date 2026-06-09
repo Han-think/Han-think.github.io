@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>sqlite-select-crud-basics | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="sqlite-select-crud-basics 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/sqlite-select-crud-basics/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/sqlite-select-crud-basics/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/sqlite-select-crud-basics/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="sqlite-select-crud-basics">
+  <meta property="og:description" content="sqlite-select-crud-basics 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-09T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-09T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="sqlite-select-crud-basics">
+  <meta name="twitter:description" content="sqlite-select-crud-basics 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "sqlite-select-crud-basics",
+      "item": "https://Han-think.github.io/learning/sqlite-select-crud-basics/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "sqlite-select-crud-basics",
+  "name": "sqlite-select-crud-basics",
+  "description": "sqlite-select-crud-basics 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 SQL 질문 이해 CRUD와 SQL 대응 테이블 생성 데이터 삽입 총평 1. SQL 질문 이해 왜 이걸 보게 됐나 처음에는 SQL을 단순히 데이터 가져오는 명령어로 생각해서, 원하는 데이터를 효율적으로 추출하는 질문을 구성하는 데 어려움을 겪었습니다. SQL의 질문 구조를 제대로 이해하지 못해 데이터베이스의 잠재력을 최대한 활용하지 못한다는 느낌을 받았고, 그래서 SQL의 본질적인 개념인 ‘질문’에 집중하게 되었습니다.\n내가 헷갈린 지점 처음에는 SQL을 단순히 데이터를 조회하는 명령어로만 생각해서, 어떤 질문을 던져야 원하는 답을 얻을 수 있을지 막막했다. SQL 명령어가 데이터베이스에 던지는 질문이라는 개념이 부족해서, 데이터베이스를 쿼리하는 유연성을 제대로 활용하지 못하고 있었다. 마치 정해진 답만 알고 있는 시험 문제를 푸는 듯한 느낌이었달까.\n시도한 코드 / 예시 SELECT * FROM study_notes; -- study_notes 테이블의 모든 데이터를 요청하는 명령 결과와 해석 SQL이 단순히 데이터를 가져오는 것이 아니라 데이터베이스에 질문을 던지는 언어라는 점을 깨달았고, SELECT 문을 통해 원하는 정보를 정확하게 요청하는 방식으로 이해가 바뀌었다. CREATE TABLE과 INSERT 문법이 테이블 생성과 데이터 삽입이라는 CRUD 연산을 연결해주는 것을 명확히 파악하게 되었고, 이를 바탕으로 테이블 생성 및 데이터 삽입 실습을 진행했다. 테이블 구조 설계와 데이터 입력 과정을 직접 수행하며 SQL에 대한 이해도를 높일 수 있었다.\n정리된 이해 SQL은 단순히 데이터를 가져오는 것이 아니라, 데이터베이스에 원하는 정보를 묻는 질문을 던지는 언어라는 것을 깨달았다. 이를 통해 SQL문의 유연성과 데이터베이스에 대한 질문 구조를 더 명확하게 이해할 수 있게 되었다.\n2. CRUD와 SQL 대응 왜 이걸 보게 됐나 처음에는 SQL 문법 자체를 어떻게 적용해야 할지 막막했는데, CRUD 연산과 SQL의 연결 고리를 이해하고 나니 테이블 설계부터 데이터 조작까지 좀 더 명확하게 접근할 수 있게 됐다. 특히 CREATE TABLE 문법과 INSERT 문법이 어떻게 상호작용하는지 알게 되면서, 데이터베이스를 설계하고 관리하는 데 필요한 기본적인 틀을 잡을 수 있게 되었다.\n내가 헷갈린 지점 처음에는 CREATE TABLE 문법이 단순히 테이블을 만드는 과정이라고 생각해서, 그 이후 데이터 입력이 어떻게 연관되는지 감이 잘 안 잡혔어. 특히 CREATE TABLE에서 정의한 컬럼 이름과 INSERT 문법에서 값을 넣는 부분이 어떻게 연결되는지 파악하는 데 시간이 걸렸어. 테이블 구조가 어떻게 영향을 미치는지 명확히 이해하지 못해서 데이터 입력이 추상적으로 느껴졌던 것 같아.\n시도한 코드 / 예시 - **Create**: `CREATE TABLE`을 사용해 테이블 생성 ```sql CREATE TABLE IF NOT EXISTS study_notes ( id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, category TEXT NOT NULL, memo TEXT ); Read: SELECT를 사용해 데이터 조회 SELECT * FROM study_notes WHERE title = 'SQLite 기본'; Update: UPDATE를 사용해 데이터 수정 UPDATE study_notes SET memo = '테이블 생성과 SELECT 기본 문법 학습 완료' WHERE id = 1; Delete: DELETE를 사용해 데이터 삭제 DELETE FROM study_notes WHERE category = 'database'; ### 결과와 해석 `CREATE TABLE` 문법은 테이블의 구조를 정의하며, `INSERT INTO` 문법은 정의된 구조에 맞춰 데이터를 삽입하는 것을 확인했다. `CREATE TABLE`로 `learning_logs` 테이블을 만들고, `INSERT INTO`로 학습 날짜, 주제, 상세 내용을 기록하는 예시를 통해 테이블 생성과 데이터 삽입이 서로 연관되어 있음을 깨달았다. 이를 통해 테이블 구조 정의와 데이터 입력의 기본 원리를 이해할 수 있었다. ### 정리된 이해 SQL은 데이터베이스에 질문을 던지는 언어이며, CRUD 연산은 SQL 문법을 사용하여 구현됩니다. 테이블 생성은 `CREATE TABLE`, 데이터 조회는 `SELECT`, 수정은 `UPDATE`, 삭제는 `DELETE` 명령어를 통해 이루어집니다. 이 관계를 이해하면 SQL을 사용하여 데이터베이스를 효과적으로 관리할 수 있습니다. ## 3. 테이블 생성 ### 왜 이걸 보게 됐나 데이터를 체계적으로 관리하고 싶어서 테이블이라는 구조를 만들 필요성을 느꼈다. SQL을 통해 데이터를 효율적으로 다루기 위해서는 테이블 생성부터 시작해야 했고, 이를 통해 데이터의 구조를 명확히 정의하고 관리할 수 있게 되었다. 테이블 생성은 단순히 데이터를 저장하는 공간을 만드는 것을 넘어, 데이터베이스 설계의 첫걸음이라는 것을 알게 되었다. ### 내가 헷갈린 지점 처음에는 `CREATE TABLE` 명령어가 단순히 테이블을 만드는 행위 자체로 생각해서, 테이블 구조를 정의하는 것 외에 다른 기능이 있을 것이라고는 상상하지 못했다. 테이블 구조 정의 이후 데이터가 어떻게 들어가고, 어떻게 관리되는지에 대한 연결 고리가 부족하다고 느꼈다. 특히 `PRIMARY KEY AUTOINCREMENT` 부분이 어떻게 작동하는지 이해하는 데 시간이 걸렸다. ### 시도한 코드 / 예시 ```sql CREATE TABLE IF NOT EXISTS study_notes ( id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, category TEXT NOT NULL, memo TEXT ); 결과와 해석 CREATE TABLE IF NOT EXISTS learning_logs 문법을 통해 학습 기록을 저장할 테이블을 생성했다. IF NOT EXISTS 조건을 통해 이미 테이블이 존재할 경우 오류를 방지하며, log_id, date, topic, details 컬럼을 정의하여 학습 내용을 구조적으로 저장할 수 있도록 설계했다. 이 테이블을 통해 학습 일지 관리의 기반을 마련했다.\n정리된 이해 CREATE TABLE 문법은 데이터베이스에 새로운 테이블을 만들라는 명령어이며, 테이블의 이름과 각 컬럼의 데이터 타입을 정의하는 중요한 단계이다. 이 과정을 통해 데이터를 체계적으로 저장할 수 있는 공간을 확보하게 된다. 테이블 생성은 이후 데이터 입력을 위한 필수적인 준비 작업이라고 이해했다.\n4. 데이터 삽입 왜 이걸 보게 됐나 데이터를 저장하고 관리하는 시스템을 구축하려면, 테이블에 데이터를 실제로 넣어야 하니까요. 단순히 표를 만드는 것만으로는 정보를 활용할 수 없어서, 기록을 남기고 체계적으로 정리하기 위해 삽입 연산이 필요했습니다. 앞으로 학습 내용을 꾸준히 기록하고 관리하기 위해서 꼭 필요한 과정이라는 것을 알게 되었습니다.\n내가 헷갈린 지점 처음에는 INSERT 문법에서 괄호 안에 들어갈 값들이 테이블 컬럼 순서대로 들어가야 한다는 점이 헷갈렸다. VALUES 뒤에 오는 값들이 컬럼과 연결되는 기준이 명확하지 않아서, 순서가 바뀌면 데이터가 잘못 들어갈까 봐 걱정했다. 그리고 문자열 값은 따옴표로 묶어야 한다는 규칙을 까먹을 때가 많았어서, 항상 주의해야 했다.\n시도한 코드 / 예시 INSERT INTO learning_logs (date, topic, details) VALUES ('2023-06-08', 'SQLite 기본', '테이블 생성 및 SELECT 기본 문법 학습 완료'); 결과와 해석 ’learning_logs’ 테이블에 2023년 6월 8일, 학습 주제는 ‘데이터 삽입’, 그리고 추가적인 세부 내용은 아직 입력하지 않은 새로운 로그를 추가했다. INSERT INTO 명령어를 통해 데이터를 삽입하는 방법을 익혔고, 나중에 필요한 경우 SELECT 문으로 다시 불러와 확인할 수 있을 것이다. INSERT 문법을 통해 테이블에 데이터를 채워넣는 기본적인 CRUD 연산을 수행해 보았다.\n정리된 이해 데이터 삽입은 INSERT INTO 명령어를 사용하여 테이블의 특정 컬럼에 값을 채워 넣는 과정이다. 각 컬럼의 데이터 유형에 맞는 값을 지정해야 하며, 괄호 안에 컬럼 이름을 명시하고 VALUES 절에 해당 값을 나열하여 실행한다. 여러 레코드를 한 번에 삽입할 수도 있으며, 이 경우 각 레코드는 괄호로 묶여 VALUES 절에 추가된다.\n총평 오늘 전체에서 배운 것 SQL을 단순히 데이터 가져오기 명령어가 아니라, 데이터베이스에 질문을 던지는 언어로 이해하게 되었다. CRUD 연산과 SQL 문법이 어떻게 연결되는지 명확하게 정리하여 테이블 생성, 데이터 삽입 등 기본 작업들을 수행할 수 있게 되었다.\n다음에 조심할 것 다음번에 SQL을 작성할 때는 질문의 목적을 명확히 하는 데 더 집중해야겠다. 테이블 생성과 데이터 삽입 시, 데이터 타입과 제약 조건을 꼼꼼히 확인하여 오류를 줄여야겠다.\n다음 복습 주제 UPDATE와 DELETE 문법을 좀 더 다양한 조건으로 활용하는 연습을 해야겠다. 특히, 서브쿼리를 활용한 조건문은 추가적으로 학습이 필요해 보인다.\n",
+  "wordCount" : "1007",
+  "inLanguage": "en",
+  "datePublished": "2026-06-09T00:00:00Z",
+  "dateModified": "2026-06-09T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/sqlite-select-crud-basics/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/posts/" title="글">
+                    <span>글</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      sqlite-select-crud-basics
+    </h1>
+    <div class="post-description">
+      sqlite-select-crud-basics 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-sql-%EC%A7%88%EB%AC%B8-%EC%9D%B4%ED%95%B4">SQL 질문 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-crud%EC%99%80-sql-%EB%8C%80%EC%9D%91">CRUD와 SQL 대응</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%ED%85%8C%EC%9D%B4%EB%B8%94-%EC%83%9D%EC%84%B1">테이블 생성</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%82%BD%EC%9E%85">데이터 삽입</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-sql-질문-이해">1. SQL 질문 이해<a hidden class="anchor" aria-hidden="true" href="#1-sql-질문-이해">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>처음에는 SQL을 단순히 데이터 가져오는 명령어로 생각해서, 원하는 데이터를 효율적으로 추출하는 질문을 구성하는 데 어려움을 겪었습니다. SQL의 질문 구조를 제대로 이해하지 못해 데이터베이스의 잠재력을 최대한 활용하지 못한다는 느낌을 받았고, 그래서 SQL의 본질적인 개념인 &lsquo;질문&rsquo;에 집중하게 되었습니다.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>처음에는 SQL을 단순히 데이터를 조회하는 명령어로만 생각해서, 어떤 질문을 던져야 원하는 답을 얻을 수 있을지 막막했다. SQL 명령어가 데이터베이스에 던지는 질문이라는 개념이 부족해서, 데이터베이스를 쿼리하는 유연성을 제대로 활용하지 못하고 있었다. 마치 정해진 답만 알고 있는 시험 문제를 푸는 듯한 느낌이었달까.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> study_notes; <span style="color:#75715e">-- study_notes 테이블의 모든 데이터를 요청하는 명령
+</span></span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p>SQL이 단순히 데이터를 가져오는 것이 아니라 데이터베이스에 질문을 던지는 언어라는 점을 깨달았고, <code>SELECT</code> 문을 통해 원하는 정보를 정확하게 요청하는 방식으로 이해가 바뀌었다. <code>CREATE TABLE</code>과 <code>INSERT</code> 문법이 테이블 생성과 데이터 삽입이라는 CRUD 연산을 연결해주는 것을 명확히 파악하게 되었고, 이를 바탕으로 테이블 생성 및 데이터 삽입 실습을 진행했다. 테이블 구조 설계와 데이터 입력 과정을 직접 수행하며 SQL에 대한 이해도를 높일 수 있었다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>SQL은 단순히 데이터를 가져오는 것이 아니라, 데이터베이스에 원하는 정보를 묻는 질문을 던지는 언어라는 것을 깨달았다. 이를 통해 SQL문의 유연성과 데이터베이스에 대한 질문 구조를 더 명확하게 이해할 수 있게 되었다.</p>
+<h2 id="2-crud와-sql-대응">2. CRUD와 SQL 대응<a hidden class="anchor" aria-hidden="true" href="#2-crud와-sql-대응">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>처음에는 SQL 문법 자체를 어떻게 적용해야 할지 막막했는데, CRUD 연산과 SQL의 연결 고리를 이해하고 나니 테이블 설계부터 데이터 조작까지 좀 더 명확하게 접근할 수 있게 됐다. 특히 CREATE TABLE 문법과 INSERT 문법이 어떻게 상호작용하는지 알게 되면서, 데이터베이스를 설계하고 관리하는 데 필요한 기본적인 틀을 잡을 수 있게 되었다.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>처음에는 <code>CREATE TABLE</code> 문법이 단순히 테이블을 만드는 과정이라고 생각해서, 그 이후 데이터 입력이 어떻게 연관되는지 감이 잘 안 잡혔어. 특히 <code>CREATE TABLE</code>에서 정의한 컬럼 이름과 <code>INSERT</code> 문법에서 값을 넣는 부분이 어떻게 연결되는지 파악하는 데 시간이 걸렸어. 테이블 구조가 어떻게 영향을 미치는지 명확히 이해하지 못해서 데이터 입력이 추상적으로 느껴졌던 것 같아.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>  <span style="color:#f92672">-</span> <span style="color:#f92672">**</span><span style="color:#66d9ef">Create</span><span style="color:#f92672">**</span>: <span style="color:#f92672">`</span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span><span style="color:#f92672">`</span><span style="color:#960050;background-color:#1e0010">을</span> <span style="color:#960050;background-color:#1e0010">사용해</span> <span style="color:#960050;background-color:#1e0010">테이블</span> <span style="color:#960050;background-color:#1e0010">생성</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">```</span><span style="color:#66d9ef">sql</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">EXISTS</span> study_notes (
+</span></span><span style="display:flex;"><span>        id INTEGER <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> AUTOINCREMENT,
+</span></span><span style="display:flex;"><span>        title TEXT <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>        category TEXT <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>        memo TEXT
+</span></span><span style="display:flex;"><span>    );
+</span></span></code></pre></div><ul>
+<li><strong>Read</strong>: <code>SELECT</code>를 사용해 데이터 조회</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> study_notes <span style="color:#66d9ef">WHERE</span> title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;SQLite 기본&#39;</span>;
+</span></span></code></pre></div><ul>
+<li><strong>Update</strong>: <code>UPDATE</code>를 사용해 데이터 수정</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>    <span style="color:#66d9ef">UPDATE</span> study_notes <span style="color:#66d9ef">SET</span> memo <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;테이블 생성과 SELECT 기본 문법 학습 완료&#39;</span> <span style="color:#66d9ef">WHERE</span> id <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span></code></pre></div><ul>
+<li><strong>Delete</strong>: <code>DELETE</code>를 사용해 데이터 삭제</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>    <span style="color:#66d9ef">DELETE</span> <span style="color:#66d9ef">FROM</span> study_notes <span style="color:#66d9ef">WHERE</span> category <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;database&#39;</span>;
+</span></span></code></pre></div><pre tabindex="0"><code>
+### 결과와 해석
+`CREATE TABLE` 문법은 테이블의 구조를 정의하며, `INSERT INTO` 문법은 정의된 구조에 맞춰 데이터를 삽입하는 것을 확인했다. `CREATE TABLE`로 `learning_logs` 테이블을 만들고, `INSERT INTO`로 학습 날짜, 주제, 상세 내용을 기록하는 예시를 통해 테이블 생성과 데이터 삽입이 서로 연관되어 있음을 깨달았다. 이를 통해 테이블 구조 정의와 데이터 입력의 기본 원리를 이해할 수 있었다.
+
+### 정리된 이해
+SQL은 데이터베이스에 질문을 던지는 언어이며, CRUD 연산은 SQL 문법을 사용하여 구현됩니다. 테이블 생성은 `CREATE TABLE`, 데이터 조회는 `SELECT`, 수정은 `UPDATE`, 삭제는 `DELETE` 명령어를 통해 이루어집니다. 이 관계를 이해하면 SQL을 사용하여 데이터베이스를 효과적으로 관리할 수 있습니다.
+
+## 3. 테이블 생성
+
+### 왜 이걸 보게 됐나
+데이터를 체계적으로 관리하고 싶어서 테이블이라는 구조를 만들 필요성을 느꼈다. SQL을 통해 데이터를 효율적으로 다루기 위해서는 테이블 생성부터 시작해야 했고, 이를 통해 데이터의 구조를 명확히 정의하고 관리할 수 있게 되었다. 테이블 생성은 단순히 데이터를 저장하는 공간을 만드는 것을 넘어, 데이터베이스 설계의 첫걸음이라는 것을 알게 되었다.
+
+### 내가 헷갈린 지점
+처음에는 `CREATE TABLE` 명령어가 단순히 테이블을 만드는 행위 자체로 생각해서, 테이블 구조를 정의하는 것 외에 다른 기능이 있을 것이라고는 상상하지 못했다. 테이블 구조 정의 이후 데이터가 어떻게 들어가고, 어떻게 관리되는지에 대한 연결 고리가 부족하다고 느꼈다. 특히 `PRIMARY KEY AUTOINCREMENT` 부분이 어떻게 작동하는지 이해하는 데 시간이 걸렸다.
+
+### 시도한 코드 / 예시
+```sql
+CREATE TABLE IF NOT EXISTS study_notes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        category TEXT NOT NULL,
+        memo TEXT
+    );
+</code></pre><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p><code>CREATE TABLE IF NOT EXISTS learning_logs</code> 문법을 통해 학습 기록을 저장할 테이블을 생성했다. <code>IF NOT EXISTS</code> 조건을 통해 이미 테이블이 존재할 경우 오류를 방지하며, <code>log_id</code>, <code>date</code>, <code>topic</code>, <code>details</code> 컬럼을 정의하여 학습 내용을 구조적으로 저장할 수 있도록 설계했다. 이 테이블을 통해 학습 일지 관리의 기반을 마련했다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p><code>CREATE TABLE</code> 문법은 데이터베이스에 새로운 테이블을 만들라는 명령어이며, 테이블의 이름과 각 컬럼의 데이터 타입을 정의하는 중요한 단계이다. 이 과정을 통해 데이터를 체계적으로 저장할 수 있는 공간을 확보하게 된다. 테이블 생성은 이후 데이터 입력을 위한 필수적인 준비 작업이라고 이해했다.</p>
+<h2 id="4-데이터-삽입">4. 데이터 삽입<a hidden class="anchor" aria-hidden="true" href="#4-데이터-삽입">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>데이터를 저장하고 관리하는 시스템을 구축하려면, 테이블에 데이터를 실제로 넣어야 하니까요. 단순히 표를 만드는 것만으로는 정보를 활용할 수 없어서, 기록을 남기고 체계적으로 정리하기 위해 삽입 연산이 필요했습니다. 앞으로 학습 내용을 꾸준히 기록하고 관리하기 위해서 꼭 필요한 과정이라는 것을 알게 되었습니다.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>처음에는 INSERT 문법에서 괄호 안에 들어갈 값들이 테이블 컬럼 순서대로 들어가야 한다는 점이 헷갈렸다. VALUES 뒤에 오는 값들이 컬럼과 연결되는 기준이 명확하지 않아서, 순서가 바뀌면 데이터가 잘못 들어갈까 봐 걱정했다. 그리고 문자열 값은 따옴표로 묶어야 한다는 규칙을 까먹을 때가 많았어서, 항상 주의해야 했다.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> learning_logs (date, topic, details) <span style="color:#66d9ef">VALUES</span>
+</span></span><span style="display:flex;"><span>(<span style="color:#e6db74">&#39;2023-06-08&#39;</span>, <span style="color:#e6db74">&#39;SQLite 기본&#39;</span>, <span style="color:#e6db74">&#39;테이블 생성 및 SELECT 기본 문법 학습 완료&#39;</span>);
+</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p>&rsquo;learning_logs&rsquo; 테이블에 2023년 6월 8일, 학습 주제는 &lsquo;데이터 삽입&rsquo;, 그리고 추가적인 세부 내용은 아직 입력하지 않은 새로운 로그를 추가했다. <code>INSERT INTO</code> 명령어를 통해 데이터를 삽입하는 방법을 익혔고, 나중에 필요한 경우 <code>SELECT</code> 문으로 다시 불러와 확인할 수 있을 것이다.  INSERT 문법을 통해 테이블에 데이터를 채워넣는 기본적인 CRUD 연산을 수행해 보았다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>데이터 삽입은 <code>INSERT INTO</code> 명령어를 사용하여 테이블의 특정 컬럼에 값을 채워 넣는 과정이다.  각 컬럼의 데이터 유형에 맞는 값을 지정해야 하며, 괄호 안에 컬럼 이름을 명시하고 <code>VALUES</code> 절에 해당 값을 나열하여 실행한다.  여러 레코드를 한 번에 삽입할 수도 있으며, 이 경우 각 레코드는 괄호로 묶여 <code>VALUES</code> 절에 추가된다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>SQL을 단순히 데이터 가져오기 명령어가 아니라, 데이터베이스에 질문을 던지는 언어로 이해하게 되었다. CRUD 연산과 SQL 문법이 어떻게 연결되는지 명확하게 정리하여 테이블 생성, 데이터 삽입 등 기본 작업들을 수행할 수 있게 되었다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>다음번에 SQL을 작성할 때는 질문의 목적을 명확히 하는 데 더 집중해야겠다. 테이블 생성과 데이터 삽입 시, 데이터 타입과 제약 조건을 꼼꼼히 확인하여 오류를 줄여야겠다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>UPDATE와 DELETE 문법을 좀 더 다양한 조건으로 활용하는 연습을 해야겠다. 특히, 서브쿼리를 활용한 조건문은 추가적으로 학습이 필요해 보인다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/sqlite-learning-resources-and-notion-export/">
+    <span class="title">« Prev</span>
+    <span>sqlite-learning-resources-and-notion-export</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/sqlite-sqltools-nextweek/">
+    <span class="title">Next »</span>
+    <span>sqlite-sqltools-nextweek</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
