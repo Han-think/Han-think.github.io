@@ -9,67 +9,11 @@
     <lastBuildDate>Wed, 10 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/learning/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>am-01-yesterday-review-to-sql-functions-join</title>
-      <link>https://Han-think.github.io/learning/am-01-yesterday-review-to-sql-functions-join/</link>
-      <pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/learning/am-01-yesterday-review-to-sql-functions-join/</guid>
-      <description>am-01-yesterday-review-to-sql-functions-join 학습 정리</description>
-    </item>
-    <item>
-      <title>am-02-group-by-having-practice</title>
-      <link>https://Han-think.github.io/learning/am-02-group-by-having-practice/</link>
-      <pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/learning/am-02-group-by-having-practice/</guid>
-      <description>am-02-group-by-having-practice 학습 정리</description>
-    </item>
-    <item>
-      <title>am-03-join-subquery-practice-chinook</title>
-      <link>https://Han-think.github.io/learning/am-03-join-subquery-practice-chinook/</link>
-      <pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/learning/am-03-join-subquery-practice-chinook/</guid>
-      <description>am-03-join-subquery-practice-chinook 학습 정리</description>
-    </item>
-    <item>
-      <title>am-04-scalar-from-subquery-data-pipeline</title>
-      <link>https://Han-think.github.io/learning/am-04-scalar-from-subquery-data-pipeline/</link>
-      <pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/learning/am-04-scalar-from-subquery-data-pipeline/</guid>
-      <description>am-04-scalar-from-subquery-data-pipeline 학습 정리</description>
-    </item>
-    <item>
       <title>GROUP BY에서 FROM 절 서브쿼리까지, SQL을 데이터 파이프라인으로 보기</title>
       <link>https://Han-think.github.io/learning/2026-06-10-am-sql-group-join-subquery/</link>
       <pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/learning/2026-06-10-am-sql-group-join-subquery/</guid>
       <description>GROUP BY, HAVING, JOIN, 스칼라 서브쿼리와 FROM 절 서브쿼리를 데이터 흐름으로 다시 정리한 오전 학습 기록</description>
-    </item>
-    <item>
-      <title>pm-01-set-operators</title>
-      <link>https://Han-think.github.io/learning/pm-01-set-operators/</link>
-      <pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/learning/pm-01-set-operators/</guid>
-      <description>pm-01-set-operators 학습 정리</description>
-    </item>
-    <item>
-      <title>pm-02-union-all-reports</title>
-      <link>https://Han-think.github.io/learning/pm-02-union-all-reports/</link>
-      <pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/learning/pm-02-union-all-reports/</guid>
-      <description>pm-02-union-all-reports 학습 정리</description>
-    </item>
-    <item>
-      <title>pm-03-recursive-cte-hierarchy</title>
-      <link>https://Han-think.github.io/learning/pm-03-recursive-cte-hierarchy/</link>
-      <pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/learning/pm-03-recursive-cte-hierarchy/</guid>
-      <description>pm-03-recursive-cte-hierarchy 학습 정리</description>
-    </item>
-    <item>
-      <title>pm-04-table-roles-alias-reading</title>
-      <link>https://Han-think.github.io/learning/pm-04-table-roles-alias-reading/</link>
-      <pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/learning/pm-04-table-roles-alias-reading/</guid>
-      <description>pm-04-table-roles-alias-reading 학습 정리</description>
     </item>
     <item>
       <title>UNION ALL부터 재귀 CTE까지, SQL 결과표를 조립하는 방식</title>

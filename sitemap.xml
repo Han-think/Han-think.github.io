@@ -3,18 +3,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://Han-think.github.io/learning/am-01-yesterday-review-to-sql-functions-join/</loc>
-    <lastmod>2026-06-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/learning/am-02-group-by-having-practice/</loc>
-    <lastmod>2026-06-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/learning/am-03-join-subquery-practice-chinook/</loc>
-    <lastmod>2026-06-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/learning/am-04-scalar-from-subquery-data-pipeline/</loc>
-    <lastmod>2026-06-10T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://Han-think.github.io/tags/beginner/</loc>
     <lastmod>2026-06-10T00:00:00+00:00</lastmod>
   </url><url>
@@ -28,18 +16,6 @@
     <lastmod>2026-06-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/join/</loc>
-    <lastmod>2026-06-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/learning/pm-01-set-operators/</loc>
-    <lastmod>2026-06-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/learning/pm-02-union-all-reports/</loc>
-    <lastmod>2026-06-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/learning/pm-03-recursive-cte-hierarchy/</loc>
-    <lastmod>2026-06-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/learning/pm-04-table-roles-alias-reading/</loc>
     <lastmod>2026-06-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/recursive-cte/</loc>
