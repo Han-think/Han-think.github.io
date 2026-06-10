@@ -169,22 +169,6 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">UNION ALL부터 재귀 CTE까지, SQL 결과표를 조립하는 방식
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 1. 집합 연산자: SELECT 결과표끼리 계산하기 2. 문제본 기준 집합 연산 복습: UNION부터 EXCEPT까지 3. UNION ALL 리포트: 장르별 통계와 전체합계 붙이기 4. WITH RECURSIVE: 직원 조직도 펼치기 5. 테이블 역할표와 별칭: FROM/JOIN부터 읽기 총평 1. 집합 연산자: SELECT 결과표끼리 계산하기 무엇을 배웠나 오후 수업은 SQL 집합 연산자에서 시작했다. 집합 연산자는 원본 테이블을 물리적으로 합치는 것이 아니라, 각각의 SELECT가 만든 결과표끼리 계산하는 방식이다.
-UNION = 두 결과표를 합치고 중복 제거 UNION ALL = 두 결과표를 중복 제거 없이 아래로 붙임 INTERSECT = 두 결과표에 모두 있는 행만 남김 EXCEPT = 첫 번째 결과표에서 두 번째 결과표를 뺌 공통 규칙은 다음과 같다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-10 00:00:00 +0000 UTC'>2026년 6월 10일</span>&nbsp;·&nbsp;<span>7 min</span></footer>
-  <a class="entry-link" aria-label="post link to UNION ALL부터 재귀 CTE까지, SQL 결과표를 조립하는 방식" href="https://Han-think.github.io/learning/2026-06-10-pm-sql-set-operators-recursive-cte/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
     <h2 class="entry-hint-parent">am-01-sql-groupby-having
     </h2>
   </header>
@@ -320,6 +304,22 @@ UNION = 두 결과표를 합치고 중복 제거 UNION ALL = 두 결과표를 �
 
 <span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
   <a class="entry-link" aria-label="post link to pm-01-select-query-practice" href="https://Han-think.github.io/learning/pm-01-select-query-practice/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">pm-02-select-mistakes-and-fixes
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 숫자 비교 오류 LIKE 연산자 ORDER BY 컬럼 데이터 정렬 총평 1. 숫자 비교 오류 왜 이걸 보게 됐나 SQL 실습을 하면서 숫자를 비교할 때, 실수로 문자열처럼 따옴표를 사용해서 오류가 발생했어. SQL은 숫자 리터럴을 그냥 사용해야 한다는 점을 간과했지. 이 실수를 통해 SQL에서 숫자와 문자열 비교의 차이점을 확실히 이해하게 됐어.
+내가 헷갈린 지점 숫자를 비교할 때 따옴표를 붙여야 한다고 생각했는데, 데이터베이스는 숫자를 문자열로 인식하는지 몰랐어요. 따옴표가 문자열 비교에 쓰이는 건 알았지만, 숫자 비교에도 적용해야 한다는 점이 헷갈렸고, 그 결과 예상치 못한 오류가 발생했습니다. 숫자는 숫자 그대로 비교해야 한다는 걸 깨닫고 코드를 수정했더니 문제가 해결되었습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to pm-02-select-mistakes-and-fixes" href="https://Han-think.github.io/learning/pm-02-select-mistakes-and-fixes/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
