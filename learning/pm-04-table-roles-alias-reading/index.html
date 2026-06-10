@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>pm-04-table-roles-alias-reading | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="pm-04-table-roles-alias-reading 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/pm-04-table-roles-alias-reading/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/pm-04-table-roles-alias-reading/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/pm-04-table-roles-alias-reading/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="pm-04-table-roles-alias-reading">
+  <meta property="og:description" content="pm-04-table-roles-alias-reading 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-10T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-10T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="pm-04-table-roles-alias-reading">
+  <meta name="twitter:description" content="pm-04-table-roles-alias-reading 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "pm-04-table-roles-alias-reading",
+      "item": "https://Han-think.github.io/learning/pm-04-table-roles-alias-reading/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "pm-04-table-roles-alias-reading",
+  "name": "pm-04-table-roles-alias-reading",
+  "description": "pm-04-table-roles-alias-reading 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 별칭 활용 테이블 역할 중심 테이블 쿼리 목적 총평 1. 별칭 활용 왜 이걸 보게 됐나 복잡한 테이블 간의 관계를 파악하고 쿼리를 작성할 때 테이블 이름이 너무 길거나 반복적으로 사용되어서 쿼리 자체가 가독성을 잃어버리는 경우가 많았어. 별칭을 사용하면 테이블 이름을 줄여서 쿼리를 간결하게 만들 수 있고, 테이블 간의 조인 조건을 명확하게 표현할 수 있어서 쿼리 이해도와 효율성을 높일 수 있겠다는 생각을 하게 됐어.\n내가 헷갈린 지점 처음에는 별칭이 왜 테이블 이름 뒤에 덧붙여지는지, 그리고 SELECT 문에서 이 별칭을 어떻게 활용해야 하는지 잘 몰랐습니다. 테이블 이름이 너무 길 때만 별칭을 쓰는 줄 알았고, 별칭을 사용하지 않으면 쿼리가 작동하지 않을 것이라고 생각했습니다. 별칭이 단순히 짧게 줄여쓰기 위한 것 이상이라는 것을 깨닫지 못했습니다.\n시도한 코드 / 예시 SELECT ii.TrackId, g.Name AS GenreName, SUM(ii.UnitPrice * ii.Quantity) AS Revenue FROM invoice_items AS ii INNER JOIN tracks AS t ON ii.TrackId = t.TrackId INNER JOIN genres AS g ON t.GenreId = g.GenreId 결과와 해석 음악 매출 쿼리에서 tracks 테이블을 중심으로 invoice_items와 genres 테이블을 조인하여 특정 장르별 매출을 계산해봤습니다. tracks 테이블의 별칭 t를 통해 조인 조건을 명확히 하고, genres 테이블의 Name 컬럼을 GenreName이라는 별칭으로 선택하여 쿼리 결과를 더 쉽게 이해할 수 있도록 했습니다. 이처럼 별칭을 사용하면 쿼리 복잡도를 줄이고 가독성을 높일 수 있었습니다.\n정리된 이해 별칭은 테이블 이름을 줄여서 편하게 사용하기 위한 임시 이름표인데, FROM이나 JOIN절에서 정의해서 쿼리 전체에서 일관되게 사용해야 합니다. 테이블 역할과 중심 테이블을 파악하는 것이 쿼리 작성의 핵심이며, 쿼리의 목적에 따라 중심 테이블을 찾고 테이블 간의 연결 관계를 이해해야 효율적인 쿼리를 작성할 수 있습니다.\n2. 테이블 역할 왜 이걸 보게 됐나 ERD가 복잡해질수록 어떤 테이블이 핵심이고, 어떤 테이블들이 서로 어떻게 연결되는지 파악하는 게 어려웠거든. 테이블 간의 관계를 명확히 이해하지 못하면 쿼리를 제대로 작성할 수 없을 것 같아서, 테이블 역할을 배우게 됐어. 결국 쿼리의 목적에 맞춰 테이블의 역할을 이해하는 게 효율적인 쿼리 작성을 위한 첫걸음인 것 같아.\n내가 헷갈린 지점 처음에는 테이블 간의 관계를 ERD에서 보는 것 자체가 어려웠고, 쿼리 작성 시 어떤 테이블이 핵심이고 어떤 테이블이 보조 역할을 하는지 파악하는 데 시간이 오래 걸렸습니다. 특히 여러 테이블이 조인되는 쿼리에서는 각 테이블이 어떤 정보를 담고 있으며, 쿼리 목적에 따라 어떤 테이블이 중심이 되는지 혼란스러웠습니다.\n시도한 코드 / 예시 SELECT ii.TrackId, g.Name AS GenreName, SUM(ii.UnitPrice * ii.Quantity) AS Revenue FROM invoice_items AS ii INNER JOIN tracks AS t ON ii.TrackId = t.TrackId INNER JOIN genres AS g ON t.GenreId = g.GenreId 결과와 해석 음악 매출 쿼리를 작성하면서 invoice_items 테이블을 중심으로 tracks와 genres 테이블을 연결하는 과정을 이해할 수 있었다. invoice_items 테이블이 중심이 되어 어떤 트랙이 얼마만큼 팔렸는지, 그리고 그 트랙의 장르는 무엇인지 알아낼 수 있게 되었다. 테이블 간의 관계를 파악하고 중심 테이블을 기준으로 쿼리를 구성하는 연습이 중요함을 깨달았다.\n정리된 이해 쿼리에서 각 테이블이 어떤 역할을 하는지 파악하는 것이 중요하며, 특히 쿼리의 목적을 고려하여 중심 테이블을 찾아야 전체적인 구조를 이해하기 쉽습니다. 중심 테이블은 쿼리의 핵심 데이터가 위치하는 곳이며, 다른 테이블과의 관계를 통해 필요한 정보를 가져옵니다.\n3. 중심 테이블 왜 이걸 보게 됐나 쿼리를 작성하다 보면 여러 테이블을 연결해서 필요한 정보를 뽑아내야 하는데, 각 테이블이 어떤 역할을 하는지 명확히 이해하지 못하면 어떤 테이블이 핵심이고 어떤 테이블을 연결해야 할지 막막해졌어. 그래서 테이블 간의 관계를 파악하고 쿼리의 목적에 맞춰 중심 테이블을 찾을 수 있게 되면서 더 효율적으로 쿼리를 작성할 수 있게 됐어.\n내가 헷갈린 지점 처음에는 여러 테이블이 연결된 쿼리에서 어떤 테이블이 가장 중요한 역할을 하는지, 즉 ‘중심 테이블’을 찾기가 어려웠다. ERD를 보면 모든 테이블이 서로 관련되어 보여서 어느 테이블을 기준으로 쿼리를 설계해야 할지 혼란스러웠고, 중심 테이블이 쿼리 결과에 가장 큰 영향을 미치는 테이블이라는 개념을 제대로 이해하지 못했다. 쿼리 목적에 따라 중심 테이블이 달라질 수 있다는 점도 인지하지 못하고 있었다.\n시도한 코드 / 예시 tracks (중심) → albums → artists → genres 결과와 해석 쿼리의 목적에 따라 중심 테이블을 찾으면 어떤 테이블이 핵심 데이터 역할을 하는지 알 수 있어요. 예를 들어 음악 매출 쿼리에서는 tracks 테이블이 중심이 되어 다른 테이블들과 연결되면서 음악 데이터와 관련된 정보를 효과적으로 가져올 수 있습니다. 이를 통해 쿼리 작성의 방향성을 잡고 테이블 간의 관계를 더 명확하게 이해할 수 있었습니다.\n정리된 이해 쿼리의 목적을 가장 잘 반영하는 테이블을 중심으로 테이블 간의 관계를 파악해야 합니다. 중심 테이블을 찾으면, 어떤 테이블들이 중심 테이블과 연결되어 있는지, 그리고 그 연결이 어떤 의미를 가지는지를 더 쉽게 이해할 수 있습니다. 이를 통해 복잡한 ERD를 단순화하고 효율적인 쿼리를 작성할 수 있습니다.\n4. 쿼리 목적 왜 이걸 보게 됐나 복잡한 데이터베이스에서 원하는 정보를 찾으려면, 어떤 테이블이 핵심적인 역할을 하는지 파악해야 효율적으로 쿼리를 작성할 수 있어요. 단순히 테이블 간의 연결만 보는 게 아니라, 어떤 정보를 얻고 싶으냐에 따라 중심 테이블이 달라지기 때문에, 쿼리 목적을 이해하는 것이 데이터 분석의 첫걸음이라고 생각하게 됐습니다. 그래야 불필요한 테이블을 거치지 않고 원하는 결과를 빠르게 얻을 수 있겠죠.\n내가 헷갈린 지점 처음에는 쿼리 목적을 파악하는 것이 가장 어려웠다. 단순히 테이블 간의 관계를 보는 것 이상으로, 어떤 정보를 얻고 싶어서 쿼리를 작성하는지에 따라 중심 테이블이 달라질 수 있다는 점을 이해하는 데 시간이 걸렸다. 쿼리가 무엇을 보여주어야 하는지에 대한 질문에 답하는 것이 테이블 역할과 별칭을 제대로 활용하는 데 핵심이라는 걸 뒤늦게 깨달았다.\n시도한 코드 / 예시 SELECT ii.TrackId, g.Name AS GenreName, SUM(ii.UnitPrice * ii.Quantity) AS Revenue FROM invoice_items AS ii INNER JOIN tracks AS t ON ii.TrackId = t.TrackId INNER JOIN genres AS g ON t.GenreId = g.GenreId 결과와 해석 쿼리 목적은 어떤 정보를 얻고 싶은지 명확하게 정의하는 것인데, 예를 들어 ‘음악 매출’을 구하는 쿼리는 ‘invoice_items’ 테이블을 중심으로 어떤 테이블과 연결되어 있는지 파악해야 합니다. 이를 통해 ‘invoice_items’ 테이블에서 시작하여 ’tracks’, ‘genres’ 테이블을 연결하는 쿼리를 작성하여 매출 정보를 얻을 수 있었습니다. 쿼리 목적에 따라 중심 테이블과 연결되는 테이블이 달라지므로, 목적에 맞게 테이블 간의 관계를 이해하는 것이 중요합니다.\n정리된 이해 쿼리 목적을 명확히 하는 것이 테이블 간의 관계를 이해하고 어떤 테이블이 중심이 되는지 파악하는 데 가장 중요합니다. 중심 테이블은 쿼리가 어떤 정보를 얻어내기 위해 사용되는 핵심 테이블이며, 다른 테이블들은 이 중심 테이블과 연결되어 필요한 데이터를 제공합니다. 따라서 쿼리를 작성하기 전에 어떤 정보를 얻고 싶은지를 먼저 생각해야 중심 테이블을 찾고 쿼리를 설계할 수 있습니다.\n총평 오늘 전체에서 배운 것 SQL 쿼리에서 테이블 이름을 짧게 줄여주는 별칭은 FROM이나 JOIN절에서 정의하며, 쿼리의 목적에 따라 중심 테이블을 파악하는 것이 중요합니다. 특히 ERD를 볼 때 각 테이블의 역할과 중심 테이블을 명확히 구분하는 연습이 필요했습니다.\n다음에 조심할 것 별칭이 FROM 절에 어디서 정의되는지, 그리고 쿼리 목적에 따라 중심 테이블을 정확히 파악하는 연습을 꾸준히 해야겠다. ERD를 보면서 테이블 간의 관계와 쿼리 목적을 연결하는 훈련이 필요해 보이고, 실제 쿼리를 작성하면서 각 테이블의 역할을 더욱 명확하게 이해해야 할 것 같다.\n다음 복습 주제 INNER JOIN genres AS g ON t.GenreId = g.GenreId GROUP BY ii.TrackId, g.Name ORDER BY Revenue DESC;\n다음에 좀 더 복잡한 JOIN 조건과 서브쿼리를 활용하여 쿼리를 작성해보고, 성능에 미치는 영향도 분석해봐야겠다. ERD의 테이블 간 관계를 시각적으로 표현하는 방법을 익혀서 테이블 역할을 더 빠르게 파악할 수 있도록 해봐야지. ",
+  "wordCount" : "1065",
+  "inLanguage": "en",
+  "datePublished": "2026-06-10T00:00:00Z",
+  "dateModified": "2026-06-10T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/pm-04-table-roles-alias-reading/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      pm-04-table-roles-alias-reading
+    </h1>
+    <div class="post-description">
+      pm-04-table-roles-alias-reading 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-10 00:00:00 +0000 UTC'>2026년 6월 10일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EB%B3%84%EC%B9%AD-%ED%99%9C%EC%9A%A9">별칭 활용</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%ED%85%8C%EC%9D%B4%EB%B8%94-%EC%97%AD%ED%95%A0">테이블 역할</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%A4%91%EC%8B%AC-%ED%85%8C%EC%9D%B4%EB%B8%94">중심 테이블</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EC%BF%BC%EB%A6%AC-%EB%AA%A9%EC%A0%81">쿼리 목적</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-별칭-활용">1. 별칭 활용<a hidden class="anchor" aria-hidden="true" href="#1-별칭-활용">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>복잡한 테이블 간의 관계를 파악하고 쿼리를 작성할 때 테이블 이름이 너무 길거나 반복적으로 사용되어서 쿼리 자체가 가독성을 잃어버리는 경우가 많았어. 별칭을 사용하면 테이블 이름을 줄여서 쿼리를 간결하게 만들 수 있고, 테이블 간의 조인 조건을 명확하게 표현할 수 있어서 쿼리 이해도와 효율성을 높일 수 있겠다는 생각을 하게 됐어.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>처음에는 별칭이 왜 테이블 이름 뒤에 덧붙여지는지, 그리고 <code>SELECT</code> 문에서 이 별칭을 어떻게 활용해야 하는지 잘 몰랐습니다. 테이블 이름이 너무 길 때만 별칭을 쓰는 줄 알았고, 별칭을 사용하지 않으면 쿼리가 작동하지 않을 것이라고 생각했습니다. 별칭이 단순히 짧게 줄여쓰기 위한 것 이상이라는 것을 깨닫지 못했습니다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> ii.TrackId, <span style="color:#66d9ef">g</span>.Name <span style="color:#66d9ef">AS</span> GenreName, <span style="color:#66d9ef">SUM</span>(ii.UnitPrice <span style="color:#f92672">*</span> ii.Quantity) <span style="color:#66d9ef">AS</span> Revenue
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> invoice_items <span style="color:#66d9ef">AS</span> ii
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span> tracks <span style="color:#66d9ef">AS</span> t <span style="color:#66d9ef">ON</span> ii.TrackId <span style="color:#f92672">=</span> t.TrackId
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span> genres <span style="color:#66d9ef">AS</span> <span style="color:#66d9ef">g</span> <span style="color:#66d9ef">ON</span> t.GenreId <span style="color:#f92672">=</span> <span style="color:#66d9ef">g</span>.GenreId
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p>음악 매출 쿼리에서 <code>tracks</code> 테이블을 중심으로 <code>invoice_items</code>와 <code>genres</code> 테이블을 조인하여 특정 장르별 매출을 계산해봤습니다. <code>tracks</code> 테이블의 별칭 <code>t</code>를 통해 조인 조건을 명확히 하고, <code>genres</code> 테이블의 <code>Name</code> 컬럼을 <code>GenreName</code>이라는 별칭으로 선택하여 쿼리 결과를 더 쉽게 이해할 수 있도록 했습니다. 이처럼 별칭을 사용하면 쿼리 복잡도를 줄이고 가독성을 높일 수 있었습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>별칭은 테이블 이름을 줄여서 편하게 사용하기 위한 임시 이름표인데, <code>FROM</code>이나 <code>JOIN</code>절에서 정의해서 쿼리 전체에서 일관되게 사용해야 합니다. 테이블 역할과 중심 테이블을 파악하는 것이 쿼리 작성의 핵심이며, 쿼리의 목적에 따라 중심 테이블을 찾고 테이블 간의 연결 관계를 이해해야 효율적인 쿼리를 작성할 수 있습니다.</p>
+<h2 id="2-테이블-역할">2. 테이블 역할<a hidden class="anchor" aria-hidden="true" href="#2-테이블-역할">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>ERD가 복잡해질수록 어떤 테이블이 핵심이고, 어떤 테이블들이 서로 어떻게 연결되는지 파악하는 게 어려웠거든. 테이블 간의 관계를 명확히 이해하지 못하면 쿼리를 제대로 작성할 수 없을 것 같아서, 테이블 역할을 배우게 됐어. 결국 쿼리의 목적에 맞춰 테이블의 역할을 이해하는 게 효율적인 쿼리 작성을 위한 첫걸음인 것 같아.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>처음에는 테이블 간의 관계를 ERD에서 보는 것 자체가 어려웠고, 쿼리 작성 시 어떤 테이블이 핵심이고 어떤 테이블이 보조 역할을 하는지 파악하는 데 시간이 오래 걸렸습니다. 특히 여러 테이블이 조인되는 쿼리에서는 각 테이블이 어떤 정보를 담고 있으며, 쿼리 목적에 따라 어떤 테이블이 중심이 되는지 혼란스러웠습니다.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> ii.TrackId, <span style="color:#66d9ef">g</span>.Name <span style="color:#66d9ef">AS</span> GenreName, <span style="color:#66d9ef">SUM</span>(ii.UnitPrice <span style="color:#f92672">*</span> ii.Quantity) <span style="color:#66d9ef">AS</span> Revenue
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> invoice_items <span style="color:#66d9ef">AS</span> ii
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span> tracks <span style="color:#66d9ef">AS</span> t <span style="color:#66d9ef">ON</span> ii.TrackId <span style="color:#f92672">=</span> t.TrackId
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span> genres <span style="color:#66d9ef">AS</span> <span style="color:#66d9ef">g</span> <span style="color:#66d9ef">ON</span> t.GenreId <span style="color:#f92672">=</span> <span style="color:#66d9ef">g</span>.GenreId
+</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p>음악 매출 쿼리를 작성하면서 <code>invoice_items</code> 테이블을 중심으로 <code>tracks</code>와 <code>genres</code> 테이블을 연결하는 과정을 이해할 수 있었다. <code>invoice_items</code> 테이블이 중심이 되어 어떤 트랙이 얼마만큼 팔렸는지, 그리고 그 트랙의 장르는 무엇인지 알아낼 수 있게 되었다. 테이블 간의 관계를 파악하고 중심 테이블을 기준으로 쿼리를 구성하는 연습이 중요함을 깨달았다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>쿼리에서 각 테이블이 어떤 역할을 하는지 파악하는 것이 중요하며, 특히 쿼리의 목적을 고려하여 중심 테이블을 찾아야 전체적인 구조를 이해하기 쉽습니다. 중심 테이블은 쿼리의 핵심 데이터가 위치하는 곳이며, 다른 테이블과의 관계를 통해 필요한 정보를 가져옵니다.</p>
+<h2 id="3-중심-테이블">3. 중심 테이블<a hidden class="anchor" aria-hidden="true" href="#3-중심-테이블">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>쿼리를 작성하다 보면 여러 테이블을 연결해서 필요한 정보를 뽑아내야 하는데, 각 테이블이 어떤 역할을 하는지 명확히 이해하지 못하면 어떤 테이블이 핵심이고 어떤 테이블을 연결해야 할지 막막해졌어. 그래서 테이블 간의 관계를 파악하고 쿼리의 목적에 맞춰 중심 테이블을 찾을 수 있게 되면서 더 효율적으로 쿼리를 작성할 수 있게 됐어.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>처음에는 여러 테이블이 연결된 쿼리에서 어떤 테이블이 가장 중요한 역할을 하는지, 즉 &lsquo;중심 테이블&rsquo;을 찾기가 어려웠다. ERD를 보면 모든 테이블이 서로 관련되어 보여서 어느 테이블을 기준으로 쿼리를 설계해야 할지 혼란스러웠고, 중심 테이블이 쿼리 결과에 가장 큰 영향을 미치는 테이블이라는 개념을 제대로 이해하지 못했다. 쿼리 목적에 따라 중심 테이블이 달라질 수 있다는 점도 인지하지 못하고 있었다.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>tracks (<span style="color:#960050;background-color:#1e0010">중심</span>) <span style="color:#960050;background-color:#1e0010">→</span> albums <span style="color:#960050;background-color:#1e0010">→</span> artists <span style="color:#960050;background-color:#1e0010">→</span> genres
+</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p>쿼리의 목적에 따라 중심 테이블을 찾으면 어떤 테이블이 핵심 데이터 역할을 하는지 알 수 있어요. 예를 들어 음악 매출 쿼리에서는 <code>tracks</code> 테이블이 중심이 되어 다른 테이블들과 연결되면서 음악 데이터와 관련된 정보를 효과적으로 가져올 수 있습니다. 이를 통해 쿼리 작성의 방향성을 잡고 테이블 간의 관계를 더 명확하게 이해할 수 있었습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>쿼리의 목적을 가장 잘 반영하는 테이블을 중심으로 테이블 간의 관계를 파악해야 합니다. 중심 테이블을 찾으면, 어떤 테이블들이 중심 테이블과 연결되어 있는지, 그리고 그 연결이 어떤 의미를 가지는지를 더 쉽게 이해할 수 있습니다. 이를 통해 복잡한 ERD를 단순화하고 효율적인 쿼리를 작성할 수 있습니다.</p>
+<h2 id="4-쿼리-목적">4. 쿼리 목적<a hidden class="anchor" aria-hidden="true" href="#4-쿼리-목적">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>복잡한 데이터베이스에서 원하는 정보를 찾으려면, 어떤 테이블이 핵심적인 역할을 하는지 파악해야 효율적으로 쿼리를 작성할 수 있어요. 단순히 테이블 간의 연결만 보는 게 아니라, 어떤 정보를 얻고 싶으냐에 따라 중심 테이블이 달라지기 때문에, 쿼리 목적을 이해하는 것이 데이터 분석의 첫걸음이라고 생각하게 됐습니다. 그래야 불필요한 테이블을 거치지 않고 원하는 결과를 빠르게 얻을 수 있겠죠.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>처음에는 쿼리 목적을 파악하는 것이 가장 어려웠다. 단순히 테이블 간의 관계를 보는 것 이상으로, 어떤 정보를 얻고 싶어서 쿼리를 작성하는지에 따라 중심 테이블이 달라질 수 있다는 점을 이해하는 데 시간이 걸렸다. 쿼리가 무엇을 보여주어야 하는지에 대한 질문에 답하는 것이 테이블 역할과 별칭을 제대로 활용하는 데 핵심이라는 걸 뒤늦게 깨달았다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> ii.TrackId, <span style="color:#66d9ef">g</span>.Name <span style="color:#66d9ef">AS</span> GenreName, <span style="color:#66d9ef">SUM</span>(ii.UnitPrice <span style="color:#f92672">*</span> ii.Quantity) <span style="color:#66d9ef">AS</span> Revenue
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> invoice_items <span style="color:#66d9ef">AS</span> ii
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span> tracks <span style="color:#66d9ef">AS</span> t <span style="color:#66d9ef">ON</span> ii.TrackId <span style="color:#f92672">=</span> t.TrackId
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span> genres <span style="color:#66d9ef">AS</span> <span style="color:#66d9ef">g</span> <span style="color:#66d9ef">ON</span> t.GenreId <span style="color:#f92672">=</span> <span style="color:#66d9ef">g</span>.GenreId
+</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<p>쿼리 목적은 어떤 정보를 얻고 싶은지 명확하게 정의하는 것인데, 예를 들어 &lsquo;음악 매출&rsquo;을 구하는 쿼리는 &lsquo;invoice_items&rsquo; 테이블을 중심으로 어떤 테이블과 연결되어 있는지 파악해야 합니다. 이를 통해 &lsquo;invoice_items&rsquo; 테이블에서 시작하여 &rsquo;tracks&rsquo;, &lsquo;genres&rsquo; 테이블을 연결하는 쿼리를 작성하여 매출 정보를 얻을 수 있었습니다. 쿼리 목적에 따라 중심 테이블과 연결되는 테이블이 달라지므로, 목적에 맞게 테이블 간의 관계를 이해하는 것이 중요합니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>쿼리 목적을 명확히 하는 것이 테이블 간의 관계를 이해하고 어떤 테이블이 중심이 되는지 파악하는 데 가장 중요합니다. 중심 테이블은 쿼리가 어떤 정보를 얻어내기 위해 사용되는 핵심 테이블이며, 다른 테이블들은 이 중심 테이블과 연결되어 필요한 데이터를 제공합니다. 따라서 쿼리를 작성하기 전에 어떤 정보를 얻고 싶은지를 먼저 생각해야 중심 테이블을 찾고 쿼리를 설계할 수 있습니다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>SQL 쿼리에서 테이블 이름을 짧게 줄여주는 별칭은 <code>FROM</code>이나 <code>JOIN</code>절에서 정의하며, 쿼리의 목적에 따라 중심 테이블을 파악하는 것이 중요합니다. 특히 ERD를 볼 때 각 테이블의 역할과 중심 테이블을 명확히 구분하는 연습이 필요했습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>별칭이 <code>FROM</code> 절에 어디서 정의되는지, 그리고 쿼리 목적에 따라 중심 테이블을 정확히 파악하는 연습을 꾸준히 해야겠다. ERD를 보면서 테이블 간의 관계와 쿼리 목적을 연결하는 훈련이 필요해 보이고, 실제 쿼리를 작성하면서 각 테이블의 역할을 더욱 명확하게 이해해야 할 것 같다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>INNER JOIN genres AS g ON t.GenreId = g.GenreId
+GROUP BY ii.TrackId, g.Name
+ORDER BY Revenue DESC;</p>
+<pre tabindex="0"><code>
+다음에 좀 더 복잡한 JOIN 조건과 서브쿼리를 활용하여 쿼리를 작성해보고, 성능에 미치는 영향도 분석해봐야겠다. ERD의 테이블 간 관계를 시각적으로 표현하는 방법을 익혀서 테이블 역할을 더 빠르게 파악할 수 있도록 해봐야지.
+</code></pre>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/pm-03-recursive-cte-hierarchy/">
+    <span class="title">« Prev</span>
+    <span>pm-03-recursive-cte-hierarchy</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-06-10-pm-sql-set-operators-recursive-cte/">
+    <span class="title">Next »</span>
+    <span>UNION ALL부터 재귀 CTE까지, SQL 결과표를 조립하는 방식</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

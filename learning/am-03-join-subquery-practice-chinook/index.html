@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>am-03-join-subquery-practice-chinook | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="am-03-join-subquery-practice-chinook 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/am-03-join-subquery-practice-chinook/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/am-03-join-subquery-practice-chinook/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/am-03-join-subquery-practice-chinook/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="am-03-join-subquery-practice-chinook">
+  <meta property="og:description" content="am-03-join-subquery-practice-chinook 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-10T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-10T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="am-03-join-subquery-practice-chinook">
+  <meta name="twitter:description" content="am-03-join-subquery-practice-chinook 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "am-03-join-subquery-practice-chinook",
+      "item": "https://Han-think.github.io/learning/am-03-join-subquery-practice-chinook/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "am-03-join-subquery-practice-chinook",
+  "name": "am-03-join-subquery-practice-chinook",
+  "description": "am-03-join-subquery-practice-chinook 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 테이블 연결 표 서브쿼리 선택 기준 FROM 절 서브쿼리 단일/다중 행 서브쿼리 총평 1. 테이블 연결 표 왜 이걸 보게 됐나 ERD 그림만 보니까 테이블 간 관계를 파악하기가 너무 어려워서, 어떤 테이블을 어떻게 연결해야 할지 막막했어. 테이블 연결 표를 사용하니까, 각 테이블이 어떤 컬럼으로 연결되는지 한눈에 보여서 훨씬 이해하기 쉬워졌어. 이제는 복잡한 테이블 관계도 명확하게 파악할 수 있게 됐어.\n내가 헷갈린 지점 처음에는 테이블 간의 관계를 ERD만 보고 파악하려고 했더니, 컬럼이 잘려 보여서 어떤 컬럼을 연결해야 할지 막막했습니다. 테이블 간의 연결 조건을 명확히 보여주는 테이블 연결 표가 있었다면 훨씬 쉽게 이해할 수 있었을 것 같았습니다. 또한, 어떤 테이블이 ‘중간’ 테이블인지, 어떤 테이블을 기준으로 연결해야 하는지 파악하는 데 어려움을 겪었습니다.\n시도한 코드 / 예시 - tracks.MediaTypeId = media_types.MediaTypeId - invoices.CustomerId = customers.CustomerId - playlists.PlaylistId = playlist_track.PlaylistId | | | | ↓ ↓ tracks tracks 결과와 해석 테이블 연결 표는 복잡한 ERD를 단순화하여 각 테이블 간의 관계를 명확하게 보여주기에, 어떤 컬럼을 JOIN에 사용해야 할지 빠르게 파악할 수 있게 도와줬습니다. 특히 여러 테이블을 연결할 때 어떤 순서로 테이블을 조인해야 하는지 시각적으로 보여주어, JOIN 조건 설정 오류를 줄여주었습니다. 덕분에 테이블 관계를 이해하는 데 훨씬 시간을 덜 쓰게 되었습니다.\n정리된 이해 테이블 연결 표는 복잡한 ERD를 이해하는 것보다 테이블 간의 관계를 명확하게 보여주어 어떤 컬럼을 어떻게 연결해야 할지 쉽게 파악할 수 있도록 도와줍니다. 이 표를 활용하면 테이블 간의 연결 과정을 시각적으로 보여주어 JOIN 구문을 작성하는 데 훨씬 도움이 됩니다. 특히 테이블이 여러 개일수록 그 효과가 더욱 두드러집니다.\n2. 서브쿼리 선택 기준 왜 이걸 보게 됐나 처음에는 JOIN과 서브쿼리를 구분해서 사용할 때가 언제인지 감이 잘 안 잡혔어요. 어떤 문제를 해결할 때 어떤 방식을 선택해야 할지 막연하게 느껴져서, 서브쿼리 선택 기준을 명확히 이해하고 싶었습니다. 이를 통해 SQL 쿼리 작성 능력을 향상시키고 싶었습니다.\n내가 헷갈린 지점 처음에는 서브쿼리가 단순한 쿼리 안에서 또 다른 쿼리를 돌리는 것 이상으로 어떤 의미를 가지는지, 그리고 왜 필요한 건지 감이 잘 안 잡혔다. 단일 행과 다중 행 서브쿼리의 차이점도 무엇이 중요한 기준인지 파악하기 어려웠고, 쿼리를 작성할 때 JOIN과 서브쿼리 중 어떤 것을 선택해야 할지 판단하는 것이 버거웠다.\n시도한 코드 / 예시 SELECT FirstName, LastName, Email FROM customers WHERE CustomerId IN (SELECT CustomerId FROM invoices WHERE BillingCountry = 'Brazil'); 결과와 해석 평균 매출을 초과하는 인보이스를 조회하는 서브쿼리를 작성해보니, 평균 매출을 구하는 서브쿼리가 전체 쿼리의 WHERE절에서 조건을 걸어주는 역할을 한다는 것을 명확히 알 수 있었다. IN 연산자를 사용한 서브쿼리는 여러 개의 값을 비교할 때 유용하다는 것을 확인했고, FROM절에 서브쿼리를 사용하면 복잡한 분석을 위한 임시 테이블을 만들 수 있음을 깨달았다. 이러한 예제들을 통해 서브쿼리의 활용 범위와 역할에 대한 이해가 깊어졌다.\n정리된 이해 단일 값 비교에는 단일 행 서브쿼리를, 목록 조회에는 다중 행 서브쿼리를 사용하면 됩니다. 필요에 따라 서브쿼리를 임시 테이블처럼 활용할 수도 있습니다. JOIN과 서브쿼리 모두 데이터 추출을 위한 강력한 도구이지만, 상황에 따라 적절한 것을 선택하는 것이 중요합니다.\n3. FROM 절 서브쿼리 왜 이걸 보게 됐나 FROM 절 서브쿼리는 JOIN으로 표현하기 복잡하거나, 테이블을 임시적으로 만들어 다른 쿼리에서 활용해야 할 때 유용하다는 것을 알게 되면서 배우게 되었습니다. 특히 복잡한 관계를 가진 데이터를 분석하거나, 집계된 결과를 기반으로 또 다른 쿼리를 실행해야 할 때 필요한 기술이라는 것을 깨달았습니다. JOIN만으로는 해결하기 어려운 상황에서 데이터를 효율적으로 다루는 방법을 배우고 싶어서 FROM 절 서브쿼리를 학습하게 되었습니다.\n내가 헷갈린 지점 처음에는 FROM 절 서브쿼리가 단순히 SELECT문의 일부라고 생각했는데, 실제로는 쿼리 실행 결과가 테이블처럼 사용되는 임시 테이블을 만드는 역할을 한다는 것을 이해하는 데 시간이 걸렸습니다. 마치 VIEW를 정의하는 것과 유사하지만, 명시적으로 VIEW를 생성하지 않고 쿼리 내에서만 사용하는 점이 낯설었습니다. 이 임시 테이블을 활용하여 복잡한 쿼리를 단순화할 수 있다는 점이 흥미로웠습니다.\n시도한 코드 / 예시 SELECT BillingCountry, total_sales FROM ( SELECT BillingCountry, SUM(Total) AS total_sales FROM invoices GROUP BY BillingCountry ) AS country_sales; 결과와 해석 FROM 절 서브쿼리는 마치 임시 테이블을 만드는 것과 같습니다. 서브쿼리에서 계산된 값을 외부 쿼리에서 마치 테이블 컬럼처럼 활용할 수 있어서, 국가별 총 매출을 계산해서 보여주는 것처럼 복잡한 로직을 구현할 때 유용합니다. 이 서브쿼리를 통해 데이터를 가공하고 정리하는 과정을 SQL 쿼리 내에서 더 깔끔하게 처리할 수 있습니다.\n정리된 이해 FROM 절 서브쿼리는 쿼리 결과로 임시 테이블을 만들어서, 이를 마치 일반 테이블처럼 다른 쿼리에서 사용할 수 있도록 해줍니다. 이를 통해 복잡한 연산을 수행하거나, 기존 테이블에 없는 새로운 가상 테이블을 만들 수 있습니다. 특히, 여러 테이블을 조인하기 전에 중간 결과를 저장하거나, 집계 결과를 기준으로 추가적인 분석을 진행할 때 유용합니다.\n4. 단일/다중 행 서브쿼리 왜 이걸 보게 됐나 JOIN과 서브쿼리를 배우면서 데이터를 효율적으로 연결하고 원하는 정보를 추출하는 방법을 익혀야 했는데, 헷갈리는 상황에서 어떤 쿼리 방식을 선택해야 할지 판단하기 어려웠어요. 단일 행과 다중 행 서브쿼리의 차이점을 명확히 이해해야 복잡한 쿼리도 논리적으로 작성할 수 있다는 것을 깨달았습니다.\n내가 헷갈린 지점 처음에는 서브쿼리가 항상 JOIN과 동일한 역할을 하는 것처럼 생각해서, 서브쿼리를 사용해야 할지 JOIN을 사용해야 할지 판단하기 어려웠다. 특히 다중 행 서브쿼리가 무엇을 의미하는지, 그리고 어떻게 활용해야 하는지 감이 잘 안 잡혔다. 어떤 조건을 만족하는 여러 개의 값을 가져올 때 IN을 사용해야 한다는 것을 나중에야 알게 되었다.\n시도한 코드 / 예시 SELECT FirstName, LastName, Email FROM customers WHERE CustomerId IN (SELECT CustomerId FROM invoices WHERE BillingCountry = 'Brazil'); 결과와 해석 단일 행 서브쿼리는 결과가 딱 하나의 값으로만 나오기 때문에 =, \u003e, \u003c 와 같은 비교 연산자를 사용해서 조건을 검사할 때 활용돼요. 반면 다중 행 서브쿼리는 여러 개의 값을 반환하기 때문에 IN이나 NOT IN과 같이 목록을 비교하는 데 사용하며, 특정 조건에 맞는 여러 행을 추출할 수 있습니다. 예를 들어, 브라질 고객이 발행한 인보이스의 고객 정보를 조회할 때 다중 행 서브쿼리를 사용해서 고객 ID 목록을 얻고, 이를 바탕으로 고객 정보를 가져오는 식으로 활용할 수 있습니다.\n정리된 이해 단일 행 서브쿼리는 비교 연산자를 통해 단 하나의 값과 비교하는 데 사용하고, 다중 행 서브쿼리는 여러 개의 값을 반환하여 목록과 비교할 때 활용합니다. 어떤 서브쿼리를 선택할지는 필요한 결과의 형태에 따라 결정되며, 복잡한 조건이나 목록 조회를 다룰 때 유용합니다. JOIN과 서브쿼리는 비슷한 결과를 낼 수 있지만, 가독성이나 성능을 고려하여 상황에 맞게 선택하는 것이 중요합니다.\n총평 오늘 전체에서 배운 것 테이블 연결 표를 활용하여 복잡한 ERD를 이해하는 데 도움을 받았고, 서브쿼리의 종류에 따른 선택 기준을 명확히 구분할 수 있게 되었다. 특히 FROM 절 서브쿼리를 활용하여 임시 테이블을 생성하는 방법을 익혀, 복잡한 데이터 분석 쿼리를 작성하는 데 필요한 역량을 키웠다.\n다음에 조심할 것 ERD를 맹신하지 말고 테이블 연결 표를 활용해서 테이블 간의 관계를 명확하게 파악해야겠다. 서브쿼리의 단일/다중 행 여부를 결정할 때, 비교 연산자의 종류를 기준으로 판단하는 연습을 꾸준히 해야겠다. FROM 절 서브쿼리는 복잡한 쿼리를 단순화하는 강력한 도구이지만, 성능에 영향을 줄 수 있다는 점을 항상 염두에 두어야겠다.\n다음 복습 주제 FROM 절 서브쿼리의 성능 이슈와 최적화 방법에 대해 더 깊이 알아보고, 복잡한 JOIN 쿼리를 분석하고 튜닝하는 실습을 해보고 싶다. 또한, 서브쿼리와 JOIN의 성능 차이를 비교 분석하여 상황에 맞는 효율적인 쿼리 작성 방법을 익혀야겠다.\n",
+  "wordCount" : "1048",
+  "inLanguage": "en",
+  "datePublished": "2026-06-10T00:00:00Z",
+  "dateModified": "2026-06-10T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/am-03-join-subquery-practice-chinook/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      am-03-join-subquery-practice-chinook
+    </h1>
+    <div class="post-description">
+      am-03-join-subquery-practice-chinook 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-10 00:00:00 +0000 UTC'>2026년 6월 10일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%ED%85%8C%EC%9D%B4%EB%B8%94-%EC%97%B0%EA%B2%B0-%ED%91%9C">테이블 연결 표</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC-%EC%84%A0%ED%83%9D-%EA%B8%B0%EC%A4%80">서브쿼리 선택 기준</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-from-%EC%A0%88-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC">FROM 절 서브쿼리</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EB%8B%A8%EC%9D%BC%EB%8B%A4%EC%A4%91-%ED%96%89-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC">단일/다중 행 서브쿼리</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-테이블-연결-표">1. 테이블 연결 표<a hidden class="anchor" aria-hidden="true" href="#1-테이블-연결-표">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>ERD 그림만 보니까 테이블 간 관계를 파악하기가 너무 어려워서, 어떤 테이블을 어떻게 연결해야 할지 막막했어. 테이블 연결 표를 사용하니까, 각 테이블이 어떤 컬럼으로 연결되는지 한눈에 보여서 훨씬 이해하기 쉬워졌어. 이제는 복잡한 테이블 관계도 명확하게 파악할 수 있게 됐어.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>처음에는 테이블 간의 관계를 ERD만 보고 파악하려고 했더니, 컬럼이 잘려 보여서 어떤 컬럼을 연결해야 할지 막막했습니다. 테이블 간의 연결 조건을 명확히 보여주는 테이블 연결 표가 있었다면 훨씬 쉽게 이해할 수 있었을 것 같았습니다. 또한, 어떤 테이블이 &lsquo;중간&rsquo; 테이블인지, 어떤 테이블을 기준으로 연결해야 하는지 파악하는 데 어려움을 겪었습니다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>- tracks.MediaTypeId = media_types.MediaTypeId
+</span></span><span style="display:flex;"><span>- invoices.CustomerId = customers.CustomerId
+</span></span><span style="display:flex;"><span>- playlists.PlaylistId = playlist_track.PlaylistId
+</span></span><span style="display:flex;"><span>       |                                  |
+</span></span><span style="display:flex;"><span>       |                                  |
+</span></span><span style="display:flex;"><span>       ↓                                  ↓
+</span></span><span style="display:flex;"><span>    tracks                                tracks
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p>테이블 연결 표는 복잡한 ERD를 단순화하여 각 테이블 간의 관계를 명확하게 보여주기에, 어떤 컬럼을 JOIN에 사용해야 할지 빠르게 파악할 수 있게 도와줬습니다. 특히 여러 테이블을 연결할 때 어떤 순서로 테이블을 조인해야 하는지 시각적으로 보여주어, JOIN 조건 설정 오류를 줄여주었습니다. 덕분에 테이블 관계를 이해하는 데 훨씬 시간을 덜 쓰게 되었습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>테이블 연결 표는 복잡한 ERD를 이해하는 것보다 테이블 간의 관계를 명확하게 보여주어 어떤 컬럼을 어떻게 연결해야 할지 쉽게 파악할 수 있도록 도와줍니다. 이 표를 활용하면 테이블 간의 연결 과정을 시각적으로 보여주어 JOIN 구문을 작성하는 데 훨씬 도움이 됩니다. 특히 테이블이 여러 개일수록 그 효과가 더욱 두드러집니다.</p>
+<h2 id="2-서브쿼리-선택-기준">2. 서브쿼리 선택 기준<a hidden class="anchor" aria-hidden="true" href="#2-서브쿼리-선택-기준">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>처음에는 JOIN과 서브쿼리를 구분해서 사용할 때가 언제인지 감이 잘 안 잡혔어요. 어떤 문제를 해결할 때 어떤 방식을 선택해야 할지 막연하게 느껴져서, 서브쿼리 선택 기준을 명확히 이해하고 싶었습니다. 이를 통해 SQL 쿼리 작성 능력을 향상시키고 싶었습니다.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>처음에는 서브쿼리가 단순한 쿼리 안에서 또 다른 쿼리를 돌리는 것 이상으로 어떤 의미를 가지는지, 그리고 왜 필요한 건지 감이 잘 안 잡혔다. 단일 행과 다중 행 서브쿼리의 차이점도 무엇이 중요한 기준인지 파악하기 어려웠고, 쿼리를 작성할 때 JOIN과 서브쿼리 중 어떤 것을 선택해야 할지 판단하는 것이 버거웠다.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> FirstName, LastName, Email
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> customers
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> CustomerId <span style="color:#66d9ef">IN</span> (<span style="color:#66d9ef">SELECT</span> CustomerId <span style="color:#66d9ef">FROM</span> invoices <span style="color:#66d9ef">WHERE</span> BillingCountry <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Brazil&#39;</span>);
+</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p>평균 매출을 초과하는 인보이스를 조회하는 서브쿼리를 작성해보니, 평균 매출을 구하는 서브쿼리가 전체 쿼리의 WHERE절에서 조건을 걸어주는 역할을 한다는 것을 명확히 알 수 있었다. <code>IN</code> 연산자를 사용한 서브쿼리는 여러 개의 값을 비교할 때 유용하다는 것을 확인했고, FROM절에 서브쿼리를 사용하면 복잡한 분석을 위한 임시 테이블을 만들 수 있음을 깨달았다. 이러한 예제들을 통해 서브쿼리의 활용 범위와 역할에 대한 이해가 깊어졌다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>단일 값 비교에는 단일 행 서브쿼리를, 목록 조회에는 다중 행 서브쿼리를 사용하면 됩니다. 필요에 따라 서브쿼리를 임시 테이블처럼 활용할 수도 있습니다. JOIN과 서브쿼리 모두 데이터 추출을 위한 강력한 도구이지만, 상황에 따라 적절한 것을 선택하는 것이 중요합니다.</p>
+<h2 id="3-from-절-서브쿼리">3. FROM 절 서브쿼리<a hidden class="anchor" aria-hidden="true" href="#3-from-절-서브쿼리">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>FROM 절 서브쿼리는 JOIN으로 표현하기 복잡하거나, 테이블을 임시적으로 만들어 다른 쿼리에서 활용해야 할 때 유용하다는 것을 알게 되면서 배우게 되었습니다. 특히 복잡한 관계를 가진 데이터를 분석하거나, 집계된 결과를 기반으로 또 다른 쿼리를 실행해야 할 때 필요한 기술이라는 것을 깨달았습니다. JOIN만으로는 해결하기 어려운 상황에서 데이터를 효율적으로 다루는 방법을 배우고 싶어서 FROM 절 서브쿼리를 학습하게 되었습니다.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>처음에는 FROM 절 서브쿼리가 단순히 SELECT문의 일부라고 생각했는데, 실제로는 쿼리 실행 결과가 테이블처럼 사용되는 임시 테이블을 만드는 역할을 한다는 것을 이해하는 데 시간이 걸렸습니다. 마치 VIEW를 정의하는 것과 유사하지만, 명시적으로 VIEW를 생성하지 않고 쿼리 내에서만 사용하는 점이 낯설었습니다. 이 임시 테이블을 활용하여 복잡한 쿼리를 단순화할 수 있다는 점이 흥미로웠습니다.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> BillingCountry, total_sales
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span> BillingCountry, <span style="color:#66d9ef">SUM</span>(Total) <span style="color:#66d9ef">AS</span> total_sales
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">FROM</span> invoices
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> BillingCountry
+</span></span><span style="display:flex;"><span>) <span style="color:#66d9ef">AS</span> country_sales;
+</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p>FROM 절 서브쿼리는 마치 임시 테이블을 만드는 것과 같습니다. 서브쿼리에서 계산된 값을 외부 쿼리에서 마치 테이블 컬럼처럼 활용할 수 있어서, 국가별 총 매출을 계산해서 보여주는 것처럼 복잡한 로직을 구현할 때 유용합니다. 이 서브쿼리를 통해 데이터를 가공하고 정리하는 과정을 SQL 쿼리 내에서 더 깔끔하게 처리할 수 있습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>FROM 절 서브쿼리는 쿼리 결과로 임시 테이블을 만들어서, 이를 마치 일반 테이블처럼 다른 쿼리에서 사용할 수 있도록 해줍니다. 이를 통해 복잡한 연산을 수행하거나, 기존 테이블에 없는 새로운 가상 테이블을 만들 수 있습니다. 특히, 여러 테이블을 조인하기 전에 중간 결과를 저장하거나, 집계 결과를 기준으로 추가적인 분석을 진행할 때 유용합니다.</p>
+<h2 id="4-단일다중-행-서브쿼리">4. 단일/다중 행 서브쿼리<a hidden class="anchor" aria-hidden="true" href="#4-단일다중-행-서브쿼리">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>JOIN과 서브쿼리를 배우면서 데이터를 효율적으로 연결하고 원하는 정보를 추출하는 방법을 익혀야 했는데, 헷갈리는 상황에서 어떤 쿼리 방식을 선택해야 할지 판단하기 어려웠어요. 단일 행과 다중 행 서브쿼리의 차이점을 명확히 이해해야 복잡한 쿼리도 논리적으로 작성할 수 있다는 것을 깨달았습니다.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>처음에는 서브쿼리가 항상 JOIN과 동일한 역할을 하는 것처럼 생각해서, 서브쿼리를 사용해야 할지 JOIN을 사용해야 할지 판단하기 어려웠다. 특히 다중 행 서브쿼리가 무엇을 의미하는지, 그리고 어떻게 활용해야 하는지 감이 잘 안 잡혔다. 어떤 조건을 만족하는 여러 개의 값을 가져올 때 <code>IN</code>을 사용해야 한다는 것을 나중에야 알게 되었다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> FirstName, LastName, Email
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> customers
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> CustomerId <span style="color:#66d9ef">IN</span> (<span style="color:#66d9ef">SELECT</span> CustomerId <span style="color:#66d9ef">FROM</span> invoices <span style="color:#66d9ef">WHERE</span> BillingCountry <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Brazil&#39;</span>);
+</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<p>단일 행 서브쿼리는 결과가 딱 하나의 값으로만 나오기 때문에 <code>=</code>, <code>&gt;</code>, <code>&lt;</code> 와 같은 비교 연산자를 사용해서 조건을 검사할 때 활용돼요. 반면 다중 행 서브쿼리는 여러 개의 값을 반환하기 때문에 <code>IN</code>이나 <code>NOT IN</code>과 같이 목록을 비교하는 데 사용하며, 특정 조건에 맞는 여러 행을 추출할 수 있습니다. 예를 들어, 브라질 고객이 발행한 인보이스의 고객 정보를 조회할 때 다중 행 서브쿼리를 사용해서 고객 ID 목록을 얻고, 이를 바탕으로 고객 정보를 가져오는 식으로 활용할 수 있습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>단일 행 서브쿼리는 비교 연산자를 통해 단 하나의 값과 비교하는 데 사용하고, 다중 행 서브쿼리는 여러 개의 값을 반환하여 목록과 비교할 때 활용합니다. 어떤 서브쿼리를 선택할지는 필요한 결과의 형태에 따라 결정되며, 복잡한 조건이나 목록 조회를 다룰 때 유용합니다. JOIN과 서브쿼리는 비슷한 결과를 낼 수 있지만, 가독성이나 성능을 고려하여 상황에 맞게 선택하는 것이 중요합니다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>테이블 연결 표를 활용하여 복잡한 ERD를 이해하는 데 도움을 받았고, 서브쿼리의 종류에 따른 선택 기준을 명확히 구분할 수 있게 되었다. 특히 FROM 절 서브쿼리를 활용하여 임시 테이블을 생성하는 방법을 익혀, 복잡한 데이터 분석 쿼리를 작성하는 데 필요한 역량을 키웠다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>ERD를 맹신하지 말고 테이블 연결 표를 활용해서 테이블 간의 관계를 명확하게 파악해야겠다. 서브쿼리의 단일/다중 행 여부를 결정할 때, 비교 연산자의 종류를 기준으로 판단하는 연습을 꾸준히 해야겠다. FROM 절 서브쿼리는 복잡한 쿼리를 단순화하는 강력한 도구이지만, 성능에 영향을 줄 수 있다는 점을 항상 염두에 두어야겠다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>FROM 절 서브쿼리의 성능 이슈와 최적화 방법에 대해 더 깊이 알아보고, 복잡한 JOIN 쿼리를 분석하고 튜닝하는 실습을 해보고 싶다. 또한, 서브쿼리와 JOIN의 성능 차이를 비교 분석하여 상황에 맞는 효율적인 쿼리 작성 방법을 익혀야겠다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/am-02-group-by-having-practice/">
+    <span class="title">« Prev</span>
+    <span>am-02-group-by-having-practice</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/am-04-scalar-from-subquery-data-pipeline/">
+    <span class="title">Next »</span>
+    <span>am-04-scalar-from-subquery-data-pipeline</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

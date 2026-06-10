@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>pm-02-union-all-reports | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="pm-02-union-all-reports 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/pm-02-union-all-reports/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/pm-02-union-all-reports/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/pm-02-union-all-reports/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="pm-02-union-all-reports">
+  <meta property="og:description" content="pm-02-union-all-reports 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-10T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-10T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="pm-02-union-all-reports">
+  <meta name="twitter:description" content="pm-02-union-all-reports 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "pm-02-union-all-reports",
+      "item": "https://Han-think.github.io/learning/pm-02-union-all-reports/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "pm-02-union-all-reports",
+  "name": "pm-02-union-all-reports",
+  "description": "pm-02-union-all-reports 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 중심 테이블 혼동 테이블 연결 경로 UNION ALL 활용 장르별 매출 통계 총평 1. 중심 테이블 혼동 왜 이걸 보게 됐나 처음에는 테이블 간의 관계가 명확하지 않아 특정 문제를 풀 때 어떤 테이블을 중심으로 데이터를 가져와야 할지 헷갈렸어요. 강사님이 문제 유형을 바꿔가며 제시하셨을 때, 중심 테이블이 바뀌면서 데이터 연결 경로를 다시 생각해야 해서 어려움을 겪었습니다. 이 과정을 통해 문제 해결의 첫걸음은 어떤 데이터를 기준으로 할 것인지를 파악하는 것임을 깨달았습니다.\n내가 헷갈린 지점 처음에는 문제를 풀 때 어떤 테이블이 기준이 되는지 파악하는 데 어려움을 느꼈습니다. 특히 장르별 트랙 수와 매출 통계를 구할 때 중심 테이블이 달라지면서 어디서부터 시작해야 할지 헷갈렸습니다. 테이블 간의 관계를 시각화해서 연결 경로를 이해하는 연습이 필요했습니다.\n시도한 코드 / 예시 -- 장르별 매출 통계 계산 SELECT g.Name AS 장르, -- 장르 이름 COUNT(DISTINCT ii.InvoiceId 결과와 해석 초기에 tracks 테이블이 중심이 아닌 invoice_items 테이블을 중심으로 매출 데이터를 분석하는 부분에서 혼란스러웠습니다. invoice_items 테이블을 중심으로 tracks 테이블, 그리고 genres 테이블로 연결하여 장르별 매출을 계산하는 SQL 쿼리를 작성하는 과정에서 테이블 간의 관계를 명확히 이해하는 것이 중요했습니다. 예를 들어, invoice_items에서 TrackId를 통해 tracks 테이블에 연결하고, tracks 테이블에서 GenreId를 통해 genres 테이블에 연결하는 방식으로 데이터 흐름을 파악했습니다.\n정리된 이해 문제를 풀 때 어떤 데이터를 중심으로 분석해야 하는지 파악하는 게 중요했어요. 처음에는 장르별 트랙 수를 구할 때 tracks 테이블이 중심이었지만, 매출 통계를 구하려면 invoice_items 테이블을 중심으로 데이터를 연결해야 한다는 점을 깨달았습니다.\n2. 테이블 연결 경로 왜 이걸 보게 됐나 처음에는 테이블 간의 관계를 떠올리는 것 자체가 어려웠는데, 문제를 풀어나가면서 어떤 테이블이 중심이 되는지, 그리고 그 테이블과 연결된 다른 테이블들이 어떻게 데이터를 연결해주는지 이해해야 장르별 매출 통계를 낼 수 있다는 것을 알게 되었어. 이 과정에서 각 테이블 간의 연결 경로를 파악하는 것이 얼마나 중요한지, 그리고 문제 해결에 결정적인 역할을 하는지 깨닫게 되었지.\n내가 헷갈린 지점 처음에는 매출 데이터를 어떻게 장르 정보와 연결해야 할지 몰랐습니다. tracks 테이블이 항상 중심이라고 생각해서 invoice_items 테이블을 중심으로 생각하는 데 어려움을 겪었습니다. 테이블 간의 관계를 명확히 이해하지 못해서 어떤 테이블을 기준으로 데이터를 가져와야 할지 혼동스러웠습니다.\n시도한 코드 / 예시 -- 장르별 매출 통계 계산 SELECT g.Name AS 장르, -- 장르 이름 COUNT(DISTINCT ii.InvoiceId 결과와 해석 테이블 연결 경로는 문제를 풀 때 어떤 테이블이 중심이 되는지, 그리고 그 테이블과 관련된 다른 테이블들을 어떻게 연결해야 하는지를 파악하는 데 도움을 줍니다. 예를 들어, 장르별 매출을 구하려면 invoice_items 테이블에서 시작하여 tracks 테이블, 그리고 genres 테이블로 연결하여 필요한 데이터를 가져올 수 있습니다. 이를 통해 데이터가 어떻게 연결되어 있는지 시각적으로 이해하고, 원하는 결과를 얻기 위한 쿼리를 효과적으로 작성할 수 있었습니다.\n정리된 이해 문제 해결의 핵심은 어떤 테이블이 중심 데이터인지 파악하는 것입니다. 중심 테이블을 기준으로 필요한 다른 테이블들과의 연결 경로를 명확히 이해해야 원하는 데이터를 추출할 수 있습니다. 이를 통해 다양한 관점에서 데이터를 분석하고 종합적인 리포트를 생성할 수 있습니다.\n3. UNION ALL 활용 왜 이걸 보게 됐나 여러 테이블에 흩어져 있는 데이터를 하나의 리포트로 보여주고 싶을 때, 각 테이블에서 얻은 결과를 단순히 합쳐서 보여주는 방법이 필요했어. 특히 장르별 트랙 수와 매출 통계를 함께 보여주기 위해, 각 쿼리 결과를 UNION ALL을 통해 합쳐서 하나의 테이블로 만들면서 이 개념을 배우게 됐지. 이를 통해 다양한 데이터를 결합하여 더 풍부한 정보가 담긴 리포트를 만들 수 있다는 점을 알게 되었어.\n내가 헷갈린 지점 UNION ALL을 사용할 때, 단순히 두 쿼리의 결과를 합치는 것이 아니라, 각 쿼리가 어떤 기준으로 데이터를 필터링하고 집계하는지 명확히 이해해야 한다는 점이 처음에는 잘 몰랐습니다. 특히, ‘전체 합계’ 행을 추가할 때는 전체 트랙 수를 계산하는 쿼리와 장르별 트랙 수를 계산하는 쿼리 사이의 데이터 유형과 집계 방식이 일치해야 해서 쿼리 작성에 어려움이 있었습니다. 각 쿼리의 결과를 일관성 있게 보여주기 위해 필요한 필드와 집계 함수를 정확하게 지정하는 데 집중해야 한다는 것을 깨달았습니다.\n시도한 코드 / 예시 UNION ALL SELECT '전체 합계' AS 장르, -- 전체 합계 레이블 COUNT(*) AS 트랙_수 -- 전체 트랙 수 계산 FROM tracks; 결과와 해석 UNION ALL을 사용하면 여러 쿼리의 결과를 하나로 합칠 수 있어서, 장르별 매출 통계와 전체 합계를 같은 형식으로 보여주는 리포트를 만들 수 있었습니다. 처음에는 장르별 트랙 수 쿼리와 매출 통계 쿼리가 비슷해서 혼란스러웠는데, UNION ALL을 통해 두 결과를 합치면서 각 쿼리의 목적과 중심 테이블이 다르다는 것을 명확히 이해하게 되었습니다. 이렇게 하면 리포트를 더 쉽게 읽고 분석할 수 있고, 전체적인 그림을 파악하는 데 도움이 됩니다.\n정리된 이해 UNION ALL은 서로 다른 SELECT 쿼리 결과를 하나로 합쳐서 보여주는 강력한 도구인데, 특히 서로 다른 종류의 데이터를 같은 형태로 표현해야 할 때 유용하다. 장르별 트랙 수와 전체 합계, 장르별 매출 통계와 전체 합계를 같은 형태의 결과로 보여주기 위해 UNION ALL을 사용했는데, 이렇게 하면 결과 집합의 구조를 일관성 있게 유지하면서 필요한 모든 정보를 한눈에 파악할 수 있다.\n4. 장르별 매출 통계 왜 이걸 보게 됐나 이전에는 장르별 트랙 수를 세는 문제만 풀었었는데, 이번에는 실제 매출 데이터를 기반으로 분석해야 해서 새로운 테이블을 다뤄야 했어. 매출 분석은 단순히 음악 데이터뿐만 아니라 판매량까지 고려해야 하는 중요한 분석 기법이라 배우게 됐어. 이를 통해 음악 데이터와 판매 데이터를 결합하여 더 의미있는 인사이트를 얻을 수 있게 될 거야.\n내가 헷갈린 지점 처음에는 장르별 매출 통계를 구할 때 tracks 테이블을 중심으로 생각해서 혼란스러웠다. 어떤 테이블이 중심이 되는지, 그리고 어떤 테이블 간의 연결 경로를 따라야 하는지 파악하는 데 시간이 걸렸다. 결국 invoice_items 테이블이 중심이 되어야 하고, tracks와 genres 테이블을 거쳐야 한다는 것을 깨달았다.\n시도한 코드 / 예시 -- 장르별 매출 통계 계산 SELECT g.Name AS 장르, -- 장르 이름 COUNT(DISTINCT ii.InvoiceId) AS 청구_수 FROM genres AS g LEFT JOIN tracks AS t ON g.GenreId = t.GenreId LEFT JOIN invoice_items AS ii ON t.TrackId = ii.TrackId GROUP BY g.GenreId, g.Name; 결과와 해석 장르별 매출 통계 리포트는 invoice_items 테이블을 중심으로 시작하여 tracks와 genres 테이블을 연결하여 각 장르별 판매 건수를 계산하는 방식으로 구현했습니다. UNION ALL을 사용하여 각 장르별 판매 건수와 함께 전체 합계 행을 하나의 리포트로 통합하여 가독성을 높였습니다. 이 과정을 통해 중심 테이블을 명확히 파악하고 테이블 간 연결 경로를 이해하는 것이 중요함을 알게 되었습니다.\n정리된 이해 장르별 매출 통계를 위해서는 판매 데이터가 있는 invoice_items 테이블을 중심으로 시작해서 tracks 테이블을 거쳐 genres 테이블에 연결해야 한다는 것을 알게 되었습니다. 중심 테이블이 문제의 핵심 데이터에 따라 달라지고, 테이블 간의 연결 경로를 정확히 파악하는 것이 중요하다고 느꼈습니다.\n총평 오늘 전체에서 배운 것 문제 해결의 핵심은 어떤 테이블이 중심인지 파악하는 것이었고, UNION ALL을 사용하여 장르별 상세 결과와 전체 합계를 한 번에 보여주는 방법을 익혔습니다. 특히, 테이블 간의 연결 경로를 명확히 이해하는 것이 중요함을 알게 되었습니다.\n다음에 조심할 것 문제 해결 시 중심 테이블을 먼저 파악하고, 필요한 테이블 간의 연결 경로를 명확히 그려야겠다. 특히, 문제의 요구사항에 따라 중심 테이블이 바뀌는 경우에 혼동하지 않도록 주의해야 해.\n다음 복습 주제 invoice_items 테이블을 이용해서 더 복잡한 매출 분석을 어떻게 할 수 있을지 알아봐야겠다. 특히 UNION ALL을 활용해서 다양한 통계 지표를 한 번에 보여주는 방법을 더 숙달해야 할 것 같다.\n",
+  "wordCount" : "1050",
+  "inLanguage": "en",
+  "datePublished": "2026-06-10T00:00:00Z",
+  "dateModified": "2026-06-10T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/pm-02-union-all-reports/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      pm-02-union-all-reports
+    </h1>
+    <div class="post-description">
+      pm-02-union-all-reports 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-10 00:00:00 +0000 UTC'>2026년 6월 10일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EC%A4%91%EC%8B%AC-%ED%85%8C%EC%9D%B4%EB%B8%94-%ED%98%BC%EB%8F%99">중심 테이블 혼동</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%ED%85%8C%EC%9D%B4%EB%B8%94-%EC%97%B0%EA%B2%B0-%EA%B2%BD%EB%A1%9C">테이블 연결 경로</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-union-all-%ED%99%9C%EC%9A%A9">UNION ALL 활용</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EC%9E%A5%EB%A5%B4%EB%B3%84-%EB%A7%A4%EC%B6%9C-%ED%86%B5%EA%B3%84">장르별 매출 통계</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-중심-테이블-혼동">1. 중심 테이블 혼동<a hidden class="anchor" aria-hidden="true" href="#1-중심-테이블-혼동">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>처음에는 테이블 간의 관계가 명확하지 않아 특정 문제를 풀 때 어떤 테이블을 중심으로 데이터를 가져와야 할지 헷갈렸어요. 강사님이 문제 유형을 바꿔가며 제시하셨을 때, 중심 테이블이 바뀌면서 데이터 연결 경로를 다시 생각해야 해서 어려움을 겪었습니다. 이 과정을 통해 문제 해결의 첫걸음은 어떤 데이터를 기준으로 할 것인지를 파악하는 것임을 깨달았습니다.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>처음에는 문제를 풀 때 어떤 테이블이 기준이 되는지 파악하는 데 어려움을 느꼈습니다. 특히 장르별 트랙 수와 매출 통계를 구할 때 중심 테이블이 달라지면서 어디서부터 시작해야 할지 헷갈렸습니다. 테이블 간의 관계를 시각화해서 연결 경로를 이해하는 연습이 필요했습니다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 장르별 매출 통계 계산
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">g</span>.Name <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">장르</span>,  <span style="color:#75715e">-- 장르 이름
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">COUNT</span>(<span style="color:#66d9ef">DISTINCT</span> ii.InvoiceId
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p>초기에 <code>tracks</code> 테이블이 중심이 아닌 <code>invoice_items</code> 테이블을 중심으로 매출 데이터를 분석하는 부분에서 혼란스러웠습니다.  <code>invoice_items</code> 테이블을 중심으로 <code>tracks</code> 테이블, 그리고 <code>genres</code> 테이블로 연결하여 장르별 매출을 계산하는 SQL 쿼리를 작성하는 과정에서 테이블 간의 관계를 명확히 이해하는 것이 중요했습니다. 예를 들어, <code>invoice_items</code>에서 <code>TrackId</code>를 통해 <code>tracks</code> 테이블에 연결하고, <code>tracks</code> 테이블에서 <code>GenreId</code>를 통해 <code>genres</code> 테이블에 연결하는 방식으로 데이터 흐름을 파악했습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>문제를 풀 때 어떤 데이터를 중심으로 분석해야 하는지 파악하는 게 중요했어요. 처음에는 장르별 트랙 수를 구할 때 <code>tracks</code> 테이블이 중심이었지만, 매출 통계를 구하려면 <code>invoice_items</code> 테이블을 중심으로 데이터를 연결해야 한다는 점을 깨달았습니다.</p>
+<h2 id="2-테이블-연결-경로">2. 테이블 연결 경로<a hidden class="anchor" aria-hidden="true" href="#2-테이블-연결-경로">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>처음에는 테이블 간의 관계를 떠올리는 것 자체가 어려웠는데, 문제를 풀어나가면서 어떤 테이블이 중심이 되는지, 그리고 그 테이블과 연결된 다른 테이블들이 어떻게 데이터를 연결해주는지 이해해야 장르별 매출 통계를 낼 수 있다는 것을 알게 되었어. 이 과정에서 각 테이블 간의 연결 경로를 파악하는 것이 얼마나 중요한지, 그리고 문제 해결에 결정적인 역할을 하는지 깨닫게 되었지.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>처음에는 매출 데이터를 어떻게 장르 정보와 연결해야 할지 몰랐습니다. <code>tracks</code> 테이블이 항상 중심이라고 생각해서 <code>invoice_items</code> 테이블을 중심으로 생각하는 데 어려움을 겪었습니다. 테이블 간의 관계를 명확히 이해하지 못해서 어떤 테이블을 기준으로 데이터를 가져와야 할지 혼동스러웠습니다.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 장르별 매출 통계 계산
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">g</span>.Name <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">장르</span>,  <span style="color:#75715e">-- 장르 이름
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">COUNT</span>(<span style="color:#66d9ef">DISTINCT</span> ii.InvoiceId
+</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p>테이블 연결 경로는 문제를 풀 때 어떤 테이블이 중심이 되는지, 그리고 그 테이블과 관련된 다른 테이블들을 어떻게 연결해야 하는지를 파악하는 데 도움을 줍니다. 예를 들어, 장르별 매출을 구하려면 <code>invoice_items</code> 테이블에서 시작하여 <code>tracks</code> 테이블, 그리고 <code>genres</code> 테이블로 연결하여 필요한 데이터를 가져올 수 있습니다. 이를 통해 데이터가 어떻게 연결되어 있는지 시각적으로 이해하고, 원하는 결과를 얻기 위한 쿼리를 효과적으로 작성할 수 있었습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>문제 해결의 핵심은 어떤 테이블이 중심 데이터인지 파악하는 것입니다. 중심 테이블을 기준으로 필요한 다른 테이블들과의 연결 경로를 명확히 이해해야 원하는 데이터를 추출할 수 있습니다. 이를 통해 다양한 관점에서 데이터를 분석하고 종합적인 리포트를 생성할 수 있습니다.</p>
+<h2 id="3-union-all-활용">3. UNION ALL 활용<a hidden class="anchor" aria-hidden="true" href="#3-union-all-활용">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>여러 테이블에 흩어져 있는 데이터를 하나의 리포트로 보여주고 싶을 때, 각 테이블에서 얻은 결과를 단순히 합쳐서 보여주는 방법이 필요했어. 특히 장르별 트랙 수와 매출 통계를 함께 보여주기 위해, 각 쿼리 결과를 <code>UNION ALL</code>을 통해 합쳐서 하나의 테이블로 만들면서 이 개념을 배우게 됐지. 이를 통해 다양한 데이터를 결합하여 더 풍부한 정보가 담긴 리포트를 만들 수 있다는 점을 알게 되었어.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>UNION ALL을 사용할 때, 단순히 두 쿼리의 결과를 합치는 것이 아니라, 각 쿼리가 어떤 기준으로 데이터를 필터링하고 집계하는지 명확히 이해해야 한다는 점이 처음에는 잘 몰랐습니다. 특히, &lsquo;전체 합계&rsquo; 행을 추가할 때는 전체 트랙 수를 계산하는 쿼리와 장르별 트랙 수를 계산하는 쿼리 사이의 데이터 유형과 집계 방식이 일치해야 해서 쿼리 작성에 어려움이 있었습니다. 각 쿼리의 결과를 일관성 있게 보여주기 위해 필요한 필드와 집계 함수를 정확하게 지정하는 데 집중해야 한다는 것을 깨달았습니다.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">ALL</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;전체 합계&#39;</span> <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">장르</span>,  <span style="color:#75715e">-- 전체 합계 레이블
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">COUNT</span>(<span style="color:#f92672">*</span>) <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">트랙</span>_수  <span style="color:#75715e">-- 전체 트랙 수 계산
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> tracks;
+</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p><code>UNION ALL</code>을 사용하면 여러 쿼리의 결과를 하나로 합칠 수 있어서, 장르별 매출 통계와 전체 합계를 같은 형식으로 보여주는 리포트를 만들 수 있었습니다.  처음에는 장르별 트랙 수 쿼리와 매출 통계 쿼리가 비슷해서 혼란스러웠는데, <code>UNION ALL</code>을 통해 두 결과를 합치면서 각 쿼리의 목적과 중심 테이블이 다르다는 것을 명확히 이해하게 되었습니다.  이렇게 하면 리포트를 더 쉽게 읽고 분석할 수 있고, 전체적인 그림을 파악하는 데 도움이 됩니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>UNION ALL은 서로 다른 SELECT 쿼리 결과를 하나로 합쳐서 보여주는 강력한 도구인데, 특히 서로 다른 종류의 데이터를 같은 형태로 표현해야 할 때 유용하다. 장르별 트랙 수와 전체 합계, 장르별 매출 통계와 전체 합계를 같은 형태의 결과로 보여주기 위해 UNION ALL을 사용했는데, 이렇게 하면 결과 집합의 구조를 일관성 있게 유지하면서 필요한 모든 정보를 한눈에 파악할 수 있다.</p>
+<h2 id="4-장르별-매출-통계">4. 장르별 매출 통계<a hidden class="anchor" aria-hidden="true" href="#4-장르별-매출-통계">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>이전에는 장르별 트랙 수를 세는 문제만 풀었었는데, 이번에는 실제 매출 데이터를 기반으로 분석해야 해서 새로운 테이블을 다뤄야 했어. 매출 분석은 단순히 음악 데이터뿐만 아니라 판매량까지 고려해야 하는 중요한 분석 기법이라 배우게 됐어. 이를 통해 음악 데이터와 판매 데이터를 결합하여 더 의미있는 인사이트를 얻을 수 있게 될 거야.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>처음에는 장르별 매출 통계를 구할 때 <code>tracks</code> 테이블을 중심으로 생각해서 혼란스러웠다. 어떤 테이블이 중심이 되는지, 그리고 어떤 테이블 간의 연결 경로를 따라야 하는지 파악하는 데 시간이 걸렸다. 결국 <code>invoice_items</code> 테이블이 중심이 되어야 하고, <code>tracks</code>와 <code>genres</code> 테이블을 거쳐야 한다는 것을 깨달았다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 장르별 매출 통계 계산
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">g</span>.Name <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">장르</span>,  <span style="color:#75715e">-- 장르 이름
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">COUNT</span>(<span style="color:#66d9ef">DISTINCT</span> ii.InvoiceId) <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">청구</span>_수
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> genres <span style="color:#66d9ef">AS</span> <span style="color:#66d9ef">g</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">LEFT</span> <span style="color:#66d9ef">JOIN</span> tracks <span style="color:#66d9ef">AS</span> t <span style="color:#66d9ef">ON</span> <span style="color:#66d9ef">g</span>.GenreId <span style="color:#f92672">=</span> t.GenreId
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">LEFT</span> <span style="color:#66d9ef">JOIN</span> invoice_items <span style="color:#66d9ef">AS</span> ii <span style="color:#66d9ef">ON</span> t.TrackId <span style="color:#f92672">=</span> ii.TrackId
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> <span style="color:#66d9ef">g</span>.GenreId, <span style="color:#66d9ef">g</span>.Name;
+</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<p>장르별 매출 통계 리포트는 <code>invoice_items</code> 테이블을 중심으로 시작하여 <code>tracks</code>와 <code>genres</code> 테이블을 연결하여 각 장르별 판매 건수를 계산하는 방식으로 구현했습니다. <code>UNION ALL</code>을 사용하여 각 장르별 판매 건수와 함께 전체 합계 행을 하나의 리포트로 통합하여 가독성을 높였습니다. 이 과정을 통해 중심 테이블을 명확히 파악하고 테이블 간 연결 경로를 이해하는 것이 중요함을 알게 되었습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>장르별 매출 통계를 위해서는 판매 데이터가 있는 <code>invoice_items</code> 테이블을 중심으로 시작해서 <code>tracks</code> 테이블을 거쳐 <code>genres</code> 테이블에 연결해야 한다는 것을 알게 되었습니다. 중심 테이블이 문제의 핵심 데이터에 따라 달라지고, 테이블 간의 연결 경로를 정확히 파악하는 것이 중요하다고 느꼈습니다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>문제 해결의 핵심은 어떤 테이블이 중심인지 파악하는 것이었고, <code>UNION ALL</code>을 사용하여 장르별 상세 결과와 전체 합계를 한 번에 보여주는 방법을 익혔습니다. 특히, 테이블 간의 연결 경로를 명확히 이해하는 것이 중요함을 알게 되었습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>문제 해결 시 중심 테이블을 먼저 파악하고, 필요한 테이블 간의 연결 경로를 명확히 그려야겠다. 특히, 문제의 요구사항에 따라 중심 테이블이 바뀌는 경우에 혼동하지 않도록 주의해야 해.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p><code>invoice_items</code> 테이블을 이용해서 더 복잡한 매출 분석을 어떻게 할 수 있을지 알아봐야겠다. 특히 <code>UNION ALL</code>을 활용해서 다양한 통계 지표를 한 번에 보여주는 방법을 더 숙달해야 할 것 같다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/pm-01-set-operators/">
+    <span class="title">« Prev</span>
+    <span>pm-01-set-operators</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/pm-03-recursive-cte-hierarchy/">
+    <span class="title">Next »</span>
+    <span>pm-03-recursive-cte-hierarchy</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

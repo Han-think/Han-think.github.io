@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>am-00-yesterday-sql-review-cards | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="am-00-yesterday-sql-review-cards 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/am-00-yesterday-sql-review-cards/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/am-00-yesterday-sql-review-cards/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/am-00-yesterday-sql-review-cards/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="am-00-yesterday-sql-review-cards">
+  <meta property="og:description" content="am-00-yesterday-sql-review-cards 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-10T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-10T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="am-00-yesterday-sql-review-cards">
+  <meta name="twitter:description" content="am-00-yesterday-sql-review-cards 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "am-00-yesterday-sql-review-cards",
+      "item": "https://Han-think.github.io/learning/am-00-yesterday-sql-review-cards/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "am-00-yesterday-sql-review-cards",
+  "name": "am-00-yesterday-sql-review-cards",
+  "description": "am-00-yesterday-sql-review-cards 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 COUNT 함수 LIMIT 절 HAVING 절 JOIN 조건 총평 1. COUNT 함수 왜 이걸 보게 됐나 데이터 분석 프로젝트를 진행하면서 데이터의 개수를 정확하게 파악하는 것이 중요해졌고, 특히 특정 조건에 맞는 데이터의 개수를 세는 과정에서 COUNT 함수의 다양한 활용법에 대한 이해가 필요해졌어. COUNT(id)와 COUNT(*)의 차이점을 알아야 데이터의 정확성을 확보할 수 있고, 조건부 개수를 세는 HAVING절을 활용하기 위해서도 기본 개념이 필요했어. 이러한 문제들을 해결하기 위해 COUNT 함수에 대해 더 깊이 공부하게 되었어.\n내가 헷갈린 지점 COUNT 함수를 사용할 때, COUNT() 와 COUNT(id) 의 차이를 명확히 이해하지 못해서 특정 컬럼이 NULL 값인 경우 결과가 어떻게 달라지는지 헷갈렸어요. 모든 컬럼에 값이 있다고 생각하고 무심결에 COUNT() 만 사용했던 기억이 납니다. COUNT(id)는 NULL 값을 제외하고 세는 것이라는 것을 알고 나서 데이터 분석 시 좀 더 정확한 결과를 얻을 수 있게 되었죠.\n시도한 코드 / 예시 -- COUNT 함수 예시: id 컬럼이 NULL인 행을 제외하고 세는 경우 -- user 테이블에 id 컬럼이 NULL인 행이 2개 있고, 전체 행이 5개라면 결과는 3이 된다. SELECT COUNT(id) FROM user; 결과와 해석 COUNT(id)는 id 컬럼이 null이 아닌 행의 개수를 세는 반면, COUNT(*)는 전체 행의 개수를 세기 때문에 id 컬럼에 null 값이 존재하면 결과가 달라진다. 예를 들어, 테이블에 100개의 행이 있고, id 컬럼에 null 값이 5개 있다면 COUNT(id)는 95를 반환하지만 COUNT(*)는 100을 반환한다. 데이터의 정확성을 위해 null 값을 고려해야 할 때 COUNT(id)를 사용하는 것이 좋다.\n정리된 이해 COUNT(id)는 id 컬럼이 NULL이 아닌 행만 세는 반면, COUNT(*)는 테이블의 모든 행을 센다. 따라서 id 컬럼에 NULL 값이 있을 수 있는 경우, COUNT(id)는 실제 데이터 개수를 더 정확하게 반영할 수 있다. 두 함수는 데이터의 특성에 따라 적절히 사용해야 한다.\n2. LIMIT 절 왜 이걸 보게 됐나 데이터를 쿼리할 때 전체 결과가 너무 많아서 일부만 보고 싶을 때가 있었어. 그래서 특정 개수만큼만 결과를 가져오거나, 특정 위치부터 데이터를 확인하는 방법을 배우게 됐지. 마침 딱 필요한 순간에 필요한 기능이라는 걸 깨달았어.\n내가 헷갈린 지점 LIMIT절에서 offset이 0부터 시작한다는 게 헷갈라서, 1을 넣으면 두 번째 행부터 데이터를 가져올 거라고 생각했었어. 그래서 offset을 제대로 활용하지 못하고, 원하는 데이터를 가져오는데 어려움을 겪었지. 처음에는 offset이 페이지네이션과 어떻게 연관되는지 이해하는 데 시간이 좀 걸렸어.\n시도한 코드 / 예시 -- LIMIT 절 예시: 1번째 행부터 5개의 행을 가져옵니다. -- offset은 1이고, count는 5입니다. SELECT * FROM your_table LIMIT 1, 5; 결과와 해석 LIMIT 1, 5 쿼리를 실행했을 때, 데이터셋에서 두 번째 행부터 시작해서 총 5개의 행을 가져왔다. 즉, offset이 1이므로 첫 번째 행은 제외되고, 그 다음 5개의 행이 결과로 나타났다. 이 기능을 활용하면 특정 페이지의 데이터를 가져오거나, 결과의 일부만 빠르게 확인하는 데 유용하다.\n정리된 이해 LIMIT 절은 결과를 제한하는 역할을 하는데, LIMIT offset, count 형태로 사용될 때 offset은 결과 집합의 시작 위치를 나타내며, 0부터 시작한다는 점을 기억해야 한다. 즉, LIMIT 1, 5는 두 번째 행부터 다섯 개의 행을 보여주는 것과 동일하다. 이 기능을 활용하여 원하는 특정 범위의 데이터를 추출할 수 있다.\n3. HAVING 절 왜 이걸 보게 됐나 GROUP BY 절을 사용해서 데이터를 묶어 분석하다 보면, 묶인 그룹별로 특정 조건을 만족하는 것만 보여주고 싶을 때가 있다. 이때 WHERE 절은 그룹을 묶기 전에 적용되어서 원하는 결과를 얻기 어려워서 HAVING 절을 사용하게 되었다. HAVING 절은 GROUP BY 절과 함께 사용되어 묶인 데이터에 대한 필터링을 더 효과적으로 할 수 있도록 해준다.\n내가 헷갈린 지점 처음에는 HAVING절이 WHERE절과 거의 같은 역할을 하는 것처럼 생각해서, 그룹화된 결과에 조건을 걸 때 어디에 조건을 줘야 하는지 헷갈렸었어. 그룹화가 먼저 이루어진 후에 조건을 적용한다는 점을 이해하는 데 시간이 좀 걸렸고, 정확히 어떤 상황에서 HAVING을 사용해야 하는지 파악하는 데 어려움이 있었어.\n시도한 코드 / 예시 -- HAVING 절 예시: 10개 이상 대여한 사용자 검색 SELECT user_id, COUNT(*) AS rental_count FROM rentals GROUP BY user_id HAVING COUNT(*) \u003e= 10; -- 실행 결과 예시: -- | user_id | rental_count | -- |---------|-------------| -- | 123 | 15 | -- | 456 | 12 | 결과와 해석 HAVING 절은 GROUP BY로 묶인 그룹에 조건을 적용할 때 사용하는데, 예를 들어 SELECT department, AVG(salary) FROM employees GROUP BY department HAVING AVG(salary) \u003e 50000는 평균 연봉이 50000 이상인 부서를 선택하는 쿼리가 된다. WHERE 절은 개별 행에 대한 필터링을 하는 반면, HAVING은 그룹화된 결과에 대한 필터링을 수행한다는 차이가 명확하다. 이렇게 그룹화된 결과에 조건을 걸어 원하는 데이터만 추출할 수 있어 유용하다.\n정리된 이해 GROUP BY로 묶인 데이터에 필터링 조건을 적용할 때는 WHERE 대신 HAVING을 사용해야 한다는 걸 알게 되었어. WHERE는 테이블 전체에서 필터링하고, HAVING은 이미 묶인 그룹에 대해서만 필터링한다는 점이 중요해. 이제 그룹화된 데이터에 조건을 적용할 때 HAVING을 활용할 수 있겠어.\n4. JOIN 조건 왜 이걸 보게 됐나 데이터를 분석하려면 여러 테이블에 흩어져 있는 정보를 합쳐서 봐야 했는데, 단순히 테이블을 나열하는 것만으로는 원하는 결과를 얻을 수 없었어. 그래서 테이블 간의 관계를 정확하게 연결하는 JOIN 구문을 이해하고 활용하는 방법이 중요해졌어. JOIN 조건에 대한 정확한 이해는 효율적인 데이터 추출과 분석에 필수적이라는 것을 깨달았어.\n내가 헷갈린 지점 JOIN을 사용할 때 어떤 컬럼을 기준으로 연결해야 하는지, 그리고 그 기준이 어떻게 작동하는지 잘 이해하지 못해서 여러 번 조건을 바꿔가며 테스트했던 기억이 난다. 특히 테이블 간의 관계가 명확하지 않을 때는 어떤 컬럼을 ON 조건으로 지정해야 하는지 파악하는 데 시간이 오래 걸렸다. 처음에는 단순히 테이블의 모든 컬럼을 비교해 보려고 했던 것도 실수였다.\n시도한 코드 / 예시 -- user 테이블의 id 와 rental 테이블의 user_id 를 연결하는 예시 -- ON 조건은 실제 연결 기준이 된다. SELECT * FROM user INNER JOIN rental ON user.id = rental.user_id; 결과와 해석 두 테이블을 ON 조건으로 연결할 때, ON 조건은 실제로 어떤 컬럼들을 기준으로 데이터를 연결하는지 명시하는 부분이야. 예를 들어 orders 테이블과 customers 테이블을 customer_id를 기준으로 연결하면, 같은 customer_id를 가진 행들끼리 묶여서 결과가 보여. 이렇게 연결 조건을 제대로 설정해야 원하는 데이터를 효과적으로 가져올 수 있어.\n정리된 이해 JOIN 쿼리에서 ON 절은 두 테이블을 연결할 핵심 기준을 명시하는 부분이야. 특정 컬럼들이 일치하는 행들끼리 연결되어 결과 집합을 형성하는 거지. 예를 들어, 사용자 테이블과 대여 테이블을 연결할 때 ON 절에서 두 테이블의 연결 고리가 되는 사용자 ID 컬럼을 지정하는 방식으로 작동해.\n총평 오늘 전체에서 배운 것 COUNT 함수에서 NULL 값 처리 차이, LIMIT 절의 offset이 0부터 시작한다는 점, GROUP BY 후 HAVING 절을 사용해야 한다는 것, 그리고 JOIN 조건이 테이블 연결의 기준이 된다는 것을 확실히 이해하게 되었어. 특히 JOIN 조건과 HAVING 절 사용법이 이전에는 헷갈렸는데, 오늘 학습을 통해 명확해졌어.\n다음에 조심할 것 COUNT 함수 사용 시 NULL 값 처리가 중요하고, LIMIT 절의 offset은 0부터 시작한다는 것을 명심해야겠다. GROUP BY와 HAVING 사용 시 조건을 적용하는 시점을 혼동하지 않도록 주의해야 할 것 같다.\n다음 복습 주제 LEFT JOIN과 RIGHT JOIN을 좀 더 다양한 예제를 통해 확실하게 이해하고, 실제 데이터 모델에 적용하는 연습을 해야겠다. 서브쿼리 사용법도 함께 공부해서 쿼리 복잡도를 줄이는 방법을 익혀야 할 것 같다.\n",
+  "wordCount" : "1038",
+  "inLanguage": "en",
+  "datePublished": "2026-06-10T00:00:00Z",
+  "dateModified": "2026-06-10T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/am-00-yesterday-sql-review-cards/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      am-00-yesterday-sql-review-cards
+    </h1>
+    <div class="post-description">
+      am-00-yesterday-sql-review-cards 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-10 00:00:00 +0000 UTC'>2026년 6월 10일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-count-%ED%95%A8%EC%88%98">COUNT 함수</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-limit-%EC%A0%88">LIMIT 절</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-having-%EC%A0%88">HAVING 절</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-join-%EC%A1%B0%EA%B1%B4">JOIN 조건</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-count-함수">1. COUNT 함수<a hidden class="anchor" aria-hidden="true" href="#1-count-함수">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>데이터 분석 프로젝트를 진행하면서 데이터의 개수를 정확하게 파악하는 것이 중요해졌고, 특히 특정 조건에 맞는 데이터의 개수를 세는 과정에서 <code>COUNT</code> 함수의 다양한 활용법에 대한 이해가 필요해졌어. <code>COUNT(id)</code>와 <code>COUNT(*)</code>의 차이점을 알아야 데이터의 정확성을 확보할 수 있고, 조건부 개수를 세는 <code>HAVING</code>절을 활용하기 위해서도 기본 개념이 필요했어. 이러한 문제들을 해결하기 위해 <code>COUNT</code> 함수에 대해 더 깊이 공부하게 되었어.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>COUNT 함수를 사용할 때, COUNT(<em>) 와 COUNT(id) 의 차이를 명확히 이해하지 못해서 특정 컬럼이 NULL 값인 경우 결과가 어떻게 달라지는지 헷갈렸어요. 모든 컬럼에 값이 있다고 생각하고 무심결에 COUNT(</em>) 만 사용했던 기억이 납니다.  COUNT(id)는 NULL 값을 제외하고 세는 것이라는 것을 알고 나서 데이터 분석 시 좀 더 정확한 결과를 얻을 수 있게 되었죠.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- COUNT 함수 예시: id 컬럼이 NULL인 행을 제외하고 세는 경우
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">-- user 테이블에 id 컬럼이 NULL인 행이 2개 있고, 전체 행이 5개라면 결과는 3이 된다.
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">COUNT</span>(id) <span style="color:#66d9ef">FROM</span> <span style="color:#66d9ef">user</span>;
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p><code>COUNT(id)</code>는 <code>id</code> 컬럼이 null이 아닌 행의 개수를 세는 반면, <code>COUNT(*)</code>는 전체 행의 개수를 세기 때문에 <code>id</code> 컬럼에 null 값이 존재하면 결과가 달라진다. 예를 들어, 테이블에 100개의 행이 있고, <code>id</code> 컬럼에 null 값이 5개 있다면 <code>COUNT(id)</code>는 95를 반환하지만 <code>COUNT(*)</code>는 100을 반환한다. 데이터의 정확성을 위해 null 값을 고려해야 할 때 <code>COUNT(id)</code>를 사용하는 것이 좋다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p><code>COUNT(id)</code>는 <code>id</code> 컬럼이 NULL이 아닌 행만 세는 반면, <code>COUNT(*)</code>는 테이블의 모든 행을 센다. 따라서 <code>id</code> 컬럼에 NULL 값이 있을 수 있는 경우, <code>COUNT(id)</code>는 실제 데이터 개수를 더 정확하게 반영할 수 있다. 두 함수는 데이터의 특성에 따라 적절히 사용해야 한다.</p>
+<h2 id="2-limit-절">2. LIMIT 절<a hidden class="anchor" aria-hidden="true" href="#2-limit-절">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>데이터를 쿼리할 때 전체 결과가 너무 많아서 일부만 보고 싶을 때가 있었어. 그래서 특정 개수만큼만 결과를 가져오거나, 특정 위치부터 데이터를 확인하는 방법을 배우게 됐지. 마침 딱 필요한 순간에 필요한 기능이라는 걸 깨달았어.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>LIMIT절에서 offset이 0부터 시작한다는 게 헷갈라서, 1을 넣으면 두 번째 행부터 데이터를 가져올 거라고 생각했었어. 그래서 offset을 제대로 활용하지 못하고, 원하는 데이터를 가져오는데 어려움을 겪었지. 처음에는 offset이 페이지네이션과 어떻게 연관되는지 이해하는 데 시간이 좀 걸렸어.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- LIMIT 절 예시: 1번째 행부터 5개의 행을 가져옵니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">-- offset은 1이고, count는 5입니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> your_table
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">5</span>;
+</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p><code>LIMIT 1, 5</code> 쿼리를 실행했을 때, 데이터셋에서 두 번째 행부터 시작해서 총 5개의 행을 가져왔다. 즉, <code>offset</code>이 1이므로 첫 번째 행은 제외되고, 그 다음 5개의 행이 결과로 나타났다. 이 기능을 활용하면 특정 페이지의 데이터를 가져오거나, 결과의 일부만 빠르게 확인하는 데 유용하다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>LIMIT 절은 결과를 제한하는 역할을 하는데, <code>LIMIT offset, count</code> 형태로 사용될 때 offset은 결과 집합의 시작 위치를 나타내며, 0부터 시작한다는 점을 기억해야 한다. 즉, <code>LIMIT 1, 5</code>는 두 번째 행부터 다섯 개의 행을 보여주는 것과 동일하다. 이 기능을 활용하여 원하는 특정 범위의 데이터를 추출할 수 있다.</p>
+<h2 id="3-having-절">3. HAVING 절<a hidden class="anchor" aria-hidden="true" href="#3-having-절">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>GROUP BY 절을 사용해서 데이터를 묶어 분석하다 보면, 묶인 그룹별로 특정 조건을 만족하는 것만 보여주고 싶을 때가 있다. 이때 WHERE 절은 그룹을 묶기 <em>전에</em> 적용되어서 원하는 결과를 얻기 어려워서 HAVING 절을 사용하게 되었다. HAVING 절은 GROUP BY 절과 함께 사용되어 묶인 데이터에 대한 필터링을 더 효과적으로 할 수 있도록 해준다.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>처음에는 <code>HAVING</code>절이 <code>WHERE</code>절과 거의 같은 역할을 하는 것처럼 생각해서, 그룹화된 결과에 조건을 걸 때 어디에 조건을 줘야 하는지 헷갈렸었어. 그룹화가 먼저 이루어진 후에 조건을 적용한다는 점을 이해하는 데 시간이 좀 걸렸고, 정확히 어떤 상황에서 <code>HAVING</code>을 사용해야 하는지 파악하는 데 어려움이 있었어.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- HAVING 절 예시: 10개 이상 대여한 사용자 검색
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> user_id, <span style="color:#66d9ef">COUNT</span>(<span style="color:#f92672">*</span>) <span style="color:#66d9ef">AS</span> rental_count
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> rentals
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> user_id
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">HAVING</span> <span style="color:#66d9ef">COUNT</span>(<span style="color:#f92672">*</span>) <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">10</span>;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 실행 결과 예시:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">-- | user_id | rental_count |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">-- |---------|-------------|
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">-- | 123     | 15          |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">-- | 456     | 12          |
+</span></span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p><code>HAVING</code> 절은 <code>GROUP BY</code>로 묶인 그룹에 조건을 적용할 때 사용하는데, 예를 들어 <code>SELECT department, AVG(salary) FROM employees GROUP BY department HAVING AVG(salary) &gt; 50000</code>는 평균 연봉이 50000 이상인 부서를 선택하는 쿼리가 된다.  <code>WHERE</code> 절은 개별 행에 대한 필터링을 하는 반면, <code>HAVING</code>은 그룹화된 결과에 대한 필터링을 수행한다는 차이가 명확하다. 이렇게 그룹화된 결과에 조건을 걸어 원하는 데이터만 추출할 수 있어 유용하다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p><code>GROUP BY</code>로 묶인 데이터에 필터링 조건을 적용할 때는 <code>WHERE</code> 대신 <code>HAVING</code>을 사용해야 한다는 걸 알게 되었어. <code>WHERE</code>는 테이블 전체에서 필터링하고, <code>HAVING</code>은 이미 묶인 그룹에 대해서만 필터링한다는 점이 중요해. 이제 그룹화된 데이터에 조건을 적용할 때 <code>HAVING</code>을 활용할 수 있겠어.</p>
+<h2 id="4-join-조건">4. JOIN 조건<a hidden class="anchor" aria-hidden="true" href="#4-join-조건">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>데이터를 분석하려면 여러 테이블에 흩어져 있는 정보를 합쳐서 봐야 했는데, 단순히 테이블을 나열하는 것만으로는 원하는 결과를 얻을 수 없었어. 그래서 테이블 간의 관계를 정확하게 연결하는 JOIN 구문을 이해하고 활용하는 방법이 중요해졌어. JOIN 조건에 대한 정확한 이해는 효율적인 데이터 추출과 분석에 필수적이라는 것을 깨달았어.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>JOIN을 사용할 때 어떤 컬럼을 기준으로 연결해야 하는지, 그리고 그 기준이 어떻게 작동하는지 잘 이해하지 못해서 여러 번 조건을 바꿔가며 테스트했던 기억이 난다. 특히 테이블 간의 관계가 명확하지 않을 때는 어떤 컬럼을 ON 조건으로 지정해야 하는지 파악하는 데 시간이 오래 걸렸다. 처음에는 단순히 테이블의 모든 컬럼을 비교해 보려고 했던 것도 실수였다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- user 테이블의 id 와 rental 테이블의 user_id 를 연결하는 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">-- ON 조건은 실제 연결 기준이 된다.
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> <span style="color:#66d9ef">user</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span> rental <span style="color:#66d9ef">ON</span> <span style="color:#66d9ef">user</span>.id <span style="color:#f92672">=</span> rental.user_id;
+</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<p>두 테이블을 <code>ON</code> 조건으로 연결할 때, <code>ON</code> 조건은 실제로 어떤 컬럼들을 기준으로 데이터를 연결하는지 명시하는 부분이야. 예를 들어 <code>orders</code> 테이블과 <code>customers</code> 테이블을 <code>customer_id</code>를 기준으로 연결하면, 같은 <code>customer_id</code>를 가진 행들끼리 묶여서 결과가 보여. 이렇게 연결 조건을 제대로 설정해야 원하는 데이터를 효과적으로 가져올 수 있어.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>JOIN 쿼리에서 ON 절은 두 테이블을 연결할 핵심 기준을 명시하는 부분이야. 특정 컬럼들이 일치하는 행들끼리 연결되어 결과 집합을 형성하는 거지. 예를 들어, 사용자 테이블과 대여 테이블을 연결할 때 ON 절에서 두 테이블의 연결 고리가 되는 사용자 ID 컬럼을 지정하는 방식으로 작동해.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>COUNT 함수에서 NULL 값 처리 차이, LIMIT 절의 offset이 0부터 시작한다는 점, GROUP BY 후 HAVING 절을 사용해야 한다는 것, 그리고 JOIN 조건이 테이블 연결의 기준이 된다는 것을 확실히 이해하게 되었어. 특히 JOIN 조건과 HAVING 절 사용법이 이전에는 헷갈렸는데, 오늘 학습을 통해 명확해졌어.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>COUNT 함수 사용 시 NULL 값 처리가 중요하고, LIMIT 절의 offset은 0부터 시작한다는 것을 명심해야겠다. GROUP BY와 HAVING 사용 시 조건을 적용하는 시점을 혼동하지 않도록 주의해야 할 것 같다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>LEFT JOIN과 RIGHT JOIN을 좀 더 다양한 예제를 통해 확실하게 이해하고, 실제 데이터 모델에 적용하는 연습을 해야겠다. 서브쿼리 사용법도 함께 공부해서 쿼리 복잡도를 줄이는 방법을 익혀야 할 것 같다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://Han-think.github.io/learning/am-01-yesterday-review-to-sql-functions-join/">
+    <span class="title">Next »</span>
+    <span>am-01-yesterday-review-to-sql-functions-join</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
