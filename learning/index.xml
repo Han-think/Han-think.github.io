@@ -6,8 +6,22 @@
     <description>Recent content in 학습 기록 on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Wed, 10 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 11 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>daily-index-v2</title>
+      <link>https://Han-think.github.io/learning/daily-index-v2/</link>
+      <pubDate>Thu, 11 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/daily-index-v2/</guid>
+      <description>daily-index-v2 학습 정리</description>
+    </item>
+    <item>
+      <title>SQL, ERD, 파이썬 SQLite 연동 및 CRUD 실습으로 데이터베이스 활용 능력 향상</title>
+      <link>https://Han-think.github.io/learning/2026-06-11-am-daily/</link>
+      <pubDate>Thu, 11 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-11-am-daily/</guid>
+      <description>2026-06-11 오전 학습 정리</description>
+    </item>
     <item>
       <title>GROUP BY에서 FROM 절 서브쿼리까지, SQL을 데이터 파이프라인으로 보기</title>
       <link>https://Han-think.github.io/learning/2026-06-10-am-sql-group-join-subquery/</link>
@@ -140,6 +154,20 @@
       <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/learning/rlhf-good-bad-response/</guid>
       <description>rlhf-good-bad-response 학습 정리</description>
+    </item>
+    <item>
+      <title>SQL GROUP BY, JOIN, ERD 활용 능력 향상을 위한 학습 정리</title>
+      <link>https://Han-think.github.io/learning/2026-06-09-am-daily/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-09-am-daily/</guid>
+      <description>2026-06-09 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>SQL 쿼리 작성, ERD와 서브쿼리 활용법을 익히다</title>
+      <link>https://Han-think.github.io/learning/2026-06-09-pm-daily/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-09-pm-daily/</guid>
+      <description>2026-06-09 오후 학습 정리</description>
     </item>
     <item>
       <title>sqlite-learning-resources-and-notion-export</title>
