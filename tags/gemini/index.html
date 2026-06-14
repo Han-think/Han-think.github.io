@@ -153,10 +153,10 @@
     </h2>
   </header>
   <div class="entry-content">
-    <p> v0.5.0 업데이트 (2026-06-01) — PDF/ipynb/md 새 파일 감지, hash 중복 방지, public_policy 자동 부여, intake 실행 리포트, 블로그/GitHub 주소 입력 UI, 명시적 GitHub push 버튼을 추가했습니다. 소스: github.com/Han-think/learninglog-kit
-무엇을 만드나 매일 배운 것을 기록하고 싶지만, 정리하고 블로그에 올리는 과정이 번거롭다.
-LearningLog Kit은 그 과정을 자동화한다.
-00_inbox/personal_notes/ 에 노트(.md)를 넣는다 ↓ LLM (Gemini / Groq / Ollama) 사실 추출 → 워킹 노트 → 블로그 초안 ↓ 블로그 발행 (draft → publish) 설치부터 발행까지 버튼 클릭만으로 가능하다. 단, 그 전에 몇 가지 환경이 미리 갖춰져 있어야 한다(아래 사전 준비물 참고).
+    <p> v0.5.2 업데이트 (2026-06-14) — 기존 Python/Web UI 킷트에 Windows PowerShell 로컬 운영판을 함께 포함했습니다. preview/approve의 부산물 제외, daily 합본 목차 제목 보정, publish 신규/갱신 카운트, 갱신 확인, URL 기반 unpublish 흐름이 추가되었습니다.
+무엇을 만드나 매일 배운 것을 기록하고 싶지만, 원본 파일을 등록하고, LLM으로 정리하고, 블로그 글로 다듬고, 발행 여부를 확인하는 과정은 생각보다 번거롭다.
+LearningLog Kit은 그 과정을 하나의 파이프라인으로 묶는다.
+00_inbox -&gt; 01_registry -&gt; 02_extracted -&gt; 03_working_notes -&gt; 04_blog_drafts -&gt; 05_ready_to_publish -&gt; blog-source/content -&gt; 06_published 핵심은 “무조건 자동 발행&#34;이 아니라, 원본과 초안과 발행본을 분리해서 안전하게 다루는 것이다.
 ...</p>
   </div>
   <footer class="entry-footer">

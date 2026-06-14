@@ -6,7 +6,7 @@
     <description>Recent content in Powershell on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Tue, 09 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 14 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/powershell/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>DailyLog Kit — 하루를 포인트로 정리하는 텍스트 브이로그</title>
@@ -30,6 +30,13 @@
 &lt;li&gt;&lt;strong&gt;양식 채우기&lt;/strong&gt; (LLM 없을 때): 빈 양식만 만들어줌 → 직접 채우는 구조화 일기장&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;LLM이 없어도 바로 쓸 수 있게 만든 게 포인트다.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>[환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인</title>
+      <link>https://Han-think.github.io/dev/learninglog-kit/</link>
+      <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/dev/learninglog-kit/</guid>
+      <description>강의자료와 개인 학습 노트를 intake, extract, blogdraft, approve, preview, publish 흐름으로 정리하고 발행하는 학습 기록 파이프라인. v0.5.2는 Windows 로컬 운영판과 안전한 발행 흐름을 포함한다.</description>
     </item>
   </channel>
 </rss>
