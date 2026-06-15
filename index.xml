@@ -6,8 +6,15 @@
     <description>Recent content on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Sun, 14 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 15 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SQL, 데이터베이스 설계, 클라우드 아키텍처 학습 정리</title>
+      <link>https://Han-think.github.io/learning/2026-06-15-am-daily/</link>
+      <pubDate>Mon, 15 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-15-am-daily/</guid>
+      <description>2026-06-15 오전 학습 정리</description>
+    </item>
     <item>
       <title>SQL 윈도우 함수와 그룹 함수, 이제 완벽하게 이해했다</title>
       <link>https://Han-think.github.io/learning/2026-06-14-pm-daily/</link>
