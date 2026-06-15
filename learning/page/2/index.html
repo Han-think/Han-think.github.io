@@ -169,6 +169,22 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">UNION ALL부터 재귀 CTE까지, SQL 결과표를 조립하는 방식
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 1. 집합 연산자: SELECT 결과표끼리 계산하기 2. 문제본 기준 집합 연산 복습: UNION부터 EXCEPT까지 3. UNION ALL 리포트: 장르별 통계와 전체합계 붙이기 4. WITH RECURSIVE: 직원 조직도 펼치기 5. 테이블 역할표와 별칭: FROM/JOIN부터 읽기 총평 1. 집합 연산자: SELECT 결과표끼리 계산하기 무엇을 배웠나 오후 수업은 SQL 집합 연산자에서 시작했다. 집합 연산자는 원본 테이블을 물리적으로 합치는 것이 아니라, 각각의 SELECT가 만든 결과표끼리 계산하는 방식이다.
+UNION = 두 결과표를 합치고 중복 제거 UNION ALL = 두 결과표를 중복 제거 없이 아래로 붙임 INTERSECT = 두 결과표에 모두 있는 행만 남김 EXCEPT = 첫 번째 결과표에서 두 번째 결과표를 뺌 공통 규칙은 다음과 같다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-10 00:00:00 +0000 UTC'>2026년 6월 10일</span>&nbsp;·&nbsp;<span>7 min</span></footer>
+  <a class="entry-link" aria-label="post link to UNION ALL부터 재귀 CTE까지, SQL 결과표를 조립하는 방식" href="https://Han-think.github.io/learning/2026-06-10-pm-sql-set-operators-recursive-cte/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">am-01-sql-groupby-having
     </h2>
   </header>
@@ -305,22 +321,6 @@
 
 <span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
   <a class="entry-link" aria-label="post link to pm-02-select-mistakes-and-fixes" href="https://Han-think.github.io/learning/pm-02-select-mistakes-and-fixes/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">pm-02-subquery-basic-single-multi
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 서브쿼리 작성 방식 메인쿼리와 서브쿼리 역할 기준값 제공 정보 계산 총평 1. 서브쿼리 작성 방식 왜 이걸 보게 됐나 평소 문제 해결을 단계별로 생각하는 내 사고방식과 SQL 서브쿼리 작성 방식이 충돌해서 어려움을 겪었거든. 특히 앨범 ID를 먼저 찾는 게 자연스러웠는데, SQL에서는 결과값을 기준으로 메인쿼리를 먼저 작성해야 해서 계속 헷갈렸어. 그래서 서브쿼리의 역할 분담을 명확히 이해하고, 메인쿼리와 서브쿼리를 역순으로 생각하는 방식을 익히게 됐어.
-내가 헷갈린 지점 평소 문제 해결 방식이 알던 단서부터 시작해서 점진적으로 답을 찾아가는 흐름인데, 서브쿼리는 그 반대로 최종 결과부터 생각하고 메인쿼리를 먼저 작성해야 해서 처음에는 역순으로 생각해야 한다는 점이 헷갈렸어요. 특히 앨범 이름을 기준으로 AlbumId를 찾는 문제가 직관적이지 않아서 SQL 작성 방식이 어색하게 느껴졌습니다. 이러한 사고방식의 차이 때문에 서브쿼리 작성에 어려움을 겪었습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
-  <a class="entry-link" aria-label="post link to pm-02-subquery-basic-single-multi" href="https://Han-think.github.io/learning/pm-02-subquery-basic-single-multi/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
