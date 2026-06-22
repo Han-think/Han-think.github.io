@@ -1,0 +1,7 @@
+order_id,customer_id,category,quantity,unit_price,returned,region_code,order_month,ad_cost,visits,orders,channel
+101,C01,Book,2,15000,False,S,2026-01,100,1200,35,Search
+102,C02,Device,1,180000,False,B,2026-01,240,1800,48,Social
+103,C01,Book,5,15000,True,S,2026-02,130,1400,39,Search
+104,C03,Course,2,120000,False,J,2026-02,300,2100,65,Email
+105,C02,Device,2,180000,False,B,2026-03,280,2000,58,Social
+106,C04,Course,1,120000,False,S,2026-03,210,1700,51,Email
