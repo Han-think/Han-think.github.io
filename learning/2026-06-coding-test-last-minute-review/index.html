@@ -133,8 +133,8 @@
   "keywords": [
     "python", "pandas", "numpy", "linux", "sql", "network", "security"
   ],
-  "articleBody": "이 글은 실제 시험 문제나 정답을 옮긴 자료가 아니다. 시험을 준비하며 여러 번 헷갈렸던 개념을 공개 가능한 범위에서 다시 구성한 마지막 복습 노트다.\n목차 15분 복습 순서 Python 기본 문법 pandas, NumPy, 시각화 Linux 명령어 SQL 핵심 문법 네트워크와 보안 초보자용 문제 풀이 가이드 코딩 예상문제 20개 객관식 예상문제 20개 정답과 풀이 방향 마지막 점검표 15분 복습 순서 Python의 자료형 변환, 조건문, 반복문, 함수 반환값을 확인한다. pandas 필터링과 groupby, merge의 입력과 결과 형태를 떠올린다. Linux 권한 숫자와 리다이렉션, 파이프의 차이를 확인한다. SQL의 실행 흐름에서 WHERE와 HAVING의 위치를 구분한다. TCP/UDP, DNS/DHCP, 인증/인가처럼 짝으로 묶이는 개념을 비교한다. Python 기본 문법 입력값과 비교 input()의 결과는 항상 문자열이다. 숫자 계산이 필요하면 먼저 int() 또는 float()로 변환한다. =는 값을 저장하는 대입 연산자이고, ==는 두 값이 같은지 확인하는 비교 연산자다.\ncount = int(input()) if count == 0: print(\"비어 있음\") elif count \u003c 10: print(\"10개 미만\") else: print(\"10개 이상\") 반복문과 함수 range(start, stop)에서 stop은 포함되지 않는다. while문은 조건에 쓰인 값이 반복 중에 변하지 않으면 무한 반복이 될 수 있다. 함수가 계산 결과를 바깥에서 사용하게 하려면 return이 필요하며, 반환문이 없으면 결과는 None이다.\ndef total_until(stop): total = 0 for number in range(1, stop + 1): total += number return total 문자열과 리스트는 모두 인덱스로 접근할 수 있지만 수정 가능 여부가 다르다. 문자열은 불변이고, 리스트는 append, insert, remove, sort 등으로 직접 변경할 수 있다.\npandas, NumPy, 시각화 데이터 확인과 필터링 데이터를 받으면 바로 복잡한 연산을 시작하지 않고 head(), info(), describe(), shape로 구조와 결측치, 자료형을 먼저 확인한다. pandas에서 여러 조건을 결합할 때는 and, or가 아니라 \u0026, |를 사용하고 각 조건을 괄호로 감싼다.\nimport pandas as pd df = pd.read_csv(\"data.csv\") selected = df.loc[(df[\"score\"] \u003e= 80) \u0026 (df[\"status\"] == \"active\")] summary = selected.groupby(\"team\")[\"score\"].mean() loc는 행과 열을 이름 기반으로 선택할 때 유용하다. 값 치환에는 map, 행 단위 규칙 적용에는 apply와 lambda, 테이블 결합에는 merge를 사용할 수 있다. 다만 apply는 편리함만 보고 남용하기보다 벡터화 연산으로 풀 수 있는지 먼저 살펴보는 편이 좋다.\nNumPy와 그래프 선택 NumPy에서는 shape, dtype, reshape로 배열의 구조를 확인하고 바꾼다. 대표값은 mean, median, percentile을 상황에 맞게 구분한다.\n확인하려는 것 그래프 시간에 따른 변화 선 그래프 범주별 크기 비교 막대 그래프 값의 분포 히스토그램 두 변수의 관계 산점도 그룹별 분포와 이상치 박스 플롯 상관계수 행렬 히트맵 Linux 명령어 현재 위치는 pwd, 목록은 ls, 이동은 cd로 확인한다. 파일과 디렉터리를 다루는 명령은 mkdir, touch, cp, mv, rm이며, 삭제 명령은 휴지통을 거치지 않을 수 있으므로 대상 경로를 먼저 확인해야 한다.\npwd ls -la find . -name \"*.py\" grep -in \"error\" app.log 권한에서 r=4, w=2, x=1이다. 644는 소유자만 쓰고 나머지는 읽는 일반 파일에, 755는 소유자가 수정하고 모두가 실행하는 디렉터리나 실행 파일에 자주 쓰인다. 777은 모든 사용자에게 모든 권한을 주므로 편의상 습관적으로 사용하면 안 된다.\n\u003e는 출력을 새로 쓰고, \u003e\u003e는 뒤에 추가하며, 2\u003e는 오류 출력을 보낸다. 파이프 |는 앞 명령의 출력을 다음 명령의 입력으로 연결한다.\ngrep -i \"warning\" app.log | sort | uniq -c SQL 핵심 문법 조회와 그룹 집계 WHERE는 그룹을 만들기 전의 행을 거르고, HAVING은 GROUP BY로 집계한 뒤의 그룹을 거른다. 별칭과 정렬 방향, 제한 행 수까지 한 번에 읽는 연습이 필요하다.\nSELECT department, COUNT(*) AS employee_count FROM employees WHERE active = 1 GROUP BY department HAVING COUNT(*) \u003e= 5 ORDER BY employee_count DESC; INNER JOIN은 양쪽에 일치하는 행만, LEFT JOIN은 왼쪽 테이블의 모든 행을 남긴다. 서브쿼리는 한 쿼리의 결과를 다른 쿼리의 조건이나 데이터 원천으로 사용한다.\n윈도우 함수와 변경 쿼리 윈도우 함수는 행을 한 줄로 축약하지 않고 순위, 이전 값, 구간 등을 계산한다. ROW_NUMBER, RANK, DENSE_RANK는 동점 처리 방식이 다르고, LAG, LEAD는 이전·다음 행을 비교할 때 유용하다.\nSELECT customer_id, order_date, amount, LAG(amount) OVER ( PARTITION BY customer_id ORDER BY order_date ) AS previous_amount FROM orders; UPDATE와 DELETE에서 WHERE를 빠뜨리면 전체 행이 영향을 받는다. 변경 전에 같은 조건의 SELECT로 대상 행을 확인하는 습관이 중요하다. 기본키, 외래키, NOT NULL, UNIQUE 같은 제약조건은 데이터가 잘못 들어오는 것을 데이터베이스 단계에서 막아준다.\n네트워크와 보안 구분 핵심 차이 TCP / UDP TCP는 연결과 신뢰성을 중시하고, UDP는 단순하고 빠른 전달을 중시한다. DNS / DHCP DNS는 도메인을 IP 주소로 찾고, DHCP는 장치에 네트워크 설정을 할당한다. 인증 / 인가 인증은 누구인지 확인하고, 인가는 무엇을 할 수 있는지 결정한다. 암호화 / 해시 암호화는 키로 복호화할 수 있고, 해시는 원래 값 복원을 목적으로 하지 않는다. 쿠키 / 세션 / 토큰 쿠키는 브라우저 저장 방식, 세션은 서버 측 상태 관리, 토큰은 요청에 실어 보내는 자격 증명 방식이다. HTTP 상태 코드는 2xx 성공, 3xx 리다이렉션, 4xx 클라이언트 오류, 5xx 서버 오류로 먼저 묶어 기억한다. 자주 만나는 코드는 200, 201, 400, 401, 403, 404, 500이다. CORS는 브라우저가 서로 다른 출처의 자원 요청을 허용할지 판단하는 정책과 관련된다.\nDHCP의 기본 흐름은 Discover, Offer, Request, Acknowledge의 앞글자를 딴 DORA로 정리할 수 있다. JWT는 토큰 형식 중 하나이며, 토큰을 쓴다고 해서 자동으로 안전해지는 것은 아니다. 서명 검증, 만료 시간, 저장 위치를 함께 고려해야 한다.\n초보자용 문제 풀이 가이드 문제를 읽고 바로 코드를 쓰려 하면 문장이 길어질수록 막히기 쉽다. 먼저 문제를 입력, 처리, 출력 세 줄로 바꾸면 필요한 문법이 보인다.\n예를 들어 “점수를 입력받아 60점 이상이면 합격을 출력하라”는 문제는 다음과 같이 나눈다.\n구분 확인할 내용 입력 점수 하나, 정수 변환 필요 처리 60 이상인지 비교 출력 조건에 따라 Pass 또는 Fail score = int(input()) # 입력 if score \u003e= 60: # 처리 result = \"Pass\" else: result = \"Fail\" print(result) # 출력 코딩 문제를 푸는 5단계 입력값의 개수와 자료형에 밑줄을 긋는다. 조건, 반복, 집계 중 어떤 작업인지 한 단어로 적는다. 예상 결과를 손으로 한 번 계산한다. 가장 단순한 코드부터 실행한 뒤 한 줄씩 추가한다. 경계값과 빈 값처럼 틀리기 쉬운 경우를 다시 넣어본다. 조건이 이상, 초과, 이하, 미만 중 무엇인지 특히 조심한다. 25 이상은 \u003e= 25, 25 초과는 \u003e 25다. 구간이 여러 개라면 가장 좁거나 큰 조건부터 검사해야 앞 조건이 뒤 조건을 가리지 않는지도 확인한다.\n분야별 시작 틀 Python 기본 문제는 다음 네 줄을 먼저 떠올리면 된다.\nvalue = int(input()) # 1. 입력과 형 변환 result = None # 2. 결과를 담을 변수 # 3. 조건문, 반복문 또는 함수 print(result) # 4. 요구한 형식으로 출력 pandas 문제는 파일을 읽고 구조를 확인한 뒤, 선택 → 변환 → 집계 순서로 접근한다.\nimport pandas as pd df = pd.read_csv(\"data.csv\") print(df.head()) print(df.shape) print(df.dtypes) SQL은 문장에 등장하는 요구를 절에 대응시킨다. “어느 테이블에서”는 FROM, “행 조건”은 WHERE, “무엇별로”는 GROUP BY, “집계 결과 조건”은 HAVING, “어떤 순서”는 ORDER BY다.\nSELECT group_column, SUM(value_column) FROM table_name WHERE row_condition GROUP BY group_column HAVING SUM(value_column) \u003e= 기준값 ORDER BY SUM(value_column) DESC; 1번부터 7번은 Python 기본 문법, 8번부터 19번은 데이터 분석, 20번은 SQL 문제다. 처음에는 각 문제에 10분을 주고, 막히면 풀이 방향에서 함수 이름만 확인한 뒤 다시 작성해보자. 완성 코드를 그대로 외우는 것보다 “왜 이 문법을 골랐는지”를 말할 수 있는지가 더 중요하다.\n코딩 예상문제 20개 아래 문제는 공개 가능한 일반 학습 범위를 토대로 새로 구성한 연습문제다. 먼저 답을 보지 않고 코드나 쿼리를 직접 작성해보자.\n1. 온도 상태 분류 정수 온도를 입력받아 0 미만이면 freezing, 0 이상 25 미만이면 cool, 25 이상이면 hot을 출력하라.\n2. 구매 금액별 배송비 구매 금액이 50,000원 이상이면 배송비 0원, 30,000원 이상이면 2,000원, 그 미만이면 3,000원을 출력하라.\n3. 특정 문자 개수 세기 문자열과 찾을 문자 하나를 입력받아 대소문자를 구분하지 않고 등장 횟수를 출력하라.\n4. 이메일 분리 name@example.com 형태의 문자열에서 사용자 이름과 도메인을 분리해 각각 출력하라.\n5. 3의 배수 합계 1부터 입력값 n까지 존재하는 3의 배수 합계를 for문으로 계산하라.\n6. 중복 제거 후 정렬 리스트 [5, 2, 5, 1, 2, 9]에서 중복을 제거하고 오름차순 리스트를 만들어라.\n7. 할인 가격 함수 가격과 할인율을 받아 할인 후 가격을 반환하는 discount_price(price, rate) 함수를 작성하라.\n8. CSV 기본 점검 sales.csv를 DataFrame으로 읽은 뒤 앞의 5행, 행과 열의 개수, 각 열의 자료형을 확인하는 코드를 작성하라.\n9. 매출 열 생성 DataFrame의 quantity와 unit_price를 곱해 revenue 열을 추가하라.\n10. 복합 조건 필터 revenue가 100,000 이상이고 returned가 False인 행만 선택하라.\n11. 코드값 치환 region_code의 S, B, J를 각각 Seoul, Busan, Jeju로 변환한 region 열을 만들어라.\n12. 주문 등급 분류 revenue가 200,000 이상이면 VIP, 100,000 이상이면 Regular, 나머지는 Basic으로 분류하는 열을 만들어라.\n13. 고객과 주문 병합 customers와 orders를 customer_id 기준으로 병합하되, 주문이 없는 고객도 남도록 작성하라.\n14. 카테고리별 집계 상품 카테고리별 총매출과 평균 주문 금액을 한 번에 계산하라.\n15. 상관관계 확인 ad_cost, visits, orders, revenue 네 열의 상관계수 행렬을 구하라.\n16. NumPy 요약 통계 배열 [62, 70, 75, 81, 88, 94]의 평균, 중앙값, 75백분위수를 계산하라.\n17. 월별 매출 선 그래프 월을 x축, 매출을 y축으로 하는 선 그래프를 그리고 제목과 축 이름을 표시하라.\n18. 광고비와 매출 산점도 Seaborn으로 ad_cost와 revenue의 관계를 그리고 channel에 따라 색을 구분하라.\n19. 상관계수 히트맵 15번에서 구한 상관계수 행렬을 값이 표시되는 히트맵으로 그려라.\n20. SQL 고객별 주문 집계 customers와 orders를 조인하여 국가가 Korea 또는 Japan인 고객의 총 주문 금액을 고객별로 구하라. 총액이 1000 이상인 고객만 금액 내림차순으로 출력하라.\n객관식 예상문제 20개 1. input()으로 받은 \"42\"를 정수 42로 변환하려면? A. float(\"42\") B. int(\"42\") C. ord(\"42\") D. str(\"42\")\n2. range(2, 6)이 만드는 값은? A. 2, 3, 4, 5 B. 2, 3, 4, 5, 6 C. 3, 4, 5, 6 D. 2, 4, 6\n3. 함수의 계산 결과를 호출한 곳으로 돌려주는 키워드는? A. print B. yield C. return D. break\n4. Python에서 .py 파일 하나를 부르는 말은? A. 모듈 B. 패키지 C. 라이브러리 D. 가상환경\n5. 프로젝트별 라이브러리 버전 충돌을 줄이는 방법은? A. 모든 패키지를 항상 최신 버전으로 올린다. B. 프로젝트마다 가상환경을 만든다. C. requirements.txt를 삭제한다. D. 패키지를 시스템 영역에 한 번만 설치한다.\n6. pandas의 관례적인 별칭은? A. np B. plt C. pd D. sns\n7. pandas에서 두 조건을 모두 만족하는 행을 찾을 때 적절한 연산자는? A. and B. | C. \u0026 D. \u0026\u0026\n8. 공통 키를 기준으로 두 DataFrame을 결합하는 대표 함수는? A. concat B. merge C. groupby D. pivot_table\n9. 데이터의 분포를 구간별 빈도로 확인하기 좋은 그래프는? A. 히스토그램 B. 박스 플롯 C. 산점도 D. 선 그래프\n10. NumPy의 관례적인 별칭은? A. pd B. plt C. np D. sns\n11. 현재 작업 디렉터리를 출력하는 Linux 명령은? A. cd B. pwd C. ls D. dirname\n12. 숨김 파일을 포함해 상세 목록을 보는 명령은? A. ls -la B. ls -lh C. ls -lt D. ls -R\n13. chmod 755 script.sh에서 소유자의 권한은? A. 읽기만 B. 읽기·쓰기 C. 읽기·실행 D. 읽기·쓰기·실행\n14. 기존 파일 뒤에 표준 출력을 추가하는 기호는? A. \u003e B. \u003e\u003e C. 2\u003e D. |\n15. SQL에서 그룹 집계 결과에 조건을 적용하는 절은? A. WHERE B. ON C. HAVING D. ORDER BY\n16. 왼쪽 테이블의 모든 행을 유지하는 조인은? A. INNER JOIN B. LEFT JOIN C. FULL OUTER JOIN D. CROSS JOIN\n17. 이전 행의 값을 가져오는 SQL 윈도우 함수는? A. LEAD B. FIRST_VALUE C. LAG D. ROW_NUMBER\n18. 도메인 이름을 IP 주소로 찾는 서비스는? A. DHCP B. DNS C. ARP D. NAT\n19. 사용자가 특정 기능을 실행할 권한이 있는지 판단하는 과정은? A. 인증(Authentication) B. 인가(Authorization) C. 암호화(Encryption) D. 감사(Auditing)\n20. 일반적인 암호학적 해시에 대한 설명으로 가장 적절한 것은? A. 비밀 키가 있으면 언제나 원문으로 되돌릴 수 있다. B. 입력이 같아도 실행할 때마다 반드시 다른 값이 나온다. C. 임의 길이 입력을 고정 길이 값으로 매핑하며 무결성 확인 등에 사용한다. D. 데이터 크기를 줄이기 위한 무손실 압축 방식이다.\n정답과 풀이 방향 코딩 문제 풀이 방향 int(input())과 if/elif/else로 경계를 나눈다. 큰 금액 조건부터 비교해야 중간 구간이 가려지지 않는다. 문자열과 찾을 문자에 lower()를 적용한 뒤 count()를 사용한다. split(\"@\", 1)로 두 부분을 분리한다. range(3, n + 1, 3) 또는 나머지 조건을 사용한다. set으로 중복을 제거한 뒤 sorted()를 적용한다. price * (1 - rate / 100)을 return한다. pd.read_csv, head, shape, dtypes를 사용한다. df[\"revenue\"] = df[\"quantity\"] * df[\"unit_price\"]로 계산한다. 각 조건을 괄호로 감싸고 \u0026로 연결한다. 딕셔너리를 전달한 map()을 사용한다. 조건 함수 또는 apply(lambda ...)로 구간을 나눈다. pd.merge(..., how=\"left\", on=\"customer_id\")를 사용한다. groupby와 agg로 합계와 평균을 함께 구한다. 숫자 열을 선택한 뒤 corr()를 호출한다. np.mean, np.median, np.percentile(..., 75)를 사용한다. plt.plot과 title, xlabel, ylabel을 사용한다. sns.scatterplot(..., hue=\"channel\")을 사용한다. sns.heatmap(corr, annot=True, fmt=\".2f\")를 사용한다. JOIN, WHERE IN, GROUP BY, HAVING, ORDER BY 순서로 구성한다. 객관식 정답 번호 정답 핵심 1 B int는 정수 변환이며 float는 실수 변환이다. 2 A range의 시작은 포함하고 stop은 제외한다. 3 C print는 화면 출력, return은 호출한 곳으로 값 반환이다. 4 A 파일 하나는 모듈, 모듈을 묶은 디렉터리는 패키지다. 5 B 가상환경은 프로젝트별 Python과 패키지 의존성을 격리한다. 6 C pd는 pandas, np는 NumPy, plt는 pyplot, sns는 Seaborn이다. 7 C pandas Series 조건은 괄호로 묶고 \u0026 또는 ` 8 B merge는 키 기반 결합, concat은 축을 따라 이어 붙일 때 주로 쓴다. 9 A 히스토그램은 연속형 값의 구간별 빈도를 보여준다. 10 C NumPy는 관례적으로 np라는 별칭을 사용한다. 11 B pwd는 현재 경로, cd는 이동, ls는 목록 확인이다. 12 A -a는 숨김 파일, -l은 상세 형식이다. 13 D 소유자 숫자 7은 읽기 4, 쓰기 2, 실행 1의 합이다. 14 B \u003e는 덮어쓰기, \u003e\u003e는 추가, 2\u003e는 오류 출력 전환이다. 15 C WHERE는 집계 전 행, HAVING은 집계 후 그룹을 거른다. 16 B LEFT JOIN은 일치 여부와 관계없이 왼쪽 행을 유지한다. 17 C LAG는 이전 행, LEAD는 다음 행의 값을 참조한다. 18 B DNS는 이름 해석, DHCP는 주소 할당, ARP는 같은 네트워크의 주소 대응과 관련된다. 19 B 인증은 신원 확인이고 인가는 허용된 권한 확인이다. 20 C 해시는 복호화가 목적이 아니며 무결성 확인과 비밀번호 검증 등에 쓰인다. 마지막 점검표 입력 자료형을 확인했는가? 반복문의 종료 조건과 경계값을 확인했는가? DataFrame 조건식을 각각 괄호로 묶었는가? 명령어 옵션과 삭제 대상 경로를 확인했는가? WHERE와 HAVING을 집계 전후로 구분했는가? UPDATE, DELETE 전에 같은 조건으로 조회했는가? 비슷한 네트워크·보안 용어를 역할 중심으로 구분했는가? 시험 직전에는 새로운 내용을 넓게 추가하기보다, 알고 있는 내용을 정확히 꺼낼 수 있도록 경계값과 실수 지점을 짧게 반복하는 편이 낫다. 이 글도 모든 범위를 담는 자료라기보다 마지막 확인을 위한 지도에 가깝다.\n",
-  "wordCount" : "2150",
+  "articleBody": "이 글은 실제 시험 문제나 정답을 옮긴 자료가 아니다. 시험을 준비하며 여러 번 헷갈렸던 개념을 공개 가능한 범위에서 다시 구성한 마지막 복습 노트다.\n목차 15분 복습 순서 Python 기본 문법 pandas, NumPy, 시각화 Linux 명령어 SQL 핵심 문법 네트워크와 보안 초보자용 문제 풀이 가이드 코딩 예상문제 20개 객관식 예상문제 20개 정답과 풀이 방향 마지막 점검표 15분 복습 순서 Python의 자료형 변환, 조건문, 반복문, 함수 반환값을 확인한다. pandas 필터링과 groupby, merge의 입력과 결과 형태를 떠올린다. Linux 권한 숫자와 리다이렉션, 파이프의 차이를 확인한다. SQL의 실행 흐름에서 WHERE와 HAVING의 위치를 구분한다. TCP/UDP, DNS/DHCP, 인증/인가처럼 짝으로 묶이는 개념을 비교한다. Python 기본 문법 입력값과 비교 input()의 결과는 항상 문자열이다. 숫자 계산이 필요하면 먼저 int() 또는 float()로 변환한다. =는 값을 저장하는 대입 연산자이고, ==는 두 값이 같은지 확인하는 비교 연산자다.\ncount = int(input()) if count == 0: print(\"비어 있음\") elif count \u003c 10: print(\"10개 미만\") else: print(\"10개 이상\") 반복문과 함수 range(start, stop)에서 stop은 포함되지 않는다. while문은 조건에 쓰인 값이 반복 중에 변하지 않으면 무한 반복이 될 수 있다. 함수가 계산 결과를 바깥에서 사용하게 하려면 return이 필요하며, 반환문이 없으면 결과는 None이다.\ndef total_until(stop): total = 0 for number in range(1, stop + 1): total += number return total 문자열과 리스트는 모두 인덱스로 접근할 수 있지만 수정 가능 여부가 다르다. 문자열은 불변이고, 리스트는 append, insert, remove, sort 등으로 직접 변경할 수 있다.\npandas, NumPy, 시각화 데이터 확인과 필터링 데이터를 받으면 바로 복잡한 연산을 시작하지 않고 head(), info(), describe(), shape로 구조와 결측치, 자료형을 먼저 확인한다. pandas에서 여러 조건을 결합할 때는 and, or가 아니라 \u0026, |를 사용하고 각 조건을 괄호로 감싼다.\nimport pandas as pd df = pd.read_csv(\"data.csv\") selected = df.loc[(df[\"score\"] \u003e= 80) \u0026 (df[\"status\"] == \"active\")] summary = selected.groupby(\"team\")[\"score\"].mean() loc는 행과 열을 이름 기반으로 선택할 때 유용하다. 값 치환에는 map, 행 단위 규칙 적용에는 apply와 lambda, 테이블 결합에는 merge를 사용할 수 있다. 다만 apply는 편리함만 보고 남용하기보다 벡터화 연산으로 풀 수 있는지 먼저 살펴보는 편이 좋다.\nNumPy와 그래프 선택 NumPy에서는 shape, dtype, reshape로 배열의 구조를 확인하고 바꾼다. 대표값은 mean, median, percentile을 상황에 맞게 구분한다.\n확인하려는 것 그래프 시간에 따른 변화 선 그래프 범주별 크기 비교 막대 그래프 값의 분포 히스토그램 두 변수의 관계 산점도 그룹별 분포와 이상치 박스 플롯 상관계수 행렬 히트맵 Linux 명령어 현재 위치는 pwd, 목록은 ls, 이동은 cd로 확인한다. 파일과 디렉터리를 다루는 명령은 mkdir, touch, cp, mv, rm이며, 삭제 명령은 휴지통을 거치지 않을 수 있으므로 대상 경로를 먼저 확인해야 한다.\npwd ls -la find . -name \"*.py\" grep -in \"error\" app.log 권한에서 r=4, w=2, x=1이다. 644는 소유자만 쓰고 나머지는 읽는 일반 파일에, 755는 소유자가 수정하고 모두가 실행하는 디렉터리나 실행 파일에 자주 쓰인다. 777은 모든 사용자에게 모든 권한을 주므로 편의상 습관적으로 사용하면 안 된다.\n\u003e는 출력을 새로 쓰고, \u003e\u003e는 뒤에 추가하며, 2\u003e는 오류 출력을 보낸다. 파이프 |는 앞 명령의 출력을 다음 명령의 입력으로 연결한다.\ngrep -i \"warning\" app.log | sort | uniq -c SQL 핵심 문법 조회와 그룹 집계 WHERE는 그룹을 만들기 전의 행을 거르고, HAVING은 GROUP BY로 집계한 뒤의 그룹을 거른다. 별칭과 정렬 방향, 제한 행 수까지 한 번에 읽는 연습이 필요하다.\nSELECT department, COUNT(*) AS employee_count FROM employees WHERE active = 1 GROUP BY department HAVING COUNT(*) \u003e= 5 ORDER BY employee_count DESC; INNER JOIN은 양쪽에 일치하는 행만, LEFT JOIN은 왼쪽 테이블의 모든 행을 남긴다. 서브쿼리는 한 쿼리의 결과를 다른 쿼리의 조건이나 데이터 원천으로 사용한다.\n윈도우 함수와 변경 쿼리 윈도우 함수는 행을 한 줄로 축약하지 않고 순위, 이전 값, 구간 등을 계산한다. ROW_NUMBER, RANK, DENSE_RANK는 동점 처리 방식이 다르고, LAG, LEAD는 이전·다음 행을 비교할 때 유용하다.\nSELECT customer_id, order_date, amount, LAG(amount) OVER ( PARTITION BY customer_id ORDER BY order_date ) AS previous_amount FROM orders; UPDATE와 DELETE에서 WHERE를 빠뜨리면 전체 행이 영향을 받는다. 변경 전에 같은 조건의 SELECT로 대상 행을 확인하는 습관이 중요하다. 기본키, 외래키, NOT NULL, UNIQUE 같은 제약조건은 데이터가 잘못 들어오는 것을 데이터베이스 단계에서 막아준다.\n네트워크와 보안 구분 핵심 차이 TCP / UDP TCP는 연결과 신뢰성을 중시하고, UDP는 단순하고 빠른 전달을 중시한다. DNS / DHCP DNS는 도메인을 IP 주소로 찾고, DHCP는 장치에 네트워크 설정을 할당한다. 인증 / 인가 인증은 누구인지 확인하고, 인가는 무엇을 할 수 있는지 결정한다. 암호화 / 해시 암호화는 키로 복호화할 수 있고, 해시는 원래 값 복원을 목적으로 하지 않는다. 쿠키 / 세션 / 토큰 쿠키는 브라우저 저장 방식, 세션은 서버 측 상태 관리, 토큰은 요청에 실어 보내는 자격 증명 방식이다. HTTP 상태 코드는 2xx 성공, 3xx 리다이렉션, 4xx 클라이언트 오류, 5xx 서버 오류로 먼저 묶어 기억한다. 자주 만나는 코드는 200, 201, 400, 401, 403, 404, 500이다. CORS는 브라우저가 서로 다른 출처의 자원 요청을 허용할지 판단하는 정책과 관련된다.\nDHCP의 기본 흐름은 Discover, Offer, Request, Acknowledge의 앞글자를 딴 DORA로 정리할 수 있다. JWT는 토큰 형식 중 하나이며, 토큰을 쓴다고 해서 자동으로 안전해지는 것은 아니다. 서명 검증, 만료 시간, 저장 위치를 함께 고려해야 한다.\n초보자용 문제 풀이 가이드 문제를 읽고 바로 코드를 쓰려 하면 문장이 길어질수록 막히기 쉽다. 먼저 문제를 입력, 처리, 출력 세 줄로 바꾸면 필요한 문법이 보인다.\n예를 들어 “점수를 입력받아 60점 이상이면 합격을 출력하라”는 문제는 다음과 같이 나눈다.\n구분 확인할 내용 입력 점수 하나, 정수 변환 필요 처리 60 이상인지 비교 출력 조건에 따라 Pass 또는 Fail score = int(input()) # 입력 if score \u003e= 60: # 처리 result = \"Pass\" else: result = \"Fail\" print(result) # 출력 코딩 문제를 푸는 5단계 입력값의 개수와 자료형에 밑줄을 긋는다. 조건, 반복, 집계 중 어떤 작업인지 한 단어로 적는다. 예상 결과를 손으로 한 번 계산한다. 가장 단순한 코드부터 실행한 뒤 한 줄씩 추가한다. 경계값과 빈 값처럼 틀리기 쉬운 경우를 다시 넣어본다. 조건이 이상, 초과, 이하, 미만 중 무엇인지 특히 조심한다. 25 이상은 \u003e= 25, 25 초과는 \u003e 25다. 구간이 여러 개라면 가장 좁거나 큰 조건부터 검사해야 앞 조건이 뒤 조건을 가리지 않는지도 확인한다.\n분야별 시작 틀 Python 기본 문제는 다음 네 줄을 먼저 떠올리면 된다.\nvalue = int(input()) # 1. 입력과 형 변환 result = None # 2. 결과를 담을 변수 # 3. 조건문, 반복문 또는 함수 print(result) # 4. 요구한 형식으로 출력 pandas 문제는 파일을 읽고 구조를 확인한 뒤, 선택 → 변환 → 집계 순서로 접근한다.\nimport pandas as pd df = pd.read_csv(\"data.csv\") print(df.head()) print(df.shape) print(df.dtypes) SQL은 문장에 등장하는 요구를 절에 대응시킨다. “어느 테이블에서”는 FROM, “행 조건”은 WHERE, “무엇별로”는 GROUP BY, “집계 결과 조건”은 HAVING, “어떤 순서”는 ORDER BY다.\nSELECT group_column, SUM(value_column) FROM table_name WHERE row_condition GROUP BY group_column HAVING SUM(value_column) \u003e= 기준값 ORDER BY SUM(value_column) DESC; 1번부터 7번은 Python 기본 문법, 8번부터 19번은 데이터 분석, 20번은 SQL 문제다. 처음에는 각 문제에 10분을 주고, 막히면 풀이 방향에서 함수 이름만 확인한 뒤 다시 작성해보자. 완성 코드를 그대로 외우는 것보다 “왜 이 문법을 골랐는지”를 말할 수 있는지가 더 중요하다.\n코딩 예상문제 20개 아래 문제는 공개 가능한 일반 학습 범위를 토대로 새로 구성한 연습문제다. 먼저 답을 보지 않고 코드나 쿼리를 직접 작성해보자.\n답안에는 무엇을 적어야 하나 1번부터 7번: 실행 가능한 Python 코드를 적는다. input()이 있으면 예시 입력을 직접 넣어 실행 결과를 확인한다. 8번부터 19번: import부터 결과를 만드는 코드까지 적는다. 표 문제는 마지막에 print(), 그래프 문제는 plt.show()를 넣는다. 20번: 완성된 SQL 문장을 SELECT부터 세미콜론까지 적는다. 아래처럼 문제를 읽은 뒤 주석으로 세 칸을 먼저 만들면 시작하기 쉽다.\n# 입력: 무엇을 받을까? # 처리: 어떤 조건이나 계산이 필요할까? # 출력: 무엇을 print 해야 할까? 8번부터 19번까지 공통 연습 데이터 8번부터 19번까지는 다음 sales.csv를 사용한다. 메모장에 아래 내용을 붙여 넣고 파일명을 sales.csv로 저장하거나, 표를 보면서 DataFrame을 직접 만들어도 된다.\norder_id,customer_id,category,quantity,unit_price,returned,region_code,order_month,ad_cost,visits,orders,channel 101,C01,Book,2,15000,False,S,2026-01,100,1200,35,Search 102,C02,Device,1,180000,False,B,2026-01,240,1800,48,Social 103,C01,Book,5,15000,True,S,2026-02,130,1400,39,Search 104,C03,Course,2,120000,False,J,2026-02,300,2100,65,Email 105,C02,Device,2,180000,False,B,2026-03,280,2000,58,Social 106,C04,Course,1,120000,False,S,2026-03,210,1700,51,Email order_id customer_id category quantity unit_price returned region_code order_month ad_cost visits orders channel 101 C01 Book 2 15000 False S 2026-01 100 1200 35 Search 102 C02 Device 1 180000 False B 2026-01 240 1800 48 Social 103 C01 Book 5 15000 True S 2026-02 130 1400 39 Search 104 C03 Course 2 120000 False J 2026-02 300 2100 65 Email 105 C02 Device 2 180000 False B 2026-03 280 2000 58 Social 106 C04 Course 1 120000 False S 2026-03 210 1700 51 Email 13번과 20번에서는 다음 두 테이블도 함께 사용한다.\ncustomers 테이블\ncustomer_id customer_name country C01 Mina Korea C02 Joon Japan C03 Sora Korea C04 Leo USA C05 Hana Japan orders 테이블\norder_id customer_id amount O01 C01 600 O02 C01 700 O03 C02 450 O04 C02 800 O05 C03 900 O06 C04 2000 1. 온도 상태 분류 정수 온도를 입력받아 0 미만이면 freezing, 0 이상 25 미만이면 cool, 25 이상이면 hot을 출력하라.\n입력 예시: 25 기대 출력: hot 답안에 적을 것: input()으로 온도를 받고 세 구간을 나누는 if/elif/else 코드 2. 구매 금액별 배송비 구매 금액이 50,000원 이상이면 배송비 0원, 30,000원 이상이면 2,000원, 그 미만이면 3,000원을 출력하라.\n입력 예시: 42000 기대 출력: 2000 추가 확인: 50000을 넣었을 때 0이 나오는지도 확인한다. 3. 특정 문자 개수 세기 문자열과 찾을 문자 하나를 입력받아 대소문자를 구분하지 않고 등장 횟수를 출력하라.\n첫 번째 입력 예시: Data Analysis 두 번째 입력 예시: a 기대 출력: 4 답안에 적을 것: 두 문자열을 같은 대소문자로 바꾼 뒤 개수를 세는 코드 4. 이메일 분리 name@example.com 형태의 문자열에서 사용자 이름과 도메인을 분리해 각각 출력하라.\n입력 예시: beginner@example.com 기대 출력 첫 줄: beginner 기대 출력 둘째 줄: example.com 5. 3의 배수 합계 1부터 입력값 n까지 존재하는 3의 배수 합계를 for문으로 계산하라.\n입력 예시: 10 계산 대상: 3 + 6 + 9 기대 출력: 18 6. 중복 제거 후 정렬 리스트 [5, 2, 5, 1, 2, 9]에서 중복을 제거하고 오름차순 리스트를 만들어라.\n주어진 값: [5, 2, 5, 1, 2, 9] 기대 출력: [1, 2, 5, 9] 답안에 적을 것: 중복 제거와 정렬을 차례대로 수행하는 코드 7. 할인 가격 함수 가격과 할인율을 받아 할인 후 가격을 반환하는 discount_price(price, rate) 함수를 작성하라.\n호출 예시: discount_price(50000, 20) 기대 반환값: 40000 답안에 적을 것: def로 함수를 만들고 계산값을 return하는 코드 8. CSV 기본 점검 sales.csv를 DataFrame으로 읽은 뒤 앞의 5행, 행과 열의 개수, 각 열의 자료형을 확인하는 코드를 작성하라.\n파일 위치: Python 파일 또는 노트북과 같은 폴더의 sales.csv 기대 shape: (6, 12) 답안에 적을 것: import pandas as pd부터 read_csv, head, shape, dtypes 출력까지 9. 매출 열 생성 DataFrame의 quantity와 unit_price를 곱해 revenue 열을 추가하라.\norder_id quantity unit_price 기대 revenue 101 2 15000 30000 104 2 120000 240000 105 2 180000 360000 마지막에 order_id, quantity, unit_price, revenue 네 열을 출력한다.\n10. 복합 조건 필터 revenue가 100,000 이상이고 returned가 False인 행만 선택하라.\n먼저 9번의 revenue 열을 만든다. 기대 order_id: 102, 104, 105, 106 답안에 적을 것: 두 조건을 각각 괄호로 묶고 \u0026로 연결한 필터 코드 11. 코드값 치환 region_code의 S, B, J를 각각 Seoul, Busan, Jeju로 변환한 region 열을 만들어라.\nregion_code 기대 region S Seoul B Busan J Jeju region_code와 새로 만든 region 열을 함께 출력한다.\n12. 주문 등급 분류 revenue가 200,000 이상이면 VIP, 100,000 이상이면 Regular, 나머지는 Basic으로 분류하는 열을 만들어라.\norder_id revenue 기대 grade 101 30000 Basic 102 180000 Regular 104 240000 VIP 105 360000 VIP 답안에는 등급을 반환하는 함수와 그 함수를 apply하는 코드를 적는다.\n13. 고객과 주문 병합 customers와 orders를 customer_id 기준으로 병합하되, 주문이 없는 고객도 남도록 작성하라.\n사용할 표: 위의 customers, orders 기준 열: customer_id 핵심 조건: 주문이 없는 C05 Hana도 결과에 남아야 한다. 기대 형태: Hana 행의 order_id와 amount는 결측값으로 표시된다. 14. 카테고리별 집계 상품 카테고리별 총매출과 평균 주문 금액을 한 번에 계산하라.\ncategory 기대 총매출 기대 평균 매출 Book 105000 52500 Course 360000 180000 Device 540000 270000 답안에는 category로 묶는 groupby와 합계·평균을 구하는 agg를 적는다.\n15. 상관관계 확인 ad_cost, visits, orders, revenue 네 열의 상관계수 행렬을 구하라.\n먼저 9번의 revenue 열을 만든다. 기대 결과 형태: 행과 열이 모두 네 변수인 4 x 4 표 확인할 점: 같은 변수끼리 만나는 대각선 값은 1.0이다. 16. NumPy 요약 통계 배열 [62, 70, 75, 81, 88, 94]의 평균, 중앙값, 75백분위수를 계산하라.\n기대 평균: 약 78.33 기대 중앙값: 78.0 기대 75백분위수: 86.25 답안에 적을 것: 배열 생성과 mean, median, percentile 출력 코드 17. 월별 매출 선 그래프 월을 x축, 매출을 y축으로 하는 선 그래프를 그리고 제목과 축 이름을 표시하라.\n먼저 order_month별 revenue 합계를 만든다.\norder_month 기대 월 매출 2026-01 210000 2026-02 315000 2026-03 480000 x축: order_month y축: 월별 revenue 합계 답안에 적을 것: 집계 코드, plt.plot, 제목, 축 이름, plt.show() 18. 광고비와 매출 산점도 Seaborn으로 ad_cost와 revenue의 관계를 그리고 channel에 따라 색을 구분하라.\nx축: ad_cost y축: revenue 색상 구분: channel 기대 결과: 데이터 한 행이 점 하나로 나타나며 Search, Social, Email이 서로 다른 색으로 보인다. 19. 상관계수 히트맵 15번에서 구한 상관계수 행렬을 값이 표시되는 히트맵으로 그려라.\n입력 데이터: 15번의 4 x 4 상관계수 표 답안에 적을 것: sns.heatmap에 표를 전달하고 annot=True, fmt=\".2f\"를 설정한 코드 기대 결과: 각 칸에 소수 둘째 자리까지 상관계수가 표시된다. 20. SQL 고객별 주문 집계 customers와 orders를 조인하여 국가가 Korea 또는 Japan인 고객의 총 주문 금액을 고객별로 구하라. 총액이 1000 이상인 고객만 금액 내림차순으로 출력하라.\n답안에는 다음 요소가 모두 들어간 SQL을 적는다.\n두 테이블의 customer_id를 연결하는 JOIN Korea와 Japan만 남기는 WHERE 고객별로 묶는 GROUP BY 총액 1000 이상을 남기는 HAVING 총액 내림차순 ORDER BY 기대 결과는 다음과 같다.\ncustomer_name total_amount Mina 1300 Joon 1250 객관식 예상문제 20개 1. input()으로 받은 \"42\"를 정수 42로 변환하려면? A. float(\"42\") B. int(\"42\") C. ord(\"42\") D. str(\"42\")\n2. range(2, 6)이 만드는 값은? A. 2, 3, 4, 5 B. 2, 3, 4, 5, 6 C. 3, 4, 5, 6 D. 2, 4, 6\n3. 함수의 계산 결과를 호출한 곳으로 돌려주는 키워드는? A. print B. yield C. return D. break\n4. Python에서 .py 파일 하나를 부르는 말은? A. 모듈 B. 패키지 C. 라이브러리 D. 가상환경\n5. 프로젝트별 라이브러리 버전 충돌을 줄이는 방법은? A. 모든 패키지를 항상 최신 버전으로 올린다. B. 프로젝트마다 가상환경을 만든다. C. requirements.txt를 삭제한다. D. 패키지를 시스템 영역에 한 번만 설치한다.\n6. pandas의 관례적인 별칭은? A. np B. plt C. pd D. sns\n7. pandas에서 두 조건을 모두 만족하는 행을 찾을 때 적절한 연산자는? A. and B. | C. \u0026 D. \u0026\u0026\n8. 공통 키를 기준으로 두 DataFrame을 결합하는 대표 함수는? A. concat B. merge C. groupby D. pivot_table\n9. 데이터의 분포를 구간별 빈도로 확인하기 좋은 그래프는? A. 히스토그램 B. 박스 플롯 C. 산점도 D. 선 그래프\n10. NumPy의 관례적인 별칭은? A. pd B. plt C. np D. sns\n11. 현재 작업 디렉터리를 출력하는 Linux 명령은? A. cd B. pwd C. ls D. dirname\n12. 숨김 파일을 포함해 상세 목록을 보는 명령은? A. ls -la B. ls -lh C. ls -lt D. ls -R\n13. chmod 755 script.sh에서 소유자의 권한은? A. 읽기만 B. 읽기·쓰기 C. 읽기·실행 D. 읽기·쓰기·실행\n14. 기존 파일 뒤에 표준 출력을 추가하는 기호는? A. \u003e B. \u003e\u003e C. 2\u003e D. |\n15. SQL에서 그룹 집계 결과에 조건을 적용하는 절은? A. WHERE B. ON C. HAVING D. ORDER BY\n16. 왼쪽 테이블의 모든 행을 유지하는 조인은? A. INNER JOIN B. LEFT JOIN C. FULL OUTER JOIN D. CROSS JOIN\n17. 이전 행의 값을 가져오는 SQL 윈도우 함수는? A. LEAD B. FIRST_VALUE C. LAG D. ROW_NUMBER\n18. 도메인 이름을 IP 주소로 찾는 서비스는? A. DHCP B. DNS C. ARP D. NAT\n19. 사용자가 특정 기능을 실행할 권한이 있는지 판단하는 과정은? A. 인증(Authentication) B. 인가(Authorization) C. 암호화(Encryption) D. 감사(Auditing)\n20. 일반적인 암호학적 해시에 대한 설명으로 가장 적절한 것은? A. 비밀 키가 있으면 언제나 원문으로 되돌릴 수 있다. B. 입력이 같아도 실행할 때마다 반드시 다른 값이 나온다. C. 임의 길이 입력을 고정 길이 값으로 매핑하며 무결성 확인 등에 사용한다. D. 데이터 크기를 줄이기 위한 무손실 압축 방식이다.\n정답과 풀이 방향 코딩 문제 풀이 방향 int(input())과 if/elif/else로 경계를 나눈다. 큰 금액 조건부터 비교해야 중간 구간이 가려지지 않는다. 문자열과 찾을 문자에 lower()를 적용한 뒤 count()를 사용한다. split(\"@\", 1)로 두 부분을 분리한다. range(3, n + 1, 3) 또는 나머지 조건을 사용한다. set으로 중복을 제거한 뒤 sorted()를 적용한다. price * (1 - rate / 100)을 return한다. pd.read_csv, head, shape, dtypes를 사용한다. df[\"revenue\"] = df[\"quantity\"] * df[\"unit_price\"]로 계산한다. 각 조건을 괄호로 감싸고 \u0026로 연결한다. 딕셔너리를 전달한 map()을 사용한다. 조건 함수 또는 apply(lambda ...)로 구간을 나눈다. pd.merge(..., how=\"left\", on=\"customer_id\")를 사용한다. groupby와 agg로 합계와 평균을 함께 구한다. 숫자 열을 선택한 뒤 corr()를 호출한다. np.mean, np.median, np.percentile(..., 75)를 사용한다. plt.plot과 title, xlabel, ylabel을 사용한다. sns.scatterplot(..., hue=\"channel\")을 사용한다. sns.heatmap(corr, annot=True, fmt=\".2f\")를 사용한다. JOIN, WHERE IN, GROUP BY, HAVING, ORDER BY 순서로 구성한다. 객관식 정답 번호 정답 핵심 1 B int는 정수 변환이며 float는 실수 변환이다. 2 A range의 시작은 포함하고 stop은 제외한다. 3 C print는 화면 출력, return은 호출한 곳으로 값 반환이다. 4 A 파일 하나는 모듈, 모듈을 묶은 디렉터리는 패키지다. 5 B 가상환경은 프로젝트별 Python과 패키지 의존성을 격리한다. 6 C pd는 pandas, np는 NumPy, plt는 pyplot, sns는 Seaborn이다. 7 C pandas Series 조건은 괄호로 묶고 \u0026 또는 ` 8 B merge는 키 기반 결합, concat은 축을 따라 이어 붙일 때 주로 쓴다. 9 A 히스토그램은 연속형 값의 구간별 빈도를 보여준다. 10 C NumPy는 관례적으로 np라는 별칭을 사용한다. 11 B pwd는 현재 경로, cd는 이동, ls는 목록 확인이다. 12 A -a는 숨김 파일, -l은 상세 형식이다. 13 D 소유자 숫자 7은 읽기 4, 쓰기 2, 실행 1의 합이다. 14 B \u003e는 덮어쓰기, \u003e\u003e는 추가, 2\u003e는 오류 출력 전환이다. 15 C WHERE는 집계 전 행, HAVING은 집계 후 그룹을 거른다. 16 B LEFT JOIN은 일치 여부와 관계없이 왼쪽 행을 유지한다. 17 C LAG는 이전 행, LEAD는 다음 행의 값을 참조한다. 18 B DNS는 이름 해석, DHCP는 주소 할당, ARP는 같은 네트워크의 주소 대응과 관련된다. 19 B 인증은 신원 확인이고 인가는 허용된 권한 확인이다. 20 C 해시는 복호화가 목적이 아니며 무결성 확인과 비밀번호 검증 등에 쓰인다. 마지막 점검표 입력 자료형을 확인했는가? 반복문의 종료 조건과 경계값을 확인했는가? DataFrame 조건식을 각각 괄호로 묶었는가? 명령어 옵션과 삭제 대상 경로를 확인했는가? WHERE와 HAVING을 집계 전후로 구분했는가? UPDATE, DELETE 전에 같은 조건으로 조회했는가? 비슷한 네트워크·보안 용어를 역할 중심으로 구분했는가? 시험 직전에는 새로운 내용을 넓게 추가하기보다, 알고 있는 내용을 정확히 꺼낼 수 있도록 경계값과 실수 지점을 짧게 반복하는 편이 낫다. 이 글도 모든 범위를 담는 자료라기보다 마지막 확인을 위한 지도에 가깝다.\n",
+  "wordCount" : "2832",
   "inLanguage": "en",
   "datePublished": "2026-06-22T00:00:00Z",
   "dateModified": "2026-06-22T00:00:00Z",
@@ -213,7 +213,7 @@
     </div>
     <div class="post-meta">
 
-<span title='2026-06-22 00:00:00 +0000 UTC'>2026년 6월 22일</span>&nbsp;·&nbsp;<span>11 min</span>
+<span title='2026-06-22 00:00:00 +0000 UTC'>2026년 6월 22일</span>&nbsp;·&nbsp;<span>14 min</span>
 
 </div>
   </header> 
@@ -432,46 +432,493 @@
 </span></span></code></pre></div><p>1번부터 7번은 Python 기본 문법, 8번부터 19번은 데이터 분석, 20번은 SQL 문제다. 처음에는 각 문제에 10분을 주고, 막히면 풀이 방향에서 함수 이름만 확인한 뒤 다시 작성해보자. 완성 코드를 그대로 외우는 것보다 “왜 이 문법을 골랐는지”를 말할 수 있는지가 더 중요하다.</p>
 <h2 id="코딩-예상문제-20개">코딩 예상문제 20개<a hidden class="anchor" aria-hidden="true" href="#코딩-예상문제-20개">#</a></h2>
 <p>아래 문제는 공개 가능한 일반 학습 범위를 토대로 새로 구성한 연습문제다. 먼저 답을 보지 않고 코드나 쿼리를 직접 작성해보자.</p>
+<h3 id="답안에는-무엇을-적어야-하나">답안에는 무엇을 적어야 하나<a hidden class="anchor" aria-hidden="true" href="#답안에는-무엇을-적어야-하나">#</a></h3>
+<ul>
+<li>1번부터 7번: 실행 가능한 Python 코드를 적는다. <code>input()</code>이 있으면 예시 입력을 직접 넣어 실행 결과를 확인한다.</li>
+<li>8번부터 19번: <code>import</code>부터 결과를 만드는 코드까지 적는다. 표 문제는 마지막에 <code>print()</code>, 그래프 문제는 <code>plt.show()</code>를 넣는다.</li>
+<li>20번: 완성된 SQL 문장을 <code>SELECT</code>부터 세미콜론까지 적는다.</li>
+</ul>
+<p>아래처럼 문제를 읽은 뒤 주석으로 세 칸을 먼저 만들면 시작하기 쉽다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 입력: 무엇을 받을까?</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 처리: 어떤 조건이나 계산이 필요할까?</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 출력: 무엇을 print 해야 할까?</span>
+</span></span></code></pre></div><h3 id="8번부터-19번까지-공통-연습-데이터">8번부터 19번까지 공통 연습 데이터<a hidden class="anchor" aria-hidden="true" href="#8번부터-19번까지-공통-연습-데이터">#</a></h3>
+<p>8번부터 19번까지는 다음 <code>sales.csv</code>를 사용한다. 메모장에 아래 내용을 붙여 넣고 파일명을 <code>sales.csv</code>로 저장하거나, 표를 보면서 DataFrame을 직접 만들어도 된다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csv" data-lang="csv"><span style="display:flex;"><span><span style="color:#e6db74">order_id</span>,<span style="color:#e6db74">customer_id</span>,<span style="color:#e6db74">category</span>,<span style="color:#e6db74">quantity</span>,<span style="color:#e6db74">unit_price</span>,<span style="color:#e6db74">returned</span>,<span style="color:#e6db74">region_code</span>,<span style="color:#e6db74">order_month</span>,<span style="color:#e6db74">ad_cost</span>,<span style="color:#e6db74">visits</span>,<span style="color:#e6db74">orders</span>,<span style="color:#e6db74">channel</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">101</span>,<span style="color:#e6db74">C01</span>,<span style="color:#e6db74">Book</span>,<span style="color:#e6db74">2</span>,<span style="color:#e6db74">15000</span>,<span style="color:#e6db74">False</span>,<span style="color:#e6db74">S</span>,<span style="color:#e6db74">2026-01</span>,<span style="color:#e6db74">100</span>,<span style="color:#e6db74">1200</span>,<span style="color:#e6db74">35</span>,<span style="color:#e6db74">Search</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">102</span>,<span style="color:#e6db74">C02</span>,<span style="color:#e6db74">Device</span>,<span style="color:#e6db74">1</span>,<span style="color:#e6db74">180000</span>,<span style="color:#e6db74">False</span>,<span style="color:#e6db74">B</span>,<span style="color:#e6db74">2026-01</span>,<span style="color:#e6db74">240</span>,<span style="color:#e6db74">1800</span>,<span style="color:#e6db74">48</span>,<span style="color:#e6db74">Social</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">103</span>,<span style="color:#e6db74">C01</span>,<span style="color:#e6db74">Book</span>,<span style="color:#e6db74">5</span>,<span style="color:#e6db74">15000</span>,<span style="color:#e6db74">True</span>,<span style="color:#e6db74">S</span>,<span style="color:#e6db74">2026-02</span>,<span style="color:#e6db74">130</span>,<span style="color:#e6db74">1400</span>,<span style="color:#e6db74">39</span>,<span style="color:#e6db74">Search</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">104</span>,<span style="color:#e6db74">C03</span>,<span style="color:#e6db74">Course</span>,<span style="color:#e6db74">2</span>,<span style="color:#e6db74">120000</span>,<span style="color:#e6db74">False</span>,<span style="color:#e6db74">J</span>,<span style="color:#e6db74">2026-02</span>,<span style="color:#e6db74">300</span>,<span style="color:#e6db74">2100</span>,<span style="color:#e6db74">65</span>,<span style="color:#e6db74">Email</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">105</span>,<span style="color:#e6db74">C02</span>,<span style="color:#e6db74">Device</span>,<span style="color:#e6db74">2</span>,<span style="color:#e6db74">180000</span>,<span style="color:#e6db74">False</span>,<span style="color:#e6db74">B</span>,<span style="color:#e6db74">2026-03</span>,<span style="color:#e6db74">280</span>,<span style="color:#e6db74">2000</span>,<span style="color:#e6db74">58</span>,<span style="color:#e6db74">Social</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">106</span>,<span style="color:#e6db74">C04</span>,<span style="color:#e6db74">Course</span>,<span style="color:#e6db74">1</span>,<span style="color:#e6db74">120000</span>,<span style="color:#e6db74">False</span>,<span style="color:#e6db74">S</span>,<span style="color:#e6db74">2026-03</span>,<span style="color:#e6db74">210</span>,<span style="color:#e6db74">1700</span>,<span style="color:#e6db74">51</span>,<span style="color:#e6db74">Email</span>
+</span></span></code></pre></div><table>
+	<thead>
+			<tr>
+					<th style="text-align: right">order_id</th>
+					<th>customer_id</th>
+					<th>category</th>
+					<th style="text-align: right">quantity</th>
+					<th style="text-align: right">unit_price</th>
+					<th style="text-align: center">returned</th>
+					<th style="text-align: center">region_code</th>
+					<th>order_month</th>
+					<th style="text-align: right">ad_cost</th>
+					<th style="text-align: right">visits</th>
+					<th style="text-align: right">orders</th>
+					<th>channel</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: right">101</td>
+					<td>C01</td>
+					<td>Book</td>
+					<td style="text-align: right">2</td>
+					<td style="text-align: right">15000</td>
+					<td style="text-align: center">False</td>
+					<td style="text-align: center">S</td>
+					<td>2026-01</td>
+					<td style="text-align: right">100</td>
+					<td style="text-align: right">1200</td>
+					<td style="text-align: right">35</td>
+					<td>Search</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">102</td>
+					<td>C02</td>
+					<td>Device</td>
+					<td style="text-align: right">1</td>
+					<td style="text-align: right">180000</td>
+					<td style="text-align: center">False</td>
+					<td style="text-align: center">B</td>
+					<td>2026-01</td>
+					<td style="text-align: right">240</td>
+					<td style="text-align: right">1800</td>
+					<td style="text-align: right">48</td>
+					<td>Social</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">103</td>
+					<td>C01</td>
+					<td>Book</td>
+					<td style="text-align: right">5</td>
+					<td style="text-align: right">15000</td>
+					<td style="text-align: center">True</td>
+					<td style="text-align: center">S</td>
+					<td>2026-02</td>
+					<td style="text-align: right">130</td>
+					<td style="text-align: right">1400</td>
+					<td style="text-align: right">39</td>
+					<td>Search</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">104</td>
+					<td>C03</td>
+					<td>Course</td>
+					<td style="text-align: right">2</td>
+					<td style="text-align: right">120000</td>
+					<td style="text-align: center">False</td>
+					<td style="text-align: center">J</td>
+					<td>2026-02</td>
+					<td style="text-align: right">300</td>
+					<td style="text-align: right">2100</td>
+					<td style="text-align: right">65</td>
+					<td>Email</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">105</td>
+					<td>C02</td>
+					<td>Device</td>
+					<td style="text-align: right">2</td>
+					<td style="text-align: right">180000</td>
+					<td style="text-align: center">False</td>
+					<td style="text-align: center">B</td>
+					<td>2026-03</td>
+					<td style="text-align: right">280</td>
+					<td style="text-align: right">2000</td>
+					<td style="text-align: right">58</td>
+					<td>Social</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">106</td>
+					<td>C04</td>
+					<td>Course</td>
+					<td style="text-align: right">1</td>
+					<td style="text-align: right">120000</td>
+					<td style="text-align: center">False</td>
+					<td style="text-align: center">S</td>
+					<td>2026-03</td>
+					<td style="text-align: right">210</td>
+					<td style="text-align: right">1700</td>
+					<td style="text-align: right">51</td>
+					<td>Email</td>
+			</tr>
+	</tbody>
+</table>
+<p>13번과 20번에서는 다음 두 테이블도 함께 사용한다.</p>
+<p><strong>customers 테이블</strong></p>
+<table>
+	<thead>
+			<tr>
+					<th>customer_id</th>
+					<th>customer_name</th>
+					<th>country</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>C01</td>
+					<td>Mina</td>
+					<td>Korea</td>
+			</tr>
+			<tr>
+					<td>C02</td>
+					<td>Joon</td>
+					<td>Japan</td>
+			</tr>
+			<tr>
+					<td>C03</td>
+					<td>Sora</td>
+					<td>Korea</td>
+			</tr>
+			<tr>
+					<td>C04</td>
+					<td>Leo</td>
+					<td>USA</td>
+			</tr>
+			<tr>
+					<td>C05</td>
+					<td>Hana</td>
+					<td>Japan</td>
+			</tr>
+	</tbody>
+</table>
+<p><strong>orders 테이블</strong></p>
+<table>
+	<thead>
+			<tr>
+					<th>order_id</th>
+					<th>customer_id</th>
+					<th style="text-align: right">amount</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>O01</td>
+					<td>C01</td>
+					<td style="text-align: right">600</td>
+			</tr>
+			<tr>
+					<td>O02</td>
+					<td>C01</td>
+					<td style="text-align: right">700</td>
+			</tr>
+			<tr>
+					<td>O03</td>
+					<td>C02</td>
+					<td style="text-align: right">450</td>
+			</tr>
+			<tr>
+					<td>O04</td>
+					<td>C02</td>
+					<td style="text-align: right">800</td>
+			</tr>
+			<tr>
+					<td>O05</td>
+					<td>C03</td>
+					<td style="text-align: right">900</td>
+			</tr>
+			<tr>
+					<td>O06</td>
+					<td>C04</td>
+					<td style="text-align: right">2000</td>
+			</tr>
+	</tbody>
+</table>
 <h3 id="1-온도-상태-분류">1. 온도 상태 분류<a hidden class="anchor" aria-hidden="true" href="#1-온도-상태-분류">#</a></h3>
 <p>정수 온도를 입력받아 0 미만이면 <code>freezing</code>, 0 이상 25 미만이면 <code>cool</code>, 25 이상이면 <code>hot</code>을 출력하라.</p>
+<ul>
+<li>입력 예시: <code>25</code></li>
+<li>기대 출력: <code>hot</code></li>
+<li>답안에 적을 것: <code>input()</code>으로 온도를 받고 세 구간을 나누는 <code>if/elif/else</code> 코드</li>
+</ul>
 <h3 id="2-구매-금액별-배송비">2. 구매 금액별 배송비<a hidden class="anchor" aria-hidden="true" href="#2-구매-금액별-배송비">#</a></h3>
 <p>구매 금액이 50,000원 이상이면 배송비 0원, 30,000원 이상이면 2,000원, 그 미만이면 3,000원을 출력하라.</p>
+<ul>
+<li>입력 예시: <code>42000</code></li>
+<li>기대 출력: <code>2000</code></li>
+<li>추가 확인: <code>50000</code>을 넣었을 때 <code>0</code>이 나오는지도 확인한다.</li>
+</ul>
 <h3 id="3-특정-문자-개수-세기">3. 특정 문자 개수 세기<a hidden class="anchor" aria-hidden="true" href="#3-특정-문자-개수-세기">#</a></h3>
 <p>문자열과 찾을 문자 하나를 입력받아 대소문자를 구분하지 않고 등장 횟수를 출력하라.</p>
+<ul>
+<li>첫 번째 입력 예시: <code>Data Analysis</code></li>
+<li>두 번째 입력 예시: <code>a</code></li>
+<li>기대 출력: <code>4</code></li>
+<li>답안에 적을 것: 두 문자열을 같은 대소문자로 바꾼 뒤 개수를 세는 코드</li>
+</ul>
 <h3 id="4-이메일-분리">4. 이메일 분리<a hidden class="anchor" aria-hidden="true" href="#4-이메일-분리">#</a></h3>
 <p><code>name@example.com</code> 형태의 문자열에서 사용자 이름과 도메인을 분리해 각각 출력하라.</p>
+<ul>
+<li>입력 예시: <code>beginner@example.com</code></li>
+<li>기대 출력 첫 줄: <code>beginner</code></li>
+<li>기대 출력 둘째 줄: <code>example.com</code></li>
+</ul>
 <h3 id="5-3의-배수-합계">5. 3의 배수 합계<a hidden class="anchor" aria-hidden="true" href="#5-3의-배수-합계">#</a></h3>
 <p>1부터 입력값 <code>n</code>까지 존재하는 3의 배수 합계를 <code>for</code>문으로 계산하라.</p>
+<ul>
+<li>입력 예시: <code>10</code></li>
+<li>계산 대상: <code>3 + 6 + 9</code></li>
+<li>기대 출력: <code>18</code></li>
+</ul>
 <h3 id="6-중복-제거-후-정렬">6. 중복 제거 후 정렬<a hidden class="anchor" aria-hidden="true" href="#6-중복-제거-후-정렬">#</a></h3>
 <p>리스트 <code>[5, 2, 5, 1, 2, 9]</code>에서 중복을 제거하고 오름차순 리스트를 만들어라.</p>
+<ul>
+<li>주어진 값: <code>[5, 2, 5, 1, 2, 9]</code></li>
+<li>기대 출력: <code>[1, 2, 5, 9]</code></li>
+<li>답안에 적을 것: 중복 제거와 정렬을 차례대로 수행하는 코드</li>
+</ul>
 <h3 id="7-할인-가격-함수">7. 할인 가격 함수<a hidden class="anchor" aria-hidden="true" href="#7-할인-가격-함수">#</a></h3>
 <p>가격과 할인율을 받아 할인 후 가격을 반환하는 <code>discount_price(price, rate)</code> 함수를 작성하라.</p>
+<ul>
+<li>호출 예시: <code>discount_price(50000, 20)</code></li>
+<li>기대 반환값: <code>40000</code></li>
+<li>답안에 적을 것: <code>def</code>로 함수를 만들고 계산값을 <code>return</code>하는 코드</li>
+</ul>
 <h3 id="8-csv-기본-점검">8. CSV 기본 점검<a hidden class="anchor" aria-hidden="true" href="#8-csv-기본-점검">#</a></h3>
 <p><code>sales.csv</code>를 DataFrame으로 읽은 뒤 앞의 5행, 행과 열의 개수, 각 열의 자료형을 확인하는 코드를 작성하라.</p>
+<ul>
+<li>파일 위치: Python 파일 또는 노트북과 같은 폴더의 <code>sales.csv</code></li>
+<li>기대 <code>shape</code>: <code>(6, 12)</code></li>
+<li>답안에 적을 것: <code>import pandas as pd</code>부터 <code>read_csv</code>, <code>head</code>, <code>shape</code>, <code>dtypes</code> 출력까지</li>
+</ul>
 <h3 id="9-매출-열-생성">9. 매출 열 생성<a hidden class="anchor" aria-hidden="true" href="#9-매출-열-생성">#</a></h3>
 <p>DataFrame의 <code>quantity</code>와 <code>unit_price</code>를 곱해 <code>revenue</code> 열을 추가하라.</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: right">order_id</th>
+					<th style="text-align: right">quantity</th>
+					<th style="text-align: right">unit_price</th>
+					<th style="text-align: right">기대 revenue</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: right">101</td>
+					<td style="text-align: right">2</td>
+					<td style="text-align: right">15000</td>
+					<td style="text-align: right">30000</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">104</td>
+					<td style="text-align: right">2</td>
+					<td style="text-align: right">120000</td>
+					<td style="text-align: right">240000</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">105</td>
+					<td style="text-align: right">2</td>
+					<td style="text-align: right">180000</td>
+					<td style="text-align: right">360000</td>
+			</tr>
+	</tbody>
+</table>
+<p>마지막에 <code>order_id</code>, <code>quantity</code>, <code>unit_price</code>, <code>revenue</code> 네 열을 출력한다.</p>
 <h3 id="10-복합-조건-필터">10. 복합 조건 필터<a hidden class="anchor" aria-hidden="true" href="#10-복합-조건-필터">#</a></h3>
 <p><code>revenue</code>가 100,000 이상이고 <code>returned</code>가 <code>False</code>인 행만 선택하라.</p>
+<ul>
+<li>먼저 9번의 <code>revenue</code> 열을 만든다.</li>
+<li>기대 order_id: <code>102</code>, <code>104</code>, <code>105</code>, <code>106</code></li>
+<li>답안에 적을 것: 두 조건을 각각 괄호로 묶고 <code>&amp;</code>로 연결한 필터 코드</li>
+</ul>
 <h3 id="11-코드값-치환">11. 코드값 치환<a hidden class="anchor" aria-hidden="true" href="#11-코드값-치환">#</a></h3>
 <p><code>region_code</code>의 <code>S</code>, <code>B</code>, <code>J</code>를 각각 <code>Seoul</code>, <code>Busan</code>, <code>Jeju</code>로 변환한 <code>region</code> 열을 만들어라.</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: center">region_code</th>
+					<th>기대 region</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">S</td>
+					<td>Seoul</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">B</td>
+					<td>Busan</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">J</td>
+					<td>Jeju</td>
+			</tr>
+	</tbody>
+</table>
+<p><code>region_code</code>와 새로 만든 <code>region</code> 열을 함께 출력한다.</p>
 <h3 id="12-주문-등급-분류">12. 주문 등급 분류<a hidden class="anchor" aria-hidden="true" href="#12-주문-등급-분류">#</a></h3>
 <p><code>revenue</code>가 200,000 이상이면 <code>VIP</code>, 100,000 이상이면 <code>Regular</code>, 나머지는 <code>Basic</code>으로 분류하는 열을 만들어라.</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: right">order_id</th>
+					<th style="text-align: right">revenue</th>
+					<th>기대 grade</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: right">101</td>
+					<td style="text-align: right">30000</td>
+					<td>Basic</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">102</td>
+					<td style="text-align: right">180000</td>
+					<td>Regular</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">104</td>
+					<td style="text-align: right">240000</td>
+					<td>VIP</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">105</td>
+					<td style="text-align: right">360000</td>
+					<td>VIP</td>
+			</tr>
+	</tbody>
+</table>
+<p>답안에는 등급을 반환하는 함수와 그 함수를 <code>apply</code>하는 코드를 적는다.</p>
 <h3 id="13-고객과-주문-병합">13. 고객과 주문 병합<a hidden class="anchor" aria-hidden="true" href="#13-고객과-주문-병합">#</a></h3>
 <p><code>customers</code>와 <code>orders</code>를 <code>customer_id</code> 기준으로 병합하되, 주문이 없는 고객도 남도록 작성하라.</p>
+<ul>
+<li>사용할 표: 위의 <code>customers</code>, <code>orders</code></li>
+<li>기준 열: <code>customer_id</code></li>
+<li>핵심 조건: 주문이 없는 <code>C05 Hana</code>도 결과에 남아야 한다.</li>
+<li>기대 형태: Hana 행의 <code>order_id</code>와 <code>amount</code>는 결측값으로 표시된다.</li>
+</ul>
 <h3 id="14-카테고리별-집계">14. 카테고리별 집계<a hidden class="anchor" aria-hidden="true" href="#14-카테고리별-집계">#</a></h3>
 <p>상품 카테고리별 총매출과 평균 주문 금액을 한 번에 계산하라.</p>
+<table>
+	<thead>
+			<tr>
+					<th>category</th>
+					<th style="text-align: right">기대 총매출</th>
+					<th style="text-align: right">기대 평균 매출</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Book</td>
+					<td style="text-align: right">105000</td>
+					<td style="text-align: right">52500</td>
+			</tr>
+			<tr>
+					<td>Course</td>
+					<td style="text-align: right">360000</td>
+					<td style="text-align: right">180000</td>
+			</tr>
+			<tr>
+					<td>Device</td>
+					<td style="text-align: right">540000</td>
+					<td style="text-align: right">270000</td>
+			</tr>
+	</tbody>
+</table>
+<p>답안에는 <code>category</code>로 묶는 <code>groupby</code>와 합계·평균을 구하는 <code>agg</code>를 적는다.</p>
 <h3 id="15-상관관계-확인">15. 상관관계 확인<a hidden class="anchor" aria-hidden="true" href="#15-상관관계-확인">#</a></h3>
 <p><code>ad_cost</code>, <code>visits</code>, <code>orders</code>, <code>revenue</code> 네 열의 상관계수 행렬을 구하라.</p>
+<ul>
+<li>먼저 9번의 <code>revenue</code> 열을 만든다.</li>
+<li>기대 결과 형태: 행과 열이 모두 네 변수인 <code>4 x 4</code> 표</li>
+<li>확인할 점: 같은 변수끼리 만나는 대각선 값은 <code>1.0</code>이다.</li>
+</ul>
 <h3 id="16-numpy-요약-통계">16. NumPy 요약 통계<a hidden class="anchor" aria-hidden="true" href="#16-numpy-요약-통계">#</a></h3>
 <p>배열 <code>[62, 70, 75, 81, 88, 94]</code>의 평균, 중앙값, 75백분위수를 계산하라.</p>
+<ul>
+<li>기대 평균: 약 <code>78.33</code></li>
+<li>기대 중앙값: <code>78.0</code></li>
+<li>기대 75백분위수: <code>86.25</code></li>
+<li>답안에 적을 것: 배열 생성과 <code>mean</code>, <code>median</code>, <code>percentile</code> 출력 코드</li>
+</ul>
 <h3 id="17-월별-매출-선-그래프">17. 월별 매출 선 그래프<a hidden class="anchor" aria-hidden="true" href="#17-월별-매출-선-그래프">#</a></h3>
 <p>월을 x축, 매출을 y축으로 하는 선 그래프를 그리고 제목과 축 이름을 표시하라.</p>
+<p>먼저 <code>order_month</code>별 <code>revenue</code> 합계를 만든다.</p>
+<table>
+	<thead>
+			<tr>
+					<th>order_month</th>
+					<th style="text-align: right">기대 월 매출</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>2026-01</td>
+					<td style="text-align: right">210000</td>
+			</tr>
+			<tr>
+					<td>2026-02</td>
+					<td style="text-align: right">315000</td>
+			</tr>
+			<tr>
+					<td>2026-03</td>
+					<td style="text-align: right">480000</td>
+			</tr>
+	</tbody>
+</table>
+<ul>
+<li>x축: <code>order_month</code></li>
+<li>y축: 월별 <code>revenue</code> 합계</li>
+<li>답안에 적을 것: 집계 코드, <code>plt.plot</code>, 제목, 축 이름, <code>plt.show()</code></li>
+</ul>
 <h3 id="18-광고비와-매출-산점도">18. 광고비와 매출 산점도<a hidden class="anchor" aria-hidden="true" href="#18-광고비와-매출-산점도">#</a></h3>
 <p>Seaborn으로 <code>ad_cost</code>와 <code>revenue</code>의 관계를 그리고 <code>channel</code>에 따라 색을 구분하라.</p>
+<ul>
+<li>x축: <code>ad_cost</code></li>
+<li>y축: <code>revenue</code></li>
+<li>색상 구분: <code>channel</code></li>
+<li>기대 결과: 데이터 한 행이 점 하나로 나타나며 Search, Social, Email이 서로 다른 색으로 보인다.</li>
+</ul>
 <h3 id="19-상관계수-히트맵">19. 상관계수 히트맵<a hidden class="anchor" aria-hidden="true" href="#19-상관계수-히트맵">#</a></h3>
 <p>15번에서 구한 상관계수 행렬을 값이 표시되는 히트맵으로 그려라.</p>
+<ul>
+<li>입력 데이터: 15번의 <code>4 x 4</code> 상관계수 표</li>
+<li>답안에 적을 것: <code>sns.heatmap</code>에 표를 전달하고 <code>annot=True</code>, <code>fmt=&quot;.2f&quot;</code>를 설정한 코드</li>
+<li>기대 결과: 각 칸에 소수 둘째 자리까지 상관계수가 표시된다.</li>
+</ul>
 <h3 id="20-sql-고객별-주문-집계">20. SQL 고객별 주문 집계<a hidden class="anchor" aria-hidden="true" href="#20-sql-고객별-주문-집계">#</a></h3>
 <p><code>customers</code>와 <code>orders</code>를 조인하여 국가가 <code>Korea</code> 또는 <code>Japan</code>인 고객의 총 주문 금액을 고객별로 구하라. 총액이 1000 이상인 고객만 금액 내림차순으로 출력하라.</p>
+<p>답안에는 다음 요소가 모두 들어간 SQL을 적는다.</p>
+<ol>
+<li>두 테이블의 <code>customer_id</code>를 연결하는 <code>JOIN</code></li>
+<li>Korea와 Japan만 남기는 <code>WHERE</code></li>
+<li>고객별로 묶는 <code>GROUP BY</code></li>
+<li>총액 1000 이상을 남기는 <code>HAVING</code></li>
+<li>총액 내림차순 <code>ORDER BY</code></li>
+</ol>
+<p>기대 결과는 다음과 같다.</p>
+<table>
+	<thead>
+			<tr>
+					<th>customer_name</th>
+					<th style="text-align: right">total_amount</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Mina</td>
+					<td style="text-align: right">1300</td>
+			</tr>
+			<tr>
+					<td>Joon</td>
+					<td style="text-align: right">1250</td>
+			</tr>
+	</tbody>
+</table>
 <h2 id="객관식-예상문제-20개">객관식 예상문제 20개<a hidden class="anchor" aria-hidden="true" href="#객관식-예상문제-20개">#</a></h2>
 <h3 id="1-input으로-받은-42를-정수-42로-변환하려면">1. <code>input()</code>으로 받은 <code>&quot;42&quot;</code>를 정수 42로 변환하려면?<a hidden class="anchor" aria-hidden="true" href="#1-input으로-받은-42를-정수-42로-변환하려면">#</a></h3>
 <p>A. <code>float(&quot;42&quot;)</code>  B. <code>int(&quot;42&quot;)</code>  C. <code>ord(&quot;42&quot;)</code>  D. <code>str(&quot;42&quot;)</code></p>
