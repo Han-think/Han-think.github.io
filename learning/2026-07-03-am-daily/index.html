@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>머신러닝 기초 다지기: 데이터 수집부터 모델 평가까지 핵심 개념 정리 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-07-03 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-07-03-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-07-03-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-03-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="머신러닝 기초 다지기: 데이터 수집부터 모델 평가까지 핵심 개념 정리">
+  <meta property="og:description" content="2026-07-03 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-07-03T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-03T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="머신러닝 기초 다지기: 데이터 수집부터 모델 평가까지 핵심 개념 정리">
+  <meta name="twitter:description" content="2026-07-03 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "머신러닝 기초 다지기: 데이터 수집부터 모델 평가까지 핵심 개념 정리",
+      "item": "https://Han-think.github.io/learning/2026-07-03-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "머신러닝 기초 다지기: 데이터 수집부터 모델 평가까지 핵심 개념 정리",
+  "name": "머신러닝 기초 다지기: 데이터 수집부터 모델 평가까지 핵심 개념 정리",
+  "description": "2026-07-03 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 머신러닝 프로젝트: 흐름과 데이터 수집의 기초 데이터 분리 및 과적합 완벽 이해하기 K-Fold 교차검증과 Epoch, 초보자를 위한 개념 정리 파이썬과 SQL: 행, 열, 인덱스 개념 이해하기 데이터 분할 및 Feature/Label 분리 실습 Scikit-learn 모델 선택 및 평가 지표 완벽 이해 초보자를 위한 EDA 시각화 및 결측치 처리 가이드 총평 1. 머신러닝 프로젝트: 흐름과 데이터 수집의 기초 무엇을 배웠나 API가 구조화된 데이터를 안정적으로 가져오는 방법이며, MCP는 LLM이나 에이전트가 외부 자원에 접근하도록 연결하는 플랫폼이라는 것을 이해하게 되었다. 데이터 수집은 단순히 파일 가져오기가 아니라 EDA와 모델 선택의 기반이 되는 중요한 과정이며, 데이터 품질이 좋은 데이터의 핵심이라는 것도 알게 되었다. 앞으로 데이터 수집 단계에 더욱 신경 쓰고, API 활용 연습을 꾸준히 해야겠다.\n헷갈렸던 점 API를 배우면서 MCP와의 관계가 궁금했는데 강의에서 MCP를 언급하지 않아 API가 MCP의 일부인지 독립적인 개념인지 알 수 없었다. 데이터 수집이 단순히 파일을 가져오는 것이 아니라 EDA와 모델 선택의 기반이 된다는 점을 완전히 이해하는 데 시간이 걸렸다. 데이터 품질이 얼마나 중요한지 처음에는 크게 와닿지 않았다.\n정리된 이해 API는 정해진 규칙에 따라 데이터를 가져오는 방법이고, MCP는 외부 자원에 접근할 수 있도록 연결하는 표준화된 구조이며, API는 MCP를 이해하는 데 도움이 되는 기초 개념이다. 데이터 수집은 단순 파일 가져오기를 넘어 EDA와 모델 선택의 기반이 되며, 데이터 품질은 정확성, 일관성, 결측치/이상치 처리 기준, 실제 예측 환경과의 적합성을 모두 포함한다.\nimport requests def fetch_data_via_api(api_url, params=None): response = requests.get(api_url, params= 2. 데이터 분리 및 과적합 완벽 이해하기 무엇을 배웠나 데이터를 단순히 나누는 것이 아니라 모델의 일반화 능력을 평가하기 위한 중요한 과정이라는 것을 알게 되었습니다. 학습, 검증, 테스트 데이터의 역할을 명확히 이해하고, 검증 데이터를 통해 과적합 여부를 감지하고 방지하는 방법을 배우었습니다. scikit-learn 라이브러리의 train_test_split 함수를 사용하여 데이터 분리를 쉽게 수행할 수 있다는 것도 알게 되었습니다.\n헷갈렸던 점 데이터 분리는 단순히 파일을 나누는 것이라는 생각을 했었고, 과적합이 무엇인지 이해했지만 어떻게 감지하고 방지해야 할지 막연했습니다. 모델의 일반화 능력과 데이터 분리의 관계, 그리고 검증 데이터의 역할에 대한 정확한 이해가 부족했습니다.\n정리된 이해 데이터 분리는 모델의 일반화 능력을 평가하기 위한 중요한 과정이며, 학습 데이터로 모델을 학습시키고 검증 데이터로 성능을 모니터링하며, 테스트 데이터로 최종 성능을 평가하는 방식으로 진행됩니다. 과적합은 학습 데이터에만 지나치게 맞춰져 새로운 데이터에 대한 성능이 떨어지는 현상이며, 검증 데이터를 통해 이를 감지하고 적절한 조치를 취해야 합니다. 데이터 분리를 통해 모델의 실제 성능을 객관적으로 평가하고 일반화 능력을 높일 수 있다는 점을 명확히 이해했습니다.\nfrom sklearn.model_selection import train_test_split from sklearn.datasets import load_iris # 데이터 로드 data = load_iris() X = data.data y = data.target # Train/Validation/Test 분리 (예: 60% Train, 20% Validation, 20% Test) X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.4, random_state=42) 3. K-Fold 교차검증과 Epoch, 초보자를 위한 개념 정리 무엇을 배웠나 K-Fold 교차검증과 Epoch 개념을 공부하면서 두 용어가 혼동되었지만, Epoch은 학습 데이터 전체를 반복하는 횟수이고, K-Fold 교차검증은 데이터 분할을 통해 모델의 일반화 성능을 평가하는 방법임을 명확히 알게 되었다. 특히, K-Fold 교차검증은 모델이 특정 데이터에 과도하게 의존하지 않고 안정적으로 작동하는지 확인하는 데 중요한 역할을 한다는 것을 깨달았다. 앞으로는 이 두 개념을 정확히 이해하고 모델 학습 과정에 적용하여 성능을 향상시킬 수 있을 것 같다.\n헷갈렸던 점 K-Fold 교차검증과 Epoch 모두 모델 학습을 반복하는 것처럼 보여서, Epoch이 모델 전체 학습을 몇 번 반복하는 것인지, K-Fold가 모델 자체를 여러 개 학습하는 것인지 헷갈렸어요. 특히 K-Fold가 모델을 여러 번 학습시키는 과정이라고 생각해서 더 복잡하게 느껴졌었죠.\n정리된 이해 Epoch은 모델이 전체 학습 데이터를 반복하며 가중치를 업데이트하는 횟수를 의미하며, K-Fold 교차검증은 데이터를 여러 조각으로 나누어 모델의 일반화 성능을 안정적으로 평가하는 방법이에요. 두 개념 모두 모델 학습 과정에서 중요한 역할을 하지만, Epoch은 학습을 위한 반복 횟수를 조절하고, K-Fold 교차검증은 모델의 성능을 객관적으로 측정하는 데 초점을 맞춘다는 차이가 있답니다.\nfrom tensorflow.keras.models import Sequential from tensorflow.keras.layers import Dense # 간단한 모델 정의 model = Sequential() model.add(Dense(32, activation='relu', input_dim=100)) model.add(Dense(1, activation='sigmoid')) # 컴파일 설정 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy']) 4. 파이썬과 SQL: 행, 열, 인덱스 개념 이해하기 무엇을 배웠나 Python과 SQL을 공부하면서 행, 열, 인덱스 용어에 헷갈렸던 점을 명확히 정리했습니다. 행은 데이터의 한 줄, 열은 변수를 나타내고, 인덱스는 위치를 의미한다는 것을 이해하고, 실제 코드 예시를 통해 복습했습니다. 앞으로 프로젝트에서 코드를 작성할 때 한국어 용어와 연결하여 생각하면 도움이 될 것 같습니다.\n헷갈렸던 점 처음에는 데이터셋을 슬라이싱 할 때 행과 열을 정확히 구분하지 못해서, dataset[0:3]이 어떤 데이터를 의미하는지 혼동했습니다. 또한, 인덱스를 활용하여 특정 데이터에 접근할 때, 그 인덱스가 어디를 가리키는지 명확하게 이해하는 데 어려움을 겪었습니다. 이 용어들을 정리하고 예시 코드를 통해 확실히 이해하려고 노력했습니다.\n정리된 이해 데이터셋을 다루면서 행은 데이터의 한 줄, 열은 변수를 나타내고, 인덱스는 각 위치를 가리킨다는 것을 명확히 이해했습니다. 코드를 작성할 때 행과 열의 개념을 혼동하지 않도록 주의하고, 인덱스를 정확하게 활용하여 원하는 데이터를 추출해야 할 것 같습니다. 앞으로는 한국어 용어를 코딩 과정에서 떠올리며 개념을 더욱 체계적으로 활용할 계획입니다.\n# 모든 행에서 특정 열 선택 feature = dataset[:, 0:3] # 첫 세 열 선택 label = dataset[:, -1] # 마지막 열 선택 # 특정 행과 열 선택 specific_value = dataset[2, 1] # 세 번째 행의 두 번째 열 값 5. 데이터 분할 및 Feature/Label 분리 실습 무엇을 배웠나 train_test_split 함수를 사용하여 데이터를 학습 및 테스트 세트로 나누는 방법을 익혔고, 데이터 분할 시 행 기반과 열 기반 선택의 차이를 명확히 이해하게 되었다. 또한, feature(특성)와 label(레이블)을 분리하는 방법을 실제 코드를 통해 확인하며 데이터 전처리 과정에 대한 이해를 높였다. 앞으로 이 지식을 바탕으로 실제 데이터에 적용해 볼 계획이다.\n헷갈렸던 점 데이터셋 슬라이싱할 때 행과 열을 어떻게 선택해야 할지 몰라서 dataset[0:3]와 dataset[:, 0:3]의 차이를 명확히 이해하지 못했습니다. train_test_split 함수를 어떻게 활용해야 할지, 그리고 각 파라미터가 어떤 역할을 하는지 확실히 알지 못했습니다. 특히 test_size와 shuffle 옵션의 의미를 제대로 파악하지 못했습니다.\n정리된 이해 데이터 분할 시 dataset[0:3]은 처음 3행을, dataset[:, 0:3]은 처음 3개의 특성(열)을 선택한다는 것을 명확히 이해했습니다. train_test_split 함수는 데이터를 학습 및 테스트 세트로 나누는 데 사용되며, test_size는 테스트 데이터의 비율을, shuffle=False는 섞지 않고 분할함을 의미합니다. 이제 이 지식을 바탕으로 실제 데이터셋에 적용하여 모델을 학습하고 평가할 수 있을 것 같습니다.\nimport numpy as np from sklearn.model_selection import train_test_split # 가상 데이터셋 생성 dataset = np.array([ [40, 1, 0], [30, 0, 1], [20, 1, 0], [50, 1, 0], [45, 0, 1], [35, 1, 0] ]) # Feature와 Label 분리 feature = dataset[:, 0:3] # 모든 행의 첫 3열 (특성) label = dataset[:, -1] # 모든 행의 마지막 열 (레이블) 6. Scikit-learn 모델 선택 및 평가 지표 완벽 이해 무엇을 배웠나 scikit-learn 모델 선택 시, 모델 이름에 포함된 단어가 역할과 항상 일치하지 않으므로 데이터의 성격(수치형 vs 범주형)에 맞춰 모델을 선택해야 한다는 점을 알게 되었다. 또한, 앙상블 기법인 RandomForest와 Gradient Boosting 모델의 차이점을 이해하고, 회귀 및 분류 문제에 따른 적절한 평가 지표를 선택하는 것이 중요하다는 것을 배웠다. 이 내용을 바탕으로 실제 데이터에 적용하여 모델을 학습하고 평가해 볼 계획이다.\n헷갈렸던 점 Logistic Regression 모델 이름 때문에 회귀 분석 모델이라고 착각했고, 앙상블 기법인 Random Forest와 Gradient Boosting의 차이점을 명확하게 이해하지 못했었다. 특히, Gradient Boosting 모델들이 이전 모델의 오류를 보완하며 학습한다는 점이 생략되어 있었고, 이를 파악하는 과정에서 어려움을 겪었다. 회귀와 분류 문제에 따른 적절한 평가 지표 선택 역시 처음에는 혼란스러웠다.\n정리된 이해 이제 scikit-learn 모델을 선택할 때, 예측하려는 값의 형태(수치형인지 범주형인지)에 따라 적절한 회귀 또는 분류 모델을 선택해야 한다는 것을 알게 되었다. 또한, 각 모델의 작동 방식(Bagging인지 Boosting인지)을 이해하면 모델 선택에 더 도움이 될 것 같다. 마지막으로, 회귀 문제와 분류 문제에 따라 적절한 평가 지표를 선택하는 것이 중요하며, 이를 통해 모델의 성능을 정확하게 파악할 수 있다.\n# 예시: 분류 모델 사용 예시 (데이터 준비 및 학습) import pandas as pd from sklearn.model_selection import train_test_split from sklearn.preprocessing import LabelEncoder from sklearn.ensemble import RandomForestClassifier from sklearn.metrics import classification_report, confusion_matrix 7. 초보자를 위한 EDA 시각화 및 결측치 처리 가이드 무엇을 배웠나 결측치 처리할 때 실제 값을 복원하는 것이 아니라 모델 학습을 위한 임시방편이라는 점을 깨달았고, 어떤 방식으로 채웠는지 기록하고 영향도 인지해야 한다는 점을 알게 되었다. isnull().sum()이 반환하는 Series 형태를 이해하는 데 도움이 되었고, 코드 구조가 어떻게 작동하는지 더 명확하게 이해하게 되었다. 원본 데이터를 보존하는 방법도 중요하고, 코드 실행 중간 구조를 확인하는 연습이 필요하다는 것을 알게 되었다.\n헷갈렸던 점 결측치 처리할 때 평균이나 중앙값으로 채우는 게 실제 데이터의 의미를 훼손하는 것 같아서 불안했는데, 그냥 모델 학습을 위한 임시방편이라는 점을 알게 되었다. 그리고 isnull().sum()의 결과가 Series 형태라는 점이 처음에 헷갈렸었다.\n정리된 이해 결측치 처리의 목적은 실제 값을 복원하는 것이 아니라 모델 학습을 위한 임시 조치이며, 어떤 방식으로 채웠는지 기록하고 그 영향을 고려해야 합니다. isnull().sum()은 Series 형태로 반환되며, 이 Series를 pd.DataFrame()으로 변환하는 과정에서 중간 구조를 이해하는 것이 중요합니다. 코드 실행 시 원본 데이터는 df_titanic.copy()를 통해 보존하는 것이 좋습니다.\nimport pandas as pd import numpy as np # 가상 데이터프레임 생성 df_titanic = pd.DataFrame({ 'age': [20, np.nan, 30, 40, np.nan], 'survived': [0, 1, 1, 0, np.nan] }) # 평균으로 결측치 채우기 mean_fill = df_titanic.fillna(df_titanic.mean()) # 중앙값으로 결측치 채우기 median_fill = df_titanic.fillna(df_titanic.median()) 총평 오늘 오전 전체에서 배운 것 오늘 오전 학습을 통해 머신러닝 프로젝트의 데이터 수집부터 모델 평가, 그리고 EDA까지 전반적인 과정을 이해하게 되었어요. 특히 데이터 분리, 교차검증, 그리고 데이터 전처리 과정의 중요성을 깨닫고, 실제 코드 실습을 통해 개념을 익혔습니다. 앞으로 프로젝트를 진행하면서 오늘 배운 내용들을 바탕으로 더욱 효과적인 모델을 만들 수 있을 것 같습니다.\n다음에 조심할 것 데이터 수집 단계에서 API 활용 연습을 꾸준히 하고, 데이터 품질을 높이는 데 더욱 신경 써야겠다. 또한, EDA 과정에서 결측치 처리 방식에 대한 기록을 꼼꼼히 하고, 코드 실행 중간 구조를 확인하는 습관을 들여야 실수를 줄일 수 있을 것 같다.\n다음 복습 주제 API를 활용한 데이터 수집 실습을 꾸준히 진행해서 실제 프로젝트에 적용해 보고 싶고, K-Fold 교차검증을 활용하여 모델의 일반화 성능을 검증하는 부분을 좀 더 깊이 학습해서 안정적인 모델 구축에 활용해야겠다. 마지막으로, 결측치 처리 과정에 대한 기록 및 영향 분석을 더욱 꼼꼼히 수행하는 습관을 들여야겠다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "1518",
+  "inLanguage": "en",
+  "datePublished": "2026-07-03T00:00:00Z",
+  "dateModified": "2026-07-03T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-07-03-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      머신러닝 기초 다지기: 데이터 수집부터 모델 평가까지 핵심 개념 정리
+    </h1>
+    <div class="post-description">
+      2026-07-03 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-03 00:00:00 +0000 UTC'>2026년 7월 3일</span>&nbsp;·&nbsp;<span>8 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%9D%90%EB%A6%84%EA%B3%BC-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%88%98%EC%A7%91%EC%9D%98-%EA%B8%B0%EC%B4%88">머신러닝 프로젝트: 흐름과 데이터 수집의 기초</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EB%A6%AC-%EB%B0%8F-%EA%B3%BC%EC%A0%81%ED%95%A9-%EC%99%84%EB%B2%BD-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">데이터 분리 및 과적합 완벽 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-k-fold-%EA%B5%90%EC%B0%A8%EA%B2%80%EC%A6%9D%EA%B3%BC-epoch-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EA%B0%9C%EB%85%90-%EC%A0%95%EB%A6%AC">K-Fold 교차검증과 Epoch, 초보자를 위한 개념 정리</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%ED%8C%8C%EC%9D%B4%EC%8D%AC%EA%B3%BC-sql-%ED%96%89-%EC%97%B4-%EC%9D%B8%EB%8D%B1%EC%8A%A4-%EA%B0%9C%EB%85%90-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">파이썬과 SQL: 행, 열, 인덱스 개념 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%ED%95%A0-%EB%B0%8F-featurelabel-%EB%B6%84%EB%A6%AC-%EC%8B%A4%EC%8A%B5">데이터 분할 및 Feature/Label 분리 실습</a></li>
+</ol>
+</li>
+<li>
+<ol start="6">
+<li><a href="#6-scikit-learn-%EB%AA%A8%EB%8D%B8-%EC%84%A0%ED%83%9D-%EB%B0%8F-%ED%8F%89%EA%B0%80-%EC%A7%80%ED%91%9C-%EC%99%84%EB%B2%BD-%EC%9D%B4%ED%95%B4">Scikit-learn 모델 선택 및 평가 지표 완벽 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="7">
+<li><a href="#7-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-eda-%EC%8B%9C%EA%B0%81%ED%99%94-%EB%B0%8F-%EA%B2%B0%EC%B8%A1%EC%B9%98-%EC%B2%98%EB%A6%AC-%EA%B0%80%EC%9D%B4%EB%93%9C">초보자를 위한 EDA 시각화 및 결측치 처리 가이드</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-머신러닝-프로젝트-흐름과-데이터-수집의-기초">1. 머신러닝 프로젝트: 흐름과 데이터 수집의 기초<a hidden class="anchor" aria-hidden="true" href="#1-머신러닝-프로젝트-흐름과-데이터-수집의-기초">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>API가 구조화된 데이터를 안정적으로 가져오는 방법이며, MCP는 LLM이나 에이전트가 외부 자원에 접근하도록 연결하는 플랫폼이라는 것을 이해하게 되었다. 데이터 수집은 단순히 파일 가져오기가 아니라 EDA와 모델 선택의 기반이 되는 중요한 과정이며, 데이터 품질이 좋은 데이터의 핵심이라는 것도 알게 되었다. 앞으로 데이터 수집 단계에 더욱 신경 쓰고, API 활용 연습을 꾸준히 해야겠다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>API를 배우면서 MCP와의 관계가 궁금했는데 강의에서 MCP를 언급하지 않아 API가 MCP의 일부인지 독립적인 개념인지 알 수 없었다. 데이터 수집이 단순히 파일을 가져오는 것이 아니라 EDA와 모델 선택의 기반이 된다는 점을 완전히 이해하는 데 시간이 걸렸다. 데이터 품질이 얼마나 중요한지 처음에는 크게 와닿지 않았다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>API는 정해진 규칙에 따라 데이터를 가져오는 방법이고, MCP는 외부 자원에 접근할 수 있도록 연결하는 표준화된 구조이며, API는 MCP를 이해하는 데 도움이 되는 기초 개념이다. 데이터 수집은 단순 파일 가져오기를 넘어 EDA와 모델 선택의 기반이 되며, 데이터 품질은 정확성, 일관성, 결측치/이상치 처리 기준, 실제 예측 환경과의 적합성을 모두 포함한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> requests
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fetch_data_via_api</span>(api_url, params<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
+</span></span><span style="display:flex;"><span>    response <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>get(api_url, params<span style="color:#f92672">=</span>
+</span></span></code></pre></div><h2 id="2-데이터-분리-및-과적합-완벽-이해하기">2. 데이터 분리 및 과적합 완벽 이해하기<a hidden class="anchor" aria-hidden="true" href="#2-데이터-분리-및-과적합-완벽-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>데이터를 단순히 나누는 것이 아니라 모델의 일반화 능력을 평가하기 위한 중요한 과정이라는 것을 알게 되었습니다. 학습, 검증, 테스트 데이터의 역할을 명확히 이해하고, 검증 데이터를 통해 과적합 여부를 감지하고 방지하는 방법을 배우었습니다. scikit-learn 라이브러리의 <code>train_test_split</code> 함수를 사용하여 데이터 분리를 쉽게 수행할 수 있다는 것도 알게 되었습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>데이터 분리는 단순히 파일을 나누는 것이라는 생각을 했었고, 과적합이 무엇인지 이해했지만 어떻게 감지하고 방지해야 할지 막연했습니다. 모델의 일반화 능력과 데이터 분리의 관계, 그리고 검증 데이터의 역할에 대한 정확한 이해가 부족했습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>데이터 분리는 모델의 일반화 능력을 평가하기 위한 중요한 과정이며, 학습 데이터로 모델을 학습시키고 검증 데이터로 성능을 모니터링하며, 테스트 데이터로 최종 성능을 평가하는 방식으로 진행됩니다. 과적합은 학습 데이터에만 지나치게 맞춰져 새로운 데이터에 대한 성능이 떨어지는 현상이며, 검증 데이터를 통해 이를 감지하고 적절한 조치를 취해야 합니다. 데이터 분리를 통해 모델의 실제 성능을 객관적으로 평가하고 일반화 능력을 높일 수 있다는 점을 명확히 이해했습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.model_selection <span style="color:#f92672">import</span> train_test_split
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.datasets <span style="color:#f92672">import</span> load_iris
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 데이터 로드</span>
+</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> load_iris()
+</span></span><span style="display:flex;"><span>X <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>data
+</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>target
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Train/Validation/Test 분리 (예: 60% Train, 20% Validation, 20% Test)</span>
+</span></span><span style="display:flex;"><span>X_train, X_temp, y_train, y_temp <span style="color:#f92672">=</span> train_test_split(X, y, test_size<span style="color:#f92672">=</span><span style="color:#ae81ff">0.4</span>, random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>)
+</span></span></code></pre></div><h2 id="3-k-fold-교차검증과-epoch-초보자를-위한-개념-정리">3. K-Fold 교차검증과 Epoch, 초보자를 위한 개념 정리<a hidden class="anchor" aria-hidden="true" href="#3-k-fold-교차검증과-epoch-초보자를-위한-개념-정리">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>K-Fold 교차검증과 Epoch 개념을 공부하면서 두 용어가 혼동되었지만, Epoch은 학습 데이터 전체를 반복하는 횟수이고, K-Fold 교차검증은 데이터 분할을 통해 모델의 일반화 성능을 평가하는 방법임을 명확히 알게 되었다. 특히, K-Fold 교차검증은 모델이 특정 데이터에 과도하게 의존하지 않고 안정적으로 작동하는지 확인하는 데 중요한 역할을 한다는 것을 깨달았다. 앞으로는 이 두 개념을 정확히 이해하고 모델 학습 과정에 적용하여 성능을 향상시킬 수 있을 것 같다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>K-Fold 교차검증과 Epoch 모두 모델 학습을 반복하는 것처럼 보여서, Epoch이 모델 전체 학습을 몇 번 반복하는 것인지, K-Fold가 모델 자체를 여러 개 학습하는 것인지 헷갈렸어요. 특히 K-Fold가 모델을 여러 번 학습시키는 과정이라고 생각해서 더 복잡하게 느껴졌었죠.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>Epoch은 모델이 전체 학습 데이터를 반복하며 가중치를 업데이트하는 횟수를 의미하며, K-Fold 교차검증은 데이터를 여러 조각으로 나누어 모델의 일반화 성능을 안정적으로 평가하는 방법이에요. 두 개념 모두 모델 학습 과정에서 중요한 역할을 하지만, Epoch은 학습을 위한 반복 횟수를 조절하고, K-Fold 교차검증은 모델의 성능을 객관적으로 측정하는 데 초점을 맞춘다는 차이가 있답니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> tensorflow.keras.models <span style="color:#f92672">import</span> Sequential
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> tensorflow.keras.layers <span style="color:#f92672">import</span> Dense
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 간단한 모델 정의</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> Sequential()
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">32</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>, input_dim<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>))
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">1</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;sigmoid&#39;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 컴파일 설정</span>
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>compile(optimizer<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;adam&#39;</span>, loss<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;binary_crossentropy&#39;</span>, metrics<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;accuracy&#39;</span>])
+</span></span></code></pre></div><h2 id="4-파이썬과-sql-행-열-인덱스-개념-이해하기">4. 파이썬과 SQL: 행, 열, 인덱스 개념 이해하기<a hidden class="anchor" aria-hidden="true" href="#4-파이썬과-sql-행-열-인덱스-개념-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>Python과 SQL을 공부하면서 행, 열, 인덱스 용어에 헷갈렸던 점을 명확히 정리했습니다. 행은 데이터의 한 줄, 열은 변수를 나타내고, 인덱스는 위치를 의미한다는 것을 이해하고, 실제 코드 예시를 통해 복습했습니다. 앞으로 프로젝트에서 코드를 작성할 때 한국어 용어와 연결하여 생각하면 도움이 될 것 같습니다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>처음에는 데이터셋을 슬라이싱 할 때 행과 열을 정확히 구분하지 못해서, <code>dataset[0:3]</code>이 어떤 데이터를 의미하는지 혼동했습니다. 또한, 인덱스를 활용하여 특정 데이터에 접근할 때, 그 인덱스가 어디를 가리키는지 명확하게 이해하는 데 어려움을 겪었습니다. 이 용어들을 정리하고 예시 코드를 통해 확실히 이해하려고 노력했습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>데이터셋을 다루면서 행은 데이터의 한 줄, 열은 변수를 나타내고, 인덱스는 각 위치를 가리킨다는 것을 명확히 이해했습니다. 코드를 작성할 때 행과 열의 개념을 혼동하지 않도록 주의하고, 인덱스를 정확하게 활용하여 원하는 데이터를 추출해야 할 것 같습니다. 앞으로는 한국어 용어를 코딩 과정에서 떠올리며 개념을 더욱 체계적으로 활용할 계획입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 모든 행에서 특정 열 선택</span>
+</span></span><span style="display:flex;"><span>feature <span style="color:#f92672">=</span> dataset[:, <span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">3</span>]  <span style="color:#75715e"># 첫 세 열 선택</span>
+</span></span><span style="display:flex;"><span>label <span style="color:#f92672">=</span> dataset[:, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]     <span style="color:#75715e"># 마지막 열 선택</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 특정 행과 열 선택</span>
+</span></span><span style="display:flex;"><span>specific_value <span style="color:#f92672">=</span> dataset[<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>]  <span style="color:#75715e"># 세 번째 행의 두 번째 열 값</span>
+</span></span></code></pre></div><h2 id="5-데이터-분할-및-featurelabel-분리-실습">5. 데이터 분할 및 Feature/Label 분리 실습<a hidden class="anchor" aria-hidden="true" href="#5-데이터-분할-및-featurelabel-분리-실습">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p><code>train_test_split</code> 함수를 사용하여 데이터를 학습 및 테스트 세트로 나누는 방법을 익혔고, 데이터 분할 시 행 기반과 열 기반 선택의 차이를 명확히 이해하게 되었다. 또한, feature(특성)와 label(레이블)을 분리하는 방법을 실제 코드를 통해 확인하며 데이터 전처리 과정에 대한 이해를 높였다. 앞으로 이 지식을 바탕으로 실제 데이터에 적용해 볼 계획이다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>데이터셋 슬라이싱할 때 행과 열을 어떻게 선택해야 할지 몰라서 <code>dataset[0:3]</code>와 <code>dataset[:, 0:3]</code>의 차이를 명확히 이해하지 못했습니다. <code>train_test_split</code> 함수를 어떻게 활용해야 할지, 그리고 각 파라미터가 어떤 역할을 하는지 확실히 알지 못했습니다. 특히 <code>test_size</code>와 <code>shuffle</code> 옵션의 의미를 제대로 파악하지 못했습니다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>데이터 분할 시 <code>dataset[0:3]</code>은 처음 3행을, <code>dataset[:, 0:3]</code>은 처음 3개의 특성(열)을 선택한다는 것을 명확히 이해했습니다. <code>train_test_split</code> 함수는 데이터를 학습 및 테스트 세트로 나누는 데 사용되며, <code>test_size</code>는 테스트 데이터의 비율을, <code>shuffle=False</code>는 섞지 않고 분할함을 의미합니다. 이제 이 지식을 바탕으로 실제 데이터셋에 적용하여 모델을 학습하고 평가할 수 있을 것 같습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.model_selection <span style="color:#f92672">import</span> train_test_split
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 가상 데이터셋 생성</span>
+</span></span><span style="display:flex;"><span>dataset <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">40</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">30</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>],
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">50</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">45</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>],
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">35</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Feature와 Label 분리</span>
+</span></span><span style="display:flex;"><span>feature <span style="color:#f92672">=</span> dataset[:, <span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">3</span>]  <span style="color:#75715e"># 모든 행의 첫 3열 (특성)</span>
+</span></span><span style="display:flex;"><span>label <span style="color:#f92672">=</span> dataset[:, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]    <span style="color:#75715e"># 모든 행의 마지막 열 (레이블)</span>
+</span></span></code></pre></div><h2 id="6-scikit-learn-모델-선택-및-평가-지표-완벽-이해">6. Scikit-learn 모델 선택 및 평가 지표 완벽 이해<a hidden class="anchor" aria-hidden="true" href="#6-scikit-learn-모델-선택-및-평가-지표-완벽-이해">#</a></h2>
+<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
+<p>scikit-learn 모델 선택 시, 모델 이름에 포함된 단어가 역할과 항상 일치하지 않으므로 데이터의 성격(수치형 vs 범주형)에 맞춰 모델을 선택해야 한다는 점을 알게 되었다. 또한, 앙상블 기법인 RandomForest와 Gradient Boosting 모델의 차이점을 이해하고, 회귀 및 분류 문제에 따른 적절한 평가 지표를 선택하는 것이 중요하다는 것을 배웠다. 이 내용을 바탕으로 실제 데이터에 적용하여 모델을 학습하고 평가해 볼 계획이다.</p>
+<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
+<p>Logistic Regression 모델 이름 때문에 회귀 분석 모델이라고 착각했고, 앙상블 기법인 Random Forest와 Gradient Boosting의 차이점을 명확하게 이해하지 못했었다. 특히, Gradient Boosting 모델들이 이전 모델의 오류를 보완하며 학습한다는 점이 생략되어 있었고, 이를 파악하는 과정에서 어려움을 겪었다. 회귀와 분류 문제에 따른 적절한 평가 지표 선택 역시 처음에는 혼란스러웠다.</p>
+<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
+<p>이제 scikit-learn 모델을 선택할 때, 예측하려는 값의 형태(수치형인지 범주형인지)에 따라 적절한 회귀 또는 분류 모델을 선택해야 한다는 것을 알게 되었다. 또한, 각 모델의 작동 방식(Bagging인지 Boosting인지)을 이해하면 모델 선택에 더 도움이 될 것 같다. 마지막으로, 회귀 문제와 분류 문제에 따라 적절한 평가 지표를 선택하는 것이 중요하며, 이를 통해 모델의 성능을 정확하게 파악할 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 예시: 분류 모델 사용 예시 (데이터 준비 및 학습)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.model_selection <span style="color:#f92672">import</span> train_test_split
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.preprocessing <span style="color:#f92672">import</span> LabelEncoder
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.ensemble <span style="color:#f92672">import</span> RandomForestClassifier
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.metrics <span style="color:#f92672">import</span> classification_report, confusion_matrix
+</span></span></code></pre></div><h2 id="7-초보자를-위한-eda-시각화-및-결측치-처리-가이드">7. 초보자를 위한 EDA 시각화 및 결측치 처리 가이드<a hidden class="anchor" aria-hidden="true" href="#7-초보자를-위한-eda-시각화-및-결측치-처리-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-6">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-6">#</a></h3>
+<p>결측치 처리할 때 실제 값을 복원하는 것이 아니라 모델 학습을 위한 임시방편이라는 점을 깨달았고, 어떤 방식으로 채웠는지 기록하고 영향도 인지해야 한다는 점을 알게 되었다. <code>isnull().sum()</code>이 반환하는 Series 형태를 이해하는 데 도움이 되었고, 코드 구조가 어떻게 작동하는지 더 명확하게 이해하게 되었다. 원본 데이터를 보존하는 방법도 중요하고, 코드 실행 중간 구조를 확인하는 연습이 필요하다는 것을 알게 되었다.</p>
+<h3 id="헷갈렸던-점-6">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-6">#</a></h3>
+<p>결측치 처리할 때 평균이나 중앙값으로 채우는 게 실제 데이터의 의미를 훼손하는 것 같아서 불안했는데, 그냥 모델 학습을 위한 임시방편이라는 점을 알게 되었다. 그리고 <code>isnull().sum()</code>의 결과가 Series 형태라는 점이 처음에 헷갈렸었다.</p>
+<h3 id="정리된-이해-6">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-6">#</a></h3>
+<p>결측치 처리의 목적은 실제 값을 복원하는 것이 아니라 모델 학습을 위한 임시 조치이며, 어떤 방식으로 채웠는지 기록하고 그 영향을 고려해야 합니다. <code>isnull().sum()</code>은 Series 형태로 반환되며, 이 Series를 <code>pd.DataFrame()</code>으로 변환하는 과정에서 중간 구조를 이해하는 것이 중요합니다. 코드 실행 시 원본 데이터는 <code>df_titanic.copy()</code>를 통해 보존하는 것이 좋습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 가상 데이터프레임 생성</span>
+</span></span><span style="display:flex;"><span>df_titanic <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame({
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;age&#39;</span>: [<span style="color:#ae81ff">20</span>, np<span style="color:#f92672">.</span>nan, <span style="color:#ae81ff">30</span>, <span style="color:#ae81ff">40</span>, np<span style="color:#f92672">.</span>nan],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;survived&#39;</span>: [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, np<span style="color:#f92672">.</span>nan]
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 평균으로 결측치 채우기</span>
+</span></span><span style="display:flex;"><span>mean_fill <span style="color:#f92672">=</span> df_titanic<span style="color:#f92672">.</span>fillna(df_titanic<span style="color:#f92672">.</span>mean())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 중앙값으로 결측치 채우기</span>
+</span></span><span style="display:flex;"><span>median_fill <span style="color:#f92672">=</span> df_titanic<span style="color:#f92672">.</span>fillna(df_titanic<span style="color:#f92672">.</span>median())
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>오늘 오전 학습을 통해 머신러닝 프로젝트의 데이터 수집부터 모델 평가, 그리고 EDA까지 전반적인 과정을 이해하게 되었어요. 특히 데이터 분리, 교차검증, 그리고 데이터 전처리 과정의 중요성을 깨닫고, 실제 코드 실습을 통해 개념을 익혔습니다. 앞으로 프로젝트를 진행하면서 오늘 배운 내용들을 바탕으로 더욱 효과적인 모델을 만들 수 있을 것 같습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>데이터 수집 단계에서 API 활용 연습을 꾸준히 하고, 데이터 품질을 높이는 데 더욱 신경 써야겠다. 또한, EDA 과정에서 결측치 처리 방식에 대한 기록을 꼼꼼히 하고, 코드 실행 중간 구조를 확인하는 습관을 들여야 실수를 줄일 수 있을 것 같다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>API를 활용한 데이터 수집 실습을 꾸준히 진행해서 실제 프로젝트에 적용해 보고 싶고, K-Fold 교차검증을 활용하여 모델의 일반화 성능을 검증하는 부분을 좀 더 깊이 학습해서 안정적인 모델 구축에 활용해야겠다. 마지막으로, 결측치 처리 과정에 대한 기록 및 영향 분석을 더욱 꼼꼼히 수행하는 습관을 들여야겠다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-07-03-pm-daily/">
+    <span class="title">« Prev</span>
+    <span>데이터 분석, 머신러닝 프로젝트의 핵심 원칙과 실전 전략 학습</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-07-02-am-daily/">
+    <span class="title">Next »</span>
+    <span>베이지안 추론과 구조화 방법론을 통한 문제 해결 프레임워크 구축</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
