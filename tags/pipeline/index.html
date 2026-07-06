@@ -154,6 +154,23 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Kaggle House Prices 1: Pipeline 문법이 왜 중요했는가
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>핵심 질문 강사님이 pipeline 문법을 강조한 이유는 단순히 코드를 예쁘게 쓰기 위해서가 아니었다. Kaggle House Prices처럼 전처리, 결측치 처리, 인코딩, 스케일링, 모델 학습이 길게 이어지는 문제에서는 각 단계를 따로 실행하면 실수할 지점이 너무 많아진다.
+이 프로젝트에서 pipeline은 세 가지 문제를 막아줬다.
+train/test 전처리 불일치 fold 안팎의 데이터 누수 실험마다 달라지는 비교 조건 데이터 로딩과 경로 통일 처음에는 Kaggle, Colab, 로컬 환경마다 경로가 달라서 코드가 흔들릴 수 있었다. 그래서 pathlib로 경로를 고정했다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-06 01:00:00 +0900 KST'>2026년 7월 6일</span>&nbsp;·&nbsp;<span>3 min</span></footer>
+  <a class="entry-link" aria-label="post link to Kaggle House Prices 1: Pipeline 문법이 왜 중요했는가" href="https://Han-think.github.io/projects/kaggle-house-prices-pipeline-syntax/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">[환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인
     </h2>
   </header>

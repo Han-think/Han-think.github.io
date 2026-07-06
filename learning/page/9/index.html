@@ -174,36 +174,6 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Streamlit Toast 실습과 환경 적응
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 Streamlit Toast 기본 사용법 환경 및 버전 확인과 문제 해결 전략 총평 1. Streamlit Toast 기본 사용법 왜 이걸 보게 됐나 Streamlit 애플리케이션에서 사용자 피드백을 제공하기 위해 Toast 메시지 기능을 탐색하고자 했습니다. 내가 헷갈린 지점 공식 문서에 나열된 다양한 옵션들이 실제 실습 환경에서 일관되게 작동하지 않았습니다. 특히 여러 토스트 메시지를 동시에 표시하는 기능이 불안정했습니다. 시도한 코드 / 예시 if st.button(&#34;여러 개 토스트 표시&#34;): st.toast(&#34;첫 번째 메시지&#34;) st.toast(&#34;두 번째 메시지&#34;) st.toast(&#34;작업 완료&#34;) 결과와 해석 예상과 달리 일부 토스트 메시지만 표시되거나 전혀 표시되지 않는 문제 발생. 이는 환경 설정이나 Streamlit 버전 차이 때문일 수 있다는 추측이 들었습니다. 정리된 이해 Toast 메시지의 일관된 동작이 환경 설정이나 버전에 크게 영향을 받는다는 점을 인지하였습니다. 2. 환경 및 버전 확인과 문제 해결 전략 왜 이걸 보게 됐나 혼란스러운 동작 원인을 파악하고 해결 방안을 모색하기 위해 환경 설정과 Streamlit 버전을 확인하였습니다. 내가 헷갈린 지점 실제 코드에는 문제가 없는 것으로 보였지만, 환경과 버전 차이로 인해 예상과 다른 결과가 나타났습니다. 시도한 코드 / 예시 python3 -c &#34;import streamlit as st; print(st.__version__)&#34; 결과와 해석 현재 사용 중인 Streamlit 버전을 확인하여 문서와 일치하는지 확인하였습니다. 버전 차이가 문제의 원인일 가능성이 높다는 결론을 내렸습니다. 정리된 이해 정확한 버전 확인과 기본 기능 검증을 통해 문제 원인을 명확히 파악할 수 있음을 확인하였습니다. 총평 오늘 전체에서 배운 것 Streamlit Toast </p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-04 00:00:00 +0000 UTC'>2026년 6월 4일</span>&nbsp;·&nbsp;<span>1 min</span></footer>
-  <a class="entry-link" aria-label="post link to Streamlit Toast 실습과 환경 적응" href="https://Han-think.github.io/learning/streamlit-toast-document-verification/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">conditions-boolean-bmi-gate-thinking
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 조건문 판단 비교 연산자 논리 연산자 활용 데이터 타입 변환 총평 1. 조건문 판단 왜 이걸 보게 됐나 조건문 판단은 프로그램의 흐름을 사용자의 입력이나 특정 조건에 따라 유연하게 제어하는 핵심 기술로, 초보자에게는 조건 설정과 논리 연산자의 조합이 복잡하게 느껴질 수 있습니다.
-내가 헷갈린 지점 초보자들은 특히 조건문 내에서 True/False 판단 기준 설정과 중첩된 조건 처리, 그리고 다양한 데이터 타입의 적절한 사용에 대해 혼란을 겪습니다. 특히 문자열 조건과 에러 처리 방식에 대한 구체적인 이해가 부족할 수 있습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
-  <a class="entry-link" aria-label="post link to conditions-boolean-bmi-gate-thinking" href="https://Han-think.github.io/learning/conditions-boolean-bmi-gate-thinking/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
     <h2 class="entry-hint-parent">for-loop-range-accumulator-print
     </h2>
   </header>
@@ -286,22 +256,6 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">local-tool-distribution-design
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 기본값 설정 사용자 친화성 매개변수 이해 배포의 의미 총평 1. 기본값 설정 왜 이걸 보게 됐나 기본값 설정은 사용자가 최소한의 설정으로도 도구를 효과적으로 사용할 수 있도록 돕고, 매개변수의 다양성은 사용자에게 세밀한 제어 능력을 제공하여 사용자 친화적인 인터페이스를 구축하는 데 필수적입니다. 이를 통해 사용자는 복잡성을 줄이고 핵심 작업에 집중할 수 있습니다.
-내가 헷갈린 지점 처음에는 다양한 매개변수와 그 용도에 대한 이해 부족으로 인해 혼란스러웠습니다. 특히 기본값 설정의 중요성과 실제 적용 방법에 대해 명확한 이해가 필요했습니다. 또한, 배포의 범위와 작은 도구에 대한 적용 가능성에 대한 의문이 있었습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
-  <a class="entry-link" aria-label="post link to local-tool-distribution-design" href="https://Han-think.github.io/learning/local-tool-distribution-design/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
     <h2 class="entry-hint-parent">official-docs-error-messages-methods
     </h2>
   </header>
@@ -330,6 +284,54 @@
 
 <span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
   <a class="entry-link" aria-label="post link to python-class-instance-basic" href="https://Han-think.github.io/learning/python-class-instance-basic/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">python-class-variables-instance-variables
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 클래스 변수 인스턴스 변수 변수 이름 일치 데이터 공유 총평 1. 클래스 변수 왜 이걸 보게 됐나 클래스 변수는 여러 인스턴스 간에 공통 데이터를 공유해야 할 때 유용하며, 이를 통해 코드의 효율성과 유지보수성을 높일 수 있습니다. 예를 들어, 팀 내 모든 구성원이 공유하는 정보를 관리할 때 적합합니다.
+내가 헷갈린 지점 변수 이름의 미묘한 차이로 인해 예상치 못한 오류가 발생할 수 있다는 점이 혼란스러웠습니다. 특히 total_members와 같은 이름이 클래스 내에서 일관되게 사용되어야 함을 이해하는 것이 중요합니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to python-class-variables-instance-variables" href="https://Han-think.github.io/learning/python-class-variables-instance-variables/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">python-classmethod-staticmethod-from-string
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 클래스 메서드 정적 메서드 대체 생성자 클래스 변수 총평 1. 클래스 메서드 왜 이걸 보게 됐나 클래스 메서드를 사용하면 클래스 수준의 데이터를 조작하거나 접근할 수 있어, 여러 인스턴스 간에 공통적으로 적용되는 동작을 쉽게 관리할 수 있습니다. 이를 통해 코드의 가독성과 유지보수성이 향상됩니다.
+내가 헷갈린 지점 처음에는 cls 매개변수의 역할을 정확히 이해하지 못해 클래스 메서드를 어떻게 작성해야 할지 혼란스러웠습니다. 그러나 cls가 현재 클래스 자체를 참조한다는 것을 알게 되면서 개념이 명확해졌습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to python-classmethod-staticmethod-from-string" href="https://Han-think.github.io/learning/python-classmethod-staticmethod-from-string/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">python-isinstance-issubclass-polymorphism
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 클래스 상속 type() 확인 isinstance() 확인 issubclass() 확인 총평 1. 클래스 상속 왜 이걸 보게 됐나 클래스 상속을 통해 자식 클래스가 부모 클래스의 메서드를 물려받고 오버라이드할 수 있다는 점을 이해하는 것이 중요합니다. 이를 통해 코드의 재사용성과 유연성을 높일 수 있습니다. 특히 type(), isinstance(), issubclass() 함수를 통해 클래스 관계를 명확히 파악할 수 있습니다.
+내가 헷갈린 지점 상속 관계에서 자식 클래스가 부모 클래스의 메서드를 어떻게 확장하거나 덮어쓰는지, 그리고 이러한 관계가 객체의 타입 확인에 어떻게 영향을 미치는지 이해하는 데 어려움이 있었습니다. 특히 DevTeam이 Department의 하위 클래스임에도 불구하고 특정 메서드 동작이 어떻게 달라지는지 명확히 파악하는 것이 헷갈렸습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+  <a class="entry-link" aria-label="post link to python-isinstance-issubclass-polymorphism" href="https://Han-think.github.io/learning/python-isinstance-issubclass-polymorphism/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

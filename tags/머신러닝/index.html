@@ -158,13 +158,13 @@
     </h2>
   </header>
   <div class="entry-content">
-    <p>프로젝트 요약 첫 Kaggle House Prices 프로젝트는 단순히 제출 파일 하나를 만드는 작업이 아니라, 같은 문제를 여러 선형 분석 트랙으로 비교하고 로컬 LLM을 해석 보조자로 붙여 검증 흐름을 만든 실험이었다. 목표는 Ames 주택 특성 데이터를 이용해 SalePrice를 예측하고, 로컬 검증 점수와 Kaggle public score 사이의 차이를 설명할 수 있는 제출 후보를 고르는 것이었다.
-최종 제출 후보는 Advanced linear v3였다. 이 모델은 고차원 one-hot feature 공간에서 RobustScaler와 LassoCV를 사용해 계수 불안정을 줄였고, local 5-fold log-RMSE를 0.110139까지 낮췄다. Kaggle public score는 0.12607로 local CV보다 나빴지만, 이후 검증 감사에서 이 차이가 단순한 전처리 누수보다는 Neighborhood 분포 차이와 저가 주택 구간 약점에 가깝다는 결론을 얻었다.
+    <p>프로젝트 요약 첫 Kaggle House Prices 프로젝트는 단순히 제출 파일 하나를 만든 작업이 아니라, 같은 문제를 여러 선형 분석 트랙으로 비교하고 4개의 LLM 관점을 해석 보조자로 붙여 검증한 프로젝트였다. 목표는 Ames 주택 특성 데이터로 SalePrice를 예측하고, local CV와 Kaggle public score 사이의 차이를 설명할 수 있는 제출 후보를 고르는 것이었다.
+최종 후보는 Advanced linear v3였다. 이 모델은 고차원 one-hot feature 공간에서 RobustScaler와 LassoCV를 사용했고, local 5-fold log-RMSE 0.110139, Kaggle public score 0.12607을 기록했다. 이후 검증 감사에서는 단순 전처리 누수보다 Neighborhood 분포 차이와 저가 주택 구간 약점이 public gap에 더 가깝다는 결론을 얻었다.
 ...</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-07-06 00:00:00 +0000 UTC'>2026년 7월 6일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+<span title='2026-07-06 00:00:00 +0000 UTC'>2026년 7월 6일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
   <a class="entry-link" aria-label="post link to 첫 Kaggle House Prices 도전: 4개의 선형 분석과 4개의 LLM 관점" href="https://Han-think.github.io/projects/kaggle-house-prices-first-challenge/"></a>
 </article>
     </main>

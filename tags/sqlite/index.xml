@@ -16,6 +16,13 @@
       <description>DB, SQL, Python, pandas, 그래프, 가설검정을 초보자 기준으로 연결해 연습하는 시험 직전 예상문제 100선</description>
     </item>
     <item>
+      <title>팀 프로젝트 DB 선택: SQLite에서 PostgreSQL로 넘어가야 하는 순간</title>
+      <link>https://Han-think.github.io/projects/team-project-database-selection-guide/</link>
+      <pubDate>Wed, 17 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/team-project-database-selection-guide/</guid>
+      <description>SQLite 한계와 팀 프로젝트용 DB 선택 기준을 정리한 프로젝트 설계 기록</description>
+    </item>
+    <item>
       <title>GROUP BY에서 FROM 절 서브쿼리까지, SQL을 데이터 파이프라인으로 보기</title>
       <link>https://Han-think.github.io/learning/2026-06-10-am-sql-group-join-subquery/</link>
       <pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>

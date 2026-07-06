@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>팀 프로젝트 on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/%ED%8C%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/</link>
+    <description>Recent content in 팀 프로젝트 on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Wed, 17 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/%ED%8C%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>팀 프로젝트 DB 선택: SQLite에서 PostgreSQL로 넘어가야 하는 순간</title>
+      <link>https://Han-think.github.io/projects/team-project-database-selection-guide/</link>
+      <pubDate>Wed, 17 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/team-project-database-selection-guide/</guid>
+      <description>SQLite 한계와 팀 프로젝트용 DB 선택 기준을 정리한 프로젝트 설계 기록</description>
+    </item>
+  </channel>
+</rss>

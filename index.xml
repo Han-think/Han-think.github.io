@@ -13,7 +13,35 @@
       <link>https://Han-think.github.io/projects/kaggle-house-prices-first-challenge/</link>
       <pubDate>Mon, 06 Jul 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/projects/kaggle-house-prices-first-challenge/</guid>
-      <description>4개의 선형 분석 트랙과 4개의 LLM 관점으로 진행한 첫 Kaggle 프로젝트</description>
+      <description>첫 Kaggle House Prices 프로젝트를 5편의 시리즈로 나누어 정리한 입구 글</description>
+    </item>
+    <item>
+      <title>Kaggle House Prices 4: 검증 감사와 다음 액션 플랜</title>
+      <link>https://Han-think.github.io/projects/kaggle-house-prices-validation-action-plan/</link>
+      <pubDate>Mon, 06 Jul 2026 04:00:00 +0900</pubDate>
+      <guid>https://Han-think.github.io/projects/kaggle-house-prices-validation-action-plan/</guid>
+      <description>local CV와 Kaggle public score 차이를 검증 감사로 해석하고 다음 실험을 정리</description>
+    </item>
+    <item>
+      <title>Kaggle House Prices 3: 4개의 LLM은 같은 실험을 어떻게 다르게 읽었나</title>
+      <link>https://Han-think.github.io/projects/kaggle-house-prices-four-llm-review/</link>
+      <pubDate>Mon, 06 Jul 2026 03:00:00 +0900</pubDate>
+      <guid>https://Han-think.github.io/projects/kaggle-house-prices-four-llm-review/</guid>
+      <description>GPT-OSS, Gemma, Magistral, Hermes가 Kaggle 실험 해석에서 맡은 역할 비교</description>
+    </item>
+    <item>
+      <title>Kaggle House Prices 2: 4개의 선형 분석 트랙 비교</title>
+      <link>https://Han-think.github.io/projects/kaggle-house-prices-four-analysis-tracks/</link>
+      <pubDate>Mon, 06 Jul 2026 02:00:00 +0900</pubDate>
+      <guid>https://Han-think.github.io/projects/kaggle-house-prices-four-analysis-tracks/</guid>
+      <description>단순 선형, 강의형 Lasso, 고급 LassoCV, 조합형 선형 모델을 역할별로 비교</description>
+    </item>
+    <item>
+      <title>Kaggle House Prices 1: Pipeline 문법이 왜 중요했는가</title>
+      <link>https://Han-think.github.io/projects/kaggle-house-prices-pipeline-syntax/</link>
+      <pubDate>Mon, 06 Jul 2026 01:00:00 +0900</pubDate>
+      <guid>https://Han-think.github.io/projects/kaggle-house-prices-pipeline-syntax/</guid>
+      <description>강사님이 강조한 Pipeline 문법을 House Prices 프로젝트에서 왜 써야 했는지 정리</description>
     </item>
     <item>
       <title>데이터 분석, 머신러닝 프로젝트의 핵심 원칙과 실전 전략 학습</title>
@@ -119,6 +147,13 @@
       <pubDate>Wed, 17 Jun 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/learning/2026-06-17-am-daily/</guid>
       <description>2026-06-17 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>팀 프로젝트 DB 선택: SQLite에서 PostgreSQL로 넘어가야 하는 순간</title>
+      <link>https://Han-think.github.io/projects/team-project-database-selection-guide/</link>
+      <pubDate>Wed, 17 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/team-project-database-selection-guide/</guid>
+      <description>SQLite 한계와 팀 프로젝트용 DB 선택 기준을 정리한 프로젝트 설계 기록</description>
     </item>
     <item>
       <title>SQL, 데이터베이스 설계, 클라우드 아키텍처 학습 정리</title>
@@ -565,16 +600,16 @@
     </item>
     <item>
       <title>python-package-environment-reference</title>
-      <link>https://Han-think.github.io/learning/python-package-environment-reference/</link>
+      <link>https://Han-think.github.io/dev/python-package-environment-reference/</link>
       <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/learning/python-package-environment-reference/</guid>
+      <guid>https://Han-think.github.io/dev/python-package-environment-reference/</guid>
       <description>python-package-environment-reference 학습 정리</description>
     </item>
     <item>
       <title>python-package-release-workflow</title>
-      <link>https://Han-think.github.io/learning/python-package-release-workflow/</link>
+      <link>https://Han-think.github.io/dev/python-package-release-workflow/</link>
       <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/learning/python-package-release-workflow/</guid>
+      <guid>https://Han-think.github.io/dev/python-package-release-workflow/</guid>
       <description>python-package-release-workflow 학습 정리</description>
     </item>
     <item>
@@ -670,9 +705,9 @@
     </item>
     <item>
       <title>local-tool-distribution-design</title>
-      <link>https://Han-think.github.io/learning/local-tool-distribution-design/</link>
+      <link>https://Han-think.github.io/dev/local-tool-distribution-design/</link>
       <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/learning/local-tool-distribution-design/</guid>
+      <guid>https://Han-think.github.io/dev/local-tool-distribution-design/</guid>
       <description>local-tool-distribution-design 학습 정리</description>
     </item>
     <item>

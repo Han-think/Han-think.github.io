@@ -182,14 +182,100 @@
     </h2>
   </header>
   <div class="entry-content">
-    <p>프로젝트 요약 첫 Kaggle House Prices 프로젝트는 단순히 제출 파일 하나를 만드는 작업이 아니라, 같은 문제를 여러 선형 분석 트랙으로 비교하고 로컬 LLM을 해석 보조자로 붙여 검증 흐름을 만든 실험이었다. 목표는 Ames 주택 특성 데이터를 이용해 SalePrice를 예측하고, 로컬 검증 점수와 Kaggle public score 사이의 차이를 설명할 수 있는 제출 후보를 고르는 것이었다.
-최종 제출 후보는 Advanced linear v3였다. 이 모델은 고차원 one-hot feature 공간에서 RobustScaler와 LassoCV를 사용해 계수 불안정을 줄였고, local 5-fold log-RMSE를 0.110139까지 낮췄다. Kaggle public score는 0.12607로 local CV보다 나빴지만, 이후 검증 감사에서 이 차이가 단순한 전처리 누수보다는 Neighborhood 분포 차이와 저가 주택 구간 약점에 가깝다는 결론을 얻었다.
+    <p>프로젝트 요약 첫 Kaggle House Prices 프로젝트는 단순히 제출 파일 하나를 만든 작업이 아니라, 같은 문제를 여러 선형 분석 트랙으로 비교하고 4개의 LLM 관점을 해석 보조자로 붙여 검증한 프로젝트였다. 목표는 Ames 주택 특성 데이터로 SalePrice를 예측하고, local CV와 Kaggle public score 사이의 차이를 설명할 수 있는 제출 후보를 고르는 것이었다.
+최종 후보는 Advanced linear v3였다. 이 모델은 고차원 one-hot feature 공간에서 RobustScaler와 LassoCV를 사용했고, local 5-fold log-RMSE 0.110139, Kaggle public score 0.12607을 기록했다. 이후 검증 감사에서는 단순 전처리 누수보다 Neighborhood 분포 차이와 저가 주택 구간 약점이 public gap에 더 가깝다는 결론을 얻었다.
 ...</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-07-06 00:00:00 +0000 UTC'>2026년 7월 6일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+<span title='2026-07-06 00:00:00 +0000 UTC'>2026년 7월 6일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
   <a class="entry-link" aria-label="post link to 첫 Kaggle House Prices 도전: 4개의 선형 분석과 4개의 LLM 관점" href="https://Han-think.github.io/projects/kaggle-house-prices-first-challenge/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Kaggle House Prices 4: 검증 감사와 다음 액션 플랜
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>왜 검증 감사를 했나 v3 LassoCV의 local CV는 0.110139였지만 Kaggle public score는 0.12607이었다. 차이는 &#43;0.015931이었다. 이 차이를 그냥 “public에서 망했다&#34;로 끝내면 다음 실험으로 이어지지 않는다.
+그래서 검증 방식을 여러 개로 바꿔보며 gap의 원인을 좁혔다.
+검증 방식 비교 validation log_rmse_mean log_rmse_std n_folds cv_safe_random_5fold 0.110170 0.007002 5 cv_safe_repeated_kfold_5x3 0.110440 0.005954 15 price_decile_stratified_5fold 0.109914 0.011926 5 neighborhood_group_5fold 0.121348 0.022803 5 Kaggle public 0.126070 - - random CV와 CV-safe random CV가 거의 같았다는 점은 중요했다. 이 결과는 최종 v3 성능이 단순한 fold-preprocessing optimism 때문만은 아니라는 근거가 됐다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-06 04:00:00 +0900 KST'>2026년 7월 6일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
+  <a class="entry-link" aria-label="post link to Kaggle House Prices 4: 검증 감사와 다음 액션 플랜" href="https://Han-think.github.io/projects/kaggle-house-prices-validation-action-plan/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Kaggle House Prices 3: 4개의 LLM은 같은 실험을 어떻게 다르게 읽었나
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>LLM을 모델링에 쓴 방식 이 프로젝트에서 LLM은 학습, CV 계산, 제출 파일 생성을 직접 수행하지 않았다. 실제 학습과 제출 파일 생성은 scikit-learn 코드가 수행했다. LLM은 코드 검토, 보고서 구조화, 결과 해석, 다음 질문 정리에 사용했다.
+중요한 원칙은 하나였다.
+LLM의 결론을 투표로 결정하지 않고, 코드와 숫자를 고정된 증거표로 삼는다.
+4개의 LLM 역할 비교 LLM 맡긴 관점 유용했던 해석 교정한 부분 GPT-OSS metric structure CV mean/std와 public gap 설명 구조화 단순 선형도 broad pipeline을 공유함을 보완 Gemma robustness and next question local CV와 Kaggle public 차이 해석 v3를 현재 후보로 제한 Magistral regularization and feature selection LassoCV와 feature 선택 설명 미제출 모델과 public score 직접 비교 제거 Hermes interpretability RobustScaler와 계수 안정성 설명 public score 과대평가 교정 GPT-OSS: 지표 구조를 잡는 역할 GPT-OSS는 여러 실험 결과를 표로 정리하고, local CV와 public score의 차이를 설명하는 구조를 잡는 데 유용했다. 특히 CV mean, CV std, Kaggle public score, gap을 한 흐름으로 보여주는 데 강했다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-06 03:00:00 +0900 KST'>2026년 7월 6일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
+  <a class="entry-link" aria-label="post link to Kaggle House Prices 3: 4개의 LLM은 같은 실험을 어떻게 다르게 읽었나" href="https://Han-think.github.io/projects/kaggle-house-prices-four-llm-review/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Kaggle House Prices 2: 4개의 선형 분석 트랙 비교
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>왜 4개의 분석으로 나눴나 처음에는 모델을 여러 개 돌려서 점수만 비교하면 된다고 생각했다. 하지만 House Prices 프로젝트에서 중요한 것은 모델 이름이 아니라 각 모델이 어떤 문제를 드러내는가였다.
+이번 프로젝트의 4개 분석 트랙은 다음 역할을 가졌다.
+트랙 대표 모델 CV mean CV std 역할 기존 단순 선형 LinearRegression 0.137385 0.020864 최소 기준선 오늘 강의형 fixed-alpha Lasso 0.110197 0.008190 동일 조건 모델·이상치 비교 내 고급 선형 LassoCV &#43; RobustScaler 0.110139 0.007380 규제 강도 선택과 제출 후보 조합형 RidgeCV &#43; LassoCV &#43; ElasticNetCV 0.110585 0.007720 선형 모델 간 상보성 점검 1. 기존 단순 선형 LinearRegression은 가장 단순한 기준선이었다. 이 모델은 규제가 없기 때문에 one-hot feature가 늘어난 뒤 계수가 불안정해졌다. test 최대 예측이 약 13,676,626까지 튀었고 fold 편차도 컸다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-06 02:00:00 +0900 KST'>2026년 7월 6일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
+  <a class="entry-link" aria-label="post link to Kaggle House Prices 2: 4개의 선형 분석 트랙 비교" href="https://Han-think.github.io/projects/kaggle-house-prices-four-analysis-tracks/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Kaggle House Prices 1: Pipeline 문법이 왜 중요했는가
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>핵심 질문 강사님이 pipeline 문법을 강조한 이유는 단순히 코드를 예쁘게 쓰기 위해서가 아니었다. Kaggle House Prices처럼 전처리, 결측치 처리, 인코딩, 스케일링, 모델 학습이 길게 이어지는 문제에서는 각 단계를 따로 실행하면 실수할 지점이 너무 많아진다.
+이 프로젝트에서 pipeline은 세 가지 문제를 막아줬다.
+train/test 전처리 불일치 fold 안팎의 데이터 누수 실험마다 달라지는 비교 조건 데이터 로딩과 경로 통일 처음에는 Kaggle, Colab, 로컬 환경마다 경로가 달라서 코드가 흔들릴 수 있었다. 그래서 pathlib로 경로를 고정했다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-06 01:00:00 +0900 KST'>2026년 7월 6일</span>&nbsp;·&nbsp;<span>3 min</span></footer>
+  <a class="entry-link" aria-label="post link to Kaggle House Prices 1: Pipeline 문법이 왜 중요했는가" href="https://Han-think.github.io/projects/kaggle-house-prices-pipeline-syntax/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">팀 프로젝트 DB 선택: SQLite에서 PostgreSQL로 넘어가야 하는 순간
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>왜 이 글을 프로젝트로 옮겼나 이 기록은 단순히 SQLite 문법을 배운 글이 아니라, 팀 프로젝트에서 어떤 데이터베이스를 선택해야 하는지 판단하는 설계 기록에 가깝다. 개인 실습에서는 SQLite가 편하지만, 팀 프로젝트나 웹 서비스에서는 동시성, 권한, 배포, 운영 비용까지 함께 봐야 한다.
+처음 헷갈렸던 지점 SQLite를 처음 볼 때는 “가볍고 쉬우면 좋은 DB 아닌가?“라는 생각이 강했다. 하지만 프로젝트 상황을 나누어 보니 같은 DB라도 적합한 맥락이 달랐다.
+SQLite는 파일 기반이라 개인 실습과 로컬 테스트에 좋다. FOREIGN KEY는 PRAGMA foreign_keys = ON을 명시해야 한다. ALTER TABLE로 제약조건을 수정하거나 삭제하는 흐름이 제한적이다. ERD 도구가 SQLite 스키마를 항상 깔끔하게 반영하지 못할 수 있다. 팀 프로젝트에서는 여러 명이 동시에 접근하고 권한을 나누는 문제가 생긴다. SQLite 실습에서 배운 것 SQLite에서 참조 무결성을 쓰려면 외래 키를 켜야 한다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-17 00:00:00 +0000 UTC'>2026년 6월 17일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
+  <a class="entry-link" aria-label="post link to 팀 프로젝트 DB 선택: SQLite에서 PostgreSQL로 넘어가야 하는 순간" href="https://Han-think.github.io/projects/team-project-database-selection-guide/"></a>
 </article>
     </main>
     
