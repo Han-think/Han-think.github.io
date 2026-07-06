@@ -6,8 +6,15 @@
     <description>Recent content in Llm on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Mon, 15 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 06 Jul 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/llm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>첫 Kaggle House Prices 도전: 4개의 선형 분석과 4개의 LLM 관점</title>
+      <link>https://Han-think.github.io/projects/kaggle-house-prices-first-challenge/</link>
+      <pubDate>Mon, 06 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/kaggle-house-prices-first-challenge/</guid>
+      <description>4개의 선형 분석 트랙과 4개의 LLM 관점으로 진행한 첫 Kaggle 프로젝트</description>
+    </item>
     <item>
       <title>[환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인</title>
       <link>https://Han-think.github.io/dev/learninglog-kit/</link>
