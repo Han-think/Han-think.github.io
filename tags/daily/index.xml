@@ -6,7 +6,7 @@
     <description>Recent content in Daily on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Tue, 09 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 06 Jul 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/daily/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>DailyLog Kit — 하루를 포인트로 정리하는 텍스트 브이로그</title>
@@ -15,21 +15,39 @@
       <guid>https://Han-think.github.io/dev/dailylog-kit/</guid>
       <description>&lt;p&gt;하루 메모를 던지면 &lt;strong&gt;카테고리별 포인트&lt;/strong&gt;로 정리해주는 작은 키트. 텍스트 브이로그처럼, 그날 있었던 일의 &lt;strong&gt;포인트만&lt;/strong&gt; 잡아 Markdown으로 남긴다. 업로드/배포는 없고 &lt;strong&gt;로컬에 정리만&lt;/strong&gt; 해준다.&lt;/p&gt;
 &lt;h2 id=&#34;다운로드&#34;&gt;다운로드&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&#34;https://Han-think.github.io/downloads/dailylog-kit-1.0.zip&#34;&gt;&lt;strong&gt;DailyLog Kit v1.0 (zip)&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;압축 안에 &lt;code&gt;DailyLog.bat&lt;/code&gt;, &lt;code&gt;dailylog.ps1&lt;/code&gt;, &lt;code&gt;README.md&lt;/code&gt; 세 개.&lt;/p&gt;
-&lt;h2 id=&#34;어떻게-쓰나&#34;&gt;어떻게 쓰나&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;code&gt;DailyLog.bat&lt;/code&gt; 더블클릭&lt;/li&gt;
-&lt;li&gt;오늘 기록할 &lt;strong&gt;요소&lt;/strong&gt; 고르기 — 📚학습 💻개발 🍳요리 🏃운동 📖독서 🎵음악 🎮게임 🌿일상 💡생각&lt;/li&gt;
-&lt;li&gt;오늘 있었던 일을 &lt;strong&gt;자유롭게&lt;/strong&gt; 적기&lt;/li&gt;
-&lt;li&gt;→ &lt;code&gt;output/YYYY-MM-DD-daily.md&lt;/code&gt; 저장. 끝.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&#34;두-가지-모드&#34;&gt;두 가지 모드&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;자동 정리&lt;/strong&gt; (Ollama 있을 때): 자유 메모 → LLM이 카테고리별 포인트 + 한 줄 회고로 정리&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;양식 채우기&lt;/strong&gt; (LLM 없을 때): 빈 양식만 만들어줌 → 직접 채우는 구조화 일기장&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;LLM이 없어도 바로 쓸 수 있게 만든 게 포인트다.&lt;/p&gt;</description>
+&lt;p&gt;&lt;a href=&#34;https://Han-think.github.io/downloads/dailylog-kit-1.1.zip&#34;&gt;&lt;strong&gt;DailyLog Kit v1.1 (zip)&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;압축 안에 &lt;code&gt;DailyLog.bat&lt;/code&gt;, &lt;code&gt;dailylog.ps1&lt;/code&gt;, &lt;code&gt;README.md&lt;/code&gt; 세 개가 들어 있다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;v1.1에서는 LearningLog의 블로그 발행 흐름과 DailyLog의 개인 회고 흐름을 더 명확히 분리해 설명했다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;learninglog와-구분&#34;&gt;LearningLog와 구분&lt;/h2&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;도구&lt;/th&gt;
+					&lt;th&gt;용도&lt;/th&gt;
+					&lt;th&gt;결과&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DailyLog Kit&lt;/td&gt;
+					&lt;td&gt;개인 하루 회고, 일상 메모 정리&lt;/td&gt;
+					&lt;td&gt;로컬 &lt;code&gt;output/*.md&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;LearningLog &lt;code&gt;LearningLog&lt;/code&gt; 메뉴&lt;/td&gt;
+					&lt;td&gt;수업/학습 노트 처리와 learning 발행&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;04_blog_drafts/learning&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;LearningLog &lt;code&gt;Projects&lt;/code&gt; 메뉴&lt;/td&gt;
+					&lt;td&gt;프로젝트 회고/분석을 여러 편으로 정리&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;04_blog_drafts/projects&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;DailyLog Kit은 블로그 발행 안전장치가 필요한 글을 다루지 않는다. 블로그에 올릴 학습 글이나 프로젝트 시리즈는 LearningLog Kit의 Windows runner를 사용한다.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

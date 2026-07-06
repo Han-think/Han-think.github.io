@@ -179,14 +179,15 @@
   </header>
   <div class="entry-content">
     <p>하루 메모를 던지면 카테고리별 포인트로 정리해주는 작은 키트. 텍스트 브이로그처럼, 그날 있었던 일의 포인트만 잡아 Markdown으로 남긴다. 업로드/배포는 없고 로컬에 정리만 해준다.
-다운로드 DailyLog Kit v1.0 (zip)
-압축 안에 DailyLog.bat, dailylog.ps1, README.md 세 개.
-어떻게 쓰나 DailyLog.bat 더블클릭 오늘 기록할 요소 고르기 — 📚학습 💻개발 🍳요리 🏃운동 📖독서 🎵음악 🎮게임 🌿일상 💡생각 오늘 있었던 일을 자유롭게 적기 → output/YYYY-MM-DD-daily.md 저장. 끝. 두 가지 모드 자동 정리 (Ollama 있을 때): 자유 메모 → LLM이 카테고리별 포인트 &#43; 한 줄 회고로 정리 양식 채우기 (LLM 없을 때): 빈 양식만 만들어줌 → 직접 채우는 구조화 일기장 LLM이 없어도 바로 쓸 수 있게 만든 게 포인트다.
+다운로드 DailyLog Kit v1.1 (zip)
+압축 안에 DailyLog.bat, dailylog.ps1, README.md 세 개가 들어 있다.
+v1.1에서는 LearningLog의 블로그 발행 흐름과 DailyLog의 개인 회고 흐름을 더 명확히 분리해 설명했다.
+LearningLog와 구분 도구 용도 결과 DailyLog Kit 개인 하루 회고, 일상 메모 정리 로컬 output/*.md LearningLog LearningLog 메뉴 수업/학습 노트 처리와 learning 발행 04_blog_drafts/learning LearningLog Projects 메뉴 프로젝트 회고/분석을 여러 편으로 정리 04_blog_drafts/projects DailyLog Kit은 블로그 발행 안전장치가 필요한 글을 다루지 않는다. 블로그에 올릴 학습 글이나 프로젝트 시리즈는 LearningLog Kit의 Windows runner를 사용한다.
 ...</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>1 min</span></footer>
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
   <a class="entry-link" aria-label="post link to DailyLog Kit — 하루를 포인트로 정리하는 텍스트 브이로그" href="https://Han-think.github.io/dev/dailylog-kit/"></a>
 </article>
 
@@ -293,7 +294,7 @@
     </h2>
   </header>
   <div class="entry-content">
-    <p> v0.5.3 업데이트 (2026-06-15) — preview 대시보드에서 표시 대상이 1개일 때 카드와 본문이 비어 보이던 JSON 배열 문제를 수정했습니다. daily 합본 글의 원본 패널도 daily 초안 자기 자신이 아니라 멤버 원본 노트 묶음을 보여주도록 보정했습니다.
+    <p> v0.5.4 업데이트 (2026-07-06) — 런처를 LearningLog / Projects / Daily로 분리했습니다. 프로젝트 글은 04_blog_drafts/projects/에 여러 편의 시리즈 초안으로 만들고, 등록·미리보기·승인·발행도 projects 섹션만 보도록 분리했습니다. DailyLog Kit도 1.1로 갱신해 블로그 발행과 별도의 개인 회고 도구임을 명확히 했습니다.
 무엇을 만드나 매일 배운 것을 기록하고 싶지만, 원본 파일을 등록하고, LLM으로 정리하고, 블로그 글로 다듬고, 발행 여부를 확인하는 과정은 생각보다 번거롭다.
 LearningLog Kit은 그 과정을 하나의 파이프라인으로 묶는다.
 00_inbox -&gt; 01_registry -&gt; 02_extracted -&gt; 03_working_notes -&gt; 04_blog_drafts -&gt; 05_ready_to_publish -&gt; blog-source/content -&gt; 06_published 핵심은 “무조건 자동 발행&#34;이 아니라, 원본과 초안과 발행본을 분리해서 안전하게 다루는 것이다.
@@ -301,7 +302,7 @@ LearningLog Kit은 그 과정을 하나의 파이프라인으로 묶는다.
   </div>
   <footer class="entry-footer">
 
-<span title='2026-05-30 00:00:00 +0000 UTC'>2026년 5월 30일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+<span title='2026-05-30 00:00:00 +0000 UTC'>2026년 5월 30일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
   <a class="entry-link" aria-label="post link to [환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인" href="https://Han-think.github.io/dev/learninglog-kit/"></a>
 </article>
     </main>

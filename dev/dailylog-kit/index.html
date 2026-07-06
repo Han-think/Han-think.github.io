@@ -9,21 +9,39 @@
 <meta name="keywords" content="kit, daily, powershell, ollama, tool">
 <meta name="description" content="하루 메모를 던지면 카테고리별 포인트로 정리해주는 작은 키트. 텍스트 브이로그처럼, 그날 있었던 일의 포인트만 잡아 Markdown으로 남긴다. 업로드/배포는 없고 로컬에 정리만 해준다.
 다운로드
-DailyLog Kit v1.0 (zip)
-압축 안에 DailyLog.bat, dailylog.ps1, README.md 세 개.
-어떻게 쓰나
+DailyLog Kit v1.1 (zip)
+압축 안에 DailyLog.bat, dailylog.ps1, README.md 세 개가 들어 있다.
 
-DailyLog.bat 더블클릭
-오늘 기록할 요소 고르기 — 📚학습 💻개발 🍳요리 🏃운동 📖독서 🎵음악 🎮게임 🌿일상 💡생각
-오늘 있었던 일을 자유롭게 적기
-→ output/YYYY-MM-DD-daily.md 저장. 끝.
+v1.1에서는 LearningLog의 블로그 발행 흐름과 DailyLog의 개인 회고 흐름을 더 명확히 분리해 설명했다.
 
-두 가지 모드
+LearningLog와 구분
 
-자동 정리 (Ollama 있을 때): 자유 메모 → LLM이 카테고리별 포인트 &#43; 한 줄 회고로 정리
-양식 채우기 (LLM 없을 때): 빈 양식만 만들어줌 → 직접 채우는 구조화 일기장
+	
+			
+					도구
+					용도
+					결과
+			
+	
+	
+			
+					DailyLog Kit
+					개인 하루 회고, 일상 메모 정리
+					로컬 output/*.md
+			
+			
+					LearningLog LearningLog 메뉴
+					수업/학습 노트 처리와 learning 발행
+					04_blog_drafts/learning
+			
+			
+					LearningLog Projects 메뉴
+					프로젝트 회고/분석을 여러 편으로 정리
+					04_blog_drafts/projects
+			
+	
 
-LLM이 없어도 바로 쓸 수 있게 만든 게 포인트다.">
+DailyLog Kit은 블로그 발행 안전장치가 필요한 글을 다루지 않는다. 블로그에 올릴 학습 글이나 프로젝트 시리즈는 LearningLog Kit의 Windows runner를 사용한다.">
 <meta name="author" content="">
 <link rel="canonical" href="https://Han-think.github.io/dev/dailylog-kit/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
@@ -102,14 +120,15 @@ LLM이 없어도 바로 쓸 수 있게 만든 게 포인트다.">
   <meta property="og:site_name" content="Han-think Blog">
   <meta property="og:title" content="DailyLog Kit — 하루를 포인트로 정리하는 텍스트 브이로그">
   <meta property="og:description" content="하루 메모를 던지면 카테고리별 포인트로 정리해주는 작은 키트. 텍스트 브이로그처럼, 그날 있었던 일의 포인트만 잡아 Markdown으로 남긴다. 업로드/배포는 없고 로컬에 정리만 해준다.
-다운로드 DailyLog Kit v1.0 (zip)
-압축 안에 DailyLog.bat, dailylog.ps1, README.md 세 개.
-어떻게 쓰나 DailyLog.bat 더블클릭 오늘 기록할 요소 고르기 — 📚학습 💻개발 🍳요리 🏃운동 📖독서 🎵음악 🎮게임 🌿일상 💡생각 오늘 있었던 일을 자유롭게 적기 → output/YYYY-MM-DD-daily.md 저장. 끝. 두 가지 모드 자동 정리 (Ollama 있을 때): 자유 메모 → LLM이 카테고리별 포인트 &#43; 한 줄 회고로 정리 양식 채우기 (LLM 없을 때): 빈 양식만 만들어줌 → 직접 채우는 구조화 일기장 LLM이 없어도 바로 쓸 수 있게 만든 게 포인트다.">
+다운로드 DailyLog Kit v1.1 (zip)
+압축 안에 DailyLog.bat, dailylog.ps1, README.md 세 개가 들어 있다.
+v1.1에서는 LearningLog의 블로그 발행 흐름과 DailyLog의 개인 회고 흐름을 더 명확히 분리해 설명했다.
+LearningLog와 구분 도구 용도 결과 DailyLog Kit 개인 하루 회고, 일상 메모 정리 로컬 output/*.md LearningLog LearningLog 메뉴 수업/학습 노트 처리와 learning 발행 04_blog_drafts/learning LearningLog Projects 메뉴 프로젝트 회고/분석을 여러 편으로 정리 04_blog_drafts/projects DailyLog Kit은 블로그 발행 안전장치가 필요한 글을 다루지 않는다. 블로그에 올릴 학습 글이나 프로젝트 시리즈는 LearningLog Kit의 Windows runner를 사용한다.">
   <meta property="og:locale" content="ko_KR">
   <meta property="og:type" content="article">
     <meta property="article:section" content="dev">
     <meta property="article:published_time" content="2026-06-09T00:00:00+00:00">
-    <meta property="article:modified_time" content="2026-06-09T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-06T00:00:00+00:00">
     <meta property="article:tag" content="Kit">
     <meta property="article:tag" content="Daily">
     <meta property="article:tag" content="Powershell">
@@ -119,9 +138,10 @@ LLM이 없어도 바로 쓸 수 있게 만든 게 포인트다.">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="DailyLog Kit — 하루를 포인트로 정리하는 텍스트 브이로그">
   <meta name="twitter:description" content="하루 메모를 던지면 카테고리별 포인트로 정리해주는 작은 키트. 텍스트 브이로그처럼, 그날 있었던 일의 포인트만 잡아 Markdown으로 남긴다. 업로드/배포는 없고 로컬에 정리만 해준다.
-다운로드 DailyLog Kit v1.0 (zip)
-압축 안에 DailyLog.bat, dailylog.ps1, README.md 세 개.
-어떻게 쓰나 DailyLog.bat 더블클릭 오늘 기록할 요소 고르기 — 📚학습 💻개발 🍳요리 🏃운동 📖독서 🎵음악 🎮게임 🌿일상 💡생각 오늘 있었던 일을 자유롭게 적기 → output/YYYY-MM-DD-daily.md 저장. 끝. 두 가지 모드 자동 정리 (Ollama 있을 때): 자유 메모 → LLM이 카테고리별 포인트 &#43; 한 줄 회고로 정리 양식 채우기 (LLM 없을 때): 빈 양식만 만들어줌 → 직접 채우는 구조화 일기장 LLM이 없어도 바로 쓸 수 있게 만든 게 포인트다.">
+다운로드 DailyLog Kit v1.1 (zip)
+압축 안에 DailyLog.bat, dailylog.ps1, README.md 세 개가 들어 있다.
+v1.1에서는 LearningLog의 블로그 발행 흐름과 DailyLog의 개인 회고 흐름을 더 명확히 분리해 설명했다.
+LearningLog와 구분 도구 용도 결과 DailyLog Kit 개인 하루 회고, 일상 메모 정리 로컬 output/*.md LearningLog LearningLog 메뉴 수업/학습 노트 처리와 learning 발행 04_blog_drafts/learning LearningLog Projects 메뉴 프로젝트 회고/분석을 여러 편으로 정리 04_blog_drafts/projects DailyLog Kit은 블로그 발행 안전장치가 필요한 글을 다루지 않는다. 블로그에 올릴 학습 글이나 프로젝트 시리즈는 LearningLog Kit의 Windows runner를 사용한다.">
 
 
 <script type="application/ld+json">
@@ -150,15 +170,15 @@ LLM이 없어도 바로 쓸 수 있게 만든 게 포인트다.">
   "@type": "BlogPosting",
   "headline": "DailyLog Kit — 하루를 포인트로 정리하는 텍스트 브이로그",
   "name": "DailyLog Kit — 하루를 포인트로 정리하는 텍스트 브이로그",
-  "description": "하루 메모를 던지면 카테고리별 포인트로 정리해주는 작은 키트. 텍스트 브이로그처럼, 그날 있었던 일의 포인트만 잡아 Markdown으로 남긴다. 업로드/배포는 없고 로컬에 정리만 해준다.\n다운로드 DailyLog Kit v1.0 (zip)\n압축 안에 DailyLog.bat, dailylog.ps1, README.md 세 개.\n어떻게 쓰나 DailyLog.bat 더블클릭 오늘 기록할 요소 고르기 — 📚학습 💻개발 🍳요리 🏃운동 📖독서 🎵음악 🎮게임 🌿일상 💡생각 오늘 있었던 일을 자유롭게 적기 → output/YYYY-MM-DD-daily.md 저장. 끝. 두 가지 모드 자동 정리 (Ollama 있을 때): 자유 메모 → LLM이 카테고리별 포인트 + 한 줄 회고로 정리 양식 채우기 (LLM 없을 때): 빈 양식만 만들어줌 → 직접 채우는 구조화 일기장 LLM이 없어도 바로 쓸 수 있게 만든 게 포인트다.\n",
+  "description": "하루 메모를 던지면 카테고리별 포인트로 정리해주는 작은 키트. 텍스트 브이로그처럼, 그날 있었던 일의 포인트만 잡아 Markdown으로 남긴다. 업로드/배포는 없고 로컬에 정리만 해준다.\n다운로드 DailyLog Kit v1.1 (zip)\n압축 안에 DailyLog.bat, dailylog.ps1, README.md 세 개가 들어 있다.\nv1.1에서는 LearningLog의 블로그 발행 흐름과 DailyLog의 개인 회고 흐름을 더 명확히 분리해 설명했다.\nLearningLog와 구분 도구 용도 결과 DailyLog Kit 개인 하루 회고, 일상 메모 정리 로컬 output/*.md LearningLog LearningLog 메뉴 수업/학습 노트 처리와 learning 발행 04_blog_drafts/learning LearningLog Projects 메뉴 프로젝트 회고/분석을 여러 편으로 정리 04_blog_drafts/projects DailyLog Kit은 블로그 발행 안전장치가 필요한 글을 다루지 않는다. 블로그에 올릴 학습 글이나 프로젝트 시리즈는 LearningLog Kit의 Windows runner를 사용한다.\n",
   "keywords": [
     "kit", "daily", "powershell", "ollama", "tool"
   ],
-  "articleBody": "하루 메모를 던지면 카테고리별 포인트로 정리해주는 작은 키트. 텍스트 브이로그처럼, 그날 있었던 일의 포인트만 잡아 Markdown으로 남긴다. 업로드/배포는 없고 로컬에 정리만 해준다.\n다운로드 DailyLog Kit v1.0 (zip)\n압축 안에 DailyLog.bat, dailylog.ps1, README.md 세 개.\n어떻게 쓰나 DailyLog.bat 더블클릭 오늘 기록할 요소 고르기 — 📚학습 💻개발 🍳요리 🏃운동 📖독서 🎵음악 🎮게임 🌿일상 💡생각 오늘 있었던 일을 자유롭게 적기 → output/YYYY-MM-DD-daily.md 저장. 끝. 두 가지 모드 자동 정리 (Ollama 있을 때): 자유 메모 → LLM이 카테고리별 포인트 + 한 줄 회고로 정리 양식 채우기 (LLM 없을 때): 빈 양식만 만들어줌 → 직접 채우는 구조화 일기장 LLM이 없어도 바로 쓸 수 있게 만든 게 포인트다.\n결과 예시 ## 오늘의 포인트 - 📚 학습: SQLite SELECT, DML 실습 - 🍳 요리: - 김치찌개 끓임 - 돼지고기 먼저 볶아 맛이 좋음 - 🌿 일상: 산책하며 컨디션 좋음 ## 한 줄 회고 SQLite 실습과 맛있는 김치찌개, 산책으로 보낸 나름 괜찮은 하루였다. 커스터마이즈 카테고리는 dailylog.ps1 상단의 $CATS 한 곳만 고치면 된다 (이모지 + 이름). ☕카페·🎬영화·💰지출 등 원하는 요소를 얼마든지 추가.\n만든 이유 복잡한 자동 발행 파이프라인 말고, “오늘 뭐 했지\"를 포인트로 가볍게 남기는 가장 단순한 도구가 필요했다. 그래서 양식 하나 + 채우기 한 단계로 줄였다. 가끔 진전 있을 때만 버전 올리는 식으로 관리한다.\n",
-  "wordCount" : "196",
+  "articleBody": "하루 메모를 던지면 카테고리별 포인트로 정리해주는 작은 키트. 텍스트 브이로그처럼, 그날 있었던 일의 포인트만 잡아 Markdown으로 남긴다. 업로드/배포는 없고 로컬에 정리만 해준다.\n다운로드 DailyLog Kit v1.1 (zip)\n압축 안에 DailyLog.bat, dailylog.ps1, README.md 세 개가 들어 있다.\nv1.1에서는 LearningLog의 블로그 발행 흐름과 DailyLog의 개인 회고 흐름을 더 명확히 분리해 설명했다.\nLearningLog와 구분 도구 용도 결과 DailyLog Kit 개인 하루 회고, 일상 메모 정리 로컬 output/*.md LearningLog LearningLog 메뉴 수업/학습 노트 처리와 learning 발행 04_blog_drafts/learning LearningLog Projects 메뉴 프로젝트 회고/분석을 여러 편으로 정리 04_blog_drafts/projects DailyLog Kit은 블로그 발행 안전장치가 필요한 글을 다루지 않는다. 블로그에 올릴 학습 글이나 프로젝트 시리즈는 LearningLog Kit의 Windows runner를 사용한다.\n어떻게 쓰나 DailyLog.bat 더블클릭 오늘 기록할 요소 고르기 — 학습, 개발, 요리, 운동, 독서, 음악, 게임, 일상, 생각 오늘 있었던 일을 자유롭게 적기 output/YYYY-MM-DD-daily.md 저장 두 가지 모드 자동 정리 (Ollama 있을 때): 자유 메모 → LLM이 카테고리별 포인트 + 한 줄 회고로 정리 양식 채우기 (LLM 없을 때): 빈 양식만 만들어줌 → 직접 채우는 구조화 일기장 LLM이 없어도 바로 쓸 수 있게 만든 게 포인트다.\n결과 예시 ## 오늘의 포인트 - 학습: SQLite SELECT, DML 실습 - 요리: - 김치찌개 끓임 - 돼지고기 먼저 볶아 맛이 좋음 - 일상: 산책하며 컨디션 좋음 ## 한 줄 회고 SQLite 실습과 맛있는 김치찌개, 산책으로 보낸 나름 괜찮은 하루였다. 커스터마이즈 카테고리는 dailylog.ps1 상단의 $CATS 한 곳만 고치면 된다. 카페, 영화, 지출 등 원하는 요소를 추가해도 된다.\n만든 이유 복잡한 자동 발행 파이프라인 말고, “오늘 뭐 했지\"를 포인트로 가볍게 남기는 가장 단순한 도구가 필요했다. LearningLog는 공개 가능한 학습/프로젝트 글을 다루고, DailyLog는 내 하루를 로컬에서 가볍게 정리하는 쪽으로 역할을 나누었다.\n",
+  "wordCount" : "257",
   "inLanguage": "en",
   "datePublished": "2026-06-09T00:00:00Z",
-  "dateModified": "2026-06-09T00:00:00Z",
+  "dateModified": "2026-07-06T00:00:00Z",
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "https://Han-think.github.io/dev/dailylog-kit/"
@@ -236,20 +256,51 @@ LLM이 없어도 바로 쓸 수 있게 만든 게 포인트다.">
     </h1>
     <div class="post-meta">
 
-<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>1 min</span>
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>2 min</span>
 
 </div>
   </header> 
   <div class="post-content md-content"><p>하루 메모를 던지면 <strong>카테고리별 포인트</strong>로 정리해주는 작은 키트. 텍스트 브이로그처럼, 그날 있었던 일의 <strong>포인트만</strong> 잡아 Markdown으로 남긴다. 업로드/배포는 없고 <strong>로컬에 정리만</strong> 해준다.</p>
 <h2 id="다운로드">다운로드<a hidden class="anchor" aria-hidden="true" href="#다운로드">#</a></h2>
-<p><a href="/downloads/dailylog-kit-1.0.zip"><strong>DailyLog Kit v1.0 (zip)</strong></a></p>
-<p>압축 안에 <code>DailyLog.bat</code>, <code>dailylog.ps1</code>, <code>README.md</code> 세 개.</p>
+<p><a href="/downloads/dailylog-kit-1.1.zip"><strong>DailyLog Kit v1.1 (zip)</strong></a></p>
+<p>압축 안에 <code>DailyLog.bat</code>, <code>dailylog.ps1</code>, <code>README.md</code> 세 개가 들어 있다.</p>
+<blockquote>
+<p>v1.1에서는 LearningLog의 블로그 발행 흐름과 DailyLog의 개인 회고 흐름을 더 명확히 분리해 설명했다.</p>
+</blockquote>
+<h2 id="learninglog와-구분">LearningLog와 구분<a hidden class="anchor" aria-hidden="true" href="#learninglog와-구분">#</a></h2>
+<table>
+	<thead>
+			<tr>
+					<th>도구</th>
+					<th>용도</th>
+					<th>결과</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>DailyLog Kit</td>
+					<td>개인 하루 회고, 일상 메모 정리</td>
+					<td>로컬 <code>output/*.md</code></td>
+			</tr>
+			<tr>
+					<td>LearningLog <code>LearningLog</code> 메뉴</td>
+					<td>수업/학습 노트 처리와 learning 발행</td>
+					<td><code>04_blog_drafts/learning</code></td>
+			</tr>
+			<tr>
+					<td>LearningLog <code>Projects</code> 메뉴</td>
+					<td>프로젝트 회고/분석을 여러 편으로 정리</td>
+					<td><code>04_blog_drafts/projects</code></td>
+			</tr>
+	</tbody>
+</table>
+<p>DailyLog Kit은 블로그 발행 안전장치가 필요한 글을 다루지 않는다. 블로그에 올릴 학습 글이나 프로젝트 시리즈는 LearningLog Kit의 Windows runner를 사용한다.</p>
 <h2 id="어떻게-쓰나">어떻게 쓰나<a hidden class="anchor" aria-hidden="true" href="#어떻게-쓰나">#</a></h2>
 <ol>
 <li><code>DailyLog.bat</code> 더블클릭</li>
-<li>오늘 기록할 <strong>요소</strong> 고르기 — 📚학습 💻개발 🍳요리 🏃운동 📖독서 🎵음악 🎮게임 🌿일상 💡생각</li>
+<li>오늘 기록할 <strong>요소</strong> 고르기 — 학습, 개발, 요리, 운동, 독서, 음악, 게임, 일상, 생각</li>
 <li>오늘 있었던 일을 <strong>자유롭게</strong> 적기</li>
-<li>→ <code>output/YYYY-MM-DD-daily.md</code> 저장. 끝.</li>
+<li><code>output/YYYY-MM-DD-daily.md</code> 저장</li>
 </ol>
 <h2 id="두-가지-모드">두 가지 모드<a hidden class="anchor" aria-hidden="true" href="#두-가지-모드">#</a></h2>
 <ul>
@@ -259,18 +310,18 @@ LLM이 없어도 바로 쓸 수 있게 만든 게 포인트다.">
 <p>LLM이 없어도 바로 쓸 수 있게 만든 게 포인트다.</p>
 <h2 id="결과-예시">결과 예시<a hidden class="anchor" aria-hidden="true" href="#결과-예시">#</a></h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="color:#75715e">## 오늘의 포인트
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> 📚 학습: SQLite SELECT, DML 실습
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> 🍳 요리:
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> 학습: SQLite SELECT, DML 실습
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> 요리:
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">-</span> 김치찌개 끓임
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">-</span> 돼지고기 먼저 볶아 맛이 좋음
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> 🌿 일상: 산책하며 컨디션 좋음
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> 일상: 산책하며 컨디션 좋음
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">## 한 줄 회고
 </span></span></span><span style="display:flex;"><span>SQLite 실습과 맛있는 김치찌개, 산책으로 보낸 나름 괜찮은 하루였다.
 </span></span></code></pre></div><h2 id="커스터마이즈">커스터마이즈<a hidden class="anchor" aria-hidden="true" href="#커스터마이즈">#</a></h2>
-<p>카테고리는 <code>dailylog.ps1</code> 상단의 <code>$CATS</code> 한 곳만 고치면 된다 (이모지 + 이름). ☕카페·🎬영화·💰지출 등 원하는 요소를 얼마든지 추가.</p>
+<p>카테고리는 <code>dailylog.ps1</code> 상단의 <code>$CATS</code> 한 곳만 고치면 된다. 카페, 영화, 지출 등 원하는 요소를 추가해도 된다.</p>
 <h2 id="만든-이유">만든 이유<a hidden class="anchor" aria-hidden="true" href="#만든-이유">#</a></h2>
-<p>복잡한 자동 발행 파이프라인 말고, <strong>&ldquo;오늘 뭐 했지&quot;를 포인트로 가볍게 남기는</strong> 가장 단순한 도구가 필요했다. 그래서 양식 하나 + 채우기 한 단계로 줄였다. 가끔 진전 있을 때만 버전 올리는 식으로 관리한다.</p>
+<p>복잡한 자동 발행 파이프라인 말고, <strong>&ldquo;오늘 뭐 했지&quot;를 포인트로 가볍게 남기는</strong> 가장 단순한 도구가 필요했다. LearningLog는 공개 가능한 학습/프로젝트 글을 다루고, DailyLog는 내 하루를 로컬에서 가볍게 정리하는 쪽으로 역할을 나누었다.</p>
 
 
   </div>
