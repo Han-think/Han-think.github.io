@@ -164,6 +164,36 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">SQL 윈도우 함수와 날짜 다루기, 그리고 실전 분석 능력 향상
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 JOIN, GROUP BY, HAVING으로 이탈 고객 찾기 PARTITION BY와 RANK로 그룹별 순위 이해하기 OVER와 누적 합계로 집계 범위 이해하기 윈도우 프레임과 FIRST/LAST/LAG/LEAD 이해하기 PERCENT_RANK와 NTILE로 분포 읽기 strftime과 LAG로 월별 매출 변화 보기 총평 1. JOIN, GROUP BY, HAVING으로 이탈 고객 찾기 무엇을 배웠나 날짜 집계 함수인 MAX()가 날짜 컬럼에서도 가장 최근 날짜를 찾는다는 것을 이해하게 되었고, HAVING 절이 GROUP BY 이후 집계된 결과에 조건을 걸어주는 역할을 한다는 것을 알게 되었다. 이를 통해 고객의 최근 주문 날짜를 기준으로 잠재 이탈 고객을 찾는 SQL 쿼리를 작성할 수 있게 되었고, WHERE와 HAVING 절의 차이점을 명확히 구분할 수 있게 되었다. 이제 날짜 관련 SQL 쿼리를 더 자신 있게 작성할 수 있을 것 같다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-12 00:00:00 +0000 UTC'>2026년 6월 12일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to SQL 윈도우 함수와 날짜 다루기, 그리고 실전 분석 능력 향상" href="https://Han-think.github.io/learning/2026-06-12-am-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 윈도우 함수로 비율과 구간 나누기 ROLLUP, CUBE, GROUPING SETS 차이 이해하기 SQLite에서 UNION ALL로 집계 함수 흉내내기 ClassicModels ERD로 매출 순위 쿼리 읽기 CURRENT ROW로 월별 누적 매출 계산하기 LAG와 LEAD로 전월 대비 변화 읽기 SQL 학습 범위와 프롬프트 정리하기 고급 서브쿼리 유형 분류하기 서브쿼리 반환 형태와 연산자 이해하기 스칼라 서브쿼리와 DUAL 개념 이해하기 VIEW 개념과 실습 흐름 정리하기 JOIN, 서브쿼리, VIEW 퀴즈 통합 복습하기 총평 1. 윈도우 함수로 비율과 구간 나누기 무엇을 배웠나 오늘 학습을 통해 윈도우 함수 내에서 비율 계산, 누적 분포, 구간 나누기와 관련된 키워드들의 역할을 명확히 이해하게 되었다. 특히 NTILE 함수를 통해 데이터를 구간으로 나누는 개념을 익혔고, ROUND 함수가 단순히 반올림하는 것이 아니라 결과를 원하는 자릿수까지 조정하는 역할을 한다는 것을 알게 되었다. GROUP BY, SUM, AVG, COUNT, OVER, AS 등 다양한 키워드들의 활용법도 함께 학습했다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-12 00:00:00 +0000 UTC'>2026년 6월 12일</span>&nbsp;·&nbsp;<span>12 min</span></footer>
+  <a class="entry-link" aria-label="post link to SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지" href="https://Han-think.github.io/learning/2026-06-12-pm-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">daily-index-v2
     </h2>
   </header>
@@ -286,36 +316,6 @@ UNION = 두 결과표를 합치고 중복 제거 UNION ALL = 두 결과표를 �
 
 <span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
   <a class="entry-link" aria-label="post link to am-02-sql-join-alias-erd" href="https://Han-think.github.io/learning/am-02-sql-join-alias-erd/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">am-03-sql-join-problem-solving
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 ERD 이해 데이터 구조 테이블 연결 SQL JOIN 총평 1. ERD 이해 왜 이걸 보게 됐나 SQL JOIN 문제를 풀 때 ERD만으로는 테이블 간의 관계를 명확하게 파악하기 어려웠어서, 데이터베이스의 구조를 더 깊이 이해해야겠다고 생각하게 됐어. 특히 테이블이 분리되어 저장되고, 연결 기준이 되는 컬럼을 정확히 알아야 하는 상황에서 어려움을 느껴서 ERD를 제대로 활용하는 방법을 익히기로 했어. 이 개념을 통해 JOIN 문제를 풀 때 데이터 구조에 대한 이해를 바탕으로 보다 효율적으로 접근할 수 있게 될 거야.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
-  <a class="entry-link" aria-label="post link to am-03-sql-join-problem-solving" href="https://Han-think.github.io/learning/am-03-sql-join-problem-solving/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">erd-crows-foot-chinook
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 ERD 구조 카디널리티 Crow’s Foot 표기법 외래키 총평 1. ERD 구조 왜 이걸 보게 됐나 데이터베이스 모델링을 통해 효율적인 데이터 저장 및 관리를 할 수 있도록 ERD는 필수적인 도구인데, 실제 서비스에서 데이터를 어떻게 연결하고 표현해야 할지 몰라서 처음에는 감이 잘 안 잡혔어. 특히 다양한 테이블 간의 관계를 시각적으로 보여주는 ERD 구조를 이해해야 데이터를 정확하게 표현하고 쿼리할 수 있다는 것을 깨달았어. 그래서 ERD를 제대로 익히고 Crow’s Foot 표기법을 통해 관계를 명확하게 표현할 수 있게 되었어.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
-  <a class="entry-link" aria-label="post link to erd-crows-foot-chinook" href="https://Han-think.github.io/learning/erd-crows-foot-chinook/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
