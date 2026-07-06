@@ -15,11 +15,12 @@
       <guid>https://Han-think.github.io/dev/dailylog-kit/</guid>
       <description>&lt;p&gt;하루 메모를 던지면 &lt;strong&gt;카테고리별 포인트&lt;/strong&gt;로 정리해주는 작은 키트. 텍스트 브이로그처럼, 그날 있었던 일의 &lt;strong&gt;포인트만&lt;/strong&gt; 잡아 Markdown으로 남긴다. 업로드/배포는 없고 &lt;strong&gt;로컬에 정리만&lt;/strong&gt; 해준다.&lt;/p&gt;
 &lt;h2 id=&#34;다운로드&#34;&gt;다운로드&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&#34;https://Han-think.github.io/downloads/dailylog-kit-1.1.zip&#34;&gt;&lt;strong&gt;DailyLog Kit v1.1 (zip)&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://Han-think.github.io/downloads/dailylog-kit-1.2.zip&#34;&gt;&lt;strong&gt;DailyLog Kit v1.2 (zip)&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;압축 안에 &lt;code&gt;DailyLog.bat&lt;/code&gt;, &lt;code&gt;dailylog.ps1&lt;/code&gt;, &lt;code&gt;README.md&lt;/code&gt; 세 개가 들어 있다.&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;v1.1에서는 LearningLog의 블로그 발행 흐름과 DailyLog의 개인 회고 흐름을 더 명확히 분리해 설명했다.&lt;/p&gt;
+&lt;p&gt;v1.2에서는 Ollama뿐 아니라 Google AI Studio의 Gemini API 키로도 하루 메모를 정리할 수 있게 했다.&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;p&gt;GitHub 저장소는 &lt;a href=&#34;https://github.com/Han-think/learninglog-kit&#34;&gt;Han-think/learninglog-kit&lt;/a&gt;이며, DailyLog Kit 소스는 &lt;code&gt;dailylog_kit/&lt;/code&gt; 폴더에 있다.&lt;/p&gt;
 &lt;h2 id=&#34;learninglog와-구분&#34;&gt;LearningLog와 구분&lt;/h2&gt;
 &lt;table&gt;
 	&lt;thead&gt;
