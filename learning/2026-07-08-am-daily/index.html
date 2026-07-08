@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>시계열 분석부터 머신러닝 핵심 개념까지, 완전정복 학습 정리 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-07-08 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-07-08-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-07-08-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-08-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="시계열 분석부터 머신러닝 핵심 개념까지, 완전정복 학습 정리">
+  <meta property="og:description" content="2026-07-08 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-07-08T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-08T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="시계열 분석부터 머신러닝 핵심 개념까지, 완전정복 학습 정리">
+  <meta name="twitter:description" content="2026-07-08 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "시계열 분석부터 머신러닝 핵심 개념까지, 완전정복 학습 정리",
+      "item": "https://Han-think.github.io/learning/2026-07-08-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "시계열 분석부터 머신러닝 핵심 개념까지, 완전정복 학습 정리",
+  "name": "시계열 분석부터 머신러닝 핵심 개념까지, 완전정복 학습 정리",
+  "description": "2026-07-08 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 시계열 분석 기초: 정상성 판단과 차분 적용 이해 ARMA·ARIMA 모델 선택 및 잔차 진단 가이드 시계열 분석 워크노트: 혼란과 학습, 그리고 실습 예시 손실 함수, 경사하강법, 체크포인트 핵심 개념 이해 다중 및 다항 회귀: 개념 이해 및 정리 과적합, 교차검증, 파이프라인: 초보자를 위한 이해 가이드 L1·L2·Elastic Net 정규화 완벽 이해하기 회귀 모델 평가 지표 완벽 가이드 총평 1. 시계열 분석 기초: 정상성 판단과 차분 적용 이해 무엇을 배웠나 ADF 검정에서 귀무가설이 “비정상\"이라는 점을 명확히 이해하게 되었고, 시계열의 구성 요소와 정상성이 무엇인지 제대로 정리했다. 특히, 차분 적용 시 데이터의 의미 손실 가능성을 인지하고, 적절한 차분 횟수를 결정해야 함을 알게 되었다. 이번 학습을 통해 비정상 시계열 데이터를 정상화하는 방법에 대한 이해도를 높일 수 있었다.\n헷갈렸던 점 ADF 검정에서 귀무 가설이 “시계열이 비정상적\"이라는 점이 처음에는 이해가 잘 안 돼서 헷갈렸고, 차분 적용 횟수를 결정하는 과정에서 원본 데이터와 차분된 데이터의 관계가 명확하지 않아서 어려움을 겪었어. 차분을 너무 많이 적용하면 중요한 정보가 손실될 수 있다는 점도 인지하지 못하고 있었어.\n정리된 이해 ADF 검정에서는 귀무가설이 시계열이 비정상이라는 점을 기억하고, p-value가 유의수준보다 작으면 정상성을 인정해야 합니다. 차분을 적용할 때, 원래 데이터에 차분을 하는 것과 이미 차분된 데이터에 다시 차분을 하는 것의 의미를 정확히 이해하고, 과도한 차분으로 정보 손실이 발생하지 않도록 주의해야 합니다. 시계열 분석에서는 추세, 계절성, 잔차를 파악하고, 적절한 차분 횟수를 통해 정상성을 확보하는 것이 중요합니다.\nimport pandas as pd import numpy as np dates = pd.date_range(start='2023-01-01', periods=365, freq='D') np.random.seed(0) temperature = np.random.normal(loc=20, scale=5, size=len(dates)) + np.sin(np.linspace(0, 2 * np.pi * 365, len(dates))) 2. ARMA·ARIMA 모델 선택 및 잔차 진단 가이드 무엇을 배웠나 ARIMA 모델 선택 시 ACF와 PACF 그래프를 통해 바로 파라미터를 결정하기 어렵다는 것을 깨달았고, 이 그래프들은 모델 후보 범위를 좁히는 진단 도구라는 점을 이해했습니다. AIC 값을 최소화하는 모델을 선택하되, 잔차 진단을 통해 모델의 적합성을 검증해야 한다는 점도 명확하게 알게 되었습니다.\n헷갈렸던 점 ACF와 PACF 그래프를 보고 AR과 MA의 파라미터를 바로 알 수 있다고 생각했지만, 실제 데이터에서는 패턴이 불분명해서 어려움을 겪었습니다. 모델 선택 결과로 얻는 AIC 값을 어떻게 DataFrame으로 정리되는지 이해하는 데도 막혔습니다. 모델 선택 기준이 AIC 값뿐이 아니고 잔차 진단도 중요하다는 것을 뒤늦게 알았습니다.\n정리된 이해 ARMA/ARIMA 모델 선택 시 ACF와 PACF는 모델 파라미터의 후보 범위를 좁히는 데 도움을 주는 진단 도구이며, AIC 값이 가장 낮다고 해서 무조건 좋은 모델이 되는 것이 아니라 잔차 진단을 통해 유의성을 확인해야 합니다. 잔차 진단을 통해 잔차에 자기상관이 없는지 검증하고, Ljung–Box 검정의 p-value를 활용하여 모델의 적합성을 판단해야 합니다.\nimport statsmodels.api as sm import matplotlib.pyplot as plt import numpy as np 3. 시계열 분석 워크노트: 혼란과 학습, 그리고 실습 예시 무엇을 배웠나 시계열 데이터 분석 노트북 구현 과정에서 차분 적용의 복잡성, 후보 조합의 규모, ARIMA와 SARIMA 모델의 차이점을 명확히 이해하는 데 어려움을 겪었지만, 데이터 정상성 검증, ACF/PACF 분석을 통한 차분 차수 결정, SARIMAX 모델 적합 및 잔차 검증 과정을 학습하며 시계열 분석 능력을 향상시켰습니다. 특히, 모델 평가 지표와 잔차 분석을 통해 모델의 적합성을 판단하는 방법을 익혔습니다. 이제는 시계열 데이터의 특성을 파악하고, 적절한 모델을 선택하여 예측하는 과정을 보다 자신 있게 수행할 수 있을 것 같습니다.\n헷갈렸던 점 차분 적용 방식과, p와 q 값의 조합이 모델 탐색 시간과 성능에 얼마나 영향을 미치는지 파악하기 어려웠어요. 특히 SARIMA 모델의 계절성 부분과 ARIMA 모델의 차이점을 명확히 구분하는 데 혼란이 있었습니다.\n정리된 이해 시계열 분석 노트북 구현 과정에서 차분 적용의 복잡성과 후보 조합의 규모로 인해 어려움을 겪었지만, 데이터 준비 단계의 정상성 검증 및 자기상관 구조 분석, SARIMAX 모델 적합 및 잔차 검증, 예측 및 평가 과정을 체계적으로 이해하게 되었습니다. 이제는 ARIMA와 SARIMA 모델의 차이점을 명확히 구분하고, 적절한 모델을 선택하여 시계열 예측을 수행할 수 있을 것 같습니다.\nimport pandas as pd import statsmodels.api as sm from statsmodels.tsa.statespace.sarimax import SARIMAX import matplotlib.pyplot as plt 4. 손실 함수, 경사하강법, 체크포인트 핵심 개념 이해 무엇을 배웠나 회귀 기울기와 경사하강법의 기울기가 혼동되었던 점을 명확히 이해했고, 둘은 서로 다른 개념이라는 것을 알게 되었다. 손실함수는 예측과 실제 값의 차이를 수치화하고, 경사하강법은 이 손실을 줄이기 위해 모델 가중치를 조정하는 과정이라는 점을 다시 확인했다. 손실값이 낮다고 해서 모델 성능이 항상 좋은 것은 아니며, 다양한 요인을 고려해야 한다는 점도 배웠다.\n헷갈렸던 점 회귀 기울기와 경사하강법의 기울기가 똑같은 개념인 줄 알았는데, 회귀는 입력 변수의 변화율을, 경사하강법은 모델 가중치 조정에 필요한 손실함수 변화량을 의미한다는 것을 명확히 알지 못했다. 손실 값이 낮다고 해서 모델 성능이 항상 좋은 것도 아니고, 손실 값만으로 모델을 판단할 수 없다는 점도 처음에는 이해가 잘 안 갔다.\n정리된 이해 손실함수는 예측값과 실제값의 차이를 수치화해서 모델이 학습의 목표를 달성하도록 돕는 역할을 하고, 경사하강법은 이 손실함수를 가장 낮게 만드는 방향으로 모델의 가중치를 조금씩 조정하는 알고리즘이야. 단순히 손실값이 낮다고 모델이 좋은지 판단할 수 없고, 학습률이라는 중요한 파라미터를 잘 조절해야 경사하강법이 제대로 작동해.\n# 경사하강법 예시 (간단한 선형 회귀) import numpy as np # 간단한 데이터 생성 X = np.array([1, 2, 3, 4, 5]) y = np.array([2, 4, 5, 4, 5]) # 모델 초기화 theta = 0 # 기울기 learning_rate = 0.01 epochs = 100 # 경사하강법 반복 for epoch in range(epochs): # 예측값 계산 y_predicted = theta * X # 손실 계산 (MSE) loss = np.mean((y_predicted - y) ** 2) # 기울기 계산 gradient = 2 * np.mean((theta * X - y) * X) # 가중치 업데이트 theta = theta - learning_rate * gradient if epoch % 10 == 0: print(f\"Epoch {epoch}: theta = {theta}, Loss = {loss}\") 5. 다중 및 다항 회귀: 개념 이해 및 정리 무엇을 배웠나 다중 선형 회귀는 종속변수가 여러 개가 아니라 독립변수가 여러 개인 모델이라는 점을 명확히 이해하게 되었다. 또한, 다항 회귀는 비선형 관계를 표현하기 위한 도구이며, 단순히 곡선을 그리는 것이 아니라 경사하강법을 통해 최적의 파라미터를 찾는 과정임을 알게 되었다. 특히, 기울기의 변화가 위치에 따라 달라지는 다항 회귀의 개념이 기존의 선형 회귀 모델과의 차이점을 이해하는데 중요한 역할을 했다.\n헷갈렸던 점 다중 선형 회귀는 종속변수가 여러 개인 문제인 줄 알았고, 다항 회귀에서 각도와 기울기 개념이 직관적으로 이해되지 않았다. 특히 다항 회귀의 기울기가 위치에 따라 변한다는 점과 경사하강법의 gradient 개념이 얽혀서 어려움을 느꼈다. 독립변수의 비선형 관계를 표현하는 다항 회귀의 핵심을 파악하는 데 집중해야겠다는 생각을 했다.\n정리된 이해 다중 선형 회귀는 여러 독립변수를 활용하여 하나의 종속변수를 예측하는 모델이고, 다항 회귀는 독립변수와 종속변수 간의 관계가 직선이 아닐 때 고차항을 사용하여 곡선 관계를 표현하는 방법이다. 다항 회귀는 독립변수의 비선형 관계를 모델링하는 데 유용하며, 경사하강법을 통해 회귀 계수를 선형적으로 최적화한다. 이제 ‘다중’이라는 단어 때문에 종속변수가 여러 개인 문제로 착각하지 않고, 다항 회귀가 위치에 따라 기울기가 변하는 곡선을 그릴 수 있다는 점을 명확히 이해하게 되었다.\n# 다중 선형 회귀 예시 (scikit-learn 사용) import numpy as np from sklearn.linear_model import LinearRegression # 샘플 데이터 X = np.array([[1, 1], [1, 2], [2, 2], [2, 3]]) # 독립변수 y = np.array([1, 2, 1, 2]) # 종속변수 # 모델 생성 및 학습 model = LinearRegression() model.fit(X, y) # 예측 print(model.predict([[3, 3]])) 6. 과적합, 교차검증, 파이프라인: 초보자를 위한 이해 가이드 무엇을 배웠나 교차 검증이 과적합을 해결하는 것이 아니라, 모델의 일반화 성능을 평가하는 도구라는 점을 확실히 이해하게 되었다. 또한, 학습 횟수가 늘어나는 부담감을 느끼지만, Pipeline을 활용하여 데이터 누수를 막고 효율적인 학습을 할 수 있다는 점을 알게 되었다. 이제는 과적합과 검증 방법, 그리고 Pipeline의 중요성을 더욱 명확하게 이해하고 적용할 수 있을 것 같다.\n헷갈렸던 점 교차검증이 단순히 과적합을 막아주는 마법의 상자처럼 생각했고, K-Fold 교차검증과 하이퍼파라미터 튜닝을 함께 할 때 학습 횟수가 너무 많이 늘어나는 게 부담스러웠다. 특히 과적합과 검증 에러의 관계를 명확하게 이해하지 못해서 최적의 모델을 찾기가 어려웠다.\n정리된 이해 모델이 훈련 데이터에만 지나치게 맞춰져 일반화 성능이 떨어지는 과적합은, 검증 데이터 분석을 통해 적절한 시점에서 멈춰야 합니다. 교차 검증은 과적합을 직접 막지는 않지만, 모델의 성능을 더 신뢰성 있게 평가하여 일반화 성능을 높이는 데 도움을 주며, 파이프라인을 활용하면 데이터 누수를 방지하고 모델 구축 과정을 효율적으로 관리할 수 있습니다.\nfrom sklearn.pipeline import Pipeline 7. L1·L2·Elastic Net 정규화 완벽 이해하기 무엇을 배웠나 정규화가 단순히 데이터를 지우는 것이 아니라 모델의 계수에 제약을 가하여 과적합을 방지하는 방식이라는 점을 이해하게 되었습니다. L1(Lasso)은 변수 선택을 통해 중요하지 않은 변수를 제거하고, L2(Ridge)는 계수를 안정화시키는 역할을 한다는 것도 명확해졌습니다. Elastic Net은 이 두 가지 효과를 결합하여 더 복합적인 정규화가 가능하다는 점도 알게 되었습니다.\n헷갈렸던 점 처음에는 정규화가 데이터 자체를 없애는 줄 알았고, Ridge 정규화는 모든 계수를 똑같이 줄이는 줄 착각했습니다. L1과 L2 정규화의 차이점과 각각의 역할에 대한 이해가 부족해서 어떤 상황에 어떤 정규화를 사용해야 할지 막막했습니다. Elastic Net이 L1과 L2의 조합이라는 사실은 알고 있었지만, 구체적으로 어떤 장점이 있는지 명확하게 이해하지 못했습니다.\n정리된 이해 정규화는 모델의 복잡도를 줄여 과적합을 막고, 계수 폭주 현상을 방지하여 일반화 성능을 높이는 기법입니다. L1(Lasso)은 일부 계수를 0으로 만들어 변수를 선택하고, L2(Ridge)는 계수의 크기를 안정화시키며, Elastic Net은 이 두 가지 방법을 결합하여 더 유연하게 모델을 조정할 수 있습니다. 특히 L2 정규화는 상관관계가 높은 변수들 간의 균형을 맞춰주는 역할을 합니다.\n최종 목적함수 = 예측 오차 + α × 계수 벌점 8. 회귀 모델 평가 지표 완벽 가이드 무엇을 배웠나 회귀 모델 평가 지표를 처음 공부할 때 R2가 작으면 나쁜 모델이라고 오해했던 점, 그리고 RSS가 단순 오차 합이 아니라 제곱으로 계산되는 점을 명확히 이해하게 되었다. RSS, MSE, MAE, R2 각각의 의미와 특징, 그리고 어떤 상황에서 어떤 지표를 활용해야 하는지를 정리할 수 있게 되었다. 앞으로는 각 지표의 장단점을 고려하여 모델을 평가하고 선택해야겠다.\n헷갈렸던 점 처음에는 회귀 평가 지표가 모두 작을수록 좋은 모델이라고 생각했고, 특히 R2 값이 커야 좋은 모델이라고 오해했습니다. RSS가 단순 오차의 합이라고 생각했지만 제곱을 통해 계산된다는 점을 제대로 이해하지 못했습니다.\n정리된 이해 회귀 모델 평가 지표를 처음 공부할 때 RSS, MSE, MAE, R2 각각의 의미와 해석 방법을 잘못 이해했던 점이 있었다. 특히 RSS는 제곱 오차의 합이므로 이상치에 민감하고, R2는 모델의 설명력을 나타내는 지표이므로 값이 클수록 좋다는 것을 명확히 알아야 한다. 이러한 점들을 숙지하고 각 지표의 특성을 고려하여 상황에 맞는 평가 지표를 선택하는 것이 중요하다.\nimport numpy as np from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score # 가상 데이터 생성 y_true = np.array([3 총평 오늘 오전 전체에서 배운 것 오늘 오전에는 시계열 분석 기초부터 시작해서 ARMA, ARIMA 모델 선택, 잔차 진단 방법, 그리고 다양한 회귀 모델 평가 지표까지 폭넓게 학습했습니다. 특히, 시계열 데이터의 정상성 검증, 모델 선택 시 ACF/PACF 그래프 활용, 그리고 정규화 기법을 통해 과적합을 방지하는 방법에 대한 이해도를 높일 수 있었습니다. 또한, 손실 함수, 경사하강법, 교차 검증 등 머신러닝의 핵심 개념들을 다시 한번 명확히 다지면서 전반적인 모델링 능력을 향상시키는 데 집중했습니다.\n다음에 조심할 것 ACF와 PACF 그래프를 활용한 ARIMA 모델 선택 시, 후보 모델들의 성능을 체계적으로 비교 분석하는 연습을 꾸준히 해야겠다. 특히, 잔차 분석을 통해 모델의 적합성을 꼼꼼히 검증하는 습관을 들여야, 실제 예측 성능을 보장하는 모델을 선택할 수 있을 것이다. 또한, 정규화 기법 적용 시 각 기법의 특징을 제대로 이해하고 데이터에 맞는 최적의 파라미터를 찾는 노력이 필요하다.\n다음 복습 주제 ARIMA 모델 선택 시 ACF와 PACF 그래프를 활용하는 방법과 잔차 진단을 통한 모델 적합성 검증 부분을 좀 더 심층적으로 복습해야 할 것 같아요. 특히 다양한 시계열 데이터에 적용하여 직관적인 이해도를 높이는 연습이 필요할 것 같습니다. 또한, 정규화 기법들이 모델 성능에 미치는 영향과 각 상황에 맞는 최적의 정규화 파라미터 선택 방법에 대해서도 다시 한번 짚어봐야 할 것 같습니다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "1735",
+  "inLanguage": "en",
+  "datePublished": "2026-07-08T00:00:00Z",
+  "dateModified": "2026-07-08T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-07-08-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      시계열 분석부터 머신러닝 핵심 개념까지, 완전정복 학습 정리
+    </h1>
+    <div class="post-description">
+      2026-07-08 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-08 00:00:00 +0000 UTC'>2026년 7월 8일</span>&nbsp;·&nbsp;<span>9 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EC%8B%9C%EA%B3%84%EC%97%B4-%EB%B6%84%EC%84%9D-%EA%B8%B0%EC%B4%88-%EC%A0%95%EC%83%81%EC%84%B1-%ED%8C%90%EB%8B%A8%EA%B3%BC-%EC%B0%A8%EB%B6%84-%EC%A0%81%EC%9A%A9-%EC%9D%B4%ED%95%B4">시계열 분석 기초: 정상성 판단과 차분 적용 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-armaarima-%EB%AA%A8%EB%8D%B8-%EC%84%A0%ED%83%9D-%EB%B0%8F-%EC%9E%94%EC%B0%A8-%EC%A7%84%EB%8B%A8-%EA%B0%80%EC%9D%B4%EB%93%9C">ARMA·ARIMA 모델 선택 및 잔차 진단 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%8B%9C%EA%B3%84%EC%97%B4-%EB%B6%84%EC%84%9D-%EC%9B%8C%ED%81%AC%EB%85%B8%ED%8A%B8-%ED%98%BC%EB%9E%80%EA%B3%BC-%ED%95%99%EC%8A%B5-%EA%B7%B8%EB%A6%AC%EA%B3%A0-%EC%8B%A4%EC%8A%B5-%EC%98%88%EC%8B%9C">시계열 분석 워크노트: 혼란과 학습, 그리고 실습 예시</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EC%86%90%EC%8B%A4-%ED%95%A8%EC%88%98-%EA%B2%BD%EC%82%AC%ED%95%98%EA%B0%95%EB%B2%95-%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8-%ED%95%B5%EC%8B%AC-%EA%B0%9C%EB%85%90-%EC%9D%B4%ED%95%B4">손실 함수, 경사하강법, 체크포인트 핵심 개념 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-%EB%8B%A4%EC%A4%91-%EB%B0%8F-%EB%8B%A4%ED%95%AD-%ED%9A%8C%EA%B7%80-%EA%B0%9C%EB%85%90-%EC%9D%B4%ED%95%B4-%EB%B0%8F-%EC%A0%95%EB%A6%AC">다중 및 다항 회귀: 개념 이해 및 정리</a></li>
+</ol>
+</li>
+<li>
+<ol start="6">
+<li><a href="#6-%EA%B3%BC%EC%A0%81%ED%95%A9-%EA%B5%90%EC%B0%A8%EA%B2%80%EC%A6%9D-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%9D%B4%ED%95%B4-%EA%B0%80%EC%9D%B4%EB%93%9C">과적합, 교차검증, 파이프라인: 초보자를 위한 이해 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="7">
+<li><a href="#7-l1l2elastic-net-%EC%A0%95%EA%B7%9C%ED%99%94-%EC%99%84%EB%B2%BD-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">L1·L2·Elastic Net 정규화 완벽 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="8">
+<li><a href="#8-%ED%9A%8C%EA%B7%80-%EB%AA%A8%EB%8D%B8-%ED%8F%89%EA%B0%80-%EC%A7%80%ED%91%9C-%EC%99%84%EB%B2%BD-%EA%B0%80%EC%9D%B4%EB%93%9C">회귀 모델 평가 지표 완벽 가이드</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-시계열-분석-기초-정상성-판단과-차분-적용-이해">1. 시계열 분석 기초: 정상성 판단과 차분 적용 이해<a hidden class="anchor" aria-hidden="true" href="#1-시계열-분석-기초-정상성-판단과-차분-적용-이해">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>ADF 검정에서 귀무가설이 &ldquo;비정상&quot;이라는 점을 명확히 이해하게 되었고, 시계열의 구성 요소와 정상성이 무엇인지 제대로 정리했다. 특히, 차분 적용 시 데이터의 의미 손실 가능성을 인지하고, 적절한 차분 횟수를 결정해야 함을 알게 되었다. 이번 학습을 통해 비정상 시계열 데이터를 정상화하는 방법에 대한 이해도를 높일 수 있었다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>ADF 검정에서 귀무 가설이 &ldquo;시계열이 비정상적&quot;이라는 점이 처음에는 이해가 잘 안 돼서 헷갈렸고, 차분 적용 횟수를 결정하는 과정에서 원본 데이터와 차분된 데이터의 관계가 명확하지 않아서 어려움을 겪었어. 차분을 너무 많이 적용하면 중요한 정보가 손실될 수 있다는 점도 인지하지 못하고 있었어.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>ADF 검정에서는 귀무가설이 시계열이 비정상이라는 점을 기억하고, p-value가 유의수준보다 작으면 정상성을 인정해야 합니다. 차분을 적용할 때, 원래 데이터에 차분을 하는 것과 이미 차분된 데이터에 다시 차분을 하는 것의 의미를 정확히 이해하고, 과도한 차분으로 정보 손실이 발생하지 않도록 주의해야 합니다. 시계열 분석에서는 추세, 계절성, 잔차를 파악하고, 적절한 차분 횟수를 통해 정상성을 확보하는 것이 중요합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dates <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>date_range(start<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;2023-01-01&#39;</span>, periods<span style="color:#f92672">=</span><span style="color:#ae81ff">365</span>, freq<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;D&#39;</span>)
+</span></span><span style="display:flex;"><span>np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>seed(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>temperature <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>normal(loc<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>, scale<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>, size<span style="color:#f92672">=</span>len(dates)) <span style="color:#f92672">+</span> np<span style="color:#f92672">.</span>sin(np<span style="color:#f92672">.</span>linspace(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> np<span style="color:#f92672">.</span>pi <span style="color:#f92672">*</span> <span style="color:#ae81ff">365</span>, len(dates)))
+</span></span></code></pre></div><h2 id="2-armaarima-모델-선택-및-잔차-진단-가이드">2. ARMA·ARIMA 모델 선택 및 잔차 진단 가이드<a hidden class="anchor" aria-hidden="true" href="#2-armaarima-모델-선택-및-잔차-진단-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>ARIMA 모델 선택 시 ACF와 PACF 그래프를 통해 바로 파라미터를 결정하기 어렵다는 것을 깨달았고, 이 그래프들은 모델 후보 범위를 좁히는 진단 도구라는 점을 이해했습니다. AIC 값을 최소화하는 모델을 선택하되, 잔차 진단을 통해 모델의 적합성을 검증해야 한다는 점도 명확하게 알게 되었습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>ACF와 PACF 그래프를 보고 AR과 MA의 파라미터를 바로 알 수 있다고 생각했지만, 실제 데이터에서는 패턴이 불분명해서 어려움을 겪었습니다. 모델 선택 결과로 얻는 AIC 값을 어떻게 DataFrame으로 정리되는지 이해하는 데도 막혔습니다. 모델 선택 기준이 AIC 값뿐이 아니고 잔차 진단도 중요하다는 것을 뒤늦게 알았습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>ARMA/ARIMA 모델 선택 시 ACF와 PACF는 모델 파라미터의 후보 범위를 좁히는 데 도움을 주는 진단 도구이며, AIC 값이 가장 낮다고 해서 무조건 좋은 모델이 되는 것이 아니라 잔차 진단을 통해 유의성을 확인해야 합니다. 잔차 진단을 통해 잔차에 자기상관이 없는지 검증하고, Ljung–Box 검정의 p-value를 활용하여 모델의 적합성을 판단해야 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> statsmodels.api <span style="color:#66d9ef">as</span> sm
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span></code></pre></div><h2 id="3-시계열-분석-워크노트-혼란과-학습-그리고-실습-예시">3. 시계열 분석 워크노트: 혼란과 학습, 그리고 실습 예시<a hidden class="anchor" aria-hidden="true" href="#3-시계열-분석-워크노트-혼란과-학습-그리고-실습-예시">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>시계열 데이터 분석 노트북 구현 과정에서 차분 적용의 복잡성, 후보 조합의 규모, ARIMA와 SARIMA 모델의 차이점을 명확히 이해하는 데 어려움을 겪었지만, 데이터 정상성 검증, ACF/PACF 분석을 통한 차분 차수 결정, SARIMAX 모델 적합 및 잔차 검증 과정을 학습하며 시계열 분석 능력을 향상시켰습니다. 특히, 모델 평가 지표와 잔차 분석을 통해 모델의 적합성을 판단하는 방법을 익혔습니다. 이제는 시계열 데이터의 특성을 파악하고, 적절한 모델을 선택하여 예측하는 과정을 보다 자신 있게 수행할 수 있을 것 같습니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>차분 적용 방식과, <code>p</code>와 <code>q</code> 값의 조합이 모델 탐색 시간과 성능에 얼마나 영향을 미치는지 파악하기 어려웠어요. 특히 SARIMA 모델의 계절성 부분과 ARIMA 모델의 차이점을 명확히 구분하는 데 혼란이 있었습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>시계열 분석 노트북 구현 과정에서 차분 적용의 복잡성과 후보 조합의 규모로 인해 어려움을 겪었지만, 데이터 준비 단계의 정상성 검증 및 자기상관 구조 분석, SARIMAX 모델 적합 및 잔차 검증, 예측 및 평가 과정을 체계적으로 이해하게 되었습니다. 이제는 ARIMA와 SARIMA 모델의 차이점을 명확히 구분하고, 적절한 모델을 선택하여 시계열 예측을 수행할 수 있을 것 같습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> statsmodels.api <span style="color:#66d9ef">as</span> sm
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> statsmodels.tsa.statespace.sarimax <span style="color:#f92672">import</span> SARIMAX
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span></code></pre></div><h2 id="4-손실-함수-경사하강법-체크포인트-핵심-개념-이해">4. 손실 함수, 경사하강법, 체크포인트 핵심 개념 이해<a hidden class="anchor" aria-hidden="true" href="#4-손실-함수-경사하강법-체크포인트-핵심-개념-이해">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>회귀 기울기와 경사하강법의 기울기가 혼동되었던 점을 명확히 이해했고, 둘은 서로 다른 개념이라는 것을 알게 되었다. 손실함수는 예측과 실제 값의 차이를 수치화하고, 경사하강법은 이 손실을 줄이기 위해 모델 가중치를 조정하는 과정이라는 점을 다시 확인했다. 손실값이 낮다고 해서 모델 성능이 항상 좋은 것은 아니며, 다양한 요인을 고려해야 한다는 점도 배웠다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>회귀 기울기와 경사하강법의 기울기가 똑같은 개념인 줄 알았는데, 회귀는 입력 변수의 변화율을, 경사하강법은 모델 가중치 조정에 필요한 손실함수 변화량을 의미한다는 것을 명확히 알지 못했다. 손실 값이 낮다고 해서 모델 성능이 항상 좋은 것도 아니고, 손실 값만으로 모델을 판단할 수 없다는 점도 처음에는 이해가 잘 안 갔다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>손실함수는 예측값과 실제값의 차이를 수치화해서 모델이 학습의 목표를 달성하도록 돕는 역할을 하고, 경사하강법은 이 손실함수를 가장 낮게 만드는 방향으로 모델의 가중치를 조금씩 조정하는 알고리즘이야. 단순히 손실값이 낮다고 모델이 좋은지 판단할 수 없고, 학습률이라는 중요한 파라미터를 잘 조절해야 경사하강법이 제대로 작동해.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 경사하강법 예시 (간단한 선형 회귀)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 간단한 데이터 생성</span>
+</span></span><span style="display:flex;"><span>X <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>])
+</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 모델 초기화</span>
+</span></span><span style="display:flex;"><span>theta <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>  <span style="color:#75715e"># 기울기</span>
+</span></span><span style="display:flex;"><span>learning_rate <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.01</span>
+</span></span><span style="display:flex;"><span>epochs <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 경사하강법 반복</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> epoch <span style="color:#f92672">in</span> range(epochs):
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># 예측값 계산</span>
+</span></span><span style="display:flex;"><span>  y_predicted <span style="color:#f92672">=</span> theta <span style="color:#f92672">*</span> X
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># 손실 계산 (MSE)</span>
+</span></span><span style="display:flex;"><span>  loss <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>mean((y_predicted <span style="color:#f92672">-</span> y) <span style="color:#f92672">**</span> <span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># 기울기 계산</span>
+</span></span><span style="display:flex;"><span>  gradient <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> np<span style="color:#f92672">.</span>mean((theta <span style="color:#f92672">*</span> X <span style="color:#f92672">-</span> y) <span style="color:#f92672">*</span> X)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># 가중치 업데이트</span>
+</span></span><span style="display:flex;"><span>  theta <span style="color:#f92672">=</span> theta <span style="color:#f92672">-</span> learning_rate <span style="color:#f92672">*</span> gradient
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> epoch <span style="color:#f92672">%</span> <span style="color:#ae81ff">10</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Epoch </span><span style="color:#e6db74">{</span>epoch<span style="color:#e6db74">}</span><span style="color:#e6db74">: theta = </span><span style="color:#e6db74">{</span>theta<span style="color:#e6db74">}</span><span style="color:#e6db74">, Loss = </span><span style="color:#e6db74">{</span>loss<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><h2 id="5-다중-및-다항-회귀-개념-이해-및-정리">5. 다중 및 다항 회귀: 개념 이해 및 정리<a hidden class="anchor" aria-hidden="true" href="#5-다중-및-다항-회귀-개념-이해-및-정리">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>다중 선형 회귀는 종속변수가 여러 개가 아니라 독립변수가 여러 개인 모델이라는 점을 명확히 이해하게 되었다. 또한, 다항 회귀는 비선형 관계를 표현하기 위한 도구이며, 단순히 곡선을 그리는 것이 아니라 경사하강법을 통해 최적의 파라미터를 찾는 과정임을 알게 되었다. 특히, 기울기의 변화가 위치에 따라 달라지는 다항 회귀의 개념이 기존의 선형 회귀 모델과의 차이점을 이해하는데 중요한 역할을 했다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>다중 선형 회귀는 종속변수가 여러 개인 문제인 줄 알았고, 다항 회귀에서 각도와 기울기 개념이 직관적으로 이해되지 않았다. 특히 다항 회귀의 기울기가 위치에 따라 변한다는 점과 경사하강법의 gradient 개념이 얽혀서 어려움을 느꼈다. 독립변수의 비선형 관계를 표현하는 다항 회귀의 핵심을 파악하는 데 집중해야겠다는 생각을 했다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>다중 선형 회귀는 여러 독립변수를 활용하여 하나의 종속변수를 예측하는 모델이고, 다항 회귀는 독립변수와 종속변수 간의 관계가 직선이 아닐 때 고차항을 사용하여 곡선 관계를 표현하는 방법이다. 다항 회귀는 독립변수의 비선형 관계를 모델링하는 데 유용하며, 경사하강법을 통해 회귀 계수를 선형적으로 최적화한다. 이제 &lsquo;다중&rsquo;이라는 단어 때문에 종속변수가 여러 개인 문제로 착각하지 않고, 다항 회귀가 위치에 따라 기울기가 변하는 곡선을 그릴 수 있다는 점을 명확히 이해하게 되었다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 다중 선형 회귀 예시 (scikit-learn 사용)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.linear_model <span style="color:#f92672">import</span> LinearRegression
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 샘플 데이터</span>
+</span></span><span style="display:flex;"><span>X <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([[<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>], [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>], [<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>], [<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>]])  <span style="color:#75715e"># 독립변수</span>
+</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>])  <span style="color:#75715e"># 종속변수</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 모델 생성 및 학습</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> LinearRegression()
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>fit(X, y)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 예측</span>
+</span></span><span style="display:flex;"><span>print(model<span style="color:#f92672">.</span>predict([[<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>]]))
+</span></span></code></pre></div><h2 id="6-과적합-교차검증-파이프라인-초보자를-위한-이해-가이드">6. 과적합, 교차검증, 파이프라인: 초보자를 위한 이해 가이드<a hidden class="anchor" aria-hidden="true" href="#6-과적합-교차검증-파이프라인-초보자를-위한-이해-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
+<p>교차 검증이 과적합을 해결하는 것이 아니라, 모델의 일반화 성능을 평가하는 도구라는 점을 확실히 이해하게 되었다. 또한, 학습 횟수가 늘어나는 부담감을 느끼지만, Pipeline을 활용하여 데이터 누수를 막고 효율적인 학습을 할 수 있다는 점을 알게 되었다. 이제는 과적합과 검증 방법, 그리고 Pipeline의 중요성을 더욱 명확하게 이해하고 적용할 수 있을 것 같다.</p>
+<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
+<p>교차검증이 단순히 과적합을 막아주는 마법의 상자처럼 생각했고, K-Fold 교차검증과 하이퍼파라미터 튜닝을 함께 할 때 학습 횟수가 너무 많이 늘어나는 게 부담스러웠다. 특히 과적합과 검증 에러의 관계를 명확하게 이해하지 못해서 최적의 모델을 찾기가 어려웠다.</p>
+<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
+<p>모델이 훈련 데이터에만 지나치게 맞춰져 일반화 성능이 떨어지는 과적합은, 검증 데이터 분석을 통해 적절한 시점에서 멈춰야 합니다. 교차 검증은 과적합을 직접 막지는 않지만, 모델의 성능을 더 신뢰성 있게 평가하여 일반화 성능을 높이는 데 도움을 주며, 파이프라인을 활용하면 데이터 누수를 방지하고 모델 구축 과정을 효율적으로 관리할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.pipeline <span style="color:#f92672">import</span> Pipeline
+</span></span></code></pre></div><h2 id="7-l1l2elastic-net-정규화-완벽-이해하기">7. L1·L2·Elastic Net 정규화 완벽 이해하기<a hidden class="anchor" aria-hidden="true" href="#7-l1l2elastic-net-정규화-완벽-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-6">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-6">#</a></h3>
+<p>정규화가 단순히 데이터를 지우는 것이 아니라 모델의 계수에 제약을 가하여 과적합을 방지하는 방식이라는 점을 이해하게 되었습니다. L1(Lasso)은 변수 선택을 통해 중요하지 않은 변수를 제거하고, L2(Ridge)는 계수를 안정화시키는 역할을 한다는 것도 명확해졌습니다. Elastic Net은 이 두 가지 효과를 결합하여 더 복합적인 정규화가 가능하다는 점도 알게 되었습니다.</p>
+<h3 id="헷갈렸던-점-6">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-6">#</a></h3>
+<p>처음에는 정규화가 데이터 자체를 없애는 줄 알았고, Ridge 정규화는 모든 계수를 똑같이 줄이는 줄 착각했습니다. L1과 L2 정규화의 차이점과 각각의 역할에 대한 이해가 부족해서 어떤 상황에 어떤 정규화를 사용해야 할지 막막했습니다. Elastic Net이 L1과 L2의 조합이라는 사실은 알고 있었지만, 구체적으로 어떤 장점이 있는지 명확하게 이해하지 못했습니다.</p>
+<h3 id="정리된-이해-6">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-6">#</a></h3>
+<p>정규화는 모델의 복잡도를 줄여 과적합을 막고, 계수 폭주 현상을 방지하여 일반화 성능을 높이는 기법입니다. L1(Lasso)은 일부 계수를 0으로 만들어 변수를 선택하고, L2(Ridge)는 계수의 크기를 안정화시키며, Elastic Net은 이 두 가지 방법을 결합하여 더 유연하게 모델을 조정할 수 있습니다. 특히 L2 정규화는 상관관계가 높은 변수들 간의 균형을 맞춰주는 역할을 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>최종 목적함수 = 예측 오차 + α × 계수 벌점
+</span></span></code></pre></div><h2 id="8-회귀-모델-평가-지표-완벽-가이드">8. 회귀 모델 평가 지표 완벽 가이드<a hidden class="anchor" aria-hidden="true" href="#8-회귀-모델-평가-지표-완벽-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-7">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-7">#</a></h3>
+<p>회귀 모델 평가 지표를 처음 공부할 때 R2가 작으면 나쁜 모델이라고 오해했던 점, 그리고 RSS가 단순 오차 합이 아니라 제곱으로 계산되는 점을 명확히 이해하게 되었다. RSS, MSE, MAE, R2 각각의 의미와 특징, 그리고 어떤 상황에서 어떤 지표를 활용해야 하는지를 정리할 수 있게 되었다. 앞으로는 각 지표의 장단점을 고려하여 모델을 평가하고 선택해야겠다.</p>
+<h3 id="헷갈렸던-점-7">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-7">#</a></h3>
+<p>처음에는 회귀 평가 지표가 모두 작을수록 좋은 모델이라고 생각했고, 특히 R2 값이 커야 좋은 모델이라고 오해했습니다. RSS가 단순 오차의 합이라고 생각했지만 제곱을 통해 계산된다는 점을 제대로 이해하지 못했습니다.</p>
+<h3 id="정리된-이해-7">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-7">#</a></h3>
+<p>회귀 모델 평가 지표를 처음 공부할 때 RSS, MSE, MAE, R2 각각의 의미와 해석 방법을 잘못 이해했던 점이 있었다. 특히 RSS는 제곱 오차의 합이므로 이상치에 민감하고, R2는 모델의 설명력을 나타내는 지표이므로 값이 클수록 좋다는 것을 명확히 알아야 한다. 이러한 점들을 숙지하고 각 지표의 특성을 고려하여 상황에 맞는 평가 지표를 선택하는 것이 중요하다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>   <span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">from</span> sklearn.metrics <span style="color:#f92672">import</span> mean_squared_error, mean_absolute_error, r2_score
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e"># 가상 데이터 생성</span>
+</span></span><span style="display:flex;"><span>   y_true <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">3</span>
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>오늘 오전에는 시계열 분석 기초부터 시작해서 ARMA, ARIMA 모델 선택, 잔차 진단 방법, 그리고 다양한 회귀 모델 평가 지표까지 폭넓게 학습했습니다. 특히, 시계열 데이터의 정상성 검증, 모델 선택 시 ACF/PACF 그래프 활용, 그리고 정규화 기법을 통해 과적합을 방지하는 방법에 대한 이해도를 높일 수 있었습니다. 또한, 손실 함수, 경사하강법, 교차 검증 등 머신러닝의 핵심 개념들을 다시 한번 명확히 다지면서 전반적인 모델링 능력을 향상시키는 데 집중했습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>ACF와 PACF 그래프를 활용한 ARIMA 모델 선택 시, 후보 모델들의 성능을 체계적으로 비교 분석하는 연습을 꾸준히 해야겠다. 특히, 잔차 분석을 통해 모델의 적합성을 꼼꼼히 검증하는 습관을 들여야, 실제 예측 성능을 보장하는 모델을 선택할 수 있을 것이다. 또한, 정규화 기법 적용 시 각 기법의 특징을 제대로 이해하고 데이터에 맞는 최적의 파라미터를 찾는 노력이 필요하다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>ARIMA 모델 선택 시 ACF와 PACF 그래프를 활용하는 방법과 잔차 진단을 통한 모델 적합성 검증 부분을 좀 더 심층적으로 복습해야 할 것 같아요. 특히 다양한 시계열 데이터에 적용하여 직관적인 이해도를 높이는 연습이 필요할 것 같습니다. 또한, 정규화 기법들이 모델 성능에 미치는 영향과 각 상황에 맞는 최적의 정규화 파라미터 선택 방법에 대해서도 다시 한번 짚어봐야 할 것 같습니다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://Han-think.github.io/learning/2026-07-08-pm-daily/">
+    <span class="title">Next »</span>
+    <span>회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
