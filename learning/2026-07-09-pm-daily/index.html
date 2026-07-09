@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>분류부터 시계열 분석까지, 머신러닝 핵심 개념과 실무 적용 노하우 정리 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-07-09 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-07-09-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-07-09-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-09-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="분류부터 시계열 분석까지, 머신러닝 핵심 개념과 실무 적용 노하우 정리">
+  <meta property="og:description" content="2026-07-09 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-07-09T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-09T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="분류부터 시계열 분석까지, 머신러닝 핵심 개념과 실무 적용 노하우 정리">
+  <meta name="twitter:description" content="2026-07-09 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "분류부터 시계열 분석까지, 머신러닝 핵심 개념과 실무 적용 노하우 정리",
+      "item": "https://Han-think.github.io/learning/2026-07-09-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "분류부터 시계열 분석까지, 머신러닝 핵심 개념과 실무 적용 노하우 정리",
+  "name": "분류부터 시계열 분석까지, 머신러닝 핵심 개념과 실무 적용 노하우 정리",
+  "description": "2026-07-09 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 분류 모델 파이프라인 및 부스팅 모델 활용 가이드 10개 모델 튜닝 및 다기준 선택: 성능, 효율성, 안정성 고려 CatBoost 래퍼와 Stacking: 복제 호환성 및 성능 향상을 위한 이해 SHAP 해석과 핵심 변수 파악: 초보자를 위한 가이드 머신러닝 공모전, 데이터 이해와 핵심 질문 해결 가이드 팀 프로젝트 역할 분담과 SCQA 발표 구조 이해 SARIMA 모델의 계절 시계열 구조 이해 SARIMA 모델 탐색, 속도와 교육용 설정 이해 SARIMAX 모델, 외생변수 활용 및 Rolling Forecast 이해 오후 수업 후기: 모델, 평가, 그리고 비즈니스 가치 판단 데이터 불균형 문제 해결을 위한 샘플링 기법 활용 의사결정나무 모델링을 위한 특성 엔지니어링 가이드 선형 회귀 모델 구현 및 이해 정리 교차 검증과 정규화 회귀 완벽 이해하기 회귀 모델 평가 지표 완벽 분석: RSS, MAE, MSE, R2 총평 1. 분류 모델 파이프라인 및 부스팅 모델 활용 가이드 무엇을 배웠나 부스팅 모델만으로 모든 정형 데이터 분석을 해결할 수 있다는 착각에서 벗어나, 기준 모델과의 비교를 통해 성능을 객관적으로 평가해야 한다는 점을 알게 되었다. 또한, 데이터 누수를 방지하고 실험 재현성을 높이기 위해 파이프라인을 활용하여 데이터 전처리 및 모델 학습 단계를 통합해야 한다는 것을 배웠다. 이제 파이프라인의 역할을 이해하고 데이터 분석 워크플로우를 효율적으로 구축할 수 있을 것이다.\n헷갈렸던 점 처음에는 XGBoost, LightGBM, CatBoost만 있으면 정형 데이터 분석이 다 될 것 같았는데, 다른 모델들도 함께 사용해야 한다는 점을 간과했습니다. 또한, Pipeline과 일반 함수가 어떤 차이점을 가지는지 명확히 이해하지 못해서, 데이터 전처리, 모델 학습 과정을 어떻게 연결해야 할지 혼동했습니다.\n정리된 이해 부스팅 모델 외에도 다양한 기준 모델을 활용하여 성능 비교를 해야 하고, Pipeline은 데이터 전처리 및 모델 학습 과정을 연결하여 실험의 일관성과 재현성을 확보하는 중요한 도구라는 것을 이해하게 되었다. 이제는 단순히 강력한 모델을 사용하는 것보다 전체적인 분석 프로세스를 고려해야 할 것 같다.\nfrom sklearn.pipeline import Pipeline from sklearn.preprocessing import StandardScaler pipeline = Pipeline([ ('scaler', StandardScaler()), # 전처리 2. 10개 모델 튜닝 및 다기준 선택: 성능, 효율성, 안정성 고려 무엇을 배웠나 모델 선택은 단순히 최고 성능 지표를 가진 모델을 고르는 것이 아니라, 성능, 효율성, 안정성, 해석 가능성 등 다양한 요소를 종합적으로 고려해야 한다는 것을 배웠습니다. 특히 CatBoost는 좋은 성능을 보이지만 학습 시간이 오래 걸리고 과적합될 가능성이 있다는 점, 그리고 Logistic Regression의 낮은 성능에도 불구하고 가진 장점(안정성, 해석 가능성)을 이해하게 되었습니다. 앞으로는 다기준 의사결정 과정을 통해 최적의 모델을 선택해야겠습니다.\n헷갈렸던 점 CatBoost가 ROC-AUC 점수가 높다고 해서 무조건 좋은 모델이라고 생각했지만, 학습 시간과 과적합 정도를 고려하니 효율성이 떨어지는 것 같았습니다. 강사님이 로지스틱 회귀를 선호하시는 이유가 성능 지표만으로는 설명이 안 될 것 같아서 궁금했습니다. 모델 선택 기준에 대한 고민이 필요했습니다.\n정리된 이해 모델 선택은 단순히 검증 ROC-AUC 점수만으로 결정할 수 없고, 학습 시간, 과적합 차이, 안정성, 해석 가능성을 종합적으로 고려해야 한다는 것을 알게 되었습니다. 특히 Logistic Regression은 성능은 낮지만 안정성과 해석 가능성이 높아 중요한 역할을 할 수 있다는 점을 인지하게 되었습니다. 앞으로는 다기준 의사결정 관점에서 모델을 선택하고, 성능 지표 외 다른 요소들을 함께 고려해야겠습니다.\nfrom sklearn.model_selection import RandomizedSearchCV from sklearn.ensemble import RandomForestClassifier from sklearn.metrics import roc_auc_score import numpy as np param_grid = { 'n_estimators': np.arange(50, 200, 50), 'max_depth': [None, 10, 20, 30], 'min_samples_split': [2, 5, 10] } 3. CatBoost 래퍼와 Stacking: 복제 호환성 및 성능 향상을 위한 이해 무엇을 배웠나 CatBoost 모델을 sklearn 파이프라인과 함께 사용하기 위한 래퍼의 목적이 단순히 데이터 누수 방지가 아니라, 모델 복제 호환성을 확보하는 데 있다는 것을 알게 되었다. Stacking은 다양한 모델을 활용하여 서로 다른 오류 패턴을 보완하는 방식으로 성능 향상을 기대할 수 있지만, 반드시 성능이 보장되는 것은 아니라는 점을 이해했다. CatBoost 래퍼 클래스를 직접 정의해보면서, 래퍼의 역할과 중요성을 좀 더 명확하게 파악할 수 있었다.\n헷갈렸던 점 래퍼의 역할이 데이터 누수 방지라고 생각했는데, 실제로는 CatBoost 모델을 sklearn 환경에서 복제해서 사용할 수 있도록 호환성을 맞춰주는 것이 중요하다는 것을 알게 되었다. 단순히 여러 모델을 쌓는다고 해서 무조건 성능이 향상되는 것이 아니고, 모델들의 다양성이 성능 향상에 중요한 역할을 한다는 점도 명확히 이해했다. 래퍼 클래스를 직접 정의해보니, CatBoost를 sklearn과 함께 사용하는 방법을 체감할 수 있었다.\n정리된 이해 CatBoost 모델을 sklearn 파이프라인과 함께 사용하기 위해 CloneSafeCatBoost 래퍼는 단순히 데이터 누수 방지 기능 외에도 모델의 복제 기능을 가능하게 하는 데 중요한 역할을 합니다. Stacking을 사용할 때 성능 향상은 모델들의 다양성에 달려있으며, 비슷한 유형의 모델들을 섞는다고 해서 무조건 성능이 좋아지는 것은 아닙니다. 다양한 알고리즘을 활용하여 서로 다른 오류 패턴을 가진 모델들을 결합하는 것이 중요합니다.\nfrom sklearn.base import BaseEstimator, ClassifierMixin from catboost import CatBoostClassifier class CloneSafeCatBoost(BaseEstimator, ClassifierMixin): def __init__(self, params): self.params = params self.model = None def fit(self, X, y): self.model = CatBoostClassifier(**self.params) self.model.fit(X, y) return self def predict(self, X): return self.model.predict(X) def predict_proba(self, X): return self.model.predict_proba(X) 4. SHAP 해석과 핵심 변수 파악: 초보자를 위한 가이드 무엇을 배웠나 SHAP 그래프 해석 시, 세로축은 중요도, 가로축은 예측 결과 방향, 색상은 변수 값의 크기를 나타냄을 이해했다. 단순히 SHAP 요약 상위 변수를 핵심 변수로 단정짓기보다는, 다양한 검증 방법을 통해 판단해야 함을 알게 되었다. 특히 연속형 변수의 경우, 빨간색은 값이 증가할수록 예측이 증가하고, 파란색은 감소하는 것을 의미하는 것을 명확히 파악했다.\n헷갈렸던 점 SHAP 그래프에서 색깔과 위치를 보고 변수의 의미를 바로 파악하기 어려웠습니다. 특히 성별이나 나이와 같은 연속형 변수가 빨간색인지 파란색인지, 그리고 어떤 값을 의미하는지 혼란스러웠습니다. 또한 SHAP 요약에서 상위 변수들을 무조건 핵심 변수로 판단할 수 있는지, 다른 검증 과정이 필요한지 명확하지 않았습니다.\n정리된 이해 SHAP 요약 그래프에서는 세로축이 변수의 중요도를 나타내고, 가로축은 변수 값 변화에 따른 예측 변화 방향을 보여줍니다. 색상은 변수 값의 크기를 나타내며, 빨간색은 값이 클수록 예측을 증가시키는 방향으로, 파란색은 감소시키는 방향으로 해석할 수 있습니다. 단순히 SHAP 요약 상위 변수만 핵심 변수로 단정짓기보다는, 다양한 검증을 통해 결론을 내려야 합니다.\n- age: 빨강 = 나이가 많음 → 예측 증가, 파랑 = 나이가 적음 → 예측 감소 - fare: 빨강 = 요금 높음 → 예측 증가, 파랑 = 요금 낮음 → 예측 감소 5. 머신러닝 공모전, 데이터 이해와 핵심 질문 해결 가이드 무엇을 배웠나 머신러닝 공모전에서 알고리즘 적용보다 데이터 자체에 대한 깊은 이해가 중요하다는 점을 깨달았습니다. 데이터 탐색과 분석을 통해 문제 정의와 답을 검증하는 과정이 핵심이며, 변수 간의 관계를 시각화하고 분석하는 것이 중요합니다. 단순히 모델을 돌리는 것이 아니라 데이터에 대한 통찰력을 얻는 것이 성공의 열쇠라는 것을 알게 되었습니다.\n헷갈렸던 점 처음에는 머신러닝 공모전이 알고리즘을 많이 시도해서 점수를 높이는 경쟁이라고 생각했어요. 데이터셋의 구조와 변수 간의 관계를 파악하는 데 어려움을 겪었고, 특히 한 행이 무엇을 의미하는지 명확하게 이해하지 못했습니다. 어떤 오류가 중요한지, 검증 점수의 신뢰성을 어떻게 판단해야 할지 혼란스러웠어요.\n정리된 이해 머신러닝 공모전은 알고리즘 경쟁이 아니라 데이터의 구조와 패턴을 이해하고 문제 해결에 활용하는 과정임을 깨달았습니다. 데이터 분석은 질문을 정의하고 증거로 답을 검증하는 과정이며, 모델은 그 도구일 뿐입니다. 이제는 데이터 탐색, 변수 중요성 파악, 모델 해석에 집중하며 데이터 자체에 대한 이해도를 높여야겠습니다.\nimport pandas as pd import seaborn as sns # 데이터 로드 data = pd.read_csv('customer_data.csv') # 시각화를 통한 변수 관계 파악 sns.pairplot(data, hue='reorder_target') # 'reorder_target'은 재 6. 팀 프로젝트 역할 분담과 SCQA 발표 구조 이해 무엇을 배웠나 팀 프로젝트에서 역할 분담은 단순히 작업을 나누는 것이 아니라, 공통의 실험 명세를 기반으로 병렬적으로 진행되어야 팀 전체의 일관성을 유지할 수 있다는 것을 알게 되었습니다. 또한, SCQA 구조와 피라미드 원칙을 활용하여 발표를 체계적으로 구성하는 방법을 배우면서, 프로젝트 결과물을 효과적으로 전달하는 방법에 대한 이해도를 높였습니다. 개인적인 프로젝트 경험을 통해 배운 점들을 팀 프로젝트에 적용하여 더욱 효율적인 협업을 할 수 있을 것 같습니다.\n헷갈렸던 점 팀 역할 분담을 할 때 각자 맡은 일에만 집중하면 전체적인 일관성이 사라질까 봐 걱정이었고, 발표 구조는 SCQA와 피라미드 원칙이 어떻게 연결되는지 명확하게 이해하지 못했습니다. 역할 분담이 단순히 작업을 나누는 것이 아니라, 전체 프로젝트의 흐름을 고려해야 한다는 점을 인지하지 못했습니다.\n정리된 이해 팀 프로젝트에서 역할 분담은 각 역할이 독립적으로 진행되는 것이 아니라, 공통의 실험 명세를 기반으로 연결되어 병렬적으로 진행되어야 프로젝트의 일관성을 유지할 수 있습니다. 또한 프로젝트 발표는 SCQA 구조와 피라미드 원칙을 활용하여 상황, 문제, 질문, 답변의 흐름을 명확하게 제시하고 핵심 내용을 시각적으로 전달해야 효과적입니다. 개인적인 프로젝트 경험을 바탕으로 이러한 원칙들을 적용해나가도록 노력하겠습니다.\n7. SARIMA 모델의 계절 시계열 구조 이해 무엇을 배웠나 SARIMA 모델에서 소문자 매개변수는 일반적인 과거 패턴을, 대문자 매개변수는 계절성 패턴을 반영한다는 것을 명확히 이해하게 되었어. 특히, ‘p’와 ‘P’, ‘q’와 ‘Q’의 차이를 구분하는 것이 중요했고, 이를 통해 계절성 시계열 데이터 분석에 대한 이해도를 높일 수 있을 것 같아. 앞으로는 이 지식을 바탕으로 실제 데이터 분석에 적용해 보려고 해.\n헷갈렸던 점 SARIMA 모델에서 소문자 p, d, q와 대문자 P, D, Q의 차이를 명확히 구분하지 못해서, 특히 p와 P, q와 Q가 비슷해 보여서 어떤 게 과거의 일반적인 패턴을 반영하고, 어떤 게 계절성 패턴을 반영하는지 헷갈렸습니다. 계절 차분(D)과 일반 차분(d)의 개념도 연결해서 이해해야 한다는 점이 불분명했습니다.\n정리된 이해 SARIMA 모델에서 소문자 매개변수는 일반적인 시계열 데이터의 패턴을 반영하고, 대문자 매개변수는 계절성 패턴을 반영하는 중요한 차이점이 있습니다. 소문자(p, d, q)는 최근 과거의 데이터 패턴을, 대문자(P, D, Q)는 계절 주기별 패턴을 분석하는 데 사용됩니다. 이 두 가지를 명확히 구분하고 활용해야 계절성을 가진 시계열 데이터를 정확하게 예측할 수 있습니다.\nimport pandas as pd from statsmodels.tsa.statespace.sarimax import SARIMAX import matplotlib.pyplot as plt # 가상 월별 항당뇨제 데이터 생성 data = pd.DataFrame({ 'Date': pd.date_range(start='2020-01-01', periods=36, freq='M'), 'Sales': [100 + i * 2 + (i % 12) * 5 for i in range(36)] # 간단한 계절성 패턴 포함 }) 8. SARIMA 모델 탐색, 속도와 교육용 설정 이해 무엇을 배웠나 SARIMA 모델의 파라미터 탐색 시 모델 적합 시간의 중요성을 깨달았고, 단순히 코어 수를 늘리는 것보다 탐색 범위를 줄이는 것이 효율적이라는 것을 알게 되었다. 또한, 교육용으로 제공된 모델은 실제 데이터에 바로 적용하기 전에 추가적인 검증 과정을 거쳐야 한다는 점을 명확히 이해했다. 시계열 분석 절차의 단계를 정리하면서 실질적인 분석 흐름을 파악하는 데 도움이 되었다.\n헷갈렸던 점 SARIMA 모델의 파라미터 조합을 하나씩 테스트할 때마다 모델을 처음부터 다시 만들어야 해서 시간이 너무 오래 걸린다는 것을 제대로 이해하지 못했어요. 또한, 강의에서 제공된 교육용 모델을 실제 데이터에 바로 적용할 수 있다고 생각해서 아쉬웠습니다. 모델 적합 속도와 실제 적용 가능성에 대한 인식이 부족했던 것 같습니다.\n정리된 이해 SARIMA 모델 차수 탐색 시, 모델 재적합 시간의 비효율성을 줄이기 위해 ACF/PACF 그래프를 활용하여 탐색 범위를 최대한 좁히는 것이 병렬화보다 중요하며, 교육용 모델은 실제 적용 전 추가적인 검증 단계를 거쳐야 한다. 시계열 분석은 정상성 확인, 차분, 차수 탐색, 잔차 진단, Rolling Forecast, 그리고 Baseline 비교의 단계를 거쳐야 성공적인 예측 모델을 구축할 수 있다.\n# 탐색 범위 축소 예시 from statsmodels.tsa.statespace.sarimax import SARIMAX import itertools # 파 9. SARIMAX 모델, 외생변수 활용 및 Rolling Forecast 이해 무엇을 배웠나 SARIMAX 모델에서 외생변수를 사용할 때, 미리 알고 있는 변수는 미래 시점에 대한 예측 없이 그대로 활용할 수 있다는 점을 알게 되었다. 또한 외생변수가 항상 예측 성능을 향상시키지 않고, 예측 오차를 유발할 수 있다는 점을 깨달았으며, 한 단계 예측과 롤링 포워드 방식을 통해 모델을 실시간으로 업데이트할 수 있음을 이해했다. 앞으로는 외생변수 선택과 예측 방식에 더욱 신중하게 접근해야 할 것 같다.\n헷갈렸던 점 SARIMAX 모델에서 외생변수를 사용할 때, 미래 전체 기간에 대해 외생변수를 예측해야 하는지, 그리고 외생변수를 많이 추가하면 예측 성능이 항상 좋아지는지에 대해 혼란스러웠습니다. 또한, 한 단계 예측과 롤링 포워드 예측 방식의 차이점을 명확하게 이해하지 못하고 있었고, 실제 운영 방식에 대한 구체적인 예시가 부족했습니다.\n정리된 이해 SARIMAX 모델에서 외생변수는 미리 알고 있는 변수는 예측 없이 그대로 활용 가능하고, 외부 데이터는 별도로 예측해야 하며, 미래값이 완전히 미지의 변수는 사용하지 않거나 별도 모델로 관리해야 한다는 것을 알게 되었다. 한 단계 예측과 rolling forecast 방식을 통해 실제 데이터를 지속적으로 업데이트하며 예측 성능을 개선할 수 있다는 점도 명확히 이해했다.\nt 시점 데이터 → t+1 예측 → 실제 t+1 관측 → 데이터 갱신 → t+2 예측 rolling forecast 적용 방법 10. 오후 수업 후기: 모델, 평가, 그리고 비즈니스 가치 판단 무엇을 배웠나 오늘 수업에서 분류 자동화부터 계절 시계열 분석까지 빠르게 진행되면서 모델 선택, 기술 연관성, 그리고 복잡성과 비즈니스 가치 판단에 어려움을 느꼈습니다. 하지만 실험 구조를 통제하는 파이프라인의 중요성, 모델 평가 지표와 SHAP 해석의 필요성, 그리고 모델의 복잡성이 항상 높은 비즈니스 가치를 의미하는 것은 아니라는 점을 다시 한번 되새겼습니다. 앞으로는 파이프라인 구축과 모델 평가 지표 이해에 집중하여 실무에 적용 가능한 지식을 쌓아야겠습니다.\n헷갈렸던 점 분류 자동화부터 계절 시계열 분석까지 빠르게 진행되면서 각 기술들이 어떻게 연결되는지 파악하기 어려웠다. 모델 평가 지표들을 어떻게 우선순위해서 봐야 할지, 그리고 앙상블, SHAP, 팀 프로젝트 설계가 서로 어떻게 연결되는지 이해하는 데 특히 어려움을 느꼈다. 복잡한 모델이 비즈니스 가치를 얼마나 높이는지 판단하는 기준도 명확하지 않았다.\n정리된 이해 전체적인 실험 구조를 파이프라인으로 구축하여 실험 조건을 통제하는 것이 중요하며, 모델 성능을 측정하는 다양한 지표(ROC-AUC, MAPE)와 모델 해석 기법(SHAP)을 활용해야 합니다. 또한, 모델의 복잡성이 항상 비즈니스 가치를 높이는 것은 아니므로, 운영 비용과 시간 등을 고려하여 최적의 모델을 선택해야 한다는 점을 깨달았습니다.\nfrom sklearn.pipeline import Pipeline 11. 데이터 불균형 문제 해결을 위한 샘플링 기법 활용 무엇을 배웠나 데이터 불균형 문제를 처음 접했을 때 정확도가 높다고 해서 모델이 잘 학습되었다고 생각했지만, 실제로는 다수 클래스에 치우친 결과일 수 있다는 점을 알게 되었습니다. 또한 다양한 샘플링 기법들을 이해하고, 각 기법의 목적과 장단점을 구분하여 데이터 불균형 문제를 해결하는 데 도움이 될 수 있음을 확인했습니다. 특히, SMOTE와 같은 기법을 활용하여 소수 클래스를 늘리는 방법도 숙지했습니다.\n헷갈렸던 점 처음에는 모델 정확도만으로 학습 상태를 판단하다가 데이터 불균형 문제가 성능에 미치는 영향에 대해 제대로 이해하지 못했습니다. 다양한 샘플링 기법들의 이름이 비슷해서 각각의 목적과 작동 방식이 무엇인지 구별하기 어려웠고, 어떤 상황에 어떤 기법을 적용해야 하는지 헷갈렸습니다.\n정리된 이해 데이터 불균형 상황에서는 모델의 정확도가 실제 성능을 제대로 반영하지 못할 수 있기 때문에, 클래스별 데이터 개수를 확인하는 것이 중요합니다. 다양한 샘플링 기법들은 데이터 불균형 문제를 해결하기 위한 방법으로, 각 기법의 작동 방식과 장단점을 이해하고 데이터셋에 적합한 기법을 선택해야 합니다. 특히 SMOTE와 같은 기법은 새로운 데이터를 생성하여 소수 클래스를 늘리는 효과가 있습니다.\nquality_counts = wine['quality'].value_counts() plt.bar(quality_counts.index, quality_counts.values) plt.show() from imblearn.under_sampling import RandomUnderSampler sampler = RandomUnderSampler(random_state=42) X, y = sampler.fit_resample(X, y) from imblearn.over_sampling import SMOTE smote = SMOTE(random_state=42) X, y = smote.fit_resample(X, y) 12. 의사결정나무 모델링을 위한 특성 엔지니어링 가이드 무엇을 배웠나 의사결정나무 모델링 시 스케일링이 필수는 아니지만, 다른 모델과의 일관성을 위해 학습하는 과정이 필요하다는 것을 깨달았습니다. 문자열 데이터 처리 방법을 고민하며, 성별을 더미 변수로 만들고 나이를 비닝하는 등의 특성 엔지니어링 기법을 활용할 수 있다는 점을 알게 되었습니다. 또한, 의사결정나무 시각화를 통해 데이터 분리 기준을 직접 확인하는 것이 중요하다는 것을 배웠습니다.\n헷갈렸던 점 의사결정나무 모델링 시 숫자 데이터 스케일링이 필수적인지에 대한 의문이 있었고, 문자열 데이터를 어떻게 처리해야 할지 명확하지 않았습니다. 특히 성별이나 이름과 같은 문자열 열을 어떻게 변환해야 할지 고민했습니다.\n정리된 이해 의사결정나무는 숫자 데이터의 스케일링에 큰 영향을 받지 않지만, 다른 모델과의 일관성을 위해 스케일링을 적용할 수 있으며, 시각화를 통해 데이터 분기 기준을 확인하는 것이 중요합니다. 문자열 데이터는 pd.get_dummies 함수를 사용하여 더미 변수로 변환하여 처리할 수 있으며, 연속적인 나이 데이터는 비닝을 통해 범주형 데이터로 변환하여 모델링에 활용할 수 있습니다. 이러한 과정을 통해 데이터의 특성을 잘 반영하는 의사결정나무 모델을 구축할 수 있습니다.\nplt.figure(dpi=150) tree.plot_tree(model, fontsize=5, feature_names=features) plt.show() from sklearn.preprocessing import MinMaxScaler scaler = MinMaxScaler() X['Fare'] = scaler.fit_transform(X[['Fare']]) def transform_age(age): return age // 10 X['Age'] = X['Age'].map(transform_age) X = pd.get_dummies(X, columns=['Sex']) 13. 선형 회귀 모델 구현 및 이해 정리 무엇을 배웠나 직접 경사하강법을 구현하여 선형 회귀를 만드는 과정을 이해하면서, 사이킷런의 LinearRegression()과의 차이점을 명확히 파악하게 되었다. 경사하강법의 핵심은 학습률 조절이며, 이를 통해 손실 함수를 최소화하는 최적의 계수를 찾는다는 것을 알게 되었다. 또한, 단순 선형 회귀, 다중 선형 회귀, 다항 회귀가 LinearRegression()을 기반으로 하지만, 데이터 전처리 및 모델 설정에서 차이가 있다는 것을 깨달았다.\n헷갈렸던 점 직접 경사하강법으로 구현하고 사이킷런의 LinearRegression()을 사용하는 과정이 비슷해서 실제 차이점을 명확히 구분하기 어려웠다. 단순 선형 회귀, 다중 선형 회귀, 다항 회귀 모델들이 모두 LinearRegression() 클래스를 활용하는 점 때문에 어떤 기준으로 모델을 구분해야 할지 헷갈렸다. 학습률을 너무 크게 설정하면 학습이 불안정해지고, 너무 작게 설정하면 학습 속도가 느려지는 점이 중요하게 느껴졌다.\n정리된 이해 직접 경사하강법을 구현하는 것과 사이킷런의 LinearRegression()을 사용하는 것은 개념적으로 유사하지만, 직접 구현은 학습률 조절 등 세부적인 과정을 이해해야 하는 반면 사이킷런은 이러한 과정을 간편하게 처리해준다는 차이가 있다. 단순 선형 회귀, 다중 선형 회귀, 다항 회귀 모델 모두 LinearRegression()을 활용할 수 있으며, 모델의 차이는 데이터 전처리 및 가설 함수 설계에 따라 결정된다.\ndef gradient_descent(X, y, iters, lr): beta_0 = np.zeros((1, 1)) beta_1 = np.zeros((1, 1)) for i in range(iters): y_pred = prediction(beta_0, beta_1, X) loss = np.mean(np.square(y - y_pred)) beta0_delta, beta1_delta = update_beta(X, y, y_pred, lr) beta_0 -= beta0_delta beta_1 -= beta1_delta return beta_0, beta_1 14. 교차 검증과 정규화 회귀 완벽 이해하기 무엇을 배웠나 K-Fold 교차 검증을 통해 train_test_split()만으로는 얻을 수 없는 더 신뢰성 있는 모델 성능 평가가 가능하다는 점을 알게 되었다. 특히 K-Fold 교차 검증은 데이터 활용도를 높여주어 데이터가 부족할 때 더욱 유용하다. 또한, Ridge, Lasso, ElasticNet 정규화 방식의 차이점을 이해하고 각 정규화 방식이 L1, L2 정규화에 따라 모델의 계수에 미치는 영향에 대해 명확하게 파악하게 되었다.\n헷갈렸던 점 처음에는 train_test_split()으로 이미 데이터를 나눴는데, 왜 K-Fold 교차 검증을 해야 하는지 이해가 안 갔어요. 그리고 Ridge, Lasso, ElasticNet 같은 정규화 회귀 방법들이 왜 서로 다른지, 각각 어떤 기준으로 계수를 조정하는지 명확하게 파악하기 어려웠습니다. L1, L2 정규화의 개념과 그 영향에 대한 이해가 부족했습니다.\n정리된 이해 K-Fold 교차 검증은 데이터를 여러 조각으로 나누어 학습과 검증을 반복함으로써 모델의 성능을 더 안정적으로 평가하는 방법입니다. train_test_split()으로 데이터를 나눈 후에도, K-Fold 교차 검증을 통해 모델이 다양한 데이터 조합에 얼마나 잘 일반화되는지 확인할 수 있습니다. 정규화 회귀는 과적합을 방지하기 위해 모델의 복잡도를 줄이는 방법이며, 각 정규화 방법(Ridge, Lasso, ElasticNet)은 L1 또는 L2 규제 항을 사용하여 모델의 계수를 조정하는 방식이 다릅니다.\nfrom sklearn.model_selection import KFold kfold = KFold(n_splits=5) 15. 회귀 모델 평가 지표 완벽 분석: RSS, MAE, MSE, R2 무엇을 배웠나 회귀 모델 평가 지표인 RSS, MAE, MSE, R2를 학습하면서 각 지표가 오차를 측정하는 방식의 차이와 R2 값 해석에 대해 명확히 이해하지 못했던 점이 있었다. RSS는 오차 제곱합으로, 데이터 크기에 민감하며 비교가 어렵고, MAE는 오차의 절대값 평균으로 직관적인 이해가 가능하다는 것을 알게 되었다. 또한 R2 값이 음수가 되는 경우도 고려해야 함을 학습했다.\n헷갈렸던 점 회귀 모델 평가 지표들을 보면서, 각 지표가 어떻게 오차를 계산하는지, 그리고 어떤 상황에서 어떤 지표를 사용하는 것이 적절한지 파악하는 데 어려움을 느꼈습니다. 특히 R2 값의 의미를 완벽하게 이해하지 못해서, 값이 높다고 해서 무조건 좋은 것인지, 아니면 다른 상황들도 고려해야 하는지 헷갈렸습니다.\n정리된 이해 회귀 모델 평가 지표인 RSS, MAE, MSE, R2를 학습하면서 오차 계산 방식의 차이와 R2 값 해석에 어려움을 겪었지만, 각 지표의 정의와 특징을 명확히 이해하게 되었다. RSS는 오차 제곱합, MAE는 절대 오차의 평균, MSE는 MSE는 오차 제곱의 평균이며, R2는 모델의 설명력을 나타내는 지표임을 알게 되었다. 특히 R2 값이 0에 가까울 때는 모델이 데이터를 설명하는 데 실패했고, 음수일 때는 예측이 실제 값보다 더 나쁘다는 의미임을 이해하게 되었다.\ndef return_RSS(test_y, predicted): RSS = sum((test_y[i] - predicted[i]) ** 2 for i in range(len(test_y))) return RSS from sklearn.metrics import mean_absolute_error MAE = mean_absolute_error(test_y, predicted) 총평 오늘 오후 전체에서 배운 것 분류 모델 파이프라인 구축, 모델 선택 시 다양한 요소를 고려하는 방법, 그리고 SARIMA 모델을 포함한 시계열 분석까지 폭넓게 학습했습니다. 데이터 불균형 문제 해결, 의사결정나무 모델링, 선형 회귀 모델 구현, 교차 검증, 회귀 모델 평가 지표까지 꼼꼼하게 학습하며 실무 적용 가능성을 높였습니다. 앞으로는 학습한 내용을 바탕으로 실전 데이터 분석 프로젝트에 적용하며 더욱 깊이 있는 이해를 해나가겠습니다.\n다음에 조심할 것 모델 선택 시 성능 지표만 보지 말고 효율성, 안정성, 해석 가능성까지 종합적으로 고려해야겠어. 특히 CatBoost나 Logistic Regression처럼 장단점이 뚜렷한 모델은 상황에 맞게 활용해야 할 것 같아. 마지막으로, 비즈니스 가치와 모델의 복잡성을 연결해서 판단하는 연습을 꾸준히 해야 실질적인 문제 해결에 도움이 될 것 같아.\n다음 복습 주제 CatBoost 래퍼와 Stacking, 그리고 SHAP 해석을 좀 더 깊이 파고들어서 실제 프로젝트에 적용해 보고 싶어. 특히 SHAP 해석 결과를 토대로 변수 엔지니어링 아이디어를 얻는 방법을 익히고 싶어. 마지막으로, 회귀 모델 평가 지표에 대한 이해도를 높이고, 실제 데이터에 적용하면서 각 지표의 장단점을 비교 분석해 보는 시간을 가졌으면 좋겠어.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "3052",
+  "inLanguage": "en",
+  "datePublished": "2026-07-09T00:00:00Z",
+  "dateModified": "2026-07-09T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-07-09-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      분류부터 시계열 분석까지, 머신러닝 핵심 개념과 실무 적용 노하우 정리
+    </h1>
+    <div class="post-description">
+      2026-07-09 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-09 00:00:00 +0000 UTC'>2026년 7월 9일</span>&nbsp;·&nbsp;<span>15 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EB%B6%84%EB%A5%98-%EB%AA%A8%EB%8D%B8-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EB%B0%8F-%EB%B6%80%EC%8A%A4%ED%8C%85-%EB%AA%A8%EB%8D%B8-%ED%99%9C%EC%9A%A9-%EA%B0%80%EC%9D%B4%EB%93%9C">분류 모델 파이프라인 및 부스팅 모델 활용 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-10%EA%B0%9C-%EB%AA%A8%EB%8D%B8-%ED%8A%9C%EB%8B%9D-%EB%B0%8F-%EB%8B%A4%EA%B8%B0%EC%A4%80-%EC%84%A0%ED%83%9D-%EC%84%B1%EB%8A%A5-%ED%9A%A8%EC%9C%A8%EC%84%B1-%EC%95%88%EC%A0%95%EC%84%B1-%EA%B3%A0%EB%A0%A4">10개 모델 튜닝 및 다기준 선택: 성능, 효율성, 안정성 고려</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-catboost-%EB%9E%98%ED%8D%BC%EC%99%80-stacking-%EB%B3%B5%EC%A0%9C-%ED%98%B8%ED%99%98%EC%84%B1-%EB%B0%8F-%EC%84%B1%EB%8A%A5-%ED%96%A5%EC%83%81%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%9D%B4%ED%95%B4">CatBoost 래퍼와 Stacking: 복제 호환성 및 성능 향상을 위한 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-shap-%ED%95%B4%EC%84%9D%EA%B3%BC-%ED%95%B5%EC%8B%AC-%EB%B3%80%EC%88%98-%ED%8C%8C%EC%95%85-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EA%B0%80%EC%9D%B4%EB%93%9C">SHAP 해석과 핵심 변수 파악: 초보자를 위한 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%EA%B3%B5%EB%AA%A8%EC%A0%84-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%9D%B4%ED%95%B4%EC%99%80-%ED%95%B5%EC%8B%AC-%EC%A7%88%EB%AC%B8-%ED%95%B4%EA%B2%B0-%EA%B0%80%EC%9D%B4%EB%93%9C">머신러닝 공모전, 데이터 이해와 핵심 질문 해결 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="6">
+<li><a href="#6-%ED%8C%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%97%AD%ED%95%A0-%EB%B6%84%EB%8B%B4%EA%B3%BC-scqa-%EB%B0%9C%ED%91%9C-%EA%B5%AC%EC%A1%B0-%EC%9D%B4%ED%95%B4">팀 프로젝트 역할 분담과 SCQA 발표 구조 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="7">
+<li><a href="#7-sarima-%EB%AA%A8%EB%8D%B8%EC%9D%98-%EA%B3%84%EC%A0%88-%EC%8B%9C%EA%B3%84%EC%97%B4-%EA%B5%AC%EC%A1%B0-%EC%9D%B4%ED%95%B4">SARIMA 모델의 계절 시계열 구조 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="8">
+<li><a href="#8-sarima-%EB%AA%A8%EB%8D%B8-%ED%83%90%EC%83%89-%EC%86%8D%EB%8F%84%EC%99%80-%EA%B5%90%EC%9C%A1%EC%9A%A9-%EC%84%A4%EC%A0%95-%EC%9D%B4%ED%95%B4">SARIMA 모델 탐색, 속도와 교육용 설정 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="9">
+<li><a href="#9-sarimax-%EB%AA%A8%EB%8D%B8-%EC%99%B8%EC%83%9D%EB%B3%80%EC%88%98-%ED%99%9C%EC%9A%A9-%EB%B0%8F-rolling-forecast-%EC%9D%B4%ED%95%B4">SARIMAX 모델, 외생변수 활용 및 Rolling Forecast 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="10">
+<li><a href="#10-%EC%98%A4%ED%9B%84-%EC%88%98%EC%97%85-%ED%9B%84%EA%B8%B0-%EB%AA%A8%EB%8D%B8-%ED%8F%89%EA%B0%80-%EA%B7%B8%EB%A6%AC%EA%B3%A0-%EB%B9%84%EC%A6%88%EB%8B%88%EC%8A%A4-%EA%B0%80%EC%B9%98-%ED%8C%90%EB%8B%A8">오후 수업 후기: 모델, 평가, 그리고 비즈니스 가치 판단</a></li>
+</ol>
+</li>
+<li>
+<ol start="11">
+<li><a href="#11-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%88%EA%B7%A0%ED%98%95-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%83%98%ED%94%8C%EB%A7%81-%EA%B8%B0%EB%B2%95-%ED%99%9C%EC%9A%A9">데이터 불균형 문제 해결을 위한 샘플링 기법 활용</a></li>
+</ol>
+</li>
+<li>
+<ol start="12">
+<li><a href="#12-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95%EB%82%98%EB%AC%B4-%EB%AA%A8%EB%8D%B8%EB%A7%81%EC%9D%84-%EC%9C%84%ED%95%9C-%ED%8A%B9%EC%84%B1-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A7%81-%EA%B0%80%EC%9D%B4%EB%93%9C">의사결정나무 모델링을 위한 특성 엔지니어링 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="13">
+<li><a href="#13-%EC%84%A0%ED%98%95-%ED%9A%8C%EA%B7%80-%EB%AA%A8%EB%8D%B8-%EA%B5%AC%ED%98%84-%EB%B0%8F-%EC%9D%B4%ED%95%B4-%EC%A0%95%EB%A6%AC">선형 회귀 모델 구현 및 이해 정리</a></li>
+</ol>
+</li>
+<li>
+<ol start="14">
+<li><a href="#14-%EA%B5%90%EC%B0%A8-%EA%B2%80%EC%A6%9D%EA%B3%BC-%EC%A0%95%EA%B7%9C%ED%99%94-%ED%9A%8C%EA%B7%80-%EC%99%84%EB%B2%BD-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">교차 검증과 정규화 회귀 완벽 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="15">
+<li><a href="#15-%ED%9A%8C%EA%B7%80-%EB%AA%A8%EB%8D%B8-%ED%8F%89%EA%B0%80-%EC%A7%80%ED%91%9C-%EC%99%84%EB%B2%BD-%EB%B6%84%EC%84%9D-rss-mae-mse-r2">회귀 모델 평가 지표 완벽 분석: RSS, MAE, MSE, R2</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-분류-모델-파이프라인-및-부스팅-모델-활용-가이드">1. 분류 모델 파이프라인 및 부스팅 모델 활용 가이드<a hidden class="anchor" aria-hidden="true" href="#1-분류-모델-파이프라인-및-부스팅-모델-활용-가이드">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>부스팅 모델만으로 모든 정형 데이터 분석을 해결할 수 있다는 착각에서 벗어나, 기준 모델과의 비교를 통해 성능을 객관적으로 평가해야 한다는 점을 알게 되었다. 또한, 데이터 누수를 방지하고 실험 재현성을 높이기 위해 파이프라인을 활용하여 데이터 전처리 및 모델 학습 단계를 통합해야 한다는 것을 배웠다. 이제 파이프라인의 역할을 이해하고 데이터 분석 워크플로우를 효율적으로 구축할 수 있을 것이다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>처음에는 XGBoost, LightGBM, CatBoost만 있으면 정형 데이터 분석이 다 될 것 같았는데, 다른 모델들도 함께 사용해야 한다는 점을 간과했습니다. 또한, Pipeline과 일반 함수가 어떤 차이점을 가지는지 명확히 이해하지 못해서, 데이터 전처리, 모델 학습 과정을 어떻게 연결해야 할지 혼동했습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>부스팅 모델 외에도 다양한 기준 모델을 활용하여 성능 비교를 해야 하고, <code>Pipeline</code>은 데이터 전처리 및 모델 학습 과정을 연결하여 실험의 일관성과 재현성을 확보하는 중요한 도구라는 것을 이해하게 되었다. 이제는 단순히 강력한 모델을 사용하는 것보다 전체적인 분석 프로세스를 고려해야 할 것 같다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.pipeline <span style="color:#f92672">import</span> Pipeline
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.preprocessing <span style="color:#f92672">import</span> StandardScaler
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pipeline <span style="color:#f92672">=</span> Pipeline([
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;scaler&#39;</span>, StandardScaler()),  <span style="color:#75715e"># 전처리</span>
+</span></span></code></pre></div><h2 id="2-10개-모델-튜닝-및-다기준-선택-성능-효율성-안정성-고려">2. 10개 모델 튜닝 및 다기준 선택: 성능, 효율성, 안정성 고려<a hidden class="anchor" aria-hidden="true" href="#2-10개-모델-튜닝-및-다기준-선택-성능-효율성-안정성-고려">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>모델 선택은 단순히 최고 성능 지표를 가진 모델을 고르는 것이 아니라, 성능, 효율성, 안정성, 해석 가능성 등 다양한 요소를 종합적으로 고려해야 한다는 것을 배웠습니다. 특히 CatBoost는 좋은 성능을 보이지만 학습 시간이 오래 걸리고 과적합될 가능성이 있다는 점, 그리고 Logistic Regression의 낮은 성능에도 불구하고 가진 장점(안정성, 해석 가능성)을 이해하게 되었습니다. 앞으로는 다기준 의사결정 과정을 통해 최적의 모델을 선택해야겠습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>CatBoost가 ROC-AUC 점수가 높다고 해서 무조건 좋은 모델이라고 생각했지만, 학습 시간과 과적합 정도를 고려하니 효율성이 떨어지는 것 같았습니다. 강사님이 로지스틱 회귀를 선호하시는 이유가 성능 지표만으로는 설명이 안 될 것 같아서 궁금했습니다. 모델 선택 기준에 대한 고민이 필요했습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>모델 선택은 단순히 검증 ROC-AUC 점수만으로 결정할 수 없고, 학습 시간, 과적합 차이, 안정성, 해석 가능성을 종합적으로 고려해야 한다는 것을 알게 되었습니다. 특히 Logistic Regression은 성능은 낮지만 안정성과 해석 가능성이 높아 중요한 역할을 할 수 있다는 점을 인지하게 되었습니다. 앞으로는 다기준 의사결정 관점에서 모델을 선택하고, 성능 지표 외 다른 요소들을 함께 고려해야겠습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.model_selection <span style="color:#f92672">import</span> RandomizedSearchCV
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.ensemble <span style="color:#f92672">import</span> RandomForestClassifier
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.metrics <span style="color:#f92672">import</span> roc_auc_score
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>param_grid <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;n_estimators&#39;</span>: np<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">50</span>, <span style="color:#ae81ff">200</span>, <span style="color:#ae81ff">50</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;max_depth&#39;</span>: [<span style="color:#66d9ef">None</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">30</span>],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;min_samples_split&#39;</span>: [<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">10</span>]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="3-catboost-래퍼와-stacking-복제-호환성-및-성능-향상을-위한-이해">3. CatBoost 래퍼와 Stacking: 복제 호환성 및 성능 향상을 위한 이해<a hidden class="anchor" aria-hidden="true" href="#3-catboost-래퍼와-stacking-복제-호환성-및-성능-향상을-위한-이해">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>CatBoost 모델을 sklearn 파이프라인과 함께 사용하기 위한 래퍼의 목적이 단순히 데이터 누수 방지가 아니라, 모델 복제 호환성을 확보하는 데 있다는 것을 알게 되었다. Stacking은 다양한 모델을 활용하여 서로 다른 오류 패턴을 보완하는 방식으로 성능 향상을 기대할 수 있지만, 반드시 성능이 보장되는 것은 아니라는 점을 이해했다. CatBoost 래퍼 클래스를 직접 정의해보면서, 래퍼의 역할과 중요성을 좀 더 명확하게 파악할 수 있었다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>래퍼의 역할이 데이터 누수 방지라고 생각했는데, 실제로는 CatBoost 모델을 sklearn 환경에서 복제해서 사용할 수 있도록 호환성을 맞춰주는 것이 중요하다는 것을 알게 되었다. 단순히 여러 모델을 쌓는다고 해서 무조건 성능이 향상되는 것이 아니고, 모델들의 다양성이 성능 향상에 중요한 역할을 한다는 점도 명확히 이해했다. 래퍼 클래스를 직접 정의해보니, CatBoost를 sklearn과 함께 사용하는 방법을 체감할 수 있었다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>CatBoost 모델을 sklearn 파이프라인과 함께 사용하기 위해 <code>CloneSafeCatBoost</code> 래퍼는 단순히 데이터 누수 방지 기능 외에도 모델의 복제 기능을 가능하게 하는 데 중요한 역할을 합니다. Stacking을 사용할 때 성능 향상은 모델들의 다양성에 달려있으며, 비슷한 유형의 모델들을 섞는다고 해서 무조건 성능이 좋아지는 것은 아닙니다. 다양한 알고리즘을 활용하여 서로 다른 오류 패턴을 가진 모델들을 결합하는 것이 중요합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.base <span style="color:#f92672">import</span> BaseEstimator, ClassifierMixin
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> catboost <span style="color:#f92672">import</span> CatBoostClassifier
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CloneSafeCatBoost</span>(BaseEstimator, ClassifierMixin):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, params):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>params <span style="color:#f92672">=</span> params
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>model <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fit</span>(self, X, y):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>model <span style="color:#f92672">=</span> CatBoostClassifier(<span style="color:#f92672">**</span>self<span style="color:#f92672">.</span>params)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>model<span style="color:#f92672">.</span>fit(X, y)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">predict</span>(self, X):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>model<span style="color:#f92672">.</span>predict(X)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">predict_proba</span>(self, X):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>model<span style="color:#f92672">.</span>predict_proba(X)
+</span></span></code></pre></div><h2 id="4-shap-해석과-핵심-변수-파악-초보자를-위한-가이드">4. SHAP 해석과 핵심 변수 파악: 초보자를 위한 가이드<a hidden class="anchor" aria-hidden="true" href="#4-shap-해석과-핵심-변수-파악-초보자를-위한-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>SHAP 그래프 해석 시, 세로축은 중요도, 가로축은 예측 결과 방향, 색상은 변수 값의 크기를 나타냄을 이해했다. 단순히 SHAP 요약 상위 변수를 핵심 변수로 단정짓기보다는, 다양한 검증 방법을 통해 판단해야 함을 알게 되었다. 특히 연속형 변수의 경우, 빨간색은 값이 증가할수록 예측이 증가하고, 파란색은 감소하는 것을 의미하는 것을 명확히 파악했다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>SHAP 그래프에서 색깔과 위치를 보고 변수의 의미를 바로 파악하기 어려웠습니다. 특히 성별이나 나이와 같은 연속형 변수가 빨간색인지 파란색인지, 그리고 어떤 값을 의미하는지 혼란스러웠습니다. 또한 SHAP 요약에서 상위 변수들을 무조건 핵심 변수로 판단할 수 있는지, 다른 검증 과정이 필요한지 명확하지 않았습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>SHAP 요약 그래프에서는 세로축이 변수의 중요도를 나타내고, 가로축은 변수 값 변화에 따른 예측 변화 방향을 보여줍니다. 색상은 변수 값의 크기를 나타내며, 빨간색은 값이 클수록 예측을 증가시키는 방향으로, 파란색은 감소시키는 방향으로 해석할 수 있습니다. 단순히 SHAP 요약 상위 변수만 핵심 변수로 단정짓기보다는, 다양한 검증을 통해 결론을 내려야 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>- age: 빨강 = 나이가 많음 → 예측 증가, 파랑 = 나이가 적음 → 예측 감소
+</span></span><span style="display:flex;"><span>- fare: 빨강 = 요금 높음 → 예측 증가, 파랑 = 요금 낮음 → 예측 감소
+</span></span></code></pre></div><h2 id="5-머신러닝-공모전-데이터-이해와-핵심-질문-해결-가이드">5. 머신러닝 공모전, 데이터 이해와 핵심 질문 해결 가이드<a hidden class="anchor" aria-hidden="true" href="#5-머신러닝-공모전-데이터-이해와-핵심-질문-해결-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>머신러닝 공모전에서 알고리즘 적용보다 데이터 자체에 대한 깊은 이해가 중요하다는 점을 깨달았습니다. 데이터 탐색과 분석을 통해 문제 정의와 답을 검증하는 과정이 핵심이며, 변수 간의 관계를 시각화하고 분석하는 것이 중요합니다. 단순히 모델을 돌리는 것이 아니라 데이터에 대한 통찰력을 얻는 것이 성공의 열쇠라는 것을 알게 되었습니다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>처음에는 머신러닝 공모전이 알고리즘을 많이 시도해서 점수를 높이는 경쟁이라고 생각했어요. 데이터셋의 구조와 변수 간의 관계를 파악하는 데 어려움을 겪었고, 특히 <code>한 행</code>이 무엇을 의미하는지 명확하게 이해하지 못했습니다. 어떤 오류가 중요한지, 검증 점수의 신뢰성을 어떻게 판단해야 할지 혼란스러웠어요.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>머신러닝 공모전은 알고리즘 경쟁이 아니라 데이터의 구조와 패턴을 이해하고 문제 해결에 활용하는 과정임을 깨달았습니다. 데이터 분석은 질문을 정의하고 증거로 답을 검증하는 과정이며, 모델은 그 도구일 뿐입니다. 이제는 데이터 탐색, 변수 중요성 파악, 모델 해석에 집중하며 데이터 자체에 대한 이해도를 높여야겠습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> seaborn <span style="color:#66d9ef">as</span> sns
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 데이터 로드</span>
+</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#39;customer_data.csv&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 시각화를 통한 변수 관계 파악</span>
+</span></span><span style="display:flex;"><span>sns<span style="color:#f92672">.</span>pairplot(data, hue<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;reorder_target&#39;</span>)  <span style="color:#75715e"># &#39;reorder_target&#39;은 재</span>
+</span></span></code></pre></div><h2 id="6-팀-프로젝트-역할-분담과-scqa-발표-구조-이해">6. 팀 프로젝트 역할 분담과 SCQA 발표 구조 이해<a hidden class="anchor" aria-hidden="true" href="#6-팀-프로젝트-역할-분담과-scqa-발표-구조-이해">#</a></h2>
+<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
+<p>팀 프로젝트에서 역할 분담은 단순히 작업을 나누는 것이 아니라, 공통의 실험 명세를 기반으로 병렬적으로 진행되어야 팀 전체의 일관성을 유지할 수 있다는 것을 알게 되었습니다. 또한, SCQA 구조와 피라미드 원칙을 활용하여 발표를 체계적으로 구성하는 방법을 배우면서, 프로젝트 결과물을 효과적으로 전달하는 방법에 대한 이해도를 높였습니다. 개인적인 프로젝트 경험을 통해 배운 점들을 팀 프로젝트에 적용하여 더욱 효율적인 협업을 할 수 있을 것 같습니다.</p>
+<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
+<p>팀 역할 분담을 할 때 각자 맡은 일에만 집중하면 전체적인 일관성이 사라질까 봐 걱정이었고, 발표 구조는 SCQA와 피라미드 원칙이 어떻게 연결되는지 명확하게 이해하지 못했습니다. 역할 분담이 단순히 작업을 나누는 것이 아니라, 전체 프로젝트의 흐름을 고려해야 한다는 점을 인지하지 못했습니다.</p>
+<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
+<p>팀 프로젝트에서 역할 분담은 각 역할이 독립적으로 진행되는 것이 아니라, 공통의 실험 명세를 기반으로 연결되어 병렬적으로 진행되어야 프로젝트의 일관성을 유지할 수 있습니다. 또한 프로젝트 발표는 SCQA 구조와 피라미드 원칙을 활용하여 상황, 문제, 질문, 답변의 흐름을 명확하게 제시하고 핵심 내용을 시각적으로 전달해야 효과적입니다. 개인적인 프로젝트 경험을 바탕으로 이러한 원칙들을 적용해나가도록 노력하겠습니다.</p>
+<pre tabindex="0"><code></code></pre><h2 id="7-sarima-모델의-계절-시계열-구조-이해">7. SARIMA 모델의 계절 시계열 구조 이해<a hidden class="anchor" aria-hidden="true" href="#7-sarima-모델의-계절-시계열-구조-이해">#</a></h2>
+<h3 id="무엇을-배웠나-6">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-6">#</a></h3>
+<p>SARIMA 모델에서 소문자 매개변수는 일반적인 과거 패턴을, 대문자 매개변수는 계절성 패턴을 반영한다는 것을 명확히 이해하게 되었어. 특히, &lsquo;p&rsquo;와 &lsquo;P&rsquo;, &lsquo;q&rsquo;와 &lsquo;Q&rsquo;의 차이를 구분하는 것이 중요했고, 이를 통해 계절성 시계열 데이터 분석에 대한 이해도를 높일 수 있을 것 같아. 앞으로는 이 지식을 바탕으로 실제 데이터 분석에 적용해 보려고 해.</p>
+<h3 id="헷갈렸던-점-6">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-6">#</a></h3>
+<p>SARIMA 모델에서 소문자 p, d, q와 대문자 P, D, Q의 차이를 명확히 구분하지 못해서, 특히 p와 P, q와 Q가 비슷해 보여서 어떤 게 과거의 일반적인 패턴을 반영하고, 어떤 게 계절성 패턴을 반영하는지 헷갈렸습니다. 계절 차분(D)과 일반 차분(d)의 개념도 연결해서 이해해야 한다는 점이 불분명했습니다.</p>
+<h3 id="정리된-이해-6">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-6">#</a></h3>
+<p>SARIMA 모델에서 소문자 매개변수는 일반적인 시계열 데이터의 패턴을 반영하고, 대문자 매개변수는 계절성 패턴을 반영하는 중요한 차이점이 있습니다. 소문자(<code>p</code>, <code>d</code>, <code>q</code>)는 최근 과거의 데이터 패턴을, 대문자(<code>P</code>, <code>D</code>, <code>Q</code>)는 계절 주기별 패턴을 분석하는 데 사용됩니다. 이 두 가지를 명확히 구분하고 활용해야 계절성을 가진 시계열 데이터를 정확하게 예측할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> statsmodels.tsa.statespace.sarimax <span style="color:#f92672">import</span> SARIMAX
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 가상 월별 항당뇨제 데이터 생성</span>
+</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame({
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Date&#39;</span>: pd<span style="color:#f92672">.</span>date_range(start<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;2020-01-01&#39;</span>, periods<span style="color:#f92672">=</span><span style="color:#ae81ff">36</span>, freq<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;M&#39;</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Sales&#39;</span>: [<span style="color:#ae81ff">100</span> <span style="color:#f92672">+</span> i <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> (i <span style="color:#f92672">%</span> <span style="color:#ae81ff">12</span>) <span style="color:#f92672">*</span> <span style="color:#ae81ff">5</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">36</span>)]  <span style="color:#75715e"># 간단한 계절성 패턴 포함</span>
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div><h2 id="8-sarima-모델-탐색-속도와-교육용-설정-이해">8. SARIMA 모델 탐색, 속도와 교육용 설정 이해<a hidden class="anchor" aria-hidden="true" href="#8-sarima-모델-탐색-속도와-교육용-설정-이해">#</a></h2>
+<h3 id="무엇을-배웠나-7">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-7">#</a></h3>
+<p>SARIMA 모델의 파라미터 탐색 시 모델 적합 시간의 중요성을 깨달았고, 단순히 코어 수를 늘리는 것보다 탐색 범위를 줄이는 것이 효율적이라는 것을 알게 되었다. 또한, 교육용으로 제공된 모델은 실제 데이터에 바로 적용하기 전에 추가적인 검증 과정을 거쳐야 한다는 점을 명확히 이해했다. 시계열 분석 절차의 단계를 정리하면서 실질적인 분석 흐름을 파악하는 데 도움이 되었다.</p>
+<h3 id="헷갈렸던-점-7">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-7">#</a></h3>
+<p>SARIMA 모델의 파라미터 조합을 하나씩 테스트할 때마다 모델을 처음부터 다시 만들어야 해서 시간이 너무 오래 걸린다는 것을 제대로 이해하지 못했어요. 또한, 강의에서 제공된 교육용 모델을 실제 데이터에 바로 적용할 수 있다고 생각해서 아쉬웠습니다. 모델 적합 속도와 실제 적용 가능성에 대한 인식이 부족했던 것 같습니다.</p>
+<h3 id="정리된-이해-7">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-7">#</a></h3>
+<p>SARIMA 모델 차수 탐색 시, 모델 재적합 시간의 비효율성을 줄이기 위해 ACF/PACF 그래프를 활용하여 탐색 범위를 최대한 좁히는 것이 병렬화보다 중요하며, 교육용 모델은 실제 적용 전 추가적인 검증 단계를 거쳐야 한다. 시계열 분석은 정상성 확인, 차분, 차수 탐색, 잔차 진단, Rolling Forecast, 그리고 Baseline 비교의 단계를 거쳐야 성공적인 예측 모델을 구축할 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 탐색 범위 축소 예시</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> statsmodels.tsa.statespace.sarimax <span style="color:#f92672">import</span> SARIMAX
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> itertools
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 파</span>
+</span></span></code></pre></div><h2 id="9-sarimax-모델-외생변수-활용-및-rolling-forecast-이해">9. SARIMAX 모델, 외생변수 활용 및 Rolling Forecast 이해<a hidden class="anchor" aria-hidden="true" href="#9-sarimax-모델-외생변수-활용-및-rolling-forecast-이해">#</a></h2>
+<h3 id="무엇을-배웠나-8">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-8">#</a></h3>
+<p>SARIMAX 모델에서 외생변수를 사용할 때, 미리 알고 있는 변수는 미래 시점에 대한 예측 없이 그대로 활용할 수 있다는 점을 알게 되었다. 또한 외생변수가 항상 예측 성능을 향상시키지 않고, 예측 오차를 유발할 수 있다는 점을 깨달았으며, 한 단계 예측과 롤링 포워드 방식을 통해 모델을 실시간으로 업데이트할 수 있음을 이해했다. 앞으로는 외생변수 선택과 예측 방식에 더욱 신중하게 접근해야 할 것 같다.</p>
+<h3 id="헷갈렸던-점-8">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-8">#</a></h3>
+<p>SARIMAX 모델에서 외생변수를 사용할 때, 미래 전체 기간에 대해 외생변수를 예측해야 하는지, 그리고 외생변수를 많이 추가하면 예측 성능이 항상 좋아지는지에 대해 혼란스러웠습니다. 또한, 한 단계 예측과 롤링 포워드 예측 방식의 차이점을 명확하게 이해하지 못하고 있었고, 실제 운영 방식에 대한 구체적인 예시가 부족했습니다.</p>
+<h3 id="정리된-이해-8">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-8">#</a></h3>
+<p>SARIMAX 모델에서 외생변수는 미리 알고 있는 변수는 예측 없이 그대로 활용 가능하고, 외부 데이터는 별도로 예측해야 하며, 미래값이 완전히 미지의 변수는 사용하지 않거나 별도 모델로 관리해야 한다는 것을 알게 되었다. 한 단계 예측과 rolling forecast 방식을 통해 실제 데이터를 지속적으로 업데이트하며 예측 성능을 개선할 수 있다는 점도 명확히 이해했다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>      t 시점 데이터 → t+1 예측 → 실제 t+1 관측 → 데이터 갱신 → t+2 예측
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>      rolling forecast 적용 방법
+</span></span></code></pre></div><h2 id="10-오후-수업-후기-모델-평가-그리고-비즈니스-가치-판단">10. 오후 수업 후기: 모델, 평가, 그리고 비즈니스 가치 판단<a hidden class="anchor" aria-hidden="true" href="#10-오후-수업-후기-모델-평가-그리고-비즈니스-가치-판단">#</a></h2>
+<h3 id="무엇을-배웠나-9">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-9">#</a></h3>
+<p>오늘 수업에서 분류 자동화부터 계절 시계열 분석까지 빠르게 진행되면서 모델 선택, 기술 연관성, 그리고 복잡성과 비즈니스 가치 판단에 어려움을 느꼈습니다. 하지만 실험 구조를 통제하는 파이프라인의 중요성, 모델 평가 지표와 SHAP 해석의 필요성, 그리고 모델의 복잡성이 항상 높은 비즈니스 가치를 의미하는 것은 아니라는 점을 다시 한번 되새겼습니다. 앞으로는 파이프라인 구축과 모델 평가 지표 이해에 집중하여 실무에 적용 가능한 지식을 쌓아야겠습니다.</p>
+<h3 id="헷갈렸던-점-9">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-9">#</a></h3>
+<p>분류 자동화부터 계절 시계열 분석까지 빠르게 진행되면서 각 기술들이 어떻게 연결되는지 파악하기 어려웠다. 모델 평가 지표들을 어떻게 우선순위해서 봐야 할지, 그리고 앙상블, SHAP, 팀 프로젝트 설계가 서로 어떻게 연결되는지 이해하는 데 특히 어려움을 느꼈다. 복잡한 모델이 비즈니스 가치를 얼마나 높이는지 판단하는 기준도 명확하지 않았다.</p>
+<h3 id="정리된-이해-9">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-9">#</a></h3>
+<p>전체적인 실험 구조를 파이프라인으로 구축하여 실험 조건을 통제하는 것이 중요하며, 모델 성능을 측정하는 다양한 지표(ROC-AUC, MAPE)와 모델 해석 기법(SHAP)을 활용해야 합니다. 또한, 모델의 복잡성이 항상 비즈니스 가치를 높이는 것은 아니므로, 운영 비용과 시간 등을 고려하여 최적의 모델을 선택해야 한다는 점을 깨달았습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.pipeline <span style="color:#f92672">import</span> Pipeline
+</span></span></code></pre></div><h2 id="11-데이터-불균형-문제-해결을-위한-샘플링-기법-활용">11. 데이터 불균형 문제 해결을 위한 샘플링 기법 활용<a hidden class="anchor" aria-hidden="true" href="#11-데이터-불균형-문제-해결을-위한-샘플링-기법-활용">#</a></h2>
+<h3 id="무엇을-배웠나-10">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-10">#</a></h3>
+<p>데이터 불균형 문제를 처음 접했을 때 정확도가 높다고 해서 모델이 잘 학습되었다고 생각했지만, 실제로는 다수 클래스에 치우친 결과일 수 있다는 점을 알게 되었습니다. 또한 다양한 샘플링 기법들을 이해하고, 각 기법의 목적과 장단점을 구분하여 데이터 불균형 문제를 해결하는 데 도움이 될 수 있음을 확인했습니다. 특히, SMOTE와 같은 기법을 활용하여 소수 클래스를 늘리는 방법도 숙지했습니다.</p>
+<h3 id="헷갈렸던-점-10">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-10">#</a></h3>
+<p>처음에는 모델 정확도만으로 학습 상태를 판단하다가 데이터 불균형 문제가 성능에 미치는 영향에 대해 제대로 이해하지 못했습니다. 다양한 샘플링 기법들의 이름이 비슷해서 각각의 목적과 작동 방식이 무엇인지 구별하기 어려웠고, 어떤 상황에 어떤 기법을 적용해야 하는지 헷갈렸습니다.</p>
+<h3 id="정리된-이해-10">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-10">#</a></h3>
+<p>데이터 불균형 상황에서는 모델의 정확도가 실제 성능을 제대로 반영하지 못할 수 있기 때문에, 클래스별 데이터 개수를 확인하는 것이 중요합니다. 다양한 샘플링 기법들은 데이터 불균형 문제를 해결하기 위한 방법으로, 각 기법의 작동 방식과 장단점을 이해하고 데이터셋에 적합한 기법을 선택해야 합니다. 특히 SMOTE와 같은 기법은 새로운 데이터를 생성하여 소수 클래스를 늘리는 효과가 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>quality_counts <span style="color:#f92672">=</span> wine[<span style="color:#e6db74">&#39;quality&#39;</span>]<span style="color:#f92672">.</span>value_counts()
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>bar(quality_counts<span style="color:#f92672">.</span>index, quality_counts<span style="color:#f92672">.</span>values)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> imblearn.under_sampling <span style="color:#f92672">import</span> RandomUnderSampler
+</span></span><span style="display:flex;"><span>sampler <span style="color:#f92672">=</span> RandomUnderSampler(random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>)
+</span></span><span style="display:flex;"><span>X, y <span style="color:#f92672">=</span> sampler<span style="color:#f92672">.</span>fit_resample(X, y)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> imblearn.over_sampling <span style="color:#f92672">import</span> SMOTE
+</span></span><span style="display:flex;"><span>smote <span style="color:#f92672">=</span> SMOTE(random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>)
+</span></span><span style="display:flex;"><span>X, y <span style="color:#f92672">=</span> smote<span style="color:#f92672">.</span>fit_resample(X, y)
+</span></span></code></pre></div><h2 id="12-의사결정나무-모델링을-위한-특성-엔지니어링-가이드">12. 의사결정나무 모델링을 위한 특성 엔지니어링 가이드<a hidden class="anchor" aria-hidden="true" href="#12-의사결정나무-모델링을-위한-특성-엔지니어링-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-11">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-11">#</a></h3>
+<p>의사결정나무 모델링 시 스케일링이 필수는 아니지만, 다른 모델과의 일관성을 위해 학습하는 과정이 필요하다는 것을 깨달았습니다. 문자열 데이터 처리 방법을 고민하며, 성별을 더미 변수로 만들고 나이를 비닝하는 등의 특성 엔지니어링 기법을 활용할 수 있다는 점을 알게 되었습니다. 또한, 의사결정나무 시각화를 통해 데이터 분리 기준을 직접 확인하는 것이 중요하다는 것을 배웠습니다.</p>
+<h3 id="헷갈렸던-점-11">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-11">#</a></h3>
+<p>의사결정나무 모델링 시 숫자 데이터 스케일링이 필수적인지에 대한 의문이 있었고, 문자열 데이터를 어떻게 처리해야 할지 명확하지 않았습니다. 특히 성별이나 이름과 같은 문자열 열을 어떻게 변환해야 할지 고민했습니다.</p>
+<h3 id="정리된-이해-11">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-11">#</a></h3>
+<p>의사결정나무는 숫자 데이터의 스케일링에 큰 영향을 받지 않지만, 다른 모델과의 일관성을 위해 스케일링을 적용할 수 있으며, 시각화를 통해 데이터 분기 기준을 확인하는 것이 중요합니다. 문자열 데이터는 <code>pd.get_dummies</code> 함수를 사용하여 더미 변수로 변환하여 처리할 수 있으며, 연속적인 나이 데이터는 비닝을 통해 범주형 데이터로 변환하여 모델링에 활용할 수 있습니다. 이러한 과정을 통해 데이터의 특성을 잘 반영하는 의사결정나무 모델을 구축할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(dpi<span style="color:#f92672">=</span><span style="color:#ae81ff">150</span>)
+</span></span><span style="display:flex;"><span>tree<span style="color:#f92672">.</span>plot_tree(model, fontsize<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>, feature_names<span style="color:#f92672">=</span>features)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.preprocessing <span style="color:#f92672">import</span> MinMaxScaler
+</span></span><span style="display:flex;"><span>scaler <span style="color:#f92672">=</span> MinMaxScaler()
+</span></span><span style="display:flex;"><span>X[<span style="color:#e6db74">&#39;Fare&#39;</span>] <span style="color:#f92672">=</span> scaler<span style="color:#f92672">.</span>fit_transform(X[[<span style="color:#e6db74">&#39;Fare&#39;</span>]])
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">transform_age</span>(age):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> age <span style="color:#f92672">//</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>X[<span style="color:#e6db74">&#39;Age&#39;</span>] <span style="color:#f92672">=</span> X[<span style="color:#e6db74">&#39;Age&#39;</span>]<span style="color:#f92672">.</span>map(transform_age)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>X <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>get_dummies(X, columns<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;Sex&#39;</span>])
+</span></span></code></pre></div><h2 id="13-선형-회귀-모델-구현-및-이해-정리">13. 선형 회귀 모델 구현 및 이해 정리<a hidden class="anchor" aria-hidden="true" href="#13-선형-회귀-모델-구현-및-이해-정리">#</a></h2>
+<h3 id="무엇을-배웠나-12">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-12">#</a></h3>
+<p>직접 경사하강법을 구현하여 선형 회귀를 만드는 과정을 이해하면서, 사이킷런의 <code>LinearRegression()</code>과의 차이점을 명확히 파악하게 되었다. 경사하강법의 핵심은 학습률 조절이며, 이를 통해 손실 함수를 최소화하는 최적의 계수를 찾는다는 것을 알게 되었다. 또한, 단순 선형 회귀, 다중 선형 회귀, 다항 회귀가 <code>LinearRegression()</code>을 기반으로 하지만, 데이터 전처리 및 모델 설정에서 차이가 있다는 것을 깨달았다.</p>
+<h3 id="헷갈렸던-점-12">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-12">#</a></h3>
+<p>직접 경사하강법으로 구현하고 사이킷런의 <code>LinearRegression()</code>을 사용하는 과정이 비슷해서 실제 차이점을 명확히 구분하기 어려웠다. 단순 선형 회귀, 다중 선형 회귀, 다항 회귀 모델들이 모두 <code>LinearRegression()</code> 클래스를 활용하는 점 때문에 어떤 기준으로 모델을 구분해야 할지 헷갈렸다. 학습률을 너무 크게 설정하면 학습이 불안정해지고, 너무 작게 설정하면 학습 속도가 느려지는 점이 중요하게 느껴졌다.</p>
+<h3 id="정리된-이해-12">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-12">#</a></h3>
+<p>직접 경사하강법을 구현하는 것과 사이킷런의 <code>LinearRegression()</code>을 사용하는 것은 개념적으로 유사하지만, 직접 구현은 학습률 조절 등 세부적인 과정을 이해해야 하는 반면 사이킷런은 이러한 과정을 간편하게 처리해준다는 차이가 있다. 단순 선형 회귀, 다중 선형 회귀, 다항 회귀 모델 모두 <code>LinearRegression()</code>을 활용할 수 있으며, 모델의 차이는 데이터 전처리 및 가설 함수 설계에 따라 결정된다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">gradient_descent</span>(X, y, iters, lr):
+</span></span><span style="display:flex;"><span>    beta_0 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros((<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>))
+</span></span><span style="display:flex;"><span>    beta_1 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros((<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(iters):
+</span></span><span style="display:flex;"><span>        y_pred <span style="color:#f92672">=</span> prediction(beta_0, beta_1, X)
+</span></span><span style="display:flex;"><span>        loss <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>mean(np<span style="color:#f92672">.</span>square(y <span style="color:#f92672">-</span> y_pred))
+</span></span><span style="display:flex;"><span>        beta0_delta, beta1_delta <span style="color:#f92672">=</span> update_beta(X, y, y_pred, lr)
+</span></span><span style="display:flex;"><span>        beta_0 <span style="color:#f92672">-=</span> beta0_delta
+</span></span><span style="display:flex;"><span>        beta_1 <span style="color:#f92672">-=</span> beta1_delta
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> beta_0, beta_1
+</span></span></code></pre></div><h2 id="14-교차-검증과-정규화-회귀-완벽-이해하기">14. 교차 검증과 정규화 회귀 완벽 이해하기<a hidden class="anchor" aria-hidden="true" href="#14-교차-검증과-정규화-회귀-완벽-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-13">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-13">#</a></h3>
+<p>K-Fold 교차 검증을 통해 <code>train_test_split()</code>만으로는 얻을 수 없는 더 신뢰성 있는 모델 성능 평가가 가능하다는 점을 알게 되었다. 특히 K-Fold 교차 검증은 데이터 활용도를 높여주어 데이터가 부족할 때 더욱 유용하다. 또한, Ridge, Lasso, ElasticNet 정규화 방식의 차이점을 이해하고 각 정규화 방식이 L1, L2 정규화에 따라 모델의 계수에 미치는 영향에 대해 명확하게 파악하게 되었다.</p>
+<h3 id="헷갈렸던-점-13">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-13">#</a></h3>
+<p>처음에는 <code>train_test_split()</code>으로 이미 데이터를 나눴는데, 왜 K-Fold 교차 검증을 해야 하는지 이해가 안 갔어요. 그리고 Ridge, Lasso, ElasticNet 같은 정규화 회귀 방법들이 왜 서로 다른지, 각각 어떤 기준으로 계수를 조정하는지 명확하게 파악하기 어려웠습니다. L1, L2 정규화의 개념과 그 영향에 대한 이해가 부족했습니다.</p>
+<h3 id="정리된-이해-13">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-13">#</a></h3>
+<p>K-Fold 교차 검증은 데이터를 여러 조각으로 나누어 학습과 검증을 반복함으로써 모델의 성능을 더 안정적으로 평가하는 방법입니다. <code>train_test_split()</code>으로 데이터를 나눈 후에도, K-Fold 교차 검증을 통해 모델이 다양한 데이터 조합에 얼마나 잘 일반화되는지 확인할 수 있습니다. 정규화 회귀는 과적합을 방지하기 위해 모델의 복잡도를 줄이는 방법이며, 각 정규화 방법(Ridge, Lasso, ElasticNet)은 L1 또는 L2 규제 항을 사용하여 모델의 계수를 조정하는 방식이 다릅니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.model_selection <span style="color:#f92672">import</span> KFold
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>kfold <span style="color:#f92672">=</span> KFold(n_splits<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>)
+</span></span></code></pre></div><h2 id="15-회귀-모델-평가-지표-완벽-분석-rss-mae-mse-r2">15. 회귀 모델 평가 지표 완벽 분석: RSS, MAE, MSE, R2<a hidden class="anchor" aria-hidden="true" href="#15-회귀-모델-평가-지표-완벽-분석-rss-mae-mse-r2">#</a></h2>
+<h3 id="무엇을-배웠나-14">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-14">#</a></h3>
+<p>회귀 모델 평가 지표인 RSS, MAE, MSE, R2를 학습하면서 각 지표가 오차를 측정하는 방식의 차이와 R2 값 해석에 대해 명확히 이해하지 못했던 점이 있었다. RSS는 오차 제곱합으로, 데이터 크기에 민감하며 비교가 어렵고, MAE는 오차의 절대값 평균으로 직관적인 이해가 가능하다는 것을 알게 되었다. 또한 R2 값이 음수가 되는 경우도 고려해야 함을 학습했다.</p>
+<h3 id="헷갈렸던-점-14">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-14">#</a></h3>
+<p>회귀 모델 평가 지표들을 보면서, 각 지표가 어떻게 오차를 계산하는지, 그리고 어떤 상황에서 어떤 지표를 사용하는 것이 적절한지 파악하는 데 어려움을 느꼈습니다. 특히 R2 값의 의미를 완벽하게 이해하지 못해서, 값이 높다고 해서 무조건 좋은 것인지, 아니면 다른 상황들도 고려해야 하는지 헷갈렸습니다.</p>
+<h3 id="정리된-이해-14">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-14">#</a></h3>
+<p>회귀 모델 평가 지표인 RSS, MAE, MSE, R2를 학습하면서 오차 계산 방식의 차이와 R2 값 해석에 어려움을 겪었지만, 각 지표의 정의와 특징을 명확히 이해하게 되었다. RSS는 오차 제곱합, MAE는 절대 오차의 평균, MSE는 MSE는 오차 제곱의 평균이며, R2는 모델의 설명력을 나타내는 지표임을 알게 되었다. 특히 R2 값이 0에 가까울 때는 모델이 데이터를 설명하는 데 실패했고, 음수일 때는 예측이 실제 값보다 더 나쁘다는 의미임을 이해하게 되었다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">return_RSS</span>(test_y, predicted):
+</span></span><span style="display:flex;"><span>    RSS <span style="color:#f92672">=</span> sum((test_y[i] <span style="color:#f92672">-</span> predicted[i]) <span style="color:#f92672">**</span> <span style="color:#ae81ff">2</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(test_y)))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> RSS
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.metrics <span style="color:#f92672">import</span> mean_absolute_error
+</span></span><span style="display:flex;"><span>MAE <span style="color:#f92672">=</span> mean_absolute_error(test_y, predicted)
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>분류 모델 파이프라인 구축, 모델 선택 시 다양한 요소를 고려하는 방법, 그리고 SARIMA 모델을 포함한 시계열 분석까지 폭넓게 학습했습니다. 데이터 불균형 문제 해결, 의사결정나무 모델링, 선형 회귀 모델 구현, 교차 검증, 회귀 모델 평가 지표까지 꼼꼼하게 학습하며 실무 적용 가능성을 높였습니다. 앞으로는 학습한 내용을 바탕으로 실전 데이터 분석 프로젝트에 적용하며 더욱 깊이 있는 이해를 해나가겠습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>모델 선택 시 성능 지표만 보지 말고 효율성, 안정성, 해석 가능성까지 종합적으로 고려해야겠어. 특히 CatBoost나 Logistic Regression처럼 장단점이 뚜렷한 모델은 상황에 맞게 활용해야 할 것 같아. 마지막으로, 비즈니스 가치와 모델의 복잡성을 연결해서 판단하는 연습을 꾸준히 해야 실질적인 문제 해결에 도움이 될 것 같아.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>CatBoost 래퍼와 Stacking, 그리고 SHAP 해석을 좀 더 깊이 파고들어서 실제 프로젝트에 적용해 보고 싶어. 특히 SHAP 해석 결과를 토대로 변수 엔지니어링 아이디어를 얻는 방법을 익히고 싶어. 마지막으로, 회귀 모델 평가 지표에 대한 이해도를 높이고, 실제 데이터에 적용하면서 각 지표의 장단점을 비교 분석해 보는 시간을 가졌으면 좋겠어.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://Han-think.github.io/learning/2026-07-08-am-daily/">
+    <span class="title">Next »</span>
+    <span>시계열 분석부터 머신러닝 핵심 개념까지, 완전정복 학습 정리</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
