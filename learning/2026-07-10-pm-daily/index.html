@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>비지도 학습, 데이터 분석의 핵심과 실제 적용 노하우 습득 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-07-10 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-07-10-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-07-10-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-10-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="비지도 학습, 데이터 분석의 핵심과 실제 적용 노하우 습득">
+  <meta property="og:description" content="2026-07-10 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-07-10T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-10T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="비지도 학습, 데이터 분석의 핵심과 실제 적용 노하우 습득">
+  <meta name="twitter:description" content="2026-07-10 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "비지도 학습, 데이터 분석의 핵심과 실제 적용 노하우 습득",
+      "item": "https://Han-think.github.io/learning/2026-07-10-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "비지도 학습, 데이터 분석의 핵심과 실제 적용 노하우 습득",
+  "name": "비지도 학습, 데이터 분석의 핵심과 실제 적용 노하우 습득",
+  "description": "2026-07-10 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 PCA와 t-SNE, 차원 축소 시각화 완벽 이해 K-Means 클러스터링과 평가 지표 완벽 이해 GMM과 EM 알고리즘: 초보자를 위한 이해 및 활용 실제 데이터 분석, 초보자의 시행착오와 깨달음 비지도 학습 노트북 비교 분석: 목표와 스타일 차이점 군집화 수식 이해와 CSV 퀵 스캔 함수 활용 가이드 AI와 인간의 협업: 데이터 분석 워크플로우 이해 총평 1. PCA와 t-SNE, 차원 축소 시각화 완벽 이해 무엇을 배웠나 PCA와 t-SNE가 모두 차원 축소에 사용되지만, PCA는 선형 방식이고 데이터의 분산을 보존하는 반면, t-SNE는 비선형 방식으로 데이터의 국소적인 구조를 시각화하는 데 중점을 둡니다. t-SNE는 군집화를 수행하는 알고리즘이 아니며, 시각화 결과에 사용된 색상은 단순히 라벨이나 추가 정보에 따른 것입니다. 이제 PCA는 재사용성이 높고, t-SNE는 시각화에 더 적합하다는 점을 이해하게 되었습니다.\n헷갈렸던 점 PCA와 t-SNE가 모두 차원 축소 기법이라고 막연하게 생각했고, t-SNE가 데이터 군집을 알아서 찾아준다고 믿었습니다. t-SNE 시각화에서 색깔이 실제 군집을 나타낸다고 생각해서 해석에 어려움을 겪었습니다.\n정리된 이해 PCA는 데이터를 선형적으로 축소하며 분산을 최대한 유지하는 반면, t-SNE는 비선형적인 방식으로 데이터의 국소적인 구조를 시각화하는 데 초점을 맞추는 차원 축소 기법입니다. t-SNE는 시각화 도구일 뿐 군집화를 수행하는 것이 아니며, 산점도에 색깔이 적용된 경우에도 이는 실제 군집 결과를 나타내는 것이 아니라 추가적인 정보를 반영한 것입니다. 따라서 PCA는 재사용성이 높고, t-SNE는 시각화에 더 적합하다고 이해했습니다.\nimport numpy as np import matplotlib.pyplot as plt from sklearn.datasets import make_blobs from sklearn.decomposition import PCA from sklearn.manifold import TSNE 2. K-Means 클러스터링과 평가 지표 완벽 이해 무엇을 배웠나 K-Means 알고리즘의 비용 함수는 지도 학습 손실 함수와 달리 데이터 포인트와 클러스터 중심 사이의 거리를 최소화하는 것을 목표로 한다는 것을 명확히 알게 되었고, Elbow Method는 시각적인 변이 감소 지점을 찾는 방법이며 경사하강법과 직접적인 관련이 없다는 것을 이해했습니다. 또한 실루엣 점수와 같은 클러스터링 지표는 정확도와는 다른 의미를 가지며, 군집의 응집도와 분리도를 나타내는 중요한 지표라는 것을 배웠습니다. 다양한 클러스터링 평가 지표의 의미를 제대로 파악하고 해석하는 것이 중요함을 알게 되었습니다.\n헷갈렸던 점 K-Means의 비용 함수가 지도 학습의 오차율과 같은 개념이라고 생각해서 헷갈렸고, Elbow Method가 경사하강법처럼 작동한다고 오해했었어. 실루엣 점수를 정확도처럼 해석하려다가 잘못된 부분이 있었고, 클러스터링 지표들의 의미를 제대로 파악하지 못했던 것 같아.\n정리된 이해 K-Means의 비용 함수는 데이터 포인트와 클러스터 중심 사이의 거리를 최소화하는 값이며, Elbow Method는 시각적으로 최적의 클러스터 수를 찾는 방법이고, 실루엣 점수나 Dunn Index는 군집의 품질을 평가하는 지표라는 것을 명확히 이해하게 되었다. 특히, 이러한 지표들이 정확도와 같은 지도 학습 지표와 직접적인 연관이 없다는 점을 기억해야겠다. 앞으로는 이러한 개념들을 바탕으로 클러스터링 결과를 더 정확하게 분석하고 해석할 수 있을 것이다.\nimport numpy as np from sklearn.cluster import KMeans from sklearn.metrics import silhouette_score, calinski_harabasz_score, davies_bould 3. GMM과 EM 알고리즘: 초보자를 위한 이해 및 활용 무엇을 배웠나 GMM의 혼합비율은 전체 성분의 가중치를, 소속 확률은 각 데이터 포인트가 특정 군집에 속할 확률을 나타낸다는 점을 명확히 이해하게 되었다. 또한 Soft Clustering의 개념과 EM 알고리즘의 역할, 그리고 predict()와 predict_proba() 함수의 차이를 제대로 구분할 수 있게 되었다. 이러한 이해를 바탕으로 실제 프로젝트에 GMM을 적용하여 다양한 범주에 대한 확률적 소속을 활용하는 시스템을 구축할 수 있을 것 같다.\n헷갈렸던 점 혼합비율과 데이터 포인트의 소속 확률을 동일한 개념으로 생각해서 당황했고, 군집 영역이 단순히 교집합으로만 존재한다고 생각했습니다. predict() 함수가 GMM에서만 사용되는 줄 알았어서 다른 클러스터링 알고리즘에서도 활용될 수 있다는 점이 신기했습니다.\n정리된 이해 GMM의 혼합비율은 각 성분이 전체 데이터에서 차지하는 가중치를 나타내고, predict_proba()는 각 데이터 포인트가 특정 군집에 속할 확률을 보여주므로 이 둘을 혼동하지 않도록 주의해야 합니다. 겹치는 군집 영역은 단순한 교집합이 아닌, 여러 군집의 확률이 높아지는 복잡한 영역이며, 이는 데이터 포인트가 여러 군집에 속할 가능성이 있음을 의미합니다. EM 알고리즘은 이러한 GMM 모델의 파라미터를 반복적으로 학습하여 최적화하는 과정입니다.\n# 예시: GMM 모델 생성 및 파라미터 확인 from sklearn.mixture import GaussianMixture # 3개의 가우시안 성분을 가진 GMM 모델 생성 gmm = GaussianMixture(n_components=3, random_state=0) # 데이터에 모델 적합 # X는 실제 데이터 gmm.fit(X) # 각 성분의 가중치 (혼합 비율) 확인 print(gmm.weights_) # 각 데이터 포인트의 군집 소속 확률 확인 proba = gmm.predict_proba(X) print(proba) # 예측된 군집 레이블 확인 labels = gmm.predict(X) print(labels) 4. 실제 데이터 분석, 초보자의 시행착오와 깨달음 무엇을 배웠나 강의 데이터와 실제 데이터의 차이점을 명확히 이해하게 되었고, 실제 데이터는 훨씬 더 복잡하고 다양한 문제를 내포한다는 것을 알게 되었다. 이상치 제거보다는 집단 간 이질성 고려의 중요성을 깨달았고, ‘재현율’과 ‘재현성’의 의미를 정확히 구분하는 방법을 배웠다. 앞으로 실제 데이터 분석에서는 이러한 점들을 염두에 두고 접근해야겠다.\n헷갈렸던 점 데이터 준비 과정에서 강의 데이터처럼 쉽게 정리될 거라고 생각했지만, 실제 데이터는 결측치, 중복, 단위 불일치 등 다양한 문제로 훨씬 복잡했습니다. 나이만으로 그룹화할 때 이상치와 집단 간 차이를 어떻게 해석해야 할지 감이 잡히지 않았고, ‘재현율’과 ‘재현성’ 용어를 헷갈려 사용했습니다.\n정리된 이해 강의 데이터와 실제 데이터를 비교하며, 실제 데이터는 결측치, 중복, 단위 불일치 등 다양한 문제로 훨씬 복잡하다는 것을 알게 되었습니다. 이상치는 무조건 제거하는 것이 아니라, 데이터의 특징을 반영하는 중요한 정보일 수 있으므로 신중하게 판단해야 하며, ‘재현율’과 ‘재현성’은 서로 다른 개념이라는 것도 명확히 구분하게 되었습니다. 앞으로는 실제 데이터 분석 시 이러한 점들을 고려하여 더욱 신중하게 접근해야겠습니다.\n5. 비지도 학습 노트북 비교 분석: 목표와 스타일 차이점 무엇을 배웠나 비지도학습 노트북들을 비교하면서 목표와 스타일에 따른 설계 방식의 차이를 이해하게 되었어요. 코드의 간결함과 상세한 설명의 균형이 중요하며, 학습 목적에 맞춰 노트북 스타일을 조정해야 한다는 것을 깨달았습니다. 특히 코드 셀에 주석을 추가하고 시각화를 활용하여 이해도를 높이는 방법을 익혔습니다.\n헷갈렸던 점 세 개의 비지도 학습 노트북을 비교하면서 각 노트북의 장단점을 명확히 구분하기 어려웠습니다. 특히, ‘Gemini 연습 노트북’이 다른 노트북보다 부족한 이유를 구체적으로 설명하기 어려웠고, 코드의 간결성과 상세한 설명 사이의 어떤 균형이 더 효과적인 학습 도구가 될 수 있는지 판단하기 힘들었습니다.\n정리된 이해 비지도학습 노트북들을 비교하면서, 단순히 코드가 짧은 것이 좋은지, 상세한 설명이 많은 것이 좋은지 판단하기 어려웠습니다. 결국 노트북의 목적에 따라 간결함과 설명을 적절히 조화시키는 것이 중요하며, 특히 초보 학습자에게는 코드 이해를 돕는 상세한 주석과 시각화가 필수적이라는 것을 알게 되었습니다. 앞으로는 학습 목적과 사용자 경험을 고려하여 노트북을 제작하는 데 집중해야겠습니다.\n# PCA 스케일링을 적용하여 데이터 표준화 from sklearn.preprocessing import StandardScaler scaler = StandardScaler() scaled_data = scaler.fit_transform(data) # t-SNE 시각화 from sklearn.manifold import TSNE tsne = TSNE(n_components=2) tsne_results = tsne.fit_ 6. 군집화 수식 이해와 CSV 퀵 스캔 함수 활용 가이드 무엇을 배웠나 군집화 수식 구현 시 데이터 타입 변환의 필요성과 K-Means 관성 계산의 효율성 차이를 이해하게 되었고, 실루엣 계수 계산 시 예외 처리에 대한 고민을 했습니다. CSV 파일 퀵 스캔 함수를 통해 데이터 탐색의 순서와 목적을 파악하고, 이상치(outlier)를 단순히 제거하는 것이 아니라 데이터의 건전성을 확인하는 지표로 활용해야 함을 알았습니다. 데이터 탐색 자동화 도구가 모델 선택보다 우선순위가 될 수 있다는 점을 깨달았습니다.\n헷갈렸던 점 데이터 분석 공식이 실제 코드로 어떻게 구현되는지 이해하는 데 어려움을 겪었습니다. CSV 파일을 처음 불러왔을 때 어떤 부분을 먼저 살펴봐야 할지 막막했고, IQR을 이용한 이상치 검출 결과를 어떻게 처리해야 할지 고민했습니다.\n정리된 이해 군집화 수식들을 코드로 구현하는 과정을 이해하는 데 어려움을 겪었지만, 수식과 코드를 연결하고, 데이터 분석 라이브러리 함수를 활용하는 방법은 직관적으로 파악하게 되었습니다. CSV 파일을 빠르게 스캔하여 데이터의 전반적인 상태를 파악하는 과정을 체계적으로 정리했고, 이상치(outlier)를 발견했을 때 즉시 삭제하기보다는 데이터의 무결성을 확인하는 중요한 지표로 활용해야 한다는 점을 알게 되었습니다.\n# 유클리드 거리 계산 예시 (np.asarray, dtype=float 설명) import numpy as np def euclidean_distance(point1, point2): \"\"\"두 점 사이의 유클리드 거리를 계산합니다.\"\"\" point1 = np.asarray(point1, dtype=float) # 데이터 타입을 float로 명시적으로 변환하여 수치 연산의 정확성을 보장합니다. point2 = np.asarray(point2, dtype=float) return np.sqrt(np.sum((point1 - point2)**2)) # K-Means 관성 계산 예시 (라이브러리 함수 사용) from sklearn.cluster import KMeans kmeans = KMeans(n_clusters=3, random_state=0, n_init=10) kmeans.fit(X) # X는 데이터셋 inertia = kmeans.inertia_ # K-Means 관성 (클러스터링 모델의 최적화 상태를 측정) # 실루엣 계수 구현 예시 (max(a, b) 사용, denominator == 0 예외 처리) def silhouette_coefficient(a, b, denominator): \"\"\"실루엣 계수를 계산합니다.\"\"\" if denominator == 0: return 0 # 예외 처리: 분모가 0인 경우 0을 반환 return max(a, b) / denominator # CSV 파일 읽기 및 인코딩 처리 예시 import pandas as pd try: df = pd.read_csv('your_file.csv', encoding='utf-8') # 기본 인코딩 시도 except UnicodeDecodeError: df = pd.read_csv('your_file.csv', encoding='cp949') # 다른 인코딩으로 시도 # IQR을 이용한 이상치 검출 예시 Q1 = df['column_name'].quantile(0.25) Q3 = df['column_name'].quantile(0.75) IQR = Q3 - Q1 lower_bound = Q1 - 1.5 * IQR upper_bound = Q3 + 1.5 * IQR outliers = df[(df['column_name'] \u003c lower_bound) | (df['column_name'] \u003e upper_bound)] 7. AI와 인간의 협업: 데이터 분석 워크플로우 이해 무엇을 배웠나 AI 보조 데이터 분석에서 AI는 반복적인 코드 작성과 실험에 강점을 보이지만, 인간은 명확한 목표 설정과 결과 해석, 최종 승인 과정이 중요하다는 점을 알게 되었다. 특히, AI가 생성한 코드와 군집화 결과는 반드시 검증하고, 현재 사용 중인 도구들의 한계를 파악하여 적절한 도구 선택과 통합 전략이 필요하다는 것을 배웠다. 이러한 과정을 통해 도구 활용 능력과 한계 이해가 중요하다는 것을 확인했다.\n헷갈렸던 점 AI가 코드를 작성해주면 내가 얼마나 알아야 하는지, 그리고 자동화된 군집 결과의 정확성을 어떻게 보장해야 할지 처음에는 헷갈렸다. 현재 사용하고 있는 도구들이 완벽하게 제 요구사항을 충족하지 못하는 이유도 명확하게 파악하기 어려웠다. 하지만 결국 AI는 도구일 뿐이고, 최종적인 판단과 해석은 인간의 몫이라는 것을 깨달았다.\n정리된 이해 AI는 반복적인 코드 작성 및 실험에 유용하지만, 명확한 목표 설정과 결과 해석은 여전히 인간의 역할이다. AI를 활용하여 분석 결과를 요약하고 다음 실험 조건을 제안하는 것은 효율적이지만, 자동화된 프로세스가 오류를 발생시킬 수 있으므로 주의해야 한다. 중요한 것은 AI 도구의 사용법과 한계를 정확히 이해하고 적절하게 활용하는 능력이다.\n# 예시: 데이터 정제 코드 (Python) # 실제 코드는 데이터 구조 및 분석 목표에 따라 달라짐 # 1. 라이브러리 불러오기 import pandas as pd # 2. 데이터 불러오기 df = pd.read_csv(\"your_data.csv\") # 3. 결측치 처리 df = df.fillna(df.mean()) # 4. 이상치 제거 (예: IQR 사용) Q1 = df.quantile(0.25) Q3 = df.quantile(0.75) df = df[(df \u003e= Q1) \u0026 (df \u003c= Q3)] # 5. 특정 컬럼 변환 (예: 문자열 -\u003e 숫자) df['column_name'] = pd.to_numeric(df['column_name'], errors='coerce') df = df.dropna(subset=['column_name']) # NaN 값 제거 # 6. 결과 저장 df.to_csv(\"cleaned_data.csv\", index=False) 총평 오늘 오후 전체에서 배운 것 오늘 학습을 통해 PCA와 t-SNE, K-Means, GMM 등 주요 비지도 학습 알고리즘의 원리와 활용법을 확실히 이해하게 되었고, 실제 데이터 분석에서 발생할 수 있는 복잡한 문제들과 해결 방안에 대한 통찰력을 얻었습니다. 특히 데이터 탐색 자동화의 중요성, AI와의 협업, 그리고 결과 해석의 필요성을 강조하며 데이터 분석 워크플로우 전반에 대한 이해를 높였습니다. 앞으로 실제 프로젝트에서 이러한 지식과 경험을 바탕으로 더 효과적인 분석을 수행할 수 있을 것 같습니다.\n다음에 조심할 것 실제 데이터 분석에서는 이상치 제거보다는 집단 간의 이질성을 고려하는 것이 중요하다는 점을 항상 기억해야겠어. 또한, AI가 생성한 코드는 반드시 검증하고, 현재 사용 중인 도구들의 한계를 파악하며 적절한 도구 선택과 통합 전략을 세우는 것을 잊지 말아야겠어.\n다음 복습 주제 GMM과 EM 알고리즘의 수학적 배경을 좀 더 깊이 파고들어, 파라미터 업데이트 과정과 소속 확률 계산 방식의 세부적인 작동 원리를 다시 한번 짚어보고 싶어. 또한, 실제 데이터 분석 시 이상치 처리와 집단 간 이질성 고려를 위한 보다 효과적인 전략을 고민하며 다양한 기법들을 실험해보고 싶어.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "1682",
+  "inLanguage": "en",
+  "datePublished": "2026-07-10T00:00:00Z",
+  "dateModified": "2026-07-10T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-07-10-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      비지도 학습, 데이터 분석의 핵심과 실제 적용 노하우 습득
+    </h1>
+    <div class="post-description">
+      2026-07-10 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-10 00:00:00 +0000 UTC'>2026년 7월 10일</span>&nbsp;·&nbsp;<span>8 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-pca%EC%99%80-t-sne-%EC%B0%A8%EC%9B%90-%EC%B6%95%EC%86%8C-%EC%8B%9C%EA%B0%81%ED%99%94-%EC%99%84%EB%B2%BD-%EC%9D%B4%ED%95%B4">PCA와 t-SNE, 차원 축소 시각화 완벽 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-k-means-%ED%81%B4%EB%9F%AC%EC%8A%A4%ED%84%B0%EB%A7%81%EA%B3%BC-%ED%8F%89%EA%B0%80-%EC%A7%80%ED%91%9C-%EC%99%84%EB%B2%BD-%EC%9D%B4%ED%95%B4">K-Means 클러스터링과 평가 지표 완벽 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-gmm%EA%B3%BC-em-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%9D%B4%ED%95%B4-%EB%B0%8F-%ED%99%9C%EC%9A%A9">GMM과 EM 알고리즘: 초보자를 위한 이해 및 활용</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EC%8B%A4%EC%A0%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D-%EC%B4%88%EB%B3%B4%EC%9E%90%EC%9D%98-%EC%8B%9C%ED%96%89%EC%B0%A9%EC%98%A4%EC%99%80-%EA%B9%A8%EB%8B%AC%EC%9D%8C">실제 데이터 분석, 초보자의 시행착오와 깨달음</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-%EB%B9%84%EC%A7%80%EB%8F%84-%ED%95%99%EC%8A%B5-%EB%85%B8%ED%8A%B8%EB%B6%81-%EB%B9%84%EA%B5%90-%EB%B6%84%EC%84%9D-%EB%AA%A9%ED%91%9C%EC%99%80-%EC%8A%A4%ED%83%80%EC%9D%BC-%EC%B0%A8%EC%9D%B4%EC%A0%90">비지도 학습 노트북 비교 분석: 목표와 스타일 차이점</a></li>
+</ol>
+</li>
+<li>
+<ol start="6">
+<li><a href="#6-%EA%B5%B0%EC%A7%91%ED%99%94-%EC%88%98%EC%8B%9D-%EC%9D%B4%ED%95%B4%EC%99%80-csv-%ED%80%B5-%EC%8A%A4%EC%BA%94-%ED%95%A8%EC%88%98-%ED%99%9C%EC%9A%A9-%EA%B0%80%EC%9D%B4%EB%93%9C">군집화 수식 이해와 CSV 퀵 스캔 함수 활용 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="7">
+<li><a href="#7-ai%EC%99%80-%EC%9D%B8%EA%B0%84%EC%9D%98-%ED%98%91%EC%97%85-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0-%EC%9D%B4%ED%95%B4">AI와 인간의 협업: 데이터 분석 워크플로우 이해</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-pca와-t-sne-차원-축소-시각화-완벽-이해">1. PCA와 t-SNE, 차원 축소 시각화 완벽 이해<a hidden class="anchor" aria-hidden="true" href="#1-pca와-t-sne-차원-축소-시각화-완벽-이해">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>PCA와 t-SNE가 모두 차원 축소에 사용되지만, PCA는 선형 방식이고 데이터의 분산을 보존하는 반면, t-SNE는 비선형 방식으로 데이터의 국소적인 구조를 시각화하는 데 중점을 둡니다. t-SNE는 군집화를 수행하는 알고리즘이 아니며, 시각화 결과에 사용된 색상은 단순히 라벨이나 추가 정보에 따른 것입니다. 이제 PCA는 재사용성이 높고, t-SNE는 시각화에 더 적합하다는 점을 이해하게 되었습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>PCA와 t-SNE가 모두 차원 축소 기법이라고 막연하게 생각했고, t-SNE가 데이터 군집을 알아서 찾아준다고 믿었습니다. t-SNE 시각화에서 색깔이 실제 군집을 나타낸다고 생각해서 해석에 어려움을 겪었습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>PCA는 데이터를 선형적으로 축소하며 분산을 최대한 유지하는 반면, t-SNE는 비선형적인 방식으로 데이터의 국소적인 구조를 시각화하는 데 초점을 맞추는 차원 축소 기법입니다. t-SNE는 시각화 도구일 뿐 군집화를 수행하는 것이 아니며, 산점도에 색깔이 적용된 경우에도 이는 실제 군집 결과를 나타내는 것이 아니라 추가적인 정보를 반영한 것입니다. 따라서 PCA는 재사용성이 높고, t-SNE는 시각화에 더 적합하다고 이해했습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.datasets <span style="color:#f92672">import</span> make_blobs
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.decomposition <span style="color:#f92672">import</span> PCA
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.manifold <span style="color:#f92672">import</span> TSNE
+</span></span></code></pre></div><h2 id="2-k-means-클러스터링과-평가-지표-완벽-이해">2. K-Means 클러스터링과 평가 지표 완벽 이해<a hidden class="anchor" aria-hidden="true" href="#2-k-means-클러스터링과-평가-지표-완벽-이해">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>K-Means 알고리즘의 비용 함수는 지도 학습 손실 함수와 달리 데이터 포인트와 클러스터 중심 사이의 거리를 최소화하는 것을 목표로 한다는 것을 명확히 알게 되었고, Elbow Method는 시각적인 변이 감소 지점을 찾는 방법이며 경사하강법과 직접적인 관련이 없다는 것을 이해했습니다. 또한 실루엣 점수와 같은 클러스터링 지표는 정확도와는 다른 의미를 가지며, 군집의 응집도와 분리도를 나타내는 중요한 지표라는 것을 배웠습니다. 다양한 클러스터링 평가 지표의 의미를 제대로 파악하고 해석하는 것이 중요함을 알게 되었습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>K-Means의 비용 함수가 지도 학습의 오차율과 같은 개념이라고 생각해서 헷갈렸고, Elbow Method가 경사하강법처럼 작동한다고 오해했었어. 실루엣 점수를 정확도처럼 해석하려다가 잘못된 부분이 있었고, 클러스터링 지표들의 의미를 제대로 파악하지 못했던 것 같아.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>K-Means의 비용 함수는 데이터 포인트와 클러스터 중심 사이의 거리를 최소화하는 값이며, Elbow Method는 시각적으로 최적의 클러스터 수를 찾는 방법이고, 실루엣 점수나 Dunn Index는 군집의 품질을 평가하는 지표라는 것을 명확히 이해하게 되었다. 특히, 이러한 지표들이 정확도와 같은 지도 학습 지표와 직접적인 연관이 없다는 점을 기억해야겠다. 앞으로는 이러한 개념들을 바탕으로 클러스터링 결과를 더 정확하게 분석하고 해석할 수 있을 것이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.cluster <span style="color:#f92672">import</span> KMeans
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.metrics <span style="color:#f92672">import</span> silhouette_score, calinski_harabasz_score, davies_bould
+</span></span></code></pre></div><h2 id="3-gmm과-em-알고리즘-초보자를-위한-이해-및-활용">3. GMM과 EM 알고리즘: 초보자를 위한 이해 및 활용<a hidden class="anchor" aria-hidden="true" href="#3-gmm과-em-알고리즘-초보자를-위한-이해-및-활용">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>GMM의 혼합비율은 전체 성분의 가중치를, 소속 확률은 각 데이터 포인트가 특정 군집에 속할 확률을 나타낸다는 점을 명확히 이해하게 되었다. 또한 Soft Clustering의 개념과 EM 알고리즘의 역할, 그리고 <code>predict()</code>와 <code>predict_proba()</code> 함수의 차이를 제대로 구분할 수 있게 되었다. 이러한 이해를 바탕으로 실제 프로젝트에 GMM을 적용하여 다양한 범주에 대한 확률적 소속을 활용하는 시스템을 구축할 수 있을 것 같다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>혼합비율과 데이터 포인트의 소속 확률을 동일한 개념으로 생각해서 당황했고, 군집 영역이 단순히 교집합으로만 존재한다고 생각했습니다. <code>predict()</code> 함수가 GMM에서만 사용되는 줄 알았어서 다른 클러스터링 알고리즘에서도 활용될 수 있다는 점이 신기했습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>GMM의 혼합비율은 각 성분이 전체 데이터에서 차지하는 가중치를 나타내고, <code>predict_proba()</code>는 각 데이터 포인트가 특정 군집에 속할 확률을 보여주므로 이 둘을 혼동하지 않도록 주의해야 합니다. 겹치는 군집 영역은 단순한 교집합이 아닌, 여러 군집의 확률이 높아지는 복잡한 영역이며, 이는 데이터 포인트가 여러 군집에 속할 가능성이 있음을 의미합니다. EM 알고리즘은 이러한 GMM 모델의 파라미터를 반복적으로 학습하여 최적화하는 과정입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 예시: GMM 모델 생성 및 파라미터 확인</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.mixture <span style="color:#f92672">import</span> GaussianMixture
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3개의 가우시안 성분을 가진 GMM 모델 생성</span>
+</span></span><span style="display:flex;"><span>gmm <span style="color:#f92672">=</span> GaussianMixture(n_components<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 데이터에 모델 적합</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># X는 실제 데이터</span>
+</span></span><span style="display:flex;"><span>gmm<span style="color:#f92672">.</span>fit(X)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 각 성분의 가중치 (혼합 비율) 확인</span>
+</span></span><span style="display:flex;"><span>print(gmm<span style="color:#f92672">.</span>weights_)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 각 데이터 포인트의 군집 소속 확률 확인</span>
+</span></span><span style="display:flex;"><span>proba <span style="color:#f92672">=</span> gmm<span style="color:#f92672">.</span>predict_proba(X)
+</span></span><span style="display:flex;"><span>print(proba)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 예측된 군집 레이블 확인</span>
+</span></span><span style="display:flex;"><span>labels <span style="color:#f92672">=</span> gmm<span style="color:#f92672">.</span>predict(X)
+</span></span><span style="display:flex;"><span>print(labels)
+</span></span></code></pre></div><h2 id="4-실제-데이터-분석-초보자의-시행착오와-깨달음">4. 실제 데이터 분석, 초보자의 시행착오와 깨달음<a hidden class="anchor" aria-hidden="true" href="#4-실제-데이터-분석-초보자의-시행착오와-깨달음">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>강의 데이터와 실제 데이터의 차이점을 명확히 이해하게 되었고, 실제 데이터는 훨씬 더 복잡하고 다양한 문제를 내포한다는 것을 알게 되었다. 이상치 제거보다는 집단 간 이질성 고려의 중요성을 깨달았고, &lsquo;재현율&rsquo;과 &lsquo;재현성&rsquo;의 의미를 정확히 구분하는 방법을 배웠다. 앞으로 실제 데이터 분석에서는 이러한 점들을 염두에 두고 접근해야겠다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>데이터 준비 과정에서 강의 데이터처럼 쉽게 정리될 거라고 생각했지만, 실제 데이터는 결측치, 중복, 단위 불일치 등 다양한 문제로 훨씬 복잡했습니다. 나이만으로 그룹화할 때 이상치와 집단 간 차이를 어떻게 해석해야 할지 감이 잡히지 않았고, &lsquo;재현율&rsquo;과 &lsquo;재현성&rsquo; 용어를 헷갈려 사용했습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>강의 데이터와 실제 데이터를 비교하며, 실제 데이터는 결측치, 중복, 단위 불일치 등 다양한 문제로 훨씬 복잡하다는 것을 알게 되었습니다. 이상치는 무조건 제거하는 것이 아니라, 데이터의 특징을 반영하는 중요한 정보일 수 있으므로 신중하게 판단해야 하며, &lsquo;재현율&rsquo;과 &lsquo;재현성&rsquo;은 서로 다른 개념이라는 것도 명확히 구분하게 되었습니다. 앞으로는 실제 데이터 분석 시 이러한 점들을 고려하여 더욱 신중하게 접근해야겠습니다.</p>
+<pre tabindex="0"><code></code></pre><h2 id="5-비지도-학습-노트북-비교-분석-목표와-스타일-차이점">5. 비지도 학습 노트북 비교 분석: 목표와 스타일 차이점<a hidden class="anchor" aria-hidden="true" href="#5-비지도-학습-노트북-비교-분석-목표와-스타일-차이점">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>비지도학습 노트북들을 비교하면서 목표와 스타일에 따른 설계 방식의 차이를 이해하게 되었어요. 코드의 간결함과 상세한 설명의 균형이 중요하며, 학습 목적에 맞춰 노트북 스타일을 조정해야 한다는 것을 깨달았습니다. 특히 코드 셀에 주석을 추가하고 시각화를 활용하여 이해도를 높이는 방법을 익혔습니다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>세 개의 비지도 학습 노트북을 비교하면서 각 노트북의 장단점을 명확히 구분하기 어려웠습니다. 특히, &lsquo;Gemini 연습 노트북&rsquo;이 다른 노트북보다 부족한 이유를 구체적으로 설명하기 어려웠고, 코드의 간결성과 상세한 설명 사이의 어떤 균형이 더 효과적인 학습 도구가 될 수 있는지 판단하기 힘들었습니다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>비지도학습 노트북들을 비교하면서, 단순히 코드가 짧은 것이 좋은지, 상세한 설명이 많은 것이 좋은지 판단하기 어려웠습니다. 결국 노트북의 목적에 따라 간결함과 설명을 적절히 조화시키는 것이 중요하며, 특히 초보 학습자에게는 코드 이해를 돕는 상세한 주석과 시각화가 필수적이라는 것을 알게 되었습니다. 앞으로는 학습 목적과 사용자 경험을 고려하여 노트북을 제작하는 데 집중해야겠습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>   <span style="color:#75715e"># PCA 스케일링을 적용하여 데이터 표준화</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">from</span> sklearn.preprocessing <span style="color:#f92672">import</span> StandardScaler
+</span></span><span style="display:flex;"><span>   scaler <span style="color:#f92672">=</span> StandardScaler()
+</span></span><span style="display:flex;"><span>   scaled_data <span style="color:#f92672">=</span> scaler<span style="color:#f92672">.</span>fit_transform(data)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>   <span style="color:#75715e"># t-SNE 시각화</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">from</span> sklearn.manifold <span style="color:#f92672">import</span> TSNE
+</span></span><span style="display:flex;"><span>   tsne <span style="color:#f92672">=</span> TSNE(n_components<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>   tsne_results <span style="color:#f92672">=</span> tsne<span style="color:#f92672">.</span>fit_
+</span></span></code></pre></div><h2 id="6-군집화-수식-이해와-csv-퀵-스캔-함수-활용-가이드">6. 군집화 수식 이해와 CSV 퀵 스캔 함수 활용 가이드<a hidden class="anchor" aria-hidden="true" href="#6-군집화-수식-이해와-csv-퀵-스캔-함수-활용-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
+<p>군집화 수식 구현 시 데이터 타입 변환의 필요성과 K-Means 관성 계산의 효율성 차이를 이해하게 되었고, 실루엣 계수 계산 시 예외 처리에 대한 고민을 했습니다. CSV 파일 퀵 스캔 함수를 통해 데이터 탐색의 순서와 목적을 파악하고, 이상치(outlier)를 단순히 제거하는 것이 아니라 데이터의 건전성을 확인하는 지표로 활용해야 함을 알았습니다. 데이터 탐색 자동화 도구가 모델 선택보다 우선순위가 될 수 있다는 점을 깨달았습니다.</p>
+<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
+<p>데이터 분석 공식이 실제 코드로 어떻게 구현되는지 이해하는 데 어려움을 겪었습니다. CSV 파일을 처음 불러왔을 때 어떤 부분을 먼저 살펴봐야 할지 막막했고, IQR을 이용한 이상치 검출 결과를 어떻게 처리해야 할지 고민했습니다.</p>
+<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
+<p>군집화 수식들을 코드로 구현하는 과정을 이해하는 데 어려움을 겪었지만, 수식과 코드를 연결하고, 데이터 분석 라이브러리 함수를 활용하는 방법은 직관적으로 파악하게 되었습니다. CSV 파일을 빠르게 스캔하여 데이터의 전반적인 상태를 파악하는 과정을 체계적으로 정리했고, 이상치(outlier)를 발견했을 때 즉시 삭제하기보다는 데이터의 무결성을 확인하는 중요한 지표로 활용해야 한다는 점을 알게 되었습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 유클리드 거리 계산 예시 (np.asarray, dtype=float 설명)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">euclidean_distance</span>(point1, point2):
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;&#34;&#34;두 점 사이의 유클리드 거리를 계산합니다.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>  point1 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>asarray(point1, dtype<span style="color:#f92672">=</span>float) <span style="color:#75715e"># 데이터 타입을 float로 명시적으로 변환하여 수치 연산의 정확성을 보장합니다.</span>
+</span></span><span style="display:flex;"><span>  point2 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>asarray(point2, dtype<span style="color:#f92672">=</span>float)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>sqrt(np<span style="color:#f92672">.</span>sum((point1 <span style="color:#f92672">-</span> point2)<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># K-Means 관성 계산 예시 (라이브러리 함수 사용)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.cluster <span style="color:#f92672">import</span> KMeans
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>kmeans <span style="color:#f92672">=</span> KMeans(n_clusters<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, n_init<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>)
+</span></span><span style="display:flex;"><span>kmeans<span style="color:#f92672">.</span>fit(X) <span style="color:#75715e"># X는 데이터셋</span>
+</span></span><span style="display:flex;"><span>inertia <span style="color:#f92672">=</span> kmeans<span style="color:#f92672">.</span>inertia_ <span style="color:#75715e"># K-Means 관성 (클러스터링 모델의 최적화 상태를 측정)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 실루엣 계수 구현 예시 (max(a, b) 사용, denominator == 0 예외 처리)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">silhouette_coefficient</span>(a, b, denominator):
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;&#34;&#34;실루엣 계수를 계산합니다.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> denominator <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>  <span style="color:#75715e"># 예외 처리: 분모가 0인 경우 0을 반환</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> max(a, b) <span style="color:#f92672">/</span> denominator
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># CSV 파일 읽기 및 인코딩 처리 예시</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>  df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#39;your_file.csv&#39;</span>, encoding<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;utf-8&#39;</span>) <span style="color:#75715e"># 기본 인코딩 시도</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">except</span> <span style="color:#a6e22e">UnicodeDecodeError</span>:
+</span></span><span style="display:flex;"><span>  df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#39;your_file.csv&#39;</span>, encoding<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;cp949&#39;</span>) <span style="color:#75715e"># 다른 인코딩으로 시도</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># IQR을 이용한 이상치 검출 예시</span>
+</span></span><span style="display:flex;"><span>Q1 <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;column_name&#39;</span>]<span style="color:#f92672">.</span>quantile(<span style="color:#ae81ff">0.25</span>)
+</span></span><span style="display:flex;"><span>Q3 <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;column_name&#39;</span>]<span style="color:#f92672">.</span>quantile(<span style="color:#ae81ff">0.75</span>)
+</span></span><span style="display:flex;"><span>IQR <span style="color:#f92672">=</span> Q3 <span style="color:#f92672">-</span> Q1
+</span></span><span style="display:flex;"><span>lower_bound <span style="color:#f92672">=</span> Q1 <span style="color:#f92672">-</span> <span style="color:#ae81ff">1.5</span> <span style="color:#f92672">*</span> IQR
+</span></span><span style="display:flex;"><span>upper_bound <span style="color:#f92672">=</span> Q3 <span style="color:#f92672">+</span> <span style="color:#ae81ff">1.5</span> <span style="color:#f92672">*</span> IQR
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>outliers <span style="color:#f92672">=</span> df[(df[<span style="color:#e6db74">&#39;column_name&#39;</span>] <span style="color:#f92672">&lt;</span> lower_bound) <span style="color:#f92672">|</span> (df[<span style="color:#e6db74">&#39;column_name&#39;</span>] <span style="color:#f92672">&gt;</span> upper_bound)]
+</span></span></code></pre></div><h2 id="7-ai와-인간의-협업-데이터-분석-워크플로우-이해">7. AI와 인간의 협업: 데이터 분석 워크플로우 이해<a hidden class="anchor" aria-hidden="true" href="#7-ai와-인간의-협업-데이터-분석-워크플로우-이해">#</a></h2>
+<h3 id="무엇을-배웠나-6">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-6">#</a></h3>
+<p>AI 보조 데이터 분석에서 AI는 반복적인 코드 작성과 실험에 강점을 보이지만, 인간은 명확한 목표 설정과 결과 해석, 최종 승인 과정이 중요하다는 점을 알게 되었다. 특히, AI가 생성한 코드와 군집화 결과는 반드시 검증하고, 현재 사용 중인 도구들의 한계를 파악하여 적절한 도구 선택과 통합 전략이 필요하다는 것을 배웠다. 이러한 과정을 통해 도구 활용 능력과 한계 이해가 중요하다는 것을 확인했다.</p>
+<h3 id="헷갈렸던-점-6">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-6">#</a></h3>
+<p>AI가 코드를 작성해주면 내가 얼마나 알아야 하는지, 그리고 자동화된 군집 결과의 정확성을 어떻게 보장해야 할지 처음에는 헷갈렸다. 현재 사용하고 있는 도구들이 완벽하게 제 요구사항을 충족하지 못하는 이유도 명확하게 파악하기 어려웠다. 하지만 결국 AI는 도구일 뿐이고, 최종적인 판단과 해석은 인간의 몫이라는 것을 깨달았다.</p>
+<h3 id="정리된-이해-6">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-6">#</a></h3>
+<p>AI는 반복적인 코드 작성 및 실험에 유용하지만, 명확한 목표 설정과 결과 해석은 여전히 인간의 역할이다. AI를 활용하여 분석 결과를 요약하고 다음 실험 조건을 제안하는 것은 효율적이지만, 자동화된 프로세스가 오류를 발생시킬 수 있으므로 주의해야 한다. 중요한 것은 AI 도구의 사용법과 한계를 정확히 이해하고 적절하게 활용하는 능력이다.</p>
+<pre tabindex="0"><code># 예시: 데이터 정제 코드 (Python)
+# 실제 코드는 데이터 구조 및 분석 목표에 따라 달라짐
+
+# 1. 라이브러리 불러오기
+import pandas as pd
+
+# 2. 데이터 불러오기
+df = pd.read_csv(&#34;your_data.csv&#34;)
+
+# 3. 결측치 처리
+df = df.fillna(df.mean())
+
+# 4. 이상치 제거 (예: IQR 사용)
+Q1 = df.quantile(0.25)
+Q3 = df.quantile(0.75)
+df = df[(df &gt;= Q1) &amp; (df &lt;= Q3)]
+
+# 5. 특정 컬럼 변환 (예: 문자열 -&gt; 숫자)
+df[&#39;column_name&#39;] = pd.to_numeric(df[&#39;column_name&#39;], errors=&#39;coerce&#39;)
+df = df.dropna(subset=[&#39;column_name&#39;]) # NaN 값 제거
+
+# 6. 결과 저장
+df.to_csv(&#34;cleaned_data.csv&#34;, index=False)
+</code></pre><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>오늘 학습을 통해 PCA와 t-SNE, K-Means, GMM 등 주요 비지도 학습 알고리즘의 원리와 활용법을 확실히 이해하게 되었고, 실제 데이터 분석에서 발생할 수 있는 복잡한 문제들과 해결 방안에 대한 통찰력을 얻었습니다. 특히 데이터 탐색 자동화의 중요성, AI와의 협업, 그리고 결과 해석의 필요성을 강조하며 데이터 분석 워크플로우 전반에 대한 이해를 높였습니다. 앞으로 실제 프로젝트에서 이러한 지식과 경험을 바탕으로 더 효과적인 분석을 수행할 수 있을 것 같습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>실제 데이터 분석에서는 이상치 제거보다는 집단 간의 이질성을 고려하는 것이 중요하다는 점을 항상 기억해야겠어. 또한, AI가 생성한 코드는 반드시 검증하고, 현재 사용 중인 도구들의 한계를 파악하며 적절한 도구 선택과 통합 전략을 세우는 것을 잊지 말아야겠어.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>GMM과 EM 알고리즘의 수학적 배경을 좀 더 깊이 파고들어, 파라미터 업데이트 과정과 소속 확률 계산 방식의 세부적인 작동 원리를 다시 한번 짚어보고 싶어. 또한, 실제 데이터 분석 시 이상치 처리와 집단 간 이질성 고려를 위한 보다 효과적인 전략을 고민하며 다양한 기법들을 실험해보고 싶어.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-07-10-am-daily/">
+    <span class="title">« Prev</span>
+    <span>데이터 분석 기초 다지기: 비지도 학습부터 분류 모델까지</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-07-09-am-daily/">
+    <span class="title">Next »</span>
+    <span>분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
