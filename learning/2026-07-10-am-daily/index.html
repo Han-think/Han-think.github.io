@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>데이터 분석 기초 다지기: 비지도 학습부터 분류 모델까지 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-07-10 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-07-10-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-07-10-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-10-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="데이터 분석 기초 다지기: 비지도 학습부터 분류 모델까지">
+  <meta property="og:description" content="2026-07-10 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-07-10T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-10T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="데이터 분석 기초 다지기: 비지도 학습부터 분류 모델까지">
+  <meta name="twitter:description" content="2026-07-10 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "데이터 분석 기초 다지기: 비지도 학습부터 분류 모델까지",
+      "item": "https://Han-think.github.io/learning/2026-07-10-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "데이터 분석 기초 다지기: 비지도 학습부터 분류 모델까지",
+  "name": "데이터 분석 기초 다지기: 비지도 학습부터 분류 모델까지",
+  "description": "2026-07-10 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 비지도학습과 클러스터링: 핵심 개념 및 실습 이해 Raw 데이터 전처리부터 모델 입력 행렬 생성까지 차원 축소, PCA와 t-SNE 완벽 가이드 PCA 설명분산 비율과 scikit-learn 속성 이해 비지도 학습과 설계 과정 연결하기 로지스틱 회귀 모델, 초보자를 위한 핵심 개념 및 데이터 형식 이해 SVM 분류 모델 학습 및 활용: 초보자를 위한 워킹 노트 베이즈 정리로 스팸 메일 확인 키워드 확률 계산하기 GaussianNB 핵심 개념과 와인 데이터 분류 실습 다중 클래스 혼동행렬 및 정규화 시각화 완전 정복 총평 1. 비지도학습과 클러스터링: 핵심 개념 및 실습 이해 무엇을 배웠나 비지도 학습, 특히 클러스터링에서 군집 내 유사성과 군집 간 차이가 회귀분석의 다중공선성과는 별개의 개념이라는 점을 명확히 이해하게 되었다. K-Fold 교차 검증과 K-means 알고리즘에서 사용되는 K의 의미가 다르다는 것도 구분할 수 있게 되었고, 간단한 K-means 클러스터링 실습을 통해 개념을 더 확실히 다질 수 있었다. 앞으로는 이 점들을 기억하며 클러스터링을 적용해나가야겠다.\n헷갈렸던 점 처음에는 클러스터링에서 군집 내 데이터의 유사성과 군집 간의 차이 관계를 회귀분석의 독립변수 간 관계와 비슷하게 생각해서 혼란스러웠다. K-Fold와 K-means에서 K가 의미하는 바가 달라서 구분이 잘 안 되었고, 클러스터링에서 다중공선성의 개념이 적용되는 것인지 궁금했다.\n정리된 이해 클러스터링은 데이터의 유사성을 기반으로 그룹을 나누는 과정이며, 회귀분석에서 독립변수 간의 중복 정보인 다중공선성과는 별개의 개념이다. K-Fold는 데이터 분할 기법이고, K-means는 데이터를 K개의 군집으로 나누는 알고리즘이며, 이 둘에서 ‘K’는 서로 다른 의미를 가진다. 앞으로는 이 개념들을 명확히 구분하여 클러스터링을 이해하고 적용해야겠다.\nfrom sklearn.cluster import KMeans import numpy as np 2. Raw 데이터 전처리부터 모델 입력 행렬 생성까지 무엇을 배웠나 Raw Data에서 모델 입력 행렬을 만들기 위한 전처리 과정과 NumPy 배열 인덱싱 방식에 대한 이해가 부족했던 점을 파악하고, 데이터 구조 확인부터 스케일링까지 전처리 단계를 체계적으로 정리했습니다. 특히 One-Hot Encoding의 필요성과 NumPy 배열의 행, 열 인덱싱 방식에 대한 이해도를 높였습니다. 펭귄 데이터를 활용한 실습 예시를 통해 실제 데이터 전처리 과정을 경험했습니다.\n헷갈렸던 점 Raw Data에서 모델 입력 행렬을 만드는 과정에서 array, ndarray 같은 기본 용어와 행/열의 의미가 헷갈렸고, One-Hot Encoding을 단순히 기계적인 변환으로만 생각해서 범주형 데이터의 순서와 거리에 대한 의미를 제대로 파악하지 못했습니다. 또한, 데이터 전처리 과정을 단계별로 정리하고 이해하는 데 어려움을 느꼈습니다.\n정리된 이해 Raw 데이터를 모델 입력 행렬로 변환하는 과정은 데이터 구조 이해, 결측치 처리, 범주형 데이터 인코딩, 스케일링 등의 전처리 단계를 거쳐 이루어진다. NumPy 배열은 행과 열 인덱싱을 통해 특정 데이터에 접근할 수 있으며, One-Hot Encoding은 범주형 데이터의 순서에 따른 문제를 해결하기 위한 중요한 과정이다. 이러한 이해를 바탕으로 데이터 전처리 과정을 체계적으로 수행할 수 있다.\nimport pandas as pd import numpy as np from sklearn.preprocessing import StandardScaler # 가상 데이터프레임 생성 df_penguins = pd.DataFrame({ 'Species': ['Gentoo', 'Adelie', 'Chinstrap', 'Gentoo'], 'Bill_length_mm': [47.1, 39.1, 36.7, 47.8], 'Bill_depth_mm': [18.7, 13.3, 12.5, 19.2], 'Flipper_length_mm': [195.8, 181.7, 173.4, 200.0] }) # 데이터프레임을 NumPy 배열로 변환 X = df_penguins.drop('Species', axis=1).values # 데이터 스케일링 예시 scaler = StandardScaler() X_scaled = scaler.fit_transform(X) 3. 차원 축소, PCA와 t-SNE 완벽 가이드 무엇을 배웠나 PCA와 t-SNE의 차원 축소 개념을 명확하게 이해하게 되었고, 특히 PCA가 데이터의 분산을 최대한 유지하며 데이터를 투영하는 과정과 t-SNE가 비선형적인 관계를 포착하여 시각화에 적합하다는 점을 알게 되었다. 차원 축소를 통해 데이터의 복잡성을 줄이고 효율성을 높이는 목적과 각 방법이 갖는 역할 차이를 제대로 파악할 수 있게 되었다. 앞으로는 이 지식을 바탕으로 데이터 분석 및 시각화 프로젝트에 적절한 방법을 선택하고 활용할 수 있을 것이다.\n헷갈렸던 점 고차원 데이터를 2차원이나 3차원으로 줄이는 과정에서 정보 손실을 얼마나 감수해야 하는지, 그리고 PCA와 t-SNE가 정확히 어떤 상황에 적합한지 혼란스러웠습니다. PCA가 단순히 데이터를 평평한 그림으로 옮겨 놓는 것이라고 생각했고, PCA와 t-SNE의 역할과 사용 목적에 대한 명확한 차이점을 파악하는 데 어려움을 겪었습니다.\n정리된 이해 차원 축소는 데이터의 복잡성을 줄여 분석 및 시각화를 용이하게 하는 중요한 과정이며, PCA는 데이터의 분산을 최대한 보존하면서 선형적인 방식으로 차원을 줄이는 반면, t-SNE는 비선형적인 관계를 고려하여 데이터 시각화에 특화되어 있습니다. 따라서 PCA는 데이터의 주요 특징을 유지하면서 차원을 축소할 때, t-SNE는 데이터 간의 복잡한 관계를 시각적으로 표현하고자 할 때 적합합니다.\nfrom sklearn.decomposition import PCA import numpy as np # 예시 데이터 (4개의 특성을 가진 10개의 데이터 포인트) data = np.random.rand(10, 4) # PCA 모델 생성 pca = PCA(n_components=2) # 데이터에 PCA 적용 principal_components = pca.fit_transform(data) # 결과 확인 (2개의 주성분) print(principal_components) 4. PCA 설명분산 비율과 scikit-learn 속성 이해 무엇을 배웠나 PCA에서 주성분 분석 결과, 각 주성분이 전체 분산에서 얼마나 많은 정보를 담고 있는지 나타내는 설명 분산 비율과 이를 누적한 누적 설명 분산 비율을 이해하게 되었습니다. explained_variance_ratio_ 와 같은 속성 뒤에 붙는 _ 기호가 속성값을 의미한다는 점도 알게 되었습니다. 마지막으로 n_components 매개변수의 역할을 명확히 파악하여 PCA 모델을 더욱 효과적으로 사용할 수 있을 것 같습니다.\n헷갈렸던 점 처음에는 PCA에서 설명 분산 비율과 누적 설명 분산 비율이 정확히 무엇을 의미하는지, 그리고 어떻게 해석해야 하는지 헷갈렸습니다. _ 기호가 붙은 속성이 왜 그런 형태인지도 궁금했고요. n_components 파라미터를 생략하면 어떤 일이 벌어지는 건지 파악하는 데 어려움을 느꼈습니다.\n정리된 이해 PCA에서 설명 분산 비율은 각 주성분이 데이터의 분산을 얼마나 설명하는지 보여주는 값이고, 누적 설명 분산은 여러 주성분을 합쳐서 얼마나 설명하는지를 보여주어, 몇 개의 주성분으로 데이터를 잘 표현할 수 있는지 판단하는 데 도움을 줍니다. scikit-learn 속성 뒤에 붙는 _ 기호는 해당 속성이 배열이나 리스트를 반환하는 것을 나타내고, n_components 매개변수를 생략하면 모든 주성분을 계산한다는 것을 알게 되었습니다.\npca_full = PCA(random_state=RANDOM_STATE) ev_ratio = pca_full.explained_variance_ratio_ X_pca2 = pca_full.transform(X_scaled)[:, :2] 5. 비지도 학습과 설계 과정 연결하기 무엇을 배웠나 비지도학습은 데이터에서 숨겨진 패턴을 찾고, 이를 인간의 해석과 함께 초기 라벨을 만들어내는 데 유용하다는 것을 알게 되었다. 이렇게 만들어진 초기 라벨을 바탕으로 지도학습을 적용하면 모델 성능을 더 향상시킬 수 있다는 점을 이해했다. 앞으로는 프로젝트에 어떤 학습 방법을 적용할지 결정할 때, 비지도학습으로 초기 패턴을 발견하고 지도학습으로 성능을 높이는 전략을 고려해야겠다.\n헷갈렸던 점 지도학습과 비지도학습을 명확히 구분하는 기준이 잘 안 잡혀서, 어떤 방법을 선택해야 할지 혼란스러웠다. 특히 회귀분석인지 분류인지 판단 기준이 불명확해서, 목표 설정부터가 어려웠다. 비지도학습 후 약한 라벨링 과정을 거쳐 지도학습에 적용하는 전체적인 설계 흐름이 어떻게 진행되는지 파악하기 어려웠다.\n정리된 이해 비지도학습은 데이터 자체의 숨겨진 구조와 패턴을 찾아내고, 이를 바탕으로 초기 라벨링을 수행하는 방식으로, 이후 인간이 해석하여 의미를 부여하는 과정을 거칩니다. 초기 라벨링된 데이터를 활용하여 지도학습 모델을 훈련시켜 성능을 향상시키는 방식으로 연결될 수 있습니다. 이러한 과정을 통해 데이터의 특징을 더 정확하게 파악하고 예측 모델의 성능을 개선할 수 있습니다.\n# 예시: 고객 리뷰 텍스트 클러스터링 (비지도학습) from sklearn.feature_extraction.text import TfidfVectorizer from sklearn.cluster import KMeans # 1. 텍스트 데이터 전처리 (토큰화, 불용어 제거 등) - 생략 (사전 처리 필요) # 2. TF-IDF 벡터화 vectorizer = TfidfVectorizer(max_features=1000) tfidf_matrix = vectorizer.fit_transform(reviews) # reviews는 전처리된 리뷰 데이터 리스트 # 3. K-Means 클러스터링 kmeans = KMeans(n_clusters=3, random_state=0, n_init=10) # 적절한 클러스터 개수 설정 필요 kmeans.fit(tfidf_matrix) # 4. 클러스터 레이블 확인 및 초기 의미 부여 labels = kmeans.labels_ print(labels) # 각 리뷰의 클러스터 레이블 확인 6. 로지스틱 회귀 모델, 초보자를 위한 핵심 개념 및 데이터 형식 이해 무엇을 배웠나 로지스틱 회귀 모델이 회귀라는 이름에도 불구하고 분류 모델이라는 점과, 사이킷런에서 데이터를 입력할 때 2차원 배열 형태로 변환해야 한다는 점을 확실히 이해하게 되었다. 특히 단일 특성 데이터도 (100, 1) 형태로 변환해야 한다는 점을 명확히 알게 되었고, 최신 NumPy 버전에서는 데이터 타입을 float으로 변환하는 것이 안전하다는 것을 배웠다. 이 지식들을 바탕으로 로지스틱 회귀 모델을 더 효과적으로 활용할 수 있을 것 같다.\n헷갈렸던 점 로지스틱 회귀가 회귀라는 이름인데 왜 분류 문제에 사용되는지, 그리고 사이킷런에서 데이터를 입력할 때 1차원 배열이 아닌 2차원 배열로 바꿔야 하는 이유가 처음에는 잘 이해가 되지 않았습니다. 특히, 특성이 하나일 때도 (100,)이 아닌 (100, 1) 형태로 만들어야 한다는 점이 헷갈렸습니다.\n정리된 이해 로지스틱 회귀는 이름과는 달리 분류 모델이며, 입력값을 확률 값으로 변환하여 클래스를 예측합니다. 사이킷런에서 데이터를 입력할 때 X는 (데이터 개수, 특성 개수) 형태의 2차원 배열이어야 하고, 단일 특성 데이터도 (100, 1)처럼 변환해야 모델이 정상적으로 작동합니다. 최신 NumPy에서는 데이터 타입을 float으로 변환하는 것이 안정적입니다.\nimport numpy as np from sklearn.model_selection import train_test_split from sklearn.linear_model import LogisticRegression import matplotlib.pyplot as plt # 예시 7. SVM 분류 모델 학습 및 활용: 초보자를 위한 워킹 노트 무엇을 배웠나 SVM 분류 모델을 사용할 때 axis=1이 열(column)을 삭제하는 역할을 한다는 것을 명확히 이해하게 되었고, 학습 데이터(fit())와 예측 데이터(predict())를 분리해서 사용해야 한다는 점을 알게 되었다. 또한 예측 결과를 평가할 때는 실제 정답 레이블과 비교하여 정확도를 계산해야 한다는 것을 실습을 통해 확인했다. 이제 SVM 모델을 좀 더 자신 있게 사용할 수 있을 것 같다.\n헷갈렸던 점 axis=1이 행을 제거하는 것인지 열을 제거하는 것인지 명확하지 않았고, fit() 메서드에 테스트 데이터를 넣어도 되는지, 그리고 예측 결과를 평가할 때 정답 데이터와 함께 사용해야 하는지 궁금했습니다. 학습 데이터와 테스트 데이터를 어떻게 구분해서 사용해야 하는지 혼동스러웠습니다.\n정리된 이해 axis=1은 Pandas DataFrame에서 열을 선택하거나 제거할 때 사용하며, data.drop(\"Class\", axis=1)은 ‘Class’ 열을 삭제하고 나머지 열들을 입력 데이터로 사용한다는 것을 알게 되었다. fit() 메서드는 학습 데이터를 사용하여 모델을 훈련시키고, predict() 메서드는 학습된 모델을 사용하여 새로운 데이터에 대한 예측을 수행하며, 예측 결과는 실제 정답과 비교하여 모델의 성능을 평가할 수 있다.\nimport pandas as pd 8. 베이즈 정리로 스팸 메일 확인 키워드 확률 계산하기 무엇을 배웠나 베이즈 정리를 활용하여 조건부 확률의 방향성을 명확히 이해하게 되었고, 특히 P(A | B)에서 B가 조건이라는 점을 확실히 알게 되었다. 스팸 메일 확인 키워드 확률을 계산할 때 조건부 확률의 의미를 정확히 파악하는 것이 중요하며, 베이즈 정리를 통해 이를 명확하게 이해할 수 있었다. 앞으로 스팸 필터링 모델을 개발하거나 분석할 때 이 지식을 활용할 수 있을 것이다.\n헷갈렸던 점 확인이라는 단어가 스팸 메일과 정상 메일에서 얼마나 자주 등장하는지, 그리고 그것이 어떤 의미를 가지는지 정확히 파악하는 데 어려움이 있었습니다. P(확인 | 스팸)과 P(스팸 | 확인)의 방향성을 혼동하여, 조건부 확률의 의미를 제대로 이해하지 못했습니다. 특히, 조건부 확률의 세로줄 기호(|)가 나타내는 의미를 정확히 이해하는 데 어려움을 겪었습니다.\n정리된 이해 베이즈 정리를 통해 조건부 확률의 방향성을 명확히 이해하게 되었고, 특히 P(A|B)에서 B가 조건임을 깨달았습니다. ‘확인’이라는 단어가 포함된 메일이 스팸일 확률(P(스팸 | 확인))은 스팸 메일에서 ‘확인’ 단어가 나올 확률(P(확인 | 스팸))과 전체 스팸 메일의 비율(P(스팸))에 따라 결정되며, 이를 통해 스팸 메일 분류 정확도를 높일 수 있습니다. 이제는 조건부 확률의 의미를 헷갈리지 않고, 문제 상황에 맞게 적용할 수 있을 것 같습니다.\n# 스팸 메일 비율 p_spam = 8 / 20 9. GaussianNB 핵심 개념과 와인 데이터 분류 실습 무엇을 배웠나 GaussianNB가 각 클래스의 특성값을 정규분포를 따른다고 가정하는 나이브 베이즈 모델임을 이해하게 되었고, random_state 옵션이 데이터 분할의 재현성을 보장하는 역할을 한다는 것을 알게 되었다. 특히, random_state가 모델 학습 자체에 영향을 주지 않는다는 점을 명확히 파악하게 되었다. 이를 통해 나이브 베이즈 모델의 다양한 변형을 이해하고, 실험의 재현성을 확보하는 방법을 배우었다.\n헷갈렸던 점 GaussianNB가 일반적인 나이브 베이즈와 어떻게 다른지, 그리고 왜 정규분포를 가정하는지 잘 이해하지 못했습니다. 또한 random_state 옵션이 모델 학습에 영향을 주는 것인지, 아니면 데이터 분할 과정에 영향을 주는 것인지 혼동스러웠습니다. 이 옵션이 실험 결과의 재현성을 어떻게 보장하는지 명확하게 파악하지 못했습니다.\n정리된 이해 GaussianNB는 각 클래스별 특성값이 정규분포를 따른다고 가정하는 나이브 베이즈 모델이며, random_state는 데이터 분할 과정의 재현성을 보장하는 설정값입니다. random_state를 설정하면 데이터 분할 과정이 항상 동일하게 진행되어 실험 결과를 다시 확인해도 동일한 결과를 얻을 수 있습니다. 이 덕분에 모델 학습 자체는 영향을 받지 않으면서도 결과의 일관성을 유지할 수 있습니다.\n# 데이터 분리 (학습용 80%, 테스트용 20%) train_X, test_X, train_y, test_y = train_test_split( X, y, test_size=0.2, random_state=0 ) 10. 다중 클래스 혼동행렬 및 정규화 시각화 완전 정복 무엇을 배웠나 혼동행렬 계산 시 실제 값과 예측 값의 순서가 중요하며, 행은 실제 클래스, 열은 예측 클래스를 나타낸다는 것을 명확히 알게 되었다. 특히 정규화된 혼동행렬은 각 행의 합이 1이 되는 방식으로, 각 실제 클래스가 어떤 예측 클래스로 잘못 분류되는 비율을 보여주는 것을 이해했다. 이 내용을 바탕으로 혼동행렬 시각화에 대한 이해도를 높일 수 있을 것이다.\n헷갈렸던 점 혼동행렬의 입력 값 순서와 행/열의 의미를 헷갈렸고, 정규화된 혼동행렬에서 어떤 값이 1이 되는지 명확하게 이해하지 못했습니다. 실제 레이블이 첫 번째 인자로 와야 하고, 행은 실제 클래스, 열은 예측 클래스를 나타낸다는 것을 알게 되었으며, 정규화는 각 행의 합을 기준으로 이루어진다는 것을 확인했습니다.\n정리된 이해 다중 클래스 혼동행렬에서 행은 실제 클래스, 열은 예측 클래스를 나타내며, 대각선은 정확하게 분류된 데이터 수를 보여줍니다. 정규화된 혼동행렬은 각 실제 클래스에 대한 예측 비율을 보여주기 위해 각 행을 해당 행의 합으로 나누어 정규화하며, 이로 인해 각 행의 합은 1이 됩니다. 이 지식들을 바탕으로 모델 성능을 보다 정확하게 분석할 수 있습니다.\nfrom sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay import matplotlib.pyplot as plt import numpy as np # 가상 데이터셋 예시 class_names = ['클래스1', '클래스2', '클래스3'] y_true = np.array([0, 2, 1, 0, 2, 1]) y_pred = np.array([0, 2, 1, 0, 1, 2]) cm = confusion_matrix(y_true, y_pred, labels=class_names) print(cm) norm_cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis] print(norm_cm) 총평 오늘 오전 전체에서 배운 것 오늘 오전 시간에는 비지도 학습부터 시작하여 PCA, 로지스틱 회귀, SVM, 베이즈 정리 등 다양한 머신러닝 모델과 개념들을 학습했습니다. 특히 데이터 전처리 과정, 모델 입력 형식, 그리고 각 모델의 핵심 원리를 명확히 이해하게 되었으며, 혼동행렬을 통한 모델 성능 평가 방법까지 익혔습니다. 앞으로 이러한 지식들을 바탕으로 실제 데이터 분석 프로젝트에 적용하고, 더 나아가 모델 성능을 개선해 나갈 수 있을 것 같습니다.\n다음에 조심할 것 데이터 전처리 과정에서 NumPy 배열 인덱싱 방식을 꼼꼼히 확인하고, 특히 단일 특성 데이터를 다룰 때 2차원 배열로 변환하는 것을 잊지 않도록 주의해야겠다. 또한, 모델의 성능을 향상시키기 위해 비지도 학습으로 초기 패턴을 발견하는 전략을 프로젝트에 적극적으로 적용해봐야겠다.\n다음 복습 주제 클러스터링 실습을 더 다양한 데이터셋에 적용해보고, 로지스틱 회귀와 SVM 모델의 성능 비교를 통해 각 모델의 특징을 파악하는 실험을 진행해보고 싶다. 또한, 혼동 행렬을 활용하여 모델의 성능을 더욱 정확하게 분석하고 개선하는 방법을 더 심도 있게 공부해야겠다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "2084",
+  "inLanguage": "en",
+  "datePublished": "2026-07-10T00:00:00Z",
+  "dateModified": "2026-07-10T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-07-10-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      데이터 분석 기초 다지기: 비지도 학습부터 분류 모델까지
+    </h1>
+    <div class="post-description">
+      2026-07-10 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-10 00:00:00 +0000 UTC'>2026년 7월 10일</span>&nbsp;·&nbsp;<span>10 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EB%B9%84%EC%A7%80%EB%8F%84%ED%95%99%EC%8A%B5%EA%B3%BC-%ED%81%B4%EB%9F%AC%EC%8A%A4%ED%84%B0%EB%A7%81-%ED%95%B5%EC%8B%AC-%EA%B0%9C%EB%85%90-%EB%B0%8F-%EC%8B%A4%EC%8A%B5-%EC%9D%B4%ED%95%B4">비지도학습과 클러스터링: 핵심 개념 및 실습 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-raw-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%84%EC%B2%98%EB%A6%AC%EB%B6%80%ED%84%B0-%EB%AA%A8%EB%8D%B8-%EC%9E%85%EB%A0%A5-%ED%96%89%EB%A0%AC-%EC%83%9D%EC%84%B1%EA%B9%8C%EC%A7%80">Raw 데이터 전처리부터 모델 입력 행렬 생성까지</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%B0%A8%EC%9B%90-%EC%B6%95%EC%86%8C-pca%EC%99%80-t-sne-%EC%99%84%EB%B2%BD-%EA%B0%80%EC%9D%B4%EB%93%9C">차원 축소, PCA와 t-SNE 완벽 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-pca-%EC%84%A4%EB%AA%85%EB%B6%84%EC%82%B0-%EB%B9%84%EC%9C%A8%EA%B3%BC-scikit-learn-%EC%86%8D%EC%84%B1-%EC%9D%B4%ED%95%B4">PCA 설명분산 비율과 scikit-learn 속성 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-%EB%B9%84%EC%A7%80%EB%8F%84-%ED%95%99%EC%8A%B5%EA%B3%BC-%EC%84%A4%EA%B3%84-%EA%B3%BC%EC%A0%95-%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0">비지도 학습과 설계 과정 연결하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="6">
+<li><a href="#6-%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1-%ED%9A%8C%EA%B7%80-%EB%AA%A8%EB%8D%B8-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%ED%95%B5%EC%8B%AC-%EA%B0%9C%EB%85%90-%EB%B0%8F-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%98%95%EC%8B%9D-%EC%9D%B4%ED%95%B4">로지스틱 회귀 모델, 초보자를 위한 핵심 개념 및 데이터 형식 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="7">
+<li><a href="#7-svm-%EB%B6%84%EB%A5%98-%EB%AA%A8%EB%8D%B8-%ED%95%99%EC%8A%B5-%EB%B0%8F-%ED%99%9C%EC%9A%A9-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%9B%8C%ED%82%B9-%EB%85%B8%ED%8A%B8">SVM 분류 모델 학습 및 활용: 초보자를 위한 워킹 노트</a></li>
+</ol>
+</li>
+<li>
+<ol start="8">
+<li><a href="#8-%EB%B2%A0%EC%9D%B4%EC%A6%88-%EC%A0%95%EB%A6%AC%EB%A1%9C-%EC%8A%A4%ED%8C%B8-%EB%A9%94%EC%9D%BC-%ED%99%95%EC%9D%B8-%ED%82%A4%EC%9B%8C%EB%93%9C-%ED%99%95%EB%A5%A0-%EA%B3%84%EC%82%B0%ED%95%98%EA%B8%B0">베이즈 정리로 스팸 메일 확인 키워드 확률 계산하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="9">
+<li><a href="#9-gaussiannb-%ED%95%B5%EC%8B%AC-%EA%B0%9C%EB%85%90%EA%B3%BC-%EC%99%80%EC%9D%B8-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EB%A5%98-%EC%8B%A4%EC%8A%B5">GaussianNB 핵심 개념과 와인 데이터 분류 실습</a></li>
+</ol>
+</li>
+<li>
+<ol start="10">
+<li><a href="#10-%EB%8B%A4%EC%A4%91-%ED%81%B4%EB%9E%98%EC%8A%A4-%ED%98%BC%EB%8F%99%ED%96%89%EB%A0%AC-%EB%B0%8F-%EC%A0%95%EA%B7%9C%ED%99%94-%EC%8B%9C%EA%B0%81%ED%99%94-%EC%99%84%EC%A0%84-%EC%A0%95%EB%B3%B5">다중 클래스 혼동행렬 및 정규화 시각화 완전 정복</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-비지도학습과-클러스터링-핵심-개념-및-실습-이해">1. 비지도학습과 클러스터링: 핵심 개념 및 실습 이해<a hidden class="anchor" aria-hidden="true" href="#1-비지도학습과-클러스터링-핵심-개념-및-실습-이해">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>비지도 학습, 특히 클러스터링에서 군집 내 유사성과 군집 간 차이가 회귀분석의 다중공선성과는 별개의 개념이라는 점을 명확히 이해하게 되었다. K-Fold 교차 검증과 K-means 알고리즘에서 사용되는 K의 의미가 다르다는 것도 구분할 수 있게 되었고, 간단한 K-means 클러스터링 실습을 통해 개념을 더 확실히 다질 수 있었다. 앞으로는 이 점들을 기억하며 클러스터링을 적용해나가야겠다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>처음에는 클러스터링에서 군집 내 데이터의 유사성과 군집 간의 차이 관계를 회귀분석의 독립변수 간 관계와 비슷하게 생각해서 혼란스러웠다. K-Fold와 K-means에서 K가 의미하는 바가 달라서 구분이 잘 안 되었고, 클러스터링에서 다중공선성의 개념이 적용되는 것인지 궁금했다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>클러스터링은 데이터의 유사성을 기반으로 그룹을 나누는 과정이며, 회귀분석에서 독립변수 간의 중복 정보인 다중공선성과는 별개의 개념이다. K-Fold는 데이터 분할 기법이고, K-means는 데이터를 K개의 군집으로 나누는 알고리즘이며, 이 둘에서 &lsquo;K&rsquo;는 서로 다른 의미를 가진다. 앞으로는 이 개념들을 명확히 구분하여 클러스터링을 이해하고 적용해야겠다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.cluster <span style="color:#f92672">import</span> KMeans
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span></code></pre></div><h2 id="2-raw-데이터-전처리부터-모델-입력-행렬-생성까지">2. Raw 데이터 전처리부터 모델 입력 행렬 생성까지<a hidden class="anchor" aria-hidden="true" href="#2-raw-데이터-전처리부터-모델-입력-행렬-생성까지">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>Raw Data에서 모델 입력 행렬을 만들기 위한 전처리 과정과 NumPy 배열 인덱싱 방식에 대한 이해가 부족했던 점을 파악하고, 데이터 구조 확인부터 스케일링까지 전처리 단계를 체계적으로 정리했습니다. 특히 One-Hot Encoding의 필요성과 NumPy 배열의 행, 열 인덱싱 방식에 대한 이해도를 높였습니다. 펭귄 데이터를 활용한 실습 예시를 통해 실제 데이터 전처리 과정을 경험했습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>Raw Data에서 모델 입력 행렬을 만드는 과정에서 array, ndarray 같은 기본 용어와 행/열의 의미가 헷갈렸고, One-Hot Encoding을 단순히 기계적인 변환으로만 생각해서 범주형 데이터의 순서와 거리에 대한 의미를 제대로 파악하지 못했습니다. 또한, 데이터 전처리 과정을 단계별로 정리하고 이해하는 데 어려움을 느꼈습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>Raw 데이터를 모델 입력 행렬로 변환하는 과정은 데이터 구조 이해, 결측치 처리, 범주형 데이터 인코딩, 스케일링 등의 전처리 단계를 거쳐 이루어진다. NumPy 배열은 행과 열 인덱싱을 통해 특정 데이터에 접근할 수 있으며, One-Hot Encoding은 범주형 데이터의 순서에 따른 문제를 해결하기 위한 중요한 과정이다. 이러한 이해를 바탕으로 데이터 전처리 과정을 체계적으로 수행할 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.preprocessing <span style="color:#f92672">import</span> StandardScaler
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 가상 데이터프레임 생성</span>
+</span></span><span style="display:flex;"><span>df_penguins <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame({
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Species&#39;</span>: [<span style="color:#e6db74">&#39;Gentoo&#39;</span>, <span style="color:#e6db74">&#39;Adelie&#39;</span>, <span style="color:#e6db74">&#39;Chinstrap&#39;</span>, <span style="color:#e6db74">&#39;Gentoo&#39;</span>],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Bill_length_mm&#39;</span>: [<span style="color:#ae81ff">47.1</span>, <span style="color:#ae81ff">39.1</span>, <span style="color:#ae81ff">36.7</span>, <span style="color:#ae81ff">47.8</span>],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Bill_depth_mm&#39;</span>: [<span style="color:#ae81ff">18.7</span>, <span style="color:#ae81ff">13.3</span>, <span style="color:#ae81ff">12.5</span>, <span style="color:#ae81ff">19.2</span>],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Flipper_length_mm&#39;</span>: [<span style="color:#ae81ff">195.8</span>, <span style="color:#ae81ff">181.7</span>, <span style="color:#ae81ff">173.4</span>, <span style="color:#ae81ff">200.0</span>]
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 데이터프레임을 NumPy 배열로 변환</span>
+</span></span><span style="display:flex;"><span>X <span style="color:#f92672">=</span> df_penguins<span style="color:#f92672">.</span>drop(<span style="color:#e6db74">&#39;Species&#39;</span>, axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">.</span>values
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 데이터 스케일링 예시</span>
+</span></span><span style="display:flex;"><span>scaler <span style="color:#f92672">=</span> StandardScaler()
+</span></span><span style="display:flex;"><span>X_scaled <span style="color:#f92672">=</span> scaler<span style="color:#f92672">.</span>fit_transform(X)
+</span></span></code></pre></div><h2 id="3-차원-축소-pca와-t-sne-완벽-가이드">3. 차원 축소, PCA와 t-SNE 완벽 가이드<a hidden class="anchor" aria-hidden="true" href="#3-차원-축소-pca와-t-sne-완벽-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>PCA와 t-SNE의 차원 축소 개념을 명확하게 이해하게 되었고, 특히 PCA가 데이터의 분산을 최대한 유지하며 데이터를 투영하는 과정과 t-SNE가 비선형적인 관계를 포착하여 시각화에 적합하다는 점을 알게 되었다. 차원 축소를 통해 데이터의 복잡성을 줄이고 효율성을 높이는 목적과 각 방법이 갖는 역할 차이를 제대로 파악할 수 있게 되었다. 앞으로는 이 지식을 바탕으로 데이터 분석 및 시각화 프로젝트에 적절한 방법을 선택하고 활용할 수 있을 것이다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>고차원 데이터를 2차원이나 3차원으로 줄이는 과정에서 정보 손실을 얼마나 감수해야 하는지, 그리고 PCA와 t-SNE가 정확히 어떤 상황에 적합한지 혼란스러웠습니다. PCA가 단순히 데이터를 평평한 그림으로 옮겨 놓는 것이라고 생각했고, PCA와 t-SNE의 역할과 사용 목적에 대한 명확한 차이점을 파악하는 데 어려움을 겪었습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>차원 축소는 데이터의 복잡성을 줄여 분석 및 시각화를 용이하게 하는 중요한 과정이며, PCA는 데이터의 분산을 최대한 보존하면서 선형적인 방식으로 차원을 줄이는 반면, t-SNE는 비선형적인 관계를 고려하여 데이터 시각화에 특화되어 있습니다. 따라서 PCA는 데이터의 주요 특징을 유지하면서 차원을 축소할 때, t-SNE는 데이터 간의 복잡한 관계를 시각적으로 표현하고자 할 때 적합합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.decomposition <span style="color:#f92672">import</span> PCA
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 예시 데이터 (4개의 특성을 가진 10개의 데이터 포인트)</span>
+</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>rand(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">4</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># PCA 모델 생성</span>
+</span></span><span style="display:flex;"><span>pca <span style="color:#f92672">=</span> PCA(n_components<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 데이터에 PCA 적용</span>
+</span></span><span style="display:flex;"><span>principal_components <span style="color:#f92672">=</span> pca<span style="color:#f92672">.</span>fit_transform(data)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 결과 확인 (2개의 주성분)</span>
+</span></span><span style="display:flex;"><span>print(principal_components)
+</span></span></code></pre></div><h2 id="4-pca-설명분산-비율과-scikit-learn-속성-이해">4. PCA 설명분산 비율과 scikit-learn 속성 이해<a hidden class="anchor" aria-hidden="true" href="#4-pca-설명분산-비율과-scikit-learn-속성-이해">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>PCA에서 주성분 분석 결과, 각 주성분이 전체 분산에서 얼마나 많은 정보를 담고 있는지 나타내는 설명 분산 비율과 이를 누적한 누적 설명 분산 비율을 이해하게 되었습니다. <code>explained_variance_ratio_</code> 와 같은 속성 뒤에 붙는 <code>_</code> 기호가 속성값을 의미한다는 점도 알게 되었습니다. 마지막으로 <code>n_components</code> 매개변수의 역할을 명확히 파악하여 PCA 모델을 더욱 효과적으로 사용할 수 있을 것 같습니다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>처음에는 PCA에서 설명 분산 비율과 누적 설명 분산 비율이 정확히 무엇을 의미하는지, 그리고 어떻게 해석해야 하는지 헷갈렸습니다. <code>_</code> 기호가 붙은 속성이 왜 그런 형태인지도 궁금했고요. <code>n_components</code> 파라미터를 생략하면 어떤 일이 벌어지는 건지 파악하는 데 어려움을 느꼈습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>PCA에서 설명 분산 비율은 각 주성분이 데이터의 분산을 얼마나 설명하는지 보여주는 값이고, 누적 설명 분산은 여러 주성분을 합쳐서 얼마나 설명하는지를 보여주어, 몇 개의 주성분으로 데이터를 잘 표현할 수 있는지 판단하는 데 도움을 줍니다. scikit-learn 속성 뒤에 붙는 <code>_</code> 기호는 해당 속성이 배열이나 리스트를 반환하는 것을 나타내고, <code>n_components</code> 매개변수를 생략하면 모든 주성분을 계산한다는 것을 알게 되었습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>pca_full <span style="color:#f92672">=</span> PCA(random_state<span style="color:#f92672">=</span>RANDOM_STATE)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>ev_ratio <span style="color:#f92672">=</span> pca_full<span style="color:#f92672">.</span>explained_variance_ratio_
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>X_pca2 <span style="color:#f92672">=</span> pca_full<span style="color:#f92672">.</span>transform(X_scaled)[:, :<span style="color:#ae81ff">2</span>]
+</span></span></code></pre></div><h2 id="5-비지도-학습과-설계-과정-연결하기">5. 비지도 학습과 설계 과정 연결하기<a hidden class="anchor" aria-hidden="true" href="#5-비지도-학습과-설계-과정-연결하기">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>비지도학습은 데이터에서 숨겨진 패턴을 찾고, 이를 인간의 해석과 함께 초기 라벨을 만들어내는 데 유용하다는 것을 알게 되었다. 이렇게 만들어진 초기 라벨을 바탕으로 지도학습을 적용하면 모델 성능을 더 향상시킬 수 있다는 점을 이해했다. 앞으로는 프로젝트에 어떤 학습 방법을 적용할지 결정할 때, 비지도학습으로 초기 패턴을 발견하고 지도학습으로 성능을 높이는 전략을 고려해야겠다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>지도학습과 비지도학습을 명확히 구분하는 기준이 잘 안 잡혀서, 어떤 방법을 선택해야 할지 혼란스러웠다. 특히 회귀분석인지 분류인지 판단 기준이 불명확해서, 목표 설정부터가 어려웠다. 비지도학습 후 약한 라벨링 과정을 거쳐 지도학습에 적용하는 전체적인 설계 흐름이 어떻게 진행되는지 파악하기 어려웠다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>비지도학습은 데이터 자체의 숨겨진 구조와 패턴을 찾아내고, 이를 바탕으로 초기 라벨링을 수행하는 방식으로, 이후 인간이 해석하여 의미를 부여하는 과정을 거칩니다. 초기 라벨링된 데이터를 활용하여 지도학습 모델을 훈련시켜 성능을 향상시키는 방식으로 연결될 수 있습니다. 이러한 과정을 통해 데이터의 특징을 더 정확하게 파악하고 예측 모델의 성능을 개선할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 예시: 고객 리뷰 텍스트 클러스터링 (비지도학습)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.feature_extraction.text <span style="color:#f92672">import</span> TfidfVectorizer
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.cluster <span style="color:#f92672">import</span> KMeans
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. 텍스트 데이터 전처리 (토큰화, 불용어 제거 등) - 생략 (사전 처리 필요)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. TF-IDF 벡터화</span>
+</span></span><span style="display:flex;"><span>vectorizer <span style="color:#f92672">=</span> TfidfVectorizer(max_features<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>)
+</span></span><span style="display:flex;"><span>tfidf_matrix <span style="color:#f92672">=</span> vectorizer<span style="color:#f92672">.</span>fit_transform(reviews) <span style="color:#75715e"># reviews는 전처리된 리뷰 데이터 리스트</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. K-Means 클러스터링</span>
+</span></span><span style="display:flex;"><span>kmeans <span style="color:#f92672">=</span> KMeans(n_clusters<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, n_init<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>) <span style="color:#75715e"># 적절한 클러스터 개수 설정 필요</span>
+</span></span><span style="display:flex;"><span>kmeans<span style="color:#f92672">.</span>fit(tfidf_matrix)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. 클러스터 레이블 확인 및 초기 의미 부여</span>
+</span></span><span style="display:flex;"><span>labels <span style="color:#f92672">=</span> kmeans<span style="color:#f92672">.</span>labels_
+</span></span><span style="display:flex;"><span>print(labels) <span style="color:#75715e"># 각 리뷰의 클러스터 레이블 확인</span>
+</span></span></code></pre></div><h2 id="6-로지스틱-회귀-모델-초보자를-위한-핵심-개념-및-데이터-형식-이해">6. 로지스틱 회귀 모델, 초보자를 위한 핵심 개념 및 데이터 형식 이해<a hidden class="anchor" aria-hidden="true" href="#6-로지스틱-회귀-모델-초보자를-위한-핵심-개념-및-데이터-형식-이해">#</a></h2>
+<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
+<p>로지스틱 회귀 모델이 회귀라는 이름에도 불구하고 분류 모델이라는 점과, 사이킷런에서 데이터를 입력할 때 2차원 배열 형태로 변환해야 한다는 점을 확실히 이해하게 되었다. 특히 단일 특성 데이터도 <code>(100, 1)</code> 형태로 변환해야 한다는 점을 명확히 알게 되었고, 최신 NumPy 버전에서는 데이터 타입을 <code>float</code>으로 변환하는 것이 안전하다는 것을 배웠다. 이 지식들을 바탕으로 로지스틱 회귀 모델을 더 효과적으로 활용할 수 있을 것 같다.</p>
+<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
+<p>로지스틱 회귀가 회귀라는 이름인데 왜 분류 문제에 사용되는지, 그리고 사이킷런에서 데이터를 입력할 때 1차원 배열이 아닌 2차원 배열로 바꿔야 하는 이유가 처음에는 잘 이해가 되지 않았습니다. 특히, 특성이 하나일 때도 (100,)이 아닌 (100, 1) 형태로 만들어야 한다는 점이 헷갈렸습니다.</p>
+<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
+<p>로지스틱 회귀는 이름과는 달리 분류 모델이며, 입력값을 확률 값으로 변환하여 클래스를 예측합니다. 사이킷런에서 데이터를 입력할 때 <code>X</code>는 (데이터 개수, 특성 개수) 형태의 2차원 배열이어야 하고, 단일 특성 데이터도 (100, 1)처럼 변환해야 모델이 정상적으로 작동합니다. 최신 NumPy에서는 데이터 타입을 <code>float</code>으로 변환하는 것이 안정적입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.model_selection <span style="color:#f92672">import</span> train_test_split
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.linear_model <span style="color:#f92672">import</span> LogisticRegression
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 예시</span>
+</span></span></code></pre></div><h2 id="7-svm-분류-모델-학습-및-활용-초보자를-위한-워킹-노트">7. SVM 분류 모델 학습 및 활용: 초보자를 위한 워킹 노트<a hidden class="anchor" aria-hidden="true" href="#7-svm-분류-모델-학습-및-활용-초보자를-위한-워킹-노트">#</a></h2>
+<h3 id="무엇을-배웠나-6">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-6">#</a></h3>
+<p>SVM 분류 모델을 사용할 때 <code>axis=1</code>이 열(column)을 삭제하는 역할을 한다는 것을 명확히 이해하게 되었고, 학습 데이터(<code>fit()</code>)와 예측 데이터(<code>predict()</code>)를 분리해서 사용해야 한다는 점을 알게 되었다. 또한 예측 결과를 평가할 때는 실제 정답 레이블과 비교하여 정확도를 계산해야 한다는 것을 실습을 통해 확인했다. 이제 SVM 모델을 좀 더 자신 있게 사용할 수 있을 것 같다.</p>
+<h3 id="헷갈렸던-점-6">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-6">#</a></h3>
+<p><code>axis=1</code>이 행을 제거하는 것인지 열을 제거하는 것인지 명확하지 않았고, <code>fit()</code> 메서드에 테스트 데이터를 넣어도 되는지, 그리고 예측 결과를 평가할 때 정답 데이터와 함께 사용해야 하는지 궁금했습니다. 학습 데이터와 테스트 데이터를 어떻게 구분해서 사용해야 하는지 혼동스러웠습니다.</p>
+<h3 id="정리된-이해-6">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-6">#</a></h3>
+<p><code>axis=1</code>은 Pandas DataFrame에서 열을 선택하거나 제거할 때 사용하며, <code>data.drop(&quot;Class&quot;, axis=1)</code>은 &lsquo;Class&rsquo; 열을 삭제하고 나머지 열들을 입력 데이터로 사용한다는 것을 알게 되었다. <code>fit()</code> 메서드는 학습 데이터를 사용하여 모델을 훈련시키고, <code>predict()</code> 메서드는 학습된 모델을 사용하여 새로운 데이터에 대한 예측을 수행하며, 예측 결과는 실제 정답과 비교하여 모델의 성능을 평가할 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span></code></pre></div><h2 id="8-베이즈-정리로-스팸-메일-확인-키워드-확률-계산하기">8. 베이즈 정리로 스팸 메일 확인 키워드 확률 계산하기<a hidden class="anchor" aria-hidden="true" href="#8-베이즈-정리로-스팸-메일-확인-키워드-확률-계산하기">#</a></h2>
+<h3 id="무엇을-배웠나-7">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-7">#</a></h3>
+<p>베이즈 정리를 활용하여 조건부 확률의 방향성을 명확히 이해하게 되었고, 특히 <code>P(A | B)</code>에서 B가 조건이라는 점을 확실히 알게 되었다. 스팸 메일 확인 키워드 확률을 계산할 때 조건부 확률의 의미를 정확히 파악하는 것이 중요하며, 베이즈 정리를 통해 이를 명확하게 이해할 수 있었다. 앞으로 스팸 필터링 모델을 개발하거나 분석할 때 이 지식을 활용할 수 있을 것이다.</p>
+<h3 id="헷갈렸던-점-7">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-7">#</a></h3>
+<p>확인이라는 단어가 스팸 메일과 정상 메일에서 얼마나 자주 등장하는지, 그리고 그것이 어떤 의미를 가지는지 정확히 파악하는 데 어려움이 있었습니다. <code>P(확인 | 스팸)</code>과 <code>P(스팸 | 확인)</code>의 방향성을 혼동하여, 조건부 확률의 의미를 제대로 이해하지 못했습니다. 특히, 조건부 확률의 세로줄 기호(<code>|</code>)가 나타내는 의미를 정확히 이해하는 데 어려움을 겪었습니다.</p>
+<h3 id="정리된-이해-7">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-7">#</a></h3>
+<p>베이즈 정리를 통해 조건부 확률의 방향성을 명확히 이해하게 되었고, 특히 <code>P(A|B)</code>에서 B가 조건임을 깨달았습니다. &lsquo;확인&rsquo;이라는 단어가 포함된 메일이 스팸일 확률(<code>P(스팸 | 확인)</code>)은 스팸 메일에서 &lsquo;확인&rsquo; 단어가 나올 확률(<code>P(확인 | 스팸)</code>)과 전체 스팸 메일의 비율(<code>P(스팸)</code>)에 따라 결정되며, 이를 통해 스팸 메일 분류 정확도를 높일 수 있습니다. 이제는 조건부 확률의 의미를 헷갈리지 않고, 문제 상황에 맞게 적용할 수 있을 것 같습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 스팸 메일 비율</span>
+</span></span><span style="display:flex;"><span>p_spam <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">20</span>
+</span></span></code></pre></div><h2 id="9-gaussiannb-핵심-개념과-와인-데이터-분류-실습">9. GaussianNB 핵심 개념과 와인 데이터 분류 실습<a hidden class="anchor" aria-hidden="true" href="#9-gaussiannb-핵심-개념과-와인-데이터-분류-실습">#</a></h2>
+<h3 id="무엇을-배웠나-8">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-8">#</a></h3>
+<p>GaussianNB가 각 클래스의 특성값을 정규분포를 따른다고 가정하는 나이브 베이즈 모델임을 이해하게 되었고, <code>random_state</code> 옵션이 데이터 분할의 재현성을 보장하는 역할을 한다는 것을 알게 되었다. 특히, <code>random_state</code>가 모델 학습 자체에 영향을 주지 않는다는 점을 명확히 파악하게 되었다. 이를 통해 나이브 베이즈 모델의 다양한 변형을 이해하고, 실험의 재현성을 확보하는 방법을 배우었다.</p>
+<h3 id="헷갈렸던-점-8">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-8">#</a></h3>
+<p>GaussianNB가 일반적인 나이브 베이즈와 어떻게 다른지, 그리고 왜 정규분포를 가정하는지 잘 이해하지 못했습니다. 또한 <code>random_state</code> 옵션이 모델 학습에 영향을 주는 것인지, 아니면 데이터 분할 과정에 영향을 주는 것인지 혼동스러웠습니다. 이 옵션이 실험 결과의 재현성을 어떻게 보장하는지 명확하게 파악하지 못했습니다.</p>
+<h3 id="정리된-이해-8">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-8">#</a></h3>
+<p>GaussianNB는 각 클래스별 특성값이 정규분포를 따른다고 가정하는 나이브 베이즈 모델이며, <code>random_state</code>는 데이터 분할 과정의 재현성을 보장하는 설정값입니다. <code>random_state</code>를 설정하면 데이터 분할 과정이 항상 동일하게 진행되어 실험 결과를 다시 확인해도 동일한 결과를 얻을 수 있습니다. 이 덕분에 모델 학습 자체는 영향을 받지 않으면서도 결과의 일관성을 유지할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 데이터 분리 (학습용 80%, 테스트용 20%)</span>
+</span></span><span style="display:flex;"><span>train_X, test_X, train_y, test_y <span style="color:#f92672">=</span> train_test_split(
+</span></span><span style="display:flex;"><span>    X, y, test_size<span style="color:#f92672">=</span><span style="color:#ae81ff">0.2</span>, random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><h2 id="10-다중-클래스-혼동행렬-및-정규화-시각화-완전-정복">10. 다중 클래스 혼동행렬 및 정규화 시각화 완전 정복<a hidden class="anchor" aria-hidden="true" href="#10-다중-클래스-혼동행렬-및-정규화-시각화-완전-정복">#</a></h2>
+<h3 id="무엇을-배웠나-9">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-9">#</a></h3>
+<p>혼동행렬 계산 시 실제 값과 예측 값의 순서가 중요하며, 행은 실제 클래스, 열은 예측 클래스를 나타낸다는 것을 명확히 알게 되었다. 특히 정규화된 혼동행렬은 각 행의 합이 1이 되는 방식으로, 각 실제 클래스가 어떤 예측 클래스로 잘못 분류되는 비율을 보여주는 것을 이해했다. 이 내용을 바탕으로 혼동행렬 시각화에 대한 이해도를 높일 수 있을 것이다.</p>
+<h3 id="헷갈렸던-점-9">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-9">#</a></h3>
+<p>혼동행렬의 입력 값 순서와 행/열의 의미를 헷갈렸고, 정규화된 혼동행렬에서 어떤 값이 1이 되는지 명확하게 이해하지 못했습니다. 실제 레이블이 첫 번째 인자로 와야 하고, 행은 실제 클래스, 열은 예측 클래스를 나타낸다는 것을 알게 되었으며, 정규화는 각 행의 합을 기준으로 이루어진다는 것을 확인했습니다.</p>
+<h3 id="정리된-이해-9">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-9">#</a></h3>
+<p>다중 클래스 혼동행렬에서 행은 실제 클래스, 열은 예측 클래스를 나타내며, 대각선은 정확하게 분류된 데이터 수를 보여줍니다. 정규화된 혼동행렬은 각 실제 클래스에 대한 예측 비율을 보여주기 위해 각 행을 해당 행의 합으로 나누어 정규화하며, 이로 인해 각 행의 합은 1이 됩니다. 이 지식들을 바탕으로 모델 성능을 보다 정확하게 분석할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.metrics <span style="color:#f92672">import</span> confusion_matrix, ConfusionMatrixDisplay
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 가상 데이터셋 예시</span>
+</span></span><span style="display:flex;"><span>class_names <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;클래스1&#39;</span>, <span style="color:#e6db74">&#39;클래스2&#39;</span>, <span style="color:#e6db74">&#39;클래스3&#39;</span>]
+</span></span><span style="display:flex;"><span>y_true <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>])
+</span></span><span style="display:flex;"><span>y_pred <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cm <span style="color:#f92672">=</span> confusion_matrix(y_true, y_pred, labels<span style="color:#f92672">=</span>class_names)
+</span></span><span style="display:flex;"><span>print(cm)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>norm_cm <span style="color:#f92672">=</span> cm<span style="color:#f92672">.</span>astype(<span style="color:#e6db74">&#39;float&#39;</span>) <span style="color:#f92672">/</span> cm<span style="color:#f92672">.</span>sum(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)[:, np<span style="color:#f92672">.</span>newaxis]
+</span></span><span style="display:flex;"><span>print(norm_cm)
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>오늘 오전 시간에는 비지도 학습부터 시작하여 PCA, 로지스틱 회귀, SVM, 베이즈 정리 등 다양한 머신러닝 모델과 개념들을 학습했습니다. 특히 데이터 전처리 과정, 모델 입력 형식, 그리고 각 모델의 핵심 원리를 명확히 이해하게 되었으며, 혼동행렬을 통한 모델 성능 평가 방법까지 익혔습니다. 앞으로 이러한 지식들을 바탕으로 실제 데이터 분석 프로젝트에 적용하고, 더 나아가 모델 성능을 개선해 나갈 수 있을 것 같습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>데이터 전처리 과정에서 NumPy 배열 인덱싱 방식을 꼼꼼히 확인하고, 특히 단일 특성 데이터를 다룰 때 2차원 배열로 변환하는 것을 잊지 않도록 주의해야겠다. 또한, 모델의 성능을 향상시키기 위해 비지도 학습으로 초기 패턴을 발견하는 전략을 프로젝트에 적극적으로 적용해봐야겠다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>클러스터링 실습을 더 다양한 데이터셋에 적용해보고, 로지스틱 회귀와 SVM 모델의 성능 비교를 통해 각 모델의 특징을 파악하는 실험을 진행해보고 싶다. 또한, 혼동 행렬을 활용하여 모델의 성능을 더욱 정확하게 분석하고 개선하는 방법을 더 심도 있게 공부해야겠다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://Han-think.github.io/learning/2026-07-09-am-daily/">
+    <span class="title">Next »</span>
+    <span>분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
