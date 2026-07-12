@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Kaggle Playground S6E7 개인 도전 회고 - 5. 최종 결과와 노트북 산출물 | Han-think Blog</title>
+<meta name="keywords" content="kaggle, shap, scqa, business-report, jupyter, projects">
+<meta name="description" content="최종 스코어보드 정리와, 강의 과제로 드러난 뒤 SCQA·민토 피라미드·SHAP을 반영한 노트북 제작기.">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-05-final-results/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-05-final-results/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-05-final-results/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="Kaggle Playground S6E7 개인 도전 회고 - 5. 최종 결과와 노트북 산출물">
+  <meta property="og:description" content="최종 스코어보드 정리와, 강의 과제로 드러난 뒤 SCQA·민토 피라미드·SHAP을 반영한 노트북 제작기.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2026-07-12T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-12T00:00:00+00:00">
+    <meta property="article:tag" content="Kaggle">
+    <meta property="article:tag" content="Shap">
+    <meta property="article:tag" content="Scqa">
+    <meta property="article:tag" content="Business-Report">
+    <meta property="article:tag" content="Jupyter">
+    <meta property="article:tag" content="Projects">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kaggle Playground S6E7 개인 도전 회고 - 5. 최종 결과와 노트북 산출물">
+  <meta name="twitter:description" content="최종 스코어보드 정리와, 강의 과제로 드러난 뒤 SCQA·민토 피라미드·SHAP을 반영한 노트북 제작기.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "프로젝트",
+      "item": "https://Han-think.github.io/projects/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Kaggle Playground S6E7 개인 도전 회고 - 5. 최종 결과와 노트북 산출물",
+      "item": "https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-05-final-results/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Kaggle Playground S6E7 개인 도전 회고 - 5. 최종 결과와 노트북 산출물",
+  "name": "Kaggle Playground S6E7 개인 도전 회고 - 5. 최종 결과와 노트북 산출물",
+  "description": "최종 스코어보드 정리와, 강의 과제로 드러난 뒤 SCQA·민토 피라미드·SHAP을 반영한 노트북 제작기.",
+  "keywords": [
+    "kaggle", "shap", "scqa", "business-report", "jupyter", "projects"
+  ],
+  "articleBody": "목차 최종 스코어보드 최종 채택 모델 상세 강의 과제였다는 반전 노트북 제작 — 구조와 겪은 버그들 총평 1. 최종 스코어보드 단계 로컬 검증 Public LB (실제 제출) SGD 베이스라인 (GPT 원본) 0.884453 (80/20 홀드아웃) 0.88188 버그 수정 + LightGBM + grid 보정 0.932107 (OOF) 0.93365 Nelder-Mead 보정 확장 1~3라운드 0.9474→0.9485 (nested) 0.94523→0.94836→0.94892 LightGBM+CatBoost 블렌드 (튜닝 전) nested 0.949451 0.94937 (랭킹 약 650등) + CatBoost 하이퍼파라미터 튜닝 nested 0.949745 (미제출, 이후 라운드에 흡수) + stress_activity 피처 엔지니어링 nested 0.949763 0.95005 한국시간 21:45 기준 리더보드에서 이 최종 제출의 순위는 371등이었다(리더보드는 다른 참가자들의 제출로 계속 변동하므로 시점에 따라 달라진다). 당시 관측된 Kaggle 상위권 클러스터는 0.95130.9517대로, 최종 결과와 약 0.00130.0017 차이였다.\n2. 최종 채택 모델 상세 최종 아키텍처는 LightGBM(5-Fold OOF, class_weight='balanced', n_estimators=6000)과 CatBoost(동일 fold, Optuna로 튜닝된 하이퍼파라미터, auto_class_weights='Balanced')의 선형 확률 블렌드다. 블렌드 비율은 alpha≈0.52(LightGBM 비중)로 거의 반반이었고, 클래스별 보정 가중치는 [at-risk, fit, unhealthy] ≈ [1.17, 3.0, 2.79] 근처였다(재실행 시마다 미세하게 달라질 수 있음). 피처는 원본 수치형 7개 + 원본 범주형 6개 + 엔지니어링한 stress_activity + 결측 플래그 13개 + 파생 수치 3개로 총 30개였다. 스태킹과 XGBoost는 nested 검증에서 블렌드보다 낮게 나와 최종적으로 채택하지 않았다.\n3. 강의 과제였다는 반전 여기까지 순수하게 점수만 보고 온 뒤, “이걸 정리해서 노트북 파일로 만들고, 결론은 액션플랜으로 수익구조화를 하는 것까지가 강의 프로젝트의 목적\"이라는 말로 이게 사실 강의 과제였다는 게 드러났다. 별도의 rubric 문서는 없어서, 평소 쓰던 학습 블로그의 과거 글들을 근거로 요건을 파악했다 — Pipeline 문법을 강조한 글에서는 전처리와 모델을 ColumnTransformer+Pipeline으로 묶어 fold마다 전처리가 다시 fit되게 만드는 게 핵심이라는 점을, 검증 관련 글에서는 세그먼트별 오차 분석과 우선순위 액션 리스트 형식을 확인했다. 사업 컨셉은 헬스케어 앱/구독 서비스(B2C), 산출물은 실제 .ipynb 파일, SCQA 청중은 가상의 경영진/투자자로 정했다.\n4. 노트북 제작 — 구조와 겪은 버그들 노트북은 SCQA와 바바라 민토 피라미드 구조를 따랐다: 결론과 3가지 핵심 근거를 담은 피라미드 다이어그램, Executive Summary, 데이터 개요, Mutual Information과 stress×activity 히트맵 같은 핵심 발견, 그리고 모델링 여정 — 원래 GPT의 SGD 베이스라인을 정식 Pipeline으로 재현해 왜 최종 모델(트리 기반)은 Pipeline을 안 썼는지도 정직하게 설명했다. SHAP 해석에서는 unhealthy 클래스 기준으로 gain importance 1위와 다르게 bmi가 SHAP 기준 1위로 나와서, 이걸 “Premium 플랜 코칭 콘텐츠에 체중 관리도 포함해야 한다\"는 제품 인사이트로 연결했다. 마지막엔 리스크 티어→상품 티어 매핑, 오분류 비용 논의, 가상 시장규모 계산까지 붙였다(실제 조사 데이터가 아님을 명시).\n제작 중 겪은 버그도 몇 가지 있었다. matplotlib 기본 폰트로는 한글이 깨져서 Malgun Gothic을 지정해야 했고, SHAP 셀에서 test가 정의되지 않았다는 에러가 나서 해당 셀에서 test 데이터를 별도로 로드하도록 고쳤다. 피라미드 다이어그램은 꼭대기 폭이 좁아 텍스트가 잘려서 폭을 넓히고 텍스트를 줄여 해결했고, 별개 스크립트에서는 pandas 3.0에서 groupby().apply(sample)이 타겟 컬럼을 없애버리는 문제를 train_test_split(stratify=...)로 교체해 해결했다.\n총평 이번 글에서 정리한 것 기술 챌린지로 시작한 작업의 최종 스코어보드와 채택 모델, 그리고 뒤늦게 강의 과제라는 걸 알게 된 뒤 SCQA·민토 피라미드·SHAP을 반영해 노트북으로 재구성한 과정을 정리했다.\n다음에 조심할 것 이미 검증한 실험 결과라도, 청중(경영진/투자자)에 맞는 구조로 다시 포장하는 건 별개의 작업이라는 걸 놓치면 안 된다 — 점수만 좋다고 좋은 보고서가 되는 게 아니었다.\n다음 액션 이 개인전 전체를 되짚어보고, 팀 프로젝트로 넘어가기 전에 남길 마무리 글을 정리한다.\n이 글은 LearningLog projects 흐름에서 생성한 프로젝트 시리즈 초안입니다.\n",
+  "wordCount" : "491",
+  "inLanguage": "en",
+  "datePublished": "2026-07-12T00:00:00Z",
+  "dateModified": "2026-07-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-05-final-results/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Kaggle Playground S6E7 개인 도전 회고 - 5. 최종 결과와 노트북 산출물
+    </h1>
+    <div class="post-description">
+      최종 스코어보드 정리와, 강의 과제로 드러난 뒤 SCQA·민토 피라미드·SHAP을 반영한 노트북 제작기.
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-12 00:00:00 +0000 UTC'>2026년 7월 12일</span>&nbsp;·&nbsp;<span>3 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EC%B5%9C%EC%A2%85-%EC%8A%A4%EC%BD%94%EC%96%B4%EB%B3%B4%EB%93%9C">최종 스코어보드</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%B5%9C%EC%A2%85-%EC%B1%84%ED%83%9D-%EB%AA%A8%EB%8D%B8-%EC%83%81%EC%84%B8">최종 채택 모델 상세</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EA%B0%95%EC%9D%98-%EA%B3%BC%EC%A0%9C%EC%98%80%EB%8B%A4%EB%8A%94-%EB%B0%98%EC%A0%84">강의 과제였다는 반전</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EB%85%B8%ED%8A%B8%EB%B6%81-%EC%A0%9C%EC%9E%91--%EA%B5%AC%EC%A1%B0%EC%99%80-%EA%B2%AA%EC%9D%80-%EB%B2%84%EA%B7%B8%EB%93%A4">노트북 제작 — 구조와 겪은 버그들</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-최종-스코어보드">1. 최종 스코어보드<a hidden class="anchor" aria-hidden="true" href="#1-최종-스코어보드">#</a></h2>
+<table>
+	<thead>
+			<tr>
+					<th>단계</th>
+					<th>로컬 검증</th>
+					<th>Public LB (실제 제출)</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>SGD 베이스라인 (GPT 원본)</td>
+					<td>0.884453 (80/20 홀드아웃)</td>
+					<td>0.88188</td>
+			</tr>
+			<tr>
+					<td>버그 수정 + LightGBM + grid 보정</td>
+					<td>0.932107 (OOF)</td>
+					<td>0.93365</td>
+			</tr>
+			<tr>
+					<td>Nelder-Mead 보정 확장 1~3라운드</td>
+					<td>0.9474→0.9485 (nested)</td>
+					<td>0.94523→0.94836→0.94892</td>
+			</tr>
+			<tr>
+					<td>LightGBM+CatBoost 블렌드 (튜닝 전)</td>
+					<td>nested 0.949451</td>
+					<td>0.94937 (랭킹 약 650등)</td>
+			</tr>
+			<tr>
+					<td>+ CatBoost 하이퍼파라미터 튜닝</td>
+					<td>nested 0.949745</td>
+					<td>(미제출, 이후 라운드에 흡수)</td>
+			</tr>
+			<tr>
+					<td>+ <code>stress_activity</code> 피처 엔지니어링</td>
+					<td>nested 0.949763</td>
+					<td><strong>0.95005</strong></td>
+			</tr>
+	</tbody>
+</table>
+<p>한국시간 21:45 기준 리더보드에서 이 최종 제출의 순위는 <strong>371등</strong>이었다(리더보드는 다른 참가자들의 제출로 계속 변동하므로 시점에 따라 달라진다). 당시 관측된 Kaggle 상위권 클러스터는 0.9513<del>0.9517대로, 최종 결과와 약 0.0013</del>0.0017 차이였다.</p>
+<h2 id="2-최종-채택-모델-상세">2. 최종 채택 모델 상세<a hidden class="anchor" aria-hidden="true" href="#2-최종-채택-모델-상세">#</a></h2>
+<p>최종 아키텍처는 LightGBM(5-Fold OOF, <code>class_weight='balanced'</code>, <code>n_estimators=6000</code>)과 CatBoost(동일 fold, Optuna로 튜닝된 하이퍼파라미터, <code>auto_class_weights='Balanced'</code>)의 선형 확률 블렌드다. 블렌드 비율은 alpha≈0.52(LightGBM 비중)로 거의 반반이었고, 클래스별 보정 가중치는 <code>[at-risk, fit, unhealthy] ≈ [1.17, 3.0, 2.79]</code> 근처였다(재실행 시마다 미세하게 달라질 수 있음). 피처는 원본 수치형 7개 + 원본 범주형 6개 + 엔지니어링한 <code>stress_activity</code> + 결측 플래그 13개 + 파생 수치 3개로 총 30개였다. 스태킹과 XGBoost는 nested 검증에서 블렌드보다 낮게 나와 최종적으로 채택하지 않았다.</p>
+<h2 id="3-강의-과제였다는-반전">3. 강의 과제였다는 반전<a hidden class="anchor" aria-hidden="true" href="#3-강의-과제였다는-반전">#</a></h2>
+<p>여기까지 순수하게 점수만 보고 온 뒤, &ldquo;이걸 정리해서 노트북 파일로 만들고, 결론은 액션플랜으로 수익구조화를 하는 것까지가 강의 프로젝트의 목적&quot;이라는 말로 이게 사실 강의 과제였다는 게 드러났다. 별도의 rubric 문서는 없어서, 평소 쓰던 학습 블로그의 과거 글들을 근거로 요건을 파악했다 — Pipeline 문법을 강조한 글에서는 전처리와 모델을 <code>ColumnTransformer</code>+<code>Pipeline</code>으로 묶어 fold마다 전처리가 다시 fit되게 만드는 게 핵심이라는 점을, 검증 관련 글에서는 세그먼트별 오차 분석과 우선순위 액션 리스트 형식을 확인했다. 사업 컨셉은 헬스케어 앱/구독 서비스(B2C), 산출물은 실제 <code>.ipynb</code> 파일, SCQA 청중은 가상의 경영진/투자자로 정했다.</p>
+<h2 id="4-노트북-제작--구조와-겪은-버그들">4. 노트북 제작 — 구조와 겪은 버그들<a hidden class="anchor" aria-hidden="true" href="#4-노트북-제작--구조와-겪은-버그들">#</a></h2>
+<p>노트북은 SCQA와 바바라 민토 피라미드 구조를 따랐다: 결론과 3가지 핵심 근거를 담은 피라미드 다이어그램, Executive Summary, 데이터 개요, Mutual Information과 <code>stress×activity</code> 히트맵 같은 핵심 발견, 그리고 모델링 여정 — 원래 GPT의 SGD 베이스라인을 정식 <code>Pipeline</code>으로 재현해 왜 최종 모델(트리 기반)은 Pipeline을 안 썼는지도 정직하게 설명했다. SHAP 해석에서는 <code>unhealthy</code> 클래스 기준으로 gain importance 1위와 다르게 <code>bmi</code>가 SHAP 기준 1위로 나와서, 이걸 &ldquo;Premium 플랜 코칭 콘텐츠에 체중 관리도 포함해야 한다&quot;는 제품 인사이트로 연결했다. 마지막엔 리스크 티어→상품 티어 매핑, 오분류 비용 논의, 가상 시장규모 계산까지 붙였다(실제 조사 데이터가 아님을 명시).</p>
+<p>제작 중 겪은 버그도 몇 가지 있었다. matplotlib 기본 폰트로는 한글이 깨져서 <code>Malgun Gothic</code>을 지정해야 했고, SHAP 셀에서 <code>test</code>가 정의되지 않았다는 에러가 나서 해당 셀에서 test 데이터를 별도로 로드하도록 고쳤다. 피라미드 다이어그램은 꼭대기 폭이 좁아 텍스트가 잘려서 폭을 넓히고 텍스트를 줄여 해결했고, 별개 스크립트에서는 pandas 3.0에서 <code>groupby().apply(sample)</code>이 타겟 컬럼을 없애버리는 문제를 <code>train_test_split(stratify=...)</code>로 교체해 해결했다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="이번-글에서-정리한-것">이번 글에서 정리한 것<a hidden class="anchor" aria-hidden="true" href="#이번-글에서-정리한-것">#</a></h3>
+<p>기술 챌린지로 시작한 작업의 최종 스코어보드와 채택 모델, 그리고 뒤늦게 강의 과제라는 걸 알게 된 뒤 SCQA·민토 피라미드·SHAP을 반영해 노트북으로 재구성한 과정을 정리했다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>이미 검증한 실험 결과라도, 청중(경영진/투자자)에 맞는 구조로 다시 포장하는 건 별개의 작업이라는 걸 놓치면 안 된다 — 점수만 좋다고 좋은 보고서가 되는 게 아니었다.</p>
+<h3 id="다음-액션">다음 액션<a hidden class="anchor" aria-hidden="true" href="#다음-액션">#</a></h3>
+<p>이 개인전 전체를 되짚어보고, 팀 프로젝트로 넘어가기 전에 남길 마무리 글을 정리한다.</p>
+<blockquote>
+<p>이 글은 LearningLog projects 흐름에서 생성한 프로젝트 시리즈 초안입니다.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/kaggle/">Kaggle</a></li>
+      <li><a href="https://Han-think.github.io/tags/shap/">Shap</a></li>
+      <li><a href="https://Han-think.github.io/tags/scqa/">Scqa</a></li>
+      <li><a href="https://Han-think.github.io/tags/business-report/">Business-Report</a></li>
+      <li><a href="https://Han-think.github.io/tags/jupyter/">Jupyter</a></li>
+      <li><a href="https://Han-think.github.io/tags/projects/">Projects</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

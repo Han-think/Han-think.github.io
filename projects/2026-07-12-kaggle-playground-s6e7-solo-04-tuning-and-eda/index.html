@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Kaggle Playground S6E7 개인 도전 회고 - 4. 튜닝 시간 추정 실패와 EDA 재검토가 만든 전환점 | Han-think Blog</title>
+<meta name="keywords" content="kaggle, optuna, hyperparameter-tuning, eda, feature-engineering, projects">
+<meta name="description" content="Optuna 튜닝에서 겪은 시간 추정 실패, 그리고 다시 돌린 EDA에서 발견한 거의 결정론적인 신호.">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-04-tuning-and-eda/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-04-tuning-and-eda/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-04-tuning-and-eda/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="Kaggle Playground S6E7 개인 도전 회고 - 4. 튜닝 시간 추정 실패와 EDA 재검토가 만든 전환점">
+  <meta property="og:description" content="Optuna 튜닝에서 겪은 시간 추정 실패, 그리고 다시 돌린 EDA에서 발견한 거의 결정론적인 신호.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2026-07-12T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-12T00:00:00+00:00">
+    <meta property="article:tag" content="Kaggle">
+    <meta property="article:tag" content="Optuna">
+    <meta property="article:tag" content="Hyperparameter-Tuning">
+    <meta property="article:tag" content="Eda">
+    <meta property="article:tag" content="Feature-Engineering">
+    <meta property="article:tag" content="Projects">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kaggle Playground S6E7 개인 도전 회고 - 4. 튜닝 시간 추정 실패와 EDA 재검토가 만든 전환점">
+  <meta name="twitter:description" content="Optuna 튜닝에서 겪은 시간 추정 실패, 그리고 다시 돌린 EDA에서 발견한 거의 결정론적인 신호.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "프로젝트",
+      "item": "https://Han-think.github.io/projects/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Kaggle Playground S6E7 개인 도전 회고 - 4. 튜닝 시간 추정 실패와 EDA 재검토가 만든 전환점",
+      "item": "https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-04-tuning-and-eda/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Kaggle Playground S6E7 개인 도전 회고 - 4. 튜닝 시간 추정 실패와 EDA 재검토가 만든 전환점",
+  "name": "Kaggle Playground S6E7 개인 도전 회고 - 4. 튜닝 시간 추정 실패와 EDA 재검토가 만든 전환점",
+  "description": "Optuna 튜닝에서 겪은 시간 추정 실패, 그리고 다시 돌린 EDA에서 발견한 거의 결정론적인 신호.",
+  "keywords": [
+    "kaggle", "optuna", "hyperparameter-tuning", "eda", "feature-engineering", "projects"
+  ],
+  "articleBody": "목차 CatBoost 하이퍼파라미터 튜닝 설계 첫 실수: 시간 추정을 안 하고 그냥 돌림 튜닝 결과와 그 의미 “더 이상 안 오르는 거 아니야?“라는 질문과 EDA 재검토 피처 엔지니어링 구현과 결과 총평 1. CatBoost 하이퍼파라미터 튜닝 설계 앙상블에서 CatBoost가 가장 강한 단일 모델(raw OOF 0.949)이었기 때문에 튜닝 레버리지가 제일 클 것으로 보고 CatBoost부터 튜닝했다. 69만 행 전체로 하이퍼파라미터 조합 수십 개를 시도하는 건 비현실적이라, 학습 데이터를 서브샘플로 줄이고 fold 수와 iteration 상한도 축소한 뒤 Optuna(TPE 샘플러)로 순차 탐색했다. 탐색 대상은 학습률, 트리 깊이, L2 정규화, random strength, bagging temperature였다.\n2. 첫 실수: 시간 추정을 안 하고 그냥 돌림 트리 깊이 상한을 10까지 열어둔 게 문제였다. CatBoost의 대칭(oblivious) 트리는 리프 수가 깊이의 지수함수(2^depth)라서, 깊이 10은 깊이 8보다 리프가 4배 많고 학습 시간도 비선형적으로 늘어난다. 결과적으로 트라이얼 13개에 56분이 걸렸다 — 트라이얼당 평균 4.3분이면 40개 전부 도는 데 약 3시간, 처음에 “20~40분이면 될 것\"이라고 잡았던 예상과 완전히 어긋났다. 바로 훨씬 가벼운 설정(서브샘플·fold·iteration·깊이 상한 전부 축소)으로 스크립트를 고쳤지만, 이미 원래 설정으로 돌리고 있던 실행은 “그냥 켜두고 볼일 보고 올게\"라며 끝까지 완주시켰다.\n3. 튜닝 결과와 그 의미 40개 트라이얼의 점수가 0.947~0.9488 사이에 매우 촘촘하게 몰려 있었다(스프레드 0.002 미만). 이건 이 데이터·모델 조합에서 CatBoost 성능이 하이퍼파라미터에 별로 민감하지 않다는 뜻이었다 — 처음에 쓴 기본값이 이미 최적점 근처였다는 걸 시사한다. 튜닝된 파라미터를 저장해두고, 있으면 자동으로 읽고 없으면 기본값으로 폴백하도록 만들어서 튜닝을 “선택적” 단계로 남겼다. 전체 데이터로 재학습한 실제 효과는 raw OOF 0.949136 → 0.949425(+0.000289) — 예측대로 개선폭이 작았다. 하이퍼파라미터 탐색을 시작하기 전에 트라이얼 1개 시간을 먼저 재보고 전체 시간을 추정해야 한다는 것, 그리고 점수가 촘촘히 몰려 있다는 것 자체가 “이 레버는 이미 거의 다 당겨져 있다\"는 유용한 정보라는 걸 배웠다.\n4. “더 이상 안 오르는 거 아니야?“라는 질문과 EDA 재검토 튜닝으로 개선폭이 작게 나오자 “지금까지 한 것 중 최선이 일단 나왔지만, 안 해본 것에서 더 나아질 가능성이 전무하다고 판단돼? 데이터 원본은 너도 알잖아\"라는 질문을 스스로에게 던졌다. 이 질문에 정직하게 답하려고 EDA를 처음부터 다시 돌렸는데, 결과적으로 피처 엔지니어링을 “기대효과 낮음\"으로 미리 낮은 우선순위를 매긴 게 성급한 판단이었다는 게 드러났다. 이전 판단은 기존 GPT 패키지들이 “신호가 별로 없다\"고 한 것에 기댄 것이었지, 직접 분석한 게 아니었다.\nMutual Information을 다시 돌려보니 sleep_duration(수치형 1위)과 stress_level(범주형 1위, 전체 2위)이 강한 신호였고, diet_type과 gender는 사실상 노이즈였다. 더 놀라운 건 stress_level 단독 교차표였다 — stress_level=medium이면 99.4%가 그냥 at-risk로, 사실상 결정론적이었다. stress_level과 physical_activity_level을 조합해서 9개 그룹으로 쪼개보니 훨씬 더 극단적인 구조가 드러났다: 9개 조합 중 딱 하나(저스트레스+활동적)만 fit 비율이 57.9%로 튀어 오르고, 나머지는 거의 규칙 기반처럼 깨끗했다. 두 GPT 패키지 모두 개별 피처 분포는 그렸지만 클래스별로 쪼개서 교차분석하거나 두 범주형 피처의 조합을 본 적이 없었다는 게 이걸 아무도 먼저 못 본 이유였다.\n5. 피처 엔지니어링 구현과 결과 stress_level과 physical_activity_level을 문자열로 이어붙인 stress_activity 교차 피처를 추가했다. 원본 범주형 컬럼 목록과 엔지니어링된 컬럼까지 포함한 목록을 분리해서 설계한 게 핵심이었다 — 이렇게 하면 다른 모든 스크립트가 “모델 학습에 실제로 쓰는 컬럼 목록\"만 참조하기 때문에, 새 피처가 코드 변경 없이 자동으로 전파된다.\n재학습 결과는 모델마다 달랐다. LightGBM은 raw OOF가 0.922588 → 0.922927로 확실히 반응했지만, CatBoost는 0.949425 → 0.949408로 거의 그대로였다(오히려 미세하게 하락). 이유는 CatBoost가 max_ctr_complexity 옵션으로 범주형 피처 조합을 알고리즘 내부에서 이미 자동으로 시도하고 있었기 때문 — 수동으로 만든 stress_activity는 CatBoost 입장에서 “이미 하고 있던 걸 한 번 더 떠먹여준 것\"이었다. 최종 블렌드(CatBoost가 주도하는 구조)는 그래서 nested 기준으로는 소폭 개선(0.949745 → 0.949763)에 그쳤지만, 실제 Public LB로는 0.94937에서 진짜로 올라갔다.\n총평 이번 글에서 정리한 것 하이퍼파라미터 탐색은 사전에 시간 추정을 해야 한다는 것과, “신호 없음\"이라는 판단을 직접 검증하지 않고 넘어갔다가 하루의 가장 큰 발견을 놓칠 뻔했다는 것을 정리했다.\n다음에 조심할 것 같은 피처 추가라도 모델 종류에 따라 효과가 다를 수 있다 — CatBoost처럼 이미 내부적으로 조합을 탐색하는 알고리즘에는 수동 피처가 중복될 수 있다는 걸 미리 알아야 기대치를 정확히 잡을 수 있다.\n다음 액션 이 개선들이 반영된 최종 스코어보드와, 강의 과제로 드러난 뒤 노트북을 만든 과정을 정리한다.\n이 글은 LearningLog projects 흐름에서 생성한 프로젝트 시리즈 초안입니다.\n",
+  "wordCount" : "615",
+  "inLanguage": "en",
+  "datePublished": "2026-07-12T00:00:00Z",
+  "dateModified": "2026-07-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-04-tuning-and-eda/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Kaggle Playground S6E7 개인 도전 회고 - 4. 튜닝 시간 추정 실패와 EDA 재검토가 만든 전환점
+    </h1>
+    <div class="post-description">
+      Optuna 튜닝에서 겪은 시간 추정 실패, 그리고 다시 돌린 EDA에서 발견한 거의 결정론적인 신호.
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-12 00:00:00 +0000 UTC'>2026년 7월 12일</span>&nbsp;·&nbsp;<span>3 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-catboost-%ED%95%98%EC%9D%B4%ED%8D%BC%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0-%ED%8A%9C%EB%8B%9D-%EC%84%A4%EA%B3%84">CatBoost 하이퍼파라미터 튜닝 설계</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%B2%AB-%EC%8B%A4%EC%88%98-%EC%8B%9C%EA%B0%84-%EC%B6%94%EC%A0%95%EC%9D%84-%EC%95%88-%ED%95%98%EA%B3%A0-%EA%B7%B8%EB%83%A5-%EB%8F%8C%EB%A6%BC">첫 실수: 시간 추정을 안 하고 그냥 돌림</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%ED%8A%9C%EB%8B%9D-%EA%B2%B0%EA%B3%BC%EC%99%80-%EA%B7%B8-%EC%9D%98%EB%AF%B8">튜닝 결과와 그 의미</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EB%8D%94-%EC%9D%B4%EC%83%81-%EC%95%88-%EC%98%A4%EB%A5%B4%EB%8A%94-%EA%B1%B0-%EC%95%84%EB%8B%88%EC%95%BC%EB%9D%BC%EB%8A%94-%EC%A7%88%EB%AC%B8%EA%B3%BC-eda-%EC%9E%AC%EA%B2%80%ED%86%A0">&ldquo;더 이상 안 오르는 거 아니야?&ldquo;라는 질문과 EDA 재검토</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-%ED%94%BC%EC%B2%98-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A7%81-%EA%B5%AC%ED%98%84%EA%B3%BC-%EA%B2%B0%EA%B3%BC">피처 엔지니어링 구현과 결과</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-catboost-하이퍼파라미터-튜닝-설계">1. CatBoost 하이퍼파라미터 튜닝 설계<a hidden class="anchor" aria-hidden="true" href="#1-catboost-하이퍼파라미터-튜닝-설계">#</a></h2>
+<p>앙상블에서 CatBoost가 가장 강한 단일 모델(raw OOF 0.949)이었기 때문에 튜닝 레버리지가 제일 클 것으로 보고 CatBoost부터 튜닝했다. 69만 행 전체로 하이퍼파라미터 조합 수십 개를 시도하는 건 비현실적이라, 학습 데이터를 서브샘플로 줄이고 fold 수와 iteration 상한도 축소한 뒤 Optuna(TPE 샘플러)로 순차 탐색했다. 탐색 대상은 학습률, 트리 깊이, L2 정규화, random strength, bagging temperature였다.</p>
+<h2 id="2-첫-실수-시간-추정을-안-하고-그냥-돌림">2. 첫 실수: 시간 추정을 안 하고 그냥 돌림<a hidden class="anchor" aria-hidden="true" href="#2-첫-실수-시간-추정을-안-하고-그냥-돌림">#</a></h2>
+<p>트리 깊이 상한을 10까지 열어둔 게 문제였다. CatBoost의 대칭(oblivious) 트리는 리프 수가 깊이의 지수함수(2^depth)라서, 깊이 10은 깊이 8보다 리프가 4배 많고 학습 시간도 비선형적으로 늘어난다. 결과적으로 트라이얼 13개에 56분이 걸렸다 — 트라이얼당 평균 4.3분이면 40개 전부 도는 데 약 3시간, 처음에 &ldquo;20~40분이면 될 것&quot;이라고 잡았던 예상과 완전히 어긋났다. 바로 훨씬 가벼운 설정(서브샘플·fold·iteration·깊이 상한 전부 축소)으로 스크립트를 고쳤지만, 이미 원래 설정으로 돌리고 있던 실행은 &ldquo;그냥 켜두고 볼일 보고 올게&quot;라며 끝까지 완주시켰다.</p>
+<h2 id="3-튜닝-결과와-그-의미">3. 튜닝 결과와 그 의미<a hidden class="anchor" aria-hidden="true" href="#3-튜닝-결과와-그-의미">#</a></h2>
+<p>40개 트라이얼의 점수가 0.947~0.9488 사이에 매우 촘촘하게 몰려 있었다(스프레드 0.002 미만). 이건 이 데이터·모델 조합에서 CatBoost 성능이 하이퍼파라미터에 별로 민감하지 않다는 뜻이었다 — 처음에 쓴 기본값이 이미 최적점 근처였다는 걸 시사한다. 튜닝된 파라미터를 저장해두고, 있으면 자동으로 읽고 없으면 기본값으로 폴백하도록 만들어서 튜닝을 &ldquo;선택적&rdquo; 단계로 남겼다. 전체 데이터로 재학습한 실제 효과는 raw OOF 0.949136 → 0.949425(+0.000289) — 예측대로 개선폭이 작았다. 하이퍼파라미터 탐색을 시작하기 전에 트라이얼 1개 시간을 먼저 재보고 전체 시간을 추정해야 한다는 것, 그리고 점수가 촘촘히 몰려 있다는 것 자체가 &ldquo;이 레버는 이미 거의 다 당겨져 있다&quot;는 유용한 정보라는 걸 배웠다.</p>
+<h2 id="4-더-이상-안-오르는-거-아니야라는-질문과-eda-재검토">4. &ldquo;더 이상 안 오르는 거 아니야?&ldquo;라는 질문과 EDA 재검토<a hidden class="anchor" aria-hidden="true" href="#4-더-이상-안-오르는-거-아니야라는-질문과-eda-재검토">#</a></h2>
+<p>튜닝으로 개선폭이 작게 나오자 &ldquo;지금까지 한 것 중 최선이 일단 나왔지만, 안 해본 것에서 더 나아질 가능성이 전무하다고 판단돼? 데이터 원본은 너도 알잖아&quot;라는 질문을 스스로에게 던졌다. 이 질문에 정직하게 답하려고 EDA를 처음부터 다시 돌렸는데, 결과적으로 피처 엔지니어링을 &ldquo;기대효과 낮음&quot;으로 미리 낮은 우선순위를 매긴 게 성급한 판단이었다는 게 드러났다. 이전 판단은 기존 GPT 패키지들이 &ldquo;신호가 별로 없다&quot;고 한 것에 기댄 것이었지, 직접 분석한 게 아니었다.</p>
+<p>Mutual Information을 다시 돌려보니 <code>sleep_duration</code>(수치형 1위)과 <code>stress_level</code>(범주형 1위, 전체 2위)이 강한 신호였고, <code>diet_type</code>과 <code>gender</code>는 사실상 노이즈였다. 더 놀라운 건 <code>stress_level</code> 단독 교차표였다 — <code>stress_level=medium</code>이면 99.4%가 그냥 <code>at-risk</code>로, 사실상 결정론적이었다. <code>stress_level</code>과 <code>physical_activity_level</code>을 조합해서 9개 그룹으로 쪼개보니 훨씬 더 극단적인 구조가 드러났다: 9개 조합 중 딱 하나(저스트레스+활동적)만 <code>fit</code> 비율이 57.9%로 튀어 오르고, 나머지는 거의 규칙 기반처럼 깨끗했다. 두 GPT 패키지 모두 개별 피처 분포는 그렸지만 클래스별로 쪼개서 교차분석하거나 두 범주형 피처의 조합을 본 적이 없었다는 게 이걸 아무도 먼저 못 본 이유였다.</p>
+<h2 id="5-피처-엔지니어링-구현과-결과">5. 피처 엔지니어링 구현과 결과<a hidden class="anchor" aria-hidden="true" href="#5-피처-엔지니어링-구현과-결과">#</a></h2>
+<p><code>stress_level</code>과 <code>physical_activity_level</code>을 문자열로 이어붙인 <code>stress_activity</code> 교차 피처를 추가했다. 원본 범주형 컬럼 목록과 엔지니어링된 컬럼까지 포함한 목록을 분리해서 설계한 게 핵심이었다 — 이렇게 하면 다른 모든 스크립트가 &ldquo;모델 학습에 실제로 쓰는 컬럼 목록&quot;만 참조하기 때문에, 새 피처가 코드 변경 없이 자동으로 전파된다.</p>
+<p>재학습 결과는 모델마다 달랐다. LightGBM은 raw OOF가 0.922588 → 0.922927로 확실히 반응했지만, CatBoost는 0.949425 → 0.949408로 거의 그대로였다(오히려 미세하게 하락). 이유는 CatBoost가 <code>max_ctr_complexity</code> 옵션으로 범주형 피처 조합을 알고리즘 내부에서 이미 자동으로 시도하고 있었기 때문 — 수동으로 만든 <code>stress_activity</code>는 CatBoost 입장에서 &ldquo;이미 하고 있던 걸 한 번 더 떠먹여준 것&quot;이었다. 최종 블렌드(CatBoost가 주도하는 구조)는 그래서 nested 기준으로는 소폭 개선(0.949745 → 0.949763)에 그쳤지만, 실제 Public LB로는 0.94937에서 진짜로 올라갔다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="이번-글에서-정리한-것">이번 글에서 정리한 것<a hidden class="anchor" aria-hidden="true" href="#이번-글에서-정리한-것">#</a></h3>
+<p>하이퍼파라미터 탐색은 사전에 시간 추정을 해야 한다는 것과, &ldquo;신호 없음&quot;이라는 판단을 직접 검증하지 않고 넘어갔다가 하루의 가장 큰 발견을 놓칠 뻔했다는 것을 정리했다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>같은 피처 추가라도 모델 종류에 따라 효과가 다를 수 있다 — CatBoost처럼 이미 내부적으로 조합을 탐색하는 알고리즘에는 수동 피처가 중복될 수 있다는 걸 미리 알아야 기대치를 정확히 잡을 수 있다.</p>
+<h3 id="다음-액션">다음 액션<a hidden class="anchor" aria-hidden="true" href="#다음-액션">#</a></h3>
+<p>이 개선들이 반영된 최종 스코어보드와, 강의 과제로 드러난 뒤 노트북을 만든 과정을 정리한다.</p>
+<blockquote>
+<p>이 글은 LearningLog projects 흐름에서 생성한 프로젝트 시리즈 초안입니다.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/kaggle/">Kaggle</a></li>
+      <li><a href="https://Han-think.github.io/tags/optuna/">Optuna</a></li>
+      <li><a href="https://Han-think.github.io/tags/hyperparameter-tuning/">Hyperparameter-Tuning</a></li>
+      <li><a href="https://Han-think.github.io/tags/eda/">Eda</a></li>
+      <li><a href="https://Han-think.github.io/tags/feature-engineering/">Feature-Engineering</a></li>
+      <li><a href="https://Han-think.github.io/tags/projects/">Projects</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

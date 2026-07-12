@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Kaggle Playground S6E7 개인 도전 회고 - 6. 마무리: 혼자 갈 수 있는 데까지, 그리고 팀으로 넘어가기 | Han-think Blog</title>
+<meta name="keywords" content="kaggle, retrospective, team-project, portfolio, projects">
+<meta name="description" content="팀 프로젝트에 들어가기 전, 혼자 부딪혀본 하루 반의 기록을 정리하며 남기는 마무리 글.">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-06-wrap-up/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-06-wrap-up/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-06-wrap-up/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="Kaggle Playground S6E7 개인 도전 회고 - 6. 마무리: 혼자 갈 수 있는 데까지, 그리고 팀으로 넘어가기">
+  <meta property="og:description" content="팀 프로젝트에 들어가기 전, 혼자 부딪혀본 하루 반의 기록을 정리하며 남기는 마무리 글.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2026-07-12T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-12T00:00:00+00:00">
+    <meta property="article:tag" content="Kaggle">
+    <meta property="article:tag" content="Retrospective">
+    <meta property="article:tag" content="Team-Project">
+    <meta property="article:tag" content="Portfolio">
+    <meta property="article:tag" content="Projects">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kaggle Playground S6E7 개인 도전 회고 - 6. 마무리: 혼자 갈 수 있는 데까지, 그리고 팀으로 넘어가기">
+  <meta name="twitter:description" content="팀 프로젝트에 들어가기 전, 혼자 부딪혀본 하루 반의 기록을 정리하며 남기는 마무리 글.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "프로젝트",
+      "item": "https://Han-think.github.io/projects/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Kaggle Playground S6E7 개인 도전 회고 - 6. 마무리: 혼자 갈 수 있는 데까지, 그리고 팀으로 넘어가기",
+      "item": "https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-06-wrap-up/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Kaggle Playground S6E7 개인 도전 회고 - 6. 마무리: 혼자 갈 수 있는 데까지, 그리고 팀으로 넘어가기",
+  "name": "Kaggle Playground S6E7 개인 도전 회고 - 6. 마무리: 혼자 갈 수 있는 데까지, 그리고 팀으로 넘어가기",
+  "description": "팀 프로젝트에 들어가기 전, 혼자 부딪혀본 하루 반의 기록을 정리하며 남기는 마무리 글.",
+  "keywords": [
+    "kaggle", "retrospective", "team-project", "portfolio", "projects"
+  ],
+  "articleBody": "목차 타임라인으로 되짚어보기 이 프로젝트를 관통한 원칙 혼자 갈 수 있는 최대치 팀 프로젝트로 넘어가며 기대하는 것 총평 1. 타임라인으로 되짚어보기 Day 1 저녁, “높은 점수를 받기 위한 코드로 결과물을 만들어내는 것을 해보자\"로 시작했다. 기존 코드의 버그를 고치고 첫 보정 결과를 냈고, 밤이 되기 전까지 확률 보정 범위를 몇 차례 넓혀가며 점수를 올렸다. 자기 전엔 CatBoost 학습을 걸어두고 잠들었다. Day 2 아침엔 XGBoost 결과를 확인하고, 하이퍼파라미터 튜닝을 돌리다 시간 추정이 완전히 빗나가는 걸 겪었고, 오후엔 “더 못 올리는 거 아니냐\"는 불안 끝에 EDA를 다시 돌려 하루 중 가장 중요한 발견(stress_activity 신호)을 찾았다. 저녁에 최종 제출을 마쳤고, 그 뒤에 이게 사실 강의 과제였다는 게 드러나 노트북과 SCQA 보고서까지 만들었다.\n2. 이 프로젝트를 관통한 원칙 돌아보면 하루 반 동안 반복해서 확인한 원칙은 네 가지였다. 실제로 실행해서 나온 숫자만 믿는다 — 기존 코드도, 다른 세션의 분석도, 스스로의 예측(시간 추정, “이제 천장일 것 같다”)도 전부 실측으로 검증받았다. 탐색과 평가는 분리한다 — nested CV 같은 장치가 없으면 낙관적인 숫자에 속기 쉽다. 작게 먼저 돌려본다 — 스모크 테스트로 CatBoost NaN 버그, pandas groupby 버그, 튜닝 시간 문제를 전체 실행 전에 미리 잡았다. 그리고 “안 된다\"고 결론 내리기 전에 직접 확인한다 — 피처 엔지니어링을 신호 없음이라고 넘겨짚었다가, 다시 확인해서 하루의 가장 큰 발견을 놓칠 뻔했다.\n3. 혼자 갈 수 있는 최대치 코딩을 깊이 아는 입문자는 아니다. 이번 개인전은 정답을 빨리 맞히는 게 목적이 아니라, 팀 프로젝트에 들어가기 전에 “어떤 방식으로 접근하는 게 맞는 건지” 스스로 감을 잡아보려고 혼자 먼저 부딪혀본 시간이었다. 그 결과, 혼자 힘으로 갈 수 있는 최대치는 Public LB 0.95005, 한국시간 21:45 기준 리더보드 371등이었다(리더보드는 계속 변동 중이므로 이 순위 자체가 최종 확정값은 아니다). 과장하지도, 낮춰 말하지도 않고 이걸 이번 개인전의 최고 성과로 있는 그대로 남겨둔다.\n4. 팀 프로젝트로 넘어가며 기대하는 것 이제 팀 프로젝트에서는 혼자가 아니라 다른 사람들과 함께 이 문제를 다시 마주하게 된다. 혼자서는 여기까지가 한계였지만, 팀원들이 각자 어떤 모델을 썼는지, 어떤 피처를 봤는지, 어떤 검증 방식을 신뢰했는지를 비교해보면 이 결과가 얼마나 더 좋아질 수 있는지 배울 수 있을 것 같다. 이번 개인전의 기록은 정답이 아니라 “이 정도 접근으로 여기까지 갈 수 있었다\"는 하나의 기준점으로 남겨두고, 팀원들에게서 무엇을 배울 수 있을지 기대하는 마음으로 이 시리즈를 마무리한다.\n총평 이번 글에서 정리한 것 개인전 전체를 관통한 원칙과, 혼자 힘으로 도달한 최종 성과(0.95005, 371등)를 있는 그대로 정리했다.\n다음에 조심할 것 팀 프로젝트에서는 여기서 검증한 방법(nested CV, 스모크 테스트)을 그대로 반복하기보다, 팀원들의 다른 접근 방식을 먼저 열린 마음으로 들어보는 자세가 우선이다.\n다음 액션 팀 프로젝트가 시작되면, 각자 어떤 모델·피처·검증 방식을 썼는지 비교하고 이번 개인전 결과와 어떻게, 왜 달라지는지 정리한다.\n이 글은 LearningLog projects 흐름에서 생성한 프로젝트 시리즈 초안입니다.\n",
+  "wordCount" : "411",
+  "inLanguage": "en",
+  "datePublished": "2026-07-12T00:00:00Z",
+  "dateModified": "2026-07-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-06-wrap-up/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Kaggle Playground S6E7 개인 도전 회고 - 6. 마무리: 혼자 갈 수 있는 데까지, 그리고 팀으로 넘어가기
+    </h1>
+    <div class="post-description">
+      팀 프로젝트에 들어가기 전, 혼자 부딪혀본 하루 반의 기록을 정리하며 남기는 마무리 글.
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-12 00:00:00 +0000 UTC'>2026년 7월 12일</span>&nbsp;·&nbsp;<span>2 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%ED%83%80%EC%9E%84%EB%9D%BC%EC%9D%B8%EC%9C%BC%EB%A1%9C-%EB%90%98%EC%A7%9A%EC%96%B4%EB%B3%B4%EA%B8%B0">타임라인으로 되짚어보기</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%9D%B4-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EB%A5%BC-%EA%B4%80%ED%86%B5%ED%95%9C-%EC%9B%90%EC%B9%99">이 프로젝트를 관통한 원칙</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%ED%98%BC%EC%9E%90-%EA%B0%88-%EC%88%98-%EC%9E%88%EB%8A%94-%EC%B5%9C%EB%8C%80%EC%B9%98">혼자 갈 수 있는 최대치</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%ED%8C%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EB%A1%9C-%EB%84%98%EC%96%B4%EA%B0%80%EB%A9%B0-%EA%B8%B0%EB%8C%80%ED%95%98%EB%8A%94-%EA%B2%83">팀 프로젝트로 넘어가며 기대하는 것</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-타임라인으로-되짚어보기">1. 타임라인으로 되짚어보기<a hidden class="anchor" aria-hidden="true" href="#1-타임라인으로-되짚어보기">#</a></h2>
+<p>Day 1 저녁, &ldquo;높은 점수를 받기 위한 코드로 결과물을 만들어내는 것을 해보자&quot;로 시작했다. 기존 코드의 버그를 고치고 첫 보정 결과를 냈고, 밤이 되기 전까지 확률 보정 범위를 몇 차례 넓혀가며 점수를 올렸다. 자기 전엔 CatBoost 학습을 걸어두고 잠들었다. Day 2 아침엔 XGBoost 결과를 확인하고, 하이퍼파라미터 튜닝을 돌리다 시간 추정이 완전히 빗나가는 걸 겪었고, 오후엔 &ldquo;더 못 올리는 거 아니냐&quot;는 불안 끝에 EDA를 다시 돌려 하루 중 가장 중요한 발견(<code>stress_activity</code> 신호)을 찾았다. 저녁에 최종 제출을 마쳤고, 그 뒤에 이게 사실 강의 과제였다는 게 드러나 노트북과 SCQA 보고서까지 만들었다.</p>
+<h2 id="2-이-프로젝트를-관통한-원칙">2. 이 프로젝트를 관통한 원칙<a hidden class="anchor" aria-hidden="true" href="#2-이-프로젝트를-관통한-원칙">#</a></h2>
+<p>돌아보면 하루 반 동안 반복해서 확인한 원칙은 네 가지였다. 실제로 실행해서 나온 숫자만 믿는다 — 기존 코드도, 다른 세션의 분석도, 스스로의 예측(시간 추정, &ldquo;이제 천장일 것 같다&rdquo;)도 전부 실측으로 검증받았다. 탐색과 평가는 분리한다 — nested CV 같은 장치가 없으면 낙관적인 숫자에 속기 쉽다. 작게 먼저 돌려본다 — 스모크 테스트로 CatBoost NaN 버그, pandas groupby 버그, 튜닝 시간 문제를 전체 실행 전에 미리 잡았다. 그리고 &ldquo;안 된다&quot;고 결론 내리기 전에 직접 확인한다 — 피처 엔지니어링을 신호 없음이라고 넘겨짚었다가, 다시 확인해서 하루의 가장 큰 발견을 놓칠 뻔했다.</p>
+<h2 id="3-혼자-갈-수-있는-최대치">3. 혼자 갈 수 있는 최대치<a hidden class="anchor" aria-hidden="true" href="#3-혼자-갈-수-있는-최대치">#</a></h2>
+<p>코딩을 깊이 아는 입문자는 아니다. 이번 개인전은 정답을 빨리 맞히는 게 목적이 아니라, 팀 프로젝트에 들어가기 전에 &ldquo;어떤 방식으로 접근하는 게 맞는 건지&rdquo; 스스로 감을 잡아보려고 혼자 먼저 부딪혀본 시간이었다. 그 결과, 혼자 힘으로 갈 수 있는 최대치는 Public LB <strong>0.95005</strong>, 한국시간 21:45 기준 리더보드 <strong>371등</strong>이었다(리더보드는 계속 변동 중이므로 이 순위 자체가 최종 확정값은 아니다). 과장하지도, 낮춰 말하지도 않고 이걸 이번 개인전의 최고 성과로 있는 그대로 남겨둔다.</p>
+<h2 id="4-팀-프로젝트로-넘어가며-기대하는-것">4. 팀 프로젝트로 넘어가며 기대하는 것<a hidden class="anchor" aria-hidden="true" href="#4-팀-프로젝트로-넘어가며-기대하는-것">#</a></h2>
+<p>이제 팀 프로젝트에서는 혼자가 아니라 다른 사람들과 함께 이 문제를 다시 마주하게 된다. 혼자서는 여기까지가 한계였지만, 팀원들이 각자 어떤 모델을 썼는지, 어떤 피처를 봤는지, 어떤 검증 방식을 신뢰했는지를 비교해보면 이 결과가 얼마나 더 좋아질 수 있는지 배울 수 있을 것 같다. 이번 개인전의 기록은 정답이 아니라 &ldquo;이 정도 접근으로 여기까지 갈 수 있었다&quot;는 하나의 기준점으로 남겨두고, 팀원들에게서 무엇을 배울 수 있을지 기대하는 마음으로 이 시리즈를 마무리한다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="이번-글에서-정리한-것">이번 글에서 정리한 것<a hidden class="anchor" aria-hidden="true" href="#이번-글에서-정리한-것">#</a></h3>
+<p>개인전 전체를 관통한 원칙과, 혼자 힘으로 도달한 최종 성과(0.95005, 371등)를 있는 그대로 정리했다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>팀 프로젝트에서는 여기서 검증한 방법(nested CV, 스모크 테스트)을 그대로 반복하기보다, 팀원들의 다른 접근 방식을 먼저 열린 마음으로 들어보는 자세가 우선이다.</p>
+<h3 id="다음-액션">다음 액션<a hidden class="anchor" aria-hidden="true" href="#다음-액션">#</a></h3>
+<p>팀 프로젝트가 시작되면, 각자 어떤 모델·피처·검증 방식을 썼는지 비교하고 이번 개인전 결과와 어떻게, 왜 달라지는지 정리한다.</p>
+<blockquote>
+<p>이 글은 LearningLog projects 흐름에서 생성한 프로젝트 시리즈 초안입니다.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/kaggle/">Kaggle</a></li>
+      <li><a href="https://Han-think.github.io/tags/retrospective/">Retrospective</a></li>
+      <li><a href="https://Han-think.github.io/tags/team-project/">Team-Project</a></li>
+      <li><a href="https://Han-think.github.io/tags/portfolio/">Portfolio</a></li>
+      <li><a href="https://Han-think.github.io/tags/projects/">Projects</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

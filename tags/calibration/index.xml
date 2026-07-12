@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Calibration on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/calibration/</link>
+    <description>Recent content in Calibration on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Sun, 12 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/calibration/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kaggle Playground S6E7 개인 도전 회고 - 2. 베이스라인 버그 수정과 보정 루프</title>
+      <link>https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-02-baseline-and-calibration/</link>
+      <pubDate>Sun, 12 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-02-baseline-and-calibration/</guid>
+      <description>수치형 컬럼을 통째로 LabelEncoder에 넣은 버그를 고치고, 클래스별 확률 보정을 nested CV로 검증하기까지.</description>
+    </item>
+  </channel>
+</rss>
