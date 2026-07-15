@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Kaggle Playground S6E7 개인 도전 - 7. Balanced Accuracy와 재현 가능한 기준점 | Han-think Blog</title>
+<meta name="keywords" content="kaggle, machine-learning, balanced-accuracy, catboost, lightgbm, oof, experiment-tracking">
+<meta name="description" content="불균형 3-class 문제에서 Balanced Accuracy의 행별 비용을 계산하고 재현 가능한 LGBM-CatBoost 기준점을 세운 과정.">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-score-journey/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-score-journey/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-score-journey/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="Kaggle Playground S6E7 개인 도전 - 7. Balanced Accuracy와 재현 가능한 기준점">
+  <meta property="og:description" content="불균형 3-class 문제에서 Balanced Accuracy의 행별 비용을 계산하고 재현 가능한 LGBM-CatBoost 기준점을 세운 과정.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2026-07-15T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-15T00:00:00+00:00">
+    <meta property="article:tag" content="Kaggle">
+    <meta property="article:tag" content="Machine-Learning">
+    <meta property="article:tag" content="Balanced-Accuracy">
+    <meta property="article:tag" content="Catboost">
+    <meta property="article:tag" content="Lightgbm">
+    <meta property="article:tag" content="Oof">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kaggle Playground S6E7 개인 도전 - 7. Balanced Accuracy와 재현 가능한 기준점">
+  <meta name="twitter:description" content="불균형 3-class 문제에서 Balanced Accuracy의 행별 비용을 계산하고 재현 가능한 LGBM-CatBoost 기준점을 세운 과정.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "프로젝트",
+      "item": "https://Han-think.github.io/projects/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Kaggle Playground S6E7 개인 도전 - 7. Balanced Accuracy와 재현 가능한 기준점",
+      "item": "https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-score-journey/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Kaggle Playground S6E7 개인 도전 - 7. Balanced Accuracy와 재현 가능한 기준점",
+  "name": "Kaggle Playground S6E7 개인 도전 - 7. Balanced Accuracy와 재현 가능한 기준점",
+  "description": "불균형 3-class 문제에서 Balanced Accuracy의 행별 비용을 계산하고 재현 가능한 LGBM-CatBoost 기준점을 세운 과정.",
+  "keywords": [
+    "kaggle", "machine-learning", "balanced-accuracy", "catboost", "lightgbm", "oof", "experiment-tracking"
+  ],
+  "articleBody": " 앞선 1~6편이 첫 개인 도전과 0.95005 도달 과정을 다뤘다면, 7편부터는 후속 실험을 수치와 검증 근거 중심으로 다시 정리한다.\n목차 종 모양 그래프 몇 개면 끝날 줄 알았다 TL;DR 대회와 데이터 Balanced Accuracy는 왜 기묘한가 첫 번째 재현 가능한 기준점 총평 종 모양 그래프 몇 개면 끝날 줄 알았다 처음 이 대회를 봤을 때는 꽤 단순해 보였다.\n수면 시간, 심박수, BMI, 걸음 수, 운동 시간, 물 섭취량처럼 건강과 관련된 특성이 있고, 목표는 학생의 건강 상태를 at-risk, fit, unhealthy 중 하나로 분류하는 문제였다. 클래스별 분포를 한 그래프에 겹쳐 그리고, 평균과 표준편차를 비교하고, 건강 상태가 나빠지는 축을 만들면 경계가 보일 것 같았다.\n실제로 각 특성의 분포는 꽤 그럴듯한 종 모양을 보였다. 하지만 분포가 그럴듯하다는 것과 Kaggle 점수가 오른다는 것은 완전히 다른 문제였다.\n이 대회의 평가지표는 일반 Accuracy가 아니라 Balanced Accuracy였다. 이 지표에서는 모든 행의 가치가 같지 않다. 다수 클래스 한 행과 희소 클래스 한 행의 손익이 다르다. 나중에는 이 작업을 모델링보다 미시경제학에 가깝다고 느꼈다.\n결과부터 말하면 다음과 같다.\n과거 기준 0.94937 로컬 재현 Blend 0.95005 외부 anchor 0.95112 최종 최고점 0.95113 다만 0.95113이라는 마지막 숫자보다 더 중요했던 것은, 어떤 개선이 진짜였고 어떤 개선이 착시였는지를 분리한 과정이었다.\nTL;DR Train은 690,088행, Test는 295,753행이었다. at-risk가 약 85.9%, fit이 약 5.8%, unhealthy가 약 8.4%인 강한 불균형 문제였다. CatBoost 단독 OOF가 가장 강했지만, LightGBM과의 오류 상쇄를 이용한 Blend가 재현 가능한 첫 챔피언이 됐다. Exact Target Encoding은 로컬 OOF를 0.950192까지 올렸지만 Kaggle Public은 0.94924까지 떨어졌다. seed ensemble, OVR, 외부 원본 50k, 건강축 LDA, pairwise 모델, 전역 모델 주입은 최종적으로 모두 기각했다. 외부 0.95112 제출을 anchor로 삼고 공개 노트북의 강한 판단으로 단 한 행을 fit -\u003e at-risk로 바꾼 Run 18이 Public 0.95113을 기록했다. fit -\u003e at-risk의 더 엄격한 0.80 tail은 새 5-fold에서 5/5 승리했지만, Test에서 두 행을 추가로 바꾼 Public은 0.95113으로 같았다. 최소 319개의 base/auxiliary fit, meta model을 포함하면 339 fit을 추적했다. 측정된 학습 시간만 약 3시간 56분이었다. Kaggle 제출 대기와 초기 미계측 학습 시간은 제외한 값이다. 1. 대회와 데이터 대회는 Kaggle Playground Series S6E7 — Predicting Student Health Risk다.\n데이터 구조는 다음과 같았다.\n항목 값 Train 690,088행 Test 295,753행 원본 입력 특성 13개 수치형 7개 범주형 6개 목표 health_condition 클래스 at-risk, fit, unhealthy Train의 클래스 분포는 다음과 같다.\n클래스 행 수 비율 at-risk 592,561 85.8675% unhealthy 57,724 8.3647% fit 39,803 5.7678% 대회 데이터는 College Student Health Behavior Dataset에서 영감을 받은 합성 데이터였다. 원본 데이터와 유사하지만 완전히 같은 생성 규칙은 아니었다. 이 차이는 나중에 외부 원본 50k를 증강했을 때 직접 드러났다.\n2. Balanced Accuracy는 왜 기묘한가 이 대회의 평가지표는 세 클래스 recall의 평균이다.\nBalanced Accuracy = (Recall_at-risk + Recall_fit + Recall_unhealthy) / 3 일반 Accuracy라면 전체 정답 개수가 중요하다. 그러나 Balanced Accuracy에서는 각 클래스가 정확히 1/3씩 기여한다.\nat-risk가 전체의 약 86%여도 지표 비중은 1/3이다. fit이 약 5.8%여도 지표 비중은 1/3이다. 희소 클래스 한 행의 정답 여부가 다수 클래스 한 행보다 훨씬 크게 작용한다. 전체 정답 개수가 늘어도 희소 클래스 recall이 내려가면 점수는 하락할 수 있다. 한 행의 가치 실제 클래스가 c인 한 행을 오답에서 정답으로 바꾸면 Balanced Accuracy의 이론적 변화는 다음과 같다.\n+1 / (3 × N_c) Train 분포를 사용해 계산하면 대략 다음과 같다.\n실제 클래스 한 행 교정의 BA 가치 at-risk 대비 상대 가치 at-risk 약 0.000000563 1.00배 unhealthy 약 0.000005775 10.27배 fit 약 0.000008375 14.89배 즉, fit 한 행을 잃는 손해를 메우려면 약 14.9개의 at-risk 행을 추가로 맞혀야 한다.\n이 때문에 일반 Accuracy가 좋아 보이는 규칙도 Balanced Accuracy에서는 실패할 수 있다.\nfit -\u003e at-risk 변경의 손익분기점 예측을 fit에서 at-risk로 바꾸는 규칙을 생각해 보자.\n실제가 at-risk면 이득이다. 실제가 fit이면 손해다. 이 규칙이 손익분기하려면 선택한 행 중 실제 at-risk 비율이 다음보다 높아야 한다.\n592,561 / (592,561 + 39,803) = 93.7057% Run 22의 관측 정밀도는 93.4959%였다. 거의 맞았지만 손익분기보다 조금 낮았고, 결과는 -0.000012였다.\nRun 22_1에서는 더 엄격한 tail만 선택했다. 정밀도가 97.9592%로 올라갔고 결과는 +0.000037, 5/5 fold 승리였다.\n작은 차이 같지만 이것이 바로 이 대회의 핵심이었다. 모델 전체의 Accuracy가 아니라 변경하는 행의 클래스별 기대가치를 계산해야 했다.\n3. 첫 번째 재현 가능한 기준점 처음 저장된 전체 OOF 기준은 다음과 같았다.\n모델 Full OOF Balanced Accuracy LightGBM 0.922927 CatBoost 0.949408 XGBoost 0.923616 CatBoost가 압도적으로 강했다. 범주형 변수와 비선형 상호작용을 자연스럽게 처리한 효과로 보였다.\n그런데 최종 기준 모델은 CatBoost 단독이 아니었다.\nalpha_lgb = 0.5246 class_weights = [1.1662, 3.0, 2.7858] LightGBM의 단독 점수는 낮았지만 CatBoost와 오류가 달랐다. 두 모델의 확률을 섞고 클래스별 결정을 보정하자 고정 full OOF는 0.949873이 됐다.\n이 모델의 Kaggle Public은 0.95005였다. 이것이 이후 모든 실험이 넘어야 할 재현 가능한 로컬 챔피언이었다.\n여기서 배운 첫 번째 교훈은 간단했다.\n단독 모델 점수가 낮아도 오류가 다르면 앙상블에서 가치가 있다.\n총평 첫 단계의 핵심은 더 복잡한 모델을 만드는 일이 아니었다. 클래스마다 한 행의 가치가 다르다는 사실을 비용표로 바꾸고, 이후 모든 실험이 넘어야 할 재현 가능한 0.95005 기준점을 고정한 것이 출발점이었다.\n시리즈 이동: 6편 - 혼자 갈 수 있는 데까지 | 8편 - 피처와 앙상블 검증\n",
+  "wordCount" : "768",
+  "inLanguage": "en",
+  "datePublished": "2026-07-15T00:00:00Z",
+  "dateModified": "2026-07-15T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-score-journey/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Kaggle Playground S6E7 개인 도전 - 7. Balanced Accuracy와 재현 가능한 기준점
+    </h1>
+    <div class="post-description">
+      불균형 3-class 문제에서 Balanced Accuracy의 행별 비용을 계산하고 재현 가능한 LGBM-CatBoost 기준점을 세운 과정.
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-15 00:00:00 +0000 UTC'>2026년 7월 15일</span>&nbsp;·&nbsp;<span>4 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><blockquote>
+<p>앞선 1~6편이 첫 개인 도전과 0.95005 도달 과정을 다뤘다면, 7편부터는 후속 실험을 수치와 검증 근거 중심으로 다시 정리한다.</p>
+</blockquote>
+<h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li><a href="#%EC%A2%85-%EB%AA%A8%EC%96%91-%EA%B7%B8%EB%9E%98%ED%94%84-%EB%AA%87-%EA%B0%9C%EB%A9%B4-%EB%81%9D%EB%82%A0-%EC%A4%84-%EC%95%8C%EC%95%98%EB%8B%A4">종 모양 그래프 몇 개면 끝날 줄 알았다</a></li>
+<li><a href="#tldr">TL;DR</a></li>
+<li>
+<ol>
+<li><a href="#1-%EB%8C%80%ED%9A%8C%EC%99%80-%EB%8D%B0%EC%9D%B4%ED%84%B0">대회와 데이터</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-balanced-accuracy%EB%8A%94-%EC%99%9C-%EA%B8%B0%EB%AC%98%ED%95%9C%EA%B0%80">Balanced Accuracy는 왜 기묘한가</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%B2%AB-%EB%B2%88%EC%A7%B8-%EC%9E%AC%ED%98%84-%EA%B0%80%EB%8A%A5%ED%95%9C-%EA%B8%B0%EC%A4%80%EC%A0%90">첫 번째 재현 가능한 기준점</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="종-모양-그래프-몇-개면-끝날-줄-알았다">종 모양 그래프 몇 개면 끝날 줄 알았다<a hidden class="anchor" aria-hidden="true" href="#종-모양-그래프-몇-개면-끝날-줄-알았다">#</a></h2>
+<p>처음 이 대회를 봤을 때는 꽤 단순해 보였다.</p>
+<p>수면 시간, 심박수, BMI, 걸음 수, 운동 시간, 물 섭취량처럼 건강과 관련된 특성이 있고, 목표는 학생의 건강 상태를 <code>at-risk</code>, <code>fit</code>, <code>unhealthy</code> 중 하나로 분류하는 문제였다. 클래스별 분포를 한 그래프에 겹쳐 그리고, 평균과 표준편차를 비교하고, 건강 상태가 나빠지는 축을 만들면 경계가 보일 것 같았다.</p>
+<p>실제로 각 특성의 분포는 꽤 그럴듯한 종 모양을 보였다. 하지만 분포가 그럴듯하다는 것과 Kaggle 점수가 오른다는 것은 완전히 다른 문제였다.</p>
+<p>이 대회의 평가지표는 일반 Accuracy가 아니라 <strong>Balanced Accuracy</strong>였다. 이 지표에서는 모든 행의 가치가 같지 않다. 다수 클래스 한 행과 희소 클래스 한 행의 손익이 다르다. 나중에는 이 작업을 모델링보다 <strong>미시경제학</strong>에 가깝다고 느꼈다.</p>
+<p>결과부터 말하면 다음과 같다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>과거 기준       0.94937
+</span></span><span style="display:flex;"><span>로컬 재현 Blend 0.95005
+</span></span><span style="display:flex;"><span>외부 anchor     0.95112
+</span></span><span style="display:flex;"><span>최종 최고점     0.95113
+</span></span></code></pre></div><p>다만 <code>0.95113</code>이라는 마지막 숫자보다 더 중요했던 것은, 어떤 개선이 진짜였고 어떤 개선이 착시였는지를 분리한 과정이었다.</p>
+<p><img alt="클래스 분포" loading="lazy" src="/images/projects/kaggle-s6e7-score-journey/01_target_distribution.png"></p>
+<h2 id="tldr">TL;DR<a hidden class="anchor" aria-hidden="true" href="#tldr">#</a></h2>
+<ul>
+<li>Train은 690,088행, Test는 295,753행이었다.</li>
+<li><code>at-risk</code>가 약 85.9%, <code>fit</code>이 약 5.8%, <code>unhealthy</code>가 약 8.4%인 강한 불균형 문제였다.</li>
+<li>CatBoost 단독 OOF가 가장 강했지만, LightGBM과의 오류 상쇄를 이용한 Blend가 재현 가능한 첫 챔피언이 됐다.</li>
+<li>Exact Target Encoding은 로컬 OOF를 0.950192까지 올렸지만 Kaggle Public은 0.94924까지 떨어졌다.</li>
+<li>seed ensemble, OVR, 외부 원본 50k, 건강축 LDA, pairwise 모델, 전역 모델 주입은 최종적으로 모두 기각했다.</li>
+<li>외부 0.95112 제출을 anchor로 삼고 공개 노트북의 강한 판단으로 <strong>단 한 행</strong>을 <code>fit -&gt; at-risk</code>로 바꾼 Run 18이 Public 0.95113을 기록했다.</li>
+<li><code>fit -&gt; at-risk</code>의 더 엄격한 0.80 tail은 새 5-fold에서 5/5 승리했지만, Test에서 두 행을 추가로 바꾼 Public은 0.95113으로 같았다.</li>
+<li>최소 319개의 base/auxiliary fit, meta model을 포함하면 339 fit을 추적했다.</li>
+<li>측정된 학습 시간만 약 3시간 56분이었다. Kaggle 제출 대기와 초기 미계측 학습 시간은 제외한 값이다.</li>
+</ul>
+<h2 id="1-대회와-데이터">1. 대회와 데이터<a hidden class="anchor" aria-hidden="true" href="#1-대회와-데이터">#</a></h2>
+<p>대회는 <a href="https://www.kaggle.com/competitions/playground-series-s6e7">Kaggle Playground Series S6E7 — Predicting Student Health Risk</a>다.</p>
+<p>데이터 구조는 다음과 같았다.</p>
+<table>
+	<thead>
+			<tr>
+					<th>항목</th>
+					<th style="text-align: right">값</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Train</td>
+					<td style="text-align: right">690,088행</td>
+			</tr>
+			<tr>
+					<td>Test</td>
+					<td style="text-align: right">295,753행</td>
+			</tr>
+			<tr>
+					<td>원본 입력 특성</td>
+					<td style="text-align: right">13개</td>
+			</tr>
+			<tr>
+					<td>수치형</td>
+					<td style="text-align: right">7개</td>
+			</tr>
+			<tr>
+					<td>범주형</td>
+					<td style="text-align: right">6개</td>
+			</tr>
+			<tr>
+					<td>목표</td>
+					<td style="text-align: right"><code>health_condition</code></td>
+			</tr>
+			<tr>
+					<td>클래스</td>
+					<td style="text-align: right"><code>at-risk</code>, <code>fit</code>, <code>unhealthy</code></td>
+			</tr>
+	</tbody>
+</table>
+<p>Train의 클래스 분포는 다음과 같다.</p>
+<table>
+	<thead>
+			<tr>
+					<th>클래스</th>
+					<th style="text-align: right">행 수</th>
+					<th style="text-align: right">비율</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>at-risk</td>
+					<td style="text-align: right">592,561</td>
+					<td style="text-align: right">85.8675%</td>
+			</tr>
+			<tr>
+					<td>unhealthy</td>
+					<td style="text-align: right">57,724</td>
+					<td style="text-align: right">8.3647%</td>
+			</tr>
+			<tr>
+					<td>fit</td>
+					<td style="text-align: right">39,803</td>
+					<td style="text-align: right">5.7678%</td>
+			</tr>
+	</tbody>
+</table>
+<p><img alt="데이터 개요" loading="lazy" src="/images/projects/kaggle-s6e7-score-journey/02_data_overview.png"></p>
+<p>대회 데이터는 <a href="https://www.kaggle.com/datasets/ziya07/college-student-health-behavior-dataset">College Student Health Behavior Dataset</a>에서 영감을 받은 합성 데이터였다. 원본 데이터와 유사하지만 완전히 같은 생성 규칙은 아니었다. 이 차이는 나중에 외부 원본 50k를 증강했을 때 직접 드러났다.</p>
+<h2 id="2-balanced-accuracy는-왜-기묘한가">2. Balanced Accuracy는 왜 기묘한가<a hidden class="anchor" aria-hidden="true" href="#2-balanced-accuracy는-왜-기묘한가">#</a></h2>
+<p>이 대회의 평가지표는 세 클래스 recall의 평균이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Balanced Accuracy
+</span></span><span style="display:flex;"><span>= (Recall_at-risk + Recall_fit + Recall_unhealthy) / 3
+</span></span></code></pre></div><p>일반 Accuracy라면 전체 정답 개수가 중요하다. 그러나 Balanced Accuracy에서는 각 클래스가 정확히 1/3씩 기여한다.</p>
+<ul>
+<li><code>at-risk</code>가 전체의 약 86%여도 지표 비중은 1/3이다.</li>
+<li><code>fit</code>이 약 5.8%여도 지표 비중은 1/3이다.</li>
+<li>희소 클래스 한 행의 정답 여부가 다수 클래스 한 행보다 훨씬 크게 작용한다.</li>
+<li>전체 정답 개수가 늘어도 희소 클래스 recall이 내려가면 점수는 하락할 수 있다.</li>
+</ul>
+<h3 id="한-행의-가치">한 행의 가치<a hidden class="anchor" aria-hidden="true" href="#한-행의-가치">#</a></h3>
+<p>실제 클래스가 <code>c</code>인 한 행을 오답에서 정답으로 바꾸면 Balanced Accuracy의 이론적 변화는 다음과 같다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>+1 / (3 × N_c)
+</span></span></code></pre></div><p>Train 분포를 사용해 계산하면 대략 다음과 같다.</p>
+<table>
+	<thead>
+			<tr>
+					<th>실제 클래스</th>
+					<th style="text-align: right">한 행 교정의 BA 가치</th>
+					<th style="text-align: right">at-risk 대비 상대 가치</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>at-risk</td>
+					<td style="text-align: right">약 0.000000563</td>
+					<td style="text-align: right">1.00배</td>
+			</tr>
+			<tr>
+					<td>unhealthy</td>
+					<td style="text-align: right">약 0.000005775</td>
+					<td style="text-align: right">10.27배</td>
+			</tr>
+			<tr>
+					<td>fit</td>
+					<td style="text-align: right">약 0.000008375</td>
+					<td style="text-align: right">14.89배</td>
+			</tr>
+	</tbody>
+</table>
+<p>즉, <code>fit</code> 한 행을 잃는 손해를 메우려면 약 14.9개의 <code>at-risk</code> 행을 추가로 맞혀야 한다.</p>
+<p>이 때문에 일반 Accuracy가 좋아 보이는 규칙도 Balanced Accuracy에서는 실패할 수 있다.</p>
+<h3 id="fit---at-risk-변경의-손익분기점"><code>fit -&gt; at-risk</code> 변경의 손익분기점<a hidden class="anchor" aria-hidden="true" href="#fit---at-risk-변경의-손익분기점">#</a></h3>
+<p>예측을 <code>fit</code>에서 <code>at-risk</code>로 바꾸는 규칙을 생각해 보자.</p>
+<ul>
+<li>실제가 <code>at-risk</code>면 이득이다.</li>
+<li>실제가 <code>fit</code>이면 손해다.</li>
+</ul>
+<p>이 규칙이 손익분기하려면 선택한 행 중 실제 <code>at-risk</code> 비율이 다음보다 높아야 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>592,561 / (592,561 + 39,803)
+</span></span><span style="display:flex;"><span>= 93.7057%
+</span></span></code></pre></div><p>Run 22의 관측 정밀도는 93.4959%였다. 거의 맞았지만 손익분기보다 조금 낮았고, 결과는 <code>-0.000012</code>였다.</p>
+<p>Run 22_1에서는 더 엄격한 tail만 선택했다. 정밀도가 97.9592%로 올라갔고 결과는 <code>+0.000037</code>, 5/5 fold 승리였다.</p>
+<p>작은 차이 같지만 이것이 바로 이 대회의 핵심이었다. 모델 전체의 Accuracy가 아니라 <strong>변경하는 행의 클래스별 기대가치</strong>를 계산해야 했다.</p>
+<h2 id="3-첫-번째-재현-가능한-기준점">3. 첫 번째 재현 가능한 기준점<a hidden class="anchor" aria-hidden="true" href="#3-첫-번째-재현-가능한-기준점">#</a></h2>
+<p>처음 저장된 전체 OOF 기준은 다음과 같았다.</p>
+<table>
+	<thead>
+			<tr>
+					<th>모델</th>
+					<th style="text-align: right">Full OOF Balanced Accuracy</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>LightGBM</td>
+					<td style="text-align: right">0.922927</td>
+			</tr>
+			<tr>
+					<td>CatBoost</td>
+					<td style="text-align: right">0.949408</td>
+			</tr>
+			<tr>
+					<td>XGBoost</td>
+					<td style="text-align: right">0.923616</td>
+			</tr>
+	</tbody>
+</table>
+<p><img alt="모델 비교" loading="lazy" src="/images/projects/kaggle-s6e7-score-journey/06_model_comparison.png"></p>
+<p>CatBoost가 압도적으로 강했다. 범주형 변수와 비선형 상호작용을 자연스럽게 처리한 효과로 보였다.</p>
+<p>그런데 최종 기준 모델은 CatBoost 단독이 아니었다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>alpha_lgb = 0.5246
+</span></span><span style="display:flex;"><span>class_weights = [1.1662, 3.0, 2.7858]
+</span></span></code></pre></div><p>LightGBM의 단독 점수는 낮았지만 CatBoost와 오류가 달랐다. 두 모델의 확률을 섞고 클래스별 결정을 보정하자 고정 full OOF는 0.949873이 됐다.</p>
+<p>이 모델의 Kaggle Public은 0.95005였다. 이것이 이후 모든 실험이 넘어야 할 <strong>재현 가능한 로컬 챔피언</strong>이었다.</p>
+<p>여기서 배운 첫 번째 교훈은 간단했다.</p>
+<blockquote>
+<p>단독 모델 점수가 낮아도 오류가 다르면 앙상블에서 가치가 있다.</p>
+</blockquote>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<p>첫 단계의 핵심은 더 복잡한 모델을 만드는 일이 아니었다. 클래스마다 한 행의 가치가 다르다는 사실을 비용표로 바꾸고, 이후 모든 실험이 넘어야 할 재현 가능한 0.95005 기준점을 고정한 것이 출발점이었다.</p>
+<blockquote>
+<p>시리즈 이동: <a href="/projects/2026-07-12-kaggle-playground-s6e7-solo-06-wrap-up/">6편 - 혼자 갈 수 있는 데까지</a> | <a href="/projects/2026-07-14-kaggle-playground-s6e7-08-feature-and-ensemble-validation/">8편 - 피처와 앙상블 검증</a></p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/kaggle/">Kaggle</a></li>
+      <li><a href="https://Han-think.github.io/tags/machine-learning/">Machine-Learning</a></li>
+      <li><a href="https://Han-think.github.io/tags/balanced-accuracy/">Balanced-Accuracy</a></li>
+      <li><a href="https://Han-think.github.io/tags/catboost/">Catboost</a></li>
+      <li><a href="https://Han-think.github.io/tags/lightgbm/">Lightgbm</a></li>
+      <li><a href="https://Han-think.github.io/tags/oof/">Oof</a></li>
+      <li><a href="https://Han-think.github.io/tags/experiment-tracking/">Experiment-Tracking</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

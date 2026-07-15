@@ -6,8 +6,15 @@
     <description>Recent content in Eda on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Sun, 12 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 13 Jul 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/eda/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지</title>
+      <link>https://Han-think.github.io/learning/2026-07-13-am-daily/</link>
+      <pubDate>Mon, 13 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-13-am-daily/</guid>
+      <description>2026-07-13 오전 수업에서 Kaggle 베이스라인, EDA 기반 변수 선택, 점수 설계와 개인 최적화의 관계를 정리했다.</description>
+    </item>
     <item>
       <title>Kaggle Playground S6E7 개인 도전 회고 - 4. 튜닝 시간 추정 실패와 EDA 재검토가 만든 전환점</title>
       <link>https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-04-tuning-and-eda/</link>

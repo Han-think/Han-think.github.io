@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Kaggle Playground S6E7 개인 도전 - 10. 실패를 분류하고 증거의 등급을 매기다 | Han-think Blog</title>
+<meta name="keywords" content="kaggle, machine-learning, balanced-accuracy, catboost, lightgbm, oof, experiment-tracking">
+<meta name="description" content="Public 점수 진행, 긍정·부정 요인, 탐색 과적합과 지표 불일치를 분류하고 실험 결과의 증거 등급을 구분했다.">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-10-evidence-and-failure-analysis/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-10-evidence-and-failure-analysis/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-10-evidence-and-failure-analysis/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="Kaggle Playground S6E7 개인 도전 - 10. 실패를 분류하고 증거의 등급을 매기다">
+  <meta property="og:description" content="Public 점수 진행, 긍정·부정 요인, 탐색 과적합과 지표 불일치를 분류하고 실험 결과의 증거 등급을 구분했다.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2026-07-15T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-15T00:00:00+00:00">
+    <meta property="article:tag" content="Kaggle">
+    <meta property="article:tag" content="Machine-Learning">
+    <meta property="article:tag" content="Balanced-Accuracy">
+    <meta property="article:tag" content="Catboost">
+    <meta property="article:tag" content="Lightgbm">
+    <meta property="article:tag" content="Oof">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kaggle Playground S6E7 개인 도전 - 10. 실패를 분류하고 증거의 등급을 매기다">
+  <meta name="twitter:description" content="Public 점수 진행, 긍정·부정 요인, 탐색 과적합과 지표 불일치를 분류하고 실험 결과의 증거 등급을 구분했다.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "프로젝트",
+      "item": "https://Han-think.github.io/projects/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Kaggle Playground S6E7 개인 도전 - 10. 실패를 분류하고 증거의 등급을 매기다",
+      "item": "https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-10-evidence-and-failure-analysis/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Kaggle Playground S6E7 개인 도전 - 10. 실패를 분류하고 증거의 등급을 매기다",
+  "name": "Kaggle Playground S6E7 개인 도전 - 10. 실패를 분류하고 증거의 등급을 매기다",
+  "description": "Public 점수 진행, 긍정·부정 요인, 탐색 과적합과 지표 불일치를 분류하고 실험 결과의 증거 등급을 구분했다.",
+  "keywords": [
+    "kaggle", "machine-learning", "balanced-accuracy", "catboost", "lightgbm", "oof", "experiment-tracking"
+  ],
+  "articleBody": " 많이 실행한 것만으로는 프로젝트의 결론이 선명해지지 않았다. 무엇이 성공했고 왜 실패했는지, 어느 수준까지 믿을 수 있는지를 따로 분류해야 했다.\n목차 Public 점수 전체 진행 무엇이 실제로 영향을 줬나 실패를 분류한 방식 증거 등급을 따로 둔 이유 총평 9. Public 점수 전체 진행 후보 Local Public 해석 과거 Blend 약 0.9495 0.94937 초기 기준 재현 가능 LGB+CatBoost Blend 약 0.949763 0.95005 첫 챔피언 ExactTE beta 1.15 0.949961 0.94981 로컬 양수, Public 음수 ExactTE beta 1.00 0.950192 0.94924 가장 큰 local/Public 불일치 Blend+ExactTE 20% 0.950019 0.94974 챔피언 미달 Blend+ExactTE 25% 0.950082 0.94973 챔피언 미달 Blend+ExactTE 30% 0.950119 0.94967 주입 증가 시 악화 외부 anchor - 0.95112 새 기준점 Run 16/17/17_1 - 0.95112 microflip 미해결 Run 18 - 0.95113 한 행 교정으로 표시점수 상승 Run 22_1 0.949911 0.95113 두 행 추가, 표시점수 동일 핵심 진행선은 다음과 같다.\n0.94937 -\u003e 0.95005 -\u003e 0.95112 -\u003e 0.95113 10. 무엇이 실제로 영향을 줬나 강한 긍정 요인 CatBoost의 범주형·비선형 모델링 단독 OOF 0.949408로 LGB/XGB보다 크게 높았다. LightGBM과 CatBoost의 오류 상쇄 약한 단독 LightGBM도 Blend에서는 가치가 있었다. 클래스 prior와 decision 보정 Balanced Accuracy 구조를 반영하지 않은 raw argmax는 경쟁력이 없었다. 외부 고득점 anchor Public 0.95112로 로컬 챔피언보다 약 0.00107 높았다. 매우 높은 신뢰도의 희소 행 교정 Run 18의 한 행이 Public 0.95113을 만들었다. 좁은 영역에서만 의미 있었던 요인 STEP_GE6500 targeted gate fit -\u003e at-risk cutoff 0.80 tail ExactTE 개발 표본의 OVR_BA_RULE 이들은 일부 검증에서는 양수였지만 전체 Blend, 독립 확인 또는 Public에서 제한이 드러났다.\n반복적으로 부정적이었던 요인 광범위 robust bin과 interaction 30개에서 21개로 특성 축소 CatBoost seed 확률 평균 외부 원본 50k augmentation logistic stacking 건강축 LDA 주입 at-risk/unhealthy pairwise Accuracy CatBoost 전역 10% 주입 끝까지 미해결인 요인 Run 16 한 행 Run 17 한 행 Run 17_1의 AB/AC/BC Run 22_1의 두 행 이들의 Public 표시점수는 기준과 같았다. 같은 다섯 자리 숫자는 정답 라벨의 증거가 아니다.\n11. 실패를 분류한 방식 모든 실패가 같은 실패는 아니었다.\n소표본 우연 Run 03의 sleep interaction 특정 seed/fold에서만 강한 domain interaction 대응: seed 반복과 disjoint sample을 사용했다.\n탐색-확인 과적합 OVR: +0.000227 -\u003e -0.000526 ExactTE: nested 양수 -\u003e Public 음수 대응: 탐색 표본과 확인 표본을 분리했다.\n단독 모델과 최종 조합의 불일치 Targeted CatBoost 단독 +0.000023 최종 Blend -0.000078 대응: 모델 단독 점수가 아니라 실제 최종 소비자 점수를 확인했다.\nAccuracy와 Balanced Accuracy의 불일치 Run 21은 정답 순증가 +511인데 BA -0.000330 Run 22는 575행 회수, 40행 손실인데 BA -0.000012 대응: 행 수가 아니라 클래스별 가치와 손익분기 정밀도를 계산했다.\nPublic 점수의 식별 불가능성 같은 소수점 다섯 자리 점수로 한두 행 효과를 판정할 수 없었다. AB/AC/BC 세 점수가 같으면 개별 block 효과를 해독할 수 없다. 대응: 추가 Public probing을 중단하고 OOF 또는 해석 가능한 단일 변경에 집중했다.\n12. 증거 등급을 따로 둔 이유 실험 결과를 한 줄의 점수로만 기록하면 몇 주 뒤에 무엇이 확정됐는지 알기 어렵다. 그래서 다음 등급을 사용했다.\n등급 의미 예시 A Public 점수가 통제된 변경 후 실제로 달라짐 Run 18 B 새 fold, seed 또는 disjoint 행에서도 양수 Run 10_3, Run 22_1 C 개발 OOF에서만 양수 Run 14 D 고정 또는 전체 OOF 음수 Run 19, 21, 23, 24 E Public 다섯 자리 표시가 동일해 미해결 Run 16, 17, 17_1, 22_1 F 준비했지만 실행하지 않음 Run 25, 26 이 구분 덕분에 좋아 보였던 것과 실제로 확인된 것을 섞지 않을 수 있었다.\n총평 실패는 한 종류가 아니었다. 소표본 우연, 탐색-확인 과적합, 단독 모델과 최종 Blend의 불일치, Accuracy와 Balanced Accuracy의 불일치, Public 반올림으로 인한 식별 불가능성을 구분하자 다음 실험을 계속할지 멈출지 판단할 수 있었다.\n시리즈 이동: 9편 - 외부 anchor와 한 행 교정 | 11편 - 최종 제출과 재현성\n",
+  "wordCount" : "570",
+  "inLanguage": "en",
+  "datePublished": "2026-07-15T00:00:00Z",
+  "dateModified": "2026-07-15T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-10-evidence-and-failure-analysis/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Kaggle Playground S6E7 개인 도전 - 10. 실패를 분류하고 증거의 등급을 매기다
+    </h1>
+    <div class="post-description">
+      Public 점수 진행, 긍정·부정 요인, 탐색 과적합과 지표 불일치를 분류하고 실험 결과의 증거 등급을 구분했다.
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-15 00:00:00 +0000 UTC'>2026년 7월 15일</span>&nbsp;·&nbsp;<span>3 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><blockquote>
+<p>많이 실행한 것만으로는 프로젝트의 결론이 선명해지지 않았다. 무엇이 성공했고 왜 실패했는지, 어느 수준까지 믿을 수 있는지를 따로 분류해야 했다.</p>
+</blockquote>
+<h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol start="9">
+<li><a href="#9-public-%EC%A0%90%EC%88%98-%EC%A0%84%EC%B2%B4-%EC%A7%84%ED%96%89">Public 점수 전체 진행</a></li>
+</ol>
+</li>
+<li>
+<ol start="10">
+<li><a href="#10-%EB%AC%B4%EC%97%87%EC%9D%B4-%EC%8B%A4%EC%A0%9C%EB%A1%9C-%EC%98%81%ED%96%A5%EC%9D%84-%EC%A4%AC%EB%82%98">무엇이 실제로 영향을 줬나</a></li>
+</ol>
+</li>
+<li>
+<ol start="11">
+<li><a href="#11-%EC%8B%A4%ED%8C%A8%EB%A5%BC-%EB%B6%84%EB%A5%98%ED%95%9C-%EB%B0%A9%EC%8B%9D">실패를 분류한 방식</a></li>
+</ol>
+</li>
+<li>
+<ol start="12">
+<li><a href="#12-%EC%A6%9D%EA%B1%B0-%EB%93%B1%EA%B8%89%EC%9D%84-%EB%94%B0%EB%A1%9C-%EB%91%94-%EC%9D%B4%EC%9C%A0">증거 등급을 따로 둔 이유</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="9-public-점수-전체-진행">9. Public 점수 전체 진행<a hidden class="anchor" aria-hidden="true" href="#9-public-점수-전체-진행">#</a></h2>
+<p><img alt="점수 진행" loading="lazy" src="/images/projects/kaggle-s6e7-score-journey/11_score_progression.png"></p>
+<table>
+	<thead>
+			<tr>
+					<th>후보</th>
+					<th style="text-align: right">Local</th>
+					<th style="text-align: right">Public</th>
+					<th>해석</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>과거 Blend</td>
+					<td style="text-align: right">약 0.9495</td>
+					<td style="text-align: right">0.94937</td>
+					<td>초기 기준</td>
+			</tr>
+			<tr>
+					<td>재현 가능 LGB+CatBoost Blend</td>
+					<td style="text-align: right">약 0.949763</td>
+					<td style="text-align: right">0.95005</td>
+					<td>첫 챔피언</td>
+			</tr>
+			<tr>
+					<td>ExactTE beta 1.15</td>
+					<td style="text-align: right">0.949961</td>
+					<td style="text-align: right">0.94981</td>
+					<td>로컬 양수, Public 음수</td>
+			</tr>
+			<tr>
+					<td>ExactTE beta 1.00</td>
+					<td style="text-align: right">0.950192</td>
+					<td style="text-align: right">0.94924</td>
+					<td>가장 큰 local/Public 불일치</td>
+			</tr>
+			<tr>
+					<td>Blend+ExactTE 20%</td>
+					<td style="text-align: right">0.950019</td>
+					<td style="text-align: right">0.94974</td>
+					<td>챔피언 미달</td>
+			</tr>
+			<tr>
+					<td>Blend+ExactTE 25%</td>
+					<td style="text-align: right">0.950082</td>
+					<td style="text-align: right">0.94973</td>
+					<td>챔피언 미달</td>
+			</tr>
+			<tr>
+					<td>Blend+ExactTE 30%</td>
+					<td style="text-align: right">0.950119</td>
+					<td style="text-align: right">0.94967</td>
+					<td>주입 증가 시 악화</td>
+			</tr>
+			<tr>
+					<td>외부 anchor</td>
+					<td style="text-align: right">-</td>
+					<td style="text-align: right">0.95112</td>
+					<td>새 기준점</td>
+			</tr>
+			<tr>
+					<td>Run 16/17/17_1</td>
+					<td style="text-align: right">-</td>
+					<td style="text-align: right">0.95112</td>
+					<td>microflip 미해결</td>
+			</tr>
+			<tr>
+					<td>Run 18</td>
+					<td style="text-align: right">-</td>
+					<td style="text-align: right"><strong>0.95113</strong></td>
+					<td>한 행 교정으로 표시점수 상승</td>
+			</tr>
+			<tr>
+					<td>Run 22_1</td>
+					<td style="text-align: right">0.949911</td>
+					<td style="text-align: right"><strong>0.95113</strong></td>
+					<td>두 행 추가, 표시점수 동일</td>
+			</tr>
+	</tbody>
+</table>
+<p>핵심 진행선은 다음과 같다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>0.94937 -&gt; 0.95005 -&gt; 0.95112 -&gt; 0.95113
+</span></span></code></pre></div><h2 id="10-무엇이-실제로-영향을-줬나">10. 무엇이 실제로 영향을 줬나<a hidden class="anchor" aria-hidden="true" href="#10-무엇이-실제로-영향을-줬나">#</a></h2>
+<h3 id="강한-긍정-요인">강한 긍정 요인<a hidden class="anchor" aria-hidden="true" href="#강한-긍정-요인">#</a></h3>
+<ol>
+<li><strong>CatBoost의 범주형·비선형 모델링</strong>
+<ul>
+<li>단독 OOF 0.949408로 LGB/XGB보다 크게 높았다.</li>
+</ul>
+</li>
+<li><strong>LightGBM과 CatBoost의 오류 상쇄</strong>
+<ul>
+<li>약한 단독 LightGBM도 Blend에서는 가치가 있었다.</li>
+</ul>
+</li>
+<li><strong>클래스 prior와 decision 보정</strong>
+<ul>
+<li>Balanced Accuracy 구조를 반영하지 않은 raw argmax는 경쟁력이 없었다.</li>
+</ul>
+</li>
+<li><strong>외부 고득점 anchor</strong>
+<ul>
+<li>Public 0.95112로 로컬 챔피언보다 약 0.00107 높았다.</li>
+</ul>
+</li>
+<li><strong>매우 높은 신뢰도의 희소 행 교정</strong>
+<ul>
+<li>Run 18의 한 행이 Public 0.95113을 만들었다.</li>
+</ul>
+</li>
+</ol>
+<h3 id="좁은-영역에서만-의미-있었던-요인">좁은 영역에서만 의미 있었던 요인<a hidden class="anchor" aria-hidden="true" href="#좁은-영역에서만-의미-있었던-요인">#</a></h3>
+<ul>
+<li>STEP_GE6500 targeted gate</li>
+<li><code>fit -&gt; at-risk</code> cutoff 0.80 tail</li>
+<li>ExactTE</li>
+<li>개발 표본의 OVR_BA_RULE</li>
+</ul>
+<p>이들은 일부 검증에서는 양수였지만 전체 Blend, 독립 확인 또는 Public에서 제한이 드러났다.</p>
+<h3 id="반복적으로-부정적이었던-요인">반복적으로 부정적이었던 요인<a hidden class="anchor" aria-hidden="true" href="#반복적으로-부정적이었던-요인">#</a></h3>
+<ul>
+<li>광범위 robust bin과 interaction</li>
+<li>30개에서 21개로 특성 축소</li>
+<li>CatBoost seed 확률 평균</li>
+<li>외부 원본 50k augmentation</li>
+<li>logistic stacking</li>
+<li>건강축 LDA 주입</li>
+<li>at-risk/unhealthy pairwise</li>
+<li>Accuracy CatBoost 전역 10% 주입</li>
+</ul>
+<h3 id="끝까지-미해결인-요인">끝까지 미해결인 요인<a hidden class="anchor" aria-hidden="true" href="#끝까지-미해결인-요인">#</a></h3>
+<ul>
+<li>Run 16 한 행</li>
+<li>Run 17 한 행</li>
+<li>Run 17_1의 AB/AC/BC</li>
+<li>Run 22_1의 두 행</li>
+</ul>
+<p>이들의 Public 표시점수는 기준과 같았다. 같은 다섯 자리 숫자는 정답 라벨의 증거가 아니다.</p>
+<h2 id="11-실패를-분류한-방식">11. 실패를 분류한 방식<a hidden class="anchor" aria-hidden="true" href="#11-실패를-분류한-방식">#</a></h2>
+<p>모든 실패가 같은 실패는 아니었다.</p>
+<h3 id="소표본-우연">소표본 우연<a hidden class="anchor" aria-hidden="true" href="#소표본-우연">#</a></h3>
+<ul>
+<li>Run 03의 sleep interaction</li>
+<li>특정 seed/fold에서만 강한 domain interaction</li>
+</ul>
+<p>대응: seed 반복과 disjoint sample을 사용했다.</p>
+<h3 id="탐색-확인-과적합">탐색-확인 과적합<a hidden class="anchor" aria-hidden="true" href="#탐색-확인-과적합">#</a></h3>
+<ul>
+<li>OVR: <code>+0.000227 -&gt; -0.000526</code></li>
+<li>ExactTE: nested 양수 -&gt; Public 음수</li>
+</ul>
+<p>대응: 탐색 표본과 확인 표본을 분리했다.</p>
+<h3 id="단독-모델과-최종-조합의-불일치">단독 모델과 최종 조합의 불일치<a hidden class="anchor" aria-hidden="true" href="#단독-모델과-최종-조합의-불일치">#</a></h3>
+<ul>
+<li>Targeted CatBoost 단독 <code>+0.000023</code></li>
+<li>최종 Blend <code>-0.000078</code></li>
+</ul>
+<p>대응: 모델 단독 점수가 아니라 실제 최종 소비자 점수를 확인했다.</p>
+<h3 id="accuracy와-balanced-accuracy의-불일치">Accuracy와 Balanced Accuracy의 불일치<a hidden class="anchor" aria-hidden="true" href="#accuracy와-balanced-accuracy의-불일치">#</a></h3>
+<ul>
+<li>Run 21은 정답 순증가 +511인데 BA <code>-0.000330</code></li>
+<li>Run 22는 575행 회수, 40행 손실인데 BA <code>-0.000012</code></li>
+</ul>
+<p>대응: 행 수가 아니라 클래스별 가치와 손익분기 정밀도를 계산했다.</p>
+<h3 id="public-점수의-식별-불가능성">Public 점수의 식별 불가능성<a hidden class="anchor" aria-hidden="true" href="#public-점수의-식별-불가능성">#</a></h3>
+<ul>
+<li>같은 소수점 다섯 자리 점수로 한두 행 효과를 판정할 수 없었다.</li>
+<li>AB/AC/BC 세 점수가 같으면 개별 block 효과를 해독할 수 없다.</li>
+</ul>
+<p>대응: 추가 Public probing을 중단하고 OOF 또는 해석 가능한 단일 변경에 집중했다.</p>
+<h2 id="12-증거-등급을-따로-둔-이유">12. 증거 등급을 따로 둔 이유<a hidden class="anchor" aria-hidden="true" href="#12-증거-등급을-따로-둔-이유">#</a></h2>
+<p>실험 결과를 한 줄의 점수로만 기록하면 몇 주 뒤에 무엇이 확정됐는지 알기 어렵다. 그래서 다음 등급을 사용했다.</p>
+<table>
+	<thead>
+			<tr>
+					<th>등급</th>
+					<th>의미</th>
+					<th>예시</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>A</td>
+					<td>Public 점수가 통제된 변경 후 실제로 달라짐</td>
+					<td>Run 18</td>
+			</tr>
+			<tr>
+					<td>B</td>
+					<td>새 fold, seed 또는 disjoint 행에서도 양수</td>
+					<td>Run 10_3, Run 22_1</td>
+			</tr>
+			<tr>
+					<td>C</td>
+					<td>개발 OOF에서만 양수</td>
+					<td>Run 14</td>
+			</tr>
+			<tr>
+					<td>D</td>
+					<td>고정 또는 전체 OOF 음수</td>
+					<td>Run 19, 21, 23, 24</td>
+			</tr>
+			<tr>
+					<td>E</td>
+					<td>Public 다섯 자리 표시가 동일해 미해결</td>
+					<td>Run 16, 17, 17_1, 22_1</td>
+			</tr>
+			<tr>
+					<td>F</td>
+					<td>준비했지만 실행하지 않음</td>
+					<td>Run 25, 26</td>
+			</tr>
+	</tbody>
+</table>
+<p>이 구분 덕분에 <code>좋아 보였던 것</code>과 <code>실제로 확인된 것</code>을 섞지 않을 수 있었다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<p>실패는 한 종류가 아니었다. 소표본 우연, 탐색-확인 과적합, 단독 모델과 최종 Blend의 불일치, Accuracy와 Balanced Accuracy의 불일치, Public 반올림으로 인한 식별 불가능성을 구분하자 다음 실험을 계속할지 멈출지 판단할 수 있었다.</p>
+<blockquote>
+<p>시리즈 이동: <a href="/projects/2026-07-14-kaggle-playground-s6e7-09-anchor-and-one-row-correction/">9편 - 외부 anchor와 한 행 교정</a> | <a href="/projects/2026-07-14-kaggle-playground-s6e7-11-final-submissions-and-reproducibility/">11편 - 최종 제출과 재현성</a></p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/kaggle/">Kaggle</a></li>
+      <li><a href="https://Han-think.github.io/tags/machine-learning/">Machine-Learning</a></li>
+      <li><a href="https://Han-think.github.io/tags/balanced-accuracy/">Balanced-Accuracy</a></li>
+      <li><a href="https://Han-think.github.io/tags/catboost/">Catboost</a></li>
+      <li><a href="https://Han-think.github.io/tags/lightgbm/">Lightgbm</a></li>
+      <li><a href="https://Han-think.github.io/tags/oof/">Oof</a></li>
+      <li><a href="https://Han-think.github.io/tags/experiment-tracking/">Experiment-Tracking</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

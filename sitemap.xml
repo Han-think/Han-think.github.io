@@ -3,28 +3,79 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://Han-think.github.io/tags/balanced-accuracy/</loc>
+    <lastmod>2026-07-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/catboost/</loc>
+    <lastmod>2026-07-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/experiment-tracking/</loc>
+    <lastmod>2026-07-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/</loc>
+    <lastmod>2026-07-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/kaggle/</loc>
+    <lastmod>2026-07-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-10-evidence-and-failure-analysis/</loc>
+    <lastmod>2026-07-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-11-final-submissions-and-reproducibility/</loc>
+    <lastmod>2026-07-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-score-journey/</loc>
+    <lastmod>2026-07-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-08-feature-and-ensemble-validation/</loc>
+    <lastmod>2026-07-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-09-anchor-and-one-row-correction/</loc>
+    <lastmod>2026-07-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/lightgbm/</loc>
+    <lastmod>2026-07-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/machine-learning/</loc>
+    <lastmod>2026-07-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/oof/</loc>
+    <lastmod>2026-07-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/</loc>
+    <lastmod>2026-07-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/projects/</loc>
+    <lastmod>2026-07-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/eda/</loc>
+    <lastmod>2026-07-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/learning/2026-07-13-am-daily/</loc>
+    <lastmod>2026-07-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/pipeline/</loc>
+    <lastmod>2026-07-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/validation/</loc>
+    <lastmod>2026-07-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/learning/</loc>
+    <lastmod>2026-07-13T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://Han-think.github.io/tags/business-report/</loc>
     <lastmod>2026-07-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/calibration/</loc>
     <lastmod>2026-07-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://Han-think.github.io/tags/catboost/</loc>
-    <lastmod>2026-07-12T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://Han-think.github.io/tags/data-leakage/</loc>
-    <lastmod>2026-07-12T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/tags/eda/</loc>
     <lastmod>2026-07-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/ensemble/</loc>
     <lastmod>2026-07-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/feature-engineering/</loc>
-    <lastmod>2026-07-12T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/</loc>
     <lastmod>2026-07-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/health-risk-prediction/</loc>
@@ -34,9 +85,6 @@
     <lastmod>2026-07-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/jupyter/</loc>
-    <lastmod>2026-07-12T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/tags/kaggle/</loc>
     <lastmod>2026-07-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-01-overview/</loc>
@@ -55,9 +103,6 @@
     <lastmod>2026-07-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-06-wrap-up/</loc>
-    <lastmod>2026-07-12T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/tags/lightgbm/</loc>
     <lastmod>2026-07-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/nested-cv/</loc>
@@ -90,25 +135,16 @@
     <loc>https://Han-think.github.io/tags/stacking/</loc>
     <lastmod>2026-07-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://Han-think.github.io/tags/</loc>
-    <lastmod>2026-07-12T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://Han-think.github.io/tags/team-project/</loc>
     <lastmod>2026-07-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/xgboost/</loc>
     <lastmod>2026-07-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://Han-think.github.io/projects/</loc>
-    <lastmod>2026-07-12T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://Han-think.github.io/learning/2026-07-10-am-daily/</loc>
     <lastmod>2026-07-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/learning/2026-07-10-pm-daily/</loc>
-    <lastmod>2026-07-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/learning/</loc>
     <lastmod>2026-07-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/learning/2026-07-09-am-daily/</loc>
@@ -203,9 +239,6 @@
   </url><url>
     <loc>https://Han-think.github.io/projects/kaggle-house-prices-pipeline-syntax/</loc>
     <lastmod>2026-07-06T01:00:00+09:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/tags/pipeline/</loc>
-    <lastmod>2026-07-06T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/scikit-learn/</loc>
     <lastmod>2026-07-06T01:00:00+09:00</lastmod>

@@ -6,8 +6,15 @@
     <description>Recent content in 학습 기록 on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Fri, 10 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 13 Jul 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지</title>
+      <link>https://Han-think.github.io/learning/2026-07-13-am-daily/</link>
+      <pubDate>Mon, 13 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-13-am-daily/</guid>
+      <description>2026-07-13 오전 수업에서 Kaggle 베이스라인, EDA 기반 변수 선택, 점수 설계와 개인 최적화의 관계를 정리했다.</description>
+    </item>
     <item>
       <title>데이터 분석 기초 다지기: 비지도 학습부터 분류 모델까지</title>
       <link>https://Han-think.github.io/learning/2026-07-10-am-daily/</link>

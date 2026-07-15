@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Balanced-Accuracy on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/balanced-accuracy/</link>
+    <description>Recent content in Balanced-Accuracy on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Wed, 15 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/balanced-accuracy/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kaggle Playground S6E7 개인 도전 - 10. 실패를 분류하고 증거의 등급을 매기다</title>
+      <link>https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-10-evidence-and-failure-analysis/</link>
+      <pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-10-evidence-and-failure-analysis/</guid>
+      <description>Public 점수 진행, 긍정·부정 요인, 탐색 과적합과 지표 불일치를 분류하고 실험 결과의 증거 등급을 구분했다.</description>
+    </item>
+    <item>
+      <title>Kaggle Playground S6E7 개인 도전 - 11. 최종 제출과 재현 가능한 실험 운영</title>
+      <link>https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-11-final-submissions-and-reproducibility/</link>
+      <pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-11-final-submissions-and-reproducibility/</guid>
+      <description>최종 제출 두 개의 역할, 339 fits와 실행 시간, 보류한 TabPFN-3, 전체 Run 요약과 다음 대회에 가져갈 실전 규칙을 정리했다.</description>
+    </item>
+    <item>
+      <title>Kaggle Playground S6E7 개인 도전 - 7. Balanced Accuracy와 재현 가능한 기준점</title>
+      <link>https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-score-journey/</link>
+      <pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-score-journey/</guid>
+      <description>불균형 3-class 문제에서 Balanced Accuracy의 행별 비용을 계산하고 재현 가능한 LGBM-CatBoost 기준점을 세운 과정.</description>
+    </item>
+    <item>
+      <title>Kaggle Playground S6E7 개인 도전 - 8. 피처 실험과 앙상블은 왜 검증에서 무너졌나</title>
+      <link>https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-08-feature-and-ensemble-validation/</link>
+      <pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-08-feature-and-ensemble-validation/</guid>
+      <description>Run 01~15의 피처 엔지니어링, Exact Target Encoding, seed ensemble, OVR, 외부 데이터 증강을 탐색과 독립 확인으로 구분해 검증했다.</description>
+    </item>
+    <item>
+      <title>Kaggle Playground S6E7 개인 도전 - 9. 외부 anchor와 단 한 행의 교정</title>
+      <link>https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-09-anchor-and-one-row-correction/</link>
+      <pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-09-anchor-and-one-row-correction/</guid>
+      <description>Public 0.95112 제출을 anchor로 유지하면서 한 행 교정으로 0.95113을 확인하고, 그 성공을 일반화하기 위한 비용 민감 규칙을 검증했다.</description>
+    </item>
+    <item>
+      <title>Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지</title>
+      <link>https://Han-think.github.io/learning/2026-07-13-am-daily/</link>
+      <pubDate>Mon, 13 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-13-am-daily/</guid>
+      <description>2026-07-13 오전 수업에서 Kaggle 베이스라인, EDA 기반 변수 선택, 점수 설계와 개인 최적화의 관계를 정리했다.</description>
+    </item>
+  </channel>
+</rss>

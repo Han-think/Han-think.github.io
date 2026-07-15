@@ -6,8 +6,78 @@
     <description>Recent content in Tags on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Sun, 12 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 15 Jul 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Balanced-Accuracy</title>
+      <link>https://Han-think.github.io/tags/balanced-accuracy/</link>
+      <pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/balanced-accuracy/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Catboost</title>
+      <link>https://Han-think.github.io/tags/catboost/</link>
+      <pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/catboost/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Experiment-Tracking</title>
+      <link>https://Han-think.github.io/tags/experiment-tracking/</link>
+      <pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/experiment-tracking/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Kaggle</title>
+      <link>https://Han-think.github.io/tags/kaggle/</link>
+      <pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/kaggle/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Lightgbm</title>
+      <link>https://Han-think.github.io/tags/lightgbm/</link>
+      <pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/lightgbm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Machine-Learning</title>
+      <link>https://Han-think.github.io/tags/machine-learning/</link>
+      <pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/machine-learning/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Oof</title>
+      <link>https://Han-think.github.io/tags/oof/</link>
+      <pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/oof/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Eda</title>
+      <link>https://Han-think.github.io/tags/eda/</link>
+      <pubDate>Mon, 13 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/eda/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Pipeline</title>
+      <link>https://Han-think.github.io/tags/pipeline/</link>
+      <pubDate>Mon, 13 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/pipeline/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Validation</title>
+      <link>https://Han-think.github.io/tags/validation/</link>
+      <pubDate>Mon, 13 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/validation/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Business-Report</title>
       <link>https://Han-think.github.io/tags/business-report/</link>
@@ -23,24 +93,10 @@
       <description></description>
     </item>
     <item>
-      <title>Catboost</title>
-      <link>https://Han-think.github.io/tags/catboost/</link>
-      <pubDate>Sun, 12 Jul 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/catboost/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Data-Leakage</title>
       <link>https://Han-think.github.io/tags/data-leakage/</link>
       <pubDate>Sun, 12 Jul 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/data-leakage/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Eda</title>
-      <link>https://Han-think.github.io/tags/eda/</link>
-      <pubDate>Sun, 12 Jul 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/eda/</guid>
       <description></description>
     </item>
     <item>
@@ -76,20 +132,6 @@
       <link>https://Han-think.github.io/tags/jupyter/</link>
       <pubDate>Sun, 12 Jul 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/jupyter/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Kaggle</title>
-      <link>https://Han-think.github.io/tags/kaggle/</link>
-      <pubDate>Sun, 12 Jul 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/kaggle/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Lightgbm</title>
-      <link>https://Han-think.github.io/tags/lightgbm/</link>
-      <pubDate>Sun, 12 Jul 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/lightgbm/</guid>
       <description></description>
     </item>
     <item>
@@ -300,13 +342,6 @@
       <link>https://Han-think.github.io/tags/columntransformer/</link>
       <pubDate>Mon, 06 Jul 2026 01:00:00 +0900</pubDate>
       <guid>https://Han-think.github.io/tags/columntransformer/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Pipeline</title>
-      <link>https://Han-think.github.io/tags/pipeline/</link>
-      <pubDate>Mon, 06 Jul 2026 01:00:00 +0900</pubDate>
-      <guid>https://Han-think.github.io/tags/pipeline/</guid>
       <description></description>
     </item>
     <item>
