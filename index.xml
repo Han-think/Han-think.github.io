@@ -44,6 +44,13 @@
       <description>Public 0.95112 제출을 anchor로 유지하면서 한 행 교정으로 0.95113을 확인하고, 그 성공을 일반화하기 위한 비용 민감 규칙을 검증했다.</description>
     </item>
     <item>
+      <title>로컬 파티 게임 - 1. 고정 TTS 음성을 재사용 가능한 캐시 키트로 만들기</title>
+      <link>https://Han-think.github.io/projects/2026-07-15-tablegame-cloned-tts-01-voice-cache-kit/</link>
+      <pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/2026-07-15-tablegame-cloned-tts-01-voice-cache-kit/</guid>
+      <description>문장마다 흔들리던 게임마스터 목소리를 기준 음성 클로닝과 선생성 WAV 캐시로 고정하고, 다른 프로젝트에도 옮길 수 있는 운영 키트로 정리한 기록.</description>
+    </item>
+    <item>
       <title>Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지</title>
       <link>https://Han-think.github.io/learning/2026-07-13-am-daily/</link>
       <pubDate>Mon, 13 Jul 2026 00:00:00 +0000</pubDate>
