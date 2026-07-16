@@ -6,8 +6,15 @@
     <description>Recent content in 학습 기록 on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Mon, 13 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 16 Jul 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해</title>
+      <link>https://Han-think.github.io/learning/2026-07-16-am-daily/</link>
+      <pubDate>Thu, 16 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-16-am-daily/</guid>
+      <description>2026-07-16 오전 학습 정리</description>
+    </item>
     <item>
       <title>Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지</title>
       <link>https://Han-think.github.io/learning/2026-07-13-am-daily/</link>
