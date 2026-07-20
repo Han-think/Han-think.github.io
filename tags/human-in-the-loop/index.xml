@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Human-in-the-Loop on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/human-in-the-loop/</link>
+    <description>Recent content in Human-in-the-Loop on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Fri, 17 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/human-in-the-loop/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kaggle Playground S6E7 팀 프로젝트 - 13. 재현 모델과 리듬ON 파일럿 설계</title>
+      <link>https://Han-think.github.io/projects/2026-07-17-kaggle-playground-s6e7-13-rhythmon-model-and-pilot/</link>
+      <pubDate>Fri, 17 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/2026-07-17-kaggle-playground-s6e7-13-rhythmon-model-and-pilot/</guid>
+      <description>팀 프로젝트에서 최고 표시점수와 재현 가능한 모델을 분리하고, 담당자 검토와 참여자 동의를 포함한 리듬ON 파일럿을 설계한 과정.</description>
+    </item>
+  </channel>
+</rss>

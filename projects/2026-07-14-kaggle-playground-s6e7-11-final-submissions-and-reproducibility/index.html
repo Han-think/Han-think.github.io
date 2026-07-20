@@ -1,19 +1,639 @@
-<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Kaggle Playground S6E7 개인 도전 - 11. 최종 제출과 재현 가능한 실험 운영 | Han-think Blog</title><meta name=keywords content="kaggle,machine-learning,balanced-accuracy,catboost,lightgbm,oof,experiment-tracking"><meta name=description content="최종 제출 두 개의 역할, 339 fits와 실행 시간, 보류한 TabPFN-3, 전체 Run 요약과 다음 대회에 가져갈 실전 규칙을 정리했다."><meta name=author content><link rel=canonical href=https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-11-final-submissions-and-reproducibility/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-11-final-submissions-and-reproducibility/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-11-final-submissions-and-reproducibility/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="Kaggle Playground S6E7 개인 도전 - 11. 최종 제출과 재현 가능한 실험 운영"><meta property="og:description" content="최종 제출 두 개의 역할, 339 fits와 실행 시간, 보류한 TabPFN-3, 전체 Run 요약과 다음 대회에 가져갈 실전 규칙을 정리했다."><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="projects"><meta property="article:published_time" content="2026-07-15T00:00:00+00:00"><meta property="article:modified_time" content="2026-07-15T00:00:00+00:00"><meta property="article:tag" content="Kaggle"><meta property="article:tag" content="Machine-Learning"><meta property="article:tag" content="Balanced-Accuracy"><meta property="article:tag" content="Catboost"><meta property="article:tag" content="Lightgbm"><meta property="article:tag" content="Oof"><meta name=twitter:card content="summary"><meta name=twitter:title content="Kaggle Playground S6E7 개인 도전 - 11. 최종 제출과 재현 가능한 실험 운영"><meta name=twitter:description content="최종 제출 두 개의 역할, 339 fits와 실행 시간, 보류한 TabPFN-3, 전체 Run 요약과 다음 대회에 가져갈 실전 규칙을 정리했다."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"프로젝트","item":"https://Han-think.github.io/projects/"},{"@type":"ListItem","position":2,"name":"Kaggle Playground S6E7 개인 도전 - 11. 최종 제출과 재현 가능한 실험 운영","item":"https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-11-final-submissions-and-reproducibility/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kaggle Playground S6E7 개인 도전 - 11. 최종 제출과 재현 가능한 실험 운영","name":"Kaggle Playground S6E7 개인 도전 - 11. 최종 제출과 재현 가능한 실험 운영","description":"최종 제출 두 개의 역할, 339 fits와 실행 시간, 보류한 TabPFN-3, 전체 Run 요약과 다음 대회에 가져갈 실전 규칙을 정리했다.","keywords":["kaggle","machine-learning","balanced-accuracy","catboost","lightgbm","oof","experiment-tracking"],"articleBody":" 마지막 실험 편에서는 최고점만 남기지 않고 최종 제출을 왜 두 개로 유지했는지, 무엇을 얼마나 실행했는지, 무엇을 실행하지 않았는지까지 함께 기록한다.\n목차 최종 제출 두 개 실행과 재현성 하지 않은 것: TabPFN-3 전체 Run 요약 이번 대회에서 얻은 실전 규칙 총평 검증에 사용한 프로젝트 산출물 다음 시리즈 예고 13. 최종 제출 두 개 Run 18 — 기준 제출 submission_exact_public_notebook_primary_1flip_20260714_084021.csv Public = 0.95113 SHA256 = d843c1ded493d1e38b74c33eb044619afc5147c82cc1d5c4e6ab60ff3b14bd09 외부 0.95112 anchor 대비 변경:\nid=776133: fit -\u003e at-risk Run 22_1 — Private 분산 제출 submission_run22_1_fixed080_from095113_2flips_20260714_105056.csv Public = 0.95113 SHA256 = bc11b83b49df24be2eef788e2d8a5d92820dfe15f9a1eff8469c73bb27a3c9cd Run 18 대비 변경:\nid=765608: fit -\u003e at-risk id=982096: fit -\u003e at-risk 두 파일은 모두 295,753행이고 ID 순서가 완전히 같다. 예측 차이는 정확히 두 행이다.\n두 제출을 함께 선택한 이유는 같은 Public 최고점을 유지하면서 두 행의 Private 불확실성을 분산하기 위해서다.\n14. 실행과 재현성 확인 가능한 최소 누적 실험량은 다음과 같다.\nbase/auxiliary learner fits = 319 meta model 포함 fits = 339 측정 wall time = 236.46분, 약 3시간 56분 여기에는 다음 시간이 포함되지 않는다.\n초기 미계측 모델 학습 Kaggle 제출과 score 대기 오류 후 재시작 외부 자료 확인 실험 운영에서 지킨 원칙은 다음과 같다.\n기존 OOF, 제출, my_best_submission.csv를 덮어쓰지 않았다. 새 후보는 별도 실행 폴더와 execution JSON에 저장했다. 긴 학습은 fold checkpoint를 남겼다. OOF gate를 통과하지 못하면 제출 파일을 만들지 않았다. 탐색 후에는 새 fold seed 또는 겹치지 않는 행으로 확인했다. 최종 CSV는 행 수, ID 순서, 라벨, 결측, SHA256을 다시 검사했다. 15. 하지 않은 것: TabPFN-3 TabPFN-3와 공개 starter를 검토했다.\n100k GPU probe와 전체 T4x2 후보 노트북까지 준비하고 정적 검증했다. 그러나 실제 실행은 하지 않았다.\n로컬 CUDA GPU가 없었다. Kaggle GPU quota와 약 1시간의 실행 비용이 필요했다. 현재 0.95113 대비 기대 개선이 불확실했다. 이미 Public과 로컬의 불일치를 여러 번 확인한 상태였다. 실행하지 않은 모델을 실패로 기록하지 않았다. 결과가 없기 때문에 그저 미실행 후보다.\n16. 전체 Run 요약 Run 핵심 내용 결과와 판단 01 통계 검정 sleep_duration, stress_level 신호 확인 02 13모델 screen HGB 0.901402, quick benchmark 03 파생 특성 ablation sleep interaction +0.000675, 단일 표본 04 수면 반복 확인 interaction 재현 실패 05 MI scan sleep \u003e steps \u003e exercise \u003e BMI 06 21 vs 30 features -0.000361, 30 유지 07 ExactTE beta 1.0 +0.000124 07_1 nested beta +0.000619, full 승격 08 ExactTE full OOF 0.949961, Public 0.94981 08_1 beta 1.00 OOF 0.950192, Public 0.94924 09 ExactTE blend Public 0.94974/0.94973/0.94967 10 broad domain features -0.000361/-0.000345 10_1 fold 부검 고활동 pocket 발견 10_2 targeted gate probe nested +0.000086 10_3 disjoint gate confirm +0.000269 11 full targeted gate 최종 Blend -0.000078 12 reopt/stacking legacy 0.949873 유지 13 seed ensemble -0.000089 13_1 seed pair confirm -0.000517 14 OVR probe +0.000227 14_1 fresh OVR confirm -0.000526, 0/3 15 원본 50k 증강 -0.000176 16 외부 위원회 microflip Public 0.95112 동일 17 signature block Public 0.95112 동일 17_1 AB/AC/BC 모두 0.95112 18 정확한 공개 노트북 재현 한 행 변경, Public 0.95113 19 minority recovery -0.001608 20 anchor disagreement 부검 1,459행 구조 분석 21 health geometry -0.000330, 정답 수는 증가 22 fit-\u003eat-risk 0.50 -0.000012, 손익분기 미달 22_1 fit-\u003eat-risk 0.80 +0.000037, 5/5, Public 동일 23 at-risk/unhealthy pairwise -0.000159 24 Accuracy CB 10% 주입 -0.000199 25 Public tomography 준비 후 미실행 26 TabPFN-3 100k 준비 후 미실행 26_1 TabPFN-3 full 준비 후 미실행 17. 이번 대회에서 얻은 실전 규칙 1. 로컬 최고점을 챔피언이라고 부르지 않는다 새 모델이 높은 OOF를 기록해도 최종 Blend, 독립 확인, Public은 별도 문제다.\n2. 탐색과 확인을 분리한다 같은 fold에서 threshold, seed, weight, feature를 고르면 결과는 낙관적으로 보인다. 고정한 뒤 새 fold 또는 disjoint 행에서 다시 본다.\n3. 최종 소비자를 평가한다 CatBoost를 개선했더라도 최종 제출이 LGB+CatBoost Blend라면 Blend 점수로 판단한다.\n4. Balanced Accuracy는 행별 비용표를 먼저 만든다 변경 방향마다 손익분기 정밀도를 계산한다. 총 정답 수만 보면 잘못된 결론을 낼 수 있다.\n5. Public 같은 점수는 정답이 아니다 다섯 자리 반올림, Public subset 포함 여부, 상쇄 효과를 구분할 수 없다.\n6. 성공한 한 행을 전역 규칙으로 확대하지 않는다 Run 18은 성공했지만 Run 19와 Run 24의 광범위한 일반화는 실패했다.\n7. 멈출 기준도 실험 설계의 일부다 TabPFN을 준비했지만 실행하지 않은 것은 포기가 아니라, 비용 대비 기대값이 낮다는 판단이었다.\n총평 처음에는 건강 특성의 분포를 겹쳐 그리면 세 클래스가 자연스럽게 갈릴 것 같았다. 실제로는 모델보다 검증 구조가 더 어려웠다.\n로컬 0.950192가 Public 0.94924가 되었고, 27개의 seed fit은 이득을 만들지 못했고, 처음 좋아 보인 OVR은 fresh 150k의 모든 fold에서 졌다. 총 정답을 511개 늘린 건강축 모델도 Balanced Accuracy는 내려갔다.\n반대로 최종 Public을 올린 것은 거대한 새 모델이 아니라 강한 anchor를 거의 그대로 유지한 단 한 행의 교정이었다.\n그래서 이 기록의 핵심은 0.95113이 아니다.\n무엇이 좋아 보였는지, 어떤 검증에서 무너졌는지, 왜 Balanced Accuracy에서 행의 가치가 달랐는지, 그리고 어느 순간 추가 탐색을 멈춰야 했는지를 남긴 것이 더 중요하다.\nKaggle에서 점수는 결과지만, 다음 대회에 가져갈 수 있는 것은 결국 검증 가능한 실험 과정이다.\n검증에 사용한 프로젝트 산출물 이 글의 수치와 판단은 Kaggle 제출 화면만 보고 적지 않았다. 로컬 프로젝트에 남긴 다음 산출물을 서로 대조했다.\n전체 실험 감사 문서: S6E7_EXPERIMENT_AND_METRIC_AUDIT_2026-07-14.md 실험 원장: EXPERIMENT_LEDGER.csv, EXPERIMENT_LEDGER.xlsx 전체 Run 및 Public 점수 진행 표 지표 영향 분류와 클래스별 행 가치 표 최종 제출 간 예측 차이 비교표 각 Run의 execution log와 결과 CSV 발표 근거 매트릭스와 최종 발표 구조 문서 원본 학습·테스트 데이터와 제출 CSV는 용량과 대회 데이터 이용 조건 때문에 블로그에 첨부하지 않는다. 본문에 사용한 그래프와 점수 화면만 공개용 이미지로 별도 선별했다.\n이 글은 LearningLog projects 흐름에서 생성한 Kaggle Playground S6E7 프로젝트 시리즈 11편입니다.\n다음 시리즈 예고 12편 이후에는 발표자료가 완성된 뒤 발표 구조와 전달 방식을 정리한다. 이어서 팀원들의 모델·피처·검증 결과를 같은 기준으로 비교하고, 최종 결과와 개인적인 감상을 남긴다. 마지막에는 처음 보는 데이터를 받았을 때 문제 정의, 지표 비용, 기준선, 탐색, 독립 확인, 제출 판단으로 이어지는 재사용 가능한 접근법을 결론으로 정리할 예정이다.\n시리즈 이동: 10편 - 실패와 증거 등급 | 다음 글은 발표자료와 팀 결과가 정리된 뒤 이어집니다.\n","wordCount":"927","inLanguage":"en","datePublished":"2026-07-15T00:00:00Z","dateModified":"2026-07-15T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-11-final-submissions-and-reproducibility/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
-<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">Kaggle Playground S6E7 개인 도전 - 11. 최종 제출과 재현 가능한 실험 운영</h1><div class=post-description>최종 제출 두 개의 역할, 339 fits와 실행 시간, 보류한 TabPFN-3, 전체 Run 요약과 다음 대회에 가져갈 실전 규칙을 정리했다.</div><div class=post-meta><span title='2026-07-15 00:00:00 +0000 UTC'>2026년 7월 15일</span>&nbsp;·&nbsp;<span>5 min</span></div></header><div class="post-content md-content"><blockquote><p>마지막 실험 편에서는 최고점만 남기지 않고 최종 제출을 왜 두 개로 유지했는지, 무엇을 얼마나 실행했는지, 무엇을 실행하지 않았는지까지 함께 기록한다.</p></blockquote><h2 id=목차>목차<a hidden class=anchor aria-hidden=true href=#목차>#</a></h2><ul><li><ol start=13><li><a href=#13-%EC%B5%9C%EC%A2%85-%EC%A0%9C%EC%B6%9C-%EB%91%90-%EA%B0%9C>최종 제출 두 개</a></li></ol></li><li><ol start=14><li><a href=#14-%EC%8B%A4%ED%96%89%EA%B3%BC-%EC%9E%AC%ED%98%84%EC%84%B1>실행과 재현성</a></li></ol></li><li><ol start=15><li><a href=#15-%ED%95%98%EC%A7%80-%EC%95%8A%EC%9D%80-%EA%B2%83-tabpfn-3>하지 않은 것: TabPFN-3</a></li></ol></li><li><ol start=16><li><a href=#16-%EC%A0%84%EC%B2%B4-run-%EC%9A%94%EC%95%BD>전체 Run 요약</a></li></ol></li><li><ol start=17><li><a href=#17-%EC%9D%B4%EB%B2%88-%EB%8C%80%ED%9A%8C%EC%97%90%EC%84%9C-%EC%96%BB%EC%9D%80-%EC%8B%A4%EC%A0%84-%EA%B7%9C%EC%B9%99>이번 대회에서 얻은 실전 규칙</a></li></ol></li><li><a href=#%EC%B4%9D%ED%8F%89>총평</a></li><li><a href=#%EA%B2%80%EC%A6%9D%EC%97%90-%EC%82%AC%EC%9A%A9%ED%95%9C-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%82%B0%EC%B6%9C%EB%AC%BC>검증에 사용한 프로젝트 산출물</a></li><li><a href=#%EB%8B%A4%EC%9D%8C-%EC%8B%9C%EB%A6%AC%EC%A6%88-%EC%98%88%EA%B3%A0>다음 시리즈 예고</a></li></ul><h2 id=13-최종-제출-두-개>13. 최종 제출 두 개<a hidden class=anchor aria-hidden=true href=#13-최종-제출-두-개>#</a></h2><h3 id=run-18--기준-제출>Run 18 — 기준 제출<a hidden class=anchor aria-hidden=true href=#run-18--기준-제출>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>submission_exact_public_notebook_primary_1flip_20260714_084021.csv
-</span></span><span style=display:flex><span>Public = 0.95113
-</span></span><span style=display:flex><span>SHA256 = d843c1ded493d1e38b74c33eb044619afc5147c82cc1d5c4e6ab60ff3b14bd09
-</span></span></code></pre></div><p>외부 0.95112 anchor 대비 변경:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>id=776133: fit -&gt; at-risk
-</span></span></code></pre></div><h3 id=run-22_1--private-분산-제출>Run 22_1 — Private 분산 제출<a hidden class=anchor aria-hidden=true href=#run-22_1--private-분산-제출>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>submission_run22_1_fixed080_from095113_2flips_20260714_105056.csv
-</span></span><span style=display:flex><span>Public = 0.95113
-</span></span><span style=display:flex><span>SHA256 = bc11b83b49df24be2eef788e2d8a5d92820dfe15f9a1eff8469c73bb27a3c9cd
-</span></span></code></pre></div><p>Run 18 대비 변경:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>id=765608: fit -&gt; at-risk
-</span></span><span style=display:flex><span>id=982096: fit -&gt; at-risk
-</span></span></code></pre></div><p>두 파일은 모두 295,753행이고 ID 순서가 완전히 같다. 예측 차이는 정확히 두 행이다.</p><p>두 제출을 함께 선택한 이유는 같은 Public 최고점을 유지하면서 두 행의 Private 불확실성을 분산하기 위해서다.</p><h2 id=14-실행과-재현성>14. 실행과 재현성<a hidden class=anchor aria-hidden=true href=#14-실행과-재현성>#</a></h2><p>확인 가능한 최소 누적 실험량은 다음과 같다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>base/auxiliary learner fits = 319
-</span></span><span style=display:flex><span>meta model 포함 fits = 339
-</span></span><span style=display:flex><span>측정 wall time = 236.46분, 약 3시간 56분
-</span></span></code></pre></div><p>여기에는 다음 시간이 포함되지 않는다.</p><ul><li>초기 미계측 모델 학습</li><li>Kaggle 제출과 score 대기</li><li>오류 후 재시작</li><li>외부 자료 확인</li></ul><p>실험 운영에서 지킨 원칙은 다음과 같다.</p><ul><li>기존 OOF, 제출, <code>my_best_submission.csv</code>를 덮어쓰지 않았다.</li><li>새 후보는 별도 실행 폴더와 execution JSON에 저장했다.</li><li>긴 학습은 fold checkpoint를 남겼다.</li><li>OOF gate를 통과하지 못하면 제출 파일을 만들지 않았다.</li><li>탐색 후에는 새 fold seed 또는 겹치지 않는 행으로 확인했다.</li><li>최종 CSV는 행 수, ID 순서, 라벨, 결측, SHA256을 다시 검사했다.</li></ul><h2 id=15-하지-않은-것-tabpfn-3>15. 하지 않은 것: TabPFN-3<a hidden class=anchor aria-hidden=true href=#15-하지-않은-것-tabpfn-3>#</a></h2><p><a href=https://www.kaggle.com/models/prior-labsai/tabpfn-3/PyTorch/default>TabPFN-3</a>와 공개 starter를 검토했다.</p><p>100k GPU probe와 전체 T4x2 후보 노트북까지 준비하고 정적 검증했다. 그러나 실제 실행은 하지 않았다.</p><ul><li>로컬 CUDA GPU가 없었다.</li><li>Kaggle GPU quota와 약 1시간의 실행 비용이 필요했다.</li><li>현재 0.95113 대비 기대 개선이 불확실했다.</li><li>이미 Public과 로컬의 불일치를 여러 번 확인한 상태였다.</li></ul><p>실행하지 않은 모델을 실패로 기록하지 않았다. 결과가 없기 때문에 그저 <strong>미실행 후보</strong>다.</p><h2 id=16-전체-run-요약>16. 전체 Run 요약<a hidden class=anchor aria-hidden=true href=#16-전체-run-요약>#</a></h2><table><thead><tr><th>Run</th><th>핵심 내용</th><th>결과와 판단</th></tr></thead><tbody><tr><td>01</td><td>통계 검정</td><td>sleep_duration, stress_level 신호 확인</td></tr><tr><td>02</td><td>13모델 screen</td><td>HGB 0.901402, quick benchmark</td></tr><tr><td>03</td><td>파생 특성 ablation</td><td>sleep interaction +0.000675, 단일 표본</td></tr><tr><td>04</td><td>수면 반복 확인</td><td>interaction 재현 실패</td></tr><tr><td>05</td><td>MI scan</td><td>sleep > steps > exercise > BMI</td></tr><tr><td>06</td><td>21 vs 30 features</td><td>-0.000361, 30 유지</td></tr><tr><td>07</td><td>ExactTE beta 1.0</td><td>+0.000124</td></tr><tr><td>07_1</td><td>nested beta</td><td>+0.000619, full 승격</td></tr><tr><td>08</td><td>ExactTE full</td><td>OOF 0.949961, Public 0.94981</td></tr><tr><td>08_1</td><td>beta 1.00</td><td>OOF 0.950192, Public 0.94924</td></tr><tr><td>09</td><td>ExactTE blend</td><td>Public 0.94974/0.94973/0.94967</td></tr><tr><td>10</td><td>broad domain features</td><td>-0.000361/-0.000345</td></tr><tr><td>10_1</td><td>fold 부검</td><td>고활동 pocket 발견</td></tr><tr><td>10_2</td><td>targeted gate probe</td><td>nested +0.000086</td></tr><tr><td>10_3</td><td>disjoint gate confirm</td><td>+0.000269</td></tr><tr><td>11</td><td>full targeted gate</td><td>최종 Blend -0.000078</td></tr><tr><td>12</td><td>reopt/stacking</td><td>legacy 0.949873 유지</td></tr><tr><td>13</td><td>seed ensemble</td><td>-0.000089</td></tr><tr><td>13_1</td><td>seed pair confirm</td><td>-0.000517</td></tr><tr><td>14</td><td>OVR probe</td><td>+0.000227</td></tr><tr><td>14_1</td><td>fresh OVR confirm</td><td>-0.000526, 0/3</td></tr><tr><td>15</td><td>원본 50k 증강</td><td>-0.000176</td></tr><tr><td>16</td><td>외부 위원회 microflip</td><td>Public 0.95112 동일</td></tr><tr><td>17</td><td>signature block</td><td>Public 0.95112 동일</td></tr><tr><td>17_1</td><td>AB/AC/BC</td><td>모두 0.95112</td></tr><tr><td>18</td><td>정확한 공개 노트북 재현</td><td>한 행 변경, Public 0.95113</td></tr><tr><td>19</td><td>minority recovery</td><td>-0.001608</td></tr><tr><td>20</td><td>anchor disagreement 부검</td><td>1,459행 구조 분석</td></tr><tr><td>21</td><td>health geometry</td><td>-0.000330, 정답 수는 증가</td></tr><tr><td>22</td><td>fit->at-risk 0.50</td><td>-0.000012, 손익분기 미달</td></tr><tr><td>22_1</td><td>fit->at-risk 0.80</td><td>+0.000037, 5/5, Public 동일</td></tr><tr><td>23</td><td>at-risk/unhealthy pairwise</td><td>-0.000159</td></tr><tr><td>24</td><td>Accuracy CB 10% 주입</td><td>-0.000199</td></tr><tr><td>25</td><td>Public tomography</td><td>준비 후 미실행</td></tr><tr><td>26</td><td>TabPFN-3 100k</td><td>준비 후 미실행</td></tr><tr><td>26_1</td><td>TabPFN-3 full</td><td>준비 후 미실행</td></tr></tbody></table><h2 id=17-이번-대회에서-얻은-실전-규칙>17. 이번 대회에서 얻은 실전 규칙<a hidden class=anchor aria-hidden=true href=#17-이번-대회에서-얻은-실전-규칙>#</a></h2><h3 id=1-로컬-최고점을-챔피언이라고-부르지-않는다>1. 로컬 최고점을 챔피언이라고 부르지 않는다<a hidden class=anchor aria-hidden=true href=#1-로컬-최고점을-챔피언이라고-부르지-않는다>#</a></h3><p>새 모델이 높은 OOF를 기록해도 최종 Blend, 독립 확인, Public은 별도 문제다.</p><h3 id=2-탐색과-확인을-분리한다>2. 탐색과 확인을 분리한다<a hidden class=anchor aria-hidden=true href=#2-탐색과-확인을-분리한다>#</a></h3><p>같은 fold에서 threshold, seed, weight, feature를 고르면 결과는 낙관적으로 보인다. 고정한 뒤 새 fold 또는 disjoint 행에서 다시 본다.</p><h3 id=3-최종-소비자를-평가한다>3. 최종 소비자를 평가한다<a hidden class=anchor aria-hidden=true href=#3-최종-소비자를-평가한다>#</a></h3><p>CatBoost를 개선했더라도 최종 제출이 LGB+CatBoost Blend라면 Blend 점수로 판단한다.</p><h3 id=4-balanced-accuracy는-행별-비용표를-먼저-만든다>4. Balanced Accuracy는 행별 비용표를 먼저 만든다<a hidden class=anchor aria-hidden=true href=#4-balanced-accuracy는-행별-비용표를-먼저-만든다>#</a></h3><p>변경 방향마다 손익분기 정밀도를 계산한다. 총 정답 수만 보면 잘못된 결론을 낼 수 있다.</p><h3 id=5-public-같은-점수는-정답이-아니다>5. Public 같은 점수는 정답이 아니다<a hidden class=anchor aria-hidden=true href=#5-public-같은-점수는-정답이-아니다>#</a></h3><p>다섯 자리 반올림, Public subset 포함 여부, 상쇄 효과를 구분할 수 없다.</p><h3 id=6-성공한-한-행을-전역-규칙으로-확대하지-않는다>6. 성공한 한 행을 전역 규칙으로 확대하지 않는다<a hidden class=anchor aria-hidden=true href=#6-성공한-한-행을-전역-규칙으로-확대하지-않는다>#</a></h3><p>Run 18은 성공했지만 Run 19와 Run 24의 광범위한 일반화는 실패했다.</p><h3 id=7-멈출-기준도-실험-설계의-일부다>7. 멈출 기준도 실험 설계의 일부다<a hidden class=anchor aria-hidden=true href=#7-멈출-기준도-실험-설계의-일부다>#</a></h3><p>TabPFN을 준비했지만 실행하지 않은 것은 포기가 아니라, 비용 대비 기대값이 낮다는 판단이었다.</p><h2 id=총평>총평<a hidden class=anchor aria-hidden=true href=#총평>#</a></h2><p>처음에는 건강 특성의 분포를 겹쳐 그리면 세 클래스가 자연스럽게 갈릴 것 같았다. 실제로는 모델보다 검증 구조가 더 어려웠다.</p><p>로컬 0.950192가 Public 0.94924가 되었고, 27개의 seed fit은 이득을 만들지 못했고, 처음 좋아 보인 OVR은 fresh 150k의 모든 fold에서 졌다. 총 정답을 511개 늘린 건강축 모델도 Balanced Accuracy는 내려갔다.</p><p>반대로 최종 Public을 올린 것은 거대한 새 모델이 아니라 강한 anchor를 거의 그대로 유지한 <strong>단 한 행의 교정</strong>이었다.</p><p>그래서 이 기록의 핵심은 <code>0.95113</code>이 아니다.</p><p>무엇이 좋아 보였는지, 어떤 검증에서 무너졌는지, 왜 Balanced Accuracy에서 행의 가치가 달랐는지, 그리고 어느 순간 추가 탐색을 멈춰야 했는지를 남긴 것이 더 중요하다.</p><p>Kaggle에서 점수는 결과지만, 다음 대회에 가져갈 수 있는 것은 결국 <strong>검증 가능한 실험 과정</strong>이다.</p><h2 id=검증에-사용한-프로젝트-산출물>검증에 사용한 프로젝트 산출물<a hidden class=anchor aria-hidden=true href=#검증에-사용한-프로젝트-산출물>#</a></h2><p>이 글의 수치와 판단은 Kaggle 제출 화면만 보고 적지 않았다. 로컬 프로젝트에 남긴 다음 산출물을 서로 대조했다.</p><ul><li>전체 실험 감사 문서: <code>S6E7_EXPERIMENT_AND_METRIC_AUDIT_2026-07-14.md</code></li><li>실험 원장: <code>EXPERIMENT_LEDGER.csv</code>, <code>EXPERIMENT_LEDGER.xlsx</code></li><li>전체 Run 및 Public 점수 진행 표</li><li>지표 영향 분류와 클래스별 행 가치 표</li><li>최종 제출 간 예측 차이 비교표</li><li>각 Run의 execution log와 결과 CSV</li><li>발표 근거 매트릭스와 최종 발표 구조 문서</li></ul><p>원본 학습·테스트 데이터와 제출 CSV는 용량과 대회 데이터 이용 조건 때문에 블로그에 첨부하지 않는다. 본문에 사용한 그래프와 점수 화면만 공개용 이미지로 별도 선별했다.</p><blockquote><p>이 글은 LearningLog projects 흐름에서 생성한 Kaggle Playground S6E7 프로젝트 시리즈 11편입니다.</p></blockquote><h2 id=다음-시리즈-예고>다음 시리즈 예고<a hidden class=anchor aria-hidden=true href=#다음-시리즈-예고>#</a></h2><p>12편 이후에는 발표자료가 완성된 뒤 발표 구조와 전달 방식을 정리한다. 이어서 팀원들의 모델·피처·검증 결과를 같은 기준으로 비교하고, 최종 결과와 개인적인 감상을 남긴다. 마지막에는 처음 보는 데이터를 받았을 때 문제 정의, 지표 비용, 기준선, 탐색, 독립 확인, 제출 판단으로 이어지는 재사용 가능한 접근법을 결론으로 정리할 예정이다.</p><blockquote><p>시리즈 이동: <a href=/projects/2026-07-14-kaggle-playground-s6e7-10-evidence-and-failure-analysis/>10편 - 실패와 증거 등급</a> | 다음 글은 발표자료와 팀 결과가 정리된 뒤 이어집니다.</p></blockquote></div><footer class=post-footer><ul class=post-tags><li><a href=https://Han-think.github.io/tags/kaggle/>Kaggle</a></li><li><a href=https://Han-think.github.io/tags/machine-learning/>Machine-Learning</a></li><li><a href=https://Han-think.github.io/tags/balanced-accuracy/>Balanced-Accuracy</a></li><li><a href=https://Han-think.github.io/tags/catboost/>Catboost</a></li><li><a href=https://Han-think.github.io/tags/lightgbm/>Lightgbm</a></li><li><a href=https://Han-think.github.io/tags/oof/>Oof</a></li><li><a href=https://Han-think.github.io/tags/experiment-tracking/>Experiment-Tracking</a></li></ul></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
-<span>Powered by
-<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
-<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Kaggle Playground S6E7 개인 도전 - 11. 최종 제출과 재현 가능한 실험 운영 | Han-think Blog</title>
+<meta name="keywords" content="kaggle, machine-learning, balanced-accuracy, catboost, lightgbm, oof, experiment-tracking">
+<meta name="description" content="최종 제출 두 개의 역할, 339 fits와 실행 시간, 보류한 TabPFN-3, 전체 Run 요약과 다음 대회에 가져갈 실전 규칙을 정리했다.">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-11-final-submissions-and-reproducibility/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-11-final-submissions-and-reproducibility/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-11-final-submissions-and-reproducibility/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="Kaggle Playground S6E7 개인 도전 - 11. 최종 제출과 재현 가능한 실험 운영">
+  <meta property="og:description" content="최종 제출 두 개의 역할, 339 fits와 실행 시간, 보류한 TabPFN-3, 전체 Run 요약과 다음 대회에 가져갈 실전 규칙을 정리했다.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2026-07-15T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-15T00:00:00+00:00">
+    <meta property="article:tag" content="Kaggle">
+    <meta property="article:tag" content="Machine-Learning">
+    <meta property="article:tag" content="Balanced-Accuracy">
+    <meta property="article:tag" content="Catboost">
+    <meta property="article:tag" content="Lightgbm">
+    <meta property="article:tag" content="Oof">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kaggle Playground S6E7 개인 도전 - 11. 최종 제출과 재현 가능한 실험 운영">
+  <meta name="twitter:description" content="최종 제출 두 개의 역할, 339 fits와 실행 시간, 보류한 TabPFN-3, 전체 Run 요약과 다음 대회에 가져갈 실전 규칙을 정리했다.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "프로젝트",
+      "item": "https://Han-think.github.io/projects/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Kaggle Playground S6E7 개인 도전 - 11. 최종 제출과 재현 가능한 실험 운영",
+      "item": "https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-11-final-submissions-and-reproducibility/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Kaggle Playground S6E7 개인 도전 - 11. 최종 제출과 재현 가능한 실험 운영",
+  "name": "Kaggle Playground S6E7 개인 도전 - 11. 최종 제출과 재현 가능한 실험 운영",
+  "description": "최종 제출 두 개의 역할, 339 fits와 실행 시간, 보류한 TabPFN-3, 전체 Run 요약과 다음 대회에 가져갈 실전 규칙을 정리했다.",
+  "keywords": [
+    "kaggle", "machine-learning", "balanced-accuracy", "catboost", "lightgbm", "oof", "experiment-tracking"
+  ],
+  "articleBody": " 마지막 실험 편에서는 최고점만 남기지 않고 최종 제출을 왜 두 개로 유지했는지, 무엇을 얼마나 실행했는지, 무엇을 실행하지 않았는지까지 함께 기록한다.\n목차 최종 제출 두 개 실행과 재현성 하지 않은 것: TabPFN-3 전체 Run 요약 이번 대회에서 얻은 실전 규칙 총평 검증에 사용한 프로젝트 산출물 다음 시리즈 예고 13. 최종 제출 두 개 Run 18 — 기준 제출 submission_exact_public_notebook_primary_1flip_20260714_084021.csv Public = 0.95113 SHA256 = d843c1ded493d1e38b74c33eb044619afc5147c82cc1d5c4e6ab60ff3b14bd09 외부 0.95112 anchor 대비 변경:\nid=776133: fit -\u003e at-risk Run 22_1 — Private 분산 제출 submission_run22_1_fixed080_from095113_2flips_20260714_105056.csv Public = 0.95113 SHA256 = bc11b83b49df24be2eef788e2d8a5d92820dfe15f9a1eff8469c73bb27a3c9cd Run 18 대비 변경:\nid=765608: fit -\u003e at-risk id=982096: fit -\u003e at-risk 두 파일은 모두 295,753행이고 ID 순서가 완전히 같다. 예측 차이는 정확히 두 행이다.\n두 제출을 함께 선택한 이유는 같은 Public 최고점을 유지하면서 두 행의 Private 불확실성을 분산하기 위해서다.\n14. 실행과 재현성 확인 가능한 최소 누적 실험량은 다음과 같다.\nbase/auxiliary learner fits = 319 meta model 포함 fits = 339 측정 wall time = 236.46분, 약 3시간 56분 여기에는 다음 시간이 포함되지 않는다.\n초기 미계측 모델 학습 Kaggle 제출과 score 대기 오류 후 재시작 외부 자료 확인 실험 운영에서 지킨 원칙은 다음과 같다.\n기존 OOF, 제출, my_best_submission.csv를 덮어쓰지 않았다. 새 후보는 별도 실행 폴더와 execution JSON에 저장했다. 긴 학습은 fold checkpoint를 남겼다. OOF gate를 통과하지 못하면 제출 파일을 만들지 않았다. 탐색 후에는 새 fold seed 또는 겹치지 않는 행으로 확인했다. 최종 CSV는 행 수, ID 순서, 라벨, 결측, SHA256을 다시 검사했다. 15. 하지 않은 것: TabPFN-3 TabPFN-3와 공개 starter를 검토했다.\n100k GPU probe와 전체 T4x2 후보 노트북까지 준비하고 정적 검증했다. 그러나 실제 실행은 하지 않았다.\n로컬 CUDA GPU가 없었다. Kaggle GPU quota와 약 1시간의 실행 비용이 필요했다. 현재 0.95113 대비 기대 개선이 불확실했다. 이미 Public과 로컬의 불일치를 여러 번 확인한 상태였다. 실행하지 않은 모델을 실패로 기록하지 않았다. 결과가 없기 때문에 그저 미실행 후보다.\n16. 전체 Run 요약 Run 핵심 내용 결과와 판단 01 통계 검정 sleep_duration, stress_level 신호 확인 02 13모델 screen HGB 0.901402, quick benchmark 03 파생 특성 ablation sleep interaction +0.000675, 단일 표본 04 수면 반복 확인 interaction 재현 실패 05 MI scan sleep \u003e steps \u003e exercise \u003e BMI 06 21 vs 30 features -0.000361, 30 유지 07 ExactTE beta 1.0 +0.000124 07_1 nested beta +0.000619, full 승격 08 ExactTE full OOF 0.949961, Public 0.94981 08_1 beta 1.00 OOF 0.950192, Public 0.94924 09 ExactTE blend Public 0.94974/0.94973/0.94967 10 broad domain features -0.000361/-0.000345 10_1 fold 부검 고활동 pocket 발견 10_2 targeted gate probe nested +0.000086 10_3 disjoint gate confirm +0.000269 11 full targeted gate 최종 Blend -0.000078 12 reopt/stacking legacy 0.949873 유지 13 seed ensemble -0.000089 13_1 seed pair confirm -0.000517 14 OVR probe +0.000227 14_1 fresh OVR confirm -0.000526, 0/3 15 원본 50k 증강 -0.000176 16 외부 위원회 microflip Public 0.95112 동일 17 signature block Public 0.95112 동일 17_1 AB/AC/BC 모두 0.95112 18 정확한 공개 노트북 재현 한 행 변경, Public 0.95113 19 minority recovery -0.001608 20 anchor disagreement 부검 1,459행 구조 분석 21 health geometry -0.000330, 정답 수는 증가 22 fit-\u003eat-risk 0.50 -0.000012, 손익분기 미달 22_1 fit-\u003eat-risk 0.80 +0.000037, 5/5, Public 동일 23 at-risk/unhealthy pairwise -0.000159 24 Accuracy CB 10% 주입 -0.000199 25 Public tomography 준비 후 미실행 26 TabPFN-3 100k 준비 후 미실행 26_1 TabPFN-3 full 준비 후 미실행 17. 이번 대회에서 얻은 실전 규칙 1. 로컬 최고점을 챔피언이라고 부르지 않는다 새 모델이 높은 OOF를 기록해도 최종 Blend, 독립 확인, Public은 별도 문제다.\n2. 탐색과 확인을 분리한다 같은 fold에서 threshold, seed, weight, feature를 고르면 결과는 낙관적으로 보인다. 고정한 뒤 새 fold 또는 disjoint 행에서 다시 본다.\n3. 최종 소비자를 평가한다 CatBoost를 개선했더라도 최종 제출이 LGB+CatBoost Blend라면 Blend 점수로 판단한다.\n4. Balanced Accuracy는 행별 비용표를 먼저 만든다 변경 방향마다 손익분기 정밀도를 계산한다. 총 정답 수만 보면 잘못된 결론을 낼 수 있다.\n5. Public 같은 점수는 정답이 아니다 다섯 자리 반올림, Public subset 포함 여부, 상쇄 효과를 구분할 수 없다.\n6. 성공한 한 행을 전역 규칙으로 확대하지 않는다 Run 18은 성공했지만 Run 19와 Run 24의 광범위한 일반화는 실패했다.\n7. 멈출 기준도 실험 설계의 일부다 TabPFN을 준비했지만 실행하지 않은 것은 포기가 아니라, 비용 대비 기대값이 낮다는 판단이었다.\n총평 처음에는 건강 특성의 분포를 겹쳐 그리면 세 클래스가 자연스럽게 갈릴 것 같았다. 실제로는 모델보다 검증 구조가 더 어려웠다.\n로컬 0.950192가 Public 0.94924가 되었고, 27개의 seed fit은 이득을 만들지 못했고, 처음 좋아 보인 OVR은 fresh 150k의 모든 fold에서 졌다. 총 정답을 511개 늘린 건강축 모델도 Balanced Accuracy는 내려갔다.\n반대로 최종 Public을 올린 것은 거대한 새 모델이 아니라 강한 anchor를 거의 그대로 유지한 단 한 행의 교정이었다.\n그래서 이 기록의 핵심은 0.95113이 아니다.\n무엇이 좋아 보였는지, 어떤 검증에서 무너졌는지, 왜 Balanced Accuracy에서 행의 가치가 달랐는지, 그리고 어느 순간 추가 탐색을 멈춰야 했는지를 남긴 것이 더 중요하다.\nKaggle에서 점수는 결과지만, 다음 대회에 가져갈 수 있는 것은 결국 검증 가능한 실험 과정이다.\n검증에 사용한 프로젝트 산출물 이 글의 수치와 판단은 Kaggle 제출 화면만 보고 적지 않았다. 로컬 프로젝트에 남긴 다음 산출물을 서로 대조했다.\n전체 실험 감사 문서: S6E7_EXPERIMENT_AND_METRIC_AUDIT_2026-07-14.md 실험 원장: EXPERIMENT_LEDGER.csv, EXPERIMENT_LEDGER.xlsx 전체 Run 및 Public 점수 진행 표 지표 영향 분류와 클래스별 행 가치 표 최종 제출 간 예측 차이 비교표 각 Run의 execution log와 결과 CSV 발표 근거 매트릭스와 최종 발표 구조 문서 원본 학습·테스트 데이터와 제출 CSV는 용량과 대회 데이터 이용 조건 때문에 블로그에 첨부하지 않는다. 본문에 사용한 그래프와 점수 화면만 공개용 이미지로 별도 선별했다.\n이 글은 LearningLog projects 흐름에서 생성한 Kaggle Playground S6E7 프로젝트 시리즈 11편입니다.\n다음 시리즈 예고 12편 이후에는 발표자료가 완성된 뒤 발표 구조와 전달 방식을 정리한다. 이어서 팀원들의 모델·피처·검증 결과를 같은 기준으로 비교하고, 최종 결과와 개인적인 감상을 남긴다. 마지막에는 처음 보는 데이터를 받았을 때 문제 정의, 지표 비용, 기준선, 탐색, 독립 확인, 제출 판단으로 이어지는 재사용 가능한 접근법을 결론으로 정리할 예정이다.\n시리즈 이동: 10편 - 실패와 증거 등급 | 다음 글은 발표자료와 팀 결과가 정리된 뒤 이어집니다.\n",
+  "wordCount" : "927",
+  "inLanguage": "en",
+  "datePublished": "2026-07-15T00:00:00Z",
+  "dateModified": "2026-07-15T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/projects/2026-07-14-kaggle-playground-s6e7-11-final-submissions-and-reproducibility/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Kaggle Playground S6E7 개인 도전 - 11. 최종 제출과 재현 가능한 실험 운영
+    </h1>
+    <div class="post-description">
+      최종 제출 두 개의 역할, 339 fits와 실행 시간, 보류한 TabPFN-3, 전체 Run 요약과 다음 대회에 가져갈 실전 규칙을 정리했다.
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-15 00:00:00 +0000 UTC'>2026년 7월 15일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><blockquote>
+<p>마지막 실험 편에서는 최고점만 남기지 않고 최종 제출을 왜 두 개로 유지했는지, 무엇을 얼마나 실행했는지, 무엇을 실행하지 않았는지까지 함께 기록한다.</p>
+</blockquote>
+<h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol start="13">
+<li><a href="#13-%EC%B5%9C%EC%A2%85-%EC%A0%9C%EC%B6%9C-%EB%91%90-%EA%B0%9C">최종 제출 두 개</a></li>
+</ol>
+</li>
+<li>
+<ol start="14">
+<li><a href="#14-%EC%8B%A4%ED%96%89%EA%B3%BC-%EC%9E%AC%ED%98%84%EC%84%B1">실행과 재현성</a></li>
+</ol>
+</li>
+<li>
+<ol start="15">
+<li><a href="#15-%ED%95%98%EC%A7%80-%EC%95%8A%EC%9D%80-%EA%B2%83-tabpfn-3">하지 않은 것: TabPFN-3</a></li>
+</ol>
+</li>
+<li>
+<ol start="16">
+<li><a href="#16-%EC%A0%84%EC%B2%B4-run-%EC%9A%94%EC%95%BD">전체 Run 요약</a></li>
+</ol>
+</li>
+<li>
+<ol start="17">
+<li><a href="#17-%EC%9D%B4%EB%B2%88-%EB%8C%80%ED%9A%8C%EC%97%90%EC%84%9C-%EC%96%BB%EC%9D%80-%EC%8B%A4%EC%A0%84-%EA%B7%9C%EC%B9%99">이번 대회에서 얻은 실전 규칙</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+<li><a href="#%EA%B2%80%EC%A6%9D%EC%97%90-%EC%82%AC%EC%9A%A9%ED%95%9C-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%82%B0%EC%B6%9C%EB%AC%BC">검증에 사용한 프로젝트 산출물</a></li>
+<li><a href="#%EB%8B%A4%EC%9D%8C-%EC%8B%9C%EB%A6%AC%EC%A6%88-%EC%98%88%EA%B3%A0">다음 시리즈 예고</a></li>
+</ul>
+<h2 id="13-최종-제출-두-개">13. 최종 제출 두 개<a hidden class="anchor" aria-hidden="true" href="#13-최종-제출-두-개">#</a></h2>
+<h3 id="run-18--기준-제출">Run 18 — 기준 제출<a hidden class="anchor" aria-hidden="true" href="#run-18--기준-제출">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>submission_exact_public_notebook_primary_1flip_20260714_084021.csv
+</span></span><span style="display:flex;"><span>Public = 0.95113
+</span></span><span style="display:flex;"><span>SHA256 = d843c1ded493d1e38b74c33eb044619afc5147c82cc1d5c4e6ab60ff3b14bd09
+</span></span></code></pre></div><p>외부 0.95112 anchor 대비 변경:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>id=776133: fit -&gt; at-risk
+</span></span></code></pre></div><h3 id="run-22_1--private-분산-제출">Run 22_1 — Private 분산 제출<a hidden class="anchor" aria-hidden="true" href="#run-22_1--private-분산-제출">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>submission_run22_1_fixed080_from095113_2flips_20260714_105056.csv
+</span></span><span style="display:flex;"><span>Public = 0.95113
+</span></span><span style="display:flex;"><span>SHA256 = bc11b83b49df24be2eef788e2d8a5d92820dfe15f9a1eff8469c73bb27a3c9cd
+</span></span></code></pre></div><p>Run 18 대비 변경:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>id=765608: fit -&gt; at-risk
+</span></span><span style="display:flex;"><span>id=982096: fit -&gt; at-risk
+</span></span></code></pre></div><p>두 파일은 모두 295,753행이고 ID 순서가 완전히 같다. 예측 차이는 정확히 두 행이다.</p>
+<p>두 제출을 함께 선택한 이유는 같은 Public 최고점을 유지하면서 두 행의 Private 불확실성을 분산하기 위해서다.</p>
+<h2 id="14-실행과-재현성">14. 실행과 재현성<a hidden class="anchor" aria-hidden="true" href="#14-실행과-재현성">#</a></h2>
+<p>확인 가능한 최소 누적 실험량은 다음과 같다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>base/auxiliary learner fits = 319
+</span></span><span style="display:flex;"><span>meta model 포함 fits = 339
+</span></span><span style="display:flex;"><span>측정 wall time = 236.46분, 약 3시간 56분
+</span></span></code></pre></div><p>여기에는 다음 시간이 포함되지 않는다.</p>
+<ul>
+<li>초기 미계측 모델 학습</li>
+<li>Kaggle 제출과 score 대기</li>
+<li>오류 후 재시작</li>
+<li>외부 자료 확인</li>
+</ul>
+<p>실험 운영에서 지킨 원칙은 다음과 같다.</p>
+<ul>
+<li>기존 OOF, 제출, <code>my_best_submission.csv</code>를 덮어쓰지 않았다.</li>
+<li>새 후보는 별도 실행 폴더와 execution JSON에 저장했다.</li>
+<li>긴 학습은 fold checkpoint를 남겼다.</li>
+<li>OOF gate를 통과하지 못하면 제출 파일을 만들지 않았다.</li>
+<li>탐색 후에는 새 fold seed 또는 겹치지 않는 행으로 확인했다.</li>
+<li>최종 CSV는 행 수, ID 순서, 라벨, 결측, SHA256을 다시 검사했다.</li>
+</ul>
+<h2 id="15-하지-않은-것-tabpfn-3">15. 하지 않은 것: TabPFN-3<a hidden class="anchor" aria-hidden="true" href="#15-하지-않은-것-tabpfn-3">#</a></h2>
+<p><a href="https://www.kaggle.com/models/prior-labsai/tabpfn-3/PyTorch/default">TabPFN-3</a>와 공개 starter를 검토했다.</p>
+<p>100k GPU probe와 전체 T4x2 후보 노트북까지 준비하고 정적 검증했다. 그러나 실제 실행은 하지 않았다.</p>
+<ul>
+<li>로컬 CUDA GPU가 없었다.</li>
+<li>Kaggle GPU quota와 약 1시간의 실행 비용이 필요했다.</li>
+<li>현재 0.95113 대비 기대 개선이 불확실했다.</li>
+<li>이미 Public과 로컬의 불일치를 여러 번 확인한 상태였다.</li>
+</ul>
+<p>실행하지 않은 모델을 실패로 기록하지 않았다. 결과가 없기 때문에 그저 <strong>미실행 후보</strong>다.</p>
+<h2 id="16-전체-run-요약">16. 전체 Run 요약<a hidden class="anchor" aria-hidden="true" href="#16-전체-run-요약">#</a></h2>
+<table>
+	<thead>
+			<tr>
+					<th>Run</th>
+					<th>핵심 내용</th>
+					<th>결과와 판단</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>01</td>
+					<td>통계 검정</td>
+					<td>sleep_duration, stress_level 신호 확인</td>
+			</tr>
+			<tr>
+					<td>02</td>
+					<td>13모델 screen</td>
+					<td>HGB 0.901402, quick benchmark</td>
+			</tr>
+			<tr>
+					<td>03</td>
+					<td>파생 특성 ablation</td>
+					<td>sleep interaction +0.000675, 단일 표본</td>
+			</tr>
+			<tr>
+					<td>04</td>
+					<td>수면 반복 확인</td>
+					<td>interaction 재현 실패</td>
+			</tr>
+			<tr>
+					<td>05</td>
+					<td>MI scan</td>
+					<td>sleep &gt; steps &gt; exercise &gt; BMI</td>
+			</tr>
+			<tr>
+					<td>06</td>
+					<td>21 vs 30 features</td>
+					<td>-0.000361, 30 유지</td>
+			</tr>
+			<tr>
+					<td>07</td>
+					<td>ExactTE beta 1.0</td>
+					<td>+0.000124</td>
+			</tr>
+			<tr>
+					<td>07_1</td>
+					<td>nested beta</td>
+					<td>+0.000619, full 승격</td>
+			</tr>
+			<tr>
+					<td>08</td>
+					<td>ExactTE full</td>
+					<td>OOF 0.949961, Public 0.94981</td>
+			</tr>
+			<tr>
+					<td>08_1</td>
+					<td>beta 1.00</td>
+					<td>OOF 0.950192, Public 0.94924</td>
+			</tr>
+			<tr>
+					<td>09</td>
+					<td>ExactTE blend</td>
+					<td>Public 0.94974/0.94973/0.94967</td>
+			</tr>
+			<tr>
+					<td>10</td>
+					<td>broad domain features</td>
+					<td>-0.000361/-0.000345</td>
+			</tr>
+			<tr>
+					<td>10_1</td>
+					<td>fold 부검</td>
+					<td>고활동 pocket 발견</td>
+			</tr>
+			<tr>
+					<td>10_2</td>
+					<td>targeted gate probe</td>
+					<td>nested +0.000086</td>
+			</tr>
+			<tr>
+					<td>10_3</td>
+					<td>disjoint gate confirm</td>
+					<td>+0.000269</td>
+			</tr>
+			<tr>
+					<td>11</td>
+					<td>full targeted gate</td>
+					<td>최종 Blend -0.000078</td>
+			</tr>
+			<tr>
+					<td>12</td>
+					<td>reopt/stacking</td>
+					<td>legacy 0.949873 유지</td>
+			</tr>
+			<tr>
+					<td>13</td>
+					<td>seed ensemble</td>
+					<td>-0.000089</td>
+			</tr>
+			<tr>
+					<td>13_1</td>
+					<td>seed pair confirm</td>
+					<td>-0.000517</td>
+			</tr>
+			<tr>
+					<td>14</td>
+					<td>OVR probe</td>
+					<td>+0.000227</td>
+			</tr>
+			<tr>
+					<td>14_1</td>
+					<td>fresh OVR confirm</td>
+					<td>-0.000526, 0/3</td>
+			</tr>
+			<tr>
+					<td>15</td>
+					<td>원본 50k 증강</td>
+					<td>-0.000176</td>
+			</tr>
+			<tr>
+					<td>16</td>
+					<td>외부 위원회 microflip</td>
+					<td>Public 0.95112 동일</td>
+			</tr>
+			<tr>
+					<td>17</td>
+					<td>signature block</td>
+					<td>Public 0.95112 동일</td>
+			</tr>
+			<tr>
+					<td>17_1</td>
+					<td>AB/AC/BC</td>
+					<td>모두 0.95112</td>
+			</tr>
+			<tr>
+					<td>18</td>
+					<td>정확한 공개 노트북 재현</td>
+					<td>한 행 변경, Public 0.95113</td>
+			</tr>
+			<tr>
+					<td>19</td>
+					<td>minority recovery</td>
+					<td>-0.001608</td>
+			</tr>
+			<tr>
+					<td>20</td>
+					<td>anchor disagreement 부검</td>
+					<td>1,459행 구조 분석</td>
+			</tr>
+			<tr>
+					<td>21</td>
+					<td>health geometry</td>
+					<td>-0.000330, 정답 수는 증가</td>
+			</tr>
+			<tr>
+					<td>22</td>
+					<td>fit-&gt;at-risk 0.50</td>
+					<td>-0.000012, 손익분기 미달</td>
+			</tr>
+			<tr>
+					<td>22_1</td>
+					<td>fit-&gt;at-risk 0.80</td>
+					<td>+0.000037, 5/5, Public 동일</td>
+			</tr>
+			<tr>
+					<td>23</td>
+					<td>at-risk/unhealthy pairwise</td>
+					<td>-0.000159</td>
+			</tr>
+			<tr>
+					<td>24</td>
+					<td>Accuracy CB 10% 주입</td>
+					<td>-0.000199</td>
+			</tr>
+			<tr>
+					<td>25</td>
+					<td>Public tomography</td>
+					<td>준비 후 미실행</td>
+			</tr>
+			<tr>
+					<td>26</td>
+					<td>TabPFN-3 100k</td>
+					<td>준비 후 미실행</td>
+			</tr>
+			<tr>
+					<td>26_1</td>
+					<td>TabPFN-3 full</td>
+					<td>준비 후 미실행</td>
+			</tr>
+	</tbody>
+</table>
+<h2 id="17-이번-대회에서-얻은-실전-규칙">17. 이번 대회에서 얻은 실전 규칙<a hidden class="anchor" aria-hidden="true" href="#17-이번-대회에서-얻은-실전-규칙">#</a></h2>
+<h3 id="1-로컬-최고점을-챔피언이라고-부르지-않는다">1. 로컬 최고점을 챔피언이라고 부르지 않는다<a hidden class="anchor" aria-hidden="true" href="#1-로컬-최고점을-챔피언이라고-부르지-않는다">#</a></h3>
+<p>새 모델이 높은 OOF를 기록해도 최종 Blend, 독립 확인, Public은 별도 문제다.</p>
+<h3 id="2-탐색과-확인을-분리한다">2. 탐색과 확인을 분리한다<a hidden class="anchor" aria-hidden="true" href="#2-탐색과-확인을-분리한다">#</a></h3>
+<p>같은 fold에서 threshold, seed, weight, feature를 고르면 결과는 낙관적으로 보인다. 고정한 뒤 새 fold 또는 disjoint 행에서 다시 본다.</p>
+<h3 id="3-최종-소비자를-평가한다">3. 최종 소비자를 평가한다<a hidden class="anchor" aria-hidden="true" href="#3-최종-소비자를-평가한다">#</a></h3>
+<p>CatBoost를 개선했더라도 최종 제출이 LGB+CatBoost Blend라면 Blend 점수로 판단한다.</p>
+<h3 id="4-balanced-accuracy는-행별-비용표를-먼저-만든다">4. Balanced Accuracy는 행별 비용표를 먼저 만든다<a hidden class="anchor" aria-hidden="true" href="#4-balanced-accuracy는-행별-비용표를-먼저-만든다">#</a></h3>
+<p>변경 방향마다 손익분기 정밀도를 계산한다. 총 정답 수만 보면 잘못된 결론을 낼 수 있다.</p>
+<h3 id="5-public-같은-점수는-정답이-아니다">5. Public 같은 점수는 정답이 아니다<a hidden class="anchor" aria-hidden="true" href="#5-public-같은-점수는-정답이-아니다">#</a></h3>
+<p>다섯 자리 반올림, Public subset 포함 여부, 상쇄 효과를 구분할 수 없다.</p>
+<h3 id="6-성공한-한-행을-전역-규칙으로-확대하지-않는다">6. 성공한 한 행을 전역 규칙으로 확대하지 않는다<a hidden class="anchor" aria-hidden="true" href="#6-성공한-한-행을-전역-규칙으로-확대하지-않는다">#</a></h3>
+<p>Run 18은 성공했지만 Run 19와 Run 24의 광범위한 일반화는 실패했다.</p>
+<h3 id="7-멈출-기준도-실험-설계의-일부다">7. 멈출 기준도 실험 설계의 일부다<a hidden class="anchor" aria-hidden="true" href="#7-멈출-기준도-실험-설계의-일부다">#</a></h3>
+<p>TabPFN을 준비했지만 실행하지 않은 것은 포기가 아니라, 비용 대비 기대값이 낮다는 판단이었다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<p>처음에는 건강 특성의 분포를 겹쳐 그리면 세 클래스가 자연스럽게 갈릴 것 같았다. 실제로는 모델보다 검증 구조가 더 어려웠다.</p>
+<p>로컬 0.950192가 Public 0.94924가 되었고, 27개의 seed fit은 이득을 만들지 못했고, 처음 좋아 보인 OVR은 fresh 150k의 모든 fold에서 졌다. 총 정답을 511개 늘린 건강축 모델도 Balanced Accuracy는 내려갔다.</p>
+<p>반대로 최종 Public을 올린 것은 거대한 새 모델이 아니라 강한 anchor를 거의 그대로 유지한 <strong>단 한 행의 교정</strong>이었다.</p>
+<p>그래서 이 기록의 핵심은 <code>0.95113</code>이 아니다.</p>
+<p>무엇이 좋아 보였는지, 어떤 검증에서 무너졌는지, 왜 Balanced Accuracy에서 행의 가치가 달랐는지, 그리고 어느 순간 추가 탐색을 멈춰야 했는지를 남긴 것이 더 중요하다.</p>
+<p>Kaggle에서 점수는 결과지만, 다음 대회에 가져갈 수 있는 것은 결국 <strong>검증 가능한 실험 과정</strong>이다.</p>
+<h2 id="검증에-사용한-프로젝트-산출물">검증에 사용한 프로젝트 산출물<a hidden class="anchor" aria-hidden="true" href="#검증에-사용한-프로젝트-산출물">#</a></h2>
+<p>이 글의 수치와 판단은 Kaggle 제출 화면만 보고 적지 않았다. 로컬 프로젝트에 남긴 다음 산출물을 서로 대조했다.</p>
+<ul>
+<li>전체 실험 감사 문서: <code>S6E7_EXPERIMENT_AND_METRIC_AUDIT_2026-07-14.md</code></li>
+<li>실험 원장: <code>EXPERIMENT_LEDGER.csv</code>, <code>EXPERIMENT_LEDGER.xlsx</code></li>
+<li>전체 Run 및 Public 점수 진행 표</li>
+<li>지표 영향 분류와 클래스별 행 가치 표</li>
+<li>최종 제출 간 예측 차이 비교표</li>
+<li>각 Run의 execution log와 결과 CSV</li>
+<li>발표 근거 매트릭스와 최종 발표 구조 문서</li>
+</ul>
+<p>원본 학습·테스트 데이터와 제출 CSV는 용량과 대회 데이터 이용 조건 때문에 블로그에 첨부하지 않는다. 본문에 사용한 그래프와 점수 화면만 공개용 이미지로 별도 선별했다.</p>
+<blockquote>
+<p>이 글은 LearningLog projects 흐름에서 생성한 Kaggle Playground S6E7 프로젝트 시리즈 11편입니다.</p>
+</blockquote>
+<h2 id="다음-시리즈-예고">다음 시리즈 예고<a hidden class="anchor" aria-hidden="true" href="#다음-시리즈-예고">#</a></h2>
+<p>12편 이후에는 발표자료가 완성된 뒤 발표 구조와 전달 방식을 정리한다. 이어서 팀원들의 모델·피처·검증 결과를 같은 기준으로 비교하고, 최종 결과와 개인적인 감상을 남긴다. 마지막에는 처음 보는 데이터를 받았을 때 문제 정의, 지표 비용, 기준선, 탐색, 독립 확인, 제출 판단으로 이어지는 재사용 가능한 접근법을 결론으로 정리할 예정이다.</p>
+<blockquote>
+<p>시리즈 이동: <a href="/projects/2026-07-14-kaggle-playground-s6e7-10-evidence-and-failure-analysis/">10편 - 실패와 증거 등급</a> | 다음 글은 발표자료와 팀 결과가 정리된 뒤 이어집니다.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/kaggle/">Kaggle</a></li>
+      <li><a href="https://Han-think.github.io/tags/machine-learning/">Machine-Learning</a></li>
+      <li><a href="https://Han-think.github.io/tags/balanced-accuracy/">Balanced-Accuracy</a></li>
+      <li><a href="https://Han-think.github.io/tags/catboost/">Catboost</a></li>
+      <li><a href="https://Han-think.github.io/tags/lightgbm/">Lightgbm</a></li>
+      <li><a href="https://Han-think.github.io/tags/oof/">Oof</a></li>
+      <li><a href="https://Han-think.github.io/tags/experiment-tracking/">Experiment-Tracking</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Reproducibility on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/reproducibility/</link>
+    <description>Recent content in Reproducibility on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Fri, 17 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/reproducibility/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kaggle Playground S6E7 팀 프로젝트 - 14. 최종 회고와 처음 보는 데이터 접근법</title>
+      <link>https://Han-think.github.io/projects/2026-07-17-kaggle-playground-s6e7-14-team-retrospective-and-data-approach/</link>
+      <pubDate>Fri, 17 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/2026-07-17-kaggle-playground-s6e7-14-team-retrospective-and-data-approach/</guid>
+      <description>팀원들과 분석, 모델, 서비스, 발표자료를 하나로 합친 경험을 돌아보고 처음 보는 데이터를 받았을 때 재사용할 문제 정의와 검증 절차를 정리했다.</description>
+    </item>
+  </channel>
+</rss>

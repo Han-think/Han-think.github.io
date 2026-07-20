@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Kaggle Playground S6E7 팀 프로젝트 - 13. 재현 모델과 리듬ON 파일럿 설계 | Han-think Blog</title>
+<meta name="keywords" content="kaggle, team-project, catboost, lightgbm, oof, human-in-the-loop, pilot">
+<meta name="description" content="팀 프로젝트에서 최고 표시점수와 재현 가능한 모델을 분리하고, 담당자 검토와 참여자 동의를 포함한 리듬ON 파일럿을 설계한 과정.">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/projects/2026-07-17-kaggle-playground-s6e7-13-rhythmon-model-and-pilot/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/projects/2026-07-17-kaggle-playground-s6e7-13-rhythmon-model-and-pilot/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/projects/2026-07-17-kaggle-playground-s6e7-13-rhythmon-model-and-pilot/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="Kaggle Playground S6E7 팀 프로젝트 - 13. 재현 모델과 리듬ON 파일럿 설계">
+  <meta property="og:description" content="팀 프로젝트에서 최고 표시점수와 재현 가능한 모델을 분리하고, 담당자 검토와 참여자 동의를 포함한 리듬ON 파일럿을 설계한 과정.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2026-07-17T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-17T00:00:00+00:00">
+    <meta property="article:tag" content="Kaggle">
+    <meta property="article:tag" content="Team-Project">
+    <meta property="article:tag" content="Catboost">
+    <meta property="article:tag" content="Lightgbm">
+    <meta property="article:tag" content="Oof">
+    <meta property="article:tag" content="Human-in-the-Loop">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kaggle Playground S6E7 팀 프로젝트 - 13. 재현 모델과 리듬ON 파일럿 설계">
+  <meta name="twitter:description" content="팀 프로젝트에서 최고 표시점수와 재현 가능한 모델을 분리하고, 담당자 검토와 참여자 동의를 포함한 리듬ON 파일럿을 설계한 과정.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "프로젝트",
+      "item": "https://Han-think.github.io/projects/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Kaggle Playground S6E7 팀 프로젝트 - 13. 재현 모델과 리듬ON 파일럿 설계",
+      "item": "https://Han-think.github.io/projects/2026-07-17-kaggle-playground-s6e7-13-rhythmon-model-and-pilot/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Kaggle Playground S6E7 팀 프로젝트 - 13. 재현 모델과 리듬ON 파일럿 설계",
+  "name": "Kaggle Playground S6E7 팀 프로젝트 - 13. 재현 모델과 리듬ON 파일럿 설계",
+  "description": "팀 프로젝트에서 최고 표시점수와 재현 가능한 모델을 분리하고, 담당자 검토와 참여자 동의를 포함한 리듬ON 파일럿을 설계한 과정.",
+  "keywords": [
+    "kaggle", "team-project", "catboost", "lightgbm", "oof", "human-in-the-loop", "pilot"
+  ],
+  "articleBody": " 팀 프로젝트의 최종 선택은 가장 높은 표시점수를 제품에 붙이는 것이 아니었다. 다시 실행할 수 있는 분석 코어와 사람이 책임지는 운영 흐름을 함께 선택하는 일이었다.\n목차 최고점과 제품 근거를 분리하다 재현 가능한 모델을 고른 과정 모델은 검토 후보까지만 제안한다 리듬ON에서 참여자가 갖는 선택권 8주 파일럿의 검증 게이트 확대보다 중단 조건이 먼저다 총평 최고점과 제품 근거를 분리하다 개인 실험에서 Public 최고점은 0.95113이었다. 그러나 이 점수는 외부 anchor에 특정 행을 수정해 만든 대회 최적화 결과였다. 성과로는 남길 수 있지만, 같은 학습 파이프라인을 다시 실행해 얻는 모델은 아니었다.\n팀 프로젝트에서는 두 점수의 역할을 분리했다.\n구분 핵심 수치 사용 목적 재현 코어 Public 0.95005 파일럿 분석 근거 고정 전체 OOF 0.949873 내부 재현성 확인 Nested OOF 0.949763 선택 편향 점검 대회 최적화 Public 0.95113 별도 대회 기록 0.95113을 숨기거나 실패로 처리한 것이 아니다. 검증 조건이 다른 결과를 한 줄에 섞지 않은 것이다. 최종 발표자료에서는 0.95005를 중심에 두고 0.95113은 별도 기록으로 분리했다.\n재현 가능한 모델을 고른 과정 최종 모델을 고르는 과정은 다음 단계로 나뉘었다.\nScreen: 공통 조건에서 여러 모델을 빠르게 비교해 후보를 줄였다. Probe: 피처, 보정, 조합이 반복해서 이득을 내는지 확인했다. Confirm: 탐색에 쓰지 않은 fold나 독립 표본에서 다시 확인했다. Full OOF: 전체 690,088행의 5-fold OOF로 최종 선택했다. Public: Kaggle 점수로 외부 결과를 확인했다. 빠른 13개 모델 비교에서는 HistGradientBoosting이 0.9014로 가장 높았고 CatBoost는 0.8964였다. 하지만 quick screen은 50k 표본과 3-fold 중심의 후보 압축 단계였다. 최종 선택은 전체 데이터와 고정된 5-fold OOF에서 다시 했다.\n최종 코어의 역할은 다음과 같았다.\nCatBoost OOF 0.949408: 주력 성능 LightGBM OOF 0.922927: 다른 오류 패턴 보정 Blend fixed OOF 0.949873: 두 모델의 오류 상쇄와 클래스별 결정 보정 단독 점수가 더 낮은 LightGBM도 최종 조합에서는 가치가 있었다. 좋은 앙상블은 강한 모델만 모으는 것이 아니라 서로 다르게 틀리는 모델을 결합하는 과정이라는 점을 다시 확인했다.\n모델은 검토 후보까지만 제안한다 서비스에서 모델이 담당하는 범위는 상태 확률과 검토 우선순위까지다. 이후 결정은 기관 담당자에게 넘어간다.\n기관용 화면은 누구를 지원할 것인가를 자동 결정하는 대시보드가 아니다. 데이터 최신성, 상태 확률, 근거, 이전 검토 이력을 보고 누구를 먼저 다시 살펴볼 것인가를 정하는 화면이다.\n담당자는 다음 선택을 할 수 있어야 한다.\n승인: 지원 안내가 필요하다고 판단 수정: 모델이 놓친 맥락을 반영 보류: 정보가 부족하거나 시점이 적절하지 않음 사유 기록: 나중에 결정 과정을 감사할 수 있도록 보존 모델은 우선순위를 만들 수 있지만, 학생의 상황을 최종 판단할 수 없다. 이 책임 경계가 있어야 오분류가 곧바로 실제 개입으로 이어지는 위험을 막을 수 있다.\n리듬ON에서 참여자가 갖는 선택권 담당자의 검토가 끝나도 앱 연결은 자동으로 시작되지 않는다. 참여자는 목적과 데이터 범위를 확인한 뒤 동의, 거절, 철회를 선택한다.\n리듬ON 앱의 역할은 상태 라벨을 통보하는 것이 아니다.\n수면, 활동, 스트레스 기록을 직접 확인하고 수정한다. 센서값만으로 설명되지 않는 오늘의 맥락을 남긴다. 현재 기록과 참고 기준을 이해하기 쉽게 비교한다. 한 번에 한두 개의 작은 행동만 제안한다. 목표는 참여자가 직접 선택하고 확정한다. 이 구조에서는 입력한 건강 기록이 바로 공개되거나 자동 지원으로 연결되지 않는다. 데이터는 참여자에게 먼저 피드백을 주고, 필요한 범위에서만 담당자 검토와 후속 상담의 맥락으로 사용된다.\n8주 파일럿의 검증 게이트 현재 리듬ON은 완성된 서비스가 아니라 검증할 제안이다. 그래서 팀원들과 8주 파일럿을 기능 개발 일정이 아니라 의사결정 게이트로 설계했다.\n기간 확인할 것 실패 시 1~2주 데이터 계약, 수집 범위, 동의문 범위 재정의 또는 보류 3주 실제 개입 없는 shadow scoring 성능·drift 점검 4주 담당자 웹 검토와 사유 기록 화면·업무 흐름 수정 5~6주 동의한 소규모 참여자 앱 초대 초대 범위 축소 7~8주 KPI, 철회, 오류, 감사 로그 확대·수정·중단 결정 모델 KPI만으로는 파일럿을 평가할 수 없다.\n상태별 recall과 Balanced Accuracy calibration과 drift 보호 집단별 성능 차이 데이터 최신성과 결측 패턴 담당자 override 비율 검토 시간과 불필요한 제안 참여자의 동의, 거절, 철회 결정과 변경의 감사 로그 정확도가 높아도 공정성, 동의, 보안, 운영 시간이 기준을 통과하지 못하면 확대하지 않는다.\n확대보다 중단 조건이 먼저다 이 프로젝트가 최종적으로 제안한 것은 전면 출시가 아니다. 담당자 검토형 소규모 파일럿이다.\nGo 조건\n같은 조건에서 재현 코어를 다시 확인한다. 담당자가 승인·수정·보류 사유를 기록한다. 참여자의 명시적 동의와 철회를 보장한다. 모든 결정과 변경을 감사할 수 있다. 성능, 공정성, 검토 시간 KPI가 함께 통과한다. No-go 조건\n모델 결과를 의료 진단처럼 사용한다. 점수만으로 지원 대상을 자동 배정한다. 동의 없이 앱이나 정보를 연결한다. 보안 또는 개인정보 보호 기준을 위반한다. 특정 집단의 성능 저하를 설명하거나 줄이지 못한다. 팀 프로젝트의 결론은 정확도가 높으니 출시한다가 아니었다. 분류 가능성은 확인했으니, 이제 사람을 실제로 도울 수 있는지 작은 범위에서 검증한다는 것이었다.\n총평 재현 가능한 모델을 고르는 일과 책임 있는 서비스를 설계하는 일은 따로 떨어져 있지 않았다. 다시 만들 수 없는 높은 점수는 제품 근거가 되기 어렵고, 사람의 검토와 참여자의 선택이 없는 정확한 모델은 안전한 지원 흐름이 되기 어렵다.\n팀원들과 함께 선택한 것은 0.95005라는 숫자 하나가 아니라, 그 숫자를 같은 조건에서 다시 확인하고 필요하면 멈출 수 있는 파일럿 구조였다.\n시리즈 이동: 12편 - 팀 프로젝트 최종 발표자료 | 14편 - 팀 프로젝트 회고와 데이터 접근법\n",
+  "wordCount" : "751",
+  "inLanguage": "en",
+  "datePublished": "2026-07-17T00:00:00Z",
+  "dateModified": "2026-07-17T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/projects/2026-07-17-kaggle-playground-s6e7-13-rhythmon-model-and-pilot/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Kaggle Playground S6E7 팀 프로젝트 - 13. 재현 모델과 리듬ON 파일럿 설계
+    </h1>
+    <div class="post-description">
+      팀 프로젝트에서 최고 표시점수와 재현 가능한 모델을 분리하고, 담당자 검토와 참여자 동의를 포함한 리듬ON 파일럿을 설계한 과정.
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-17 00:00:00 +0000 UTC'>2026년 7월 17일</span>&nbsp;·&nbsp;<span>4 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><blockquote>
+<p>팀 프로젝트의 최종 선택은 가장 높은 표시점수를 제품에 붙이는 것이 아니었다. 다시 실행할 수 있는 분석 코어와 사람이 책임지는 운영 흐름을 함께 선택하는 일이었다.</p>
+</blockquote>
+<h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li><a href="#%EC%B5%9C%EA%B3%A0%EC%A0%90%EA%B3%BC-%EC%A0%9C%ED%92%88-%EA%B7%BC%EA%B1%B0%EB%A5%BC-%EB%B6%84%EB%A6%AC%ED%95%98%EB%8B%A4">최고점과 제품 근거를 분리하다</a></li>
+<li><a href="#%EC%9E%AC%ED%98%84-%EA%B0%80%EB%8A%A5%ED%95%9C-%EB%AA%A8%EB%8D%B8%EC%9D%84-%EA%B3%A0%EB%A5%B8-%EA%B3%BC%EC%A0%95">재현 가능한 모델을 고른 과정</a></li>
+<li><a href="#%EB%AA%A8%EB%8D%B8%EC%9D%80-%EA%B2%80%ED%86%A0-%ED%9B%84%EB%B3%B4%EA%B9%8C%EC%A7%80%EB%A7%8C-%EC%A0%9C%EC%95%88%ED%95%9C%EB%8B%A4">모델은 검토 후보까지만 제안한다</a></li>
+<li><a href="#%EB%A6%AC%EB%93%ACon%EC%97%90%EC%84%9C-%EC%B0%B8%EC%97%AC%EC%9E%90%EA%B0%80-%EA%B0%96%EB%8A%94-%EC%84%A0%ED%83%9D%EA%B6%8C">리듬ON에서 참여자가 갖는 선택권</a></li>
+<li><a href="#8%EC%A3%BC-%ED%8C%8C%EC%9D%BC%EB%9F%BF%EC%9D%98-%EA%B2%80%EC%A6%9D-%EA%B2%8C%EC%9D%B4%ED%8A%B8">8주 파일럿의 검증 게이트</a></li>
+<li><a href="#%ED%99%95%EB%8C%80%EB%B3%B4%EB%8B%A4-%EC%A4%91%EB%8B%A8-%EC%A1%B0%EA%B1%B4%EC%9D%B4-%EB%A8%BC%EC%A0%80%EB%8B%A4">확대보다 중단 조건이 먼저다</a></li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="최고점과-제품-근거를-분리하다">최고점과 제품 근거를 분리하다<a hidden class="anchor" aria-hidden="true" href="#최고점과-제품-근거를-분리하다">#</a></h2>
+<p>개인 실험에서 Public 최고점은 <code>0.95113</code>이었다. 그러나 이 점수는 외부 anchor에 특정 행을 수정해 만든 대회 최적화 결과였다. 성과로는 남길 수 있지만, 같은 학습 파이프라인을 다시 실행해 얻는 모델은 아니었다.</p>
+<p>팀 프로젝트에서는 두 점수의 역할을 분리했다.</p>
+<table>
+	<thead>
+			<tr>
+					<th>구분</th>
+					<th style="text-align: right">핵심 수치</th>
+					<th>사용 목적</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>재현 코어</td>
+					<td style="text-align: right">Public <code>0.95005</code></td>
+					<td>파일럿 분석 근거</td>
+			</tr>
+			<tr>
+					<td>고정 전체 OOF</td>
+					<td style="text-align: right"><code>0.949873</code></td>
+					<td>내부 재현성 확인</td>
+			</tr>
+			<tr>
+					<td>Nested OOF</td>
+					<td style="text-align: right"><code>0.949763</code></td>
+					<td>선택 편향 점검</td>
+			</tr>
+			<tr>
+					<td>대회 최적화</td>
+					<td style="text-align: right">Public <code>0.95113</code></td>
+					<td>별도 대회 기록</td>
+			</tr>
+	</tbody>
+</table>
+<p><code>0.95113</code>을 숨기거나 실패로 처리한 것이 아니다. 검증 조건이 다른 결과를 한 줄에 섞지 않은 것이다. 최종 발표자료에서는 <code>0.95005</code>를 중심에 두고 <code>0.95113</code>은 별도 기록으로 분리했다.</p>
+<h2 id="재현-가능한-모델을-고른-과정">재현 가능한 모델을 고른 과정<a hidden class="anchor" aria-hidden="true" href="#재현-가능한-모델을-고른-과정">#</a></h2>
+<p><img alt="재현 가능한 모델 선택 흐름" loading="lazy" src="/images/projects/sixon-rhythmon-team-final/03-reproducible-model-pipeline.png"></p>
+<p>최종 모델을 고르는 과정은 다음 단계로 나뉘었다.</p>
+<ol>
+<li><strong>Screen</strong>: 공통 조건에서 여러 모델을 빠르게 비교해 후보를 줄였다.</li>
+<li><strong>Probe</strong>: 피처, 보정, 조합이 반복해서 이득을 내는지 확인했다.</li>
+<li><strong>Confirm</strong>: 탐색에 쓰지 않은 fold나 독립 표본에서 다시 확인했다.</li>
+<li><strong>Full OOF</strong>: 전체 690,088행의 5-fold OOF로 최종 선택했다.</li>
+<li><strong>Public</strong>: Kaggle 점수로 외부 결과를 확인했다.</li>
+</ol>
+<p>빠른 13개 모델 비교에서는 HistGradientBoosting이 <code>0.9014</code>로 가장 높았고 CatBoost는 <code>0.8964</code>였다. 하지만 quick screen은 50k 표본과 3-fold 중심의 후보 압축 단계였다. 최종 선택은 전체 데이터와 고정된 5-fold OOF에서 다시 했다.</p>
+<p>최종 코어의 역할은 다음과 같았다.</p>
+<ul>
+<li>CatBoost OOF <code>0.949408</code>: 주력 성능</li>
+<li>LightGBM OOF <code>0.922927</code>: 다른 오류 패턴</li>
+<li>보정 Blend fixed OOF <code>0.949873</code>: 두 모델의 오류 상쇄와 클래스별 결정 보정</li>
+</ul>
+<p>단독 점수가 더 낮은 LightGBM도 최종 조합에서는 가치가 있었다. 좋은 앙상블은 강한 모델만 모으는 것이 아니라 <strong>서로 다르게 틀리는 모델을 결합하는 과정</strong>이라는 점을 다시 확인했다.</p>
+<h2 id="모델은-검토-후보까지만-제안한다">모델은 검토 후보까지만 제안한다<a hidden class="anchor" aria-hidden="true" href="#모델은-검토-후보까지만-제안한다">#</a></h2>
+<p>서비스에서 모델이 담당하는 범위는 상태 확률과 검토 우선순위까지다. 이후 결정은 기관 담당자에게 넘어간다.</p>
+<p>기관용 화면은 <code>누구를 지원할 것인가</code>를 자동 결정하는 대시보드가 아니다. 데이터 최신성, 상태 확률, 근거, 이전 검토 이력을 보고 <strong>누구를 먼저 다시 살펴볼 것인가</strong>를 정하는 화면이다.</p>
+<p>담당자는 다음 선택을 할 수 있어야 한다.</p>
+<ul>
+<li>승인: 지원 안내가 필요하다고 판단</li>
+<li>수정: 모델이 놓친 맥락을 반영</li>
+<li>보류: 정보가 부족하거나 시점이 적절하지 않음</li>
+<li>사유 기록: 나중에 결정 과정을 감사할 수 있도록 보존</li>
+</ul>
+<p>모델은 우선순위를 만들 수 있지만, 학생의 상황을 최종 판단할 수 없다. 이 책임 경계가 있어야 오분류가 곧바로 실제 개입으로 이어지는 위험을 막을 수 있다.</p>
+<h2 id="리듬on에서-참여자가-갖는-선택권">리듬ON에서 참여자가 갖는 선택권<a hidden class="anchor" aria-hidden="true" href="#리듬on에서-참여자가-갖는-선택권">#</a></h2>
+<p><img alt="참여자 중심 리듬ON 흐름" loading="lazy" src="/images/projects/sixon-rhythmon-team-final/04-rhythmon-participant-flow.png"></p>
+<p>담당자의 검토가 끝나도 앱 연결은 자동으로 시작되지 않는다. 참여자는 목적과 데이터 범위를 확인한 뒤 동의, 거절, 철회를 선택한다.</p>
+<p>리듬ON 앱의 역할은 상태 라벨을 통보하는 것이 아니다.</p>
+<ul>
+<li>수면, 활동, 스트레스 기록을 직접 확인하고 수정한다.</li>
+<li>센서값만으로 설명되지 않는 오늘의 맥락을 남긴다.</li>
+<li>현재 기록과 참고 기준을 이해하기 쉽게 비교한다.</li>
+<li>한 번에 한두 개의 작은 행동만 제안한다.</li>
+<li>목표는 참여자가 직접 선택하고 확정한다.</li>
+</ul>
+<p>이 구조에서는 입력한 건강 기록이 바로 공개되거나 자동 지원으로 연결되지 않는다. 데이터는 참여자에게 먼저 피드백을 주고, 필요한 범위에서만 담당자 검토와 후속 상담의 맥락으로 사용된다.</p>
+<h2 id="8주-파일럿의-검증-게이트">8주 파일럿의 검증 게이트<a hidden class="anchor" aria-hidden="true" href="#8주-파일럿의-검증-게이트">#</a></h2>
+<p><img alt="파일럿 성공 기준" loading="lazy" src="/images/projects/sixon-rhythmon-team-final/05-pilot-kpi.png"></p>
+<p>현재 리듬ON은 완성된 서비스가 아니라 검증할 제안이다. 그래서 팀원들과 8주 파일럿을 기능 개발 일정이 아니라 <strong>의사결정 게이트</strong>로 설계했다.</p>
+<table>
+	<thead>
+			<tr>
+					<th>기간</th>
+					<th>확인할 것</th>
+					<th>실패 시</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>1~2주</td>
+					<td>데이터 계약, 수집 범위, 동의문</td>
+					<td>범위 재정의 또는 보류</td>
+			</tr>
+			<tr>
+					<td>3주</td>
+					<td>실제 개입 없는 shadow scoring</td>
+					<td>성능·drift 점검</td>
+			</tr>
+			<tr>
+					<td>4주</td>
+					<td>담당자 웹 검토와 사유 기록</td>
+					<td>화면·업무 흐름 수정</td>
+			</tr>
+			<tr>
+					<td>5~6주</td>
+					<td>동의한 소규모 참여자 앱 초대</td>
+					<td>초대 범위 축소</td>
+			</tr>
+			<tr>
+					<td>7~8주</td>
+					<td>KPI, 철회, 오류, 감사 로그</td>
+					<td>확대·수정·중단 결정</td>
+			</tr>
+	</tbody>
+</table>
+<p>모델 KPI만으로는 파일럿을 평가할 수 없다.</p>
+<ul>
+<li>상태별 recall과 Balanced Accuracy</li>
+<li>calibration과 drift</li>
+<li>보호 집단별 성능 차이</li>
+<li>데이터 최신성과 결측 패턴</li>
+<li>담당자 override 비율</li>
+<li>검토 시간과 불필요한 제안</li>
+<li>참여자의 동의, 거절, 철회</li>
+<li>결정과 변경의 감사 로그</li>
+</ul>
+<p>정확도가 높아도 공정성, 동의, 보안, 운영 시간이 기준을 통과하지 못하면 확대하지 않는다.</p>
+<h2 id="확대보다-중단-조건이-먼저다">확대보다 중단 조건이 먼저다<a hidden class="anchor" aria-hidden="true" href="#확대보다-중단-조건이-먼저다">#</a></h2>
+<p><img alt="파일럿 Go/No-go 기준" loading="lazy" src="/images/projects/sixon-rhythmon-team-final/06-pilot-go-no-go.png"></p>
+<p>이 프로젝트가 최종적으로 제안한 것은 전면 출시가 아니다. 담당자 검토형 소규모 파일럿이다.</p>
+<p><strong>Go 조건</strong></p>
+<ul>
+<li>같은 조건에서 재현 코어를 다시 확인한다.</li>
+<li>담당자가 승인·수정·보류 사유를 기록한다.</li>
+<li>참여자의 명시적 동의와 철회를 보장한다.</li>
+<li>모든 결정과 변경을 감사할 수 있다.</li>
+<li>성능, 공정성, 검토 시간 KPI가 함께 통과한다.</li>
+</ul>
+<p><strong>No-go 조건</strong></p>
+<ul>
+<li>모델 결과를 의료 진단처럼 사용한다.</li>
+<li>점수만으로 지원 대상을 자동 배정한다.</li>
+<li>동의 없이 앱이나 정보를 연결한다.</li>
+<li>보안 또는 개인정보 보호 기준을 위반한다.</li>
+<li>특정 집단의 성능 저하를 설명하거나 줄이지 못한다.</li>
+</ul>
+<p>팀 프로젝트의 결론은 <code>정확도가 높으니 출시한다</code>가 아니었다. <strong>분류 가능성은 확인했으니, 이제 사람을 실제로 도울 수 있는지 작은 범위에서 검증한다</strong>는 것이었다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<p>재현 가능한 모델을 고르는 일과 책임 있는 서비스를 설계하는 일은 따로 떨어져 있지 않았다. 다시 만들 수 없는 높은 점수는 제품 근거가 되기 어렵고, 사람의 검토와 참여자의 선택이 없는 정확한 모델은 안전한 지원 흐름이 되기 어렵다.</p>
+<p>팀원들과 함께 선택한 것은 <code>0.95005</code>라는 숫자 하나가 아니라, 그 숫자를 같은 조건에서 다시 확인하고 필요하면 멈출 수 있는 파일럿 구조였다.</p>
+<blockquote>
+<p>시리즈 이동: <a href="/projects/2026-07-17-kaggle-playground-s6e7-12-team-project-final-presentation/">12편 - 팀 프로젝트 최종 발표자료</a> | <a href="/projects/2026-07-17-kaggle-playground-s6e7-14-team-retrospective-and-data-approach/">14편 - 팀 프로젝트 회고와 데이터 접근법</a></p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/kaggle/">Kaggle</a></li>
+      <li><a href="https://Han-think.github.io/tags/team-project/">Team-Project</a></li>
+      <li><a href="https://Han-think.github.io/tags/catboost/">Catboost</a></li>
+      <li><a href="https://Han-think.github.io/tags/lightgbm/">Lightgbm</a></li>
+      <li><a href="https://Han-think.github.io/tags/oof/">Oof</a></li>
+      <li><a href="https://Han-think.github.io/tags/human-in-the-loop/">Human-in-the-Loop</a></li>
+      <li><a href="https://Han-think.github.io/tags/pilot/">Pilot</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

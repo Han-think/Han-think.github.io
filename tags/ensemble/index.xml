@@ -1,1 +1,26 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Ensemble on Han-think Blog</title><link>https://Han-think.github.io/tags/ensemble/</link><description>Recent content in Ensemble on Han-think Blog</description><generator>Hugo</generator><language>ko-KR</language><lastBuildDate>Mon, 20 Jul 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://Han-think.github.io/tags/ensemble/index.xml" rel="self" type="application/rss+xml"/><item><title>0.88188에서 0.95005까지, Kaggle 예측 모델을 리듬ON 서비스 제안으로 연결한 기록</title><link>https://Han-think.github.io/learning/2026-07-20-pm-kaggle-s6e7-rhythmon-project-retrospective/</link><pubDate>Mon, 20 Jul 2026 00:00:00 +0000</pubDate><guid>https://Han-think.github.io/learning/2026-07-20-pm-kaggle-s6e7-rhythmon-project-retrospective/</guid><description>Kaggle Playground S6E7에서 데이터 오류 수정, OOF 검증, 클래스 보정, 앙상블, 피처 엔지니어링을 거쳐 재현 가능한 0.95005 모델과 사람 중심 건강지원 서비스 리듬ON을 설계한 전체 프로젝트 회고</description></item><item><title>Kaggle Playground S6E7 개인 도전 회고 - 3. 앙상블: CatBoost 블렌드와 스태킹, 그리고 XGBoost 기각</title><link>https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-03-ensemble/</link><pubDate>Sun, 12 Jul 2026 00:00:00 +0000</pubDate><guid>https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-03-ensemble/</guid><description>확률 보정만으로는 개선폭이 줄어들 때, 새로운 모델을 더해 진짜 새로운 정보를 늘린 과정.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Ensemble on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/ensemble/</link>
+    <description>Recent content in Ensemble on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Mon, 20 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/ensemble/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>0.88188에서 0.95005까지, Kaggle 예측 모델을 리듬ON 서비스 제안으로 연결한 기록</title>
+      <link>https://Han-think.github.io/projects/2026-07-20-kaggle-s6e7-rhythmon-project-retrospective/</link>
+      <pubDate>Mon, 20 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/2026-07-20-kaggle-s6e7-rhythmon-project-retrospective/</guid>
+      <description>Kaggle Playground S6E7에서 데이터 오류 수정, OOF 검증, 클래스 보정, 앙상블, 피처 엔지니어링을 거쳐 재현 가능한 0.95005 모델과 사람 중심 건강지원 서비스 리듬ON을 설계한 전체 프로젝트 회고</description>
+    </item>
+    <item>
+      <title>Kaggle Playground S6E7 개인 도전 회고 - 3. 앙상블: CatBoost 블렌드와 스태킹, 그리고 XGBoost 기각</title>
+      <link>https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-03-ensemble/</link>
+      <pubDate>Sun, 12 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-03-ensemble/</guid>
+      <description>확률 보정만으로는 개선폭이 줄어들 때, 새로운 모델을 더해 진짜 새로운 정보를 늘린 과정.</description>
+    </item>
+  </channel>
+</rss>

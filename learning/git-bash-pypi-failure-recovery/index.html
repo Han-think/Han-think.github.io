@@ -1,45 +1,427 @@
-<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>git-bash-pypi-failure-recovery | Han-think Blog</title><meta name=keywords content><meta name=description content="git-bash-pypi-failure-recovery 학습 정리"><meta name=author content><link rel=canonical href=https://Han-think.github.io/learning/git-bash-pypi-failure-recovery/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/learning/git-bash-pypi-failure-recovery/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/learning/git-bash-pypi-failure-recovery/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="git-bash-pypi-failure-recovery"><meta property="og:description" content="git-bash-pypi-failure-recovery 학습 정리"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="learning"><meta property="article:published_time" content="2026-06-08T00:00:00+00:00"><meta property="article:modified_time" content="2026-06-08T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="git-bash-pypi-failure-recovery"><meta name=twitter:description content="git-bash-pypi-failure-recovery 학습 정리"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"학습 기록","item":"https://Han-think.github.io/learning/"},{"@type":"ListItem","position":2,"name":"git-bash-pypi-failure-recovery","item":"https://Han-think.github.io/learning/git-bash-pypi-failure-recovery/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"git-bash-pypi-failure-recovery","name":"git-bash-pypi-failure-recovery","description":"git-bash-pypi-failure-recovery 학습 정리","keywords":[],"articleBody":"목차 명령어 환경 구분 환경 변수 설정 토큰 관리 트러블슈팅 기법 총평 1. 명령어 환경 구분 왜 이걸 보게 됐나 Git Bash와 PowerShell의 명령어 차이와 환경 설정의 복잡성으로 인해 발생하는 혼란을 이해하고 해결하는 방법을 학습자에게 제공하기 위함입니다.\n내가 헷갈린 지점 학습자들이 Git Bash와 PowerShell 간의 명령어 호환성 문제와 환경 변수 설정 방법의 차이로 인해 겪는 혼란을 명확히 파악하고 극복하는 데 어려움을 겪고 있습니다. 특히 토큰 관리와 관련된 세부 사항에서 오류가 발생하는 경우가 많습니다.\n시도한 코드 / 예시 # Git Bash에서 PowerShell 명령어 오류 수정 예시 # PowerShell의 Remove-Item 대신 Git Bash에서 사용 가능한 명령어 rm -rf directory_to_remove # 환경 변수 설정 예시 (Git Bash) export MY_VARIABLE=value # PowerShell과 비교하여 Git Bash에서의 설정 방법 이해 # PowerShell: # $env:MY_VARIABLE = 'value' 결과와 해석 학습자는 Git Bash와 PowerShell 간의 명령어 호환성 문제를 인식하고, 각 환경에 맞는 정확한 명령어와 환경 변수 설정 방법을 적용함으로써 혼란을 줄일 수 있습니다. 토큰 관리에 대한 이해도 향상으로 PyPI 업로드 과정에서의 오류가 감소합니다.\n정리된 이해 이 항목들은 Git Bash 사용자들이 PowerShell과의 명령어 환경 차이를 이해하고, 효과적인 환경 변수 설정 방법을 배우며, 특히 PyPI 토큰 관리에 대한 명확한 지침을 제공하여 트러블슈팅 능력을 향상시키는 데 초점을 맞춥니다.\n2. 환경 변수 설정 왜 이걸 보게 됐나 환경 변수 설정의 차이를 이해하는 것은 Git Bash와 다른 쉘 환경에서 일관된 설정 관리를 위해 필수적입니다. 특히, \u003e의 역할 차이로 인한 혼동은 명령어 실행에 직접적인 영향을 미칩니다.\n내가 헷갈린 지점 Git Bash에서 \u003e가 단순히 입력 완료를 의미하는 것이 아니라 계속 입력을 기다리는 상태라는 점이 혼란스러웠습니다. 또한, 환경 변수 설정 방법의 차이로 인해 설정 과정에서 오류가 발생했습니다.\n시도한 코드 / 예시 # Git Bash에서 환경 변수 설정 예시 export MY_VARIABLE=value # 확인 명령어 echo $MY_VARIABLE # 출력: value 결과와 해석 환경 변수 MY_VARIABLE이 성공적으로 설정되고 출력됩니다. \u003e 이후에 명령어를 입력하지 않아도 변수 설정은 완료됩니다.\n# 잘못된 사용 예시 \u003e echo '설정 오류' # 결과: 계속 입력을 요구하는 상태 유지 정리된 이해 Git Bash에서 환경 변수를 설정할 때는 export 명령어를 사용하고, \u003e는 단순히 입력 완료를 의미하는 것이 아니라 추가 입력을 기다리는 상태임을 이해해야 합니다. 이를 통해 명령어 실행 오류를 방지하고 일관된 환경 설정을 유지할 수 있습니다.\n3. 토큰 관리 왜 이걸 보게 됐나 토큰 관리의 중요성과 혼동 해결 방법을 이해하여 PyPI 배포 과정에서의 효율성을 높이기 위함\n내가 헷갈린 지점 PyPI 토큰의 이름 설정과 실제 값 입력 과정에서의 혼동으로 인해 패키지 업로드 실패 경험\n시도한 코드 / 예시 # 토큰 변수 설정 예시 import os # 환경 변수 설정 (실제 값은 사용자 정의) os.environ['PYPI_TOKEN'] = 'your_actual_token_here' # 토큰 사용 예시 (예: requests 라이브러리를 이용한 업로드) import requests response = requests.post('https://upload.pypi.org/legacy/', files={'file': open('your_package_file', 'rb')}, auth=('', os.environ['PYPI_TOKEN'])) print(response.status_code) 결과와 해석 위 코드 실행 시, 토큰이 올바르게 설정되어 PyPI 서버에 패키지 업로드 요청이 성공적으로 처리되면 HTTP 상태 코드 200 또는 관련 성공 코드가 출력됨\n정리된 이해 토큰 관리에서의 혼란을 줄이기 위해 환경 변수를 활용한 토큰 설정 방법을 소개하고, 실제 PyPI 패키지 업로드 과정에서 토큰을 올바르게 적용하는 파이썬 코드 예시를 제공함으로써 초보자도 쉽게 이해하고 적용할 수 있도록 함\n4. 트러블슈팅 기법 왜 이걸 보게 됐나 명령어 환경의 차이로 인해 예상치 못한 결과가 발생하여 프로젝트 진행에 차질이 생겼습니다. 특히 Git Bash와 PowerShell 간의 명령어 사용법 차이를 명확히 이해하지 못한 것이 주요 원인이었습니다.\n내가 헷갈린 지점 Git Bash에서 PowerShell 명령어를 그대로 사용하려다 오류가 발생했고, 환경 변수 설정 방식의 차이로 인해 설정 과정에서 시간을 많이 소비했습니다. 특히 \u003e 기호의 역할에 대한 오해로 인해 명령어 입력이 중단되는 문제를 겪었습니다.\n시도한 코드 / 예시 # 잘못된 명령어 사용 예시 cat README.md | xargs rm -rf # README 내용을 잘못 해석하여 명령어 실행 # 수정된 명령어 예시 rm -rf README_temp # 명확한 명령어 입력으로 문제 해결 결과와 해석 명령어 사용을 정확히 이해하고 수정한 후, 터미널에서 예상대로 파일을 삭제할 수 있게 되었습니다. 환경 변수 설정도 올바르게 적용되어 Git Bash 환경에서도 원활하게 동작하기 시작했습니다.\n정리된 이해 Git Bash와 다른 쉘 환경 간의 명령어 차이를 인지하고, 특히 \u003e 기호의 역할과 환경 변수 설정 방법을 정확히 이해함으로써 트러블슈팅에 성공했습니다. 이러한 경험을 바탕으로 향후 작업에서 더 효율적으로 문제를 해결할 수 있을 것으로 기대됩니다.\n총평 오늘 전체에서 배운 것 Git Bash와 PowerShell 명령어의 차이와 환경 변수 설정 방법을 이해하고, PyPI 배포 시 토큰 관리의 중요성을 깨달았다. 특히 \u003e 기호의 역할과 명령어 입력 시 주의사항을 배웠다.\n다음에 조심할 것 명령어 환경에 따른 차이를 인지하고, 환경 변수 설정 시 각 쉘의 특성을 고려해야 한다. PyPI 토큰 사용 시 이름과 값의 구분 오류를 주의해야 한다.\n다음 복습 주제 실습을 통해 명령어 혼동과 토큰 입력 오류를 직접 해결하며 실무 능력을 향상시켰다. 초보자에게는 명령어 환경 구분과 토큰 관리에 대한 명확한 이해가 필수적임을 확인했다.\n","wordCount":"724","inLanguage":"en","datePublished":"2026-06-08T00:00:00Z","dateModified":"2026-06-08T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/learning/git-bash-pypi-failure-recovery/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
-<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">git-bash-pypi-failure-recovery</h1><div class=post-description>git-bash-pypi-failure-recovery 학습 정리</div><div class=post-meta><span title='2026-06-08 00:00:00 +0000 UTC'>2026년 6월 8일</span>&nbsp;·&nbsp;<span>4 min</span></div></header><div class="post-content md-content"><h2 id=목차>목차<a hidden class=anchor aria-hidden=true href=#목차>#</a></h2><ul><li><ol><li><a href=#1-%EB%AA%85%EB%A0%B9%EC%96%B4-%ED%99%98%EA%B2%BD-%EA%B5%AC%EB%B6%84>명령어 환경 구분</a></li></ol></li><li><ol start=2><li><a href=#2-%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98-%EC%84%A4%EC%A0%95>환경 변수 설정</a></li></ol></li><li><ol start=3><li><a href=#3-%ED%86%A0%ED%81%B0-%EA%B4%80%EB%A6%AC>토큰 관리</a></li></ol></li><li><ol start=4><li><a href=#4-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85-%EA%B8%B0%EB%B2%95>트러블슈팅 기법</a></li></ol></li><li><a href=#%EC%B4%9D%ED%8F%89>총평</a></li></ul><h2 id=1-명령어-환경-구분>1. 명령어 환경 구분<a hidden class=anchor aria-hidden=true href=#1-명령어-환경-구분>#</a></h2><h3 id=왜-이걸-보게-됐나>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나>#</a></h3><p>Git Bash와 PowerShell의 명령어 차이와 환경 설정의 복잡성으로 인해 발생하는 혼란을 이해하고 해결하는 방법을 학습자에게 제공하기 위함입니다.</p><h3 id=내가-헷갈린-지점>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점>#</a></h3><p>학습자들이 Git Bash와 PowerShell 간의 명령어 호환성 문제와 환경 변수 설정 방법의 차이로 인해 겪는 혼란을 명확히 파악하고 극복하는 데 어려움을 겪고 있습니다. 특히 토큰 관리와 관련된 세부 사항에서 오류가 발생하는 경우가 많습니다.</p><h3 id=시도한-코드--예시>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Git Bash에서 PowerShell 명령어 오류 수정 예시</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># PowerShell의 Remove-Item 대신 Git Bash에서 사용 가능한 명령어</span>
-</span></span><span style=display:flex><span>rm -rf directory_to_remove
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 환경 변수 설정 예시 (Git Bash)</span>
-</span></span><span style=display:flex><span>export MY_VARIABLE<span style=color:#f92672>=</span>value
-</span></span><span style=display:flex><span><span style=color:#75715e># PowerShell과 비교하여 Git Bash에서의 설정 방법 이해</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># PowerShell:</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># $env:MY_VARIABLE = &#39;value&#39;</span>
-</span></span></code></pre></div><h3 id=결과와-해석>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석>#</a></h3><p>학습자는 Git Bash와 PowerShell 간의 명령어 호환성 문제를 인식하고, 각 환경에 맞는 정확한 명령어와 환경 변수 설정 방법을 적용함으로써 혼란을 줄일 수 있습니다. 토큰 관리에 대한 이해도 향상으로 PyPI 업로드 과정에서의 오류가 감소합니다.</p><h3 id=정리된-이해>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해>#</a></h3><p>이 항목들은 Git Bash 사용자들이 PowerShell과의 명령어 환경 차이를 이해하고, 효과적인 환경 변수 설정 방법을 배우며, 특히 PyPI 토큰 관리에 대한 명확한 지침을 제공하여 트러블슈팅 능력을 향상시키는 데 초점을 맞춥니다.</p><h2 id=2-환경-변수-설정>2. 환경 변수 설정<a hidden class=anchor aria-hidden=true href=#2-환경-변수-설정>#</a></h2><h3 id=왜-이걸-보게-됐나-1>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-1>#</a></h3><p>환경 변수 설정의 차이를 이해하는 것은 Git Bash와 다른 쉘 환경에서 일관된 설정 관리를 위해 필수적입니다. 특히, <code>></code>의 역할 차이로 인한 혼동은 명령어 실행에 직접적인 영향을 미칩니다.</p><h3 id=내가-헷갈린-지점-1>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-1>#</a></h3><p>Git Bash에서 <code>></code>가 단순히 입력 완료를 의미하는 것이 아니라 계속 입력을 기다리는 상태라는 점이 혼란스러웠습니다. 또한, 환경 변수 설정 방법의 차이로 인해 설정 과정에서 오류가 발생했습니다.</p><h3 id=시도한-코드--예시-1>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-1>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Git Bash에서 환경 변수 설정 예시</span>
-</span></span><span style=display:flex><span>export MY_VARIABLE<span style=color:#f92672>=</span>value
-</span></span><span style=display:flex><span><span style=color:#75715e># 확인 명령어</span>
-</span></span><span style=display:flex><span>echo $MY_VARIABLE  <span style=color:#75715e># 출력: value</span>
-</span></span></code></pre></div><h3 id=결과와-해석-1>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-1>#</a></h3><p>환경 변수 <code>MY_VARIABLE</code>이 성공적으로 설정되고 출력됩니다. <code>></code> 이후에 명령어를 입력하지 않아도 변수 설정은 완료됩니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 잘못된 사용 예시</span>
-</span></span><span style=display:flex><span>&gt; echo <span style=color:#e6db74>&#39;설정 오류&#39;</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 결과: 계속 입력을 요구하는 상태 유지</span>
-</span></span></code></pre></div><h3 id=정리된-이해-1>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-1>#</a></h3><p>Git Bash에서 환경 변수를 설정할 때는 <code>export</code> 명령어를 사용하고, <code>></code>는 단순히 입력 완료를 의미하는 것이 아니라 추가 입력을 기다리는 상태임을 이해해야 합니다. 이를 통해 명령어 실행 오류를 방지하고 일관된 환경 설정을 유지할 수 있습니다.</p><h2 id=3-토큰-관리>3. 토큰 관리<a hidden class=anchor aria-hidden=true href=#3-토큰-관리>#</a></h2><h3 id=왜-이걸-보게-됐나-2>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-2>#</a></h3><p>토큰 관리의 중요성과 혼동 해결 방법을 이해하여 PyPI 배포 과정에서의 효율성을 높이기 위함</p><h3 id=내가-헷갈린-지점-2>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-2>#</a></h3><p>PyPI 토큰의 이름 설정과 실제 값 입력 과정에서의 혼동으로 인해 패키지 업로드 실패 경험</p><h3 id=시도한-코드--예시-2>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-2>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># 토큰 변수 설정 예시</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> os
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 환경 변수 설정 (실제 값은 사용자 정의)</span>
-</span></span><span style=display:flex><span>os<span style=color:#f92672>.</span>environ[<span style=color:#e6db74>&#39;PYPI_TOKEN&#39;</span>] <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;your_actual_token_here&#39;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 토큰 사용 예시 (예: requests 라이브러리를 이용한 업로드)</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> requests
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>response <span style=color:#f92672>=</span> requests<span style=color:#f92672>.</span>post(<span style=color:#e6db74>&#39;https://upload.pypi.org/legacy/&#39;</span>,
-</span></span><span style=display:flex><span>                     files<span style=color:#f92672>=</span>{<span style=color:#e6db74>&#39;file&#39;</span>: open(<span style=color:#e6db74>&#39;your_package_file&#39;</span>, <span style=color:#e6db74>&#39;rb&#39;</span>)},
-</span></span><span style=display:flex><span>                     auth<span style=color:#f92672>=</span>(<span style=color:#e6db74>&#39;&#39;</span>, os<span style=color:#f92672>.</span>environ[<span style=color:#e6db74>&#39;PYPI_TOKEN&#39;</span>]))
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>print(response<span style=color:#f92672>.</span>status_code)
-</span></span></code></pre></div><h3 id=결과와-해석-2>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-2>#</a></h3><p>위 코드 실행 시, 토큰이 올바르게 설정되어 PyPI 서버에 패키지 업로드 요청이 성공적으로 처리되면 HTTP 상태 코드 200 또는 관련 성공 코드가 출력됨</p><h3 id=정리된-이해-2>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-2>#</a></h3><p>토큰 관리에서의 혼란을 줄이기 위해 환경 변수를 활용한 토큰 설정 방법을 소개하고, 실제 PyPI 패키지 업로드 과정에서 토큰을 올바르게 적용하는 파이썬 코드 예시를 제공함으로써 초보자도 쉽게 이해하고 적용할 수 있도록 함</p><h2 id=4-트러블슈팅-기법>4. 트러블슈팅 기법<a hidden class=anchor aria-hidden=true href=#4-트러블슈팅-기법>#</a></h2><h3 id=왜-이걸-보게-됐나-3>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-3>#</a></h3><p>명령어 환경의 차이로 인해 예상치 못한 결과가 발생하여 프로젝트 진행에 차질이 생겼습니다. 특히 Git Bash와 PowerShell 간의 명령어 사용법 차이를 명확히 이해하지 못한 것이 주요 원인이었습니다.</p><h3 id=내가-헷갈린-지점-3>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-3>#</a></h3><p>Git Bash에서 PowerShell 명령어를 그대로 사용하려다 오류가 발생했고, 환경 변수 설정 방식의 차이로 인해 설정 과정에서 시간을 많이 소비했습니다. 특히 <code>></code> 기호의 역할에 대한 오해로 인해 명령어 입력이 중단되는 문제를 겪었습니다.</p><h3 id=시도한-코드--예시-3>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-3>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 잘못된 명령어 사용 예시</span>
-</span></span><span style=display:flex><span>cat README.md | xargs rm -rf  <span style=color:#75715e># README 내용을 잘못 해석하여 명령어 실행</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 수정된 명령어 예시</span>
-</span></span><span style=display:flex><span>rm -rf README_temp  <span style=color:#75715e># 명확한 명령어 입력으로 문제 해결</span>
-</span></span></code></pre></div><h3 id=결과와-해석-3>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-3>#</a></h3><p>명령어 사용을 정확히 이해하고 수정한 후, 터미널에서 예상대로 파일을 삭제할 수 있게 되었습니다. 환경 변수 설정도 올바르게 적용되어 Git Bash 환경에서도 원활하게 동작하기 시작했습니다.</p><h3 id=정리된-이해-3>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-3>#</a></h3><p>Git Bash와 다른 쉘 환경 간의 명령어 차이를 인지하고, 특히 <code>></code> 기호의 역할과 환경 변수 설정 방법을 정확히 이해함으로써 트러블슈팅에 성공했습니다. 이러한 경험을 바탕으로 향후 작업에서 더 효율적으로 문제를 해결할 수 있을 것으로 기대됩니다.</p><h2 id=총평>총평<a hidden class=anchor aria-hidden=true href=#총평>#</a></h2><h3 id=오늘-전체에서-배운-것>오늘 전체에서 배운 것<a hidden class=anchor aria-hidden=true href=#오늘-전체에서-배운-것>#</a></h3><p>Git Bash와 PowerShell 명령어의 차이와 환경 변수 설정 방법을 이해하고, PyPI 배포 시 토큰 관리의 중요성을 깨달았다. 특히 <code>></code> 기호의 역할과 명령어 입력 시 주의사항을 배웠다.</p><h3 id=다음에-조심할-것>다음에 조심할 것<a hidden class=anchor aria-hidden=true href=#다음에-조심할-것>#</a></h3><p>명령어 환경에 따른 차이를 인지하고, 환경 변수 설정 시 각 쉘의 특성을 고려해야 한다. PyPI 토큰 사용 시 이름과 값의 구분 오류를 주의해야 한다.</p><h3 id=다음-복습-주제>다음 복습 주제<a hidden class=anchor aria-hidden=true href=#다음-복습-주제>#</a></h3><p>실습을 통해 명령어 혼동과 토큰 입력 오류를 직접 해결하며 실무 능력을 향상시켰다. 초보자에게는 명령어 환경 구분과 토큰 관리에 대한 명확한 이해가 필수적임을 확인했다.</p></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://Han-think.github.io/learning/function-structure-and-testable-code/><span class=title>« Prev</span>
-<span>function-structure-and-testable-code</span>
-</a><a class=next href=https://Han-think.github.io/learning/github-clone-commit-push/><span class=title>Next »</span>
-<span>github-clone-commit-push</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
-<span>Powered by
-<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
-<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>git-bash-pypi-failure-recovery | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="git-bash-pypi-failure-recovery 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/git-bash-pypi-failure-recovery/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/git-bash-pypi-failure-recovery/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/git-bash-pypi-failure-recovery/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="git-bash-pypi-failure-recovery">
+  <meta property="og:description" content="git-bash-pypi-failure-recovery 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-08T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-08T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="git-bash-pypi-failure-recovery">
+  <meta name="twitter:description" content="git-bash-pypi-failure-recovery 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "git-bash-pypi-failure-recovery",
+      "item": "https://Han-think.github.io/learning/git-bash-pypi-failure-recovery/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "git-bash-pypi-failure-recovery",
+  "name": "git-bash-pypi-failure-recovery",
+  "description": "git-bash-pypi-failure-recovery 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 명령어 환경 구분 환경 변수 설정 토큰 관리 트러블슈팅 기법 총평 1. 명령어 환경 구분 왜 이걸 보게 됐나 Git Bash와 PowerShell의 명령어 차이와 환경 설정의 복잡성으로 인해 발생하는 혼란을 이해하고 해결하는 방법을 학습자에게 제공하기 위함입니다.\n내가 헷갈린 지점 학습자들이 Git Bash와 PowerShell 간의 명령어 호환성 문제와 환경 변수 설정 방법의 차이로 인해 겪는 혼란을 명확히 파악하고 극복하는 데 어려움을 겪고 있습니다. 특히 토큰 관리와 관련된 세부 사항에서 오류가 발생하는 경우가 많습니다.\n시도한 코드 / 예시 # Git Bash에서 PowerShell 명령어 오류 수정 예시 # PowerShell의 Remove-Item 대신 Git Bash에서 사용 가능한 명령어 rm -rf directory_to_remove # 환경 변수 설정 예시 (Git Bash) export MY_VARIABLE=value # PowerShell과 비교하여 Git Bash에서의 설정 방법 이해 # PowerShell: # $env:MY_VARIABLE = 'value' 결과와 해석 학습자는 Git Bash와 PowerShell 간의 명령어 호환성 문제를 인식하고, 각 환경에 맞는 정확한 명령어와 환경 변수 설정 방법을 적용함으로써 혼란을 줄일 수 있습니다. 토큰 관리에 대한 이해도 향상으로 PyPI 업로드 과정에서의 오류가 감소합니다.\n정리된 이해 이 항목들은 Git Bash 사용자들이 PowerShell과의 명령어 환경 차이를 이해하고, 효과적인 환경 변수 설정 방법을 배우며, 특히 PyPI 토큰 관리에 대한 명확한 지침을 제공하여 트러블슈팅 능력을 향상시키는 데 초점을 맞춥니다.\n2. 환경 변수 설정 왜 이걸 보게 됐나 환경 변수 설정의 차이를 이해하는 것은 Git Bash와 다른 쉘 환경에서 일관된 설정 관리를 위해 필수적입니다. 특히, \u003e의 역할 차이로 인한 혼동은 명령어 실행에 직접적인 영향을 미칩니다.\n내가 헷갈린 지점 Git Bash에서 \u003e가 단순히 입력 완료를 의미하는 것이 아니라 계속 입력을 기다리는 상태라는 점이 혼란스러웠습니다. 또한, 환경 변수 설정 방법의 차이로 인해 설정 과정에서 오류가 발생했습니다.\n시도한 코드 / 예시 # Git Bash에서 환경 변수 설정 예시 export MY_VARIABLE=value # 확인 명령어 echo $MY_VARIABLE # 출력: value 결과와 해석 환경 변수 MY_VARIABLE이 성공적으로 설정되고 출력됩니다. \u003e 이후에 명령어를 입력하지 않아도 변수 설정은 완료됩니다.\n# 잘못된 사용 예시 \u003e echo '설정 오류' # 결과: 계속 입력을 요구하는 상태 유지 정리된 이해 Git Bash에서 환경 변수를 설정할 때는 export 명령어를 사용하고, \u003e는 단순히 입력 완료를 의미하는 것이 아니라 추가 입력을 기다리는 상태임을 이해해야 합니다. 이를 통해 명령어 실행 오류를 방지하고 일관된 환경 설정을 유지할 수 있습니다.\n3. 토큰 관리 왜 이걸 보게 됐나 토큰 관리의 중요성과 혼동 해결 방법을 이해하여 PyPI 배포 과정에서의 효율성을 높이기 위함\n내가 헷갈린 지점 PyPI 토큰의 이름 설정과 실제 값 입력 과정에서의 혼동으로 인해 패키지 업로드 실패 경험\n시도한 코드 / 예시 # 토큰 변수 설정 예시 import os # 환경 변수 설정 (실제 값은 사용자 정의) os.environ['PYPI_TOKEN'] = 'your_actual_token_here' # 토큰 사용 예시 (예: requests 라이브러리를 이용한 업로드) import requests response = requests.post('https://upload.pypi.org/legacy/', files={'file': open('your_package_file', 'rb')}, auth=('', os.environ['PYPI_TOKEN'])) print(response.status_code) 결과와 해석 위 코드 실행 시, 토큰이 올바르게 설정되어 PyPI 서버에 패키지 업로드 요청이 성공적으로 처리되면 HTTP 상태 코드 200 또는 관련 성공 코드가 출력됨\n정리된 이해 토큰 관리에서의 혼란을 줄이기 위해 환경 변수를 활용한 토큰 설정 방법을 소개하고, 실제 PyPI 패키지 업로드 과정에서 토큰을 올바르게 적용하는 파이썬 코드 예시를 제공함으로써 초보자도 쉽게 이해하고 적용할 수 있도록 함\n4. 트러블슈팅 기법 왜 이걸 보게 됐나 명령어 환경의 차이로 인해 예상치 못한 결과가 발생하여 프로젝트 진행에 차질이 생겼습니다. 특히 Git Bash와 PowerShell 간의 명령어 사용법 차이를 명확히 이해하지 못한 것이 주요 원인이었습니다.\n내가 헷갈린 지점 Git Bash에서 PowerShell 명령어를 그대로 사용하려다 오류가 발생했고, 환경 변수 설정 방식의 차이로 인해 설정 과정에서 시간을 많이 소비했습니다. 특히 \u003e 기호의 역할에 대한 오해로 인해 명령어 입력이 중단되는 문제를 겪었습니다.\n시도한 코드 / 예시 # 잘못된 명령어 사용 예시 cat README.md | xargs rm -rf # README 내용을 잘못 해석하여 명령어 실행 # 수정된 명령어 예시 rm -rf README_temp # 명확한 명령어 입력으로 문제 해결 결과와 해석 명령어 사용을 정확히 이해하고 수정한 후, 터미널에서 예상대로 파일을 삭제할 수 있게 되었습니다. 환경 변수 설정도 올바르게 적용되어 Git Bash 환경에서도 원활하게 동작하기 시작했습니다.\n정리된 이해 Git Bash와 다른 쉘 환경 간의 명령어 차이를 인지하고, 특히 \u003e 기호의 역할과 환경 변수 설정 방법을 정확히 이해함으로써 트러블슈팅에 성공했습니다. 이러한 경험을 바탕으로 향후 작업에서 더 효율적으로 문제를 해결할 수 있을 것으로 기대됩니다.\n총평 오늘 전체에서 배운 것 Git Bash와 PowerShell 명령어의 차이와 환경 변수 설정 방법을 이해하고, PyPI 배포 시 토큰 관리의 중요성을 깨달았다. 특히 \u003e 기호의 역할과 명령어 입력 시 주의사항을 배웠다.\n다음에 조심할 것 명령어 환경에 따른 차이를 인지하고, 환경 변수 설정 시 각 쉘의 특성을 고려해야 한다. PyPI 토큰 사용 시 이름과 값의 구분 오류를 주의해야 한다.\n다음 복습 주제 실습을 통해 명령어 혼동과 토큰 입력 오류를 직접 해결하며 실무 능력을 향상시켰다. 초보자에게는 명령어 환경 구분과 토큰 관리에 대한 명확한 이해가 필수적임을 확인했다.\n",
+  "wordCount" : "724",
+  "inLanguage": "en",
+  "datePublished": "2026-06-08T00:00:00Z",
+  "dateModified": "2026-06-08T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/git-bash-pypi-failure-recovery/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      git-bash-pypi-failure-recovery
+    </h1>
+    <div class="post-description">
+      git-bash-pypi-failure-recovery 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-08 00:00:00 +0000 UTC'>2026년 6월 8일</span>&nbsp;·&nbsp;<span>4 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EB%AA%85%EB%A0%B9%EC%96%B4-%ED%99%98%EA%B2%BD-%EA%B5%AC%EB%B6%84">명령어 환경 구분</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98-%EC%84%A4%EC%A0%95">환경 변수 설정</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%ED%86%A0%ED%81%B0-%EA%B4%80%EB%A6%AC">토큰 관리</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85-%EA%B8%B0%EB%B2%95">트러블슈팅 기법</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-명령어-환경-구분">1. 명령어 환경 구분<a hidden class="anchor" aria-hidden="true" href="#1-명령어-환경-구분">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>Git Bash와 PowerShell의 명령어 차이와 환경 설정의 복잡성으로 인해 발생하는 혼란을 이해하고 해결하는 방법을 학습자에게 제공하기 위함입니다.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>학습자들이 Git Bash와 PowerShell 간의 명령어 호환성 문제와 환경 변수 설정 방법의 차이로 인해 겪는 혼란을 명확히 파악하고 극복하는 데 어려움을 겪고 있습니다. 특히 토큰 관리와 관련된 세부 사항에서 오류가 발생하는 경우가 많습니다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Git Bash에서 PowerShell 명령어 오류 수정 예시</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># PowerShell의 Remove-Item 대신 Git Bash에서 사용 가능한 명령어</span>
+</span></span><span style="display:flex;"><span>rm -rf directory_to_remove
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 환경 변수 설정 예시 (Git Bash)</span>
+</span></span><span style="display:flex;"><span>export MY_VARIABLE<span style="color:#f92672">=</span>value
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># PowerShell과 비교하여 Git Bash에서의 설정 방법 이해</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># PowerShell:</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># $env:MY_VARIABLE = &#39;value&#39;</span>
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p>학습자는 Git Bash와 PowerShell 간의 명령어 호환성 문제를 인식하고, 각 환경에 맞는 정확한 명령어와 환경 변수 설정 방법을 적용함으로써 혼란을 줄일 수 있습니다. 토큰 관리에 대한 이해도 향상으로 PyPI 업로드 과정에서의 오류가 감소합니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>이 항목들은 Git Bash 사용자들이 PowerShell과의 명령어 환경 차이를 이해하고, 효과적인 환경 변수 설정 방법을 배우며, 특히 PyPI 토큰 관리에 대한 명확한 지침을 제공하여 트러블슈팅 능력을 향상시키는 데 초점을 맞춥니다.</p>
+<h2 id="2-환경-변수-설정">2. 환경 변수 설정<a hidden class="anchor" aria-hidden="true" href="#2-환경-변수-설정">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>환경 변수 설정의 차이를 이해하는 것은 Git Bash와 다른 쉘 환경에서 일관된 설정 관리를 위해 필수적입니다. 특히, <code>&gt;</code>의 역할 차이로 인한 혼동은 명령어 실행에 직접적인 영향을 미칩니다.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>Git Bash에서 <code>&gt;</code>가 단순히 입력 완료를 의미하는 것이 아니라 계속 입력을 기다리는 상태라는 점이 혼란스러웠습니다. 또한, 환경 변수 설정 방법의 차이로 인해 설정 과정에서 오류가 발생했습니다.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Git Bash에서 환경 변수 설정 예시</span>
+</span></span><span style="display:flex;"><span>export MY_VARIABLE<span style="color:#f92672">=</span>value
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 확인 명령어</span>
+</span></span><span style="display:flex;"><span>echo $MY_VARIABLE  <span style="color:#75715e"># 출력: value</span>
+</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p>환경 변수 <code>MY_VARIABLE</code>이 성공적으로 설정되고 출력됩니다. <code>&gt;</code> 이후에 명령어를 입력하지 않아도 변수 설정은 완료됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 잘못된 사용 예시</span>
+</span></span><span style="display:flex;"><span>&gt; echo <span style="color:#e6db74">&#39;설정 오류&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 결과: 계속 입력을 요구하는 상태 유지</span>
+</span></span></code></pre></div><h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>Git Bash에서 환경 변수를 설정할 때는 <code>export</code> 명령어를 사용하고, <code>&gt;</code>는 단순히 입력 완료를 의미하는 것이 아니라 추가 입력을 기다리는 상태임을 이해해야 합니다. 이를 통해 명령어 실행 오류를 방지하고 일관된 환경 설정을 유지할 수 있습니다.</p>
+<h2 id="3-토큰-관리">3. 토큰 관리<a hidden class="anchor" aria-hidden="true" href="#3-토큰-관리">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>토큰 관리의 중요성과 혼동 해결 방법을 이해하여 PyPI 배포 과정에서의 효율성을 높이기 위함</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>PyPI 토큰의 이름 설정과 실제 값 입력 과정에서의 혼동으로 인해 패키지 업로드 실패 경험</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 토큰 변수 설정 예시</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 환경 변수 설정 (실제 값은 사용자 정의)</span>
+</span></span><span style="display:flex;"><span>os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;PYPI_TOKEN&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;your_actual_token_here&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 토큰 사용 예시 (예: requests 라이브러리를 이용한 업로드)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> requests
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>response <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>post(<span style="color:#e6db74">&#39;https://upload.pypi.org/legacy/&#39;</span>,
+</span></span><span style="display:flex;"><span>                     files<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#39;file&#39;</span>: open(<span style="color:#e6db74">&#39;your_package_file&#39;</span>, <span style="color:#e6db74">&#39;rb&#39;</span>)},
+</span></span><span style="display:flex;"><span>                     auth<span style="color:#f92672">=</span>(<span style="color:#e6db74">&#39;&#39;</span>, os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;PYPI_TOKEN&#39;</span>]))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(response<span style="color:#f92672">.</span>status_code)
+</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p>위 코드 실행 시, 토큰이 올바르게 설정되어 PyPI 서버에 패키지 업로드 요청이 성공적으로 처리되면 HTTP 상태 코드 200 또는 관련 성공 코드가 출력됨</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>토큰 관리에서의 혼란을 줄이기 위해 환경 변수를 활용한 토큰 설정 방법을 소개하고, 실제 PyPI 패키지 업로드 과정에서 토큰을 올바르게 적용하는 파이썬 코드 예시를 제공함으로써 초보자도 쉽게 이해하고 적용할 수 있도록 함</p>
+<h2 id="4-트러블슈팅-기법">4. 트러블슈팅 기법<a hidden class="anchor" aria-hidden="true" href="#4-트러블슈팅-기법">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>명령어 환경의 차이로 인해 예상치 못한 결과가 발생하여 프로젝트 진행에 차질이 생겼습니다. 특히 Git Bash와 PowerShell 간의 명령어 사용법 차이를 명확히 이해하지 못한 것이 주요 원인이었습니다.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>Git Bash에서 PowerShell 명령어를 그대로 사용하려다 오류가 발생했고, 환경 변수 설정 방식의 차이로 인해 설정 과정에서 시간을 많이 소비했습니다. 특히 <code>&gt;</code> 기호의 역할에 대한 오해로 인해 명령어 입력이 중단되는 문제를 겪었습니다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 잘못된 명령어 사용 예시</span>
+</span></span><span style="display:flex;"><span>cat README.md | xargs rm -rf  <span style="color:#75715e"># README 내용을 잘못 해석하여 명령어 실행</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 수정된 명령어 예시</span>
+</span></span><span style="display:flex;"><span>rm -rf README_temp  <span style="color:#75715e"># 명확한 명령어 입력으로 문제 해결</span>
+</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<p>명령어 사용을 정확히 이해하고 수정한 후, 터미널에서 예상대로 파일을 삭제할 수 있게 되었습니다. 환경 변수 설정도 올바르게 적용되어 Git Bash 환경에서도 원활하게 동작하기 시작했습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>Git Bash와 다른 쉘 환경 간의 명령어 차이를 인지하고, 특히 <code>&gt;</code> 기호의 역할과 환경 변수 설정 방법을 정확히 이해함으로써 트러블슈팅에 성공했습니다. 이러한 경험을 바탕으로 향후 작업에서 더 효율적으로 문제를 해결할 수 있을 것으로 기대됩니다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>Git Bash와 PowerShell 명령어의 차이와 환경 변수 설정 방법을 이해하고, PyPI 배포 시 토큰 관리의 중요성을 깨달았다. 특히 <code>&gt;</code> 기호의 역할과 명령어 입력 시 주의사항을 배웠다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>명령어 환경에 따른 차이를 인지하고, 환경 변수 설정 시 각 쉘의 특성을 고려해야 한다. PyPI 토큰 사용 시 이름과 값의 구분 오류를 주의해야 한다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>실습을 통해 명령어 혼동과 토큰 입력 오류를 직접 해결하며 실무 능력을 향상시켰다. 초보자에게는 명령어 환경 구분과 토큰 관리에 대한 명확한 이해가 필수적임을 확인했다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/function-structure-and-testable-code/">
+    <span class="title">« Prev</span>
+    <span>function-structure-and-testable-code</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/github-clone-commit-push/">
+    <span class="title">Next »</span>
+    <span>github-clone-commit-push</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

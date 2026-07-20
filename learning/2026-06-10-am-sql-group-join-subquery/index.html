@@ -1,121 +1,515 @@
-<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>GROUP BY에서 FROM 절 서브쿼리까지, SQL을 데이터 파이프라인으로 보기 | Han-think Blog</title><meta name=keywords content="sql,sqlite,group-by,join,subquery,beginner,review"><meta name=description content="GROUP BY, HAVING, JOIN, 스칼라 서브쿼리와 FROM 절 서브쿼리를 데이터 흐름으로 다시 정리한 오전 학습 기록"><meta name=author content><link rel=canonical href=https://Han-think.github.io/learning/2026-06-10-am-sql-group-join-subquery/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/learning/2026-06-10-am-sql-group-join-subquery/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/learning/2026-06-10-am-sql-group-join-subquery/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="GROUP BY에서 FROM 절 서브쿼리까지, SQL을 데이터 파이프라인으로 보기"><meta property="og:description" content="GROUP BY, HAVING, JOIN, 스칼라 서브쿼리와 FROM 절 서브쿼리를 데이터 흐름으로 다시 정리한 오전 학습 기록"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="learning"><meta property="article:published_time" content="2026-06-10T00:00:00+00:00"><meta property="article:modified_time" content="2026-06-10T00:00:00+00:00"><meta property="article:tag" content="Sql"><meta property="article:tag" content="SQLite"><meta property="article:tag" content="Group-By"><meta property="article:tag" content="Join"><meta property="article:tag" content="Subquery"><meta property="article:tag" content="Beginner"><meta name=twitter:card content="summary"><meta name=twitter:title content="GROUP BY에서 FROM 절 서브쿼리까지, SQL을 데이터 파이프라인으로 보기"><meta name=twitter:description content="GROUP BY, HAVING, JOIN, 스칼라 서브쿼리와 FROM 절 서브쿼리를 데이터 흐름으로 다시 정리한 오전 학습 기록"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"학습 기록","item":"https://Han-think.github.io/learning/"},{"@type":"ListItem","position":2,"name":"GROUP BY에서 FROM 절 서브쿼리까지, SQL을 데이터 파이프라인으로 보기","item":"https://Han-think.github.io/learning/2026-06-10-am-sql-group-join-subquery/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"GROUP BY에서 FROM 절 서브쿼리까지, SQL을 데이터 파이프라인으로 보기","name":"GROUP BY에서 FROM 절 서브쿼리까지, SQL을 데이터 파이프라인으로 보기","description":"GROUP BY, HAVING, JOIN, 스칼라 서브쿼리와 FROM 절 서브쿼리를 데이터 흐름으로 다시 정리한 오전 학습 기록","keywords":["sql","sqlite","group-by","join","subquery","beginner","review"],"articleBody":"목차 1. 어제 SQL 복습: 함수와 JOIN이 서브쿼리로 이어지는 흐름 2. GROUP BY와 HAVING: 묶고 나서 조건 걸기 3. JOIN과 서브쿼리: ERD보다 연결표를 먼저 보기 4. 스칼라 서브쿼리와 FROM 절 서브쿼리: 값과 임시표 만들기 총평 1. 어제 SQL 복습: 함수와 JOIN이 서브쿼리로 이어지는 흐름 무엇을 배웠나 오전 수업은 전날 배운 SQL 함수와 다수 테이블 제어 복습에서 시작했다. 함수는 단순 계산용으로 끝나는 것이 아니라, 이후 서브쿼리 안에서 기준값을 만드는 재료가 된다.\nCOUNT = 데이터 개수 세기 LIMIT = 출력 개수 제한 SUM = 총합 AVG = 평균 MAX = 최댓값 MIN = 최솟값 예를 들어 평균 결제 금액보다 작은 인보이스를 찾을 때는 먼저 AVG(Total)로 기준값을 만든다.\nSELECT InvoiceId, Total FROM invoices WHERE Total \u003c ( SELECT AVG(Total) FROM invoices ); JOIN 복습에서는 ON이 핵심이었다. JOIN은 테이블을 그냥 붙이는 것이 아니라, 어떤 컬럼끼리 연결할지 지정해야 한다.\nSELECT * FROM rental INNER JOIN user ON user.id = rental.user_id; 헷갈렸던 점 복습 카드만 보면 함수와 JOIN은 각각 따로 떨어진 문법처럼 보였다. 하지만 실제 문제에서는 AVG, MAX, COUNT 같은 함수가 서브쿼리 안으로 들어가고, JOIN은 테이블 간 경로를 찾는 도구로 다시 등장했다.\n또 LEFT JOIN과 RIGHT JOIN은 어느 쪽 테이블이 살아남는지 자주 헷갈릴 수 있다.\nFROM A LEFT JOIN B = A 생존 FROM A RIGHT JOIN B = B 생존 정리된 이해 전날 배운 3장 함수와 4장 JOIN은 오늘 배운 서브쿼리의 재료였다.\n3장 함수 → 평균/최대/최소 기준값 만들기 4장 GROUP BY / HAVING / JOIN → 묶기, 조건 걸기, 테이블 연결하기 5장 서브쿼리 → 앞에서 만든 기준값과 연결 감각을 안쪽 SELECT로 접어 넣기 2. GROUP BY와 HAVING: 묶고 나서 조건 걸기 무엇을 배웠나 GROUP BY는 같은 값끼리 묶는 기준이고, 집계 함수는 묶인 그룹 안에서 개수·합계·평균·최댓값을 계산한다.\n기본 공식은 다음과 같다.\nSELECT 그룹기준컬럼, COUNT(*) AS count_name FROM 테이블 GROUP BY 그룹기준컬럼 ORDER BY count_name DESC; 미디어 타입별 트랙 수는 다음처럼 쓸 수 있다.\nSELECT MediaTypeId, COUNT(*) AS track_count FROM tracks GROUP BY MediaTypeId; 도시별 인보이스 건수를 많은 순서로 정렬하려면 ORDER BY의 기준은 원본 금액이 아니라 집계 결과여야 한다.\nSELECT BillingCity, COUNT(*) AS invoices_count FROM invoices GROUP BY BillingCity ORDER BY invoices_count DESC; 담당 직원별 고객 수에서 10명 이상만 보려면 HAVING을 쓴다.\nSELECT SupportRepId, COUNT(*) AS customer_count FROM customers GROUP BY SupportRepId HAVING COUNT(*) \u003e= 10; 장르별 최대 재생시간은 MAX와 GROUP BY를 함께 사용한다.\nSELECT GenreId, MAX(Milliseconds) AS max_ms FROM tracks GROUP BY GenreId ORDER BY max_ms DESC; 헷갈렸던 점 DESC를 GROUP BY에 붙이려고 했던 부분이 핵심 오류였다. GROUP BY는 묶는 기준이고, DESC는 정렬 방향이므로 ORDER BY에 붙어야 한다.\nGROUP BY = 묶기 ORDER BY = 정렬 DESC = 정렬 방향 또 문제에서 요구하는 정렬 기준이 “건수”인지 “금액”인지 분리해서 봐야 한다. 도시별 주문 건수를 묻는 문제에서 ORDER BY Total DESC를 쓰면 문제 목적과 어긋난다.\n정리된 이해 WHERE와 HAVING의 차이를 이렇게 고정했다.\nWHERE = 그룹 짓기 전 원본 행 조건 HAVING = GROUP BY 이후 집계 결과 조건 즉 원본 행을 필터링할 때는 WHERE, 묶은 뒤 계산된 결과를 필터링할 때는 HAVING이다.\n3. JOIN과 서브쿼리: ERD보다 연결표를 먼저 보기 무엇을 배웠나 Chinook DB 문제에서는 ERD 전체를 한 번에 보려고 하기보다, 문제마다 필요한 테이블과 연결 컬럼을 표처럼 정리하는 방식이 더 유용했다.\n트랙 이름과 미디어 타입 이름을 함께 보려면 tracks와 media_types를 연결한다.\nSELECT t.Name AS track_name, mt.Name AS media_type FROM tracks AS t INNER JOIN media_types AS mt ON t.MediaTypeId = mt.MediaTypeId; 인보이스와 고객 정보를 함께 보려면 invoices.CustomerId = customers.CustomerId 경로를 사용한다.\nSELECT i.InvoiceId, i.Total, i.BillingCountry, c.LastName, c.FirstName FROM invoices AS i INNER JOIN customers AS c ON i.CustomerId = c.CustomerId; 플레이리스트와 트랙은 직접 연결되지 않고, playlist_track이라는 중간 테이블을 거친다.\nSELECT p.Name AS playlist_name, t.Name AS track_name FROM playlists AS p INNER JOIN playlist_track AS pt ON p.PlaylistId = pt.PlaylistId INNER JOIN tracks AS t ON pt.TrackId = t.TrackId; 헷갈렸던 점 세 테이블 JOIN에서는 중간 테이블이 왜 필요한지 바로 보이지 않았다. playlists와 tracks가 직접 연결되지 않기 때문에 playlist_track이 다리 역할을 한다.\nplaylists → playlist_track → tracks 또 같은 결과를 JOIN으로도, 서브쿼리로도 만들 수 있어서 무엇이 필수인지 혼동됐다.\n정리된 이해 JOIN 문제는 ERD 전체보다 연결표를 믿는 것이 낫다.\ntracks.MediaTypeId = media_types.MediaTypeId invoices.CustomerId = customers.CustomerId playlists.PlaylistId = playlist_track.PlaylistId playlist_track.TrackId = tracks.TrackId 서브쿼리는 결과 형태에 따라 구분한다.\n단일 행 서브쿼리 = AVG, MAX, MIN처럼 값 하나 → =, \u003e, \u003c 다중 행 서브쿼리 = 목록 → IN, NOT IN FROM 절 서브쿼리 = 안쪽에서 임시표를 만들고 바깥에서 조회 4. 스칼라 서브쿼리와 FROM 절 서브쿼리: 값과 임시표 만들기 무엇을 배웠나 스칼라 서브쿼리는 SQL에 SCALAR라는 키워드를 쓰는 것이 아니다. 서브쿼리 결과가 한 칸짜리 값처럼 쓰일 때 스칼라 서브쿼리라고 부른다.\n스칼라 = 한 칸짜리 값 스칼라 서브쿼리 = 값 하나처럼 쓰이는 괄호 안 SELECT 각 고객의 총 결제 금액을 옆 칸에 붙이는 예시는 다음과 같다.\nSELECT c.FirstName, c.LastName, ( SELECT SUM(i.Total) FROM invoices AS i WHERE i.CustomerId = c.CustomerId ) AS total_spent FROM customers AS c; FROM 절 서브쿼리는 안쪽 SELECT로 임시표를 만들고, 바깥 SELECT가 그 임시표를 다시 조회하는 방식이다.\nSELECT country_sales.BillingCountry, country_sales.total_sales FROM ( SELECT BillingCountry, SUM(Total) AS total_sales FROM invoices GROUP BY BillingCountry ) AS country_sales ORDER BY country_sales.total_sales DESC LIMIT 5; 헷갈렸던 점 FROM invoices는 원본 테이블을 바로 쓰는 것이지만, FROM (SELECT ...) AS sub는 원본을 가공한 임시표를 쓰는 것이다. 이 차이가 처음에는 갑자기 난이도를 올리는 부분이었다.\nFROM invoices = 원본 테이블 사용 FROM (SELECT ... FROM invoices GROUP BY ...) AS sub = 원본을 가공한 임시표 사용 정리된 이해 SELECT와 FROM의 역할을 다시 정리했다.\nFROM = 작업할 데이터 덩어리 / 판 / 임시 테이블을 정함 SELECT = 그 데이터 덩어리에서 최종으로 보여줄 컬럼을 고름 스칼라 서브쿼리는 행마다 값 하나를 붙이고, FROM 절 서브쿼리는 새로운 데이터판을 만든다.\n총평 오늘 오전 전체에서 배운 것 오전 수업은 함수 복습에서 시작해 GROUP BY, HAVING, JOIN, 서브쿼리, 스칼라 서브쿼리, FROM 절 서브쿼리까지 이어졌다. 처음에는 각각의 문법이 따로 떨어져 보였지만, 실제로는 “기준값 만들기 → 묶기 → 연결하기 → 임시표 만들기 → 최종 결과표 만들기”라는 하나의 데이터 흐름으로 연결된다.\n가장 중요한 전환은 SQL을 단순 조회문이 아니라 데이터 파이프라인으로 보는 관점이었다. 원본 테이블을 바로 조회하는 수준을 넘어, 안쪽 SELECT로 요약표를 만들고, 그 결과를 바깥 쿼리에서 다시 정렬하거나 JOIN하는 흐름이 보이기 시작했다.\n다음에 조심할 것 DESC는 GROUP BY가 아니라 ORDER BY에 붙인다. 정렬 기준은 문제에서 요구하는 값이 건수인지 금액인지 먼저 확인해야 한다. JOIN 문제에서는 테이블을 먼저 외우려고 하기보다 중심 테이블과 연결 경로를 찾는 편이 안전하다.\n서브쿼리는 괄호 안 SELECT가 무엇을 반환하는지부터 봐야 한다. 값 하나인지, 목록인지, 임시표인지 구분하지 않으면 메인쿼리까지 같이 흔들린다.\n다음 복습 주제 WHERE와 HAVING의 차이 GROUP BY와 집계 함수 조합 중간 테이블이 있는 JOIN 경로 단일 행 서브쿼리와 다중 행 서브쿼리 스칼라 서브쿼리와 FROM 절 서브쿼리 차이 파생 테이블에는 반드시 별칭을 붙인다는 점 ","wordCount":"1054","inLanguage":"en","datePublished":"2026-06-10T00:00:00Z","dateModified":"2026-06-10T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/learning/2026-06-10-am-sql-group-join-subquery/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
-<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">GROUP BY에서 FROM 절 서브쿼리까지, SQL을 데이터 파이프라인으로 보기</h1><div class=post-description>GROUP BY, HAVING, JOIN, 스칼라 서브쿼리와 FROM 절 서브쿼리를 데이터 흐름으로 다시 정리한 오전 학습 기록</div><div class=post-meta><span title='2026-06-10 00:00:00 +0000 UTC'>2026년 6월 10일</span>&nbsp;·&nbsp;<span>5 min</span></div></header><div class="post-content md-content"><h2 id=목차>목차<a hidden class=anchor aria-hidden=true href=#목차>#</a></h2><ul><li><a href=#1-%EC%96%B4%EC%A0%9C-sql-%EB%B3%B5%EC%8A%B5-%ED%95%A8%EC%88%98%EC%99%80-join%EC%9D%B4-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC%EB%A1%9C-%EC%9D%B4%EC%96%B4%EC%A7%80%EB%8A%94-%ED%9D%90%EB%A6%84>1. 어제 SQL 복습: 함수와 JOIN이 서브쿼리로 이어지는 흐름</a></li><li><a href=#2-group-by%EC%99%80-having-%EB%AC%B6%EA%B3%A0-%EB%82%98%EC%84%9C-%EC%A1%B0%EA%B1%B4-%EA%B1%B8%EA%B8%B0>2. GROUP BY와 HAVING: 묶고 나서 조건 걸기</a></li><li><a href=#3-join%EA%B3%BC-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC-erd%EB%B3%B4%EB%8B%A4-%EC%97%B0%EA%B2%B0%ED%91%9C%EB%A5%BC-%EB%A8%BC%EC%A0%80-%EB%B3%B4%EA%B8%B0>3. JOIN과 서브쿼리: ERD보다 연결표를 먼저 보기</a></li><li><a href=#4-%EC%8A%A4%EC%B9%BC%EB%9D%BC-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC%EC%99%80-from-%EC%A0%88-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC-%EA%B0%92%EA%B3%BC-%EC%9E%84%EC%8B%9C%ED%91%9C-%EB%A7%8C%EB%93%A4%EA%B8%B0>4. 스칼라 서브쿼리와 FROM 절 서브쿼리: 값과 임시표 만들기</a></li><li><a href=#%EC%B4%9D%ED%8F%89>총평</a></li></ul><h2 id=1-어제-sql-복습-함수와-join이-서브쿼리로-이어지는-흐름>1. 어제 SQL 복습: 함수와 JOIN이 서브쿼리로 이어지는 흐름<a hidden class=anchor aria-hidden=true href=#1-어제-sql-복습-함수와-join이-서브쿼리로-이어지는-흐름>#</a></h2><h3 id=무엇을-배웠나>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나>#</a></h3><p>오전 수업은 전날 배운 SQL 함수와 다수 테이블 제어 복습에서 시작했다. 함수는 단순 계산용으로 끝나는 것이 아니라, 이후 서브쿼리 안에서 기준값을 만드는 재료가 된다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>COUNT = 데이터 개수 세기
-</span></span><span style=display:flex><span>LIMIT = 출력 개수 제한
-</span></span><span style=display:flex><span>SUM = 총합
-</span></span><span style=display:flex><span>AVG = 평균
-</span></span><span style=display:flex><span>MAX = 최댓값
-</span></span><span style=display:flex><span>MIN = 최솟값
-</span></span></code></pre></div><p>예를 들어 평균 결제 금액보다 작은 인보이스를 찾을 때는 먼저 <code>AVG(Total)</code>로 기준값을 만든다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> InvoiceId, Total
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> invoices
-</span></span><span style=display:flex><span><span style=color:#66d9ef>WHERE</span> Total <span style=color:#f92672>&lt;</span> (
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>SELECT</span> <span style=color:#66d9ef>AVG</span>(Total)
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>FROM</span> invoices
-</span></span><span style=display:flex><span>);
-</span></span></code></pre></div><p>JOIN 복습에서는 <code>ON</code>이 핵심이었다. JOIN은 테이블을 그냥 붙이는 것이 아니라, 어떤 컬럼끼리 연결할지 지정해야 한다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#f92672>*</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> rental
-</span></span><span style=display:flex><span><span style=color:#66d9ef>INNER</span> <span style=color:#66d9ef>JOIN</span> <span style=color:#66d9ef>user</span>
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>ON</span> <span style=color:#66d9ef>user</span>.id <span style=color:#f92672>=</span> rental.user_id;
-</span></span></code></pre></div><h3 id=헷갈렸던-점>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점>#</a></h3><p>복습 카드만 보면 함수와 JOIN은 각각 따로 떨어진 문법처럼 보였다. 하지만 실제 문제에서는 <code>AVG</code>, <code>MAX</code>, <code>COUNT</code> 같은 함수가 서브쿼리 안으로 들어가고, JOIN은 테이블 간 경로를 찾는 도구로 다시 등장했다.</p><p>또 <code>LEFT JOIN</code>과 <code>RIGHT JOIN</code>은 어느 쪽 테이블이 살아남는지 자주 헷갈릴 수 있다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>FROM A LEFT JOIN B  = A 생존
-</span></span><span style=display:flex><span>FROM A RIGHT JOIN B = B 생존
-</span></span></code></pre></div><h3 id=정리된-이해>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해>#</a></h3><p>전날 배운 3장 함수와 4장 JOIN은 오늘 배운 서브쿼리의 재료였다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>3장 함수
-</span></span><span style=display:flex><span>→ 평균/최대/최소 기준값 만들기
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>4장 GROUP BY / HAVING / JOIN
-</span></span><span style=display:flex><span>→ 묶기, 조건 걸기, 테이블 연결하기
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>5장 서브쿼리
-</span></span><span style=display:flex><span>→ 앞에서 만든 기준값과 연결 감각을 안쪽 SELECT로 접어 넣기
-</span></span></code></pre></div><h2 id=2-group-by와-having-묶고-나서-조건-걸기>2. GROUP BY와 HAVING: 묶고 나서 조건 걸기<a hidden class=anchor aria-hidden=true href=#2-group-by와-having-묶고-나서-조건-걸기>#</a></h2><h3 id=무엇을-배웠나-1>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-1>#</a></h3><p><code>GROUP BY</code>는 같은 값끼리 묶는 기준이고, 집계 함수는 묶인 그룹 안에서 개수·합계·평균·최댓값을 계산한다.</p><p>기본 공식은 다음과 같다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#960050;background-color:#1e0010>그룹기준컬럼</span>, <span style=color:#66d9ef>COUNT</span>(<span style=color:#f92672>*</span>) <span style=color:#66d9ef>AS</span> count_name
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> <span style=color:#960050;background-color:#1e0010>테이블</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>GROUP</span> <span style=color:#66d9ef>BY</span> <span style=color:#960050;background-color:#1e0010>그룹기준컬럼</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>ORDER</span> <span style=color:#66d9ef>BY</span> count_name <span style=color:#66d9ef>DESC</span>;
-</span></span></code></pre></div><p>미디어 타입별 트랙 수는 다음처럼 쓸 수 있다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> MediaTypeId, <span style=color:#66d9ef>COUNT</span>(<span style=color:#f92672>*</span>) <span style=color:#66d9ef>AS</span> track_count
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> tracks
-</span></span><span style=display:flex><span><span style=color:#66d9ef>GROUP</span> <span style=color:#66d9ef>BY</span> MediaTypeId;
-</span></span></code></pre></div><p>도시별 인보이스 건수를 많은 순서로 정렬하려면 <code>ORDER BY</code>의 기준은 원본 금액이 아니라 집계 결과여야 한다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> BillingCity, <span style=color:#66d9ef>COUNT</span>(<span style=color:#f92672>*</span>) <span style=color:#66d9ef>AS</span> invoices_count
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> invoices
-</span></span><span style=display:flex><span><span style=color:#66d9ef>GROUP</span> <span style=color:#66d9ef>BY</span> BillingCity
-</span></span><span style=display:flex><span><span style=color:#66d9ef>ORDER</span> <span style=color:#66d9ef>BY</span> invoices_count <span style=color:#66d9ef>DESC</span>;
-</span></span></code></pre></div><p>담당 직원별 고객 수에서 10명 이상만 보려면 <code>HAVING</code>을 쓴다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> SupportRepId, <span style=color:#66d9ef>COUNT</span>(<span style=color:#f92672>*</span>) <span style=color:#66d9ef>AS</span> customer_count
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> customers
-</span></span><span style=display:flex><span><span style=color:#66d9ef>GROUP</span> <span style=color:#66d9ef>BY</span> SupportRepId
-</span></span><span style=display:flex><span><span style=color:#66d9ef>HAVING</span> <span style=color:#66d9ef>COUNT</span>(<span style=color:#f92672>*</span>) <span style=color:#f92672>&gt;=</span> <span style=color:#ae81ff>10</span>;
-</span></span></code></pre></div><p>장르별 최대 재생시간은 <code>MAX</code>와 <code>GROUP BY</code>를 함께 사용한다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> GenreId, <span style=color:#66d9ef>MAX</span>(Milliseconds) <span style=color:#66d9ef>AS</span> max_ms
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> tracks
-</span></span><span style=display:flex><span><span style=color:#66d9ef>GROUP</span> <span style=color:#66d9ef>BY</span> GenreId
-</span></span><span style=display:flex><span><span style=color:#66d9ef>ORDER</span> <span style=color:#66d9ef>BY</span> max_ms <span style=color:#66d9ef>DESC</span>;
-</span></span></code></pre></div><h3 id=헷갈렸던-점-1>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-1>#</a></h3><p><code>DESC</code>를 <code>GROUP BY</code>에 붙이려고 했던 부분이 핵심 오류였다. <code>GROUP BY</code>는 묶는 기준이고, <code>DESC</code>는 정렬 방향이므로 <code>ORDER BY</code>에 붙어야 한다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>GROUP BY = 묶기
-</span></span><span style=display:flex><span>ORDER BY = 정렬
-</span></span><span style=display:flex><span>DESC = 정렬 방향
-</span></span></code></pre></div><p>또 문제에서 요구하는 정렬 기준이 “건수”인지 “금액”인지 분리해서 봐야 한다. 도시별 주문 건수를 묻는 문제에서 <code>ORDER BY Total DESC</code>를 쓰면 문제 목적과 어긋난다.</p><h3 id=정리된-이해-1>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-1>#</a></h3><p><code>WHERE</code>와 <code>HAVING</code>의 차이를 이렇게 고정했다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>WHERE = 그룹 짓기 전 원본 행 조건
-</span></span><span style=display:flex><span>HAVING = GROUP BY 이후 집계 결과 조건
-</span></span></code></pre></div><p>즉 원본 행을 필터링할 때는 <code>WHERE</code>, 묶은 뒤 계산된 결과를 필터링할 때는 <code>HAVING</code>이다.</p><h2 id=3-join과-서브쿼리-erd보다-연결표를-먼저-보기>3. JOIN과 서브쿼리: ERD보다 연결표를 먼저 보기<a hidden class=anchor aria-hidden=true href=#3-join과-서브쿼리-erd보다-연결표를-먼저-보기>#</a></h2><h3 id=무엇을-배웠나-2>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-2>#</a></h3><p>Chinook DB 문제에서는 ERD 전체를 한 번에 보려고 하기보다, 문제마다 필요한 테이블과 연결 컬럼을 표처럼 정리하는 방식이 더 유용했다.</p><p>트랙 이름과 미디어 타입 이름을 함께 보려면 <code>tracks</code>와 <code>media_types</code>를 연결한다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>    t.Name <span style=color:#66d9ef>AS</span> track_name,
-</span></span><span style=display:flex><span>    mt.Name <span style=color:#66d9ef>AS</span> media_type
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> tracks <span style=color:#66d9ef>AS</span> t
-</span></span><span style=display:flex><span><span style=color:#66d9ef>INNER</span> <span style=color:#66d9ef>JOIN</span> media_types <span style=color:#66d9ef>AS</span> mt
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>ON</span> t.MediaTypeId <span style=color:#f92672>=</span> mt.MediaTypeId;
-</span></span></code></pre></div><p>인보이스와 고객 정보를 함께 보려면 <code>invoices.CustomerId = customers.CustomerId</code> 경로를 사용한다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>    i.InvoiceId,
-</span></span><span style=display:flex><span>    i.Total,
-</span></span><span style=display:flex><span>    i.BillingCountry,
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>c</span>.LastName,
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>c</span>.FirstName
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> invoices <span style=color:#66d9ef>AS</span> i
-</span></span><span style=display:flex><span><span style=color:#66d9ef>INNER</span> <span style=color:#66d9ef>JOIN</span> customers <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>c</span>
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>ON</span> i.CustomerId <span style=color:#f92672>=</span> <span style=color:#66d9ef>c</span>.CustomerId;
-</span></span></code></pre></div><p>플레이리스트와 트랙은 직접 연결되지 않고, <code>playlist_track</code>이라는 중간 테이블을 거친다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>    p.Name <span style=color:#66d9ef>AS</span> playlist_name,
-</span></span><span style=display:flex><span>    t.Name <span style=color:#66d9ef>AS</span> track_name
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> playlists <span style=color:#66d9ef>AS</span> p
-</span></span><span style=display:flex><span><span style=color:#66d9ef>INNER</span> <span style=color:#66d9ef>JOIN</span> playlist_track <span style=color:#66d9ef>AS</span> pt
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>ON</span> p.PlaylistId <span style=color:#f92672>=</span> pt.PlaylistId
-</span></span><span style=display:flex><span><span style=color:#66d9ef>INNER</span> <span style=color:#66d9ef>JOIN</span> tracks <span style=color:#66d9ef>AS</span> t
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>ON</span> pt.TrackId <span style=color:#f92672>=</span> t.TrackId;
-</span></span></code></pre></div><h3 id=헷갈렸던-점-2>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-2>#</a></h3><p>세 테이블 JOIN에서는 중간 테이블이 왜 필요한지 바로 보이지 않았다. <code>playlists</code>와 <code>tracks</code>가 직접 연결되지 않기 때문에 <code>playlist_track</code>이 다리 역할을 한다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>playlists → playlist_track → tracks
-</span></span></code></pre></div><p>또 같은 결과를 JOIN으로도, 서브쿼리로도 만들 수 있어서 무엇이 필수인지 혼동됐다.</p><h3 id=정리된-이해-2>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-2>#</a></h3><p>JOIN 문제는 ERD 전체보다 연결표를 믿는 것이 낫다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>tracks.MediaTypeId = media_types.MediaTypeId
-</span></span><span style=display:flex><span>invoices.CustomerId = customers.CustomerId
-</span></span><span style=display:flex><span>playlists.PlaylistId = playlist_track.PlaylistId
-</span></span><span style=display:flex><span>playlist_track.TrackId = tracks.TrackId
-</span></span></code></pre></div><p>서브쿼리는 결과 형태에 따라 구분한다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>단일 행 서브쿼리 = AVG, MAX, MIN처럼 값 하나 → =, &gt;, &lt;
-</span></span><span style=display:flex><span>다중 행 서브쿼리 = 목록 → IN, NOT IN
-</span></span><span style=display:flex><span>FROM 절 서브쿼리 = 안쪽에서 임시표를 만들고 바깥에서 조회
-</span></span></code></pre></div><h2 id=4-스칼라-서브쿼리와-from-절-서브쿼리-값과-임시표-만들기>4. 스칼라 서브쿼리와 FROM 절 서브쿼리: 값과 임시표 만들기<a hidden class=anchor aria-hidden=true href=#4-스칼라-서브쿼리와-from-절-서브쿼리-값과-임시표-만들기>#</a></h2><h3 id=무엇을-배웠나-3>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-3>#</a></h3><p>스칼라 서브쿼리는 SQL에 <code>SCALAR</code>라는 키워드를 쓰는 것이 아니다. 서브쿼리 결과가 한 칸짜리 값처럼 쓰일 때 스칼라 서브쿼리라고 부른다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>스칼라 = 한 칸짜리 값
-</span></span><span style=display:flex><span>스칼라 서브쿼리 = 값 하나처럼 쓰이는 괄호 안 SELECT
-</span></span></code></pre></div><p>각 고객의 총 결제 금액을 옆 칸에 붙이는 예시는 다음과 같다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>c</span>.FirstName,
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>c</span>.LastName,
-</span></span><span style=display:flex><span>    (
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>SELECT</span> <span style=color:#66d9ef>SUM</span>(i.Total)
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>FROM</span> invoices <span style=color:#66d9ef>AS</span> i
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>WHERE</span> i.CustomerId <span style=color:#f92672>=</span> <span style=color:#66d9ef>c</span>.CustomerId
-</span></span><span style=display:flex><span>    ) <span style=color:#66d9ef>AS</span> total_spent
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> customers <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>c</span>;
-</span></span></code></pre></div><p>FROM 절 서브쿼리는 안쪽 SELECT로 임시표를 만들고, 바깥 SELECT가 그 임시표를 다시 조회하는 방식이다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>    country_sales.BillingCountry,
-</span></span><span style=display:flex><span>    country_sales.total_sales
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> (
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>        BillingCountry,
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>SUM</span>(Total) <span style=color:#66d9ef>AS</span> total_sales
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>FROM</span> invoices
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>GROUP</span> <span style=color:#66d9ef>BY</span> BillingCountry
-</span></span><span style=display:flex><span>) <span style=color:#66d9ef>AS</span> country_sales
-</span></span><span style=display:flex><span><span style=color:#66d9ef>ORDER</span> <span style=color:#66d9ef>BY</span> country_sales.total_sales <span style=color:#66d9ef>DESC</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>LIMIT</span> <span style=color:#ae81ff>5</span>;
-</span></span></code></pre></div><h3 id=헷갈렸던-점-3>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-3>#</a></h3><p><code>FROM invoices</code>는 원본 테이블을 바로 쓰는 것이지만, <code>FROM (SELECT ...) AS sub</code>는 원본을 가공한 임시표를 쓰는 것이다. 이 차이가 처음에는 갑자기 난이도를 올리는 부분이었다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>FROM invoices
-</span></span><span style=display:flex><span>= 원본 테이블 사용
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>FROM (SELECT ... FROM invoices GROUP BY ...) AS sub
-</span></span><span style=display:flex><span>= 원본을 가공한 임시표 사용
-</span></span></code></pre></div><h3 id=정리된-이해-3>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-3>#</a></h3><p><code>SELECT</code>와 <code>FROM</code>의 역할을 다시 정리했다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>FROM = 작업할 데이터 덩어리 / 판 / 임시 테이블을 정함
-</span></span><span style=display:flex><span>SELECT = 그 데이터 덩어리에서 최종으로 보여줄 컬럼을 고름
-</span></span></code></pre></div><p>스칼라 서브쿼리는 행마다 값 하나를 붙이고, FROM 절 서브쿼리는 새로운 데이터판을 만든다.</p><h2 id=총평>총평<a hidden class=anchor aria-hidden=true href=#총평>#</a></h2><h3 id=오늘-오전-전체에서-배운-것>오늘 오전 전체에서 배운 것<a hidden class=anchor aria-hidden=true href=#오늘-오전-전체에서-배운-것>#</a></h3><p>오전 수업은 함수 복습에서 시작해 GROUP BY, HAVING, JOIN, 서브쿼리, 스칼라 서브쿼리, FROM 절 서브쿼리까지 이어졌다. 처음에는 각각의 문법이 따로 떨어져 보였지만, 실제로는 “기준값 만들기 → 묶기 → 연결하기 → 임시표 만들기 → 최종 결과표 만들기”라는 하나의 데이터 흐름으로 연결된다.</p><p>가장 중요한 전환은 SQL을 단순 조회문이 아니라 데이터 파이프라인으로 보는 관점이었다. 원본 테이블을 바로 조회하는 수준을 넘어, 안쪽 SELECT로 요약표를 만들고, 그 결과를 바깥 쿼리에서 다시 정렬하거나 JOIN하는 흐름이 보이기 시작했다.</p><h3 id=다음에-조심할-것>다음에 조심할 것<a hidden class=anchor aria-hidden=true href=#다음에-조심할-것>#</a></h3><p><code>DESC</code>는 <code>GROUP BY</code>가 아니라 <code>ORDER BY</code>에 붙인다. 정렬 기준은 문제에서 요구하는 값이 건수인지 금액인지 먼저 확인해야 한다. JOIN 문제에서는 테이블을 먼저 외우려고 하기보다 중심 테이블과 연결 경로를 찾는 편이 안전하다.</p><p>서브쿼리는 괄호 안 SELECT가 무엇을 반환하는지부터 봐야 한다. 값 하나인지, 목록인지, 임시표인지 구분하지 않으면 메인쿼리까지 같이 흔들린다.</p><h3 id=다음-복습-주제>다음 복습 주제<a hidden class=anchor aria-hidden=true href=#다음-복습-주제>#</a></h3><ul><li><code>WHERE</code>와 <code>HAVING</code>의 차이</li><li><code>GROUP BY</code>와 집계 함수 조합</li><li>중간 테이블이 있는 JOIN 경로</li><li>단일 행 서브쿼리와 다중 행 서브쿼리</li><li>스칼라 서브쿼리와 FROM 절 서브쿼리 차이</li><li>파생 테이블에는 반드시 별칭을 붙인다는 점</li></ul></div><footer class=post-footer><ul class=post-tags><li><a href=https://Han-think.github.io/tags/sql/>Sql</a></li><li><a href=https://Han-think.github.io/tags/sqlite/>SQLite</a></li><li><a href=https://Han-think.github.io/tags/group-by/>Group-By</a></li><li><a href=https://Han-think.github.io/tags/join/>Join</a></li><li><a href=https://Han-think.github.io/tags/subquery/>Subquery</a></li><li><a href=https://Han-think.github.io/tags/beginner/>Beginner</a></li><li><a href=https://Han-think.github.io/tags/review/>Review</a></li></ul><nav class=paginav><a class=prev href=https://Han-think.github.io/learning/consulting-report-prompting/><span class=title>« Prev</span>
-<span>컨설팅 보고서 작성, 초보자를 위한 핵심 가이드</span>
-</a><a class=next href=https://Han-think.github.io/learning/2026-06-10-pm-sql-set-operators-recursive-cte/><span class=title>Next »</span>
-<span>UNION ALL부터 재귀 CTE까지, SQL 결과표를 조립하는 방식</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
-<span>Powered by
-<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
-<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>GROUP BY에서 FROM 절 서브쿼리까지, SQL을 데이터 파이프라인으로 보기 | Han-think Blog</title>
+<meta name="keywords" content="sql, sqlite, group-by, join, subquery, beginner, review">
+<meta name="description" content="GROUP BY, HAVING, JOIN, 스칼라 서브쿼리와 FROM 절 서브쿼리를 데이터 흐름으로 다시 정리한 오전 학습 기록">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-06-10-am-sql-group-join-subquery/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-06-10-am-sql-group-join-subquery/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-06-10-am-sql-group-join-subquery/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="GROUP BY에서 FROM 절 서브쿼리까지, SQL을 데이터 파이프라인으로 보기">
+  <meta property="og:description" content="GROUP BY, HAVING, JOIN, 스칼라 서브쿼리와 FROM 절 서브쿼리를 데이터 흐름으로 다시 정리한 오전 학습 기록">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-10T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-10T00:00:00+00:00">
+    <meta property="article:tag" content="Sql">
+    <meta property="article:tag" content="SQLite">
+    <meta property="article:tag" content="Group-By">
+    <meta property="article:tag" content="Join">
+    <meta property="article:tag" content="Subquery">
+    <meta property="article:tag" content="Beginner">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="GROUP BY에서 FROM 절 서브쿼리까지, SQL을 데이터 파이프라인으로 보기">
+  <meta name="twitter:description" content="GROUP BY, HAVING, JOIN, 스칼라 서브쿼리와 FROM 절 서브쿼리를 데이터 흐름으로 다시 정리한 오전 학습 기록">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "GROUP BY에서 FROM 절 서브쿼리까지, SQL을 데이터 파이프라인으로 보기",
+      "item": "https://Han-think.github.io/learning/2026-06-10-am-sql-group-join-subquery/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "GROUP BY에서 FROM 절 서브쿼리까지, SQL을 데이터 파이프라인으로 보기",
+  "name": "GROUP BY에서 FROM 절 서브쿼리까지, SQL을 데이터 파이프라인으로 보기",
+  "description": "GROUP BY, HAVING, JOIN, 스칼라 서브쿼리와 FROM 절 서브쿼리를 데이터 흐름으로 다시 정리한 오전 학습 기록",
+  "keywords": [
+    "sql", "sqlite", "group-by", "join", "subquery", "beginner", "review"
+  ],
+  "articleBody": "목차 1. 어제 SQL 복습: 함수와 JOIN이 서브쿼리로 이어지는 흐름 2. GROUP BY와 HAVING: 묶고 나서 조건 걸기 3. JOIN과 서브쿼리: ERD보다 연결표를 먼저 보기 4. 스칼라 서브쿼리와 FROM 절 서브쿼리: 값과 임시표 만들기 총평 1. 어제 SQL 복습: 함수와 JOIN이 서브쿼리로 이어지는 흐름 무엇을 배웠나 오전 수업은 전날 배운 SQL 함수와 다수 테이블 제어 복습에서 시작했다. 함수는 단순 계산용으로 끝나는 것이 아니라, 이후 서브쿼리 안에서 기준값을 만드는 재료가 된다.\nCOUNT = 데이터 개수 세기 LIMIT = 출력 개수 제한 SUM = 총합 AVG = 평균 MAX = 최댓값 MIN = 최솟값 예를 들어 평균 결제 금액보다 작은 인보이스를 찾을 때는 먼저 AVG(Total)로 기준값을 만든다.\nSELECT InvoiceId, Total FROM invoices WHERE Total \u003c ( SELECT AVG(Total) FROM invoices ); JOIN 복습에서는 ON이 핵심이었다. JOIN은 테이블을 그냥 붙이는 것이 아니라, 어떤 컬럼끼리 연결할지 지정해야 한다.\nSELECT * FROM rental INNER JOIN user ON user.id = rental.user_id; 헷갈렸던 점 복습 카드만 보면 함수와 JOIN은 각각 따로 떨어진 문법처럼 보였다. 하지만 실제 문제에서는 AVG, MAX, COUNT 같은 함수가 서브쿼리 안으로 들어가고, JOIN은 테이블 간 경로를 찾는 도구로 다시 등장했다.\n또 LEFT JOIN과 RIGHT JOIN은 어느 쪽 테이블이 살아남는지 자주 헷갈릴 수 있다.\nFROM A LEFT JOIN B = A 생존 FROM A RIGHT JOIN B = B 생존 정리된 이해 전날 배운 3장 함수와 4장 JOIN은 오늘 배운 서브쿼리의 재료였다.\n3장 함수 → 평균/최대/최소 기준값 만들기 4장 GROUP BY / HAVING / JOIN → 묶기, 조건 걸기, 테이블 연결하기 5장 서브쿼리 → 앞에서 만든 기준값과 연결 감각을 안쪽 SELECT로 접어 넣기 2. GROUP BY와 HAVING: 묶고 나서 조건 걸기 무엇을 배웠나 GROUP BY는 같은 값끼리 묶는 기준이고, 집계 함수는 묶인 그룹 안에서 개수·합계·평균·최댓값을 계산한다.\n기본 공식은 다음과 같다.\nSELECT 그룹기준컬럼, COUNT(*) AS count_name FROM 테이블 GROUP BY 그룹기준컬럼 ORDER BY count_name DESC; 미디어 타입별 트랙 수는 다음처럼 쓸 수 있다.\nSELECT MediaTypeId, COUNT(*) AS track_count FROM tracks GROUP BY MediaTypeId; 도시별 인보이스 건수를 많은 순서로 정렬하려면 ORDER BY의 기준은 원본 금액이 아니라 집계 결과여야 한다.\nSELECT BillingCity, COUNT(*) AS invoices_count FROM invoices GROUP BY BillingCity ORDER BY invoices_count DESC; 담당 직원별 고객 수에서 10명 이상만 보려면 HAVING을 쓴다.\nSELECT SupportRepId, COUNT(*) AS customer_count FROM customers GROUP BY SupportRepId HAVING COUNT(*) \u003e= 10; 장르별 최대 재생시간은 MAX와 GROUP BY를 함께 사용한다.\nSELECT GenreId, MAX(Milliseconds) AS max_ms FROM tracks GROUP BY GenreId ORDER BY max_ms DESC; 헷갈렸던 점 DESC를 GROUP BY에 붙이려고 했던 부분이 핵심 오류였다. GROUP BY는 묶는 기준이고, DESC는 정렬 방향이므로 ORDER BY에 붙어야 한다.\nGROUP BY = 묶기 ORDER BY = 정렬 DESC = 정렬 방향 또 문제에서 요구하는 정렬 기준이 “건수”인지 “금액”인지 분리해서 봐야 한다. 도시별 주문 건수를 묻는 문제에서 ORDER BY Total DESC를 쓰면 문제 목적과 어긋난다.\n정리된 이해 WHERE와 HAVING의 차이를 이렇게 고정했다.\nWHERE = 그룹 짓기 전 원본 행 조건 HAVING = GROUP BY 이후 집계 결과 조건 즉 원본 행을 필터링할 때는 WHERE, 묶은 뒤 계산된 결과를 필터링할 때는 HAVING이다.\n3. JOIN과 서브쿼리: ERD보다 연결표를 먼저 보기 무엇을 배웠나 Chinook DB 문제에서는 ERD 전체를 한 번에 보려고 하기보다, 문제마다 필요한 테이블과 연결 컬럼을 표처럼 정리하는 방식이 더 유용했다.\n트랙 이름과 미디어 타입 이름을 함께 보려면 tracks와 media_types를 연결한다.\nSELECT t.Name AS track_name, mt.Name AS media_type FROM tracks AS t INNER JOIN media_types AS mt ON t.MediaTypeId = mt.MediaTypeId; 인보이스와 고객 정보를 함께 보려면 invoices.CustomerId = customers.CustomerId 경로를 사용한다.\nSELECT i.InvoiceId, i.Total, i.BillingCountry, c.LastName, c.FirstName FROM invoices AS i INNER JOIN customers AS c ON i.CustomerId = c.CustomerId; 플레이리스트와 트랙은 직접 연결되지 않고, playlist_track이라는 중간 테이블을 거친다.\nSELECT p.Name AS playlist_name, t.Name AS track_name FROM playlists AS p INNER JOIN playlist_track AS pt ON p.PlaylistId = pt.PlaylistId INNER JOIN tracks AS t ON pt.TrackId = t.TrackId; 헷갈렸던 점 세 테이블 JOIN에서는 중간 테이블이 왜 필요한지 바로 보이지 않았다. playlists와 tracks가 직접 연결되지 않기 때문에 playlist_track이 다리 역할을 한다.\nplaylists → playlist_track → tracks 또 같은 결과를 JOIN으로도, 서브쿼리로도 만들 수 있어서 무엇이 필수인지 혼동됐다.\n정리된 이해 JOIN 문제는 ERD 전체보다 연결표를 믿는 것이 낫다.\ntracks.MediaTypeId = media_types.MediaTypeId invoices.CustomerId = customers.CustomerId playlists.PlaylistId = playlist_track.PlaylistId playlist_track.TrackId = tracks.TrackId 서브쿼리는 결과 형태에 따라 구분한다.\n단일 행 서브쿼리 = AVG, MAX, MIN처럼 값 하나 → =, \u003e, \u003c 다중 행 서브쿼리 = 목록 → IN, NOT IN FROM 절 서브쿼리 = 안쪽에서 임시표를 만들고 바깥에서 조회 4. 스칼라 서브쿼리와 FROM 절 서브쿼리: 값과 임시표 만들기 무엇을 배웠나 스칼라 서브쿼리는 SQL에 SCALAR라는 키워드를 쓰는 것이 아니다. 서브쿼리 결과가 한 칸짜리 값처럼 쓰일 때 스칼라 서브쿼리라고 부른다.\n스칼라 = 한 칸짜리 값 스칼라 서브쿼리 = 값 하나처럼 쓰이는 괄호 안 SELECT 각 고객의 총 결제 금액을 옆 칸에 붙이는 예시는 다음과 같다.\nSELECT c.FirstName, c.LastName, ( SELECT SUM(i.Total) FROM invoices AS i WHERE i.CustomerId = c.CustomerId ) AS total_spent FROM customers AS c; FROM 절 서브쿼리는 안쪽 SELECT로 임시표를 만들고, 바깥 SELECT가 그 임시표를 다시 조회하는 방식이다.\nSELECT country_sales.BillingCountry, country_sales.total_sales FROM ( SELECT BillingCountry, SUM(Total) AS total_sales FROM invoices GROUP BY BillingCountry ) AS country_sales ORDER BY country_sales.total_sales DESC LIMIT 5; 헷갈렸던 점 FROM invoices는 원본 테이블을 바로 쓰는 것이지만, FROM (SELECT ...) AS sub는 원본을 가공한 임시표를 쓰는 것이다. 이 차이가 처음에는 갑자기 난이도를 올리는 부분이었다.\nFROM invoices = 원본 테이블 사용 FROM (SELECT ... FROM invoices GROUP BY ...) AS sub = 원본을 가공한 임시표 사용 정리된 이해 SELECT와 FROM의 역할을 다시 정리했다.\nFROM = 작업할 데이터 덩어리 / 판 / 임시 테이블을 정함 SELECT = 그 데이터 덩어리에서 최종으로 보여줄 컬럼을 고름 스칼라 서브쿼리는 행마다 값 하나를 붙이고, FROM 절 서브쿼리는 새로운 데이터판을 만든다.\n총평 오늘 오전 전체에서 배운 것 오전 수업은 함수 복습에서 시작해 GROUP BY, HAVING, JOIN, 서브쿼리, 스칼라 서브쿼리, FROM 절 서브쿼리까지 이어졌다. 처음에는 각각의 문법이 따로 떨어져 보였지만, 실제로는 “기준값 만들기 → 묶기 → 연결하기 → 임시표 만들기 → 최종 결과표 만들기”라는 하나의 데이터 흐름으로 연결된다.\n가장 중요한 전환은 SQL을 단순 조회문이 아니라 데이터 파이프라인으로 보는 관점이었다. 원본 테이블을 바로 조회하는 수준을 넘어, 안쪽 SELECT로 요약표를 만들고, 그 결과를 바깥 쿼리에서 다시 정렬하거나 JOIN하는 흐름이 보이기 시작했다.\n다음에 조심할 것 DESC는 GROUP BY가 아니라 ORDER BY에 붙인다. 정렬 기준은 문제에서 요구하는 값이 건수인지 금액인지 먼저 확인해야 한다. JOIN 문제에서는 테이블을 먼저 외우려고 하기보다 중심 테이블과 연결 경로를 찾는 편이 안전하다.\n서브쿼리는 괄호 안 SELECT가 무엇을 반환하는지부터 봐야 한다. 값 하나인지, 목록인지, 임시표인지 구분하지 않으면 메인쿼리까지 같이 흔들린다.\n다음 복습 주제 WHERE와 HAVING의 차이 GROUP BY와 집계 함수 조합 중간 테이블이 있는 JOIN 경로 단일 행 서브쿼리와 다중 행 서브쿼리 스칼라 서브쿼리와 FROM 절 서브쿼리 차이 파생 테이블에는 반드시 별칭을 붙인다는 점 ",
+  "wordCount" : "1054",
+  "inLanguage": "en",
+  "datePublished": "2026-06-10T00:00:00Z",
+  "dateModified": "2026-06-10T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-06-10-am-sql-group-join-subquery/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      GROUP BY에서 FROM 절 서브쿼리까지, SQL을 데이터 파이프라인으로 보기
+    </h1>
+    <div class="post-description">
+      GROUP BY, HAVING, JOIN, 스칼라 서브쿼리와 FROM 절 서브쿼리를 데이터 흐름으로 다시 정리한 오전 학습 기록
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-10 00:00:00 +0000 UTC'>2026년 6월 10일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li><a href="#1-%EC%96%B4%EC%A0%9C-sql-%EB%B3%B5%EC%8A%B5-%ED%95%A8%EC%88%98%EC%99%80-join%EC%9D%B4-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC%EB%A1%9C-%EC%9D%B4%EC%96%B4%EC%A7%80%EB%8A%94-%ED%9D%90%EB%A6%84">1. 어제 SQL 복습: 함수와 JOIN이 서브쿼리로 이어지는 흐름</a></li>
+<li><a href="#2-group-by%EC%99%80-having-%EB%AC%B6%EA%B3%A0-%EB%82%98%EC%84%9C-%EC%A1%B0%EA%B1%B4-%EA%B1%B8%EA%B8%B0">2. GROUP BY와 HAVING: 묶고 나서 조건 걸기</a></li>
+<li><a href="#3-join%EA%B3%BC-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC-erd%EB%B3%B4%EB%8B%A4-%EC%97%B0%EA%B2%B0%ED%91%9C%EB%A5%BC-%EB%A8%BC%EC%A0%80-%EB%B3%B4%EA%B8%B0">3. JOIN과 서브쿼리: ERD보다 연결표를 먼저 보기</a></li>
+<li><a href="#4-%EC%8A%A4%EC%B9%BC%EB%9D%BC-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC%EC%99%80-from-%EC%A0%88-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC-%EA%B0%92%EA%B3%BC-%EC%9E%84%EC%8B%9C%ED%91%9C-%EB%A7%8C%EB%93%A4%EA%B8%B0">4. 스칼라 서브쿼리와 FROM 절 서브쿼리: 값과 임시표 만들기</a></li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-어제-sql-복습-함수와-join이-서브쿼리로-이어지는-흐름">1. 어제 SQL 복습: 함수와 JOIN이 서브쿼리로 이어지는 흐름<a hidden class="anchor" aria-hidden="true" href="#1-어제-sql-복습-함수와-join이-서브쿼리로-이어지는-흐름">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>오전 수업은 전날 배운 SQL 함수와 다수 테이블 제어 복습에서 시작했다. 함수는 단순 계산용으로 끝나는 것이 아니라, 이후 서브쿼리 안에서 기준값을 만드는 재료가 된다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>COUNT = 데이터 개수 세기
+</span></span><span style="display:flex;"><span>LIMIT = 출력 개수 제한
+</span></span><span style="display:flex;"><span>SUM = 총합
+</span></span><span style="display:flex;"><span>AVG = 평균
+</span></span><span style="display:flex;"><span>MAX = 최댓값
+</span></span><span style="display:flex;"><span>MIN = 최솟값
+</span></span></code></pre></div><p>예를 들어 평균 결제 금액보다 작은 인보이스를 찾을 때는 먼저 <code>AVG(Total)</code>로 기준값을 만든다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> InvoiceId, Total
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> invoices
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> Total <span style="color:#f92672">&lt;</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">AVG</span>(Total)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">FROM</span> invoices
+</span></span><span style="display:flex;"><span>);
+</span></span></code></pre></div><p>JOIN 복습에서는 <code>ON</code>이 핵심이었다. JOIN은 테이블을 그냥 붙이는 것이 아니라, 어떤 컬럼끼리 연결할지 지정해야 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> rental
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span> <span style="color:#66d9ef">user</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ON</span> <span style="color:#66d9ef">user</span>.id <span style="color:#f92672">=</span> rental.user_id;
+</span></span></code></pre></div><h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>복습 카드만 보면 함수와 JOIN은 각각 따로 떨어진 문법처럼 보였다. 하지만 실제 문제에서는 <code>AVG</code>, <code>MAX</code>, <code>COUNT</code> 같은 함수가 서브쿼리 안으로 들어가고, JOIN은 테이블 간 경로를 찾는 도구로 다시 등장했다.</p>
+<p>또 <code>LEFT JOIN</code>과 <code>RIGHT JOIN</code>은 어느 쪽 테이블이 살아남는지 자주 헷갈릴 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>FROM A LEFT JOIN B  = A 생존
+</span></span><span style="display:flex;"><span>FROM A RIGHT JOIN B = B 생존
+</span></span></code></pre></div><h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>전날 배운 3장 함수와 4장 JOIN은 오늘 배운 서브쿼리의 재료였다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>3장 함수
+</span></span><span style="display:flex;"><span>→ 평균/최대/최소 기준값 만들기
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>4장 GROUP BY / HAVING / JOIN
+</span></span><span style="display:flex;"><span>→ 묶기, 조건 걸기, 테이블 연결하기
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>5장 서브쿼리
+</span></span><span style="display:flex;"><span>→ 앞에서 만든 기준값과 연결 감각을 안쪽 SELECT로 접어 넣기
+</span></span></code></pre></div><h2 id="2-group-by와-having-묶고-나서-조건-걸기">2. GROUP BY와 HAVING: 묶고 나서 조건 걸기<a hidden class="anchor" aria-hidden="true" href="#2-group-by와-having-묶고-나서-조건-걸기">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p><code>GROUP BY</code>는 같은 값끼리 묶는 기준이고, 집계 함수는 묶인 그룹 안에서 개수·합계·평균·최댓값을 계산한다.</p>
+<p>기본 공식은 다음과 같다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#960050;background-color:#1e0010">그룹기준컬럼</span>, <span style="color:#66d9ef">COUNT</span>(<span style="color:#f92672">*</span>) <span style="color:#66d9ef">AS</span> count_name
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> <span style="color:#960050;background-color:#1e0010">테이블</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> <span style="color:#960050;background-color:#1e0010">그룹기준컬럼</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> count_name <span style="color:#66d9ef">DESC</span>;
+</span></span></code></pre></div><p>미디어 타입별 트랙 수는 다음처럼 쓸 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> MediaTypeId, <span style="color:#66d9ef">COUNT</span>(<span style="color:#f92672">*</span>) <span style="color:#66d9ef">AS</span> track_count
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> tracks
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> MediaTypeId;
+</span></span></code></pre></div><p>도시별 인보이스 건수를 많은 순서로 정렬하려면 <code>ORDER BY</code>의 기준은 원본 금액이 아니라 집계 결과여야 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> BillingCity, <span style="color:#66d9ef">COUNT</span>(<span style="color:#f92672">*</span>) <span style="color:#66d9ef">AS</span> invoices_count
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> invoices
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> BillingCity
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> invoices_count <span style="color:#66d9ef">DESC</span>;
+</span></span></code></pre></div><p>담당 직원별 고객 수에서 10명 이상만 보려면 <code>HAVING</code>을 쓴다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> SupportRepId, <span style="color:#66d9ef">COUNT</span>(<span style="color:#f92672">*</span>) <span style="color:#66d9ef">AS</span> customer_count
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> customers
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> SupportRepId
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">HAVING</span> <span style="color:#66d9ef">COUNT</span>(<span style="color:#f92672">*</span>) <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">10</span>;
+</span></span></code></pre></div><p>장르별 최대 재생시간은 <code>MAX</code>와 <code>GROUP BY</code>를 함께 사용한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> GenreId, <span style="color:#66d9ef">MAX</span>(Milliseconds) <span style="color:#66d9ef">AS</span> max_ms
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> tracks
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> GenreId
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> max_ms <span style="color:#66d9ef">DESC</span>;
+</span></span></code></pre></div><h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p><code>DESC</code>를 <code>GROUP BY</code>에 붙이려고 했던 부분이 핵심 오류였다. <code>GROUP BY</code>는 묶는 기준이고, <code>DESC</code>는 정렬 방향이므로 <code>ORDER BY</code>에 붙어야 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>GROUP BY = 묶기
+</span></span><span style="display:flex;"><span>ORDER BY = 정렬
+</span></span><span style="display:flex;"><span>DESC = 정렬 방향
+</span></span></code></pre></div><p>또 문제에서 요구하는 정렬 기준이 “건수”인지 “금액”인지 분리해서 봐야 한다. 도시별 주문 건수를 묻는 문제에서 <code>ORDER BY Total DESC</code>를 쓰면 문제 목적과 어긋난다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p><code>WHERE</code>와 <code>HAVING</code>의 차이를 이렇게 고정했다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>WHERE = 그룹 짓기 전 원본 행 조건
+</span></span><span style="display:flex;"><span>HAVING = GROUP BY 이후 집계 결과 조건
+</span></span></code></pre></div><p>즉 원본 행을 필터링할 때는 <code>WHERE</code>, 묶은 뒤 계산된 결과를 필터링할 때는 <code>HAVING</code>이다.</p>
+<h2 id="3-join과-서브쿼리-erd보다-연결표를-먼저-보기">3. JOIN과 서브쿼리: ERD보다 연결표를 먼저 보기<a hidden class="anchor" aria-hidden="true" href="#3-join과-서브쿼리-erd보다-연결표를-먼저-보기">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>Chinook DB 문제에서는 ERD 전체를 한 번에 보려고 하기보다, 문제마다 필요한 테이블과 연결 컬럼을 표처럼 정리하는 방식이 더 유용했다.</p>
+<p>트랙 이름과 미디어 타입 이름을 함께 보려면 <code>tracks</code>와 <code>media_types</code>를 연결한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    t.Name <span style="color:#66d9ef">AS</span> track_name,
+</span></span><span style="display:flex;"><span>    mt.Name <span style="color:#66d9ef">AS</span> media_type
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> tracks <span style="color:#66d9ef">AS</span> t
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span> media_types <span style="color:#66d9ef">AS</span> mt
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ON</span> t.MediaTypeId <span style="color:#f92672">=</span> mt.MediaTypeId;
+</span></span></code></pre></div><p>인보이스와 고객 정보를 함께 보려면 <code>invoices.CustomerId = customers.CustomerId</code> 경로를 사용한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    i.InvoiceId,
+</span></span><span style="display:flex;"><span>    i.Total,
+</span></span><span style="display:flex;"><span>    i.BillingCountry,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">c</span>.LastName,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">c</span>.FirstName
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> invoices <span style="color:#66d9ef">AS</span> i
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span> customers <span style="color:#66d9ef">AS</span> <span style="color:#66d9ef">c</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ON</span> i.CustomerId <span style="color:#f92672">=</span> <span style="color:#66d9ef">c</span>.CustomerId;
+</span></span></code></pre></div><p>플레이리스트와 트랙은 직접 연결되지 않고, <code>playlist_track</code>이라는 중간 테이블을 거친다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    p.Name <span style="color:#66d9ef">AS</span> playlist_name,
+</span></span><span style="display:flex;"><span>    t.Name <span style="color:#66d9ef">AS</span> track_name
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> playlists <span style="color:#66d9ef">AS</span> p
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span> playlist_track <span style="color:#66d9ef">AS</span> pt
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ON</span> p.PlaylistId <span style="color:#f92672">=</span> pt.PlaylistId
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span> tracks <span style="color:#66d9ef">AS</span> t
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ON</span> pt.TrackId <span style="color:#f92672">=</span> t.TrackId;
+</span></span></code></pre></div><h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>세 테이블 JOIN에서는 중간 테이블이 왜 필요한지 바로 보이지 않았다. <code>playlists</code>와 <code>tracks</code>가 직접 연결되지 않기 때문에 <code>playlist_track</code>이 다리 역할을 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>playlists → playlist_track → tracks
+</span></span></code></pre></div><p>또 같은 결과를 JOIN으로도, 서브쿼리로도 만들 수 있어서 무엇이 필수인지 혼동됐다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>JOIN 문제는 ERD 전체보다 연결표를 믿는 것이 낫다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>tracks.MediaTypeId = media_types.MediaTypeId
+</span></span><span style="display:flex;"><span>invoices.CustomerId = customers.CustomerId
+</span></span><span style="display:flex;"><span>playlists.PlaylistId = playlist_track.PlaylistId
+</span></span><span style="display:flex;"><span>playlist_track.TrackId = tracks.TrackId
+</span></span></code></pre></div><p>서브쿼리는 결과 형태에 따라 구분한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>단일 행 서브쿼리 = AVG, MAX, MIN처럼 값 하나 → =, &gt;, &lt;
+</span></span><span style="display:flex;"><span>다중 행 서브쿼리 = 목록 → IN, NOT IN
+</span></span><span style="display:flex;"><span>FROM 절 서브쿼리 = 안쪽에서 임시표를 만들고 바깥에서 조회
+</span></span></code></pre></div><h2 id="4-스칼라-서브쿼리와-from-절-서브쿼리-값과-임시표-만들기">4. 스칼라 서브쿼리와 FROM 절 서브쿼리: 값과 임시표 만들기<a hidden class="anchor" aria-hidden="true" href="#4-스칼라-서브쿼리와-from-절-서브쿼리-값과-임시표-만들기">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>스칼라 서브쿼리는 SQL에 <code>SCALAR</code>라는 키워드를 쓰는 것이 아니다. 서브쿼리 결과가 한 칸짜리 값처럼 쓰일 때 스칼라 서브쿼리라고 부른다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>스칼라 = 한 칸짜리 값
+</span></span><span style="display:flex;"><span>스칼라 서브쿼리 = 값 하나처럼 쓰이는 괄호 안 SELECT
+</span></span></code></pre></div><p>각 고객의 총 결제 금액을 옆 칸에 붙이는 예시는 다음과 같다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">c</span>.FirstName,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">c</span>.LastName,
+</span></span><span style="display:flex;"><span>    (
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">SUM</span>(i.Total)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">FROM</span> invoices <span style="color:#66d9ef">AS</span> i
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">WHERE</span> i.CustomerId <span style="color:#f92672">=</span> <span style="color:#66d9ef">c</span>.CustomerId
+</span></span><span style="display:flex;"><span>    ) <span style="color:#66d9ef">AS</span> total_spent
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> customers <span style="color:#66d9ef">AS</span> <span style="color:#66d9ef">c</span>;
+</span></span></code></pre></div><p>FROM 절 서브쿼리는 안쪽 SELECT로 임시표를 만들고, 바깥 SELECT가 그 임시표를 다시 조회하는 방식이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    country_sales.BillingCountry,
+</span></span><span style="display:flex;"><span>    country_sales.total_sales
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>        BillingCountry,
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">SUM</span>(Total) <span style="color:#66d9ef">AS</span> total_sales
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">FROM</span> invoices
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> BillingCountry
+</span></span><span style="display:flex;"><span>) <span style="color:#66d9ef">AS</span> country_sales
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> country_sales.total_sales <span style="color:#66d9ef">DESC</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">5</span>;
+</span></span></code></pre></div><h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p><code>FROM invoices</code>는 원본 테이블을 바로 쓰는 것이지만, <code>FROM (SELECT ...) AS sub</code>는 원본을 가공한 임시표를 쓰는 것이다. 이 차이가 처음에는 갑자기 난이도를 올리는 부분이었다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>FROM invoices
+</span></span><span style="display:flex;"><span>= 원본 테이블 사용
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FROM (SELECT ... FROM invoices GROUP BY ...) AS sub
+</span></span><span style="display:flex;"><span>= 원본을 가공한 임시표 사용
+</span></span></code></pre></div><h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p><code>SELECT</code>와 <code>FROM</code>의 역할을 다시 정리했다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>FROM = 작업할 데이터 덩어리 / 판 / 임시 테이블을 정함
+</span></span><span style="display:flex;"><span>SELECT = 그 데이터 덩어리에서 최종으로 보여줄 컬럼을 고름
+</span></span></code></pre></div><p>스칼라 서브쿼리는 행마다 값 하나를 붙이고, FROM 절 서브쿼리는 새로운 데이터판을 만든다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>오전 수업은 함수 복습에서 시작해 GROUP BY, HAVING, JOIN, 서브쿼리, 스칼라 서브쿼리, FROM 절 서브쿼리까지 이어졌다. 처음에는 각각의 문법이 따로 떨어져 보였지만, 실제로는 “기준값 만들기 → 묶기 → 연결하기 → 임시표 만들기 → 최종 결과표 만들기”라는 하나의 데이터 흐름으로 연결된다.</p>
+<p>가장 중요한 전환은 SQL을 단순 조회문이 아니라 데이터 파이프라인으로 보는 관점이었다. 원본 테이블을 바로 조회하는 수준을 넘어, 안쪽 SELECT로 요약표를 만들고, 그 결과를 바깥 쿼리에서 다시 정렬하거나 JOIN하는 흐름이 보이기 시작했다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p><code>DESC</code>는 <code>GROUP BY</code>가 아니라 <code>ORDER BY</code>에 붙인다. 정렬 기준은 문제에서 요구하는 값이 건수인지 금액인지 먼저 확인해야 한다. JOIN 문제에서는 테이블을 먼저 외우려고 하기보다 중심 테이블과 연결 경로를 찾는 편이 안전하다.</p>
+<p>서브쿼리는 괄호 안 SELECT가 무엇을 반환하는지부터 봐야 한다. 값 하나인지, 목록인지, 임시표인지 구분하지 않으면 메인쿼리까지 같이 흔들린다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<ul>
+<li><code>WHERE</code>와 <code>HAVING</code>의 차이</li>
+<li><code>GROUP BY</code>와 집계 함수 조합</li>
+<li>중간 테이블이 있는 JOIN 경로</li>
+<li>단일 행 서브쿼리와 다중 행 서브쿼리</li>
+<li>스칼라 서브쿼리와 FROM 절 서브쿼리 차이</li>
+<li>파생 테이블에는 반드시 별칭을 붙인다는 점</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/sql/">Sql</a></li>
+      <li><a href="https://Han-think.github.io/tags/sqlite/">SQLite</a></li>
+      <li><a href="https://Han-think.github.io/tags/group-by/">Group-By</a></li>
+      <li><a href="https://Han-think.github.io/tags/join/">Join</a></li>
+      <li><a href="https://Han-think.github.io/tags/subquery/">Subquery</a></li>
+      <li><a href="https://Han-think.github.io/tags/beginner/">Beginner</a></li>
+      <li><a href="https://Han-think.github.io/tags/review/">Review</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/consulting-report-prompting/">
+    <span class="title">« Prev</span>
+    <span>컨설팅 보고서 작성, 초보자를 위한 핵심 가이드</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-06-10-pm-sql-set-operators-recursive-cte/">
+    <span class="title">Next »</span>
+    <span>UNION ALL부터 재귀 CTE까지, SQL 결과표를 조립하는 방식</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

@@ -1,1 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Gemma on Han-think Blog</title><link>https://Han-think.github.io/tags/gemma/</link><description>Recent content in Gemma on Han-think Blog</description><generator>Hugo</generator><language>ko-KR</language><lastBuildDate>Mon, 06 Jul 2026 03:00:00 +0900</lastBuildDate><atom:link href="https://Han-think.github.io/tags/gemma/index.xml" rel="self" type="application/rss+xml"/><item><title>Kaggle House Prices 3: 4개의 LLM은 같은 실험을 어떻게 다르게 읽었나</title><link>https://Han-think.github.io/projects/kaggle-house-prices-four-llm-review/</link><pubDate>Mon, 06 Jul 2026 03:00:00 +0900</pubDate><guid>https://Han-think.github.io/projects/kaggle-house-prices-four-llm-review/</guid><description>GPT-OSS, Gemma, Magistral, Hermes가 Kaggle 실험 해석에서 맡은 역할 비교</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Gemma on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/gemma/</link>
+    <description>Recent content in Gemma on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Mon, 06 Jul 2026 03:00:00 +0900</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/gemma/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kaggle House Prices 3: 4개의 LLM은 같은 실험을 어떻게 다르게 읽었나</title>
+      <link>https://Han-think.github.io/projects/kaggle-house-prices-four-llm-review/</link>
+      <pubDate>Mon, 06 Jul 2026 03:00:00 +0900</pubDate>
+      <guid>https://Han-think.github.io/projects/kaggle-house-prices-four-llm-review/</guid>
+      <description>GPT-OSS, Gemma, Magistral, Hermes가 Kaggle 실험 해석에서 맡은 역할 비교</description>
+    </item>
+  </channel>
+</rss>

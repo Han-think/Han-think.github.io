@@ -1,52 +1,439 @@
-<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>list-methods-scenarios-dedupe-connection | Han-think Blog</title><meta name=keywords content><meta name=description content="list-methods-scenarios-dedupe-connection 학습 정리"><meta name=author content><link rel=canonical href=https://Han-think.github.io/learning/list-methods-scenarios-dedupe-connection/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/learning/list-methods-scenarios-dedupe-connection/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/learning/list-methods-scenarios-dedupe-connection/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="list-methods-scenarios-dedupe-connection"><meta property="og:description" content="list-methods-scenarios-dedupe-connection 학습 정리"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="learning"><meta property="article:published_time" content="2026-06-02T00:00:00+00:00"><meta property="article:modified_time" content="2026-06-02T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="list-methods-scenarios-dedupe-connection"><meta name=twitter:description content="list-methods-scenarios-dedupe-connection 학습 정리"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"학습 기록","item":"https://Han-think.github.io/learning/"},{"@type":"ListItem","position":2,"name":"list-methods-scenarios-dedupe-connection","item":"https://Han-think.github.io/learning/list-methods-scenarios-dedupe-connection/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"list-methods-scenarios-dedupe-connection","name":"list-methods-scenarios-dedupe-connection","description":"list-methods-scenarios-dedupe-connection 학습 정리","keywords":[],"articleBody":"목차 리스트 추가 (append) 특정 위치 삽입 (insert) 요소 제거 (remove) 중복 제거 (dedupe) 총평 1. 리스트 추가 (append) 왜 이걸 보게 됐나 리스트에 새로운 요소를 추가할 때 각 메서드의 역할과 차이점을 명확히 이해하고자 함. 특히, append(), extend(), insert() 등의 메서드가 어떻게 다른지 파악하고 실제 코딩에서 어떻게 적용할지 배우고자 함.\n내가 헷갈린 지점 append()와 extend()의 차이점과 사용 시기를 정확히 구분하지 못했으며, insert() 메서드가 리스트 내 요소 배치에 미치는 영향을 구체적으로 이해하는 데 어려움이 있었음. 또한, 중복 요소 제거와 관련된 dedupe 기능과 remove() 메서드의 역할을 명확히 구분하지 못했음.\n시도한 코드 / 예시 # append() 예시 my_list = ['사과', '바나나'] my_list.append('체리') print(my_list) # 출력: ['사과', '바나나', '체리'] # extend() 예시 fruits = ['사과', '바나나'] more_fruits = ['체리', '포도'] fruits.extend(more_fruits) print(fruits) # 출력: ['사과', '바나나', '체리', '포도'] # insert() 예시 numbers = [1, 2, 3] numbers.insert(1, 1.5) print(numbers) # 출력: [1, 1.5, 2, 3] 결과와 해석 위 코드 실행 결과:\nappend() 후 my_list: ['사과', '바나나', '체리'] extend() 후 fruits: ['사과', '바나나', '체리', '포도'] insert() 후 numbers: [1, 1.5, 2, 3] 정리된 이해 리스트 조작 메서드 이해를 통해 append()로 리스트 끝에 요소 추가, extend()로 여러 요소 한 번에 추가, insert()로 특정 위치에 요소 삽입하는 방법을 익혔다. 각 메서드의 특징과 사용 시기를 파악함으로써 리스트 관리 능력 향상에 도움이 되었다.\n2. 특정 위치 삽입 (insert) 왜 이걸 보게 됐나 특정 위치에 값을 삽입해야 하는 상황에서 정확한 메서드 사용법을 이해하고 적용하기 위해\n내가 헷갈린 지점 언제 insert() 메서드를 사용해야 하는지, 그리고 삽입이 기존 요소에 어떤 영향을 미치는지 명확히 파악하지 못했던 경험\n시도한 코드 / 예시 fruits = ['사과', '바나나'] # 인덱스 1 위치에 '체리' 삽입 fruits.insert(1, '체리') print(fruits) # 결과: ['사과', '체리', '바나나'] 결과와 해석 인덱스 1 위치에 ‘체리’가 삽입되어 리스트가 [‘사과’, ‘체리’, ‘바나나’]로 변경됨\n정리된 이해 리스트의 insert() 메서드는 특정 위치에 요소를 삽입하여 리스트의 구조를 조정하는데 사용되며, 이 과정에서 삽입된 요소는 기존 요소들을 뒤로 밀어냅니다.\n3. 요소 제거 (remove) 왜 이걸 보게 됐나 리스트 조작에서 요소 제거의 핵심 이해와 실제 적용 방법을 명확히 하여, 학습자가 코드 작성 시 혼란을 줄일 수 있도록 함.\n내가 헷갈린 지점 학습자들이 remove() 메서드가 리스트에서 어떤 요소를 정확히 제거하는지, 특히 중복 요소 처리 시 어떤 동작을 하는지에 대해 명확한 이해가 부족함을 인식하고 해결 방안을 제시함.\n시도한 코드 / 예시 fruits = ['사과', '바나나', '체리', '사과'] # 첫 번째로 발견되는 '사과' 제거 fruits.remove('사과') print(fruits) # 결과: ['바나나', '체리', '사과'] # 중복 요소 제거를 위한 예시 unique_fruits = [] for fruit in fruits: # 중복 제거를 위해 별도 리스트 사용 if fruit not in unique_fruits: unique_fruits.append(fruit) print(unique_fruits) # 결과: ['바나나', '체리', '사과'] 결과와 해석 코드 실행 결과는 첫 번째로 발견되는 ‘사과’가 제거되고, 중복 요소를 수동으로 제거한 결과 리스트가 출력됨. 이는 remove() 메서드의 동작 방식과 중복 요소 제거를 위한 대체 방법을 보여줌.\n['바나나', '체리', '사과'] ['바나나', '체리', '사과'] 정리된 이해 학습자들은 remove() 메서드가 리스트에서 첫 번째로 나타나는 특정 요소를 제거함을 이해하게 되며, 중복 요소를 제거할 때는 remove() 대신 수동 반복문을 활용하거나 다른 중복 제거 기법을 적용해야 함을 깨닫게 됩니다. 이를 통해 실제 프로젝트에서의 리스트 조작 능력 향상에 도움이 됩니다.\n4. 중복 제거 (dedupe) 왜 이걸 보게 됐나 중복 요소를 제거하는 dedupe 기능의 실제 적용 방법과 그 중요성을 이해하고자 합니다. 특히, 리스트 내 중복 요소를 효과적으로 제거하는 방법과 이를 프로젝트, 특히 데이터 처리 파이프라인에서 어떻게 활용할 수 있는지 구체적인 예시를 원합니다.\n내가 헷갈린 지점 중복 요소 제거 시, 어떤 기준으로 중복을 판단해야 하는지 명확하지 않습니다. 예를 들어, 문자열 리스트에서 부분 문자열의 중복을 어떻게 처리할지에 대한 구체적인 방법이 필요합니다. 또한, dedupe와 remove() 메서드의 차이점과 각각의 적절한 사용 사례에 대한 이해가 부족합니다.\n시도한 코드 / 예시 def remove_duplicates(lst): # 중복 요소 제거 함수 return list(dict.fromkeys(lst)) # dict를 이용해 중복 제거 후 다시 리스트로 변환 # 예시 리스트 items = ['사과', '바나나', '사과', '체리', '바나나'] # 중복 제거 적용 unique_items = remove_duplicates(items) print(unique_items) # 출력: ['사과', '바나나', '체리'] 결과와 해석 [‘사과’, ‘바나나’, ‘체리’]\n정리된 이해 중복 요소를 제거하는 dedupe 기법은 dict.fromkeys()를 활용하여 리스트 내 중복 항목을 효과적으로 제거할 수 있습니다. 이 방법은 원본 리스트의 순서를 유지하면서 중복을 제거하므로, 데이터 처리 파이프라인에서 중복 데이터를 제거하는 데 유용합니다. remove()와 달리 dedupe는 전체 리스트를 스캔하여 모든 중복을 일괄적으로 처리할 수 있다는 점에서 차이가 있습니다.\n총평 오늘 전체에서 배운 것 리스트 조작 메서드 (append, insert, remove, dedupe)의 정확한 사용법과 적용 시나리오를 이해했습니다. 특히, 각 메서드의 구체적인 동작 방식과 예시를 통해 혼란스러웠던 부분을 명확히 파악했습니다.\n다음에 조심할 것 remove() 함수는 첫 번째 일치 요소만 제거하므로, 특정 값의 모든 발생을 제거하려면 루프를 사용해야 합니다. 또한, dedupe는 일반적으로 외부 라이브러리나 함수를 통해 구현되므로, 기본 리스트 메서드로는 완벽한 중복 제거가 어려울 수 있습니다.\n다음 복습 주제 반복문 내에서 append()를 활용한 순차적 데이터 추가와 insert()를 통한 특정 위치 삽입의 중요성을 깨달았습니다. 리스트 관리의 핵심은 데이터의 효율적인 추가, 수정, 제거에 있으며, 이는 실제 프로젝트에서 데이터 처리와 관리에 필수적입니다.\n","wordCount":"760","inLanguage":"en","datePublished":"2026-06-02T00:00:00Z","dateModified":"2026-06-02T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/learning/list-methods-scenarios-dedupe-connection/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
-<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">list-methods-scenarios-dedupe-connection</h1><div class=post-description>list-methods-scenarios-dedupe-connection 학습 정리</div><div class=post-meta><span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span></div></header><div class="post-content md-content"><h2 id=목차>목차<a hidden class=anchor aria-hidden=true href=#목차>#</a></h2><ul><li><ol><li><a href=#1-%EB%A6%AC%EC%8A%A4%ED%8A%B8-%EC%B6%94%EA%B0%80-append>리스트 추가 (append)</a></li></ol></li><li><ol start=2><li><a href=#2-%ED%8A%B9%EC%A0%95-%EC%9C%84%EC%B9%98-%EC%82%BD%EC%9E%85-insert>특정 위치 삽입 (insert)</a></li></ol></li><li><ol start=3><li><a href=#3-%EC%9A%94%EC%86%8C-%EC%A0%9C%EA%B1%B0-remove>요소 제거 (remove)</a></li></ol></li><li><ol start=4><li><a href=#4-%EC%A4%91%EB%B3%B5-%EC%A0%9C%EA%B1%B0-dedupe>중복 제거 (dedupe)</a></li></ol></li><li><a href=#%EC%B4%9D%ED%8F%89>총평</a></li></ul><h2 id=1-리스트-추가-append>1. 리스트 추가 (append)<a hidden class=anchor aria-hidden=true href=#1-리스트-추가-append>#</a></h2><h3 id=왜-이걸-보게-됐나>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나>#</a></h3><p>리스트에 새로운 요소를 추가할 때 각 메서드의 역할과 차이점을 명확히 이해하고자 함. 특히, <code>append()</code>, <code>extend()</code>, <code>insert()</code> 등의 메서드가 어떻게 다른지 파악하고 실제 코딩에서 어떻게 적용할지 배우고자 함.</p><h3 id=내가-헷갈린-지점>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점>#</a></h3><p><code>append()</code>와 <code>extend()</code>의 차이점과 사용 시기를 정확히 구분하지 못했으며, <code>insert()</code> 메서드가 리스트 내 요소 배치에 미치는 영향을 구체적으로 이해하는 데 어려움이 있었음. 또한, 중복 요소 제거와 관련된 <code>dedupe</code> 기능과 <code>remove()</code> 메서드의 역할을 명확히 구분하지 못했음.</p><h3 id=시도한-코드--예시>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># append() 예시</span>
-</span></span><span style=display:flex><span>my_list <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#39;사과&#39;</span>, <span style=color:#e6db74>&#39;바나나&#39;</span>]
-</span></span><span style=display:flex><span>my_list<span style=color:#f92672>.</span>append(<span style=color:#e6db74>&#39;체리&#39;</span>)
-</span></span><span style=display:flex><span>print(my_list)  <span style=color:#75715e># 출력: [&#39;사과&#39;, &#39;바나나&#39;, &#39;체리&#39;]</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># extend() 예시</span>
-</span></span><span style=display:flex><span>fruits <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#39;사과&#39;</span>, <span style=color:#e6db74>&#39;바나나&#39;</span>]
-</span></span><span style=display:flex><span>more_fruits <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#39;체리&#39;</span>, <span style=color:#e6db74>&#39;포도&#39;</span>]
-</span></span><span style=display:flex><span>fruits<span style=color:#f92672>.</span>extend(more_fruits)
-</span></span><span style=display:flex><span>print(fruits)  <span style=color:#75715e># 출력: [&#39;사과&#39;, &#39;바나나&#39;, &#39;체리&#39;, &#39;포도&#39;]</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># insert() 예시</span>
-</span></span><span style=display:flex><span>numbers <span style=color:#f92672>=</span> [<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>3</span>]
-</span></span><span style=display:flex><span>numbers<span style=color:#f92672>.</span>insert(<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1.5</span>)
-</span></span><span style=display:flex><span>print(numbers)  <span style=color:#75715e># 출력: [1, 1.5, 2, 3]</span>
-</span></span></code></pre></div><h3 id=결과와-해석>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석>#</a></h3><p>위 코드 실행 결과:</p><ul><li><code>append()</code> 후 <code>my_list</code>: <code>['사과', '바나나', '체리']</code></li><li><code>extend()</code> 후 <code>fruits</code>: <code>['사과', '바나나', '체리', '포도']</code></li><li><code>insert()</code> 후 <code>numbers</code>: <code>[1, 1.5, 2, 3]</code></li></ul><h3 id=정리된-이해>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해>#</a></h3><p>리스트 조작 메서드 이해를 통해 <code>append()</code>로 리스트 끝에 요소 추가, <code>extend()</code>로 여러 요소 한 번에 추가, <code>insert()</code>로 특정 위치에 요소 삽입하는 방법을 익혔다. 각 메서드의 특징과 사용 시기를 파악함으로써 리스트 관리 능력 향상에 도움이 되었다.</p><h2 id=2-특정-위치-삽입-insert>2. 특정 위치 삽입 (insert)<a hidden class=anchor aria-hidden=true href=#2-특정-위치-삽입-insert>#</a></h2><h3 id=왜-이걸-보게-됐나-1>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-1>#</a></h3><p>특정 위치에 값을 삽입해야 하는 상황에서 정확한 메서드 사용법을 이해하고 적용하기 위해</p><h3 id=내가-헷갈린-지점-1>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-1>#</a></h3><p>언제 <code>insert()</code> 메서드를 사용해야 하는지, 그리고 삽입이 기존 요소에 어떤 영향을 미치는지 명확히 파악하지 못했던 경험</p><h3 id=시도한-코드--예시-1>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-1>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>fruits <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#39;사과&#39;</span>, <span style=color:#e6db74>&#39;바나나&#39;</span>]
-</span></span><span style=display:flex><span><span style=color:#75715e># 인덱스 1 위치에 &#39;체리&#39; 삽입</span>
-</span></span><span style=display:flex><span>fruits<span style=color:#f92672>.</span>insert(<span style=color:#ae81ff>1</span>, <span style=color:#e6db74>&#39;체리&#39;</span>)
-</span></span><span style=display:flex><span>print(fruits)
-</span></span><span style=display:flex><span><span style=color:#75715e># 결과: [&#39;사과&#39;, &#39;체리&#39;, &#39;바나나&#39;]</span>
-</span></span></code></pre></div><h3 id=결과와-해석-1>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-1>#</a></h3><p>인덱스 1 위치에 &lsquo;체리&rsquo;가 삽입되어 리스트가 [&lsquo;사과&rsquo;, &lsquo;체리&rsquo;, &lsquo;바나나&rsquo;]로 변경됨</p><h3 id=정리된-이해-1>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-1>#</a></h3><p>리스트의 <code>insert()</code> 메서드는 특정 위치에 요소를 삽입하여 리스트의 구조를 조정하는데 사용되며, 이 과정에서 삽입된 요소는 기존 요소들을 뒤로 밀어냅니다.</p><h2 id=3-요소-제거-remove>3. 요소 제거 (remove)<a hidden class=anchor aria-hidden=true href=#3-요소-제거-remove>#</a></h2><h3 id=왜-이걸-보게-됐나-2>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-2>#</a></h3><p>리스트 조작에서 요소 제거의 핵심 이해와 실제 적용 방법을 명확히 하여, 학습자가 코드 작성 시 혼란을 줄일 수 있도록 함.</p><h3 id=내가-헷갈린-지점-2>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-2>#</a></h3><p>학습자들이 <code>remove()</code> 메서드가 리스트에서 어떤 요소를 정확히 제거하는지, 특히 중복 요소 처리 시 어떤 동작을 하는지에 대해 명확한 이해가 부족함을 인식하고 해결 방안을 제시함.</p><h3 id=시도한-코드--예시-2>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-2>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>fruits <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#39;사과&#39;</span>, <span style=color:#e6db74>&#39;바나나&#39;</span>, <span style=color:#e6db74>&#39;체리&#39;</span>, <span style=color:#e6db74>&#39;사과&#39;</span>]
-</span></span><span style=display:flex><span><span style=color:#75715e># 첫 번째로 발견되는 &#39;사과&#39; 제거</span>
-</span></span><span style=display:flex><span>fruits<span style=color:#f92672>.</span>remove(<span style=color:#e6db74>&#39;사과&#39;</span>)
-</span></span><span style=display:flex><span>print(fruits)  <span style=color:#75715e># 결과: [&#39;바나나&#39;, &#39;체리&#39;, &#39;사과&#39;]</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 중복 요소 제거를 위한 예시</span>
-</span></span><span style=display:flex><span>unique_fruits <span style=color:#f92672>=</span> []
-</span></span><span style=display:flex><span><span style=color:#66d9ef>for</span> fruit <span style=color:#f92672>in</span> fruits:  <span style=color:#75715e># 중복 제거를 위해 별도 리스트 사용</span>
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> fruit <span style=color:#f92672>not</span> <span style=color:#f92672>in</span> unique_fruits:
-</span></span><span style=display:flex><span>        unique_fruits<span style=color:#f92672>.</span>append(fruit)
-</span></span><span style=display:flex><span>print(unique_fruits)  <span style=color:#75715e># 결과: [&#39;바나나&#39;, &#39;체리&#39;, &#39;사과&#39;]</span>
-</span></span></code></pre></div><h3 id=결과와-해석-2>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-2>#</a></h3><p>코드 실행 결과는 첫 번째로 발견되는 &lsquo;사과&rsquo;가 제거되고, 중복 요소를 수동으로 제거한 결과 리스트가 출력됨. 이는 <code>remove()</code> 메서드의 동작 방식과 중복 요소 제거를 위한 대체 방법을 보여줌.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-plaintext data-lang=plaintext><span style=display:flex><span>[&#39;바나나&#39;, &#39;체리&#39;, &#39;사과&#39;]
-</span></span><span style=display:flex><span>[&#39;바나나&#39;, &#39;체리&#39;, &#39;사과&#39;]
-</span></span></code></pre></div><h3 id=정리된-이해-2>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-2>#</a></h3><p>학습자들은 <code>remove()</code> 메서드가 리스트에서 첫 번째로 나타나는 특정 요소를 제거함을 이해하게 되며, 중복 요소를 제거할 때는 <code>remove()</code> 대신 수동 반복문을 활용하거나 다른 중복 제거 기법을 적용해야 함을 깨닫게 됩니다. 이를 통해 실제 프로젝트에서의 리스트 조작 능력 향상에 도움이 됩니다.</p><h2 id=4-중복-제거-dedupe>4. 중복 제거 (dedupe)<a hidden class=anchor aria-hidden=true href=#4-중복-제거-dedupe>#</a></h2><h3 id=왜-이걸-보게-됐나-3>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-3>#</a></h3><p>중복 요소를 제거하는 <code>dedupe</code> 기능의 실제 적용 방법과 그 중요성을 이해하고자 합니다. 특히, 리스트 내 중복 요소를 효과적으로 제거하는 방법과 이를 프로젝트, 특히 데이터 처리 파이프라인에서 어떻게 활용할 수 있는지 구체적인 예시를 원합니다.</p><h3 id=내가-헷갈린-지점-3>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-3>#</a></h3><p>중복 요소 제거 시, 어떤 기준으로 중복을 판단해야 하는지 명확하지 않습니다. 예를 들어, 문자열 리스트에서 부분 문자열의 중복을 어떻게 처리할지에 대한 구체적인 방법이 필요합니다. 또한, <code>dedupe</code>와 <code>remove()</code> 메서드의 차이점과 각각의 적절한 사용 사례에 대한 이해가 부족합니다.</p><h3 id=시도한-코드--예시-3>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-3>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>remove_duplicates</span>(lst):  <span style=color:#75715e># 중복 요소 제거 함수</span>
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> list(dict<span style=color:#f92672>.</span>fromkeys(lst))  <span style=color:#75715e># dict를 이용해 중복 제거 후 다시 리스트로 변환</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 예시 리스트</span>
-</span></span><span style=display:flex><span>items <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#39;사과&#39;</span>, <span style=color:#e6db74>&#39;바나나&#39;</span>, <span style=color:#e6db74>&#39;사과&#39;</span>, <span style=color:#e6db74>&#39;체리&#39;</span>, <span style=color:#e6db74>&#39;바나나&#39;</span>]
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 중복 제거 적용</span>
-</span></span><span style=display:flex><span>unique_items <span style=color:#f92672>=</span> remove_duplicates(items)
-</span></span><span style=display:flex><span>print(unique_items)  <span style=color:#75715e># 출력: [&#39;사과&#39;, &#39;바나나&#39;, &#39;체리&#39;]</span>
-</span></span></code></pre></div><h3 id=결과와-해석-3>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-3>#</a></h3><p>[&lsquo;사과&rsquo;, &lsquo;바나나&rsquo;, &lsquo;체리&rsquo;]</p><h3 id=정리된-이해-3>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-3>#</a></h3><p>중복 요소를 제거하는 <code>dedupe</code> 기법은 <code>dict.fromkeys()</code>를 활용하여 리스트 내 중복 항목을 효과적으로 제거할 수 있습니다. 이 방법은 원본 리스트의 순서를 유지하면서 중복을 제거하므로, 데이터 처리 파이프라인에서 중복 데이터를 제거하는 데 유용합니다. <code>remove()</code>와 달리 <code>dedupe</code>는 전체 리스트를 스캔하여 모든 중복을 일괄적으로 처리할 수 있다는 점에서 차이가 있습니다.</p><h2 id=총평>총평<a hidden class=anchor aria-hidden=true href=#총평>#</a></h2><h3 id=오늘-전체에서-배운-것>오늘 전체에서 배운 것<a hidden class=anchor aria-hidden=true href=#오늘-전체에서-배운-것>#</a></h3><p>리스트 조작 메서드 (<code>append</code>, <code>insert</code>, <code>remove</code>, <code>dedupe</code>)의 정확한 사용법과 적용 시나리오를 이해했습니다. 특히, 각 메서드의 구체적인 동작 방식과 예시를 통해 혼란스러웠던 부분을 명확히 파악했습니다.</p><h3 id=다음에-조심할-것>다음에 조심할 것<a hidden class=anchor aria-hidden=true href=#다음에-조심할-것>#</a></h3><p><code>remove()</code> 함수는 첫 번째 일치 요소만 제거하므로, 특정 값의 모든 발생을 제거하려면 루프를 사용해야 합니다. 또한, <code>dedupe</code>는 일반적으로 외부 라이브러리나 함수를 통해 구현되므로, 기본 리스트 메서드로는 완벽한 중복 제거가 어려울 수 있습니다.</p><h3 id=다음-복습-주제>다음 복습 주제<a hidden class=anchor aria-hidden=true href=#다음-복습-주제>#</a></h3><p>반복문 내에서 <code>append()</code>를 활용한 순차적 데이터 추가와 <code>insert()</code>를 통한 특정 위치 삽입의 중요성을 깨달았습니다. 리스트 관리의 핵심은 데이터의 효율적인 추가, 수정, 제거에 있으며, 이는 실제 프로젝트에서 데이터 처리와 관리에 필수적입니다.</p></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://Han-think.github.io/learning/jupyterlab-localhost-vscode-gitbash/><span class=title>« Prev</span>
-<span>jupyterlab-localhost-vscode-gitbash</span>
-</a><a class=next href=https://Han-think.github.io/learning/official-docs-error-messages-methods/><span class=title>Next »</span>
-<span>official-docs-error-messages-methods</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
-<span>Powered by
-<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
-<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>list-methods-scenarios-dedupe-connection | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="list-methods-scenarios-dedupe-connection 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/list-methods-scenarios-dedupe-connection/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/list-methods-scenarios-dedupe-connection/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/list-methods-scenarios-dedupe-connection/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="list-methods-scenarios-dedupe-connection">
+  <meta property="og:description" content="list-methods-scenarios-dedupe-connection 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-02T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-02T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="list-methods-scenarios-dedupe-connection">
+  <meta name="twitter:description" content="list-methods-scenarios-dedupe-connection 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "list-methods-scenarios-dedupe-connection",
+      "item": "https://Han-think.github.io/learning/list-methods-scenarios-dedupe-connection/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "list-methods-scenarios-dedupe-connection",
+  "name": "list-methods-scenarios-dedupe-connection",
+  "description": "list-methods-scenarios-dedupe-connection 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 리스트 추가 (append) 특정 위치 삽입 (insert) 요소 제거 (remove) 중복 제거 (dedupe) 총평 1. 리스트 추가 (append) 왜 이걸 보게 됐나 리스트에 새로운 요소를 추가할 때 각 메서드의 역할과 차이점을 명확히 이해하고자 함. 특히, append(), extend(), insert() 등의 메서드가 어떻게 다른지 파악하고 실제 코딩에서 어떻게 적용할지 배우고자 함.\n내가 헷갈린 지점 append()와 extend()의 차이점과 사용 시기를 정확히 구분하지 못했으며, insert() 메서드가 리스트 내 요소 배치에 미치는 영향을 구체적으로 이해하는 데 어려움이 있었음. 또한, 중복 요소 제거와 관련된 dedupe 기능과 remove() 메서드의 역할을 명확히 구분하지 못했음.\n시도한 코드 / 예시 # append() 예시 my_list = ['사과', '바나나'] my_list.append('체리') print(my_list) # 출력: ['사과', '바나나', '체리'] # extend() 예시 fruits = ['사과', '바나나'] more_fruits = ['체리', '포도'] fruits.extend(more_fruits) print(fruits) # 출력: ['사과', '바나나', '체리', '포도'] # insert() 예시 numbers = [1, 2, 3] numbers.insert(1, 1.5) print(numbers) # 출력: [1, 1.5, 2, 3] 결과와 해석 위 코드 실행 결과:\nappend() 후 my_list: ['사과', '바나나', '체리'] extend() 후 fruits: ['사과', '바나나', '체리', '포도'] insert() 후 numbers: [1, 1.5, 2, 3] 정리된 이해 리스트 조작 메서드 이해를 통해 append()로 리스트 끝에 요소 추가, extend()로 여러 요소 한 번에 추가, insert()로 특정 위치에 요소 삽입하는 방법을 익혔다. 각 메서드의 특징과 사용 시기를 파악함으로써 리스트 관리 능력 향상에 도움이 되었다.\n2. 특정 위치 삽입 (insert) 왜 이걸 보게 됐나 특정 위치에 값을 삽입해야 하는 상황에서 정확한 메서드 사용법을 이해하고 적용하기 위해\n내가 헷갈린 지점 언제 insert() 메서드를 사용해야 하는지, 그리고 삽입이 기존 요소에 어떤 영향을 미치는지 명확히 파악하지 못했던 경험\n시도한 코드 / 예시 fruits = ['사과', '바나나'] # 인덱스 1 위치에 '체리' 삽입 fruits.insert(1, '체리') print(fruits) # 결과: ['사과', '체리', '바나나'] 결과와 해석 인덱스 1 위치에 ‘체리’가 삽입되어 리스트가 [‘사과’, ‘체리’, ‘바나나’]로 변경됨\n정리된 이해 리스트의 insert() 메서드는 특정 위치에 요소를 삽입하여 리스트의 구조를 조정하는데 사용되며, 이 과정에서 삽입된 요소는 기존 요소들을 뒤로 밀어냅니다.\n3. 요소 제거 (remove) 왜 이걸 보게 됐나 리스트 조작에서 요소 제거의 핵심 이해와 실제 적용 방법을 명확히 하여, 학습자가 코드 작성 시 혼란을 줄일 수 있도록 함.\n내가 헷갈린 지점 학습자들이 remove() 메서드가 리스트에서 어떤 요소를 정확히 제거하는지, 특히 중복 요소 처리 시 어떤 동작을 하는지에 대해 명확한 이해가 부족함을 인식하고 해결 방안을 제시함.\n시도한 코드 / 예시 fruits = ['사과', '바나나', '체리', '사과'] # 첫 번째로 발견되는 '사과' 제거 fruits.remove('사과') print(fruits) # 결과: ['바나나', '체리', '사과'] # 중복 요소 제거를 위한 예시 unique_fruits = [] for fruit in fruits: # 중복 제거를 위해 별도 리스트 사용 if fruit not in unique_fruits: unique_fruits.append(fruit) print(unique_fruits) # 결과: ['바나나', '체리', '사과'] 결과와 해석 코드 실행 결과는 첫 번째로 발견되는 ‘사과’가 제거되고, 중복 요소를 수동으로 제거한 결과 리스트가 출력됨. 이는 remove() 메서드의 동작 방식과 중복 요소 제거를 위한 대체 방법을 보여줌.\n['바나나', '체리', '사과'] ['바나나', '체리', '사과'] 정리된 이해 학습자들은 remove() 메서드가 리스트에서 첫 번째로 나타나는 특정 요소를 제거함을 이해하게 되며, 중복 요소를 제거할 때는 remove() 대신 수동 반복문을 활용하거나 다른 중복 제거 기법을 적용해야 함을 깨닫게 됩니다. 이를 통해 실제 프로젝트에서의 리스트 조작 능력 향상에 도움이 됩니다.\n4. 중복 제거 (dedupe) 왜 이걸 보게 됐나 중복 요소를 제거하는 dedupe 기능의 실제 적용 방법과 그 중요성을 이해하고자 합니다. 특히, 리스트 내 중복 요소를 효과적으로 제거하는 방법과 이를 프로젝트, 특히 데이터 처리 파이프라인에서 어떻게 활용할 수 있는지 구체적인 예시를 원합니다.\n내가 헷갈린 지점 중복 요소 제거 시, 어떤 기준으로 중복을 판단해야 하는지 명확하지 않습니다. 예를 들어, 문자열 리스트에서 부분 문자열의 중복을 어떻게 처리할지에 대한 구체적인 방법이 필요합니다. 또한, dedupe와 remove() 메서드의 차이점과 각각의 적절한 사용 사례에 대한 이해가 부족합니다.\n시도한 코드 / 예시 def remove_duplicates(lst): # 중복 요소 제거 함수 return list(dict.fromkeys(lst)) # dict를 이용해 중복 제거 후 다시 리스트로 변환 # 예시 리스트 items = ['사과', '바나나', '사과', '체리', '바나나'] # 중복 제거 적용 unique_items = remove_duplicates(items) print(unique_items) # 출력: ['사과', '바나나', '체리'] 결과와 해석 [‘사과’, ‘바나나’, ‘체리’]\n정리된 이해 중복 요소를 제거하는 dedupe 기법은 dict.fromkeys()를 활용하여 리스트 내 중복 항목을 효과적으로 제거할 수 있습니다. 이 방법은 원본 리스트의 순서를 유지하면서 중복을 제거하므로, 데이터 처리 파이프라인에서 중복 데이터를 제거하는 데 유용합니다. remove()와 달리 dedupe는 전체 리스트를 스캔하여 모든 중복을 일괄적으로 처리할 수 있다는 점에서 차이가 있습니다.\n총평 오늘 전체에서 배운 것 리스트 조작 메서드 (append, insert, remove, dedupe)의 정확한 사용법과 적용 시나리오를 이해했습니다. 특히, 각 메서드의 구체적인 동작 방식과 예시를 통해 혼란스러웠던 부분을 명확히 파악했습니다.\n다음에 조심할 것 remove() 함수는 첫 번째 일치 요소만 제거하므로, 특정 값의 모든 발생을 제거하려면 루프를 사용해야 합니다. 또한, dedupe는 일반적으로 외부 라이브러리나 함수를 통해 구현되므로, 기본 리스트 메서드로는 완벽한 중복 제거가 어려울 수 있습니다.\n다음 복습 주제 반복문 내에서 append()를 활용한 순차적 데이터 추가와 insert()를 통한 특정 위치 삽입의 중요성을 깨달았습니다. 리스트 관리의 핵심은 데이터의 효율적인 추가, 수정, 제거에 있으며, 이는 실제 프로젝트에서 데이터 처리와 관리에 필수적입니다.\n",
+  "wordCount" : "760",
+  "inLanguage": "en",
+  "datePublished": "2026-06-02T00:00:00Z",
+  "dateModified": "2026-06-02T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/list-methods-scenarios-dedupe-connection/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      list-methods-scenarios-dedupe-connection
+    </h1>
+    <div class="post-description">
+      list-methods-scenarios-dedupe-connection 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EB%A6%AC%EC%8A%A4%ED%8A%B8-%EC%B6%94%EA%B0%80-append">리스트 추가 (append)</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%ED%8A%B9%EC%A0%95-%EC%9C%84%EC%B9%98-%EC%82%BD%EC%9E%85-insert">특정 위치 삽입 (insert)</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%9A%94%EC%86%8C-%EC%A0%9C%EA%B1%B0-remove">요소 제거 (remove)</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EC%A4%91%EB%B3%B5-%EC%A0%9C%EA%B1%B0-dedupe">중복 제거 (dedupe)</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-리스트-추가-append">1. 리스트 추가 (append)<a hidden class="anchor" aria-hidden="true" href="#1-리스트-추가-append">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>리스트에 새로운 요소를 추가할 때 각 메서드의 역할과 차이점을 명확히 이해하고자 함. 특히, <code>append()</code>, <code>extend()</code>, <code>insert()</code> 등의 메서드가 어떻게 다른지 파악하고 실제 코딩에서 어떻게 적용할지 배우고자 함.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p><code>append()</code>와 <code>extend()</code>의 차이점과 사용 시기를 정확히 구분하지 못했으며, <code>insert()</code> 메서드가 리스트 내 요소 배치에 미치는 영향을 구체적으로 이해하는 데 어려움이 있었음. 또한, 중복 요소 제거와 관련된 <code>dedupe</code> 기능과 <code>remove()</code> 메서드의 역할을 명확히 구분하지 못했음.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># append() 예시</span>
+</span></span><span style="display:flex;"><span>my_list <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;사과&#39;</span>, <span style="color:#e6db74">&#39;바나나&#39;</span>]
+</span></span><span style="display:flex;"><span>my_list<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#39;체리&#39;</span>)
+</span></span><span style="display:flex;"><span>print(my_list)  <span style="color:#75715e"># 출력: [&#39;사과&#39;, &#39;바나나&#39;, &#39;체리&#39;]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># extend() 예시</span>
+</span></span><span style="display:flex;"><span>fruits <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;사과&#39;</span>, <span style="color:#e6db74">&#39;바나나&#39;</span>]
+</span></span><span style="display:flex;"><span>more_fruits <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;체리&#39;</span>, <span style="color:#e6db74">&#39;포도&#39;</span>]
+</span></span><span style="display:flex;"><span>fruits<span style="color:#f92672">.</span>extend(more_fruits)
+</span></span><span style="display:flex;"><span>print(fruits)  <span style="color:#75715e"># 출력: [&#39;사과&#39;, &#39;바나나&#39;, &#39;체리&#39;, &#39;포도&#39;]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># insert() 예시</span>
+</span></span><span style="display:flex;"><span>numbers <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>]
+</span></span><span style="display:flex;"><span>numbers<span style="color:#f92672">.</span>insert(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1.5</span>)
+</span></span><span style="display:flex;"><span>print(numbers)  <span style="color:#75715e"># 출력: [1, 1.5, 2, 3]</span>
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p>위 코드 실행 결과:</p>
+<ul>
+<li><code>append()</code> 후 <code>my_list</code>: <code>['사과', '바나나', '체리']</code></li>
+<li><code>extend()</code> 후 <code>fruits</code>: <code>['사과', '바나나', '체리', '포도']</code></li>
+<li><code>insert()</code> 후 <code>numbers</code>: <code>[1, 1.5, 2, 3]</code></li>
+</ul>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>리스트 조작 메서드 이해를 통해 <code>append()</code>로 리스트 끝에 요소 추가, <code>extend()</code>로 여러 요소 한 번에 추가, <code>insert()</code>로 특정 위치에 요소 삽입하는 방법을 익혔다. 각 메서드의 특징과 사용 시기를 파악함으로써 리스트 관리 능력 향상에 도움이 되었다.</p>
+<h2 id="2-특정-위치-삽입-insert">2. 특정 위치 삽입 (insert)<a hidden class="anchor" aria-hidden="true" href="#2-특정-위치-삽입-insert">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>특정 위치에 값을 삽입해야 하는 상황에서 정확한 메서드 사용법을 이해하고 적용하기 위해</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>언제 <code>insert()</code> 메서드를 사용해야 하는지, 그리고 삽입이 기존 요소에 어떤 영향을 미치는지 명확히 파악하지 못했던 경험</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fruits <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;사과&#39;</span>, <span style="color:#e6db74">&#39;바나나&#39;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 인덱스 1 위치에 &#39;체리&#39; 삽입</span>
+</span></span><span style="display:flex;"><span>fruits<span style="color:#f92672">.</span>insert(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;체리&#39;</span>)
+</span></span><span style="display:flex;"><span>print(fruits)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 결과: [&#39;사과&#39;, &#39;체리&#39;, &#39;바나나&#39;]</span>
+</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p>인덱스 1 위치에 &lsquo;체리&rsquo;가 삽입되어 리스트가 [&lsquo;사과&rsquo;, &lsquo;체리&rsquo;, &lsquo;바나나&rsquo;]로 변경됨</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>리스트의 <code>insert()</code> 메서드는 특정 위치에 요소를 삽입하여 리스트의 구조를 조정하는데 사용되며, 이 과정에서 삽입된 요소는 기존 요소들을 뒤로 밀어냅니다.</p>
+<h2 id="3-요소-제거-remove">3. 요소 제거 (remove)<a hidden class="anchor" aria-hidden="true" href="#3-요소-제거-remove">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>리스트 조작에서 요소 제거의 핵심 이해와 실제 적용 방법을 명확히 하여, 학습자가 코드 작성 시 혼란을 줄일 수 있도록 함.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>학습자들이 <code>remove()</code> 메서드가 리스트에서 어떤 요소를 정확히 제거하는지, 특히 중복 요소 처리 시 어떤 동작을 하는지에 대해 명확한 이해가 부족함을 인식하고 해결 방안을 제시함.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fruits <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;사과&#39;</span>, <span style="color:#e6db74">&#39;바나나&#39;</span>, <span style="color:#e6db74">&#39;체리&#39;</span>, <span style="color:#e6db74">&#39;사과&#39;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 첫 번째로 발견되는 &#39;사과&#39; 제거</span>
+</span></span><span style="display:flex;"><span>fruits<span style="color:#f92672">.</span>remove(<span style="color:#e6db74">&#39;사과&#39;</span>)
+</span></span><span style="display:flex;"><span>print(fruits)  <span style="color:#75715e"># 결과: [&#39;바나나&#39;, &#39;체리&#39;, &#39;사과&#39;]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 중복 요소 제거를 위한 예시</span>
+</span></span><span style="display:flex;"><span>unique_fruits <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> fruit <span style="color:#f92672">in</span> fruits:  <span style="color:#75715e"># 중복 제거를 위해 별도 리스트 사용</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> fruit <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> unique_fruits:
+</span></span><span style="display:flex;"><span>        unique_fruits<span style="color:#f92672">.</span>append(fruit)
+</span></span><span style="display:flex;"><span>print(unique_fruits)  <span style="color:#75715e"># 결과: [&#39;바나나&#39;, &#39;체리&#39;, &#39;사과&#39;]</span>
+</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p>코드 실행 결과는 첫 번째로 발견되는 &lsquo;사과&rsquo;가 제거되고, 중복 요소를 수동으로 제거한 결과 리스트가 출력됨. 이는 <code>remove()</code> 메서드의 동작 방식과 중복 요소 제거를 위한 대체 방법을 보여줌.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>[&#39;바나나&#39;, &#39;체리&#39;, &#39;사과&#39;]
+</span></span><span style="display:flex;"><span>[&#39;바나나&#39;, &#39;체리&#39;, &#39;사과&#39;]
+</span></span></code></pre></div><h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>학습자들은 <code>remove()</code> 메서드가 리스트에서 첫 번째로 나타나는 특정 요소를 제거함을 이해하게 되며, 중복 요소를 제거할 때는 <code>remove()</code> 대신 수동 반복문을 활용하거나 다른 중복 제거 기법을 적용해야 함을 깨닫게 됩니다. 이를 통해 실제 프로젝트에서의 리스트 조작 능력 향상에 도움이 됩니다.</p>
+<h2 id="4-중복-제거-dedupe">4. 중복 제거 (dedupe)<a hidden class="anchor" aria-hidden="true" href="#4-중복-제거-dedupe">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>중복 요소를 제거하는 <code>dedupe</code> 기능의 실제 적용 방법과 그 중요성을 이해하고자 합니다. 특히, 리스트 내 중복 요소를 효과적으로 제거하는 방법과 이를 프로젝트, 특히 데이터 처리 파이프라인에서 어떻게 활용할 수 있는지 구체적인 예시를 원합니다.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>중복 요소 제거 시, 어떤 기준으로 중복을 판단해야 하는지 명확하지 않습니다. 예를 들어, 문자열 리스트에서 부분 문자열의 중복을 어떻게 처리할지에 대한 구체적인 방법이 필요합니다. 또한, <code>dedupe</code>와 <code>remove()</code> 메서드의 차이점과 각각의 적절한 사용 사례에 대한 이해가 부족합니다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">remove_duplicates</span>(lst):  <span style="color:#75715e"># 중복 요소 제거 함수</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> list(dict<span style="color:#f92672">.</span>fromkeys(lst))  <span style="color:#75715e"># dict를 이용해 중복 제거 후 다시 리스트로 변환</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 예시 리스트</span>
+</span></span><span style="display:flex;"><span>items <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;사과&#39;</span>, <span style="color:#e6db74">&#39;바나나&#39;</span>, <span style="color:#e6db74">&#39;사과&#39;</span>, <span style="color:#e6db74">&#39;체리&#39;</span>, <span style="color:#e6db74">&#39;바나나&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 중복 제거 적용</span>
+</span></span><span style="display:flex;"><span>unique_items <span style="color:#f92672">=</span> remove_duplicates(items)
+</span></span><span style="display:flex;"><span>print(unique_items)  <span style="color:#75715e"># 출력: [&#39;사과&#39;, &#39;바나나&#39;, &#39;체리&#39;]</span>
+</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<p>[&lsquo;사과&rsquo;, &lsquo;바나나&rsquo;, &lsquo;체리&rsquo;]</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>중복 요소를 제거하는 <code>dedupe</code> 기법은 <code>dict.fromkeys()</code>를 활용하여 리스트 내 중복 항목을 효과적으로 제거할 수 있습니다. 이 방법은 원본 리스트의 순서를 유지하면서 중복을 제거하므로, 데이터 처리 파이프라인에서 중복 데이터를 제거하는 데 유용합니다. <code>remove()</code>와 달리 <code>dedupe</code>는 전체 리스트를 스캔하여 모든 중복을 일괄적으로 처리할 수 있다는 점에서 차이가 있습니다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>리스트 조작 메서드 (<code>append</code>, <code>insert</code>, <code>remove</code>, <code>dedupe</code>)의 정확한 사용법과 적용 시나리오를 이해했습니다. 특히, 각 메서드의 구체적인 동작 방식과 예시를 통해 혼란스러웠던 부분을 명확히 파악했습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p><code>remove()</code> 함수는 첫 번째 일치 요소만 제거하므로, 특정 값의 모든 발생을 제거하려면 루프를 사용해야 합니다. 또한, <code>dedupe</code>는 일반적으로 외부 라이브러리나 함수를 통해 구현되므로, 기본 리스트 메서드로는 완벽한 중복 제거가 어려울 수 있습니다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>반복문 내에서 <code>append()</code>를 활용한 순차적 데이터 추가와 <code>insert()</code>를 통한 특정 위치 삽입의 중요성을 깨달았습니다. 리스트 관리의 핵심은 데이터의 효율적인 추가, 수정, 제거에 있으며, 이는 실제 프로젝트에서 데이터 처리와 관리에 필수적입니다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/jupyterlab-localhost-vscode-gitbash/">
+    <span class="title">« Prev</span>
+    <span>jupyterlab-localhost-vscode-gitbash</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/official-docs-error-messages-methods/">
+    <span class="title">Next »</span>
+    <span>official-docs-error-messages-methods</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

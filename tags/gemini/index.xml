@@ -1,36 +1,61 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Gemini on Han-think Blog</title><link>https://Han-think.github.io/tags/gemini/</link><description>Recent content in Gemini on Han-think Blog</description><generator>Hugo</generator><language>ko-KR</language><lastBuildDate>Mon, 06 Jul 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://Han-think.github.io/tags/gemini/index.xml" rel="self" type="application/rss+xml"/><item><title>DailyLog Kit — 하루를 포인트로 정리하는 텍스트 브이로그</title><link>https://Han-think.github.io/dev/dailylog-kit/</link><pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate><guid>https://Han-think.github.io/dev/dailylog-kit/</guid><description>&lt;p&gt;하루 메모를 던지면 &lt;strong&gt;카테고리별 포인트&lt;/strong&gt;로 정리해주는 작은 키트. 텍스트 브이로그처럼, 그날 있었던 일의 &lt;strong&gt;포인트만&lt;/strong&gt; 잡아 Markdown으로 남긴다. 업로드/배포는 없고 &lt;strong&gt;로컬에 정리만&lt;/strong&gt; 해준다.&lt;/p&gt;
-&lt;h2 id="다운로드"&gt;다운로드&lt;/h2&gt;
-&lt;p&gt;&lt;a href="https://Han-think.github.io/downloads/dailylog-kit-1.2.zip"&gt;&lt;strong&gt;DailyLog Kit v1.2 (zip)&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Gemini on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/gemini/</link>
+    <description>Recent content in Gemini on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Mon, 06 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/gemini/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DailyLog Kit — 하루를 포인트로 정리하는 텍스트 브이로그</title>
+      <link>https://Han-think.github.io/dev/dailylog-kit/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/dev/dailylog-kit/</guid>
+      <description>&lt;p&gt;하루 메모를 던지면 &lt;strong&gt;카테고리별 포인트&lt;/strong&gt;로 정리해주는 작은 키트. 텍스트 브이로그처럼, 그날 있었던 일의 &lt;strong&gt;포인트만&lt;/strong&gt; 잡아 Markdown으로 남긴다. 업로드/배포는 없고 &lt;strong&gt;로컬에 정리만&lt;/strong&gt; 해준다.&lt;/p&gt;
+&lt;h2 id=&#34;다운로드&#34;&gt;다운로드&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://Han-think.github.io/downloads/dailylog-kit-1.2.zip&#34;&gt;&lt;strong&gt;DailyLog Kit v1.2 (zip)&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;압축 안에 &lt;code&gt;DailyLog.bat&lt;/code&gt;, &lt;code&gt;dailylog.ps1&lt;/code&gt;, &lt;code&gt;README.md&lt;/code&gt; 세 개가 들어 있다.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;v1.2에서는 Ollama뿐 아니라 Google AI Studio의 Gemini API 키로도 하루 메모를 정리할 수 있게 했다.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;GitHub 저장소는 &lt;a href="https://github.com/Han-think/learninglog-kit"&gt;Han-think/learninglog-kit&lt;/a&gt;이며, DailyLog Kit 소스는 &lt;code&gt;dailylog_kit/&lt;/code&gt; 폴더에 있다.&lt;/p&gt;
-&lt;h2 id="learninglog와-구분"&gt;LearningLog와 구분&lt;/h2&gt;
+&lt;p&gt;GitHub 저장소는 &lt;a href=&#34;https://github.com/Han-think/learninglog-kit&#34;&gt;Han-think/learninglog-kit&lt;/a&gt;이며, DailyLog Kit 소스는 &lt;code&gt;dailylog_kit/&lt;/code&gt; 폴더에 있다.&lt;/p&gt;
+&lt;h2 id=&#34;learninglog와-구분&#34;&gt;LearningLog와 구분&lt;/h2&gt;
 &lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;도구&lt;/th&gt;
-&lt;th&gt;용도&lt;/th&gt;
-&lt;th&gt;결과&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;DailyLog Kit&lt;/td&gt;
-&lt;td&gt;개인 하루 회고, 일상 메모 정리&lt;/td&gt;
-&lt;td&gt;로컬 &lt;code&gt;output/*.md&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;LearningLog &lt;code&gt;LearningLog&lt;/code&gt; 메뉴&lt;/td&gt;
-&lt;td&gt;수업/학습 노트 처리와 learning 발행&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;04_blog_drafts/learning&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;LearningLog &lt;code&gt;Projects&lt;/code&gt; 메뉴&lt;/td&gt;
-&lt;td&gt;프로젝트 회고/분석을 여러 편으로 정리&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;04_blog_drafts/projects&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;도구&lt;/th&gt;
+					&lt;th&gt;용도&lt;/th&gt;
+					&lt;th&gt;결과&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DailyLog Kit&lt;/td&gt;
+					&lt;td&gt;개인 하루 회고, 일상 메모 정리&lt;/td&gt;
+					&lt;td&gt;로컬 &lt;code&gt;output/*.md&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;LearningLog &lt;code&gt;LearningLog&lt;/code&gt; 메뉴&lt;/td&gt;
+					&lt;td&gt;수업/학습 노트 처리와 learning 발행&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;04_blog_drafts/learning&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;LearningLog &lt;code&gt;Projects&lt;/code&gt; 메뉴&lt;/td&gt;
+					&lt;td&gt;프로젝트 회고/분석을 여러 편으로 정리&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;04_blog_drafts/projects&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;DailyLog Kit은 블로그 발행 안전장치가 필요한 글을 다루지 않는다. 블로그에 올릴 학습 글이나 프로젝트 시리즈는 LearningLog Kit의 Windows runner를 사용한다.&lt;/p&gt;</description></item><item><title>[환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인</title><link>https://Han-think.github.io/dev/learninglog-kit/</link><pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate><guid>https://Han-think.github.io/dev/learninglog-kit/</guid><description>강의자료와 개인 학습 노트, 프로젝트 시리즈를 분리해 intake, extract, preview, approve, publish 흐름으로 정리하는 학습 기록 파이프라인. v0.5.4는 LearningLog와 Projects 메뉴 분리를 포함한다.</description></item></channel></rss>
+&lt;p&gt;DailyLog Kit은 블로그 발행 안전장치가 필요한 글을 다루지 않는다. 블로그에 올릴 학습 글이나 프로젝트 시리즈는 LearningLog Kit의 Windows runner를 사용한다.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>[환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인</title>
+      <link>https://Han-think.github.io/dev/learninglog-kit/</link>
+      <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/dev/learninglog-kit/</guid>
+      <description>강의자료와 개인 학습 노트, 프로젝트 시리즈를 분리해 intake, extract, preview, approve, publish 흐름으로 정리하는 학습 기록 파이프라인. v0.5.4는 LearningLog와 Projects 메뉴 분리를 포함한다.</description>
+    </item>
+  </channel>
+</rss>

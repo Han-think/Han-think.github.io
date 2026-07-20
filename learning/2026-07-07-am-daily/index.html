@@ -1,69 +1,454 @@
-<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정 | Han-think Blog</title><meta name=keywords content><meta name=description content="2026-07-07 오전 학습 정리"><meta name=author content><link rel=canonical href=https://Han-think.github.io/learning/2026-07-07-am-daily/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/learning/2026-07-07-am-daily/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-07-am-daily/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정"><meta property="og:description" content="2026-07-07 오전 학습 정리"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="learning"><meta property="article:published_time" content="2026-07-07T00:00:00+00:00"><meta property="article:modified_time" content="2026-07-07T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정"><meta name=twitter:description content="2026-07-07 오전 학습 정리"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"학습 기록","item":"https://Han-think.github.io/learning/"},{"@type":"ListItem","position":2,"name":"API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정","item":"https://Han-think.github.io/learning/2026-07-07-am-daily/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정","name":"API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정","description":"2026-07-07 오전 학습 정리","keywords":[],"articleBody":"목차 공공 API 크롤링, 요청 인자 이해하기 JSON과 XML 선택 및 로컬 데이터 관리 전략 멀티스레딩과 API 사용 시 성능과 제한 사항 이해 랜덤 포레스트 이해와 하이퍼파라미터 튜닝 워크노트 에러 수정 및 개인 PC 자원 맞춤 학습 전략 총평 1. 공공 API 크롤링, 요청 인자 이해하기 무엇을 배웠나 Open API 기반 크롤링을 처음 이해할 때 인증 관련, 응답 형식, 데이터 대상, 범위 지정 등 다양한 인자를 혼동했었는데, API가 외부 데이터에 접근하는 통로라는 것을 명확히 이해하게 되었습니다. 공공 데이터 API와 LLM API의 차이점을 이해하고, API 문서를 통해 필요한 인자를 파악하는 연습이 중요함을 알게 되었습니다. 실제 식품안전나라 레시피 API 실습을 통해 API 호출 구조와 데이터 처리 과정을 익혔습니다.\n헷갈렸던 점 API를 처음 접했을 때, 어떤 인자가 필수이고 어떤 인자가 선택적인지 파악하는 게 어려웠습니다. 특히 공공 데이터 API와 LLM API의 차이점을 명확히 구분하지 못해서 API가 단순히 모델을 호출하는 것 이상으로 외부 데이터에 접근하는 역할을 한다는 것을 이해하는 데 시간이 걸렸습니다.\n정리된 이해 API는 단순히 모델을 호출하는 것이 아니라 외부 데이터에 접근할 수 있도록 해주는 중요한 통로라는 점을 이해하게 되었다. 요청 인자들을 역할에 따라 분류하고, 각 인자가 API 요청에 어떤 영향을 미치는지 명확히 파악하는 것이 중요하다. 특히 공공 데이터 API를 사용할 때는 공식 문서를 꼼꼼히 확인하고, 인증키와 데이터 형식을 정확하게 입력해야 원하는 데이터를 얻을 수 있다.\nimport requests import json api_key = \"YOUR_API_KEY\" # 실제 API 키로 대체 url = f\"https://api.foodsafetykorea.go.kr/api/1/recipe/{api_key}/json/RECIPE_SERVICE/0/10\" response = requests.get(url) if response.status_code == 200: data = response.json() print(json.dumps(data, indent=2, ensure_ascii=False)) else: print(f\"API 요청 실패: {response.status_code}\") 2. JSON과 XML 선택 및 로컬 데이터 관리 전략 무엇을 배웠나 JSON과 XML의 선택은 프로젝트의 요구사항과 환경에 따라 달라져야 하며, JSON의 편리함과 XML의 엄격한 검증 능력을 모두 고려해야 한다는 점을 알게 되었습니다. 자주 사용하는 데이터는 외부 API 호출 대신 로컬 데이터베이스에 저장하여 효율적인 접근성을 확보하는 것이 중요하다는 것을 배웠습니다. 앞으로는 데이터 형식 선택 시, 단순히 최신 기술 여부를 판단하는 것이 아니라, 프로젝트의 목적과 데이터 특성에 맞는 최적의 방식을 선택해야겠습니다.\n헷갈렸던 점 처음에는 JSON을 최신 기술로만 생각하고 XML을 오래된 형식으로 여겨 JSON을 무조건적으로 선호했지만, XML의 계층 구조와 데이터 검증 능력이 중요함을 깨달았습니다. 또한 매번 API를 호출할지, 로컬에 저장할지 결정하는 데 어려움을 겪었으며, 효율적인 데이터 관리 방법에 대한 이해가 부족했습니다.\n정리된 이해 프로젝트의 필요에 따라 JSON과 XML을 선택하되, JSON은 Python과의 연동이 용이하여 우선적으로 고려합니다. 자주 사용되는 데이터는 외부 API 호출 대신 로컬 데이터베이스에 저장하여 효율성을 높이고, 원본 데이터 형식은 보존하여 필요시 활용합니다. XML은 여전히 엄격한 데이터 검증이 필요한 환경에서 유용하게 사용될 수 있습니다.\nimport requests import pandas as pd # JSON 예시 response = requests.get('API_URL', timeout=30) response.raise_for_status() payload = response.json() rows = payload[\"서비스명\"][\"데이터열\"] df = pd.DataFrame(rows) import xml.etree.ElementTree as ET # XML 예시 root = ET.fromstring(response.text) xml_data = {child.tag: child.text for child in root} 3. 멀티스레딩과 API 사용 시 성능과 제한 사항 이해 무엇을 배웠나 멀티스레드를 사용한다고 해서 항상 성능이 일정 비율로 향상되는 것은 아니라는 것을 알게 되었다. 요청 수와 서버 응답 시간에 따라 멀티스레드의 효과가 달라지고, 무료 공공 API는 다양한 제한 사항이 있다는 것도 깨달았다. 이러한 점들을 고려하여 API 호출 설계를 해야겠다.\n헷갈렸던 점 멀티스레드가 항상 일정한 비율로 성능 향상을 가져온다고 생각했고, 공공 API는 제한 없이 자유롭게 사용할 수 있다고 잘못 이해했습니다. 실제로 멀티스레드 성능은 요청 수와 응답 시간에 따라 달라지고, 공공 API는 다양한 제한 사항이 존재했습니다.\n정리된 이해 멀티스레드를 사용하면 네트워크 요청의 개수와 서버 응답 시간에 따라 성능 향상이 커지지만, 요청 수가 적거나 응답 시간이 길면 효과가 제한적일 수 있습니다. 무료 공공 API는 무제한으로 사용할 수 있는 것이 아니라, 호출 횟수, 페이지 크기, 인증 등 다양한 제한 사항을 준수해야 합니다. 이러한 점들을 고려하여 스레드 수를 조절하고 API 사용 계획을 세워야 효율적인 데이터 수집이 가능합니다.\nimport concurrent.futures import requests def fetch_data(url): try: response = requests.get(url) response.raise_for_status() # HTTP 에러 발생 시 예외 발생 return response.json() except requests.exceptions.RequestException as e: print(f\"Error fetching {url}: {e}\") return None 4. 랜덤 포레스트 이해와 하이퍼파라미터 튜닝 워크노트 무엇을 배웠나 Random Forest가 단순히 여러 트리의 결과를 평균내는 것이 아니라, 다수결 투표 방식으로 예측을 결정한다는 점을 명확히 이해하게 되었다. 또한, 모델 학습 과정에서 사용되는 무작위성이 데이터 샘플링과 특성 선택에 활용된다는 것을 알게 되었고, 하이퍼파라미터와 학습 파라미터의 구분에도 대한 개념을 제대로 갖추게 되었다. 이러한 이해를 바탕으로 Random Forest 모델을 더 효과적으로 다룰 수 있을 것 같다.\n헷갈렸던 점 처음에는 Random Forest의 예측이 여러 트리의 결과를 단순 평균내는 거라고 생각했고, ‘random’이라는 단어가 데이터 임의 채워넣는 걸 의미한다고 착각했습니다. 또한, 모델 내부 파라미터와 사람이 설정하는 하이퍼파라미터의 차이를 명확히 구분하지 못해 어려움을 겪었습니다.\n정리된 이해 Random Forest는 여러 트리의 예측 결과를 투표로 결정하며, 무작위성은 데이터 샘플링과 특성 선택 과정에서 활용됩니다. 하이퍼파라미터는 모델 학습 전에 사용자가 직접 설정하는 값이며, 트리의 깊이나 트리의 수를 조절합니다. 이러한 이해를 바탕으로 Random Forest 모델을 더 효과적으로 활용할 수 있을 것입니다.\n# Random Forest 예측 방식 예시 (Python) import numpy as np def majority_vote(predictions): \"\"\"다수결 투표를 통해 최종 예측 결정\"\"\" counts = np.bincount(predictions) return np.argmax(counts) # 예측 결과 (각 트리의 예측) tree_predictions = np.array(['생존', '사망', '생존', '생존', '사망', '생존']) # 다수결 투표를 통해 최종 예측 결정 final_prediction = majority_vote(tree_predictions) print(f\"최종 예측: {final_prediction}\") 5. 에러 수정 및 개인 PC 자원 맞춤 학습 전략 무엇을 배웠나 작은 오타 하나로도 파이프라인 실행이 중단될 수 있다는 점을 깨달았고, n_jobs=-1과 같은 무분별한 병렬 처리가 오히려 자원 과다 사용으로 이어질 수 있다는 점을 알게 되었다. 개인 PC 자원을 고려하여 각 단계별 병렬 처리 전략을 세우는 것이 중요하며, 특히 API 수집, 랜덤 포레스트, 그리드 서치CV의 병렬화 방식 차이를 이해해야 한다는 것을 배웠다. 앞으로는 코드를 꼼꼼히 검토하고, 자원 사용량을 고려하여 병렬 처리 단계를 조정해야겠다.\n헷갈렸던 점 실습하다가 ColumnTransformer나 random_state 같은 사소한 오타 때문에 파이프라인이 멈추는 경우가 많았고, n_jobs=-1을 어디에나 적용하면 좋을 거라고 생각했지만 오히려 자원 낭비가 될 수 있다는 점을 제대로 이해하지 못했습니다. 특히 개인 PC의 자원을 고려해서 병렬 처리 전략을 어떻게 세워야 할지 막막했습니다.\n정리된 이해 작은 오타와 문법 오류가 코드 실행에 큰 영향을 미칠 수 있다는 점을 깨달았고, 병렬 처리 시 각 단계별 목적과 주의사항을 명확히 이해해야 과도한 자원 사용을 막을 수 있다는 점을 알게 되었다. 특히 개인 PC의 자원을 고려하여 각 단계에 적합한 병렬화 수준을 설정하는 것이 중요하다는 점을 확인했다.\nColumnTransformer(transformers=[...]) # 수정 전 ColumnTransformer(transformers=[...]) # 수정 후 random_state = RANDOM_STATE # 수정 전 random_state = RANDOM_STATE # 수정 후 rf_model = RandomForestClassifier(random_state=RANDOM_STATE, n_jobs=1) # 단일 코어 사용 총평 오늘 오전 전체에서 배운 것 공공 API 크롤링부터 데이터 관리, 머신러닝 모델 튜닝, 그리고 개인 PC 자원 활용까지, 오늘 다양한 주제를 학습하며 실질적인 문제 해결 능력을 키울 수 있었습니다. 특히 API 사용 시 제한 사항과 PC 자원을 고려한 효율적인 병렬 처리 전략의 중요성을 깨달았으며, 앞으로 실제 프로젝트에 적용할 수 있는 중요한 인사이트를 얻었습니다. 꼼꼼한 코드 검토와 최적화된 전략 수립이 앞으로의 학습 방향이 될 것입니다.\n다음에 조심할 것 API 사용 시 제한 사항과 서버 응답 시간을 고려하여 멀티스레딩 설계를 하고, 작은 오타나 무분별한 병렬 처리가 전체 파이프라인에 미치는 영향을 항상 염두에 두어야겠다. 또한, 데이터 형식 선택 시 최신 기술이 아닌 프로젝트의 목적과 데이터 특성에 가장 적합한 방식을 신중하게 고려해야 할 것이다.\n다음 복습 주제 공공 API 사용 시 인증, 응답 형식, 데이터 범위 지정 등 인자 파악 연습을 꾸준히 해야 하고, JSON과 XML 선택 시 프로젝트 요구사항에 따른 최적의 방식을 고민하며 결정해야겠다. 또한, API 사용 시 다양한 제한 사항과 개인 PC 자원을 고려한 병렬 처리 전략을 다시 한번 점검하고 적용하는 연습을 해야 할 것 같다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n","wordCount":"1165","inLanguage":"en","datePublished":"2026-07-07T00:00:00Z","dateModified":"2026-07-07T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/learning/2026-07-07-am-daily/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
-<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정</h1><div class=post-description>2026-07-07 오전 학습 정리</div><div class=post-meta><span title='2026-07-07 00:00:00 +0000 UTC'>2026년 7월 7일</span>&nbsp;·&nbsp;<span>6 min</span></div></header><div class="post-content md-content"><h2 id=목차>목차<a hidden class=anchor aria-hidden=true href=#목차>#</a></h2><ul><li><ol><li><a href=#1-%EA%B3%B5%EA%B3%B5-api-%ED%81%AC%EB%A1%A4%EB%A7%81-%EC%9A%94%EC%B2%AD-%EC%9D%B8%EC%9E%90-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0>공공 API 크롤링, 요청 인자 이해하기</a></li></ol></li><li><ol start=2><li><a href=#2-json%EA%B3%BC-xml-%EC%84%A0%ED%83%9D-%EB%B0%8F-%EB%A1%9C%EC%BB%AC-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B4%80%EB%A6%AC-%EC%A0%84%EB%9E%B5>JSON과 XML 선택 및 로컬 데이터 관리 전략</a></li></ol></li><li><ol start=3><li><a href=#3-%EB%A9%80%ED%8B%B0%EC%8A%A4%EB%A0%88%EB%94%A9%EA%B3%BC-api-%EC%82%AC%EC%9A%A9-%EC%8B%9C-%EC%84%B1%EB%8A%A5%EA%B3%BC-%EC%A0%9C%ED%95%9C-%EC%82%AC%ED%95%AD-%EC%9D%B4%ED%95%B4>멀티스레딩과 API 사용 시 성능과 제한 사항 이해</a></li></ol></li><li><ol start=4><li><a href=#4-%EB%9E%9C%EB%8D%A4-%ED%8F%AC%EB%A0%88%EC%8A%A4%ED%8A%B8-%EC%9D%B4%ED%95%B4%EC%99%80-%ED%95%98%EC%9D%B4%ED%8D%BC%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0-%ED%8A%9C%EB%8B%9D-%EC%9B%8C%ED%81%AC%EB%85%B8%ED%8A%B8>랜덤 포레스트 이해와 하이퍼파라미터 튜닝 워크노트</a></li></ol></li><li><ol start=5><li><a href=#5-%EC%97%90%EB%9F%AC-%EC%88%98%EC%A0%95-%EB%B0%8F-%EA%B0%9C%EC%9D%B8-pc-%EC%9E%90%EC%9B%90-%EB%A7%9E%EC%B6%A4-%ED%95%99%EC%8A%B5-%EC%A0%84%EB%9E%B5>에러 수정 및 개인 PC 자원 맞춤 학습 전략</a></li></ol></li><li><a href=#%EC%B4%9D%ED%8F%89>총평</a></li></ul><h2 id=1-공공-api-크롤링-요청-인자-이해하기>1. 공공 API 크롤링, 요청 인자 이해하기<a hidden class=anchor aria-hidden=true href=#1-공공-api-크롤링-요청-인자-이해하기>#</a></h2><h3 id=무엇을-배웠나>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나>#</a></h3><p>Open API 기반 크롤링을 처음 이해할 때 인증 관련, 응답 형식, 데이터 대상, 범위 지정 등 다양한 인자를 혼동했었는데, API가 외부 데이터에 접근하는 통로라는 것을 명확히 이해하게 되었습니다. 공공 데이터 API와 LLM API의 차이점을 이해하고, API 문서를 통해 필요한 인자를 파악하는 연습이 중요함을 알게 되었습니다. 실제 식품안전나라 레시피 API 실습을 통해 API 호출 구조와 데이터 처리 과정을 익혔습니다.</p><h3 id=헷갈렸던-점>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점>#</a></h3><p>API를 처음 접했을 때, 어떤 인자가 필수이고 어떤 인자가 선택적인지 파악하는 게 어려웠습니다. 특히 공공 데이터 API와 LLM API의 차이점을 명확히 구분하지 못해서 API가 단순히 모델을 호출하는 것 이상으로 외부 데이터에 접근하는 역할을 한다는 것을 이해하는 데 시간이 걸렸습니다.</p><h3 id=정리된-이해>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해>#</a></h3><p>API는 단순히 모델을 호출하는 것이 아니라 외부 데이터에 접근할 수 있도록 해주는 중요한 통로라는 점을 이해하게 되었다. 요청 인자들을 역할에 따라 분류하고, 각 인자가 API 요청에 어떤 영향을 미치는지 명확히 파악하는 것이 중요하다. 특히 공공 데이터 API를 사용할 때는 공식 문서를 꼼꼼히 확인하고, 인증키와 데이터 형식을 정확하게 입력해야 원하는 데이터를 얻을 수 있다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> requests
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> json
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>api_key <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;YOUR_API_KEY&#34;</span>  <span style=color:#75715e># 실제 API 키로 대체</span>
-</span></span><span style=display:flex><span>url <span style=color:#f92672>=</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;https://api.foodsafetykorea.go.kr/api/1/recipe/</span><span style=color:#e6db74>{</span>api_key<span style=color:#e6db74>}</span><span style=color:#e6db74>/json/RECIPE_SERVICE/0/10&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>response <span style=color:#f92672>=</span> requests<span style=color:#f92672>.</span>get(url)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> response<span style=color:#f92672>.</span>status_code <span style=color:#f92672>==</span> <span style=color:#ae81ff>200</span>:
-</span></span><span style=display:flex><span>    data <span style=color:#f92672>=</span> response<span style=color:#f92672>.</span>json()
-</span></span><span style=display:flex><span>    print(json<span style=color:#f92672>.</span>dumps(data, indent<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>, ensure_ascii<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>))
-</span></span><span style=display:flex><span><span style=color:#66d9ef>else</span>:
-</span></span><span style=display:flex><span>    print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;API 요청 실패: </span><span style=color:#e6db74>{</span>response<span style=color:#f92672>.</span>status_code<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
-</span></span></code></pre></div><h2 id=2-json과-xml-선택-및-로컬-데이터-관리-전략>2. JSON과 XML 선택 및 로컬 데이터 관리 전략<a hidden class=anchor aria-hidden=true href=#2-json과-xml-선택-및-로컬-데이터-관리-전략>#</a></h2><h3 id=무엇을-배웠나-1>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-1>#</a></h3><p>JSON과 XML의 선택은 프로젝트의 요구사항과 환경에 따라 달라져야 하며, JSON의 편리함과 XML의 엄격한 검증 능력을 모두 고려해야 한다는 점을 알게 되었습니다. 자주 사용하는 데이터는 외부 API 호출 대신 로컬 데이터베이스에 저장하여 효율적인 접근성을 확보하는 것이 중요하다는 것을 배웠습니다. 앞으로는 데이터 형식 선택 시, 단순히 최신 기술 여부를 판단하는 것이 아니라, 프로젝트의 목적과 데이터 특성에 맞는 최적의 방식을 선택해야겠습니다.</p><h3 id=헷갈렸던-점-1>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-1>#</a></h3><p>처음에는 JSON을 최신 기술로만 생각하고 XML을 오래된 형식으로 여겨 JSON을 무조건적으로 선호했지만, XML의 계층 구조와 데이터 검증 능력이 중요함을 깨달았습니다. 또한 매번 API를 호출할지, 로컬에 저장할지 결정하는 데 어려움을 겪었으며, 효율적인 데이터 관리 방법에 대한 이해가 부족했습니다.</p><h3 id=정리된-이해-1>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-1>#</a></h3><p>프로젝트의 필요에 따라 JSON과 XML을 선택하되, JSON은 Python과의 연동이 용이하여 우선적으로 고려합니다. 자주 사용되는 데이터는 외부 API 호출 대신 로컬 데이터베이스에 저장하여 효율성을 높이고, 원본 데이터 형식은 보존하여 필요시 활용합니다. XML은 여전히 엄격한 데이터 검증이 필요한 환경에서 유용하게 사용될 수 있습니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> requests
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> pandas <span style=color:#66d9ef>as</span> pd
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># JSON 예시</span>
-</span></span><span style=display:flex><span>response <span style=color:#f92672>=</span> requests<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#39;API_URL&#39;</span>, timeout<span style=color:#f92672>=</span><span style=color:#ae81ff>30</span>)
-</span></span><span style=display:flex><span>response<span style=color:#f92672>.</span>raise_for_status()
-</span></span><span style=display:flex><span>payload <span style=color:#f92672>=</span> response<span style=color:#f92672>.</span>json()
-</span></span><span style=display:flex><span>rows <span style=color:#f92672>=</span> payload[<span style=color:#e6db74>&#34;서비스명&#34;</span>][<span style=color:#e6db74>&#34;데이터열&#34;</span>]
-</span></span><span style=display:flex><span>df <span style=color:#f92672>=</span> pd<span style=color:#f92672>.</span>DataFrame(rows)
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> xml.etree.ElementTree <span style=color:#66d9ef>as</span> ET
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># XML 예시</span>
-</span></span><span style=display:flex><span>root <span style=color:#f92672>=</span> ET<span style=color:#f92672>.</span>fromstring(response<span style=color:#f92672>.</span>text)
-</span></span><span style=display:flex><span>xml_data <span style=color:#f92672>=</span> {child<span style=color:#f92672>.</span>tag: child<span style=color:#f92672>.</span>text <span style=color:#66d9ef>for</span> child <span style=color:#f92672>in</span> root}
-</span></span></code></pre></div><h2 id=3-멀티스레딩과-api-사용-시-성능과-제한-사항-이해>3. 멀티스레딩과 API 사용 시 성능과 제한 사항 이해<a hidden class=anchor aria-hidden=true href=#3-멀티스레딩과-api-사용-시-성능과-제한-사항-이해>#</a></h2><h3 id=무엇을-배웠나-2>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-2>#</a></h3><p>멀티스레드를 사용한다고 해서 항상 성능이 일정 비율로 향상되는 것은 아니라는 것을 알게 되었다. 요청 수와 서버 응답 시간에 따라 멀티스레드의 효과가 달라지고, 무료 공공 API는 다양한 제한 사항이 있다는 것도 깨달았다. 이러한 점들을 고려하여 API 호출 설계를 해야겠다.</p><h3 id=헷갈렸던-점-2>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-2>#</a></h3><p>멀티스레드가 항상 일정한 비율로 성능 향상을 가져온다고 생각했고, 공공 API는 제한 없이 자유롭게 사용할 수 있다고 잘못 이해했습니다. 실제로 멀티스레드 성능은 요청 수와 응답 시간에 따라 달라지고, 공공 API는 다양한 제한 사항이 존재했습니다.</p><h3 id=정리된-이해-2>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-2>#</a></h3><p>멀티스레드를 사용하면 네트워크 요청의 개수와 서버 응답 시간에 따라 성능 향상이 커지지만, 요청 수가 적거나 응답 시간이 길면 효과가 제한적일 수 있습니다. 무료 공공 API는 무제한으로 사용할 수 있는 것이 아니라, 호출 횟수, 페이지 크기, 인증 등 다양한 제한 사항을 준수해야 합니다. 이러한 점들을 고려하여 스레드 수를 조절하고 API 사용 계획을 세워야 효율적인 데이터 수집이 가능합니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> concurrent.futures
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> requests
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>fetch_data</span>(url):
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>try</span>:
-</span></span><span style=display:flex><span>        response <span style=color:#f92672>=</span> requests<span style=color:#f92672>.</span>get(url)
-</span></span><span style=display:flex><span>        response<span style=color:#f92672>.</span>raise_for_status() <span style=color:#75715e># HTTP 에러 발생 시 예외 발생</span>
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> response<span style=color:#f92672>.</span>json()
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>except</span> requests<span style=color:#f92672>.</span>exceptions<span style=color:#f92672>.</span>RequestException <span style=color:#66d9ef>as</span> e:
-</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;Error fetching </span><span style=color:#e6db74>{</span>url<span style=color:#e6db74>}</span><span style=color:#e6db74>: </span><span style=color:#e6db74>{</span>e<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>None</span>
-</span></span></code></pre></div><h2 id=4-랜덤-포레스트-이해와-하이퍼파라미터-튜닝-워크노트>4. 랜덤 포레스트 이해와 하이퍼파라미터 튜닝 워크노트<a hidden class=anchor aria-hidden=true href=#4-랜덤-포레스트-이해와-하이퍼파라미터-튜닝-워크노트>#</a></h2><h3 id=무엇을-배웠나-3>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-3>#</a></h3><p>Random Forest가 단순히 여러 트리의 결과를 평균내는 것이 아니라, 다수결 투표 방식으로 예측을 결정한다는 점을 명확히 이해하게 되었다. 또한, 모델 학습 과정에서 사용되는 무작위성이 데이터 샘플링과 특성 선택에 활용된다는 것을 알게 되었고, 하이퍼파라미터와 학습 파라미터의 구분에도 대한 개념을 제대로 갖추게 되었다. 이러한 이해를 바탕으로 Random Forest 모델을 더 효과적으로 다룰 수 있을 것 같다.</p><h3 id=헷갈렸던-점-3>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-3>#</a></h3><p>처음에는 Random Forest의 예측이 여러 트리의 결과를 단순 평균내는 거라고 생각했고, &lsquo;random&rsquo;이라는 단어가 데이터 임의 채워넣는 걸 의미한다고 착각했습니다. 또한, 모델 내부 파라미터와 사람이 설정하는 하이퍼파라미터의 차이를 명확히 구분하지 못해 어려움을 겪었습니다.</p><h3 id=정리된-이해-3>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-3>#</a></h3><p>Random Forest는 여러 트리의 예측 결과를 투표로 결정하며, 무작위성은 데이터 샘플링과 특성 선택 과정에서 활용됩니다. 하이퍼파라미터는 모델 학습 전에 사용자가 직접 설정하는 값이며, 트리의 깊이나 트리의 수를 조절합니다. 이러한 이해를 바탕으로 Random Forest 모델을 더 효과적으로 활용할 수 있을 것입니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-plaintext data-lang=plaintext><span style=display:flex><span># Random Forest 예측 방식 예시 (Python)
-</span></span><span style=display:flex><span>import numpy as np
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>def majority_vote(predictions):
-</span></span><span style=display:flex><span>    &#34;&#34;&#34;다수결 투표를 통해 최종 예측 결정&#34;&#34;&#34;
-</span></span><span style=display:flex><span>    counts = np.bincount(predictions)
-</span></span><span style=display:flex><span>    return np.argmax(counts)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span># 예측 결과 (각 트리의 예측)
-</span></span><span style=display:flex><span>tree_predictions = np.array([&#39;생존&#39;, &#39;사망&#39;, &#39;생존&#39;, &#39;생존&#39;, &#39;사망&#39;, &#39;생존&#39;])
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span># 다수결 투표를 통해 최종 예측 결정
-</span></span><span style=display:flex><span>final_prediction = majority_vote(tree_predictions)
-</span></span><span style=display:flex><span>print(f&#34;최종 예측: {final_prediction}&#34;)
-</span></span></code></pre></div><h2 id=5-에러-수정-및-개인-pc-자원-맞춤-학습-전략>5. 에러 수정 및 개인 PC 자원 맞춤 학습 전략<a hidden class=anchor aria-hidden=true href=#5-에러-수정-및-개인-pc-자원-맞춤-학습-전략>#</a></h2><h3 id=무엇을-배웠나-4>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-4>#</a></h3><p>작은 오타 하나로도 파이프라인 실행이 중단될 수 있다는 점을 깨달았고, <code>n_jobs=-1</code>과 같은 무분별한 병렬 처리가 오히려 자원 과다 사용으로 이어질 수 있다는 점을 알게 되었다. 개인 PC 자원을 고려하여 각 단계별 병렬 처리 전략을 세우는 것이 중요하며, 특히 API 수집, 랜덤 포레스트, 그리드 서치CV의 병렬화 방식 차이를 이해해야 한다는 것을 배웠다. 앞으로는 코드를 꼼꼼히 검토하고, 자원 사용량을 고려하여 병렬 처리 단계를 조정해야겠다.</p><h3 id=헷갈렸던-점-4>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-4>#</a></h3><p>실습하다가 <code>ColumnTransformer</code>나 <code>random_state</code> 같은 사소한 오타 때문에 파이프라인이 멈추는 경우가 많았고, <code>n_jobs=-1</code>을 어디에나 적용하면 좋을 거라고 생각했지만 오히려 자원 낭비가 될 수 있다는 점을 제대로 이해하지 못했습니다. 특히 개인 PC의 자원을 고려해서 병렬 처리 전략을 어떻게 세워야 할지 막막했습니다.</p><h3 id=정리된-이해-4>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-4>#</a></h3><p>작은 오타와 문법 오류가 코드 실행에 큰 영향을 미칠 수 있다는 점을 깨달았고, 병렬 처리 시 각 단계별 목적과 주의사항을 명확히 이해해야 과도한 자원 사용을 막을 수 있다는 점을 알게 되었다. 특히 개인 PC의 자원을 고려하여 각 단계에 적합한 병렬화 수준을 설정하는 것이 중요하다는 점을 확인했다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>ColumnTransformer(transformers<span style=color:#f92672>=</span>[<span style=color:#f92672>...</span>])  <span style=color:#75715e># 수정 전</span>
-</span></span><span style=display:flex><span>ColumnTransformer(transformers<span style=color:#f92672>=</span>[<span style=color:#f92672>...</span>])  <span style=color:#75715e># 수정 후</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>random_state <span style=color:#f92672>=</span> RANDOM_STATE  <span style=color:#75715e># 수정 전</span>
-</span></span><span style=display:flex><span>random_state <span style=color:#f92672>=</span> RANDOM_STATE  <span style=color:#75715e># 수정 후</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>rf_model <span style=color:#f92672>=</span> RandomForestClassifier(random_state<span style=color:#f92672>=</span>RANDOM_STATE, n_jobs<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)  <span style=color:#75715e># 단일 코어 사용</span>
-</span></span></code></pre></div><h2 id=총평>총평<a hidden class=anchor aria-hidden=true href=#총평>#</a></h2><h3 id=오늘-오전-전체에서-배운-것>오늘 오전 전체에서 배운 것<a hidden class=anchor aria-hidden=true href=#오늘-오전-전체에서-배운-것>#</a></h3><p>공공 API 크롤링부터 데이터 관리, 머신러닝 모델 튜닝, 그리고 개인 PC 자원 활용까지, 오늘 다양한 주제를 학습하며 실질적인 문제 해결 능력을 키울 수 있었습니다. 특히 API 사용 시 제한 사항과 PC 자원을 고려한 효율적인 병렬 처리 전략의 중요성을 깨달았으며, 앞으로 실제 프로젝트에 적용할 수 있는 중요한 인사이트를 얻었습니다. 꼼꼼한 코드 검토와 최적화된 전략 수립이 앞으로의 학습 방향이 될 것입니다.</p><h3 id=다음에-조심할-것>다음에 조심할 것<a hidden class=anchor aria-hidden=true href=#다음에-조심할-것>#</a></h3><p>API 사용 시 제한 사항과 서버 응답 시간을 고려하여 멀티스레딩 설계를 하고, 작은 오타나 무분별한 병렬 처리가 전체 파이프라인에 미치는 영향을 항상 염두에 두어야겠다. 또한, 데이터 형식 선택 시 최신 기술이 아닌 프로젝트의 목적과 데이터 특성에 가장 적합한 방식을 신중하게 고려해야 할 것이다.</p><h3 id=다음-복습-주제>다음 복습 주제<a hidden class=anchor aria-hidden=true href=#다음-복습-주제>#</a></h3><p>공공 API 사용 시 인증, 응답 형식, 데이터 범위 지정 등 인자 파악 연습을 꾸준히 해야 하고, JSON과 XML 선택 시 프로젝트 요구사항에 따른 최적의 방식을 고민하며 결정해야겠다. 또한, API 사용 시 다양한 제한 사항과 개인 PC 자원을 고려한 병렬 처리 전략을 다시 한번 점검하고 적용하는 연습을 해야 할 것 같다.</p><blockquote><p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
-This post was written with the help of a local LLM (AI).</p></blockquote></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://Han-think.github.io/learning/2026-07-08-pm-daily/><span class=title>« Prev</span>
-<span>회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험</span>
-</a><a class=next href=https://Han-think.github.io/learning/2026-07-07-pm-daily/><span class=title>Next »</span>
-<span>데이터 분석, 머신러닝 핵심 원리 완벽 해설 및 활용법 익히기</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
-<span>Powered by
-<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
-<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-07-07 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-07-07-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-07-07-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-07-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정">
+  <meta property="og:description" content="2026-07-07 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-07-07T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-07T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정">
+  <meta name="twitter:description" content="2026-07-07 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정",
+      "item": "https://Han-think.github.io/learning/2026-07-07-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정",
+  "name": "API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정",
+  "description": "2026-07-07 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 공공 API 크롤링, 요청 인자 이해하기 JSON과 XML 선택 및 로컬 데이터 관리 전략 멀티스레딩과 API 사용 시 성능과 제한 사항 이해 랜덤 포레스트 이해와 하이퍼파라미터 튜닝 워크노트 에러 수정 및 개인 PC 자원 맞춤 학습 전략 총평 1. 공공 API 크롤링, 요청 인자 이해하기 무엇을 배웠나 Open API 기반 크롤링을 처음 이해할 때 인증 관련, 응답 형식, 데이터 대상, 범위 지정 등 다양한 인자를 혼동했었는데, API가 외부 데이터에 접근하는 통로라는 것을 명확히 이해하게 되었습니다. 공공 데이터 API와 LLM API의 차이점을 이해하고, API 문서를 통해 필요한 인자를 파악하는 연습이 중요함을 알게 되었습니다. 실제 식품안전나라 레시피 API 실습을 통해 API 호출 구조와 데이터 처리 과정을 익혔습니다.\n헷갈렸던 점 API를 처음 접했을 때, 어떤 인자가 필수이고 어떤 인자가 선택적인지 파악하는 게 어려웠습니다. 특히 공공 데이터 API와 LLM API의 차이점을 명확히 구분하지 못해서 API가 단순히 모델을 호출하는 것 이상으로 외부 데이터에 접근하는 역할을 한다는 것을 이해하는 데 시간이 걸렸습니다.\n정리된 이해 API는 단순히 모델을 호출하는 것이 아니라 외부 데이터에 접근할 수 있도록 해주는 중요한 통로라는 점을 이해하게 되었다. 요청 인자들을 역할에 따라 분류하고, 각 인자가 API 요청에 어떤 영향을 미치는지 명확히 파악하는 것이 중요하다. 특히 공공 데이터 API를 사용할 때는 공식 문서를 꼼꼼히 확인하고, 인증키와 데이터 형식을 정확하게 입력해야 원하는 데이터를 얻을 수 있다.\nimport requests import json api_key = \"YOUR_API_KEY\" # 실제 API 키로 대체 url = f\"https://api.foodsafetykorea.go.kr/api/1/recipe/{api_key}/json/RECIPE_SERVICE/0/10\" response = requests.get(url) if response.status_code == 200: data = response.json() print(json.dumps(data, indent=2, ensure_ascii=False)) else: print(f\"API 요청 실패: {response.status_code}\") 2. JSON과 XML 선택 및 로컬 데이터 관리 전략 무엇을 배웠나 JSON과 XML의 선택은 프로젝트의 요구사항과 환경에 따라 달라져야 하며, JSON의 편리함과 XML의 엄격한 검증 능력을 모두 고려해야 한다는 점을 알게 되었습니다. 자주 사용하는 데이터는 외부 API 호출 대신 로컬 데이터베이스에 저장하여 효율적인 접근성을 확보하는 것이 중요하다는 것을 배웠습니다. 앞으로는 데이터 형식 선택 시, 단순히 최신 기술 여부를 판단하는 것이 아니라, 프로젝트의 목적과 데이터 특성에 맞는 최적의 방식을 선택해야겠습니다.\n헷갈렸던 점 처음에는 JSON을 최신 기술로만 생각하고 XML을 오래된 형식으로 여겨 JSON을 무조건적으로 선호했지만, XML의 계층 구조와 데이터 검증 능력이 중요함을 깨달았습니다. 또한 매번 API를 호출할지, 로컬에 저장할지 결정하는 데 어려움을 겪었으며, 효율적인 데이터 관리 방법에 대한 이해가 부족했습니다.\n정리된 이해 프로젝트의 필요에 따라 JSON과 XML을 선택하되, JSON은 Python과의 연동이 용이하여 우선적으로 고려합니다. 자주 사용되는 데이터는 외부 API 호출 대신 로컬 데이터베이스에 저장하여 효율성을 높이고, 원본 데이터 형식은 보존하여 필요시 활용합니다. XML은 여전히 엄격한 데이터 검증이 필요한 환경에서 유용하게 사용될 수 있습니다.\nimport requests import pandas as pd # JSON 예시 response = requests.get('API_URL', timeout=30) response.raise_for_status() payload = response.json() rows = payload[\"서비스명\"][\"데이터열\"] df = pd.DataFrame(rows) import xml.etree.ElementTree as ET # XML 예시 root = ET.fromstring(response.text) xml_data = {child.tag: child.text for child in root} 3. 멀티스레딩과 API 사용 시 성능과 제한 사항 이해 무엇을 배웠나 멀티스레드를 사용한다고 해서 항상 성능이 일정 비율로 향상되는 것은 아니라는 것을 알게 되었다. 요청 수와 서버 응답 시간에 따라 멀티스레드의 효과가 달라지고, 무료 공공 API는 다양한 제한 사항이 있다는 것도 깨달았다. 이러한 점들을 고려하여 API 호출 설계를 해야겠다.\n헷갈렸던 점 멀티스레드가 항상 일정한 비율로 성능 향상을 가져온다고 생각했고, 공공 API는 제한 없이 자유롭게 사용할 수 있다고 잘못 이해했습니다. 실제로 멀티스레드 성능은 요청 수와 응답 시간에 따라 달라지고, 공공 API는 다양한 제한 사항이 존재했습니다.\n정리된 이해 멀티스레드를 사용하면 네트워크 요청의 개수와 서버 응답 시간에 따라 성능 향상이 커지지만, 요청 수가 적거나 응답 시간이 길면 효과가 제한적일 수 있습니다. 무료 공공 API는 무제한으로 사용할 수 있는 것이 아니라, 호출 횟수, 페이지 크기, 인증 등 다양한 제한 사항을 준수해야 합니다. 이러한 점들을 고려하여 스레드 수를 조절하고 API 사용 계획을 세워야 효율적인 데이터 수집이 가능합니다.\nimport concurrent.futures import requests def fetch_data(url): try: response = requests.get(url) response.raise_for_status() # HTTP 에러 발생 시 예외 발생 return response.json() except requests.exceptions.RequestException as e: print(f\"Error fetching {url}: {e}\") return None 4. 랜덤 포레스트 이해와 하이퍼파라미터 튜닝 워크노트 무엇을 배웠나 Random Forest가 단순히 여러 트리의 결과를 평균내는 것이 아니라, 다수결 투표 방식으로 예측을 결정한다는 점을 명확히 이해하게 되었다. 또한, 모델 학습 과정에서 사용되는 무작위성이 데이터 샘플링과 특성 선택에 활용된다는 것을 알게 되었고, 하이퍼파라미터와 학습 파라미터의 구분에도 대한 개념을 제대로 갖추게 되었다. 이러한 이해를 바탕으로 Random Forest 모델을 더 효과적으로 다룰 수 있을 것 같다.\n헷갈렸던 점 처음에는 Random Forest의 예측이 여러 트리의 결과를 단순 평균내는 거라고 생각했고, ‘random’이라는 단어가 데이터 임의 채워넣는 걸 의미한다고 착각했습니다. 또한, 모델 내부 파라미터와 사람이 설정하는 하이퍼파라미터의 차이를 명확히 구분하지 못해 어려움을 겪었습니다.\n정리된 이해 Random Forest는 여러 트리의 예측 결과를 투표로 결정하며, 무작위성은 데이터 샘플링과 특성 선택 과정에서 활용됩니다. 하이퍼파라미터는 모델 학습 전에 사용자가 직접 설정하는 값이며, 트리의 깊이나 트리의 수를 조절합니다. 이러한 이해를 바탕으로 Random Forest 모델을 더 효과적으로 활용할 수 있을 것입니다.\n# Random Forest 예측 방식 예시 (Python) import numpy as np def majority_vote(predictions): \"\"\"다수결 투표를 통해 최종 예측 결정\"\"\" counts = np.bincount(predictions) return np.argmax(counts) # 예측 결과 (각 트리의 예측) tree_predictions = np.array(['생존', '사망', '생존', '생존', '사망', '생존']) # 다수결 투표를 통해 최종 예측 결정 final_prediction = majority_vote(tree_predictions) print(f\"최종 예측: {final_prediction}\") 5. 에러 수정 및 개인 PC 자원 맞춤 학습 전략 무엇을 배웠나 작은 오타 하나로도 파이프라인 실행이 중단될 수 있다는 점을 깨달았고, n_jobs=-1과 같은 무분별한 병렬 처리가 오히려 자원 과다 사용으로 이어질 수 있다는 점을 알게 되었다. 개인 PC 자원을 고려하여 각 단계별 병렬 처리 전략을 세우는 것이 중요하며, 특히 API 수집, 랜덤 포레스트, 그리드 서치CV의 병렬화 방식 차이를 이해해야 한다는 것을 배웠다. 앞으로는 코드를 꼼꼼히 검토하고, 자원 사용량을 고려하여 병렬 처리 단계를 조정해야겠다.\n헷갈렸던 점 실습하다가 ColumnTransformer나 random_state 같은 사소한 오타 때문에 파이프라인이 멈추는 경우가 많았고, n_jobs=-1을 어디에나 적용하면 좋을 거라고 생각했지만 오히려 자원 낭비가 될 수 있다는 점을 제대로 이해하지 못했습니다. 특히 개인 PC의 자원을 고려해서 병렬 처리 전략을 어떻게 세워야 할지 막막했습니다.\n정리된 이해 작은 오타와 문법 오류가 코드 실행에 큰 영향을 미칠 수 있다는 점을 깨달았고, 병렬 처리 시 각 단계별 목적과 주의사항을 명확히 이해해야 과도한 자원 사용을 막을 수 있다는 점을 알게 되었다. 특히 개인 PC의 자원을 고려하여 각 단계에 적합한 병렬화 수준을 설정하는 것이 중요하다는 점을 확인했다.\nColumnTransformer(transformers=[...]) # 수정 전 ColumnTransformer(transformers=[...]) # 수정 후 random_state = RANDOM_STATE # 수정 전 random_state = RANDOM_STATE # 수정 후 rf_model = RandomForestClassifier(random_state=RANDOM_STATE, n_jobs=1) # 단일 코어 사용 총평 오늘 오전 전체에서 배운 것 공공 API 크롤링부터 데이터 관리, 머신러닝 모델 튜닝, 그리고 개인 PC 자원 활용까지, 오늘 다양한 주제를 학습하며 실질적인 문제 해결 능력을 키울 수 있었습니다. 특히 API 사용 시 제한 사항과 PC 자원을 고려한 효율적인 병렬 처리 전략의 중요성을 깨달았으며, 앞으로 실제 프로젝트에 적용할 수 있는 중요한 인사이트를 얻었습니다. 꼼꼼한 코드 검토와 최적화된 전략 수립이 앞으로의 학습 방향이 될 것입니다.\n다음에 조심할 것 API 사용 시 제한 사항과 서버 응답 시간을 고려하여 멀티스레딩 설계를 하고, 작은 오타나 무분별한 병렬 처리가 전체 파이프라인에 미치는 영향을 항상 염두에 두어야겠다. 또한, 데이터 형식 선택 시 최신 기술이 아닌 프로젝트의 목적과 데이터 특성에 가장 적합한 방식을 신중하게 고려해야 할 것이다.\n다음 복습 주제 공공 API 사용 시 인증, 응답 형식, 데이터 범위 지정 등 인자 파악 연습을 꾸준히 해야 하고, JSON과 XML 선택 시 프로젝트 요구사항에 따른 최적의 방식을 고민하며 결정해야겠다. 또한, API 사용 시 다양한 제한 사항과 개인 PC 자원을 고려한 병렬 처리 전략을 다시 한번 점검하고 적용하는 연습을 해야 할 것 같다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "1165",
+  "inLanguage": "en",
+  "datePublished": "2026-07-07T00:00:00Z",
+  "dateModified": "2026-07-07T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-07-07-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정
+    </h1>
+    <div class="post-description">
+      2026-07-07 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-07 00:00:00 +0000 UTC'>2026년 7월 7일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EA%B3%B5%EA%B3%B5-api-%ED%81%AC%EB%A1%A4%EB%A7%81-%EC%9A%94%EC%B2%AD-%EC%9D%B8%EC%9E%90-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">공공 API 크롤링, 요청 인자 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-json%EA%B3%BC-xml-%EC%84%A0%ED%83%9D-%EB%B0%8F-%EB%A1%9C%EC%BB%AC-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B4%80%EB%A6%AC-%EC%A0%84%EB%9E%B5">JSON과 XML 선택 및 로컬 데이터 관리 전략</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EB%A9%80%ED%8B%B0%EC%8A%A4%EB%A0%88%EB%94%A9%EA%B3%BC-api-%EC%82%AC%EC%9A%A9-%EC%8B%9C-%EC%84%B1%EB%8A%A5%EA%B3%BC-%EC%A0%9C%ED%95%9C-%EC%82%AC%ED%95%AD-%EC%9D%B4%ED%95%B4">멀티스레딩과 API 사용 시 성능과 제한 사항 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EB%9E%9C%EB%8D%A4-%ED%8F%AC%EB%A0%88%EC%8A%A4%ED%8A%B8-%EC%9D%B4%ED%95%B4%EC%99%80-%ED%95%98%EC%9D%B4%ED%8D%BC%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0-%ED%8A%9C%EB%8B%9D-%EC%9B%8C%ED%81%AC%EB%85%B8%ED%8A%B8">랜덤 포레스트 이해와 하이퍼파라미터 튜닝 워크노트</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-%EC%97%90%EB%9F%AC-%EC%88%98%EC%A0%95-%EB%B0%8F-%EA%B0%9C%EC%9D%B8-pc-%EC%9E%90%EC%9B%90-%EB%A7%9E%EC%B6%A4-%ED%95%99%EC%8A%B5-%EC%A0%84%EB%9E%B5">에러 수정 및 개인 PC 자원 맞춤 학습 전략</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-공공-api-크롤링-요청-인자-이해하기">1. 공공 API 크롤링, 요청 인자 이해하기<a hidden class="anchor" aria-hidden="true" href="#1-공공-api-크롤링-요청-인자-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>Open API 기반 크롤링을 처음 이해할 때 인증 관련, 응답 형식, 데이터 대상, 범위 지정 등 다양한 인자를 혼동했었는데, API가 외부 데이터에 접근하는 통로라는 것을 명확히 이해하게 되었습니다. 공공 데이터 API와 LLM API의 차이점을 이해하고, API 문서를 통해 필요한 인자를 파악하는 연습이 중요함을 알게 되었습니다. 실제 식품안전나라 레시피 API 실습을 통해 API 호출 구조와 데이터 처리 과정을 익혔습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>API를 처음 접했을 때, 어떤 인자가 필수이고 어떤 인자가 선택적인지 파악하는 게 어려웠습니다. 특히 공공 데이터 API와 LLM API의 차이점을 명확히 구분하지 못해서 API가 단순히 모델을 호출하는 것 이상으로 외부 데이터에 접근하는 역할을 한다는 것을 이해하는 데 시간이 걸렸습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>API는 단순히 모델을 호출하는 것이 아니라 외부 데이터에 접근할 수 있도록 해주는 중요한 통로라는 점을 이해하게 되었다. 요청 인자들을 역할에 따라 분류하고, 각 인자가 API 요청에 어떤 영향을 미치는지 명확히 파악하는 것이 중요하다. 특히 공공 데이터 API를 사용할 때는 공식 문서를 꼼꼼히 확인하고, 인증키와 데이터 형식을 정확하게 입력해야 원하는 데이터를 얻을 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> requests
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>api_key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;YOUR_API_KEY&#34;</span>  <span style="color:#75715e"># 실제 API 키로 대체</span>
+</span></span><span style="display:flex;"><span>url <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;https://api.foodsafetykorea.go.kr/api/1/recipe/</span><span style="color:#e6db74">{</span>api_key<span style="color:#e6db74">}</span><span style="color:#e6db74">/json/RECIPE_SERVICE/0/10&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>response <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>get(url)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> response<span style="color:#f92672">.</span>status_code <span style="color:#f92672">==</span> <span style="color:#ae81ff">200</span>:
+</span></span><span style="display:flex;"><span>    data <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>json()
+</span></span><span style="display:flex;"><span>    print(json<span style="color:#f92672">.</span>dumps(data, indent<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, ensure_ascii<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>))
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;API 요청 실패: </span><span style="color:#e6db74">{</span>response<span style="color:#f92672">.</span>status_code<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><h2 id="2-json과-xml-선택-및-로컬-데이터-관리-전략">2. JSON과 XML 선택 및 로컬 데이터 관리 전략<a hidden class="anchor" aria-hidden="true" href="#2-json과-xml-선택-및-로컬-데이터-관리-전략">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>JSON과 XML의 선택은 프로젝트의 요구사항과 환경에 따라 달라져야 하며, JSON의 편리함과 XML의 엄격한 검증 능력을 모두 고려해야 한다는 점을 알게 되었습니다. 자주 사용하는 데이터는 외부 API 호출 대신 로컬 데이터베이스에 저장하여 효율적인 접근성을 확보하는 것이 중요하다는 것을 배웠습니다. 앞으로는 데이터 형식 선택 시, 단순히 최신 기술 여부를 판단하는 것이 아니라, 프로젝트의 목적과 데이터 특성에 맞는 최적의 방식을 선택해야겠습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음에는 JSON을 최신 기술로만 생각하고 XML을 오래된 형식으로 여겨 JSON을 무조건적으로 선호했지만, XML의 계층 구조와 데이터 검증 능력이 중요함을 깨달았습니다. 또한 매번 API를 호출할지, 로컬에 저장할지 결정하는 데 어려움을 겪었으며, 효율적인 데이터 관리 방법에 대한 이해가 부족했습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>프로젝트의 필요에 따라 JSON과 XML을 선택하되, JSON은 Python과의 연동이 용이하여 우선적으로 고려합니다. 자주 사용되는 데이터는 외부 API 호출 대신 로컬 데이터베이스에 저장하여 효율성을 높이고, 원본 데이터 형식은 보존하여 필요시 활용합니다. XML은 여전히 엄격한 데이터 검증이 필요한 환경에서 유용하게 사용될 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> requests
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># JSON 예시</span>
+</span></span><span style="display:flex;"><span>response <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;API_URL&#39;</span>, timeout<span style="color:#f92672">=</span><span style="color:#ae81ff">30</span>)
+</span></span><span style="display:flex;"><span>response<span style="color:#f92672">.</span>raise_for_status()
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>json()
+</span></span><span style="display:flex;"><span>rows <span style="color:#f92672">=</span> payload[<span style="color:#e6db74">&#34;서비스명&#34;</span>][<span style="color:#e6db74">&#34;데이터열&#34;</span>]
+</span></span><span style="display:flex;"><span>df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame(rows)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> xml.etree.ElementTree <span style="color:#66d9ef">as</span> ET
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># XML 예시</span>
+</span></span><span style="display:flex;"><span>root <span style="color:#f92672">=</span> ET<span style="color:#f92672">.</span>fromstring(response<span style="color:#f92672">.</span>text)
+</span></span><span style="display:flex;"><span>xml_data <span style="color:#f92672">=</span> {child<span style="color:#f92672">.</span>tag: child<span style="color:#f92672">.</span>text <span style="color:#66d9ef">for</span> child <span style="color:#f92672">in</span> root}
+</span></span></code></pre></div><h2 id="3-멀티스레딩과-api-사용-시-성능과-제한-사항-이해">3. 멀티스레딩과 API 사용 시 성능과 제한 사항 이해<a hidden class="anchor" aria-hidden="true" href="#3-멀티스레딩과-api-사용-시-성능과-제한-사항-이해">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>멀티스레드를 사용한다고 해서 항상 성능이 일정 비율로 향상되는 것은 아니라는 것을 알게 되었다. 요청 수와 서버 응답 시간에 따라 멀티스레드의 효과가 달라지고, 무료 공공 API는 다양한 제한 사항이 있다는 것도 깨달았다. 이러한 점들을 고려하여 API 호출 설계를 해야겠다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>멀티스레드가 항상 일정한 비율로 성능 향상을 가져온다고 생각했고, 공공 API는 제한 없이 자유롭게 사용할 수 있다고 잘못 이해했습니다. 실제로 멀티스레드 성능은 요청 수와 응답 시간에 따라 달라지고, 공공 API는 다양한 제한 사항이 존재했습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>멀티스레드를 사용하면 네트워크 요청의 개수와 서버 응답 시간에 따라 성능 향상이 커지지만, 요청 수가 적거나 응답 시간이 길면 효과가 제한적일 수 있습니다. 무료 공공 API는 무제한으로 사용할 수 있는 것이 아니라, 호출 횟수, 페이지 크기, 인증 등 다양한 제한 사항을 준수해야 합니다. 이러한 점들을 고려하여 스레드 수를 조절하고 API 사용 계획을 세워야 효율적인 데이터 수집이 가능합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> concurrent.futures
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> requests
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fetch_data</span>(url):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        response <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>get(url)
+</span></span><span style="display:flex;"><span>        response<span style="color:#f92672">.</span>raise_for_status() <span style="color:#75715e"># HTTP 에러 발생 시 예외 발생</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> response<span style="color:#f92672">.</span>json()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> requests<span style="color:#f92672">.</span>exceptions<span style="color:#f92672">.</span>RequestException <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Error fetching </span><span style="color:#e6db74">{</span>url<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span></code></pre></div><h2 id="4-랜덤-포레스트-이해와-하이퍼파라미터-튜닝-워크노트">4. 랜덤 포레스트 이해와 하이퍼파라미터 튜닝 워크노트<a hidden class="anchor" aria-hidden="true" href="#4-랜덤-포레스트-이해와-하이퍼파라미터-튜닝-워크노트">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>Random Forest가 단순히 여러 트리의 결과를 평균내는 것이 아니라, 다수결 투표 방식으로 예측을 결정한다는 점을 명확히 이해하게 되었다. 또한, 모델 학습 과정에서 사용되는 무작위성이 데이터 샘플링과 특성 선택에 활용된다는 것을 알게 되었고, 하이퍼파라미터와 학습 파라미터의 구분에도 대한 개념을 제대로 갖추게 되었다. 이러한 이해를 바탕으로 Random Forest 모델을 더 효과적으로 다룰 수 있을 것 같다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>처음에는 Random Forest의 예측이 여러 트리의 결과를 단순 평균내는 거라고 생각했고, &lsquo;random&rsquo;이라는 단어가 데이터 임의 채워넣는 걸 의미한다고 착각했습니다. 또한, 모델 내부 파라미터와 사람이 설정하는 하이퍼파라미터의 차이를 명확히 구분하지 못해 어려움을 겪었습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>Random Forest는 여러 트리의 예측 결과를 투표로 결정하며, 무작위성은 데이터 샘플링과 특성 선택 과정에서 활용됩니다. 하이퍼파라미터는 모델 학습 전에 사용자가 직접 설정하는 값이며, 트리의 깊이나 트리의 수를 조절합니다. 이러한 이해를 바탕으로 Random Forest 모델을 더 효과적으로 활용할 수 있을 것입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span># Random Forest 예측 방식 예시 (Python)
+</span></span><span style="display:flex;"><span>import numpy as np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>def majority_vote(predictions):
+</span></span><span style="display:flex;"><span>    &#34;&#34;&#34;다수결 투표를 통해 최종 예측 결정&#34;&#34;&#34;
+</span></span><span style="display:flex;"><span>    counts = np.bincount(predictions)
+</span></span><span style="display:flex;"><span>    return np.argmax(counts)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># 예측 결과 (각 트리의 예측)
+</span></span><span style="display:flex;"><span>tree_predictions = np.array([&#39;생존&#39;, &#39;사망&#39;, &#39;생존&#39;, &#39;생존&#39;, &#39;사망&#39;, &#39;생존&#39;])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># 다수결 투표를 통해 최종 예측 결정
+</span></span><span style="display:flex;"><span>final_prediction = majority_vote(tree_predictions)
+</span></span><span style="display:flex;"><span>print(f&#34;최종 예측: {final_prediction}&#34;)
+</span></span></code></pre></div><h2 id="5-에러-수정-및-개인-pc-자원-맞춤-학습-전략">5. 에러 수정 및 개인 PC 자원 맞춤 학습 전략<a hidden class="anchor" aria-hidden="true" href="#5-에러-수정-및-개인-pc-자원-맞춤-학습-전략">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>작은 오타 하나로도 파이프라인 실행이 중단될 수 있다는 점을 깨달았고, <code>n_jobs=-1</code>과 같은 무분별한 병렬 처리가 오히려 자원 과다 사용으로 이어질 수 있다는 점을 알게 되었다. 개인 PC 자원을 고려하여 각 단계별 병렬 처리 전략을 세우는 것이 중요하며, 특히 API 수집, 랜덤 포레스트, 그리드 서치CV의 병렬화 방식 차이를 이해해야 한다는 것을 배웠다. 앞으로는 코드를 꼼꼼히 검토하고, 자원 사용량을 고려하여 병렬 처리 단계를 조정해야겠다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>실습하다가 <code>ColumnTransformer</code>나 <code>random_state</code> 같은 사소한 오타 때문에 파이프라인이 멈추는 경우가 많았고, <code>n_jobs=-1</code>을 어디에나 적용하면 좋을 거라고 생각했지만 오히려 자원 낭비가 될 수 있다는 점을 제대로 이해하지 못했습니다. 특히 개인 PC의 자원을 고려해서 병렬 처리 전략을 어떻게 세워야 할지 막막했습니다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>작은 오타와 문법 오류가 코드 실행에 큰 영향을 미칠 수 있다는 점을 깨달았고, 병렬 처리 시 각 단계별 목적과 주의사항을 명확히 이해해야 과도한 자원 사용을 막을 수 있다는 점을 알게 되었다. 특히 개인 PC의 자원을 고려하여 각 단계에 적합한 병렬화 수준을 설정하는 것이 중요하다는 점을 확인했다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>ColumnTransformer(transformers<span style="color:#f92672">=</span>[<span style="color:#f92672">...</span>])  <span style="color:#75715e"># 수정 전</span>
+</span></span><span style="display:flex;"><span>ColumnTransformer(transformers<span style="color:#f92672">=</span>[<span style="color:#f92672">...</span>])  <span style="color:#75715e"># 수정 후</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>random_state <span style="color:#f92672">=</span> RANDOM_STATE  <span style="color:#75715e"># 수정 전</span>
+</span></span><span style="display:flex;"><span>random_state <span style="color:#f92672">=</span> RANDOM_STATE  <span style="color:#75715e"># 수정 후</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>rf_model <span style="color:#f92672">=</span> RandomForestClassifier(random_state<span style="color:#f92672">=</span>RANDOM_STATE, n_jobs<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)  <span style="color:#75715e"># 단일 코어 사용</span>
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>공공 API 크롤링부터 데이터 관리, 머신러닝 모델 튜닝, 그리고 개인 PC 자원 활용까지, 오늘 다양한 주제를 학습하며 실질적인 문제 해결 능력을 키울 수 있었습니다. 특히 API 사용 시 제한 사항과 PC 자원을 고려한 효율적인 병렬 처리 전략의 중요성을 깨달았으며, 앞으로 실제 프로젝트에 적용할 수 있는 중요한 인사이트를 얻었습니다. 꼼꼼한 코드 검토와 최적화된 전략 수립이 앞으로의 학습 방향이 될 것입니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>API 사용 시 제한 사항과 서버 응답 시간을 고려하여 멀티스레딩 설계를 하고, 작은 오타나 무분별한 병렬 처리가 전체 파이프라인에 미치는 영향을 항상 염두에 두어야겠다. 또한, 데이터 형식 선택 시 최신 기술이 아닌 프로젝트의 목적과 데이터 특성에 가장 적합한 방식을 신중하게 고려해야 할 것이다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>공공 API 사용 시 인증, 응답 형식, 데이터 범위 지정 등 인자 파악 연습을 꾸준히 해야 하고, JSON과 XML 선택 시 프로젝트 요구사항에 따른 최적의 방식을 고민하며 결정해야겠다. 또한, API 사용 시 다양한 제한 사항과 개인 PC 자원을 고려한 병렬 처리 전략을 다시 한번 점검하고 적용하는 연습을 해야 할 것 같다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-07-08-pm-daily/">
+    <span class="title">« Prev</span>
+    <span>회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-07-07-pm-daily/">
+    <span class="title">Next »</span>
+    <span>데이터 분석, 머신러닝 핵심 원리 완벽 해설 및 활용법 익히기</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

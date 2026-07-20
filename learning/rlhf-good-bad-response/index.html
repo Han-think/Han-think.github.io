@@ -1,39 +1,424 @@
-<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>rlhf-good-bad-response | Han-think Blog</title><meta name=keywords content><meta name=description content="rlhf-good-bad-response 학습 정리"><meta name=author content><link rel=canonical href=https://Han-think.github.io/learning/rlhf-good-bad-response/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/learning/rlhf-good-bad-response/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/learning/rlhf-good-bad-response/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="rlhf-good-bad-response"><meta property="og:description" content="rlhf-good-bad-response 학습 정리"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="learning"><meta property="article:published_time" content="2026-06-09T00:00:00+00:00"><meta property="article:modified_time" content="2026-06-09T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="rlhf-good-bad-response"><meta name=twitter:description content="rlhf-good-bad-response 학습 정리"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"학습 기록","item":"https://Han-think.github.io/learning/"},{"@type":"ListItem","position":2,"name":"rlhf-good-bad-response","item":"https://Han-think.github.io/learning/rlhf-good-bad-response/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"rlhf-good-bad-response","name":"rlhf-good-bad-response","description":"rlhf-good-bad-response 학습 정리","keywords":[],"articleBody":"목차 강화학습과 LoRA LLM 학습 단계 좋은 응답 기준 프로토콜 기반 평가 총평 1. 강화학습과 LoRA 왜 이걸 보게 됐나 RLHF 학습 과정에서 모델의 성능을 향상시키는 여러 기술들이 사용되는데, 초기에 강화학습 자체와 LoRA라는 기술을 혼동하여 전체적인 학습 흐름을 제대로 파악하지 못했습니다. 따라서 RLHF의 역할과 LoRA의 역할을 구분하여 학습해야 더 깊이 있는 이해가 가능하다고 생각하여 이 개념을 배우게 되었습니다. 이 개념을 명확히 이해하면 모델 학습 과정을 더 효율적으로 분석하고 개선할 수 있을 것입니다.\n내가 헷갈린 지점 초기에 강화학습(RLHF)과 LoRA를 마치 같은 의미인 것처럼 착각하여, 강화학습을 모델 최적화 전체 과정을 나타내는 것이고 LoRA는 그 과정을 위한 기술적인 도구라고 생각했습니다. 학습 과정에서 두 개념을 혼동하며, RLHF가 단순히 LoRA를 사용하는 방식으로 이해하고 있었던 점이 오해였습니다. 실제로는 RLHF는 학습 방식과 조련 루프를 지칭하고, LoRA는 기존 모델을 미세 조정하는 기술이라는 것을 명확히 구분해야 했습니다.\n시도한 코드 / 예시 # 코드 없음. 강화학습(RLHF)과 LoRA는 개념적인 차이이며, 코드 예시를 통해 설명할 수 없음. # RLHF는 학습 방식, LoRA는 미세 조정 기술. 결과와 해석 RLHF와 LoRA는 혼동했었는데, RLHF는 사용자 선호도를 반영하여 모델을 학습시키는 전체 과정이고, LoRA는 기존 모델을 효율적으로 미세 조정하는 기술이라는 것을 깨달았다. 이를 통해 SFT 이후 LoRA를 사용하여 RLHF 과정을 구현할 수 있다는 것을 이해하게 되었고, 실제 모델 학습 시 연관성을 고려하여 적용할 수 있을 것이다. 처음에는 어렵게 느껴졌지만, 예시를 통해 개념적 차이를 명확히 구분할 수 있었다.\n정리된 이해 RLHF는 LLM을 인간의 선호도에 맞춰 학습시키는 전체적인 방식이고, LoRA는 기존 모델을 효율적으로 미세 조정하는 기술적인 방법이다. 두 개념은 분리해서 이해해야 하며, RLHF 과정에서 LoRA를 활용할 수 있다. 나는 이 둘을 혼동했었지만, 이제는 명확히 구분해서 이해하고 있다.\n2. LLM 학습 단계 왜 이걸 보게 됐나 LLM 학습 단계를 이해하게 된 건 강화학습(RLHF)과 LoRA를 혼동했던 초기 혼란을 해소하기 위해서였어. RLHF를 단순히 기술적인 방법으로 오해하고 있었던 점을 명확히 하고, LLM이 어떻게 인간의 피드백을 반영하여 발전하는지 전체적인 흐름을 파악하고 싶었지. 이를 통해 더 나은 프롬프트 엔지니어링 및 모델 조련 전략을 수립하는 데 도움이 될 거라고 생각했어.\n내가 헷갈린 지점 처음에는 강화학습(RLHF)이 전체적인 학습 과정이고 LoRA는 그 과정에서 사용되는 기술이라고 생각해서 두 개념이 혼동되었었다. RLHF는 인간 피드백을 활용하여 모델을 조련하는 방식이고, LoRA는 기존 모델을 효율적으로 미세 조정하는 방법이라는 것을 명확히 구분해야 했다. 이 두 가지가 서로 다른 개념이라는 것을 이해하는 데 시간이 좀 걸렸다.\n시도한 코드 / 예시 # 코드 예시: LLM 학습 단계 - SFT (Self-Supervised Fine-Tuning) # SFT는 인간이 작성한 좋은 응답을 학습하는 단계 # (실제 코드는 모델 아키텍처 및 데이터셋에 따라 달라짐) # 1. 데이터 준비: 좋은 응답 데이터셋 (인간 작성) # - 데이터셋: {prompt: \"오늘 날씨가 어때?\", response: \"오늘 서울은 맑고 기온은 25도입니다.\"} 형태 # - 데이터셋 크기: 수천~수만 개의 데이터 포인트 # 2. 모델 학습 (예시: PyTorch) # import torch # from transformers import AutoModelForCausalLM, AutoTokenizer # # model_name = \"...\" # 모델 이름 지정 # tokenizer = AutoTokenizer.from_pretrained(model_name) # model = AutoModelForCausalLM.from_pretrained(model_name) # # # 데이터셋 로딩 및 전처리 (토큰화 등) # # ... # # # 모델 학습 (Backpropagation) # # ... # # # 모델 저장 # # ... 결과와 해석 LLM 학습 단계를 이해하기 위해 간단한 날씨 질문에 대한 모델 응답을 세 개 생성하여 ‘최적’, ‘보통’, ‘불량’으로 분류하는 실습을 해봤어. 모델이 단순히 “오늘 날씨는 맑습니다\"라고 답하는 것은 보통으로 평가했고, 날씨 정보와 함께 오늘 활동 추천까지 하는 응답은 최적으로 평가했고, 관련 없는 내용을 섞어 쓰는 응답은 불량으로 분류했어. 이 과정을 통해 LLM이 사용자 의도를 얼마나 잘 파악하고, 어떤 내용이 사용자에게 도움이 되는지 판단하는 기준을 구체적으로 알 수 있었어.\n정리된 이해 LLM 학습은 먼저 토큰 예측 모델을 만들고, 인간이 작성한 좋은 답변을 모방하도록 SFT 과정을 거쳐, 사용자의 선호도를 반영하여 답변을 최적화하는 RLHF 또는 DPO/ORPO 단계를 통해 진행됩니다. 이 과정에서 좋은 응답은 지시사항 준수, 상황 적절성, 실질적인 도움 제공을 포함하며, 나쁜 응답은 이러한 기준을 충족하지 못하는 경우에 해당합니다.\n3. 좋은 응답 기준 왜 이걸 보게 됐나 RLHF 관점에서 좋은 응답과 나쁜 응답을 이해하기 위해서는, 모델이 사용자 선호도에 맞춰 답변을 최적화하는 과정을 명확히 파악해야 했기 때문입니다. 이를 통해 모델이 어떤 기준으로 답변을 생성해야 하는지, 그리고 어떤 종류의 답변이 사용자에게 만족스러운 경험을 제공하는지 알 수 있었습니다. 궁극적으로는 모델의 성능을 향상시키고 사용자에게 더욱 유용한 답변을 제공하는 데 도움이 될 것이라고 생각합니다.\n내가 헷갈린 지점 처음에는 ‘좋은 응답 기준’이 단순히 문법적으로 완벽하고 형식적인 답변을 의미한다고 생각했어요. 사용자 상황에 맞고 실질적인 도움을 제공하는 것까지 포함해야 한다는 점을 명확히 이해하지 못했고, 위험하거나 부적절한 내용을 피하는 윤리적인 측면까지 고려해야 한다는 점을 간과했습니다.\n시도한 코드 / 예시 \"\"\" 좋은 응답 예시: print(“오늘 서울의 날씨는 맑고, 최고 기온은 28도입니다.”)\nprint() 함수를 사용해 날씨 정보를 제공 구체적인 정보 (서울, 28도)를 포함하여 사용자에게 유용함 \"\"\" 결과와 해석 좋은 응답 기준에 따라 평가한 결과, ‘최적’ 응답은 현재 날짜, 위치 정보를 포함하여 명확하고 사용자 상황에 맞는 정보를 제공하는 것이 중요함을 알 수 있었다. 반면, ‘불량’ 응답은 일반적인 답변만 제공하거나 사실과 다른 정보를 제공하여 사용자에게 실질적인 도움을 주지 못하는 경우임을 확인했다. 이러한 실습을 통해 좋은 응답이 단순히 형식적인 정확성뿐 아니라 내용의 유용성과 관련 있음을 깨달았다.\n정리된 이해 좋은 응답은 사용자의 지시사항을 정확히 따르면서, 상황에 맞는 실질적인 도움을 제공해야 해. 특히 근거 없는 주장은 최소화하고, 위험하거나 부적절한 내용은 피해야 한다는 점을 명심해야 할 것 같아. 형식적인 완성도도 중요하지만, 내용의 의미가 핵심이라는 것을 잊지 말아야지.\n4. 프로토콜 기반 평가 왜 이걸 보게 됐나 프로토콜 기반 평가는 LLM 응답의 품질을 체계적으로 평가하고 개선하기 위해 도입되었습니다. 단순히 주관적인 판단을 넘어, 명확한 기준에 따라 응답을 분류하고 개선 방향을 제시하여, 모델의 성능을 객관적으로 향상시키고자 했습니다. 또한, 이 과정을 통해 효과적인 프롬프트 엔지니어링 및 규칙 개선 전략을 구축하는 데 도움을 받고자 했습니다.\n내가 헷갈린 지점 프로토콜 기반 평가가 단순히 응답을 ‘좋다/나쁘다’로 나누는 것이 아니라, 왜 그런 판단을 내렸는지 구체적인 이유를 기록하는 과정이라는 점이 처음에는 잘 이해되지 않았다. 단순히 분류하는 것이 아니라, 응답의 어떤 부분이 어떤 기준에 부합하거나 벗어나는지 자세하게 분석해야 한다는 점이 중요했다. 또한, 이 피드백이 프롬프트 개선에 직접적으로 활용될 수 있다는 점도 처음에는 인지하지 못했다.\n시도한 코드 / 예시 결과와 해석 프로토콜 기반 평가는 동일 질문에 대한 여러 응답을 비교하며 답변의 질을 객관적으로 판단하는 방법론으로, ‘최적’, ‘보통’, ‘불량’ 태그를 부여하여 구체적인 피드백을 기록한다. 이 과정을 통해 프롬프트 및 답변 생성 규칙을 개선하여 모델의 성능을 향상시킬 수 있었다. 예를 들어, 단순히 날씨를 묻는 질문에 ‘최적’ 응답은 현재 온도, 습도, 풍속과 같은 구체적인 정보를 제공해야 한다.\n정리된 이해 프로토콜 기반 평가는 동일한 질문에 대해 생성된 여러 응답을 객관적으로 평가하여, 각 응답의 장단점을 파악하고 개선점을 찾는 방법론이다. 이를 통해 프롬프트와 규칙을 지속적으로 개선하여 모델의 답변 품질을 향상시킬 수 있다. 단순히 ‘좋다’, ‘나쁘다’를 판단하는 것이 아니라, 구체적인 피드백을 통해 모델 학습 방향을 설정하는 것이 중요하다.\n총평 오늘 전체에서 배운 것 강화학습(RLHF)과 LoRA는 서로 다른 개념이며, RLHF는 답변을 최적화하는 학습 방식이고 LoRA는 모델 미세 조정 기술이다. 좋은 응답은 지시사항 준수, 상황 적합성, 실질적인 도움 제공을 포함하며, 프로토콜 기반 평가를 통해 이러한 기준을 객관적으로 판단할 수 있다.\n다음에 조심할 것 다음에는 RLHF 학습 과정에서 LoRA의 역할과 전체 프로세스의 차이점을 명확히 이해하고, 프로토콜 기반 평가를 더욱 체계적으로 수행하여, 응답의 품질을 높이는 데 집중해야겠다. 특히, ‘왜’ 좋았는지/불만족스러웠는지에 대한 구체적인 피드백을 상세하게 기록하여, 지속적인 개선 방향을 설정하는 데 활용해야겠다.\n다음 복습 주제 LoRA를 활용한 RLHF 구현 과정에서 발생하는 문제점과 디버깅 전략을 좀 더 깊이 파악하고 싶다. 또한, DPO/ORPO와 같은 최신 선호 학습 방식의 장단점을 비교 분석하여 RLHF의 발전 방향을 이해해야겠다.\n","wordCount":"1134","inLanguage":"en","datePublished":"2026-06-09T00:00:00Z","dateModified":"2026-06-09T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/learning/rlhf-good-bad-response/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
-<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">rlhf-good-bad-response</h1><div class=post-description>rlhf-good-bad-response 학습 정리</div><div class=post-meta><span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>6 min</span></div></header><div class="post-content md-content"><h2 id=목차>목차<a hidden class=anchor aria-hidden=true href=#목차>#</a></h2><ul><li><ol><li><a href=#1-%EA%B0%95%ED%99%94%ED%95%99%EC%8A%B5%EA%B3%BC-lora>강화학습과 LoRA</a></li></ol></li><li><ol start=2><li><a href=#2-llm-%ED%95%99%EC%8A%B5-%EB%8B%A8%EA%B3%84>LLM 학습 단계</a></li></ol></li><li><ol start=3><li><a href=#3-%EC%A2%8B%EC%9D%80-%EC%9D%91%EB%8B%B5-%EA%B8%B0%EC%A4%80>좋은 응답 기준</a></li></ol></li><li><ol start=4><li><a href=#4-%ED%94%84%EB%A1%9C%ED%86%A0%EC%BD%9C-%EA%B8%B0%EB%B0%98-%ED%8F%89%EA%B0%80>프로토콜 기반 평가</a></li></ol></li><li><a href=#%EC%B4%9D%ED%8F%89>총평</a></li></ul><h2 id=1-강화학습과-lora>1. 강화학습과 LoRA<a hidden class=anchor aria-hidden=true href=#1-강화학습과-lora>#</a></h2><h3 id=왜-이걸-보게-됐나>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나>#</a></h3><p>RLHF 학습 과정에서 모델의 성능을 향상시키는 여러 기술들이 사용되는데, 초기에 강화학습 자체와 LoRA라는 기술을 혼동하여 전체적인 학습 흐름을 제대로 파악하지 못했습니다. 따라서 RLHF의 역할과 LoRA의 역할을 구분하여 학습해야 더 깊이 있는 이해가 가능하다고 생각하여 이 개념을 배우게 되었습니다. 이 개념을 명확히 이해하면 모델 학습 과정을 더 효율적으로 분석하고 개선할 수 있을 것입니다.</p><h3 id=내가-헷갈린-지점>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점>#</a></h3><p>초기에 강화학습(RLHF)과 LoRA를 마치 같은 의미인 것처럼 착각하여, 강화학습을 모델 최적화 전체 과정을 나타내는 것이고 LoRA는 그 과정을 위한 기술적인 도구라고 생각했습니다. 학습 과정에서 두 개념을 혼동하며, RLHF가 단순히 LoRA를 사용하는 방식으로 이해하고 있었던 점이 오해였습니다. 실제로는 RLHF는 학습 방식과 조련 루프를 지칭하고, LoRA는 기존 모델을 미세 조정하는 기술이라는 것을 명확히 구분해야 했습니다.</p><h3 id=시도한-코드--예시>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-plaintext data-lang=plaintext><span style=display:flex><span># 코드 없음. 강화학습(RLHF)과 LoRA는 개념적인 차이이며, 코드 예시를 통해 설명할 수 없음.
-</span></span><span style=display:flex><span># RLHF는 학습 방식, LoRA는 미세 조정 기술.
-</span></span></code></pre></div><h3 id=결과와-해석>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석>#</a></h3><p>RLHF와 LoRA는 혼동했었는데, RLHF는 사용자 선호도를 반영하여 모델을 학습시키는 전체 과정이고, LoRA는 기존 모델을 효율적으로 미세 조정하는 기술이라는 것을 깨달았다. 이를 통해 SFT 이후 LoRA를 사용하여 RLHF 과정을 구현할 수 있다는 것을 이해하게 되었고, 실제 모델 학습 시 연관성을 고려하여 적용할 수 있을 것이다. 처음에는 어렵게 느껴졌지만, 예시를 통해 개념적 차이를 명확히 구분할 수 있었다.</p><h3 id=정리된-이해>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해>#</a></h3><p>RLHF는 LLM을 인간의 선호도에 맞춰 학습시키는 전체적인 방식이고, LoRA는 기존 모델을 효율적으로 미세 조정하는 기술적인 방법이다. 두 개념은 분리해서 이해해야 하며, RLHF 과정에서 LoRA를 활용할 수 있다. 나는 이 둘을 혼동했었지만, 이제는 명확히 구분해서 이해하고 있다.</p><h2 id=2-llm-학습-단계>2. LLM 학습 단계<a hidden class=anchor aria-hidden=true href=#2-llm-학습-단계>#</a></h2><h3 id=왜-이걸-보게-됐나-1>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-1>#</a></h3><p>LLM 학습 단계를 이해하게 된 건 강화학습(RLHF)과 LoRA를 혼동했던 초기 혼란을 해소하기 위해서였어. RLHF를 단순히 기술적인 방법으로 오해하고 있었던 점을 명확히 하고, LLM이 어떻게 인간의 피드백을 반영하여 발전하는지 전체적인 흐름을 파악하고 싶었지. 이를 통해 더 나은 프롬프트 엔지니어링 및 모델 조련 전략을 수립하는 데 도움이 될 거라고 생각했어.</p><h3 id=내가-헷갈린-지점-1>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-1>#</a></h3><p>처음에는 강화학습(RLHF)이 전체적인 학습 과정이고 LoRA는 그 과정에서 사용되는 기술이라고 생각해서 두 개념이 혼동되었었다. RLHF는 인간 피드백을 활용하여 모델을 조련하는 방식이고, LoRA는 기존 모델을 효율적으로 미세 조정하는 방법이라는 것을 명확히 구분해야 했다. 이 두 가지가 서로 다른 개념이라는 것을 이해하는 데 시간이 좀 걸렸다.</p><h3 id=시도한-코드--예시-1>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-1>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-plaintext data-lang=plaintext><span style=display:flex><span># 코드 예시: LLM 학습 단계 - SFT (Self-Supervised Fine-Tuning)
-</span></span><span style=display:flex><span># SFT는 인간이 작성한 좋은 응답을 학습하는 단계
-</span></span><span style=display:flex><span># (실제 코드는 모델 아키텍처 및 데이터셋에 따라 달라짐)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span># 1. 데이터 준비: 좋은 응답 데이터셋 (인간 작성)
-</span></span><span style=display:flex><span>#   - 데이터셋: {prompt: &#34;오늘 날씨가 어때?&#34;, response: &#34;오늘 서울은 맑고 기온은 25도입니다.&#34;} 형태
-</span></span><span style=display:flex><span>#   - 데이터셋 크기: 수천~수만 개의 데이터 포인트
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span># 2. 모델 학습 (예시: PyTorch)
-</span></span><span style=display:flex><span># import torch
-</span></span><span style=display:flex><span># from transformers import AutoModelForCausalLM, AutoTokenizer
-</span></span><span style=display:flex><span>#
-</span></span><span style=display:flex><span># model_name = &#34;...&#34; # 모델 이름 지정
-</span></span><span style=display:flex><span># tokenizer = AutoTokenizer.from_pretrained(model_name)
-</span></span><span style=display:flex><span># model = AutoModelForCausalLM.from_pretrained(model_name)
-</span></span><span style=display:flex><span>#
-</span></span><span style=display:flex><span># # 데이터셋 로딩 및 전처리 (토큰화 등)
-</span></span><span style=display:flex><span># # ...
-</span></span><span style=display:flex><span>#
-</span></span><span style=display:flex><span># # 모델 학습 (Backpropagation)
-</span></span><span style=display:flex><span># # ...
-</span></span><span style=display:flex><span>#
-</span></span><span style=display:flex><span># # 모델 저장
-</span></span><span style=display:flex><span># # ...
-</span></span></code></pre></div><h3 id=결과와-해석-1>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-1>#</a></h3><p>LLM 학습 단계를 이해하기 위해 간단한 날씨 질문에 대한 모델 응답을 세 개 생성하여 &lsquo;최적&rsquo;, &lsquo;보통&rsquo;, &lsquo;불량&rsquo;으로 분류하는 실습을 해봤어. 모델이 단순히 &ldquo;오늘 날씨는 맑습니다"라고 답하는 것은 보통으로 평가했고, 날씨 정보와 함께 오늘 활동 추천까지 하는 응답은 최적으로 평가했고, 관련 없는 내용을 섞어 쓰는 응답은 불량으로 분류했어. 이 과정을 통해 LLM이 사용자 의도를 얼마나 잘 파악하고, 어떤 내용이 사용자에게 도움이 되는지 판단하는 기준을 구체적으로 알 수 있었어.</p><h3 id=정리된-이해-1>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-1>#</a></h3><p>LLM 학습은 먼저 토큰 예측 모델을 만들고, 인간이 작성한 좋은 답변을 모방하도록 SFT 과정을 거쳐, 사용자의 선호도를 반영하여 답변을 최적화하는 RLHF 또는 DPO/ORPO 단계를 통해 진행됩니다. 이 과정에서 좋은 응답은 지시사항 준수, 상황 적절성, 실질적인 도움 제공을 포함하며, 나쁜 응답은 이러한 기준을 충족하지 못하는 경우에 해당합니다.</p><h2 id=3-좋은-응답-기준>3. 좋은 응답 기준<a hidden class=anchor aria-hidden=true href=#3-좋은-응답-기준>#</a></h2><h3 id=왜-이걸-보게-됐나-2>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-2>#</a></h3><p>RLHF 관점에서 좋은 응답과 나쁜 응답을 이해하기 위해서는, 모델이 사용자 선호도에 맞춰 답변을 최적화하는 과정을 명확히 파악해야 했기 때문입니다. 이를 통해 모델이 어떤 기준으로 답변을 생성해야 하는지, 그리고 어떤 종류의 답변이 사용자에게 만족스러운 경험을 제공하는지 알 수 있었습니다. 궁극적으로는 모델의 성능을 향상시키고 사용자에게 더욱 유용한 답변을 제공하는 데 도움이 될 것이라고 생각합니다.</p><h3 id=내가-헷갈린-지점-2>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-2>#</a></h3><p>처음에는 &lsquo;좋은 응답 기준&rsquo;이 단순히 문법적으로 완벽하고 형식적인 답변을 의미한다고 생각했어요. 사용자 상황에 맞고 실질적인 도움을 제공하는 것까지 포함해야 한다는 점을 명확히 이해하지 못했고, 위험하거나 부적절한 내용을 피하는 윤리적인 측면까지 고려해야 한다는 점을 간과했습니다.</p><h3 id=시도한-코드--예시-2>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-2>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-plaintext data-lang=plaintext><span style=display:flex><span>&#34;&#34;&#34;
-</span></span><span style=display:flex><span>좋은 응답 예시:
-</span></span></code></pre></div><p>print(&ldquo;오늘 서울의 날씨는 맑고, 최고 기온은 28도입니다.&rdquo;)</p><h1 id=print-함수를-사용해-날씨-정보를-제공>print() 함수를 사용해 날씨 정보를 제공<a hidden class=anchor aria-hidden=true href=#print-함수를-사용해-날씨-정보를-제공>#</a></h1><h1 id=구체적인-정보-서울-28도를-포함하여-사용자에게-유용함>구체적인 정보 (서울, 28도)를 포함하여 사용자에게 유용함<a hidden class=anchor aria-hidden=true href=#구체적인-정보-서울-28도를-포함하여-사용자에게-유용함>#</a></h1><pre tabindex=0><code>&#34;&#34;&#34;
-</code></pre><h3 id=결과와-해석-2>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-2>#</a></h3><p>좋은 응답 기준에 따라 평가한 결과, &lsquo;최적&rsquo; 응답은 현재 날짜, 위치 정보를 포함하여 명확하고 사용자 상황에 맞는 정보를 제공하는 것이 중요함을 알 수 있었다. 반면, &lsquo;불량&rsquo; 응답은 일반적인 답변만 제공하거나 사실과 다른 정보를 제공하여 사용자에게 실질적인 도움을 주지 못하는 경우임을 확인했다. 이러한 실습을 통해 좋은 응답이 단순히 형식적인 정확성뿐 아니라 내용의 유용성과 관련 있음을 깨달았다.</p><h3 id=정리된-이해-2>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-2>#</a></h3><p>좋은 응답은 사용자의 지시사항을 정확히 따르면서, 상황에 맞는 실질적인 도움을 제공해야 해. 특히 근거 없는 주장은 최소화하고, 위험하거나 부적절한 내용은 피해야 한다는 점을 명심해야 할 것 같아. 형식적인 완성도도 중요하지만, 내용의 의미가 핵심이라는 것을 잊지 말아야지.</p><h2 id=4-프로토콜-기반-평가>4. 프로토콜 기반 평가<a hidden class=anchor aria-hidden=true href=#4-프로토콜-기반-평가>#</a></h2><h3 id=왜-이걸-보게-됐나-3>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-3>#</a></h3><p>프로토콜 기반 평가는 LLM 응답의 품질을 체계적으로 평가하고 개선하기 위해 도입되었습니다. 단순히 주관적인 판단을 넘어, 명확한 기준에 따라 응답을 분류하고 개선 방향을 제시하여, 모델의 성능을 객관적으로 향상시키고자 했습니다. 또한, 이 과정을 통해 효과적인 프롬프트 엔지니어링 및 규칙 개선 전략을 구축하는 데 도움을 받고자 했습니다.</p><h3 id=내가-헷갈린-지점-3>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-3>#</a></h3><p>프로토콜 기반 평가가 단순히 응답을 &lsquo;좋다/나쁘다&rsquo;로 나누는 것이 아니라, 왜 그런 판단을 내렸는지 구체적인 이유를 기록하는 과정이라는 점이 처음에는 잘 이해되지 않았다. 단순히 분류하는 것이 아니라, 응답의 어떤 부분이 어떤 기준에 부합하거나 벗어나는지 자세하게 분석해야 한다는 점이 중요했다. 또한, 이 피드백이 프롬프트 개선에 직접적으로 활용될 수 있다는 점도 처음에는 인지하지 못했다.</p><h3 id=시도한-코드--예시-3>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-3>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-plaintext data-lang=plaintext></code></pre></div><h3 id=결과와-해석-3>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-3>#</a></h3><p>프로토콜 기반 평가는 동일 질문에 대한 여러 응답을 비교하며 답변의 질을 객관적으로 판단하는 방법론으로, &lsquo;최적&rsquo;, &lsquo;보통&rsquo;, &lsquo;불량&rsquo; 태그를 부여하여 구체적인 피드백을 기록한다. 이 과정을 통해 프롬프트 및 답변 생성 규칙을 개선하여 모델의 성능을 향상시킬 수 있었다. 예를 들어, 단순히 날씨를 묻는 질문에 &lsquo;최적&rsquo; 응답은 현재 온도, 습도, 풍속과 같은 구체적인 정보를 제공해야 한다.</p><h3 id=정리된-이해-3>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-3>#</a></h3><p>프로토콜 기반 평가는 동일한 질문에 대해 생성된 여러 응답을 객관적으로 평가하여, 각 응답의 장단점을 파악하고 개선점을 찾는 방법론이다. 이를 통해 프롬프트와 규칙을 지속적으로 개선하여 모델의 답변 품질을 향상시킬 수 있다. 단순히 &lsquo;좋다&rsquo;, &lsquo;나쁘다&rsquo;를 판단하는 것이 아니라, 구체적인 피드백을 통해 모델 학습 방향을 설정하는 것이 중요하다.</p><h2 id=총평>총평<a hidden class=anchor aria-hidden=true href=#총평>#</a></h2><h3 id=오늘-전체에서-배운-것>오늘 전체에서 배운 것<a hidden class=anchor aria-hidden=true href=#오늘-전체에서-배운-것>#</a></h3><p>강화학습(RLHF)과 LoRA는 서로 다른 개념이며, RLHF는 답변을 최적화하는 학습 방식이고 LoRA는 모델 미세 조정 기술이다. 좋은 응답은 지시사항 준수, 상황 적합성, 실질적인 도움 제공을 포함하며, 프로토콜 기반 평가를 통해 이러한 기준을 객관적으로 판단할 수 있다.</p><h3 id=다음에-조심할-것>다음에 조심할 것<a hidden class=anchor aria-hidden=true href=#다음에-조심할-것>#</a></h3><p>다음에는 RLHF 학습 과정에서 LoRA의 역할과 전체 프로세스의 차이점을 명확히 이해하고, 프로토콜 기반 평가를 더욱 체계적으로 수행하여, 응답의 품질을 높이는 데 집중해야겠다. 특히, &lsquo;왜&rsquo; 좋았는지/불만족스러웠는지에 대한 구체적인 피드백을 상세하게 기록하여, 지속적인 개선 방향을 설정하는 데 활용해야겠다.</p><h3 id=다음-복습-주제>다음 복습 주제<a hidden class=anchor aria-hidden=true href=#다음-복습-주제>#</a></h3><p>LoRA를 활용한 RLHF 구현 과정에서 발생하는 문제점과 디버깅 전략을 좀 더 깊이 파악하고 싶다. 또한, DPO/ORPO와 같은 최신 선호 학습 방식의 장단점을 비교 분석하여 RLHF의 발전 방향을 이해해야겠다.</p></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://Han-think.github.io/learning/pm-05-erd-reading-training/><span class=title>« Prev</span>
-<span>pm-05-erd-reading-training</span>
-</a><a class=next href=https://Han-think.github.io/learning/2026-06-09-am-daily/><span class=title>Next »</span>
-<span>SQL GROUP BY, JOIN, ERD 활용 능력 향상을 위한 학습 정리</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
-<span>Powered by
-<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
-<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>rlhf-good-bad-response | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="rlhf-good-bad-response 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/rlhf-good-bad-response/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/rlhf-good-bad-response/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/rlhf-good-bad-response/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="rlhf-good-bad-response">
+  <meta property="og:description" content="rlhf-good-bad-response 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-09T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-09T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="rlhf-good-bad-response">
+  <meta name="twitter:description" content="rlhf-good-bad-response 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "rlhf-good-bad-response",
+      "item": "https://Han-think.github.io/learning/rlhf-good-bad-response/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "rlhf-good-bad-response",
+  "name": "rlhf-good-bad-response",
+  "description": "rlhf-good-bad-response 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 강화학습과 LoRA LLM 학습 단계 좋은 응답 기준 프로토콜 기반 평가 총평 1. 강화학습과 LoRA 왜 이걸 보게 됐나 RLHF 학습 과정에서 모델의 성능을 향상시키는 여러 기술들이 사용되는데, 초기에 강화학습 자체와 LoRA라는 기술을 혼동하여 전체적인 학습 흐름을 제대로 파악하지 못했습니다. 따라서 RLHF의 역할과 LoRA의 역할을 구분하여 학습해야 더 깊이 있는 이해가 가능하다고 생각하여 이 개념을 배우게 되었습니다. 이 개념을 명확히 이해하면 모델 학습 과정을 더 효율적으로 분석하고 개선할 수 있을 것입니다.\n내가 헷갈린 지점 초기에 강화학습(RLHF)과 LoRA를 마치 같은 의미인 것처럼 착각하여, 강화학습을 모델 최적화 전체 과정을 나타내는 것이고 LoRA는 그 과정을 위한 기술적인 도구라고 생각했습니다. 학습 과정에서 두 개념을 혼동하며, RLHF가 단순히 LoRA를 사용하는 방식으로 이해하고 있었던 점이 오해였습니다. 실제로는 RLHF는 학습 방식과 조련 루프를 지칭하고, LoRA는 기존 모델을 미세 조정하는 기술이라는 것을 명확히 구분해야 했습니다.\n시도한 코드 / 예시 # 코드 없음. 강화학습(RLHF)과 LoRA는 개념적인 차이이며, 코드 예시를 통해 설명할 수 없음. # RLHF는 학습 방식, LoRA는 미세 조정 기술. 결과와 해석 RLHF와 LoRA는 혼동했었는데, RLHF는 사용자 선호도를 반영하여 모델을 학습시키는 전체 과정이고, LoRA는 기존 모델을 효율적으로 미세 조정하는 기술이라는 것을 깨달았다. 이를 통해 SFT 이후 LoRA를 사용하여 RLHF 과정을 구현할 수 있다는 것을 이해하게 되었고, 실제 모델 학습 시 연관성을 고려하여 적용할 수 있을 것이다. 처음에는 어렵게 느껴졌지만, 예시를 통해 개념적 차이를 명확히 구분할 수 있었다.\n정리된 이해 RLHF는 LLM을 인간의 선호도에 맞춰 학습시키는 전체적인 방식이고, LoRA는 기존 모델을 효율적으로 미세 조정하는 기술적인 방법이다. 두 개념은 분리해서 이해해야 하며, RLHF 과정에서 LoRA를 활용할 수 있다. 나는 이 둘을 혼동했었지만, 이제는 명확히 구분해서 이해하고 있다.\n2. LLM 학습 단계 왜 이걸 보게 됐나 LLM 학습 단계를 이해하게 된 건 강화학습(RLHF)과 LoRA를 혼동했던 초기 혼란을 해소하기 위해서였어. RLHF를 단순히 기술적인 방법으로 오해하고 있었던 점을 명확히 하고, LLM이 어떻게 인간의 피드백을 반영하여 발전하는지 전체적인 흐름을 파악하고 싶었지. 이를 통해 더 나은 프롬프트 엔지니어링 및 모델 조련 전략을 수립하는 데 도움이 될 거라고 생각했어.\n내가 헷갈린 지점 처음에는 강화학습(RLHF)이 전체적인 학습 과정이고 LoRA는 그 과정에서 사용되는 기술이라고 생각해서 두 개념이 혼동되었었다. RLHF는 인간 피드백을 활용하여 모델을 조련하는 방식이고, LoRA는 기존 모델을 효율적으로 미세 조정하는 방법이라는 것을 명확히 구분해야 했다. 이 두 가지가 서로 다른 개념이라는 것을 이해하는 데 시간이 좀 걸렸다.\n시도한 코드 / 예시 # 코드 예시: LLM 학습 단계 - SFT (Self-Supervised Fine-Tuning) # SFT는 인간이 작성한 좋은 응답을 학습하는 단계 # (실제 코드는 모델 아키텍처 및 데이터셋에 따라 달라짐) # 1. 데이터 준비: 좋은 응답 데이터셋 (인간 작성) # - 데이터셋: {prompt: \"오늘 날씨가 어때?\", response: \"오늘 서울은 맑고 기온은 25도입니다.\"} 형태 # - 데이터셋 크기: 수천~수만 개의 데이터 포인트 # 2. 모델 학습 (예시: PyTorch) # import torch # from transformers import AutoModelForCausalLM, AutoTokenizer # # model_name = \"...\" # 모델 이름 지정 # tokenizer = AutoTokenizer.from_pretrained(model_name) # model = AutoModelForCausalLM.from_pretrained(model_name) # # # 데이터셋 로딩 및 전처리 (토큰화 등) # # ... # # # 모델 학습 (Backpropagation) # # ... # # # 모델 저장 # # ... 결과와 해석 LLM 학습 단계를 이해하기 위해 간단한 날씨 질문에 대한 모델 응답을 세 개 생성하여 ‘최적’, ‘보통’, ‘불량’으로 분류하는 실습을 해봤어. 모델이 단순히 “오늘 날씨는 맑습니다\"라고 답하는 것은 보통으로 평가했고, 날씨 정보와 함께 오늘 활동 추천까지 하는 응답은 최적으로 평가했고, 관련 없는 내용을 섞어 쓰는 응답은 불량으로 분류했어. 이 과정을 통해 LLM이 사용자 의도를 얼마나 잘 파악하고, 어떤 내용이 사용자에게 도움이 되는지 판단하는 기준을 구체적으로 알 수 있었어.\n정리된 이해 LLM 학습은 먼저 토큰 예측 모델을 만들고, 인간이 작성한 좋은 답변을 모방하도록 SFT 과정을 거쳐, 사용자의 선호도를 반영하여 답변을 최적화하는 RLHF 또는 DPO/ORPO 단계를 통해 진행됩니다. 이 과정에서 좋은 응답은 지시사항 준수, 상황 적절성, 실질적인 도움 제공을 포함하며, 나쁜 응답은 이러한 기준을 충족하지 못하는 경우에 해당합니다.\n3. 좋은 응답 기준 왜 이걸 보게 됐나 RLHF 관점에서 좋은 응답과 나쁜 응답을 이해하기 위해서는, 모델이 사용자 선호도에 맞춰 답변을 최적화하는 과정을 명확히 파악해야 했기 때문입니다. 이를 통해 모델이 어떤 기준으로 답변을 생성해야 하는지, 그리고 어떤 종류의 답변이 사용자에게 만족스러운 경험을 제공하는지 알 수 있었습니다. 궁극적으로는 모델의 성능을 향상시키고 사용자에게 더욱 유용한 답변을 제공하는 데 도움이 될 것이라고 생각합니다.\n내가 헷갈린 지점 처음에는 ‘좋은 응답 기준’이 단순히 문법적으로 완벽하고 형식적인 답변을 의미한다고 생각했어요. 사용자 상황에 맞고 실질적인 도움을 제공하는 것까지 포함해야 한다는 점을 명확히 이해하지 못했고, 위험하거나 부적절한 내용을 피하는 윤리적인 측면까지 고려해야 한다는 점을 간과했습니다.\n시도한 코드 / 예시 \"\"\" 좋은 응답 예시: print(“오늘 서울의 날씨는 맑고, 최고 기온은 28도입니다.”)\nprint() 함수를 사용해 날씨 정보를 제공 구체적인 정보 (서울, 28도)를 포함하여 사용자에게 유용함 \"\"\" 결과와 해석 좋은 응답 기준에 따라 평가한 결과, ‘최적’ 응답은 현재 날짜, 위치 정보를 포함하여 명확하고 사용자 상황에 맞는 정보를 제공하는 것이 중요함을 알 수 있었다. 반면, ‘불량’ 응답은 일반적인 답변만 제공하거나 사실과 다른 정보를 제공하여 사용자에게 실질적인 도움을 주지 못하는 경우임을 확인했다. 이러한 실습을 통해 좋은 응답이 단순히 형식적인 정확성뿐 아니라 내용의 유용성과 관련 있음을 깨달았다.\n정리된 이해 좋은 응답은 사용자의 지시사항을 정확히 따르면서, 상황에 맞는 실질적인 도움을 제공해야 해. 특히 근거 없는 주장은 최소화하고, 위험하거나 부적절한 내용은 피해야 한다는 점을 명심해야 할 것 같아. 형식적인 완성도도 중요하지만, 내용의 의미가 핵심이라는 것을 잊지 말아야지.\n4. 프로토콜 기반 평가 왜 이걸 보게 됐나 프로토콜 기반 평가는 LLM 응답의 품질을 체계적으로 평가하고 개선하기 위해 도입되었습니다. 단순히 주관적인 판단을 넘어, 명확한 기준에 따라 응답을 분류하고 개선 방향을 제시하여, 모델의 성능을 객관적으로 향상시키고자 했습니다. 또한, 이 과정을 통해 효과적인 프롬프트 엔지니어링 및 규칙 개선 전략을 구축하는 데 도움을 받고자 했습니다.\n내가 헷갈린 지점 프로토콜 기반 평가가 단순히 응답을 ‘좋다/나쁘다’로 나누는 것이 아니라, 왜 그런 판단을 내렸는지 구체적인 이유를 기록하는 과정이라는 점이 처음에는 잘 이해되지 않았다. 단순히 분류하는 것이 아니라, 응답의 어떤 부분이 어떤 기준에 부합하거나 벗어나는지 자세하게 분석해야 한다는 점이 중요했다. 또한, 이 피드백이 프롬프트 개선에 직접적으로 활용될 수 있다는 점도 처음에는 인지하지 못했다.\n시도한 코드 / 예시 결과와 해석 프로토콜 기반 평가는 동일 질문에 대한 여러 응답을 비교하며 답변의 질을 객관적으로 판단하는 방법론으로, ‘최적’, ‘보통’, ‘불량’ 태그를 부여하여 구체적인 피드백을 기록한다. 이 과정을 통해 프롬프트 및 답변 생성 규칙을 개선하여 모델의 성능을 향상시킬 수 있었다. 예를 들어, 단순히 날씨를 묻는 질문에 ‘최적’ 응답은 현재 온도, 습도, 풍속과 같은 구체적인 정보를 제공해야 한다.\n정리된 이해 프로토콜 기반 평가는 동일한 질문에 대해 생성된 여러 응답을 객관적으로 평가하여, 각 응답의 장단점을 파악하고 개선점을 찾는 방법론이다. 이를 통해 프롬프트와 규칙을 지속적으로 개선하여 모델의 답변 품질을 향상시킬 수 있다. 단순히 ‘좋다’, ‘나쁘다’를 판단하는 것이 아니라, 구체적인 피드백을 통해 모델 학습 방향을 설정하는 것이 중요하다.\n총평 오늘 전체에서 배운 것 강화학습(RLHF)과 LoRA는 서로 다른 개념이며, RLHF는 답변을 최적화하는 학습 방식이고 LoRA는 모델 미세 조정 기술이다. 좋은 응답은 지시사항 준수, 상황 적합성, 실질적인 도움 제공을 포함하며, 프로토콜 기반 평가를 통해 이러한 기준을 객관적으로 판단할 수 있다.\n다음에 조심할 것 다음에는 RLHF 학습 과정에서 LoRA의 역할과 전체 프로세스의 차이점을 명확히 이해하고, 프로토콜 기반 평가를 더욱 체계적으로 수행하여, 응답의 품질을 높이는 데 집중해야겠다. 특히, ‘왜’ 좋았는지/불만족스러웠는지에 대한 구체적인 피드백을 상세하게 기록하여, 지속적인 개선 방향을 설정하는 데 활용해야겠다.\n다음 복습 주제 LoRA를 활용한 RLHF 구현 과정에서 발생하는 문제점과 디버깅 전략을 좀 더 깊이 파악하고 싶다. 또한, DPO/ORPO와 같은 최신 선호 학습 방식의 장단점을 비교 분석하여 RLHF의 발전 방향을 이해해야겠다.\n",
+  "wordCount" : "1134",
+  "inLanguage": "en",
+  "datePublished": "2026-06-09T00:00:00Z",
+  "dateModified": "2026-06-09T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/rlhf-good-bad-response/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      rlhf-good-bad-response
+    </h1>
+    <div class="post-description">
+      rlhf-good-bad-response 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EA%B0%95%ED%99%94%ED%95%99%EC%8A%B5%EA%B3%BC-lora">강화학습과 LoRA</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-llm-%ED%95%99%EC%8A%B5-%EB%8B%A8%EA%B3%84">LLM 학습 단계</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%A2%8B%EC%9D%80-%EC%9D%91%EB%8B%B5-%EA%B8%B0%EC%A4%80">좋은 응답 기준</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%ED%94%84%EB%A1%9C%ED%86%A0%EC%BD%9C-%EA%B8%B0%EB%B0%98-%ED%8F%89%EA%B0%80">프로토콜 기반 평가</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-강화학습과-lora">1. 강화학습과 LoRA<a hidden class="anchor" aria-hidden="true" href="#1-강화학습과-lora">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>RLHF 학습 과정에서 모델의 성능을 향상시키는 여러 기술들이 사용되는데, 초기에 강화학습 자체와 LoRA라는 기술을 혼동하여 전체적인 학습 흐름을 제대로 파악하지 못했습니다. 따라서 RLHF의 역할과 LoRA의 역할을 구분하여 학습해야 더 깊이 있는 이해가 가능하다고 생각하여 이 개념을 배우게 되었습니다. 이 개념을 명확히 이해하면 모델 학습 과정을 더 효율적으로 분석하고 개선할 수 있을 것입니다.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>초기에 강화학습(RLHF)과 LoRA를 마치 같은 의미인 것처럼 착각하여, 강화학습을 모델 최적화 전체 과정을 나타내는 것이고 LoRA는 그 과정을 위한 기술적인 도구라고 생각했습니다. 학습 과정에서 두 개념을 혼동하며, RLHF가 단순히 LoRA를 사용하는 방식으로 이해하고 있었던 점이 오해였습니다. 실제로는 RLHF는 학습 방식과 조련 루프를 지칭하고, LoRA는 기존 모델을 미세 조정하는 기술이라는 것을 명확히 구분해야 했습니다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span># 코드 없음. 강화학습(RLHF)과 LoRA는 개념적인 차이이며, 코드 예시를 통해 설명할 수 없음.
+</span></span><span style="display:flex;"><span># RLHF는 학습 방식, LoRA는 미세 조정 기술.
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p>RLHF와 LoRA는 혼동했었는데, RLHF는 사용자 선호도를 반영하여 모델을 학습시키는 전체 과정이고, LoRA는 기존 모델을 효율적으로 미세 조정하는 기술이라는 것을 깨달았다. 이를 통해 SFT 이후 LoRA를 사용하여 RLHF 과정을 구현할 수 있다는 것을 이해하게 되었고, 실제 모델 학습 시 연관성을 고려하여 적용할 수 있을 것이다. 처음에는 어렵게 느껴졌지만, 예시를 통해 개념적 차이를 명확히 구분할 수 있었다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>RLHF는 LLM을 인간의 선호도에 맞춰 학습시키는 전체적인 방식이고, LoRA는 기존 모델을 효율적으로 미세 조정하는 기술적인 방법이다. 두 개념은 분리해서 이해해야 하며, RLHF 과정에서 LoRA를 활용할 수 있다. 나는 이 둘을 혼동했었지만, 이제는 명확히 구분해서 이해하고 있다.</p>
+<h2 id="2-llm-학습-단계">2. LLM 학습 단계<a hidden class="anchor" aria-hidden="true" href="#2-llm-학습-단계">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>LLM 학습 단계를 이해하게 된 건 강화학습(RLHF)과 LoRA를 혼동했던 초기 혼란을 해소하기 위해서였어. RLHF를 단순히 기술적인 방법으로 오해하고 있었던 점을 명확히 하고, LLM이 어떻게 인간의 피드백을 반영하여 발전하는지 전체적인 흐름을 파악하고 싶었지. 이를 통해 더 나은 프롬프트 엔지니어링 및 모델 조련 전략을 수립하는 데 도움이 될 거라고 생각했어.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>처음에는 강화학습(RLHF)이 전체적인 학습 과정이고 LoRA는 그 과정에서 사용되는 기술이라고 생각해서 두 개념이 혼동되었었다.  RLHF는 인간 피드백을 활용하여 모델을 조련하는 방식이고, LoRA는 기존 모델을 효율적으로 미세 조정하는 방법이라는 것을 명확히 구분해야 했다.  이 두 가지가 서로 다른 개념이라는 것을 이해하는 데 시간이 좀 걸렸다.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span># 코드 예시: LLM 학습 단계 - SFT (Self-Supervised Fine-Tuning)
+</span></span><span style="display:flex;"><span># SFT는 인간이 작성한 좋은 응답을 학습하는 단계
+</span></span><span style="display:flex;"><span># (실제 코드는 모델 아키텍처 및 데이터셋에 따라 달라짐)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># 1. 데이터 준비: 좋은 응답 데이터셋 (인간 작성)
+</span></span><span style="display:flex;"><span>#   - 데이터셋: {prompt: &#34;오늘 날씨가 어때?&#34;, response: &#34;오늘 서울은 맑고 기온은 25도입니다.&#34;} 형태
+</span></span><span style="display:flex;"><span>#   - 데이터셋 크기: 수천~수만 개의 데이터 포인트
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># 2. 모델 학습 (예시: PyTorch)
+</span></span><span style="display:flex;"><span># import torch
+</span></span><span style="display:flex;"><span># from transformers import AutoModelForCausalLM, AutoTokenizer
+</span></span><span style="display:flex;"><span>#
+</span></span><span style="display:flex;"><span># model_name = &#34;...&#34; # 모델 이름 지정
+</span></span><span style="display:flex;"><span># tokenizer = AutoTokenizer.from_pretrained(model_name)
+</span></span><span style="display:flex;"><span># model = AutoModelForCausalLM.from_pretrained(model_name)
+</span></span><span style="display:flex;"><span>#
+</span></span><span style="display:flex;"><span># # 데이터셋 로딩 및 전처리 (토큰화 등)
+</span></span><span style="display:flex;"><span># # ...
+</span></span><span style="display:flex;"><span>#
+</span></span><span style="display:flex;"><span># # 모델 학습 (Backpropagation)
+</span></span><span style="display:flex;"><span># # ...
+</span></span><span style="display:flex;"><span>#
+</span></span><span style="display:flex;"><span># # 모델 저장
+</span></span><span style="display:flex;"><span># # ...
+</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p>LLM 학습 단계를 이해하기 위해 간단한 날씨 질문에 대한 모델 응답을 세 개 생성하여 &lsquo;최적&rsquo;, &lsquo;보통&rsquo;, &lsquo;불량&rsquo;으로 분류하는 실습을 해봤어. 모델이 단순히 &ldquo;오늘 날씨는 맑습니다&quot;라고 답하는 것은 보통으로 평가했고, 날씨 정보와 함께 오늘 활동 추천까지 하는 응답은 최적으로 평가했고, 관련 없는 내용을 섞어 쓰는 응답은 불량으로 분류했어. 이 과정을 통해 LLM이 사용자 의도를 얼마나 잘 파악하고, 어떤 내용이 사용자에게 도움이 되는지 판단하는 기준을 구체적으로 알 수 있었어.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>LLM 학습은 먼저 토큰 예측 모델을 만들고, 인간이 작성한 좋은 답변을 모방하도록 SFT 과정을 거쳐, 사용자의 선호도를 반영하여 답변을 최적화하는 RLHF 또는 DPO/ORPO 단계를 통해 진행됩니다. 이 과정에서 좋은 응답은 지시사항 준수, 상황 적절성, 실질적인 도움 제공을 포함하며, 나쁜 응답은 이러한 기준을 충족하지 못하는 경우에 해당합니다.</p>
+<h2 id="3-좋은-응답-기준">3. 좋은 응답 기준<a hidden class="anchor" aria-hidden="true" href="#3-좋은-응답-기준">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>RLHF 관점에서 좋은 응답과 나쁜 응답을 이해하기 위해서는, 모델이 사용자 선호도에 맞춰 답변을 최적화하는 과정을 명확히 파악해야 했기 때문입니다. 이를 통해 모델이 어떤 기준으로 답변을 생성해야 하는지, 그리고 어떤 종류의 답변이 사용자에게 만족스러운 경험을 제공하는지 알 수 있었습니다. 궁극적으로는 모델의 성능을 향상시키고 사용자에게 더욱 유용한 답변을 제공하는 데 도움이 될 것이라고 생각합니다.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>처음에는 &lsquo;좋은 응답 기준&rsquo;이 단순히 문법적으로 완벽하고 형식적인 답변을 의미한다고 생각했어요. 사용자 상황에 맞고 실질적인 도움을 제공하는 것까지 포함해야 한다는 점을 명확히 이해하지 못했고, 위험하거나 부적절한 내용을 피하는 윤리적인 측면까지 고려해야 한다는 점을 간과했습니다.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>&#34;&#34;&#34;
+</span></span><span style="display:flex;"><span>좋은 응답 예시:
+</span></span></code></pre></div><p>print(&ldquo;오늘 서울의 날씨는 맑고, 최고 기온은 28도입니다.&rdquo;)</p>
+<h1 id="print-함수를-사용해-날씨-정보를-제공">print() 함수를 사용해 날씨 정보를 제공<a hidden class="anchor" aria-hidden="true" href="#print-함수를-사용해-날씨-정보를-제공">#</a></h1>
+<h1 id="구체적인-정보-서울-28도를-포함하여-사용자에게-유용함">구체적인 정보 (서울, 28도)를 포함하여 사용자에게 유용함<a hidden class="anchor" aria-hidden="true" href="#구체적인-정보-서울-28도를-포함하여-사용자에게-유용함">#</a></h1>
+<pre tabindex="0"><code>&#34;&#34;&#34;
+</code></pre><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p>좋은 응답 기준에 따라 평가한 결과, &lsquo;최적&rsquo; 응답은 현재 날짜, 위치 정보를 포함하여 명확하고 사용자 상황에 맞는 정보를 제공하는 것이 중요함을 알 수 있었다. 반면, &lsquo;불량&rsquo; 응답은 일반적인 답변만 제공하거나 사실과 다른 정보를 제공하여 사용자에게 실질적인 도움을 주지 못하는 경우임을 확인했다. 이러한 실습을 통해 좋은 응답이 단순히 형식적인 정확성뿐 아니라 내용의 유용성과 관련 있음을 깨달았다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>좋은 응답은 사용자의 지시사항을 정확히 따르면서, 상황에 맞는 실질적인 도움을 제공해야 해. 특히 근거 없는 주장은 최소화하고, 위험하거나 부적절한 내용은 피해야 한다는 점을 명심해야 할 것 같아. 형식적인 완성도도 중요하지만, 내용의 의미가 핵심이라는 것을 잊지 말아야지.</p>
+<h2 id="4-프로토콜-기반-평가">4. 프로토콜 기반 평가<a hidden class="anchor" aria-hidden="true" href="#4-프로토콜-기반-평가">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>프로토콜 기반 평가는 LLM 응답의 품질을 체계적으로 평가하고 개선하기 위해 도입되었습니다. 단순히 주관적인 판단을 넘어, 명확한 기준에 따라 응답을 분류하고 개선 방향을 제시하여, 모델의 성능을 객관적으로 향상시키고자 했습니다. 또한, 이 과정을 통해 효과적인 프롬프트 엔지니어링 및 규칙 개선 전략을 구축하는 데 도움을 받고자 했습니다.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>프로토콜 기반 평가가 단순히 응답을 &lsquo;좋다/나쁘다&rsquo;로 나누는 것이 아니라, 왜 그런 판단을 내렸는지 구체적인 이유를 기록하는 과정이라는 점이 처음에는 잘 이해되지 않았다. 단순히 분류하는 것이 아니라, 응답의 어떤 부분이 어떤 기준에 부합하거나 벗어나는지 자세하게 분석해야 한다는 점이 중요했다. 또한, 이 피드백이 프롬프트 개선에 직접적으로 활용될 수 있다는 점도 처음에는 인지하지 못했다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plaintext" data-lang="plaintext"></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<p>프로토콜 기반 평가는 동일 질문에 대한 여러 응답을 비교하며 답변의 질을 객관적으로 판단하는 방법론으로, &lsquo;최적&rsquo;, &lsquo;보통&rsquo;, &lsquo;불량&rsquo; 태그를 부여하여 구체적인 피드백을 기록한다. 이 과정을 통해 프롬프트 및 답변 생성 규칙을 개선하여 모델의 성능을 향상시킬 수 있었다. 예를 들어, 단순히 날씨를 묻는 질문에 &lsquo;최적&rsquo; 응답은 현재 온도, 습도, 풍속과 같은 구체적인 정보를 제공해야 한다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>프로토콜 기반 평가는 동일한 질문에 대해 생성된 여러 응답을 객관적으로 평가하여, 각 응답의 장단점을 파악하고 개선점을 찾는 방법론이다. 이를 통해 프롬프트와 규칙을 지속적으로 개선하여 모델의 답변 품질을 향상시킬 수 있다. 단순히 &lsquo;좋다&rsquo;, &lsquo;나쁘다&rsquo;를 판단하는 것이 아니라, 구체적인 피드백을 통해 모델 학습 방향을 설정하는 것이 중요하다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>강화학습(RLHF)과 LoRA는 서로 다른 개념이며, RLHF는 답변을 최적화하는 학습 방식이고 LoRA는 모델 미세 조정 기술이다. 좋은 응답은 지시사항 준수, 상황 적합성, 실질적인 도움 제공을 포함하며, 프로토콜 기반 평가를 통해 이러한 기준을 객관적으로 판단할 수 있다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>다음에는 RLHF 학습 과정에서 LoRA의 역할과 전체 프로세스의 차이점을 명확히 이해하고, 프로토콜 기반 평가를 더욱 체계적으로 수행하여, 응답의 품질을 높이는 데 집중해야겠다. 특히, &lsquo;왜&rsquo; 좋았는지/불만족스러웠는지에 대한 구체적인 피드백을 상세하게 기록하여, 지속적인 개선 방향을 설정하는 데 활용해야겠다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>LoRA를 활용한 RLHF 구현 과정에서 발생하는 문제점과 디버깅 전략을 좀 더 깊이 파악하고 싶다. 또한, DPO/ORPO와 같은 최신 선호 학습 방식의 장단점을 비교 분석하여 RLHF의 발전 방향을 이해해야겠다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/pm-05-erd-reading-training/">
+    <span class="title">« Prev</span>
+    <span>pm-05-erd-reading-training</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-06-09-am-daily/">
+    <span class="title">Next »</span>
+    <span>SQL GROUP BY, JOIN, ERD 활용 능력 향상을 위한 학습 정리</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

@@ -1,58 +1,455 @@
-<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>SQL 윈도우 함수와 날짜 다루기, 그리고 실전 분석 능력 향상 | Han-think Blog</title><meta name=keywords content><meta name=description content="2026-06-12 오전 학습 정리"><meta name=author content><link rel=canonical href=https://Han-think.github.io/learning/2026-06-12-am-daily/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/learning/2026-06-12-am-daily/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/learning/2026-06-12-am-daily/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="SQL 윈도우 함수와 날짜 다루기, 그리고 실전 분석 능력 향상"><meta property="og:description" content="2026-06-12 오전 학습 정리"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="learning"><meta property="article:published_time" content="2026-06-12T00:00:00+00:00"><meta property="article:modified_time" content="2026-06-12T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="SQL 윈도우 함수와 날짜 다루기, 그리고 실전 분석 능력 향상"><meta name=twitter:description content="2026-06-12 오전 학습 정리"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"학습 기록","item":"https://Han-think.github.io/learning/"},{"@type":"ListItem","position":2,"name":"SQL 윈도우 함수와 날짜 다루기, 그리고 실전 분석 능력 향상","item":"https://Han-think.github.io/learning/2026-06-12-am-daily/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"SQL 윈도우 함수와 날짜 다루기, 그리고 실전 분석 능력 향상","name":"SQL 윈도우 함수와 날짜 다루기, 그리고 실전 분석 능력 향상","description":"2026-06-12 오전 학습 정리","keywords":[],"articleBody":"목차 JOIN, GROUP BY, HAVING으로 이탈 고객 찾기 PARTITION BY와 RANK로 그룹별 순위 이해하기 OVER와 누적 합계로 집계 범위 이해하기 윈도우 프레임과 FIRST/LAST/LAG/LEAD 이해하기 PERCENT_RANK와 NTILE로 분포 읽기 strftime과 LAG로 월별 매출 변화 보기 총평 1. JOIN, GROUP BY, HAVING으로 이탈 고객 찾기 무엇을 배웠나 날짜 집계 함수인 MAX()가 날짜 컬럼에서도 가장 최근 날짜를 찾는다는 것을 이해하게 되었고, HAVING 절이 GROUP BY 이후 집계된 결과에 조건을 걸어주는 역할을 한다는 것을 알게 되었다. 이를 통해 고객의 최근 주문 날짜를 기준으로 잠재 이탈 고객을 찾는 SQL 쿼리를 작성할 수 있게 되었고, WHERE와 HAVING 절의 차이점을 명확히 구분할 수 있게 되었다. 이제 날짜 관련 SQL 쿼리를 더 자신 있게 작성할 수 있을 것 같다.\n헷갈렸던 점 처음에는 MAX(orderDate)가 왜 가장 최근 날짜를 나타내는지, 그리고 HAVING 절이 왜 필요한지 잘 이해하지 못했습니다. MAX() 함수가 숫자 컬럼에서만 적용될 것이라고 생각했고, WHERE절로도 충분할 것이라고 생각했습니다. 날짜 컬럼에서의 MAX()의 의미와 HAVING 절의 역할에 대한 이해가 부족했습니다.\n정리된 이해 날짜 컬럼에서도 MAX() 함수는 가장 최근 날짜를 찾기 위해 사용되며, WHERE 절은 개별 행에 대한 조건을, HAVING 절은 그룹화된 결과에 대한 조건을 걸 때 사용합니다. 특히 고객별 마지막 주문 날짜를 기준으로 잠재적 이탈 고객을 찾을 때는 HAVING 절이 필수적입니다. 이 과정을 통해 고객 데이터 분석 및 관리 능력을 향상시킬 수 있습니다.\nHAV 2. PARTITION BY와 RANK로 그룹별 순위 이해하기 무엇을 배웠나 윈도우 함수에서 PARTITION BY는 실제 테이블을 나누는 것이 아니라, 그룹별로 순위를 계산하는 기준을 설정하는 역할이라는 것을 알게 되었다. 또한, 윈도우 함수 내 ORDER BY와 최종 결과 출력 시의 ORDER BY는 서로 다른 역할을 한다는 것을 이해하고, 구체적인 예시를 통해 그 차이를 명확히 했다. 이제 윈도우 함수를 사용할 때 PARTITION BY의 역할과 ORDER BY의 다양한 용도를 더 명확하게 활용할 수 있을 것 같다.\n헷갈렸던 점 윈도우 함수에서 PARTITION BY를 처음 접했을 때, 테이블이 실제로 분할되는 것처럼 느껴져서 혼란스러웠고, ORDER BY가 쿼리 내에서 여러 역할을 하는 것 같아서 어떤 기준으로 해석해야 할지 몰랐습니다. 특히 국가별 순위 계산을 위한 ORDER BY와 최종 결과 정렬을 위한 ORDER BY의 차이점이 명확하게 이해되지 않았습니다.\n정리된 이해 윈도우 함수에서 PARTITION BY는 실제 테이블을 나누는 것이 아니라, 계산 범위를 그룹화하는 역할이고, ORDER BY는 윈도우 함수 내부에서는 정렬 기준, 최종 결과에서는 출력 순서를 결정합니다. 따라서 각 PARTITION BY 절은 개별적인 순위 계산 공간을 만들고, ORDER BY는 그 순위를 어떻게 보여줄지를 정하는 것이라고 이해했습니다. 이제 PARTITION BY가 어떻게 작동하는지 좀 더 명확하게 파악할 수 있을 것 같습니다.\nSELECT c.CustomerId, c.FirstName || ' ' || c.LastName AS CustomerName, c.Country, ROUND(SUM(i.Total), 2) 3. OVER와 누적 합계로 집계 범위 이해하기 무엇을 배웠나 OVER() 함수가 집계 함수에 적용될 데이터 범위를 정의하는 역할을 한다는 것을 이해하게 되었고, ROUND 함수를 사용하여 소수점 자릿수를 지정할 수 있다는 점을 알게 되었다. 특히 OVER()가 비어있을 때 전체 행을 기준으로 계산한다는 점을 명확히 파악하게 되었으며, SUM 함수와 OVER() 함수의 차이를 통해 전체 합계와 누적 합계를 구분할 수 있게 되었다. 앞으로 다양한 상황에서 OVER()를 활용하여 데이터 분석을 수행할 수 있을 것 같다.\n헷갈렸던 점 처음에는 OVER()가 값을 올리는 함수인 줄 알았고, ROUND 함수 안의 숫자 2가 어떤 의미인지도 정확히 몰랐다. 특히 OVER()가 비어 있을 때 전체 행을 기준으로 계산된다는 점이 이해하기 어려웠다.\n정리된 이해 OVER()는 집계 함수가 적용될 데이터 범위를 설정하는 구문이고, ROUND 함수는 소수점 자릿수를 반올림하는 역할을 합니다. OVER()가 비어있으면 전체 행을 기준으로 계산하며, SUM 함수와 OVER()를 함께 사용하면 전체 합계 또는 누적 합계를 각 행에 적용할 수 있습니다.\nSELECT InvoiceId, InvoiceDate, Total, ROUND(SUM(Total) OVER (), 2) AS GrandTotal, ROUND(SUM(Total) OVER ( ORDER BY InvoiceDate ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW ), 2) AS RunningTotal FROM invoices ORDER BY InvoiceDate LIMIT 20; 4. 윈도우 프레임과 FIRST/LAST/LAG/LEAD 이해하기 무엇을 배웠나 윈도우 함수, 특히 ROWS BETWEEN 구문을 사용하는 부분을 이해하는 데 어려움을 겪었지만, UNBOUNDED PRECEDING과 UNBOUNDED FOLLOWING를 ‘무제한 첫 번째 행’과 ‘무제한 마지막 행’으로 단순화하여 개념을 파악할 수 있었다. FIRST_VALUE와 LAST_VALUE를 활용하여 각 국가별 최소/최대 청구 금액을 찾는 실습을 통해 윈도우 함수가 파티션 내의 행 범위를 어떻게 참조하는지 이해했다. Total 컬럼의 실제 의미를 파악하는 과정에서 혼란이 있었지만, 실습을 통해 윈도우 함수를 활용하는 방법을 익힐 수 있었다.\n헷갈렸던 점 윈도우 함수에서 UNBOUNDED PRECEDING이나 UNBOUNDED FOLLOWING 같은 표현이 영어 때문에 처음에는 무슨 의미인지 파악하기 어려웠어요. 특히 Total 컬럼이 실제로는 청구 금액을 나타내는 것인지, 아니면 다른 의미인지 헷갈렸습니다. 처음에는 윈도우 함수 내의 ROWS BETWEEN 구문이 어떻게 동작하는지 이해하는 데 시간이 좀 걸렸어요.\n정리된 이해 윈도우 함수에서 ROWS BETWEEN 구문은 파티션 내에서 특정 행들의 범위를 지정하는 역할을 하며, UNBOUNDED PRECEDING과 UNBOUNDED FOLLOWING는 각각 파티션의 시작과 끝을 의미합니다. FIRST_VALUE와 LAST_VALUE 함수를 사용하여 파티션 내에서 각 행의 최소값과 최대값을 쉽게 찾을 수 있습니다. Total 컬럼의 실제 의미를 파악하는 데 시간을 낭비했음을 기억해야겠습니다.\nSELECT InvoiceId, BillingCountry, Total, FIRST_VALUE(Total) OVER ( PARTITION BY BillingCountry ORDER BY Total ASC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) AS CountryMinTotal, LAST_VALUE(Total) OVER ( PARTITION BY BillingCountry ORDER BY Total ASC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) AS CountryMaxTotal FROM invoices ORDER BY BillingCountry, Total; 5. PERCENT_RANK와 NTILE로 분포 읽기 무엇을 배웠나 PERCENT_RANK, CUME_DIST, NTILE 함수가 무엇을 의미하는지, 그리고 각각 어떤 방식으로 데이터를 분석하는 데 활용될 수 있는지 이해하게 되었습니다. 특히 PERCENT_RANK는 순위 위치를 비율로 나타내는 방식, CUME_DIST는 누적된 비율을 보여주는 방식이 처음에는 헷갈렸지만, 예시를 통해 개념을 명확히 할 수 있었습니다. 이 함수들을 활용하여 데이터 그룹화 및 분석을 수행할 수 있을 것 같습니다.\n헷갈렸던 점 PERCENT_RANK, CUME_DIST 함수가 이름만 보고는 어떤 값을 계산하는지 감이 잘 오지 않았습니다. 특히 PERCENT_RANK의 0~1 사이의 비율로 순위를 표현하는 방식과 CUME_DIST가 단순한 순위가 아닌 누적 비율을 보여주는 점이 처음에는 직관적으로 이해하기 어려웠습니다.\n정리된 이해 PERCENT_RANK는 데이터 내 순위를 0과 1 사이의 비율로 표현하며, CUME_DIST는 현재 행까지의 누적된 비율을 보여주는 함수입니다. NTILE은 데이터를 특정 개수의 그룹으로 나누어 분석을 용이하게 해주는 기능입니다. 이 세 함수는 데이터 분석 시 순위, 분포, 그룹화 등 다양한 방식으로 활용될 수 있습니다.\nROUND(SUM(o.TotalAmount), 1) AS TotalSpent, PERCENT_RANK() OVER (ORDER BY SUM(o.TotalAmount) DESC) AS PercentileRank FROM Orders o JOIN Customers c ON o.CustomerId = c.CustomerId GROUP BY c.CustomerId ORDER BY PercentileRank DESC LIMIT 10; 6. strftime과 LAG로 월별 매출 변화 보기 무엇을 배웠나 SQLite의 strftime 함수를 사용하여 날짜를 원하는 형식으로 변환하는 방법을 익혔습니다. 또한, MoM과 같은 비즈니스 용어의 의미를 명확히 이해하고, 전월 대비 매출 증감 계산에 필요한 SQL 쿼리 작성 능력을 향상시켰습니다. 오타 방지에 더욱 신경 써야 함을 깨달았습니다.\n헷갈렸던 점 처음에는 strftime 함수가 어떻게 연월을 추출해 내는지, 그리고 쿼리에서 어떤 역할을 하는지 명확히 이해하지 못했습니다. 또한, 쿼리에 사용된 영어 컬럼명들이 의미하는 바를 바로 파악하지 못해 전체적인 쿼리 의도를 이해하는 데 어려움이 있었습니다. 오타도 자주 발생해서 디버깅하는 데 시간을 낭비하기도 했습니다.\n정리된 이해 strftime 함수는 날짜를 원하는 형식의 문자열로 바꿔주는 SQLite 함수이고, MoM_Diff는 전월 대비 증감액을 의미하는 용어라는 것을 알게 되었다. 특히 strftime 함수를 사용하여 연월을 추출하고, 이를 기반으로 전월 대비 매출 증감액을 계산하는 방법을 이해하게 되었다. 앞으로는 오타 없이 정확하게 함수와 컬럼명을 사용하도록 노력해야겠다.\nSELECT strftime('%Y-%m', InvoiceDate) AS YearMonth, 총평 오늘 오전 전체에서 배운 것 오늘은 SQL 윈도우 함수와 날짜 함수를 집중적으로 학습했습니다. 특히 윈도우 함수의 PARTITION BY와 ORDER BY의 역할, 그리고 OVER() 함수를 활용한 누적 합계 계산 방법을 익혔고, SQLite의 strftime 함수를 활용하여 날짜 형식을 변환하고 전월 대비 매출 증감을 계산하는 쿼리를 작성할 수 있게 되었습니다. 앞으로 데이터 분석 시 다양한 윈도우 함수와 날짜 함수를 활용하여 더욱 심층적인 분석을 수행할 수 있을 것 같습니다.\n다음에 조심할 것 윈도우 프레임을 사용하는 부분은 아직 좀 어렵게 느껴지니, 꾸준히 예제를 통해 연습해야 할 것 같습니다. 또한, SQL 쿼리 작성 시 오타 방지에 더욱 주의하며, 비즈니스 용어에 대한 이해를 확실히 하는 것이 중요하다고 생각합니다.\n다음 복습 주제 윈도우 프레임을 활용한 FIRST_VALUE와 LAST_VALUE 구문 적용 및 활용, 그리고 Total 컬럼의 실제 의미 파악에 대한 좀 더 깊이 있는 복습이 필요할 것 같습니다. 또한, PERCENT_RANK, CUME_DIST 함수들을 다양한 데이터 세트에 적용해보면서 더욱 확실하게 개념을 다져야 할 것 같아요.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n","wordCount":"1243","inLanguage":"en","datePublished":"2026-06-12T00:00:00Z","dateModified":"2026-06-12T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/learning/2026-06-12-am-daily/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
-<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">SQL 윈도우 함수와 날짜 다루기, 그리고 실전 분석 능력 향상</h1><div class=post-description>2026-06-12 오전 학습 정리</div><div class=post-meta><span title='2026-06-12 00:00:00 +0000 UTC'>2026년 6월 12일</span>&nbsp;·&nbsp;<span>6 min</span></div></header><div class="post-content md-content"><h2 id=목차>목차<a hidden class=anchor aria-hidden=true href=#목차>#</a></h2><ul><li><ol><li><a href=#1-join-group-by-having%EC%9C%BC%EB%A1%9C-%EC%9D%B4%ED%83%88-%EA%B3%A0%EA%B0%9D-%EC%B0%BE%EA%B8%B0>JOIN, GROUP BY, HAVING으로 이탈 고객 찾기</a></li></ol></li><li><ol start=2><li><a href=#2-partition-by%EC%99%80-rank%EB%A1%9C-%EA%B7%B8%EB%A3%B9%EB%B3%84-%EC%88%9C%EC%9C%84-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0>PARTITION BY와 RANK로 그룹별 순위 이해하기</a></li></ol></li><li><ol start=3><li><a href=#3-over%EC%99%80-%EB%88%84%EC%A0%81-%ED%95%A9%EA%B3%84%EB%A1%9C-%EC%A7%91%EA%B3%84-%EB%B2%94%EC%9C%84-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0>OVER와 누적 합계로 집계 범위 이해하기</a></li></ol></li><li><ol start=4><li><a href=#4-%EC%9C%88%EB%8F%84%EC%9A%B0-%ED%94%84%EB%A0%88%EC%9E%84%EA%B3%BC-firstlastlaglead-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0>윈도우 프레임과 FIRST/LAST/LAG/LEAD 이해하기</a></li></ol></li><li><ol start=5><li><a href=#5-percentrank%EC%99%80-ntile%EB%A1%9C-%EB%B6%84%ED%8F%AC-%EC%9D%BD%EA%B8%B0>PERCENT_RANK와 NTILE로 분포 읽기</a></li></ol></li><li><ol start=6><li><a href=#6-strftime%EA%B3%BC-lag%EB%A1%9C-%EC%9B%94%EB%B3%84-%EB%A7%A4%EC%B6%9C-%EB%B3%80%ED%99%94-%EB%B3%B4%EA%B8%B0>strftime과 LAG로 월별 매출 변화 보기</a></li></ol></li><li><a href=#%EC%B4%9D%ED%8F%89>총평</a></li></ul><h2 id=1-join-group-by-having으로-이탈-고객-찾기>1. JOIN, GROUP BY, HAVING으로 이탈 고객 찾기<a hidden class=anchor aria-hidden=true href=#1-join-group-by-having으로-이탈-고객-찾기>#</a></h2><h3 id=무엇을-배웠나>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나>#</a></h3><p>날짜 집계 함수인 <code>MAX()</code>가 날짜 컬럼에서도 가장 최근 날짜를 찾는다는 것을 이해하게 되었고, <code>HAVING</code> 절이 <code>GROUP BY</code> 이후 집계된 결과에 조건을 걸어주는 역할을 한다는 것을 알게 되었다. 이를 통해 고객의 최근 주문 날짜를 기준으로 잠재 이탈 고객을 찾는 SQL 쿼리를 작성할 수 있게 되었고, <code>WHERE</code>와 <code>HAVING</code> 절의 차이점을 명확히 구분할 수 있게 되었다. 이제 날짜 관련 SQL 쿼리를 더 자신 있게 작성할 수 있을 것 같다.</p><h3 id=헷갈렸던-점>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점>#</a></h3><p>처음에는 <code>MAX(orderDate)</code>가 왜 가장 최근 날짜를 나타내는지, 그리고 <code>HAVING</code> 절이 왜 필요한지 잘 이해하지 못했습니다. <code>MAX()</code> 함수가 숫자 컬럼에서만 적용될 것이라고 생각했고, <code>WHERE</code>절로도 충분할 것이라고 생각했습니다. 날짜 컬럼에서의 <code>MAX()</code>의 의미와 <code>HAVING</code> 절의 역할에 대한 이해가 부족했습니다.</p><h3 id=정리된-이해>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해>#</a></h3><p>날짜 컬럼에서도 MAX() 함수는 가장 최근 날짜를 찾기 위해 사용되며, WHERE 절은 개별 행에 대한 조건을, HAVING 절은 그룹화된 결과에 대한 조건을 걸 때 사용합니다. 특히 고객별 마지막 주문 날짜를 기준으로 잠재적 이탈 고객을 찾을 때는 HAVING 절이 필수적입니다. 이 과정을 통해 고객 데이터 분석 및 관리 능력을 향상시킬 수 있습니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span>HAV
-</span></span></code></pre></div><h2 id=2-partition-by와-rank로-그룹별-순위-이해하기>2. PARTITION BY와 RANK로 그룹별 순위 이해하기<a hidden class=anchor aria-hidden=true href=#2-partition-by와-rank로-그룹별-순위-이해하기>#</a></h2><h3 id=무엇을-배웠나-1>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-1>#</a></h3><p>윈도우 함수에서 <code>PARTITION BY</code>는 실제 테이블을 나누는 것이 아니라, 그룹별로 순위를 계산하는 기준을 설정하는 역할이라는 것을 알게 되었다. 또한, 윈도우 함수 내 <code>ORDER BY</code>와 최종 결과 출력 시의 <code>ORDER BY</code>는 서로 다른 역할을 한다는 것을 이해하고, 구체적인 예시를 통해 그 차이를 명확히 했다. 이제 윈도우 함수를 사용할 때 <code>PARTITION BY</code>의 역할과 <code>ORDER BY</code>의 다양한 용도를 더 명확하게 활용할 수 있을 것 같다.</p><h3 id=헷갈렸던-점-1>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-1>#</a></h3><p>윈도우 함수에서 <code>PARTITION BY</code>를 처음 접했을 때, 테이블이 실제로 분할되는 것처럼 느껴져서 혼란스러웠고, <code>ORDER BY</code>가 쿼리 내에서 여러 역할을 하는 것 같아서 어떤 기준으로 해석해야 할지 몰랐습니다. 특히 국가별 순위 계산을 위한 <code>ORDER BY</code>와 최종 결과 정렬을 위한 <code>ORDER BY</code>의 차이점이 명확하게 이해되지 않았습니다.</p><h3 id=정리된-이해-1>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-1>#</a></h3><p>윈도우 함수에서 <code>PARTITION BY</code>는 실제 테이블을 나누는 것이 아니라, 계산 범위를 그룹화하는 역할이고, <code>ORDER BY</code>는 윈도우 함수 내부에서는 정렬 기준, 최종 결과에서는 출력 순서를 결정합니다. 따라서 각 <code>PARTITION BY</code> 절은 개별적인 순위 계산 공간을 만들고, <code>ORDER BY</code>는 그 순위를 어떻게 보여줄지를 정하는 것이라고 이해했습니다. 이제 <code>PARTITION BY</code>가 어떻게 작동하는지 좀 더 명확하게 파악할 수 있을 것 같습니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>c</span>.CustomerId,
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>c</span>.FirstName <span style=color:#f92672>||</span> <span style=color:#e6db74>&#39; &#39;</span> <span style=color:#f92672>||</span> <span style=color:#66d9ef>c</span>.LastName <span style=color:#66d9ef>AS</span> CustomerName,
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>c</span>.Country,
-</span></span><span style=display:flex><span>    ROUND(<span style=color:#66d9ef>SUM</span>(i.Total), <span style=color:#ae81ff>2</span>)
-</span></span></code></pre></div><h2 id=3-over와-누적-합계로-집계-범위-이해하기>3. OVER와 누적 합계로 집계 범위 이해하기<a hidden class=anchor aria-hidden=true href=#3-over와-누적-합계로-집계-범위-이해하기>#</a></h2><h3 id=무엇을-배웠나-2>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-2>#</a></h3><p>OVER() 함수가 집계 함수에 적용될 데이터 범위를 정의하는 역할을 한다는 것을 이해하게 되었고, ROUND 함수를 사용하여 소수점 자릿수를 지정할 수 있다는 점을 알게 되었다. 특히 OVER()가 비어있을 때 전체 행을 기준으로 계산한다는 점을 명확히 파악하게 되었으며, SUM 함수와 OVER() 함수의 차이를 통해 전체 합계와 누적 합계를 구분할 수 있게 되었다. 앞으로 다양한 상황에서 OVER()를 활용하여 데이터 분석을 수행할 수 있을 것 같다.</p><h3 id=헷갈렸던-점-2>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-2>#</a></h3><p>처음에는 OVER()가 값을 올리는 함수인 줄 알았고, ROUND 함수 안의 숫자 2가 어떤 의미인지도 정확히 몰랐다. 특히 OVER()가 비어 있을 때 전체 행을 기준으로 계산된다는 점이 이해하기 어려웠다.</p><h3 id=정리된-이해-2>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-2>#</a></h3><p>OVER()는 집계 함수가 적용될 데이터 범위를 설정하는 구문이고, ROUND 함수는 소수점 자릿수를 반올림하는 역할을 합니다. OVER()가 비어있으면 전체 행을 기준으로 계산하며, SUM 함수와 OVER()를 함께 사용하면 전체 합계 또는 누적 합계를 각 행에 적용할 수 있습니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>    InvoiceId,
-</span></span><span style=display:flex><span>    InvoiceDate,
-</span></span><span style=display:flex><span>    Total,
-</span></span><span style=display:flex><span>    ROUND(<span style=color:#66d9ef>SUM</span>(Total) OVER (), <span style=color:#ae81ff>2</span>) <span style=color:#66d9ef>AS</span> GrandTotal,
-</span></span><span style=display:flex><span>    ROUND(<span style=color:#66d9ef>SUM</span>(Total) OVER (
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>ORDER</span> <span style=color:#66d9ef>BY</span> InvoiceDate
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>ROWS</span> <span style=color:#66d9ef>BETWEEN</span> UNBOUNDED PRECEDING <span style=color:#66d9ef>AND</span> <span style=color:#66d9ef>CURRENT</span> <span style=color:#66d9ef>ROW</span>
-</span></span><span style=display:flex><span>    ), <span style=color:#ae81ff>2</span>) <span style=color:#66d9ef>AS</span> RunningTotal
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> invoices
-</span></span><span style=display:flex><span><span style=color:#66d9ef>ORDER</span> <span style=color:#66d9ef>BY</span> InvoiceDate
-</span></span><span style=display:flex><span><span style=color:#66d9ef>LIMIT</span> <span style=color:#ae81ff>20</span>;
-</span></span></code></pre></div><h2 id=4-윈도우-프레임과-firstlastlaglead-이해하기>4. 윈도우 프레임과 FIRST/LAST/LAG/LEAD 이해하기<a hidden class=anchor aria-hidden=true href=#4-윈도우-프레임과-firstlastlaglead-이해하기>#</a></h2><h3 id=무엇을-배웠나-3>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-3>#</a></h3><p>윈도우 함수, 특히 <code>ROWS BETWEEN</code> 구문을 사용하는 부분을 이해하는 데 어려움을 겪었지만, <code>UNBOUNDED PRECEDING</code>과 <code>UNBOUNDED FOLLOWING</code>를 &lsquo;무제한 첫 번째 행&rsquo;과 &lsquo;무제한 마지막 행&rsquo;으로 단순화하여 개념을 파악할 수 있었다. <code>FIRST_VALUE</code>와 <code>LAST_VALUE</code>를 활용하여 각 국가별 최소/최대 청구 금액을 찾는 실습을 통해 윈도우 함수가 파티션 내의 행 범위를 어떻게 참조하는지 이해했다. <code>Total</code> 컬럼의 실제 의미를 파악하는 과정에서 혼란이 있었지만, 실습을 통해 윈도우 함수를 활용하는 방법을 익힐 수 있었다.</p><h3 id=헷갈렸던-점-3>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-3>#</a></h3><p>윈도우 함수에서 <code>UNBOUNDED PRECEDING</code>이나 <code>UNBOUNDED FOLLOWING</code> 같은 표현이 영어 때문에 처음에는 무슨 의미인지 파악하기 어려웠어요. 특히 <code>Total</code> 컬럼이 실제로는 청구 금액을 나타내는 것인지, 아니면 다른 의미인지 헷갈렸습니다. 처음에는 윈도우 함수 내의 <code>ROWS BETWEEN</code> 구문이 어떻게 동작하는지 이해하는 데 시간이 좀 걸렸어요.</p><h3 id=정리된-이해-3>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-3>#</a></h3><p>윈도우 함수에서 <code>ROWS BETWEEN</code> 구문은 파티션 내에서 특정 행들의 범위를 지정하는 역할을 하며, <code>UNBOUNDED PRECEDING</code>과 <code>UNBOUNDED FOLLOWING</code>는 각각 파티션의 시작과 끝을 의미합니다. <code>FIRST_VALUE</code>와 <code>LAST_VALUE</code> 함수를 사용하여 파티션 내에서 각 행의 최소값과 최대값을 쉽게 찾을 수 있습니다. <code>Total</code> 컬럼의 실제 의미를 파악하는 데 시간을 낭비했음을 기억해야겠습니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>    InvoiceId,
-</span></span><span style=display:flex><span>    BillingCountry,
-</span></span><span style=display:flex><span>    Total,
-</span></span><span style=display:flex><span>    FIRST_VALUE(Total) OVER (
-</span></span><span style=display:flex><span>        PARTITION <span style=color:#66d9ef>BY</span> BillingCountry
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>ORDER</span> <span style=color:#66d9ef>BY</span> Total <span style=color:#66d9ef>ASC</span>
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>ROWS</span> <span style=color:#66d9ef>BETWEEN</span> UNBOUNDED PRECEDING <span style=color:#66d9ef>AND</span> UNBOUNDED FOLLOWING
-</span></span><span style=display:flex><span>    ) <span style=color:#66d9ef>AS</span> CountryMinTotal,
-</span></span><span style=display:flex><span>    LAST_VALUE(Total) OVER (
-</span></span><span style=display:flex><span>        PARTITION <span style=color:#66d9ef>BY</span> BillingCountry
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>ORDER</span> <span style=color:#66d9ef>BY</span> Total <span style=color:#66d9ef>ASC</span>
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>ROWS</span> <span style=color:#66d9ef>BETWEEN</span> UNBOUNDED PRECEDING <span style=color:#66d9ef>AND</span> UNBOUNDED FOLLOWING
-</span></span><span style=display:flex><span>    ) <span style=color:#66d9ef>AS</span> CountryMaxTotal
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> invoices
-</span></span><span style=display:flex><span><span style=color:#66d9ef>ORDER</span> <span style=color:#66d9ef>BY</span> BillingCountry, Total;
-</span></span></code></pre></div><h2 id=5-percent_rank와-ntile로-분포-읽기>5. PERCENT_RANK와 NTILE로 분포 읽기<a hidden class=anchor aria-hidden=true href=#5-percent_rank와-ntile로-분포-읽기>#</a></h2><h3 id=무엇을-배웠나-4>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-4>#</a></h3><p>PERCENT_RANK, CUME_DIST, NTILE 함수가 무엇을 의미하는지, 그리고 각각 어떤 방식으로 데이터를 분석하는 데 활용될 수 있는지 이해하게 되었습니다. 특히 PERCENT_RANK는 순위 위치를 비율로 나타내는 방식, CUME_DIST는 누적된 비율을 보여주는 방식이 처음에는 헷갈렸지만, 예시를 통해 개념을 명확히 할 수 있었습니다. 이 함수들을 활용하여 데이터 그룹화 및 분석을 수행할 수 있을 것 같습니다.</p><h3 id=헷갈렸던-점-4>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-4>#</a></h3><p>PERCENT_RANK, CUME_DIST 함수가 이름만 보고는 어떤 값을 계산하는지 감이 잘 오지 않았습니다. 특히 PERCENT_RANK의 0~1 사이의 비율로 순위를 표현하는 방식과 CUME_DIST가 단순한 순위가 아닌 누적 비율을 보여주는 점이 처음에는 직관적으로 이해하기 어려웠습니다.</p><h3 id=정리된-이해-4>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-4>#</a></h3><p>PERCENT_RANK는 데이터 내 순위를 0과 1 사이의 비율로 표현하며, CUME_DIST는 현재 행까지의 누적된 비율을 보여주는 함수입니다. NTILE은 데이터를 특정 개수의 그룹으로 나누어 분석을 용이하게 해주는 기능입니다. 이 세 함수는 데이터 분석 시 순위, 분포, 그룹화 등 다양한 방식으로 활용될 수 있습니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span>   ROUND(<span style=color:#66d9ef>SUM</span>(o.TotalAmount), <span style=color:#ae81ff>1</span>) <span style=color:#66d9ef>AS</span> TotalSpent,
-</span></span><span style=display:flex><span>   PERCENT_RANK() OVER (<span style=color:#66d9ef>ORDER</span> <span style=color:#66d9ef>BY</span> <span style=color:#66d9ef>SUM</span>(o.TotalAmount) <span style=color:#66d9ef>DESC</span>) <span style=color:#66d9ef>AS</span> PercentileRank
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span>
-</span></span><span style=display:flex><span>   Orders o
-</span></span><span style=display:flex><span><span style=color:#66d9ef>JOIN</span>
-</span></span><span style=display:flex><span>   Customers <span style=color:#66d9ef>c</span> <span style=color:#66d9ef>ON</span> o.CustomerId <span style=color:#f92672>=</span> <span style=color:#66d9ef>c</span>.CustomerId
-</span></span><span style=display:flex><span><span style=color:#66d9ef>GROUP</span> <span style=color:#66d9ef>BY</span>
-</span></span><span style=display:flex><span>   <span style=color:#66d9ef>c</span>.CustomerId
-</span></span><span style=display:flex><span><span style=color:#66d9ef>ORDER</span> <span style=color:#66d9ef>BY</span>
-</span></span><span style=display:flex><span>   PercentileRank <span style=color:#66d9ef>DESC</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>LIMIT</span> <span style=color:#ae81ff>10</span>;
-</span></span></code></pre></div><h2 id=6-strftime과-lag로-월별-매출-변화-보기>6. strftime과 LAG로 월별 매출 변화 보기<a hidden class=anchor aria-hidden=true href=#6-strftime과-lag로-월별-매출-변화-보기>#</a></h2><h3 id=무엇을-배웠나-5>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-5>#</a></h3><p>SQLite의 <code>strftime</code> 함수를 사용하여 날짜를 원하는 형식으로 변환하는 방법을 익혔습니다. 또한, <code>MoM</code>과 같은 비즈니스 용어의 의미를 명확히 이해하고, 전월 대비 매출 증감 계산에 필요한 SQL 쿼리 작성 능력을 향상시켰습니다. 오타 방지에 더욱 신경 써야 함을 깨달았습니다.</p><h3 id=헷갈렸던-점-5>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-5>#</a></h3><p>처음에는 <code>strftime</code> 함수가 어떻게 연월을 추출해 내는지, 그리고 쿼리에서 어떤 역할을 하는지 명확히 이해하지 못했습니다. 또한, 쿼리에 사용된 영어 컬럼명들이 의미하는 바를 바로 파악하지 못해 전체적인 쿼리 의도를 이해하는 데 어려움이 있었습니다. 오타도 자주 발생해서 디버깅하는 데 시간을 낭비하기도 했습니다.</p><h3 id=정리된-이해-5>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-5>#</a></h3><p><code>strftime</code> 함수는 날짜를 원하는 형식의 문자열로 바꿔주는 SQLite 함수이고, <code>MoM_Diff</code>는 전월 대비 증감액을 의미하는 용어라는 것을 알게 되었다. 특히 <code>strftime</code> 함수를 사용하여 연월을 추출하고, 이를 기반으로 전월 대비 매출 증감액을 계산하는 방법을 이해하게 되었다. 앞으로는 오타 없이 정확하게 함수와 컬럼명을 사용하도록 노력해야겠다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>    strftime(<span style=color:#e6db74>&#39;%Y-%m&#39;</span>, InvoiceDate) <span style=color:#66d9ef>AS</span> YearMonth,
-</span></span></code></pre></div><h2 id=총평>총평<a hidden class=anchor aria-hidden=true href=#총평>#</a></h2><h3 id=오늘-오전-전체에서-배운-것>오늘 오전 전체에서 배운 것<a hidden class=anchor aria-hidden=true href=#오늘-오전-전체에서-배운-것>#</a></h3><p>오늘은 SQL 윈도우 함수와 날짜 함수를 집중적으로 학습했습니다. 특히 윈도우 함수의 <code>PARTITION BY</code>와 <code>ORDER BY</code>의 역할, 그리고 <code>OVER()</code> 함수를 활용한 누적 합계 계산 방법을 익혔고, SQLite의 <code>strftime</code> 함수를 활용하여 날짜 형식을 변환하고 전월 대비 매출 증감을 계산하는 쿼리를 작성할 수 있게 되었습니다. 앞으로 데이터 분석 시 다양한 윈도우 함수와 날짜 함수를 활용하여 더욱 심층적인 분석을 수행할 수 있을 것 같습니다.</p><h3 id=다음에-조심할-것>다음에 조심할 것<a hidden class=anchor aria-hidden=true href=#다음에-조심할-것>#</a></h3><p>윈도우 프레임을 사용하는 부분은 아직 좀 어렵게 느껴지니, 꾸준히 예제를 통해 연습해야 할 것 같습니다. 또한, SQL 쿼리 작성 시 오타 방지에 더욱 주의하며, 비즈니스 용어에 대한 이해를 확실히 하는 것이 중요하다고 생각합니다.</p><h3 id=다음-복습-주제>다음 복습 주제<a hidden class=anchor aria-hidden=true href=#다음-복습-주제>#</a></h3><p>윈도우 프레임을 활용한 <code>FIRST_VALUE</code>와 <code>LAST_VALUE</code> 구문 적용 및 활용, 그리고 <code>Total</code> 컬럼의 실제 의미 파악에 대한 좀 더 깊이 있는 복습이 필요할 것 같습니다. 또한, PERCENT_RANK, CUME_DIST 함수들을 다양한 데이터 세트에 적용해보면서 더욱 확실하게 개념을 다져야 할 것 같아요.</p><blockquote><p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
-This post was written with the help of a local LLM (AI).</p></blockquote></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://Han-think.github.io/learning/2026-06-14-pm-daily/><span class=title>« Prev</span>
-<span>SQL 윈도우 함수와 그룹 함수, 이제 완벽하게 이해했다</span>
-</a><a class=next href=https://Han-think.github.io/learning/2026-06-12-pm-daily/><span class=title>Next »</span>
-<span>SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
-<span>Powered by
-<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
-<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>SQL 윈도우 함수와 날짜 다루기, 그리고 실전 분석 능력 향상 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-06-12 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-06-12-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-06-12-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-06-12-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="SQL 윈도우 함수와 날짜 다루기, 그리고 실전 분석 능력 향상">
+  <meta property="og:description" content="2026-06-12 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-12T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-12T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="SQL 윈도우 함수와 날짜 다루기, 그리고 실전 분석 능력 향상">
+  <meta name="twitter:description" content="2026-06-12 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "SQL 윈도우 함수와 날짜 다루기, 그리고 실전 분석 능력 향상",
+      "item": "https://Han-think.github.io/learning/2026-06-12-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "SQL 윈도우 함수와 날짜 다루기, 그리고 실전 분석 능력 향상",
+  "name": "SQL 윈도우 함수와 날짜 다루기, 그리고 실전 분석 능력 향상",
+  "description": "2026-06-12 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 JOIN, GROUP BY, HAVING으로 이탈 고객 찾기 PARTITION BY와 RANK로 그룹별 순위 이해하기 OVER와 누적 합계로 집계 범위 이해하기 윈도우 프레임과 FIRST/LAST/LAG/LEAD 이해하기 PERCENT_RANK와 NTILE로 분포 읽기 strftime과 LAG로 월별 매출 변화 보기 총평 1. JOIN, GROUP BY, HAVING으로 이탈 고객 찾기 무엇을 배웠나 날짜 집계 함수인 MAX()가 날짜 컬럼에서도 가장 최근 날짜를 찾는다는 것을 이해하게 되었고, HAVING 절이 GROUP BY 이후 집계된 결과에 조건을 걸어주는 역할을 한다는 것을 알게 되었다. 이를 통해 고객의 최근 주문 날짜를 기준으로 잠재 이탈 고객을 찾는 SQL 쿼리를 작성할 수 있게 되었고, WHERE와 HAVING 절의 차이점을 명확히 구분할 수 있게 되었다. 이제 날짜 관련 SQL 쿼리를 더 자신 있게 작성할 수 있을 것 같다.\n헷갈렸던 점 처음에는 MAX(orderDate)가 왜 가장 최근 날짜를 나타내는지, 그리고 HAVING 절이 왜 필요한지 잘 이해하지 못했습니다. MAX() 함수가 숫자 컬럼에서만 적용될 것이라고 생각했고, WHERE절로도 충분할 것이라고 생각했습니다. 날짜 컬럼에서의 MAX()의 의미와 HAVING 절의 역할에 대한 이해가 부족했습니다.\n정리된 이해 날짜 컬럼에서도 MAX() 함수는 가장 최근 날짜를 찾기 위해 사용되며, WHERE 절은 개별 행에 대한 조건을, HAVING 절은 그룹화된 결과에 대한 조건을 걸 때 사용합니다. 특히 고객별 마지막 주문 날짜를 기준으로 잠재적 이탈 고객을 찾을 때는 HAVING 절이 필수적입니다. 이 과정을 통해 고객 데이터 분석 및 관리 능력을 향상시킬 수 있습니다.\nHAV 2. PARTITION BY와 RANK로 그룹별 순위 이해하기 무엇을 배웠나 윈도우 함수에서 PARTITION BY는 실제 테이블을 나누는 것이 아니라, 그룹별로 순위를 계산하는 기준을 설정하는 역할이라는 것을 알게 되었다. 또한, 윈도우 함수 내 ORDER BY와 최종 결과 출력 시의 ORDER BY는 서로 다른 역할을 한다는 것을 이해하고, 구체적인 예시를 통해 그 차이를 명확히 했다. 이제 윈도우 함수를 사용할 때 PARTITION BY의 역할과 ORDER BY의 다양한 용도를 더 명확하게 활용할 수 있을 것 같다.\n헷갈렸던 점 윈도우 함수에서 PARTITION BY를 처음 접했을 때, 테이블이 실제로 분할되는 것처럼 느껴져서 혼란스러웠고, ORDER BY가 쿼리 내에서 여러 역할을 하는 것 같아서 어떤 기준으로 해석해야 할지 몰랐습니다. 특히 국가별 순위 계산을 위한 ORDER BY와 최종 결과 정렬을 위한 ORDER BY의 차이점이 명확하게 이해되지 않았습니다.\n정리된 이해 윈도우 함수에서 PARTITION BY는 실제 테이블을 나누는 것이 아니라, 계산 범위를 그룹화하는 역할이고, ORDER BY는 윈도우 함수 내부에서는 정렬 기준, 최종 결과에서는 출력 순서를 결정합니다. 따라서 각 PARTITION BY 절은 개별적인 순위 계산 공간을 만들고, ORDER BY는 그 순위를 어떻게 보여줄지를 정하는 것이라고 이해했습니다. 이제 PARTITION BY가 어떻게 작동하는지 좀 더 명확하게 파악할 수 있을 것 같습니다.\nSELECT c.CustomerId, c.FirstName || ' ' || c.LastName AS CustomerName, c.Country, ROUND(SUM(i.Total), 2) 3. OVER와 누적 합계로 집계 범위 이해하기 무엇을 배웠나 OVER() 함수가 집계 함수에 적용될 데이터 범위를 정의하는 역할을 한다는 것을 이해하게 되었고, ROUND 함수를 사용하여 소수점 자릿수를 지정할 수 있다는 점을 알게 되었다. 특히 OVER()가 비어있을 때 전체 행을 기준으로 계산한다는 점을 명확히 파악하게 되었으며, SUM 함수와 OVER() 함수의 차이를 통해 전체 합계와 누적 합계를 구분할 수 있게 되었다. 앞으로 다양한 상황에서 OVER()를 활용하여 데이터 분석을 수행할 수 있을 것 같다.\n헷갈렸던 점 처음에는 OVER()가 값을 올리는 함수인 줄 알았고, ROUND 함수 안의 숫자 2가 어떤 의미인지도 정확히 몰랐다. 특히 OVER()가 비어 있을 때 전체 행을 기준으로 계산된다는 점이 이해하기 어려웠다.\n정리된 이해 OVER()는 집계 함수가 적용될 데이터 범위를 설정하는 구문이고, ROUND 함수는 소수점 자릿수를 반올림하는 역할을 합니다. OVER()가 비어있으면 전체 행을 기준으로 계산하며, SUM 함수와 OVER()를 함께 사용하면 전체 합계 또는 누적 합계를 각 행에 적용할 수 있습니다.\nSELECT InvoiceId, InvoiceDate, Total, ROUND(SUM(Total) OVER (), 2) AS GrandTotal, ROUND(SUM(Total) OVER ( ORDER BY InvoiceDate ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW ), 2) AS RunningTotal FROM invoices ORDER BY InvoiceDate LIMIT 20; 4. 윈도우 프레임과 FIRST/LAST/LAG/LEAD 이해하기 무엇을 배웠나 윈도우 함수, 특히 ROWS BETWEEN 구문을 사용하는 부분을 이해하는 데 어려움을 겪었지만, UNBOUNDED PRECEDING과 UNBOUNDED FOLLOWING를 ‘무제한 첫 번째 행’과 ‘무제한 마지막 행’으로 단순화하여 개념을 파악할 수 있었다. FIRST_VALUE와 LAST_VALUE를 활용하여 각 국가별 최소/최대 청구 금액을 찾는 실습을 통해 윈도우 함수가 파티션 내의 행 범위를 어떻게 참조하는지 이해했다. Total 컬럼의 실제 의미를 파악하는 과정에서 혼란이 있었지만, 실습을 통해 윈도우 함수를 활용하는 방법을 익힐 수 있었다.\n헷갈렸던 점 윈도우 함수에서 UNBOUNDED PRECEDING이나 UNBOUNDED FOLLOWING 같은 표현이 영어 때문에 처음에는 무슨 의미인지 파악하기 어려웠어요. 특히 Total 컬럼이 실제로는 청구 금액을 나타내는 것인지, 아니면 다른 의미인지 헷갈렸습니다. 처음에는 윈도우 함수 내의 ROWS BETWEEN 구문이 어떻게 동작하는지 이해하는 데 시간이 좀 걸렸어요.\n정리된 이해 윈도우 함수에서 ROWS BETWEEN 구문은 파티션 내에서 특정 행들의 범위를 지정하는 역할을 하며, UNBOUNDED PRECEDING과 UNBOUNDED FOLLOWING는 각각 파티션의 시작과 끝을 의미합니다. FIRST_VALUE와 LAST_VALUE 함수를 사용하여 파티션 내에서 각 행의 최소값과 최대값을 쉽게 찾을 수 있습니다. Total 컬럼의 실제 의미를 파악하는 데 시간을 낭비했음을 기억해야겠습니다.\nSELECT InvoiceId, BillingCountry, Total, FIRST_VALUE(Total) OVER ( PARTITION BY BillingCountry ORDER BY Total ASC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) AS CountryMinTotal, LAST_VALUE(Total) OVER ( PARTITION BY BillingCountry ORDER BY Total ASC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) AS CountryMaxTotal FROM invoices ORDER BY BillingCountry, Total; 5. PERCENT_RANK와 NTILE로 분포 읽기 무엇을 배웠나 PERCENT_RANK, CUME_DIST, NTILE 함수가 무엇을 의미하는지, 그리고 각각 어떤 방식으로 데이터를 분석하는 데 활용될 수 있는지 이해하게 되었습니다. 특히 PERCENT_RANK는 순위 위치를 비율로 나타내는 방식, CUME_DIST는 누적된 비율을 보여주는 방식이 처음에는 헷갈렸지만, 예시를 통해 개념을 명확히 할 수 있었습니다. 이 함수들을 활용하여 데이터 그룹화 및 분석을 수행할 수 있을 것 같습니다.\n헷갈렸던 점 PERCENT_RANK, CUME_DIST 함수가 이름만 보고는 어떤 값을 계산하는지 감이 잘 오지 않았습니다. 특히 PERCENT_RANK의 0~1 사이의 비율로 순위를 표현하는 방식과 CUME_DIST가 단순한 순위가 아닌 누적 비율을 보여주는 점이 처음에는 직관적으로 이해하기 어려웠습니다.\n정리된 이해 PERCENT_RANK는 데이터 내 순위를 0과 1 사이의 비율로 표현하며, CUME_DIST는 현재 행까지의 누적된 비율을 보여주는 함수입니다. NTILE은 데이터를 특정 개수의 그룹으로 나누어 분석을 용이하게 해주는 기능입니다. 이 세 함수는 데이터 분석 시 순위, 분포, 그룹화 등 다양한 방식으로 활용될 수 있습니다.\nROUND(SUM(o.TotalAmount), 1) AS TotalSpent, PERCENT_RANK() OVER (ORDER BY SUM(o.TotalAmount) DESC) AS PercentileRank FROM Orders o JOIN Customers c ON o.CustomerId = c.CustomerId GROUP BY c.CustomerId ORDER BY PercentileRank DESC LIMIT 10; 6. strftime과 LAG로 월별 매출 변화 보기 무엇을 배웠나 SQLite의 strftime 함수를 사용하여 날짜를 원하는 형식으로 변환하는 방법을 익혔습니다. 또한, MoM과 같은 비즈니스 용어의 의미를 명확히 이해하고, 전월 대비 매출 증감 계산에 필요한 SQL 쿼리 작성 능력을 향상시켰습니다. 오타 방지에 더욱 신경 써야 함을 깨달았습니다.\n헷갈렸던 점 처음에는 strftime 함수가 어떻게 연월을 추출해 내는지, 그리고 쿼리에서 어떤 역할을 하는지 명확히 이해하지 못했습니다. 또한, 쿼리에 사용된 영어 컬럼명들이 의미하는 바를 바로 파악하지 못해 전체적인 쿼리 의도를 이해하는 데 어려움이 있었습니다. 오타도 자주 발생해서 디버깅하는 데 시간을 낭비하기도 했습니다.\n정리된 이해 strftime 함수는 날짜를 원하는 형식의 문자열로 바꿔주는 SQLite 함수이고, MoM_Diff는 전월 대비 증감액을 의미하는 용어라는 것을 알게 되었다. 특히 strftime 함수를 사용하여 연월을 추출하고, 이를 기반으로 전월 대비 매출 증감액을 계산하는 방법을 이해하게 되었다. 앞으로는 오타 없이 정확하게 함수와 컬럼명을 사용하도록 노력해야겠다.\nSELECT strftime('%Y-%m', InvoiceDate) AS YearMonth, 총평 오늘 오전 전체에서 배운 것 오늘은 SQL 윈도우 함수와 날짜 함수를 집중적으로 학습했습니다. 특히 윈도우 함수의 PARTITION BY와 ORDER BY의 역할, 그리고 OVER() 함수를 활용한 누적 합계 계산 방법을 익혔고, SQLite의 strftime 함수를 활용하여 날짜 형식을 변환하고 전월 대비 매출 증감을 계산하는 쿼리를 작성할 수 있게 되었습니다. 앞으로 데이터 분석 시 다양한 윈도우 함수와 날짜 함수를 활용하여 더욱 심층적인 분석을 수행할 수 있을 것 같습니다.\n다음에 조심할 것 윈도우 프레임을 사용하는 부분은 아직 좀 어렵게 느껴지니, 꾸준히 예제를 통해 연습해야 할 것 같습니다. 또한, SQL 쿼리 작성 시 오타 방지에 더욱 주의하며, 비즈니스 용어에 대한 이해를 확실히 하는 것이 중요하다고 생각합니다.\n다음 복습 주제 윈도우 프레임을 활용한 FIRST_VALUE와 LAST_VALUE 구문 적용 및 활용, 그리고 Total 컬럼의 실제 의미 파악에 대한 좀 더 깊이 있는 복습이 필요할 것 같습니다. 또한, PERCENT_RANK, CUME_DIST 함수들을 다양한 데이터 세트에 적용해보면서 더욱 확실하게 개념을 다져야 할 것 같아요.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "1243",
+  "inLanguage": "en",
+  "datePublished": "2026-06-12T00:00:00Z",
+  "dateModified": "2026-06-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-06-12-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      SQL 윈도우 함수와 날짜 다루기, 그리고 실전 분석 능력 향상
+    </h1>
+    <div class="post-description">
+      2026-06-12 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-12 00:00:00 +0000 UTC'>2026년 6월 12일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-join-group-by-having%EC%9C%BC%EB%A1%9C-%EC%9D%B4%ED%83%88-%EA%B3%A0%EA%B0%9D-%EC%B0%BE%EA%B8%B0">JOIN, GROUP BY, HAVING으로 이탈 고객 찾기</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-partition-by%EC%99%80-rank%EB%A1%9C-%EA%B7%B8%EB%A3%B9%EB%B3%84-%EC%88%9C%EC%9C%84-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">PARTITION BY와 RANK로 그룹별 순위 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-over%EC%99%80-%EB%88%84%EC%A0%81-%ED%95%A9%EA%B3%84%EB%A1%9C-%EC%A7%91%EA%B3%84-%EB%B2%94%EC%9C%84-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">OVER와 누적 합계로 집계 범위 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EC%9C%88%EB%8F%84%EC%9A%B0-%ED%94%84%EB%A0%88%EC%9E%84%EA%B3%BC-firstlastlaglead-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">윈도우 프레임과 FIRST/LAST/LAG/LEAD 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-percentrank%EC%99%80-ntile%EB%A1%9C-%EB%B6%84%ED%8F%AC-%EC%9D%BD%EA%B8%B0">PERCENT_RANK와 NTILE로 분포 읽기</a></li>
+</ol>
+</li>
+<li>
+<ol start="6">
+<li><a href="#6-strftime%EA%B3%BC-lag%EB%A1%9C-%EC%9B%94%EB%B3%84-%EB%A7%A4%EC%B6%9C-%EB%B3%80%ED%99%94-%EB%B3%B4%EA%B8%B0">strftime과 LAG로 월별 매출 변화 보기</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-join-group-by-having으로-이탈-고객-찾기">1. JOIN, GROUP BY, HAVING으로 이탈 고객 찾기<a hidden class="anchor" aria-hidden="true" href="#1-join-group-by-having으로-이탈-고객-찾기">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>날짜 집계 함수인 <code>MAX()</code>가 날짜 컬럼에서도 가장 최근 날짜를 찾는다는 것을 이해하게 되었고, <code>HAVING</code> 절이 <code>GROUP BY</code> 이후 집계된 결과에 조건을 걸어주는 역할을 한다는 것을 알게 되었다. 이를 통해 고객의 최근 주문 날짜를 기준으로 잠재 이탈 고객을 찾는 SQL 쿼리를 작성할 수 있게 되었고, <code>WHERE</code>와 <code>HAVING</code> 절의 차이점을 명확히 구분할 수 있게 되었다. 이제 날짜 관련 SQL 쿼리를 더 자신 있게 작성할 수 있을 것 같다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>처음에는 <code>MAX(orderDate)</code>가 왜 가장 최근 날짜를 나타내는지, 그리고 <code>HAVING</code> 절이 왜 필요한지 잘 이해하지 못했습니다. <code>MAX()</code> 함수가 숫자 컬럼에서만 적용될 것이라고 생각했고, <code>WHERE</code>절로도 충분할 것이라고 생각했습니다. 날짜 컬럼에서의 <code>MAX()</code>의 의미와 <code>HAVING</code> 절의 역할에 대한 이해가 부족했습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>날짜 컬럼에서도 MAX() 함수는 가장 최근 날짜를 찾기 위해 사용되며, WHERE 절은 개별 행에 대한 조건을, HAVING 절은 그룹화된 결과에 대한 조건을 걸 때 사용합니다. 특히 고객별 마지막 주문 날짜를 기준으로 잠재적 이탈 고객을 찾을 때는 HAVING 절이 필수적입니다. 이 과정을 통해 고객 데이터 분석 및 관리 능력을 향상시킬 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>HAV
+</span></span></code></pre></div><h2 id="2-partition-by와-rank로-그룹별-순위-이해하기">2. PARTITION BY와 RANK로 그룹별 순위 이해하기<a hidden class="anchor" aria-hidden="true" href="#2-partition-by와-rank로-그룹별-순위-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>윈도우 함수에서 <code>PARTITION BY</code>는 실제 테이블을 나누는 것이 아니라, 그룹별로 순위를 계산하는 기준을 설정하는 역할이라는 것을 알게 되었다. 또한, 윈도우 함수 내 <code>ORDER BY</code>와 최종 결과 출력 시의 <code>ORDER BY</code>는 서로 다른 역할을 한다는 것을 이해하고, 구체적인 예시를 통해 그 차이를 명확히 했다. 이제 윈도우 함수를 사용할 때 <code>PARTITION BY</code>의 역할과 <code>ORDER BY</code>의 다양한 용도를 더 명확하게 활용할 수 있을 것 같다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>윈도우 함수에서 <code>PARTITION BY</code>를 처음 접했을 때, 테이블이 실제로 분할되는 것처럼 느껴져서 혼란스러웠고, <code>ORDER BY</code>가 쿼리 내에서 여러 역할을 하는 것 같아서 어떤 기준으로 해석해야 할지 몰랐습니다. 특히 국가별 순위 계산을 위한 <code>ORDER BY</code>와 최종 결과 정렬을 위한 <code>ORDER BY</code>의 차이점이 명확하게 이해되지 않았습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>윈도우 함수에서 <code>PARTITION BY</code>는 실제 테이블을 나누는 것이 아니라, 계산 범위를 그룹화하는 역할이고, <code>ORDER BY</code>는 윈도우 함수 내부에서는 정렬 기준, 최종 결과에서는 출력 순서를 결정합니다. 따라서 각 <code>PARTITION BY</code> 절은 개별적인 순위 계산 공간을 만들고, <code>ORDER BY</code>는 그 순위를 어떻게 보여줄지를 정하는 것이라고 이해했습니다. 이제 <code>PARTITION BY</code>가 어떻게 작동하는지 좀 더 명확하게 파악할 수 있을 것 같습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">c</span>.CustomerId,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">c</span>.FirstName <span style="color:#f92672">||</span> <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">||</span> <span style="color:#66d9ef">c</span>.LastName <span style="color:#66d9ef">AS</span> CustomerName,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">c</span>.Country,
+</span></span><span style="display:flex;"><span>    ROUND(<span style="color:#66d9ef">SUM</span>(i.Total), <span style="color:#ae81ff">2</span>)
+</span></span></code></pre></div><h2 id="3-over와-누적-합계로-집계-범위-이해하기">3. OVER와 누적 합계로 집계 범위 이해하기<a hidden class="anchor" aria-hidden="true" href="#3-over와-누적-합계로-집계-범위-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>OVER() 함수가 집계 함수에 적용될 데이터 범위를 정의하는 역할을 한다는 것을 이해하게 되었고, ROUND 함수를 사용하여 소수점 자릿수를 지정할 수 있다는 점을 알게 되었다. 특히 OVER()가 비어있을 때 전체 행을 기준으로 계산한다는 점을 명확히 파악하게 되었으며, SUM 함수와 OVER() 함수의 차이를 통해 전체 합계와 누적 합계를 구분할 수 있게 되었다. 앞으로 다양한 상황에서 OVER()를 활용하여 데이터 분석을 수행할 수 있을 것 같다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>처음에는 OVER()가 값을 올리는 함수인 줄 알았고, ROUND 함수 안의 숫자 2가 어떤 의미인지도 정확히 몰랐다. 특히 OVER()가 비어 있을 때 전체 행을 기준으로 계산된다는 점이 이해하기 어려웠다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>OVER()는 집계 함수가 적용될 데이터 범위를 설정하는 구문이고, ROUND 함수는 소수점 자릿수를 반올림하는 역할을 합니다. OVER()가 비어있으면 전체 행을 기준으로 계산하며, SUM 함수와 OVER()를 함께 사용하면 전체 합계 또는 누적 합계를 각 행에 적용할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    InvoiceId,
+</span></span><span style="display:flex;"><span>    InvoiceDate,
+</span></span><span style="display:flex;"><span>    Total,
+</span></span><span style="display:flex;"><span>    ROUND(<span style="color:#66d9ef">SUM</span>(Total) OVER (), <span style="color:#ae81ff">2</span>) <span style="color:#66d9ef">AS</span> GrandTotal,
+</span></span><span style="display:flex;"><span>    ROUND(<span style="color:#66d9ef">SUM</span>(Total) OVER (
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> InvoiceDate
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">ROWS</span> <span style="color:#66d9ef">BETWEEN</span> UNBOUNDED PRECEDING <span style="color:#66d9ef">AND</span> <span style="color:#66d9ef">CURRENT</span> <span style="color:#66d9ef">ROW</span>
+</span></span><span style="display:flex;"><span>    ), <span style="color:#ae81ff">2</span>) <span style="color:#66d9ef">AS</span> RunningTotal
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> invoices
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> InvoiceDate
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">20</span>;
+</span></span></code></pre></div><h2 id="4-윈도우-프레임과-firstlastlaglead-이해하기">4. 윈도우 프레임과 FIRST/LAST/LAG/LEAD 이해하기<a hidden class="anchor" aria-hidden="true" href="#4-윈도우-프레임과-firstlastlaglead-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>윈도우 함수, 특히 <code>ROWS BETWEEN</code> 구문을 사용하는 부분을 이해하는 데 어려움을 겪었지만, <code>UNBOUNDED PRECEDING</code>과 <code>UNBOUNDED FOLLOWING</code>를 &lsquo;무제한 첫 번째 행&rsquo;과 &lsquo;무제한 마지막 행&rsquo;으로 단순화하여 개념을 파악할 수 있었다. <code>FIRST_VALUE</code>와 <code>LAST_VALUE</code>를 활용하여 각 국가별 최소/최대 청구 금액을 찾는 실습을 통해 윈도우 함수가 파티션 내의 행 범위를 어떻게 참조하는지 이해했다. <code>Total</code> 컬럼의 실제 의미를 파악하는 과정에서 혼란이 있었지만, 실습을 통해 윈도우 함수를 활용하는 방법을 익힐 수 있었다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>윈도우 함수에서 <code>UNBOUNDED PRECEDING</code>이나 <code>UNBOUNDED FOLLOWING</code> 같은 표현이 영어 때문에 처음에는 무슨 의미인지 파악하기 어려웠어요. 특히 <code>Total</code> 컬럼이 실제로는 청구 금액을 나타내는 것인지, 아니면 다른 의미인지 헷갈렸습니다. 처음에는 윈도우 함수 내의 <code>ROWS BETWEEN</code> 구문이 어떻게 동작하는지 이해하는 데 시간이 좀 걸렸어요.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>윈도우 함수에서 <code>ROWS BETWEEN</code> 구문은 파티션 내에서 특정 행들의 범위를 지정하는 역할을 하며, <code>UNBOUNDED PRECEDING</code>과 <code>UNBOUNDED FOLLOWING</code>는 각각 파티션의 시작과 끝을 의미합니다. <code>FIRST_VALUE</code>와 <code>LAST_VALUE</code> 함수를 사용하여 파티션 내에서 각 행의 최소값과 최대값을 쉽게 찾을 수 있습니다. <code>Total</code> 컬럼의 실제 의미를 파악하는 데 시간을 낭비했음을 기억해야겠습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    InvoiceId,
+</span></span><span style="display:flex;"><span>    BillingCountry,
+</span></span><span style="display:flex;"><span>    Total,
+</span></span><span style="display:flex;"><span>    FIRST_VALUE(Total) OVER (
+</span></span><span style="display:flex;"><span>        PARTITION <span style="color:#66d9ef">BY</span> BillingCountry
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> Total <span style="color:#66d9ef">ASC</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">ROWS</span> <span style="color:#66d9ef">BETWEEN</span> UNBOUNDED PRECEDING <span style="color:#66d9ef">AND</span> UNBOUNDED FOLLOWING
+</span></span><span style="display:flex;"><span>    ) <span style="color:#66d9ef">AS</span> CountryMinTotal,
+</span></span><span style="display:flex;"><span>    LAST_VALUE(Total) OVER (
+</span></span><span style="display:flex;"><span>        PARTITION <span style="color:#66d9ef">BY</span> BillingCountry
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> Total <span style="color:#66d9ef">ASC</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">ROWS</span> <span style="color:#66d9ef">BETWEEN</span> UNBOUNDED PRECEDING <span style="color:#66d9ef">AND</span> UNBOUNDED FOLLOWING
+</span></span><span style="display:flex;"><span>    ) <span style="color:#66d9ef">AS</span> CountryMaxTotal
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> invoices
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> BillingCountry, Total;
+</span></span></code></pre></div><h2 id="5-percent_rank와-ntile로-분포-읽기">5. PERCENT_RANK와 NTILE로 분포 읽기<a hidden class="anchor" aria-hidden="true" href="#5-percent_rank와-ntile로-분포-읽기">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>PERCENT_RANK, CUME_DIST, NTILE 함수가 무엇을 의미하는지, 그리고 각각 어떤 방식으로 데이터를 분석하는 데 활용될 수 있는지 이해하게 되었습니다. 특히 PERCENT_RANK는 순위 위치를 비율로 나타내는 방식, CUME_DIST는 누적된 비율을 보여주는 방식이 처음에는 헷갈렸지만, 예시를 통해 개념을 명확히 할 수 있었습니다. 이 함수들을 활용하여 데이터 그룹화 및 분석을 수행할 수 있을 것 같습니다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>PERCENT_RANK, CUME_DIST 함수가 이름만 보고는 어떤 값을 계산하는지 감이 잘 오지 않았습니다. 특히 PERCENT_RANK의 0~1 사이의 비율로 순위를 표현하는 방식과 CUME_DIST가 단순한 순위가 아닌 누적 비율을 보여주는 점이 처음에는 직관적으로 이해하기 어려웠습니다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>PERCENT_RANK는 데이터 내 순위를 0과 1 사이의 비율로 표현하며, CUME_DIST는 현재 행까지의 누적된 비율을 보여주는 함수입니다. NTILE은 데이터를 특정 개수의 그룹으로 나누어 분석을 용이하게 해주는 기능입니다. 이 세 함수는 데이터 분석 시 순위, 분포, 그룹화 등 다양한 방식으로 활용될 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>   ROUND(<span style="color:#66d9ef">SUM</span>(o.TotalAmount), <span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">AS</span> TotalSpent,
+</span></span><span style="display:flex;"><span>   PERCENT_RANK() OVER (<span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#66d9ef">SUM</span>(o.TotalAmount) <span style="color:#66d9ef">DESC</span>) <span style="color:#66d9ef">AS</span> PercentileRank
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span>
+</span></span><span style="display:flex;"><span>   Orders o
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">JOIN</span>
+</span></span><span style="display:flex;"><span>   Customers <span style="color:#66d9ef">c</span> <span style="color:#66d9ef">ON</span> o.CustomerId <span style="color:#f92672">=</span> <span style="color:#66d9ef">c</span>.CustomerId
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">c</span>.CustomerId
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span>
+</span></span><span style="display:flex;"><span>   PercentileRank <span style="color:#66d9ef">DESC</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">10</span>;
+</span></span></code></pre></div><h2 id="6-strftime과-lag로-월별-매출-변화-보기">6. strftime과 LAG로 월별 매출 변화 보기<a hidden class="anchor" aria-hidden="true" href="#6-strftime과-lag로-월별-매출-변화-보기">#</a></h2>
+<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
+<p>SQLite의 <code>strftime</code> 함수를 사용하여 날짜를 원하는 형식으로 변환하는 방법을 익혔습니다. 또한, <code>MoM</code>과 같은 비즈니스 용어의 의미를 명확히 이해하고, 전월 대비 매출 증감 계산에 필요한 SQL 쿼리 작성 능력을 향상시켰습니다. 오타 방지에 더욱 신경 써야 함을 깨달았습니다.</p>
+<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
+<p>처음에는 <code>strftime</code> 함수가 어떻게 연월을 추출해 내는지, 그리고 쿼리에서 어떤 역할을 하는지 명확히 이해하지 못했습니다. 또한, 쿼리에 사용된 영어 컬럼명들이 의미하는 바를 바로 파악하지 못해 전체적인 쿼리 의도를 이해하는 데 어려움이 있었습니다. 오타도 자주 발생해서 디버깅하는 데 시간을 낭비하기도 했습니다.</p>
+<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
+<p><code>strftime</code> 함수는 날짜를 원하는 형식의 문자열로 바꿔주는 SQLite 함수이고, <code>MoM_Diff</code>는 전월 대비 증감액을 의미하는 용어라는 것을 알게 되었다. 특히 <code>strftime</code> 함수를 사용하여 연월을 추출하고, 이를 기반으로 전월 대비 매출 증감액을 계산하는 방법을 이해하게 되었다. 앞으로는 오타 없이 정확하게 함수와 컬럼명을 사용하도록 노력해야겠다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    strftime(<span style="color:#e6db74">&#39;%Y-%m&#39;</span>, InvoiceDate) <span style="color:#66d9ef">AS</span> YearMonth,
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>오늘은 SQL 윈도우 함수와 날짜 함수를 집중적으로 학습했습니다. 특히 윈도우 함수의 <code>PARTITION BY</code>와 <code>ORDER BY</code>의 역할, 그리고 <code>OVER()</code> 함수를 활용한 누적 합계 계산 방법을 익혔고, SQLite의 <code>strftime</code> 함수를 활용하여 날짜 형식을 변환하고 전월 대비 매출 증감을 계산하는 쿼리를 작성할 수 있게 되었습니다. 앞으로 데이터 분석 시 다양한 윈도우 함수와 날짜 함수를 활용하여 더욱 심층적인 분석을 수행할 수 있을 것 같습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>윈도우 프레임을 사용하는 부분은 아직 좀 어렵게 느껴지니, 꾸준히 예제를 통해 연습해야 할 것 같습니다. 또한, SQL 쿼리 작성 시 오타 방지에 더욱 주의하며, 비즈니스 용어에 대한 이해를 확실히 하는 것이 중요하다고 생각합니다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>윈도우 프레임을 활용한 <code>FIRST_VALUE</code>와 <code>LAST_VALUE</code> 구문 적용 및 활용, 그리고 <code>Total</code> 컬럼의 실제 의미 파악에 대한 좀 더 깊이 있는 복습이 필요할 것 같습니다. 또한, PERCENT_RANK, CUME_DIST 함수들을 다양한 데이터 세트에 적용해보면서 더욱 확실하게 개념을 다져야 할 것 같아요.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-06-14-pm-daily/">
+    <span class="title">« Prev</span>
+    <span>SQL 윈도우 함수와 그룹 함수, 이제 완벽하게 이해했다</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-06-12-pm-daily/">
+    <span class="title">Next »</span>
+    <span>SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

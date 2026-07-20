@@ -1,18 +1,413 @@
-<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>학습 기록 | Han-think Blog</title><meta name=keywords content><meta name=description content="강의와 자료에서 배운 내용 — 내 혼란과 교정된 이해를 포함한 학습 노트"><meta name=author content><link rel=canonical href=https://Han-think.github.io/learning/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://Han-think.github.io/learning/index.xml title=rss><link rel=alternate hreflang=en href=https://Han-think.github.io/learning/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/learning/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="학습 기록"><meta property="og:description" content="강의와 자료에서 배운 내용 — 내 혼란과 교정된 이해를 포함한 학습 노트"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="website"><meta name=twitter:card content="summary"><meta name=twitter:title content="학습 기록"><meta name=twitter:description content="강의와 자료에서 배운 내용 — 내 혼란과 교정된 이해를 포함한 학습 노트"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"학습 기록","item":"https://Han-think.github.io/learning/"}]}</script></head><body class=list id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
-<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span class=active>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><header class=page-header><h1>학습 기록</h1><div class=post-description>강의와 자료에서 배운 내용 — 내 혼란과 교정된 이해를 포함한 학습 노트</div></header><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>0.88188에서 0.95005까지, Kaggle 예측 모델을 리듬ON 서비스 제안으로 연결한 기록</h2></header><div class=entry-content><p>목차 프로젝트의 출발점과 최종 결과 문제 정의와 평가 지표부터 다시 잡기 첫 번째 전환점 수치형 변수를 문자열로 다루던 오류 검증 전략 OOF와 nested 검증을 분리한 이유 클래스별 확률 보정으로 불균형을 다루기 모델 스크리닝과 후보 압축 CatBoost와 LightGBM을 함께 사용한 이유 하이퍼파라미터 튜닝에서 배운 시간 관리 EDA 재검토가 만든 가장 큰 돌파구 13개 원본 변수를 30개 피처로 확장한 방식 최종 모델과 점수 계보 점수 경쟁을 서비스 설계로 바꾼 리듬ON 사람 중심 운영 구조와 안전 경계 8주 파일럿과 KPI 설계 실패한 시도와 남겨야 할 교훈 재현 가능한 프로젝트 패키지 구조 이 프로젝트가 내 Pipeline OS 사고와 연결된 지점 마무리 점수가 아니라 책임 있는 흐름을 남기기 총평 1. 프로젝트의 출발점과 최종 결과 무엇을 만들었나 이 프로젝트는 Kaggle Playground Series S6E7의 학생 생활습관 데이터를 이용해 health_condition을 예측하는 다중 분류 문제에서 시작했다.
-...</p></div><footer class=entry-footer><span title='2026-07-20 00:00:00 +0000 UTC'>2026년 7월 20일</span>&nbsp;·&nbsp;<span>23 min</span></footer><a class=entry-link aria-label="post link to 0.88188에서 0.95005까지, Kaggle 예측 모델을 리듬ON 서비스 제안으로 연결한 기록" href=https://Han-think.github.io/learning/2026-07-20-pm-kaggle-s6e7-rhythmon-project-retrospective/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해</h2></header><div class=entry-content><p>목차 머신러닝과 딥러닝 개념 정리 및 Pipeline OS 적용 이해 퍼셉트론의 구조와 활성화 함수 이해 도함수와 경사하강법: 손실 함수 최소화 원리 벡터, 행렬, 텐서와 은닉층 기초 다지기 PyTorch 모델 구조: 상속과 forward 메서드 이해 단층 퍼셉트론 구현과 Step 활성화 함수 이해 총평 1. 머신러닝과 딥러닝 개념 정리 및 Pipeline OS 적용 이해 무엇을 배웠나 머신러닝과 딥러닝의 차이를 명확히 이해하게 되었는데, 머신러닝은 사람이 직접 피처를 선택하고 가공하는 반면 딥러닝은 모델이 데이터로부터 패턴을 스스로 학습한다는 점이 핵심이다. 특히 Pipeline OS에서 LLM을 활용하는 방식을 통해 인간의 의도와 AI의 능력을 융합하는 시스템 구축이 가능하다는 점을 깨달았다. 앞으로는 피처 엔지니어링 기법과 딥러닝 기반 문장 생성 알고리즘을 활용하여 프로젝트에 적용해 보려 한다.
-...</p></div><footer class=entry-footer><span title='2026-07-16 00:00:00 +0000 UTC'>2026년 7월 16일</span>&nbsp;·&nbsp;<span>7 min</span></footer><a class=entry-link aria-label="post link to 머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해" href=https://Han-think.github.io/learning/2026-07-16-am-daily/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지</h2></header><div class=entry-content><p>목차 Pipeline으로 Kaggle 베이스라인 완주하기 EDA를 변수 선택의 근거로 사용하기 점수 설계와 검증 가능한 의사결정 구조 수업 베이스라인과 개인 최적화의 역할 구분 총평 1. Pipeline으로 Kaggle 베이스라인 완주하기 무엇을 배웠나 오전 수업에서는 Kaggle 프로젝트를 처음부터 제출까지 한 번 완주하는 표준 흐름을 확인했다.
-문제 정의 -> 데이터 확인 -> 독립변수와 종속변수 분리 -> 전처리 Pipeline 구성 -> 베이스라인 모델 학습 -> Balanced Accuracy 확인 -> 테스트 데이터 예측 -> submission.csv 생성 -> Kaggle 제출 및 점수 확인 처음부터 최고 점수를 노리는 것보다, 같은 입력에서 같은 결과를 다시 만들 수 있는 기준선부터 완성하는 것이 중요했다. 기준선이 있어야 이후의 피처 엔지니어링이나 앙상블이 실제 개선인지 비교할 수 있다.
-...</p></div><footer class=entry-footer><span title='2026-07-13 00:00:00 +0000 UTC'>2026년 7월 13일</span>&nbsp;·&nbsp;<span>4 min</span></footer><a class=entry-link aria-label="post link to Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지" href=https://Han-think.github.io/learning/2026-07-13-am-daily/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>데이터 분석 기초 다지기: 비지도 학습부터 분류 모델까지</h2></header><div class=entry-content><p>목차 비지도학습과 클러스터링: 핵심 개념 및 실습 이해 Raw 데이터 전처리부터 모델 입력 행렬 생성까지 차원 축소, PCA와 t-SNE 완벽 가이드 PCA 설명분산 비율과 scikit-learn 속성 이해 비지도 학습과 설계 과정 연결하기 로지스틱 회귀 모델, 초보자를 위한 핵심 개념 및 데이터 형식 이해 SVM 분류 모델 학습 및 활용: 초보자를 위한 워킹 노트 베이즈 정리로 스팸 메일 확인 키워드 확률 계산하기 GaussianNB 핵심 개념과 와인 데이터 분류 실습 다중 클래스 혼동행렬 및 정규화 시각화 완전 정복 총평 1. 비지도학습과 클러스터링: 핵심 개념 및 실습 이해 무엇을 배웠나 비지도 학습, 특히 클러스터링에서 군집 내 유사성과 군집 간 차이가 회귀분석의 다중공선성과는 별개의 개념이라는 점을 명확히 이해하게 되었다. K-Fold 교차 검증과 K-means 알고리즘에서 사용되는 K의 의미가 다르다는 것도 구분할 수 있게 되었고, 간단한 K-means 클러스터링 실습을 통해 개념을 더 확실히 다질 수 있었다. 앞으로는 이 점들을 기억하며 클러스터링을 적용해나가야겠다.
-...</p></div><footer class=entry-footer><span title='2026-07-10 00:00:00 +0000 UTC'>2026년 7월 10일</span>&nbsp;·&nbsp;<span>10 min</span></footer><a class=entry-link aria-label="post link to 데이터 분석 기초 다지기: 비지도 학습부터 분류 모델까지" href=https://Han-think.github.io/learning/2026-07-10-am-daily/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>비지도 학습, 데이터 분석의 핵심과 실제 적용 노하우 습득</h2></header><div class=entry-content><p>목차 PCA와 t-SNE, 차원 축소 시각화 완벽 이해 K-Means 클러스터링과 평가 지표 완벽 이해 GMM과 EM 알고리즘: 초보자를 위한 이해 및 활용 실제 데이터 분석, 초보자의 시행착오와 깨달음 비지도 학습 노트북 비교 분석: 목표와 스타일 차이점 군집화 수식 이해와 CSV 퀵 스캔 함수 활용 가이드 AI와 인간의 협업: 데이터 분석 워크플로우 이해 총평 1. PCA와 t-SNE, 차원 축소 시각화 완벽 이해 무엇을 배웠나 PCA와 t-SNE가 모두 차원 축소에 사용되지만, PCA는 선형 방식이고 데이터의 분산을 보존하는 반면, t-SNE는 비선형 방식으로 데이터의 국소적인 구조를 시각화하는 데 중점을 둡니다. t-SNE는 군집화를 수행하는 알고리즘이 아니며, 시각화 결과에 사용된 색상은 단순히 라벨이나 추가 정보에 따른 것입니다. 이제 PCA는 재사용성이 높고, t-SNE는 시각화에 더 적합하다는 점을 이해하게 되었습니다.
-...</p></div><footer class=entry-footer><span title='2026-07-10 00:00:00 +0000 UTC'>2026년 7월 10일</span>&nbsp;·&nbsp;<span>8 min</span></footer><a class=entry-link aria-label="post link to 비지도 학습, 데이터 분석의 핵심과 실제 적용 노하우 습득" href=https://Han-think.github.io/learning/2026-07-10-pm-daily/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터</h2></header><div class=entry-content><p>목차 분류 문제 기초: 알고리즘 선택 가이드 층화 분할과 검증 데이터셋 구축 가이드 혼동행렬과 불균형 데이터 분류 평가지표 이해 ROC-AUC와 임계값 조정: 초보자를 위한 이해 의사결정나무, 배깅, 부스팅: 앙상블 학습 핵심 원리 XGBoost & LightGBM Native API와 Early Stopping 완벽 이해 로지스틱 회귀와 오즈비, 통계적 이해와 해석 가이드 분류 미니프로젝트 학습 노트: 초보자를 위한 성능 평가 가이드 총평 1. 분류 문제 기초: 알고리즘 선택 가이드 무엇을 배웠나 분류 문제와 회귀 문제의 차이점과 다양한 분류 알고리즘(로지스틱 회귀, SVM, Naive Bayes, KNN 등)의 기본적인 작동 원리를 배웠어요. 특히 SVM의 결정 경계 설정 방식과 서포트 벡터의 중요성을 이해하게 되었고, 각 알고리즘의 특징을 고려하여 문제에 적합한 알고리즘을 선택하는 기준을 세우는 데 도움이 될 것 같아요. 각 알고리즘의 실용성을 고민하며 앞으로 학습 방향을 설정해야겠다는 생각이 들었어요.
-...</p></div><footer class=entry-footer><span title='2026-07-09 00:00:00 +0000 UTC'>2026년 7월 9일</span>&nbsp;·&nbsp;<span>9 min</span></footer><a class=entry-link aria-label="post link to 분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터" href=https://Han-think.github.io/learning/2026-07-09-am-daily/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>분류부터 시계열 분석까지, 머신러닝 핵심 개념과 실무 적용 노하우 정리</h2></header><div class=entry-content><p>목차 분류 모델 파이프라인 및 부스팅 모델 활용 가이드 10개 모델 튜닝 및 다기준 선택: 성능, 효율성, 안정성 고려 CatBoost 래퍼와 Stacking: 복제 호환성 및 성능 향상을 위한 이해 SHAP 해석과 핵심 변수 파악: 초보자를 위한 가이드 머신러닝 공모전, 데이터 이해와 핵심 질문 해결 가이드 팀 프로젝트 역할 분담과 SCQA 발표 구조 이해 SARIMA 모델의 계절 시계열 구조 이해 SARIMA 모델 탐색, 속도와 교육용 설정 이해 SARIMAX 모델, 외생변수 활용 및 Rolling Forecast 이해 오후 수업 후기: 모델, 평가, 그리고 비즈니스 가치 판단 데이터 불균형 문제 해결을 위한 샘플링 기법 활용 의사결정나무 모델링을 위한 특성 엔지니어링 가이드 선형 회귀 모델 구현 및 이해 정리 교차 검증과 정규화 회귀 완벽 이해하기 회귀 모델 평가 지표 완벽 분석: RSS, MAE, MSE, R2 총평 1. 분류 모델 파이프라인 및 부스팅 모델 활용 가이드 무엇을 배웠나 부스팅 모델만으로 모든 정형 데이터 분석을 해결할 수 있다는 착각에서 벗어나, 기준 모델과의 비교를 통해 성능을 객관적으로 평가해야 한다는 점을 알게 되었다. 또한, 데이터 누수를 방지하고 실험 재현성을 높이기 위해 파이프라인을 활용하여 데이터 전처리 및 모델 학습 단계를 통합해야 한다는 것을 배웠다. 이제 파이프라인의 역할을 이해하고 데이터 분석 워크플로우를 효율적으로 구축할 수 있을 것이다.
-...</p></div><footer class=entry-footer><span title='2026-07-09 00:00:00 +0000 UTC'>2026년 7월 9일</span>&nbsp;·&nbsp;<span>15 min</span></footer><a class=entry-link aria-label="post link to 분류부터 시계열 분석까지, 머신러닝 핵심 개념과 실무 적용 노하우 정리" href=https://Han-think.github.io/learning/2026-07-09-pm-daily/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>시계열 분석부터 머신러닝 핵심 개념까지, 완전정복 학습 정리</h2></header><div class=entry-content><p>목차 시계열 분석 기초: 정상성 판단과 차분 적용 이해 ARMA·ARIMA 모델 선택 및 잔차 진단 가이드 시계열 분석 워크노트: 혼란과 학습, 그리고 실습 예시 손실 함수, 경사하강법, 체크포인트 핵심 개념 이해 다중 및 다항 회귀: 개념 이해 및 정리 과적합, 교차검증, 파이프라인: 초보자를 위한 이해 가이드 L1·L2·Elastic Net 정규화 완벽 이해하기 회귀 모델 평가 지표 완벽 가이드 총평 1. 시계열 분석 기초: 정상성 판단과 차분 적용 이해 무엇을 배웠나 ADF 검정에서 귀무가설이 “비정상"이라는 점을 명확히 이해하게 되었고, 시계열의 구성 요소와 정상성이 무엇인지 제대로 정리했다. 특히, 차분 적용 시 데이터의 의미 손실 가능성을 인지하고, 적절한 차분 횟수를 결정해야 함을 알게 되었다. 이번 학습을 통해 비정상 시계열 데이터를 정상화하는 방법에 대한 이해도를 높일 수 있었다.
-...</p></div><footer class=entry-footer><span title='2026-07-08 00:00:00 +0000 UTC'>2026년 7월 8일</span>&nbsp;·&nbsp;<span>9 min</span></footer><a class=entry-link aria-label="post link to 시계열 분석부터 머신러닝 핵심 개념까지, 완전정복 학습 정리" href=https://Han-think.github.io/learning/2026-07-08-am-daily/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험</h2></header><div class=entry-content><p>목차 결정계수와 SST·SSR·SSE 그래프, 초보자를 위한 해석 다항 회귀 과적합과 손실 지표 이해하기 데이터 누수 방지를 위한 전처리 파이프라인 구축 가이드 교차검증과 모델 선택: 성능 평가의 핵심 이해 하이퍼파라미터 탐색: 시간과 성능의 균형 잡기 SHAP을 활용한 모델 해석 및 시각화 워크노트 Stacking 모델 학습의 어려움과 올바른 이해 PyCaret AutoML 실습 환경 구축 및 버전 호환성 문제 해결 회귀 미니 프로젝트 설계 및 분석 가이드 총평 1. 결정계수와 SST·SSR·SSE 그래프, 초보자를 위한 해석 무엇을 배웠나 결정계수 (R^2)를 이해하는 데 필요한 SST, SSR, SSE 각각이 의미하는 바를 명확히 알게 되었다. SST는 전체 데이터의 변동성, SSR은 모델이 설명하는 변동성, SSE는 모델이 설명하지 못한 오차를 나타냄을 이해했다. 특히, SSR과 SSE의 혼동을 바로잡고, 이들의 관계를 통해 모델의 설명력을 파악하는 방법을 익혔다.
-...</p></div><footer class=entry-footer><span title='2026-07-08 00:00:00 +0000 UTC'>2026년 7월 8일</span>&nbsp;·&nbsp;<span>10 min</span></footer><a class=entry-link aria-label="post link to 회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험" href=https://Han-think.github.io/learning/2026-07-08-pm-daily/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정</h2></header><div class=entry-content><p>목차 공공 API 크롤링, 요청 인자 이해하기 JSON과 XML 선택 및 로컬 데이터 관리 전략 멀티스레딩과 API 사용 시 성능과 제한 사항 이해 랜덤 포레스트 이해와 하이퍼파라미터 튜닝 워크노트 에러 수정 및 개인 PC 자원 맞춤 학습 전략 총평 1. 공공 API 크롤링, 요청 인자 이해하기 무엇을 배웠나 Open API 기반 크롤링을 처음 이해할 때 인증 관련, 응답 형식, 데이터 대상, 범위 지정 등 다양한 인자를 혼동했었는데, API가 외부 데이터에 접근하는 통로라는 것을 명확히 이해하게 되었습니다. 공공 데이터 API와 LLM API의 차이점을 이해하고, API 문서를 통해 필요한 인자를 파악하는 연습이 중요함을 알게 되었습니다. 실제 식품안전나라 레시피 API 실습을 통해 API 호출 구조와 데이터 처리 과정을 익혔습니다.
-...</p></div><footer class=entry-footer><span title='2026-07-07 00:00:00 +0000 UTC'>2026년 7월 7일</span>&nbsp;·&nbsp;<span>6 min</span></footer><a class=entry-link aria-label="post link to API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정" href=https://Han-think.github.io/learning/2026-07-07-am-daily/></a></article><footer class=page-footer><nav class=pagination><a class=next href=https://Han-think.github.io/learning/page/2/>Next&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
-<span>Powered by
-<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
-<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>학습 기록 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="강의와 자료에서 배운 내용 — 내 혼란과 교정된 이해를 포함한 학습 노트">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://Han-think.github.io/learning/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="학습 기록">
+  <meta property="og:description" content="강의와 자료에서 배운 내용 — 내 혼란과 교정된 이해를 포함한 학습 노트">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="website">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="학습 기록">
+  <meta name="twitter:description" content="강의와 자료에서 배운 내용 — 내 혼란과 교정된 이해를 포함한 학습 노트">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }
+  ]
+}
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span class="active">학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header">
+  <h1>
+    학습 기록
+  </h1>
+  <div class="post-description">
+    강의와 자료에서 배운 내용 — 내 혼란과 교정된 이해를 포함한 학습 노트
+  </div>
+</header>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">PyTorch 기초 다지기: 데이터 전처리부터 신경망 시각화까지
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 PyTorch 생태계와 장치 설정 가이드 FashionMNIST 이미지 전처리 및 정규화 상세 이해 FashionMNIST를 활용한 미니배치 학습과 데이터 로더 이해 데이터 시각화와 신경망 구조 이해: 초보자 워킹 노트 총평 1. PyTorch 생태계와 장치 설정 가이드 무엇을 배웠나 PyTorch를 사용하면서 GPU 자동 인식 문제와 다양한 모듈의 역할을 명확히 구분하는 데 어려움을 겪었지만, 각 모듈의 역할과 실행 장치 설정을 이해하게 되었습니다. torch, torch.nn, torch.optim 등의 역할 차이를 정리하고, .to(device) 메서드를 사용하여 모델과 데이터를 GPU로 옮기는 방법을 알게 되었습니다. 이제 PyTorch 생태계를 좀 더 자신 있게 활용할 수 있을 것 같습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-20 00:00:00 +0000 UTC'>2026년 7월 20일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to PyTorch 기초 다지기: 데이터 전처리부터 신경망 시각화까지" href="https://Han-think.github.io/learning/2026-07-20-am-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 머신러닝과 딥러닝 개념 정리 및 Pipeline OS 적용 이해 퍼셉트론의 구조와 활성화 함수 이해 도함수와 경사하강법: 손실 함수 최소화 원리 벡터, 행렬, 텐서와 은닉층 기초 다지기 PyTorch 모델 구조: 상속과 forward 메서드 이해 단층 퍼셉트론 구현과 Step 활성화 함수 이해 총평 1. 머신러닝과 딥러닝 개념 정리 및 Pipeline OS 적용 이해 무엇을 배웠나 머신러닝과 딥러닝의 차이를 명확히 이해하게 되었는데, 머신러닝은 사람이 직접 피처를 선택하고 가공하는 반면 딥러닝은 모델이 데이터로부터 패턴을 스스로 학습한다는 점이 핵심이다. 특히 Pipeline OS에서 LLM을 활용하는 방식을 통해 인간의 의도와 AI의 능력을 융합하는 시스템 구축이 가능하다는 점을 깨달았다. 앞으로는 피처 엔지니어링 기법과 딥러닝 기반 문장 생성 알고리즘을 활용하여 프로젝트에 적용해 보려 한다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-16 00:00:00 +0000 UTC'>2026년 7월 16일</span>&nbsp;·&nbsp;<span>7 min</span></footer>
+  <a class="entry-link" aria-label="post link to 머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해" href="https://Han-think.github.io/learning/2026-07-16-am-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 Pipeline으로 Kaggle 베이스라인 완주하기 EDA를 변수 선택의 근거로 사용하기 점수 설계와 검증 가능한 의사결정 구조 수업 베이스라인과 개인 최적화의 역할 구분 총평 1. Pipeline으로 Kaggle 베이스라인 완주하기 무엇을 배웠나 오전 수업에서는 Kaggle 프로젝트를 처음부터 제출까지 한 번 완주하는 표준 흐름을 확인했다.
+문제 정의 -&gt; 데이터 확인 -&gt; 독립변수와 종속변수 분리 -&gt; 전처리 Pipeline 구성 -&gt; 베이스라인 모델 학습 -&gt; Balanced Accuracy 확인 -&gt; 테스트 데이터 예측 -&gt; submission.csv 생성 -&gt; Kaggle 제출 및 점수 확인 처음부터 최고 점수를 노리는 것보다, 같은 입력에서 같은 결과를 다시 만들 수 있는 기준선부터 완성하는 것이 중요했다. 기준선이 있어야 이후의 피처 엔지니어링이나 앙상블이 실제 개선인지 비교할 수 있다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-13 00:00:00 +0000 UTC'>2026년 7월 13일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+  <a class="entry-link" aria-label="post link to Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지" href="https://Han-think.github.io/learning/2026-07-13-am-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">데이터 분석 기초 다지기: 비지도 학습부터 분류 모델까지
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 비지도학습과 클러스터링: 핵심 개념 및 실습 이해 Raw 데이터 전처리부터 모델 입력 행렬 생성까지 차원 축소, PCA와 t-SNE 완벽 가이드 PCA 설명분산 비율과 scikit-learn 속성 이해 비지도 학습과 설계 과정 연결하기 로지스틱 회귀 모델, 초보자를 위한 핵심 개념 및 데이터 형식 이해 SVM 분류 모델 학습 및 활용: 초보자를 위한 워킹 노트 베이즈 정리로 스팸 메일 확인 키워드 확률 계산하기 GaussianNB 핵심 개념과 와인 데이터 분류 실습 다중 클래스 혼동행렬 및 정규화 시각화 완전 정복 총평 1. 비지도학습과 클러스터링: 핵심 개념 및 실습 이해 무엇을 배웠나 비지도 학습, 특히 클러스터링에서 군집 내 유사성과 군집 간 차이가 회귀분석의 다중공선성과는 별개의 개념이라는 점을 명확히 이해하게 되었다. K-Fold 교차 검증과 K-means 알고리즘에서 사용되는 K의 의미가 다르다는 것도 구분할 수 있게 되었고, 간단한 K-means 클러스터링 실습을 통해 개념을 더 확실히 다질 수 있었다. 앞으로는 이 점들을 기억하며 클러스터링을 적용해나가야겠다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-10 00:00:00 +0000 UTC'>2026년 7월 10일</span>&nbsp;·&nbsp;<span>10 min</span></footer>
+  <a class="entry-link" aria-label="post link to 데이터 분석 기초 다지기: 비지도 학습부터 분류 모델까지" href="https://Han-think.github.io/learning/2026-07-10-am-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">비지도 학습, 데이터 분석의 핵심과 실제 적용 노하우 습득
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 PCA와 t-SNE, 차원 축소 시각화 완벽 이해 K-Means 클러스터링과 평가 지표 완벽 이해 GMM과 EM 알고리즘: 초보자를 위한 이해 및 활용 실제 데이터 분석, 초보자의 시행착오와 깨달음 비지도 학습 노트북 비교 분석: 목표와 스타일 차이점 군집화 수식 이해와 CSV 퀵 스캔 함수 활용 가이드 AI와 인간의 협업: 데이터 분석 워크플로우 이해 총평 1. PCA와 t-SNE, 차원 축소 시각화 완벽 이해 무엇을 배웠나 PCA와 t-SNE가 모두 차원 축소에 사용되지만, PCA는 선형 방식이고 데이터의 분산을 보존하는 반면, t-SNE는 비선형 방식으로 데이터의 국소적인 구조를 시각화하는 데 중점을 둡니다. t-SNE는 군집화를 수행하는 알고리즘이 아니며, 시각화 결과에 사용된 색상은 단순히 라벨이나 추가 정보에 따른 것입니다. 이제 PCA는 재사용성이 높고, t-SNE는 시각화에 더 적합하다는 점을 이해하게 되었습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-10 00:00:00 +0000 UTC'>2026년 7월 10일</span>&nbsp;·&nbsp;<span>8 min</span></footer>
+  <a class="entry-link" aria-label="post link to 비지도 학습, 데이터 분석의 핵심과 실제 적용 노하우 습득" href="https://Han-think.github.io/learning/2026-07-10-pm-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 분류 문제 기초: 알고리즘 선택 가이드 층화 분할과 검증 데이터셋 구축 가이드 혼동행렬과 불균형 데이터 분류 평가지표 이해 ROC-AUC와 임계값 조정: 초보자를 위한 이해 의사결정나무, 배깅, 부스팅: 앙상블 학습 핵심 원리 XGBoost &amp; LightGBM Native API와 Early Stopping 완벽 이해 로지스틱 회귀와 오즈비, 통계적 이해와 해석 가이드 분류 미니프로젝트 학습 노트: 초보자를 위한 성능 평가 가이드 총평 1. 분류 문제 기초: 알고리즘 선택 가이드 무엇을 배웠나 분류 문제와 회귀 문제의 차이점과 다양한 분류 알고리즘(로지스틱 회귀, SVM, Naive Bayes, KNN 등)의 기본적인 작동 원리를 배웠어요. 특히 SVM의 결정 경계 설정 방식과 서포트 벡터의 중요성을 이해하게 되었고, 각 알고리즘의 특징을 고려하여 문제에 적합한 알고리즘을 선택하는 기준을 세우는 데 도움이 될 것 같아요. 각 알고리즘의 실용성을 고민하며 앞으로 학습 방향을 설정해야겠다는 생각이 들었어요.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-09 00:00:00 +0000 UTC'>2026년 7월 9일</span>&nbsp;·&nbsp;<span>9 min</span></footer>
+  <a class="entry-link" aria-label="post link to 분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터" href="https://Han-think.github.io/learning/2026-07-09-am-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">분류부터 시계열 분석까지, 머신러닝 핵심 개념과 실무 적용 노하우 정리
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 분류 모델 파이프라인 및 부스팅 모델 활용 가이드 10개 모델 튜닝 및 다기준 선택: 성능, 효율성, 안정성 고려 CatBoost 래퍼와 Stacking: 복제 호환성 및 성능 향상을 위한 이해 SHAP 해석과 핵심 변수 파악: 초보자를 위한 가이드 머신러닝 공모전, 데이터 이해와 핵심 질문 해결 가이드 팀 프로젝트 역할 분담과 SCQA 발표 구조 이해 SARIMA 모델의 계절 시계열 구조 이해 SARIMA 모델 탐색, 속도와 교육용 설정 이해 SARIMAX 모델, 외생변수 활용 및 Rolling Forecast 이해 오후 수업 후기: 모델, 평가, 그리고 비즈니스 가치 판단 데이터 불균형 문제 해결을 위한 샘플링 기법 활용 의사결정나무 모델링을 위한 특성 엔지니어링 가이드 선형 회귀 모델 구현 및 이해 정리 교차 검증과 정규화 회귀 완벽 이해하기 회귀 모델 평가 지표 완벽 분석: RSS, MAE, MSE, R2 총평 1. 분류 모델 파이프라인 및 부스팅 모델 활용 가이드 무엇을 배웠나 부스팅 모델만으로 모든 정형 데이터 분석을 해결할 수 있다는 착각에서 벗어나, 기준 모델과의 비교를 통해 성능을 객관적으로 평가해야 한다는 점을 알게 되었다. 또한, 데이터 누수를 방지하고 실험 재현성을 높이기 위해 파이프라인을 활용하여 데이터 전처리 및 모델 학습 단계를 통합해야 한다는 것을 배웠다. 이제 파이프라인의 역할을 이해하고 데이터 분석 워크플로우를 효율적으로 구축할 수 있을 것이다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-09 00:00:00 +0000 UTC'>2026년 7월 9일</span>&nbsp;·&nbsp;<span>15 min</span></footer>
+  <a class="entry-link" aria-label="post link to 분류부터 시계열 분석까지, 머신러닝 핵심 개념과 실무 적용 노하우 정리" href="https://Han-think.github.io/learning/2026-07-09-pm-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">시계열 분석부터 머신러닝 핵심 개념까지, 완전정복 학습 정리
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 시계열 분석 기초: 정상성 판단과 차분 적용 이해 ARMA·ARIMA 모델 선택 및 잔차 진단 가이드 시계열 분석 워크노트: 혼란과 학습, 그리고 실습 예시 손실 함수, 경사하강법, 체크포인트 핵심 개념 이해 다중 및 다항 회귀: 개념 이해 및 정리 과적합, 교차검증, 파이프라인: 초보자를 위한 이해 가이드 L1·L2·Elastic Net 정규화 완벽 이해하기 회귀 모델 평가 지표 완벽 가이드 총평 1. 시계열 분석 기초: 정상성 판단과 차분 적용 이해 무엇을 배웠나 ADF 검정에서 귀무가설이 “비정상&#34;이라는 점을 명확히 이해하게 되었고, 시계열의 구성 요소와 정상성이 무엇인지 제대로 정리했다. 특히, 차분 적용 시 데이터의 의미 손실 가능성을 인지하고, 적절한 차분 횟수를 결정해야 함을 알게 되었다. 이번 학습을 통해 비정상 시계열 데이터를 정상화하는 방법에 대한 이해도를 높일 수 있었다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-08 00:00:00 +0000 UTC'>2026년 7월 8일</span>&nbsp;·&nbsp;<span>9 min</span></footer>
+  <a class="entry-link" aria-label="post link to 시계열 분석부터 머신러닝 핵심 개념까지, 완전정복 학습 정리" href="https://Han-think.github.io/learning/2026-07-08-am-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 결정계수와 SST·SSR·SSE 그래프, 초보자를 위한 해석 다항 회귀 과적합과 손실 지표 이해하기 데이터 누수 방지를 위한 전처리 파이프라인 구축 가이드 교차검증과 모델 선택: 성능 평가의 핵심 이해 하이퍼파라미터 탐색: 시간과 성능의 균형 잡기 SHAP을 활용한 모델 해석 및 시각화 워크노트 Stacking 모델 학습의 어려움과 올바른 이해 PyCaret AutoML 실습 환경 구축 및 버전 호환성 문제 해결 회귀 미니 프로젝트 설계 및 분석 가이드 총평 1. 결정계수와 SST·SSR·SSE 그래프, 초보자를 위한 해석 무엇을 배웠나 결정계수 (R^2)를 이해하는 데 필요한 SST, SSR, SSE 각각이 의미하는 바를 명확히 알게 되었다. SST는 전체 데이터의 변동성, SSR은 모델이 설명하는 변동성, SSE는 모델이 설명하지 못한 오차를 나타냄을 이해했다. 특히, SSR과 SSE의 혼동을 바로잡고, 이들의 관계를 통해 모델의 설명력을 파악하는 방법을 익혔다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-08 00:00:00 +0000 UTC'>2026년 7월 8일</span>&nbsp;·&nbsp;<span>10 min</span></footer>
+  <a class="entry-link" aria-label="post link to 회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험" href="https://Han-think.github.io/learning/2026-07-08-pm-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 공공 API 크롤링, 요청 인자 이해하기 JSON과 XML 선택 및 로컬 데이터 관리 전략 멀티스레딩과 API 사용 시 성능과 제한 사항 이해 랜덤 포레스트 이해와 하이퍼파라미터 튜닝 워크노트 에러 수정 및 개인 PC 자원 맞춤 학습 전략 총평 1. 공공 API 크롤링, 요청 인자 이해하기 무엇을 배웠나 Open API 기반 크롤링을 처음 이해할 때 인증 관련, 응답 형식, 데이터 대상, 범위 지정 등 다양한 인자를 혼동했었는데, API가 외부 데이터에 접근하는 통로라는 것을 명확히 이해하게 되었습니다. 공공 데이터 API와 LLM API의 차이점을 이해하고, API 문서를 통해 필요한 인자를 파악하는 연습이 중요함을 알게 되었습니다. 실제 식품안전나라 레시피 API 실습을 통해 API 호출 구조와 데이터 처리 과정을 익혔습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-07 00:00:00 +0000 UTC'>2026년 7월 7일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정" href="https://Han-think.github.io/learning/2026-07-07-am-daily/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="next" href="https://Han-think.github.io/learning/page/2/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

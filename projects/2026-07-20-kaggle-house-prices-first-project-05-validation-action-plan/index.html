@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Kaggle House Prices 첫 프로젝트 회고 - 5. 검증과 다음 액션 | Han-think Blog</title>
+<meta name="keywords" content="validation, action-plan, portfolio, projects">
+<meta name="description" content="최종 제출 전 점검과 다음 프로젝트로 가져갈 기준을 정리한다.">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-05-validation-action-plan/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-05-validation-action-plan/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-05-validation-action-plan/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="Kaggle House Prices 첫 프로젝트 회고 - 5. 검증과 다음 액션">
+  <meta property="og:description" content="최종 제출 전 점검과 다음 프로젝트로 가져갈 기준을 정리한다.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2026-07-20T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-20T00:00:00+00:00">
+    <meta property="article:tag" content="Validation">
+    <meta property="article:tag" content="Action-Plan">
+    <meta property="article:tag" content="Portfolio">
+    <meta property="article:tag" content="Projects">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kaggle House Prices 첫 프로젝트 회고 - 5. 검증과 다음 액션">
+  <meta name="twitter:description" content="최종 제출 전 점검과 다음 프로젝트로 가져갈 기준을 정리한다.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "프로젝트",
+      "item": "https://Han-think.github.io/projects/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Kaggle House Prices 첫 프로젝트 회고 - 5. 검증과 다음 액션",
+      "item": "https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-05-validation-action-plan/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Kaggle House Prices 첫 프로젝트 회고 - 5. 검증과 다음 액션",
+  "name": "Kaggle House Prices 첫 프로젝트 회고 - 5. 검증과 다음 액션",
+  "description": "최종 제출 전 점검과 다음 프로젝트로 가져갈 기준을 정리한다.",
+  "keywords": [
+    "validation", "action-plan", "portfolio", "projects"
+  ],
+  "articleBody": "목차 제출 전 검증 보고서 검증 포트폴리오 관점 다음 액션 총평 1. 제출 전 검증 제출 CSV의 열 이름, 행 개수, 예측값 범위, 결측 여부를 확인한다. 모델 점수가 좋아도 제출 형식이 틀리면 프로젝트 결과물로 볼 수 없다.\n2. 보고서 검증 보고서의 수치, 그래프, 코드 결과가 서로 같은 실험을 말하는지 확인한다. 서로 다른 버전의 결과가 섞이면 읽는 사람이 흐름을 믿기 어렵다.\n3. 포트폴리오 관점 포트폴리오로 남길 때는 최고 점수보다 문제를 어떻게 읽고, 어떤 기준으로 실험했고, 무엇을 다음 액션으로 남겼는지가 중요하다.\n4. 다음 액션 다음 프로젝트에서는 시작부터 폴더 구조, pipeline 코드, 모델 비교 표, LLM 리뷰 기록을 함께 남긴다. 이렇게 하면 마지막에 급하게 보고서를 맞추는 부담이 줄어든다.\n총평 이번 글에서 정리한 것 프로젝트 마무리는 제출 파일, 보고서, 재현성, 다음 액션까지 함께 닫는 과정이라는 점을 정리했다.\n다음에 조심할 것 최종 결과가 여러 파일에 흩어지면 어떤 버전이 맞는지 헷갈릴 수 있다.\n다음 액션 다음 프로젝트 템플릿에 이번 검증 목록을 반영한다.\n이 글은 LearningLog projects 흐름에서 생성한 프로젝트 시리즈 초안입니다.\n",
+  "wordCount" : "155",
+  "inLanguage": "en",
+  "datePublished": "2026-07-20T00:00:00Z",
+  "dateModified": "2026-07-20T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-05-validation-action-plan/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Kaggle House Prices 첫 프로젝트 회고 - 5. 검증과 다음 액션
+    </h1>
+    <div class="post-description">
+      최종 제출 전 점검과 다음 프로젝트로 가져갈 기준을 정리한다.
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-20 00:00:00 +0000 UTC'>2026년 7월 20일</span>&nbsp;·&nbsp;<span>1 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EC%A0%9C%EC%B6%9C-%EC%A0%84-%EA%B2%80%EC%A6%9D">제출 전 검증</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EB%B3%B4%EA%B3%A0%EC%84%9C-%EA%B2%80%EC%A6%9D">보고서 검증</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4-%EA%B4%80%EC%A0%90">포트폴리오 관점</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EB%8B%A4%EC%9D%8C-%EC%95%A1%EC%85%98">다음 액션</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-제출-전-검증">1. 제출 전 검증<a hidden class="anchor" aria-hidden="true" href="#1-제출-전-검증">#</a></h2>
+<p>제출 CSV의 열 이름, 행 개수, 예측값 범위, 결측 여부를 확인한다. 모델 점수가 좋아도 제출 형식이 틀리면 프로젝트 결과물로 볼 수 없다.</p>
+<h2 id="2-보고서-검증">2. 보고서 검증<a hidden class="anchor" aria-hidden="true" href="#2-보고서-검증">#</a></h2>
+<p>보고서의 수치, 그래프, 코드 결과가 서로 같은 실험을 말하는지 확인한다. 서로 다른 버전의 결과가 섞이면 읽는 사람이 흐름을 믿기 어렵다.</p>
+<h2 id="3-포트폴리오-관점">3. 포트폴리오 관점<a hidden class="anchor" aria-hidden="true" href="#3-포트폴리오-관점">#</a></h2>
+<p>포트폴리오로 남길 때는 최고 점수보다 문제를 어떻게 읽고, 어떤 기준으로 실험했고, 무엇을 다음 액션으로 남겼는지가 중요하다.</p>
+<h2 id="4-다음-액션">4. 다음 액션<a hidden class="anchor" aria-hidden="true" href="#4-다음-액션">#</a></h2>
+<p>다음 프로젝트에서는 시작부터 폴더 구조, pipeline 코드, 모델 비교 표, LLM 리뷰 기록을 함께 남긴다. 이렇게 하면 마지막에 급하게 보고서를 맞추는 부담이 줄어든다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="이번-글에서-정리한-것">이번 글에서 정리한 것<a hidden class="anchor" aria-hidden="true" href="#이번-글에서-정리한-것">#</a></h3>
+<p>프로젝트 마무리는 제출 파일, 보고서, 재현성, 다음 액션까지 함께 닫는 과정이라는 점을 정리했다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>최종 결과가 여러 파일에 흩어지면 어떤 버전이 맞는지 헷갈릴 수 있다.</p>
+<h3 id="다음-액션">다음 액션<a hidden class="anchor" aria-hidden="true" href="#다음-액션">#</a></h3>
+<p>다음 프로젝트 템플릿에 이번 검증 목록을 반영한다.</p>
+<blockquote>
+<p>이 글은 LearningLog projects 흐름에서 생성한 프로젝트 시리즈 초안입니다.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/validation/">Validation</a></li>
+      <li><a href="https://Han-think.github.io/tags/action-plan/">Action-Plan</a></li>
+      <li><a href="https://Han-think.github.io/tags/portfolio/">Portfolio</a></li>
+      <li><a href="https://Han-think.github.io/tags/projects/">Projects</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

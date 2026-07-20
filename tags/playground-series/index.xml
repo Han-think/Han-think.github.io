@@ -1,1 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Playground-Series on Han-think Blog</title><link>https://Han-think.github.io/tags/playground-series/</link><description>Recent content in Playground-Series on Han-think Blog</description><generator>Hugo</generator><language>ko-KR</language><lastBuildDate>Sun, 12 Jul 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://Han-think.github.io/tags/playground-series/index.xml" rel="self" type="application/rss+xml"/><item><title>Kaggle Playground S6E7 개인 도전 회고 - 1. 배경과 목표</title><link>https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-01-overview/</link><pubDate>Sun, 12 Jul 2026 00:00:00 +0000</pubDate><guid>https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-01-overview/</guid><description>팀 프로젝트에 들어가기 전, 혼자 Kaggle Playground S6E7에 도전하며 남긴 기록의 시작.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Playground-Series on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/playground-series/</link>
+    <description>Recent content in Playground-Series on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Sun, 12 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/playground-series/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kaggle Playground S6E7 개인 도전 회고 - 1. 배경과 목표</title>
+      <link>https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-01-overview/</link>
+      <pubDate>Sun, 12 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-01-overview/</guid>
+      <description>팀 프로젝트에 들어가기 전, 혼자 Kaggle Playground S6E7에 도전하며 남긴 기록의 시작.</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Kaggle House Prices 첫 프로젝트 회고 - 1. 목표와 전체 흐름 | Han-think Blog</title>
+<meta name="keywords" content="kaggle, house-prices, project, projects">
+<meta name="description" content="House Prices 프로젝트를 학습 프로젝트로 분리해 기록한 첫 글.">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-01-overview/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-01-overview/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-01-overview/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="Kaggle House Prices 첫 프로젝트 회고 - 1. 목표와 전체 흐름">
+  <meta property="og:description" content="House Prices 프로젝트를 학습 프로젝트로 분리해 기록한 첫 글.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2026-07-20T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-20T00:00:00+00:00">
+    <meta property="article:tag" content="Kaggle">
+    <meta property="article:tag" content="House-Prices">
+    <meta property="article:tag" content="Project">
+    <meta property="article:tag" content="Projects">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kaggle House Prices 첫 프로젝트 회고 - 1. 목표와 전체 흐름">
+  <meta name="twitter:description" content="House Prices 프로젝트를 학습 프로젝트로 분리해 기록한 첫 글.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "프로젝트",
+      "item": "https://Han-think.github.io/projects/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Kaggle House Prices 첫 프로젝트 회고 - 1. 목표와 전체 흐름",
+      "item": "https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-01-overview/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Kaggle House Prices 첫 프로젝트 회고 - 1. 목표와 전체 흐름",
+  "name": "Kaggle House Prices 첫 프로젝트 회고 - 1. 목표와 전체 흐름",
+  "description": "House Prices 프로젝트를 학습 프로젝트로 분리해 기록한 첫 글.",
+  "keywords": [
+    "kaggle", "house-prices", "project", "projects"
+  ],
+  "articleBody": "목차 왜 이 프로젝트를 따로 남기는가 프로젝트 목표 산출물 기준 이 시리즈의 구성 총평 1. 왜 이 프로젝트를 따로 남기는가 House Prices는 단순히 점수를 올리는 문제보다 프로젝트 흐름을 익히는 데 의미가 컸다. 데이터 파일을 읽고, 결측치와 범주형 변수를 다루고, 모델을 비교하고, 제출 파일을 만드는 전 과정이 하나의 작은 머신러닝 프로젝트였다.\n2. 프로젝트 목표 목표는 집값을 예측하는 제출 파일을 만드는 것이지만, 학습 목표는 더 구체적이었다. 수업에서 강조한 pipeline 문법을 사용해 전처리와 모델 학습을 하나의 흐름으로 묶고, 같은 기준으로 실험을 비교하는 것이 핵심이었다.\n3. 산출물 기준 최종 산출물은 제출 CSV, 분석 노트북, 모델 비교 메모, 발표용 요약 자료다. 이 네 가지가 서로 따로 놀지 않고 같은 실험 흐름을 설명해야 프로젝트 기록으로 의미가 생긴다.\n4. 이 시리즈의 구성 이후 글은 pipeline 문법, 네 가지 분석 축, 네 가지 LLM 리뷰, 검증과 액션 플랜으로 나누어 정리한다.\n총평 이번 글에서 정리한 것 프로젝트 글은 학습 daily와 달리 목표, 산출물, 판단 흐름을 오래 보존해야 한다는 점을 정리했다.\n다음에 조심할 것 점수나 결과만 남기면 왜 그런 선택을 했는지 사라지므로 과정도 함께 기록해야 한다.\n다음 액션 pipeline 문법을 중심으로 프로젝트 재현성을 정리한다.\n이 글은 LearningLog projects 흐름에서 생성한 프로젝트 시리즈 초안입니다.\n",
+  "wordCount" : "183",
+  "inLanguage": "en",
+  "datePublished": "2026-07-20T00:00:00Z",
+  "dateModified": "2026-07-20T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-01-overview/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Kaggle House Prices 첫 프로젝트 회고 - 1. 목표와 전체 흐름
+    </h1>
+    <div class="post-description">
+      House Prices 프로젝트를 학습 프로젝트로 분리해 기록한 첫 글.
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-20 00:00:00 +0000 UTC'>2026년 7월 20일</span>&nbsp;·&nbsp;<span>1 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EC%99%9C-%EC%9D%B4-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EB%A5%BC-%EB%94%B0%EB%A1%9C-%EB%82%A8%EA%B8%B0%EB%8A%94%EA%B0%80">왜 이 프로젝트를 따로 남기는가</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%AA%A9%ED%91%9C">프로젝트 목표</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%82%B0%EC%B6%9C%EB%AC%BC-%EA%B8%B0%EC%A4%80">산출물 기준</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EC%9D%B4-%EC%8B%9C%EB%A6%AC%EC%A6%88%EC%9D%98-%EA%B5%AC%EC%84%B1">이 시리즈의 구성</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-왜-이-프로젝트를-따로-남기는가">1. 왜 이 프로젝트를 따로 남기는가<a hidden class="anchor" aria-hidden="true" href="#1-왜-이-프로젝트를-따로-남기는가">#</a></h2>
+<p>House Prices는 단순히 점수를 올리는 문제보다 프로젝트 흐름을 익히는 데 의미가 컸다. 데이터 파일을 읽고, 결측치와 범주형 변수를 다루고, 모델을 비교하고, 제출 파일을 만드는 전 과정이 하나의 작은 머신러닝 프로젝트였다.</p>
+<h2 id="2-프로젝트-목표">2. 프로젝트 목표<a hidden class="anchor" aria-hidden="true" href="#2-프로젝트-목표">#</a></h2>
+<p>목표는 집값을 예측하는 제출 파일을 만드는 것이지만, 학습 목표는 더 구체적이었다. 수업에서 강조한 pipeline 문법을 사용해 전처리와 모델 학습을 하나의 흐름으로 묶고, 같은 기준으로 실험을 비교하는 것이 핵심이었다.</p>
+<h2 id="3-산출물-기준">3. 산출물 기준<a hidden class="anchor" aria-hidden="true" href="#3-산출물-기준">#</a></h2>
+<p>최종 산출물은 제출 CSV, 분석 노트북, 모델 비교 메모, 발표용 요약 자료다. 이 네 가지가 서로 따로 놀지 않고 같은 실험 흐름을 설명해야 프로젝트 기록으로 의미가 생긴다.</p>
+<h2 id="4-이-시리즈의-구성">4. 이 시리즈의 구성<a hidden class="anchor" aria-hidden="true" href="#4-이-시리즈의-구성">#</a></h2>
+<p>이후 글은 pipeline 문법, 네 가지 분석 축, 네 가지 LLM 리뷰, 검증과 액션 플랜으로 나누어 정리한다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="이번-글에서-정리한-것">이번 글에서 정리한 것<a hidden class="anchor" aria-hidden="true" href="#이번-글에서-정리한-것">#</a></h3>
+<p>프로젝트 글은 학습 daily와 달리 목표, 산출물, 판단 흐름을 오래 보존해야 한다는 점을 정리했다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>점수나 결과만 남기면 왜 그런 선택을 했는지 사라지므로 과정도 함께 기록해야 한다.</p>
+<h3 id="다음-액션">다음 액션<a hidden class="anchor" aria-hidden="true" href="#다음-액션">#</a></h3>
+<p>pipeline 문법을 중심으로 프로젝트 재현성을 정리한다.</p>
+<blockquote>
+<p>이 글은 LearningLog projects 흐름에서 생성한 프로젝트 시리즈 초안입니다.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/kaggle/">Kaggle</a></li>
+      <li><a href="https://Han-think.github.io/tags/house-prices/">House-Prices</a></li>
+      <li><a href="https://Han-think.github.io/tags/project/">Project</a></li>
+      <li><a href="https://Han-think.github.io/tags/projects/">Projects</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

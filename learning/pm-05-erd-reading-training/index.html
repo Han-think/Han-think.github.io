@@ -1,27 +1,409 @@
-<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>pm-05-erd-reading-training | Han-think Blog</title><meta name=keywords content><meta name=description content="pm-05-erd-reading-training 학습 정리"><meta name=author content><link rel=canonical href=https://Han-think.github.io/learning/pm-05-erd-reading-training/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/learning/pm-05-erd-reading-training/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/learning/pm-05-erd-reading-training/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="pm-05-erd-reading-training"><meta property="og:description" content="pm-05-erd-reading-training 학습 정리"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="learning"><meta property="article:published_time" content="2026-06-09T00:00:00+00:00"><meta property="article:modified_time" content="2026-06-09T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="pm-05-erd-reading-training"><meta name=twitter:description content="pm-05-erd-reading-training 학습 정리"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"학습 기록","item":"https://Han-think.github.io/learning/"},{"@type":"ListItem","position":2,"name":"pm-05-erd-reading-training","item":"https://Han-think.github.io/learning/pm-05-erd-reading-training/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"pm-05-erd-reading-training","name":"pm-05-erd-reading-training","description":"pm-05-erd-reading-training 학습 정리","keywords":[],"articleBody":"목차 테이블 관계 프라이머리 키 포린 키 조인 총평 1. 테이블 관계 왜 이걸 보게 됐나 데이터를 효과적으로 관리하고 분석하기 위해서는 데이터가 어떻게 저장되고 연결되는지 이해하는 것이 필수적이었어요. ERD는 이 데이터 구조를 시각적으로 보여주기 때문에, 복잡한 데이터베이스 쿼리를 작성하거나 데이터 모델을 설계할 때 필요한 중요한 도구라는 것을 알게 됐습니다. 덕분에 데이터가 어떻게 연결되는지 파악하고 필요한 정보를 정확하게 가져오는 쿼리를 만들 수 있게 될 것 같습니다.\n내가 헷갈린 지점 처음에는 테이블들을 단순히 나열된 목록으로 생각해서 테이블 간의 관계가 어떻게 연결되는지 파악하는 데 어려움을 겪었습니다. 테이블을 부품으로 생각하라는 비유 때문에 오히려 더 복잡하게 느껴졌고, Primary Key나 Foreign Key가 어떤 역할을 하는지 명확히 이해하지 못했습니다. 테이블 간의 연결이 회로도처럼 복잡하게 얽혀 있다는 점을 깨닫고, 각 연결고리가 의미하는 바를 하나씩 파악해야 할 필요성을 느꼈습니다.\n시도한 코드 / 예시 SELECT artists.Name AS 아티스트_이름, albums.Title AS 앨범_제목 FROM artists JOIN albums ON artists.ArtistId = albums.ArtistId; 결과와 해석 Chinook 데이터베이스 예시처럼, 테이블 간의 관계를 파악하고 JOIN 구문을 활용하여 필요한 데이터를 결합하는 쿼리를 작성할 수 있었습니다. 아티스트와 앨범 테이블을 연결하여 아티스트 이름과 앨범 제목을 동시에 가져오는 쿼리를 성공적으로 작성하며 ERD를 활용한 데이터 조회 능력이 향상된 것 같습니다. 이처럼 ERD를 통해 테이블 간의 관계를 시각적으로 이해하고, 이를 SQL 쿼리에 반영하는 연습이 필요합니다.\n정리된 이해 ERD는 테이블 간의 연결 관계를 시각적으로 보여주는 지도와 같아서, 테이블 이름, Primary Key, Foreign Key를 파악하며 데이터가 어떻게 연결되는지 이해하는 것이 중요합니다. 테이블 관계를 명확히 이해하면 JOIN을 사용하여 필요한 데이터를 효과적으로 결합하는 쿼리를 작성할 수 있습니다.\n2. 프라이머리 키 왜 이걸 보게 됐나 데이터를 효율적으로 관리하고 테이블 간의 연결고리를 명확하게 파악하기 위해 프라이머리 키 개념이 필요했어요. 각 테이블에서 특정 레코드를 식별하고, 다른 테이블과 연결할 때 기준이 되는 중요한 역할을 한다는 걸 알게 됐습니다. ERD를 제대로 이해하고 관계형 데이터베이스 쿼리를 작성하려면 반드시 알아야 하는 핵심 개념이라고 생각합니다.\n내가 헷갈린 지점 처음에는 프라이머리 키가 단순히 테이블에서 ‘중요한’ 컬럼이라고 생각했었는데, 각 행을 유일하게 식별하는 역할이라는 것을 정확히 이해하지 못했어. 테이블을 여러 개 연결할 때, 다른 테이블에서 이 프라이머리 키를 외래 키로 참조해야 관계를 제대로 활용할 수 있다는 점이 늦게 알게 됐어. 프라이머리 키가 데이터의 ‘정체성’을 나타내는 중요한 역할이라는 것을 깨닫고 다시 보니 이해가 훨씬 잘 돼.\n시도한 코드 / 예시 -- 예시: artists 테이블에서 ArtistId (프라이머리 키)를 사용하여 아티스트 정보를 가져옴 SELECT ArtistId, Name FROM artists; 결과와 해석 프라이머리 키는 각 테이블 내에서 레코드를 유일하게 식별하는 컬럼이고, 데이터 중복 없이 레코드를 구분하는 중요한 역할을 합니다. Chinook 데이터베이스에서 artists 테이블의 ArtistId가 프라이머리 키인데, 이 ID를 통해 각 아티스트를 정확하게 찾고 연결할 수 있습니다. 이를 통해 다른 테이블과 관계를 맺고 데이터를 결합하는 기반이 됩니다.\n정리된 이해 프라이머리 키는 각 테이블 내에서 특정 레코드를 유일하게 식별하는 역할을 하는 컬럼이야. 마치 각 부품을 구분하는 고유한 번호와 같고, 테이블 내의 데이터를 정확하게 지칭할 수 있도록 해줘. 이를 통해 다른 테이블과의 관계를 연결하고 데이터를 찾거나 수정할 때 오류를 줄일 수 있어.\n3. 포린 키 왜 이걸 보게 됐나 테이블 간 연결고리가 있어야 데이터가 의미를 갖게 되고, 여러 테이블에 흩어진 정보를 조합해서 필요한 정보를 얻을 수 있기 때문입니다. 포린 키를 이해해야 테이블 간의 관계를 정확히 파악하고, 복잡한 쿼리를 작성하여 원하는 데이터를 효율적으로 추출할 수 있습니다. 결국, 데이터베이스 전체의 구조를 이해하고 활용하는 데 필수적인 개념이라고 생각합니다.\n내가 헷갈린 지점 포린 키가 단순히 다른 테이블의 컬럼을 참조하는 것임을 인지했지만, 왜 그렇게 연결되어야 하는지에 대한 데이터 모델링의 이유를 제대로 이해하지 못했던 것 같아요. 단순히 테이블 간의 연결고리라는 기능적인 측면만 생각하고, 데이터의 의미적 연관성을 간과했던 부분이 있었습니다. 결국, 포린 키는 데이터의 일관성과 무결성을 유지하기 위한 중요한 설계 요소임을 깨닫게 되었습니다.\n시도한 코드 / 예시 SELECT artists.Name AS 아티스트_이름, albums.Title AS 앨범_제목 FROM artists JOIN albums ON artists.ArtistId = albums.ArtistId; 결과와 해석 포린 키는 다른 테이블의 Primary Key를 참조하여 두 테이블 간의 관계를 설정하는 컬럼이야. 예를 들어, albums 테이블의 ArtistId가 artists 테이블의 ArtistId를 참조하는 포린 키가 되면, 앨범과 아티스트가 어떻게 연결되는지 알 수 있어. 이걸 통해 서로 관련된 데이터를 쿼리할 때 테이블을 조인(JOIN)하는 데 핵심적인 역할을 해.\n정리된 이해 포린 키는 다른 테이블의 Primary Key를 참조하여 테이블 간의 관계를 연결하는 컬럼이야. 마치 다른 부품을 연결하는 전선처럼, 데이터를 서로 묶어줌으로써 관련 정보를 함께 활용할 수 있게 도와줘. 이를 통해 테이블을 조인하여 필요한 데이터를 추출할 수 있어.\n4. 조인 왜 이걸 보게 됐나 ERD를 읽고 테이블 간의 관계를 파악하는 과정에서 데이터를 효과적으로 가져오기 위해 여러 테이블을 연결해야 한다는 것을 알게 되었고, 바로 이 연결 방식이 ‘조인’이라는 개념으로 이어지는 것을 깨달았습니다. 조인을 통해 데이터를 여러 테이블에서 조합하여 원하는 정보를 얻을 수 있게 되었고, 이는 쿼리 작성의 필수적인 부분임을 알게 되었습니다.\n내가 헷갈린 지점 처음에는 조인이 단순히 테이블을 합치는 것이라고 생각했는데, 실제로는 테이블 간의 연결 고리(Foreign Key)를 통해 관련된 데이터를 가져오는 과정이라는 것을 깨달았습니다. 어떤 테이블을 먼저 조인해야 하는지, 어떤 컬럼을 기준으로 연결해야 하는지 파악하는 것이 중요하다고 생각했습니다. 특히, 여러 테이블을 조인할 때는 조인 순서에 따라 결과가 달라질 수 있다는 점이 헷갈렸습니다.\n시도한 코드 / 예시 SELECT artists.Name AS 아티스트_이름, albums.Title AS 앨범_제목 FROM artists JOIN albums ON artists.ArtistId = albums.ArtistId; 결과와 해석 JOIN은 두 테이블의 공통된 컬럼(Foreign Key)을 기반으로 데이터를 연결하여 원하는 정보를 추출하는 방법이야. 위의 예시처럼 아티스트 테이블과 앨범 테이블을 ArtistId를 기준으로 JOIN하면, 각 아티스트가 가진 앨범 정보를 함께 확인할 수 있어. 이를 통해 ERD에서 파악한 테이블 간 관계를 실제 쿼리에 적용할 수 있음을 알게 되었어.\n정리된 이해 조인은 테이블 간의 관계를 나타내는 Foreign Key를 이용하여, 여러 테이블에 흩어진 데이터를 하나의 결과 집합으로 결합하는 핵심적인 SQL 연산이야. ERD에서 테이블 간의 연결 관계를 파악하고, 그 관계에 맞춰 JOIN 조건을 설정하면 원하는 데이터를 효과적으로 추출할 수 있어. 결국 조인은 데이터베이스에서 정보를 연결하고 분석하는 데 필수적인 도구라고 이해하고 있어.\n총평 오늘 전체에서 배운 것 ERD를 통해 테이블 간의 관계를 시각적으로 이해하고, 이를 바탕으로 필요한 데이터를 조인하여 가져오는 쿼리를 생성하는 방법을 익혔습니다. 테이블과 컬럼을 부품과 단자로 비유하여 관계를 파악하면 ERD를 좀 더 쉽게 이해할 수 있다는 것을 알게 되었습니다. Chinook 데이터베이스 예제를 통해 실제 쿼리 작성에 ERD가 어떻게 활용되는지 경험했습니다.\n다음에 조심할 것 테이블 간의 관계를 파악할 때, 단순히 연결된 컬럼을 보는 것이 아니라, 테이블이 어떻게 상호작용하는지 전체적인 맥락을 이해해야겠다. JOIN 조건을 잘못 설정하면 원하는 데이터를 얻지 못하거나, 불필요한 데이터까지 가져올 수 있으므로 주의해야겠다. 테이블 관계를 시각적으로 명확하게 떠올리는 연습을 꾸준히 해야겠다.\n다음 복습 주제 N:M 관계를 나타내는 테이블을 어떻게 설계하고 쿼리하는지 좀 더 자세히 알아봐야겠다. 복잡한 ERD에서 원하는 데이터의 위치를 빠르게 파악하는 연습이 필요하고, 다양한 JOIN 유형을 익혀야 실무에서 활용할 수 있을 것 같다.\n","wordCount":"999","inLanguage":"en","datePublished":"2026-06-09T00:00:00Z","dateModified":"2026-06-09T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/learning/pm-05-erd-reading-training/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
-<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">pm-05-erd-reading-training</h1><div class=post-description>pm-05-erd-reading-training 학습 정리</div><div class=post-meta><span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></div></header><div class="post-content md-content"><h2 id=목차>목차<a hidden class=anchor aria-hidden=true href=#목차>#</a></h2><ul><li><ol><li><a href=#1-%ED%85%8C%EC%9D%B4%EB%B8%94-%EA%B4%80%EA%B3%84>테이블 관계</a></li></ol></li><li><ol start=2><li><a href=#2-%ED%94%84%EB%9D%BC%EC%9D%B4%EB%A8%B8%EB%A6%AC-%ED%82%A4>프라이머리 키</a></li></ol></li><li><ol start=3><li><a href=#3-%ED%8F%AC%EB%A6%B0-%ED%82%A4>포린 키</a></li></ol></li><li><ol start=4><li><a href=#4-%EC%A1%B0%EC%9D%B8>조인</a></li></ol></li><li><a href=#%EC%B4%9D%ED%8F%89>총평</a></li></ul><h2 id=1-테이블-관계>1. 테이블 관계<a hidden class=anchor aria-hidden=true href=#1-테이블-관계>#</a></h2><h3 id=왜-이걸-보게-됐나>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나>#</a></h3><p>데이터를 효과적으로 관리하고 분석하기 위해서는 데이터가 어떻게 저장되고 연결되는지 이해하는 것이 필수적이었어요. ERD는 이 데이터 구조를 시각적으로 보여주기 때문에, 복잡한 데이터베이스 쿼리를 작성하거나 데이터 모델을 설계할 때 필요한 중요한 도구라는 것을 알게 됐습니다. 덕분에 데이터가 어떻게 연결되는지 파악하고 필요한 정보를 정확하게 가져오는 쿼리를 만들 수 있게 될 것 같습니다.</p><h3 id=내가-헷갈린-지점>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점>#</a></h3><p>처음에는 테이블들을 단순히 나열된 목록으로 생각해서 테이블 간의 관계가 어떻게 연결되는지 파악하는 데 어려움을 겪었습니다. 테이블을 부품으로 생각하라는 비유 때문에 오히려 더 복잡하게 느껴졌고, Primary Key나 Foreign Key가 어떤 역할을 하는지 명확히 이해하지 못했습니다. 테이블 간의 연결이 회로도처럼 복잡하게 얽혀 있다는 점을 깨닫고, 각 연결고리가 의미하는 바를 하나씩 파악해야 할 필요성을 느꼈습니다.</p><h3 id=시도한-코드--예시>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>    artists.Name <span style=color:#66d9ef>AS</span> <span style=color:#960050;background-color:#1e0010>아티스트</span>_이름,
-</span></span><span style=display:flex><span>    albums.Title <span style=color:#66d9ef>AS</span> <span style=color:#960050;background-color:#1e0010>앨범</span>_제목
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> artists
-</span></span><span style=display:flex><span><span style=color:#66d9ef>JOIN</span> albums <span style=color:#66d9ef>ON</span> artists.ArtistId <span style=color:#f92672>=</span> albums.ArtistId;
-</span></span></code></pre></div><h3 id=결과와-해석>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석>#</a></h3><p>Chinook 데이터베이스 예시처럼, 테이블 간의 관계를 파악하고 JOIN 구문을 활용하여 필요한 데이터를 결합하는 쿼리를 작성할 수 있었습니다. 아티스트와 앨범 테이블을 연결하여 아티스트 이름과 앨범 제목을 동시에 가져오는 쿼리를 성공적으로 작성하며 ERD를 활용한 데이터 조회 능력이 향상된 것 같습니다. 이처럼 ERD를 통해 테이블 간의 관계를 시각적으로 이해하고, 이를 SQL 쿼리에 반영하는 연습이 필요합니다.</p><h3 id=정리된-이해>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해>#</a></h3><p>ERD는 테이블 간의 연결 관계를 시각적으로 보여주는 지도와 같아서, 테이블 이름, Primary Key, Foreign Key를 파악하며 데이터가 어떻게 연결되는지 이해하는 것이 중요합니다. 테이블 관계를 명확히 이해하면 JOIN을 사용하여 필요한 데이터를 효과적으로 결합하는 쿼리를 작성할 수 있습니다.</p><h2 id=2-프라이머리-키>2. 프라이머리 키<a hidden class=anchor aria-hidden=true href=#2-프라이머리-키>#</a></h2><h3 id=왜-이걸-보게-됐나-1>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-1>#</a></h3><p>데이터를 효율적으로 관리하고 테이블 간의 연결고리를 명확하게 파악하기 위해 프라이머리 키 개념이 필요했어요. 각 테이블에서 특정 레코드를 식별하고, 다른 테이블과 연결할 때 기준이 되는 중요한 역할을 한다는 걸 알게 됐습니다. ERD를 제대로 이해하고 관계형 데이터베이스 쿼리를 작성하려면 반드시 알아야 하는 핵심 개념이라고 생각합니다.</p><h3 id=내가-헷갈린-지점-1>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-1>#</a></h3><p>처음에는 프라이머리 키가 단순히 테이블에서 &lsquo;중요한&rsquo; 컬럼이라고 생각했었는데, 각 행을 유일하게 식별하는 역할이라는 것을 정확히 이해하지 못했어. 테이블을 여러 개 연결할 때, 다른 테이블에서 이 프라이머리 키를 외래 키로 참조해야 관계를 제대로 활용할 수 있다는 점이 늦게 알게 됐어. 프라이머리 키가 데이터의 &lsquo;정체성&rsquo;을 나타내는 중요한 역할이라는 것을 깨닫고 다시 보니 이해가 훨씬 잘 돼.</p><h3 id=시도한-코드--예시-1>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-1>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#75715e>-- 예시: artists 테이블에서 ArtistId (프라이머리 키)를 사용하여 아티스트 정보를 가져옴
-</span></span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> ArtistId, Name <span style=color:#66d9ef>FROM</span> artists;
-</span></span></code></pre></div><h3 id=결과와-해석-1>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-1>#</a></h3><p>프라이머리 키는 각 테이블 내에서 레코드를 유일하게 식별하는 컬럼이고, 데이터 중복 없이 레코드를 구분하는 중요한 역할을 합니다. Chinook 데이터베이스에서 <code>artists</code> 테이블의 <code>ArtistId</code>가 프라이머리 키인데, 이 ID를 통해 각 아티스트를 정확하게 찾고 연결할 수 있습니다. 이를 통해 다른 테이블과 관계를 맺고 데이터를 결합하는 기반이 됩니다.</p><h3 id=정리된-이해-1>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-1>#</a></h3><p>프라이머리 키는 각 테이블 내에서 특정 레코드를 유일하게 식별하는 역할을 하는 컬럼이야. 마치 각 부품을 구분하는 고유한 번호와 같고, 테이블 내의 데이터를 정확하게 지칭할 수 있도록 해줘. 이를 통해 다른 테이블과의 관계를 연결하고 데이터를 찾거나 수정할 때 오류를 줄일 수 있어.</p><h2 id=3-포린-키>3. 포린 키<a hidden class=anchor aria-hidden=true href=#3-포린-키>#</a></h2><h3 id=왜-이걸-보게-됐나-2>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-2>#</a></h3><p>테이블 간 연결고리가 있어야 데이터가 의미를 갖게 되고, 여러 테이블에 흩어진 정보를 조합해서 필요한 정보를 얻을 수 있기 때문입니다. 포린 키를 이해해야 테이블 간의 관계를 정확히 파악하고, 복잡한 쿼리를 작성하여 원하는 데이터를 효율적으로 추출할 수 있습니다. 결국, 데이터베이스 전체의 구조를 이해하고 활용하는 데 필수적인 개념이라고 생각합니다.</p><h3 id=내가-헷갈린-지점-2>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-2>#</a></h3><p>포린 키가 단순히 다른 테이블의 컬럼을 참조하는 것임을 인지했지만, 왜 그렇게 연결되어야 하는지에 대한 데이터 모델링의 이유를 제대로 이해하지 못했던 것 같아요. 단순히 테이블 간의 연결고리라는 기능적인 측면만 생각하고, 데이터의 의미적 연관성을 간과했던 부분이 있었습니다. 결국, 포린 키는 데이터의 일관성과 무결성을 유지하기 위한 중요한 설계 요소임을 깨닫게 되었습니다.</p><h3 id=시도한-코드--예시-2>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-2>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>    artists.Name <span style=color:#66d9ef>AS</span> <span style=color:#960050;background-color:#1e0010>아티스트</span>_이름,
-</span></span><span style=display:flex><span>    albums.Title <span style=color:#66d9ef>AS</span> <span style=color:#960050;background-color:#1e0010>앨범</span>_제목
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> artists
-</span></span><span style=display:flex><span><span style=color:#66d9ef>JOIN</span> albums <span style=color:#66d9ef>ON</span> artists.ArtistId <span style=color:#f92672>=</span> albums.ArtistId;
-</span></span></code></pre></div><h3 id=결과와-해석-2>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-2>#</a></h3><p>포린 키는 다른 테이블의 Primary Key를 참조하여 두 테이블 간의 관계를 설정하는 컬럼이야. 예를 들어, <code>albums</code> 테이블의 <code>ArtistId</code>가 <code>artists</code> 테이블의 <code>ArtistId</code>를 참조하는 포린 키가 되면, 앨범과 아티스트가 어떻게 연결되는지 알 수 있어. 이걸 통해 서로 관련된 데이터를 쿼리할 때 테이블을 조인(JOIN)하는 데 핵심적인 역할을 해.</p><h3 id=정리된-이해-2>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-2>#</a></h3><p>포린 키는 다른 테이블의 Primary Key를 참조하여 테이블 간의 관계를 연결하는 컬럼이야. 마치 다른 부품을 연결하는 전선처럼, 데이터를 서로 묶어줌으로써 관련 정보를 함께 활용할 수 있게 도와줘. 이를 통해 테이블을 조인하여 필요한 데이터를 추출할 수 있어.</p><h2 id=4-조인>4. 조인<a hidden class=anchor aria-hidden=true href=#4-조인>#</a></h2><h3 id=왜-이걸-보게-됐나-3>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-3>#</a></h3><p>ERD를 읽고 테이블 간의 관계를 파악하는 과정에서 데이터를 효과적으로 가져오기 위해 여러 테이블을 연결해야 한다는 것을 알게 되었고, 바로 이 연결 방식이 &lsquo;조인&rsquo;이라는 개념으로 이어지는 것을 깨달았습니다. 조인을 통해 데이터를 여러 테이블에서 조합하여 원하는 정보를 얻을 수 있게 되었고, 이는 쿼리 작성의 필수적인 부분임을 알게 되었습니다.</p><h3 id=내가-헷갈린-지점-3>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-3>#</a></h3><p>처음에는 조인이 단순히 테이블을 합치는 것이라고 생각했는데, 실제로는 테이블 간의 연결 고리(Foreign Key)를 통해 관련된 데이터를 가져오는 과정이라는 것을 깨달았습니다. 어떤 테이블을 먼저 조인해야 하는지, 어떤 컬럼을 기준으로 연결해야 하는지 파악하는 것이 중요하다고 생각했습니다. 특히, 여러 테이블을 조인할 때는 조인 순서에 따라 결과가 달라질 수 있다는 점이 헷갈렸습니다.</p><h3 id=시도한-코드--예시-3>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-3>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>    artists.Name <span style=color:#66d9ef>AS</span> <span style=color:#960050;background-color:#1e0010>아티스트</span>_이름,
-</span></span><span style=display:flex><span>    albums.Title <span style=color:#66d9ef>AS</span> <span style=color:#960050;background-color:#1e0010>앨범</span>_제목
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> artists
-</span></span><span style=display:flex><span><span style=color:#66d9ef>JOIN</span> albums <span style=color:#66d9ef>ON</span> artists.ArtistId <span style=color:#f92672>=</span> albums.ArtistId;
-</span></span></code></pre></div><h3 id=결과와-해석-3>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-3>#</a></h3><p>JOIN은 두 테이블의 공통된 컬럼(Foreign Key)을 기반으로 데이터를 연결하여 원하는 정보를 추출하는 방법이야. 위의 예시처럼 아티스트 테이블과 앨범 테이블을 ArtistId를 기준으로 JOIN하면, 각 아티스트가 가진 앨범 정보를 함께 확인할 수 있어. 이를 통해 ERD에서 파악한 테이블 간 관계를 실제 쿼리에 적용할 수 있음을 알게 되었어.</p><h3 id=정리된-이해-3>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-3>#</a></h3><p>조인은 테이블 간의 관계를 나타내는 Foreign Key를 이용하여, 여러 테이블에 흩어진 데이터를 하나의 결과 집합으로 결합하는 핵심적인 SQL 연산이야. ERD에서 테이블 간의 연결 관계를 파악하고, 그 관계에 맞춰 JOIN 조건을 설정하면 원하는 데이터를 효과적으로 추출할 수 있어. 결국 조인은 데이터베이스에서 정보를 연결하고 분석하는 데 필수적인 도구라고 이해하고 있어.</p><h2 id=총평>총평<a hidden class=anchor aria-hidden=true href=#총평>#</a></h2><h3 id=오늘-전체에서-배운-것>오늘 전체에서 배운 것<a hidden class=anchor aria-hidden=true href=#오늘-전체에서-배운-것>#</a></h3><p>ERD를 통해 테이블 간의 관계를 시각적으로 이해하고, 이를 바탕으로 필요한 데이터를 조인하여 가져오는 쿼리를 생성하는 방법을 익혔습니다. 테이블과 컬럼을 부품과 단자로 비유하여 관계를 파악하면 ERD를 좀 더 쉽게 이해할 수 있다는 것을 알게 되었습니다. Chinook 데이터베이스 예제를 통해 실제 쿼리 작성에 ERD가 어떻게 활용되는지 경험했습니다.</p><h3 id=다음에-조심할-것>다음에 조심할 것<a hidden class=anchor aria-hidden=true href=#다음에-조심할-것>#</a></h3><p>테이블 간의 관계를 파악할 때, 단순히 연결된 컬럼을 보는 것이 아니라, 테이블이 어떻게 상호작용하는지 전체적인 맥락을 이해해야겠다. JOIN 조건을 잘못 설정하면 원하는 데이터를 얻지 못하거나, 불필요한 데이터까지 가져올 수 있으므로 주의해야겠다. 테이블 관계를 시각적으로 명확하게 떠올리는 연습을 꾸준히 해야겠다.</p><h3 id=다음-복습-주제>다음 복습 주제<a hidden class=anchor aria-hidden=true href=#다음-복습-주제>#</a></h3><p>N:M 관계를 나타내는 테이블을 어떻게 설계하고 쿼리하는지 좀 더 자세히 알아봐야겠다. 복잡한 ERD에서 원하는 데이터의 위치를 빠르게 파악하는 연습이 필요하고, 다양한 JOIN 유형을 익혀야 실무에서 활용할 수 있을 것 같다.</p></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://Han-think.github.io/learning/pm-04-subquery-learning-friction/><span class=title>« Prev</span>
-<span>pm-04-subquery-learning-friction</span>
-</a><a class=next href=https://Han-think.github.io/learning/rlhf-good-bad-response/><span class=title>Next »</span>
-<span>rlhf-good-bad-response</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
-<span>Powered by
-<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
-<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>pm-05-erd-reading-training | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="pm-05-erd-reading-training 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/pm-05-erd-reading-training/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/pm-05-erd-reading-training/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/pm-05-erd-reading-training/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="pm-05-erd-reading-training">
+  <meta property="og:description" content="pm-05-erd-reading-training 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-09T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-09T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="pm-05-erd-reading-training">
+  <meta name="twitter:description" content="pm-05-erd-reading-training 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "pm-05-erd-reading-training",
+      "item": "https://Han-think.github.io/learning/pm-05-erd-reading-training/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "pm-05-erd-reading-training",
+  "name": "pm-05-erd-reading-training",
+  "description": "pm-05-erd-reading-training 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 테이블 관계 프라이머리 키 포린 키 조인 총평 1. 테이블 관계 왜 이걸 보게 됐나 데이터를 효과적으로 관리하고 분석하기 위해서는 데이터가 어떻게 저장되고 연결되는지 이해하는 것이 필수적이었어요. ERD는 이 데이터 구조를 시각적으로 보여주기 때문에, 복잡한 데이터베이스 쿼리를 작성하거나 데이터 모델을 설계할 때 필요한 중요한 도구라는 것을 알게 됐습니다. 덕분에 데이터가 어떻게 연결되는지 파악하고 필요한 정보를 정확하게 가져오는 쿼리를 만들 수 있게 될 것 같습니다.\n내가 헷갈린 지점 처음에는 테이블들을 단순히 나열된 목록으로 생각해서 테이블 간의 관계가 어떻게 연결되는지 파악하는 데 어려움을 겪었습니다. 테이블을 부품으로 생각하라는 비유 때문에 오히려 더 복잡하게 느껴졌고, Primary Key나 Foreign Key가 어떤 역할을 하는지 명확히 이해하지 못했습니다. 테이블 간의 연결이 회로도처럼 복잡하게 얽혀 있다는 점을 깨닫고, 각 연결고리가 의미하는 바를 하나씩 파악해야 할 필요성을 느꼈습니다.\n시도한 코드 / 예시 SELECT artists.Name AS 아티스트_이름, albums.Title AS 앨범_제목 FROM artists JOIN albums ON artists.ArtistId = albums.ArtistId; 결과와 해석 Chinook 데이터베이스 예시처럼, 테이블 간의 관계를 파악하고 JOIN 구문을 활용하여 필요한 데이터를 결합하는 쿼리를 작성할 수 있었습니다. 아티스트와 앨범 테이블을 연결하여 아티스트 이름과 앨범 제목을 동시에 가져오는 쿼리를 성공적으로 작성하며 ERD를 활용한 데이터 조회 능력이 향상된 것 같습니다. 이처럼 ERD를 통해 테이블 간의 관계를 시각적으로 이해하고, 이를 SQL 쿼리에 반영하는 연습이 필요합니다.\n정리된 이해 ERD는 테이블 간의 연결 관계를 시각적으로 보여주는 지도와 같아서, 테이블 이름, Primary Key, Foreign Key를 파악하며 데이터가 어떻게 연결되는지 이해하는 것이 중요합니다. 테이블 관계를 명확히 이해하면 JOIN을 사용하여 필요한 데이터를 효과적으로 결합하는 쿼리를 작성할 수 있습니다.\n2. 프라이머리 키 왜 이걸 보게 됐나 데이터를 효율적으로 관리하고 테이블 간의 연결고리를 명확하게 파악하기 위해 프라이머리 키 개념이 필요했어요. 각 테이블에서 특정 레코드를 식별하고, 다른 테이블과 연결할 때 기준이 되는 중요한 역할을 한다는 걸 알게 됐습니다. ERD를 제대로 이해하고 관계형 데이터베이스 쿼리를 작성하려면 반드시 알아야 하는 핵심 개념이라고 생각합니다.\n내가 헷갈린 지점 처음에는 프라이머리 키가 단순히 테이블에서 ‘중요한’ 컬럼이라고 생각했었는데, 각 행을 유일하게 식별하는 역할이라는 것을 정확히 이해하지 못했어. 테이블을 여러 개 연결할 때, 다른 테이블에서 이 프라이머리 키를 외래 키로 참조해야 관계를 제대로 활용할 수 있다는 점이 늦게 알게 됐어. 프라이머리 키가 데이터의 ‘정체성’을 나타내는 중요한 역할이라는 것을 깨닫고 다시 보니 이해가 훨씬 잘 돼.\n시도한 코드 / 예시 -- 예시: artists 테이블에서 ArtistId (프라이머리 키)를 사용하여 아티스트 정보를 가져옴 SELECT ArtistId, Name FROM artists; 결과와 해석 프라이머리 키는 각 테이블 내에서 레코드를 유일하게 식별하는 컬럼이고, 데이터 중복 없이 레코드를 구분하는 중요한 역할을 합니다. Chinook 데이터베이스에서 artists 테이블의 ArtistId가 프라이머리 키인데, 이 ID를 통해 각 아티스트를 정확하게 찾고 연결할 수 있습니다. 이를 통해 다른 테이블과 관계를 맺고 데이터를 결합하는 기반이 됩니다.\n정리된 이해 프라이머리 키는 각 테이블 내에서 특정 레코드를 유일하게 식별하는 역할을 하는 컬럼이야. 마치 각 부품을 구분하는 고유한 번호와 같고, 테이블 내의 데이터를 정확하게 지칭할 수 있도록 해줘. 이를 통해 다른 테이블과의 관계를 연결하고 데이터를 찾거나 수정할 때 오류를 줄일 수 있어.\n3. 포린 키 왜 이걸 보게 됐나 테이블 간 연결고리가 있어야 데이터가 의미를 갖게 되고, 여러 테이블에 흩어진 정보를 조합해서 필요한 정보를 얻을 수 있기 때문입니다. 포린 키를 이해해야 테이블 간의 관계를 정확히 파악하고, 복잡한 쿼리를 작성하여 원하는 데이터를 효율적으로 추출할 수 있습니다. 결국, 데이터베이스 전체의 구조를 이해하고 활용하는 데 필수적인 개념이라고 생각합니다.\n내가 헷갈린 지점 포린 키가 단순히 다른 테이블의 컬럼을 참조하는 것임을 인지했지만, 왜 그렇게 연결되어야 하는지에 대한 데이터 모델링의 이유를 제대로 이해하지 못했던 것 같아요. 단순히 테이블 간의 연결고리라는 기능적인 측면만 생각하고, 데이터의 의미적 연관성을 간과했던 부분이 있었습니다. 결국, 포린 키는 데이터의 일관성과 무결성을 유지하기 위한 중요한 설계 요소임을 깨닫게 되었습니다.\n시도한 코드 / 예시 SELECT artists.Name AS 아티스트_이름, albums.Title AS 앨범_제목 FROM artists JOIN albums ON artists.ArtistId = albums.ArtistId; 결과와 해석 포린 키는 다른 테이블의 Primary Key를 참조하여 두 테이블 간의 관계를 설정하는 컬럼이야. 예를 들어, albums 테이블의 ArtistId가 artists 테이블의 ArtistId를 참조하는 포린 키가 되면, 앨범과 아티스트가 어떻게 연결되는지 알 수 있어. 이걸 통해 서로 관련된 데이터를 쿼리할 때 테이블을 조인(JOIN)하는 데 핵심적인 역할을 해.\n정리된 이해 포린 키는 다른 테이블의 Primary Key를 참조하여 테이블 간의 관계를 연결하는 컬럼이야. 마치 다른 부품을 연결하는 전선처럼, 데이터를 서로 묶어줌으로써 관련 정보를 함께 활용할 수 있게 도와줘. 이를 통해 테이블을 조인하여 필요한 데이터를 추출할 수 있어.\n4. 조인 왜 이걸 보게 됐나 ERD를 읽고 테이블 간의 관계를 파악하는 과정에서 데이터를 효과적으로 가져오기 위해 여러 테이블을 연결해야 한다는 것을 알게 되었고, 바로 이 연결 방식이 ‘조인’이라는 개념으로 이어지는 것을 깨달았습니다. 조인을 통해 데이터를 여러 테이블에서 조합하여 원하는 정보를 얻을 수 있게 되었고, 이는 쿼리 작성의 필수적인 부분임을 알게 되었습니다.\n내가 헷갈린 지점 처음에는 조인이 단순히 테이블을 합치는 것이라고 생각했는데, 실제로는 테이블 간의 연결 고리(Foreign Key)를 통해 관련된 데이터를 가져오는 과정이라는 것을 깨달았습니다. 어떤 테이블을 먼저 조인해야 하는지, 어떤 컬럼을 기준으로 연결해야 하는지 파악하는 것이 중요하다고 생각했습니다. 특히, 여러 테이블을 조인할 때는 조인 순서에 따라 결과가 달라질 수 있다는 점이 헷갈렸습니다.\n시도한 코드 / 예시 SELECT artists.Name AS 아티스트_이름, albums.Title AS 앨범_제목 FROM artists JOIN albums ON artists.ArtistId = albums.ArtistId; 결과와 해석 JOIN은 두 테이블의 공통된 컬럼(Foreign Key)을 기반으로 데이터를 연결하여 원하는 정보를 추출하는 방법이야. 위의 예시처럼 아티스트 테이블과 앨범 테이블을 ArtistId를 기준으로 JOIN하면, 각 아티스트가 가진 앨범 정보를 함께 확인할 수 있어. 이를 통해 ERD에서 파악한 테이블 간 관계를 실제 쿼리에 적용할 수 있음을 알게 되었어.\n정리된 이해 조인은 테이블 간의 관계를 나타내는 Foreign Key를 이용하여, 여러 테이블에 흩어진 데이터를 하나의 결과 집합으로 결합하는 핵심적인 SQL 연산이야. ERD에서 테이블 간의 연결 관계를 파악하고, 그 관계에 맞춰 JOIN 조건을 설정하면 원하는 데이터를 효과적으로 추출할 수 있어. 결국 조인은 데이터베이스에서 정보를 연결하고 분석하는 데 필수적인 도구라고 이해하고 있어.\n총평 오늘 전체에서 배운 것 ERD를 통해 테이블 간의 관계를 시각적으로 이해하고, 이를 바탕으로 필요한 데이터를 조인하여 가져오는 쿼리를 생성하는 방법을 익혔습니다. 테이블과 컬럼을 부품과 단자로 비유하여 관계를 파악하면 ERD를 좀 더 쉽게 이해할 수 있다는 것을 알게 되었습니다. Chinook 데이터베이스 예제를 통해 실제 쿼리 작성에 ERD가 어떻게 활용되는지 경험했습니다.\n다음에 조심할 것 테이블 간의 관계를 파악할 때, 단순히 연결된 컬럼을 보는 것이 아니라, 테이블이 어떻게 상호작용하는지 전체적인 맥락을 이해해야겠다. JOIN 조건을 잘못 설정하면 원하는 데이터를 얻지 못하거나, 불필요한 데이터까지 가져올 수 있으므로 주의해야겠다. 테이블 관계를 시각적으로 명확하게 떠올리는 연습을 꾸준히 해야겠다.\n다음 복습 주제 N:M 관계를 나타내는 테이블을 어떻게 설계하고 쿼리하는지 좀 더 자세히 알아봐야겠다. 복잡한 ERD에서 원하는 데이터의 위치를 빠르게 파악하는 연습이 필요하고, 다양한 JOIN 유형을 익혀야 실무에서 활용할 수 있을 것 같다.\n",
+  "wordCount" : "999",
+  "inLanguage": "en",
+  "datePublished": "2026-06-09T00:00:00Z",
+  "dateModified": "2026-06-09T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/pm-05-erd-reading-training/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      pm-05-erd-reading-training
+    </h1>
+    <div class="post-description">
+      pm-05-erd-reading-training 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%ED%85%8C%EC%9D%B4%EB%B8%94-%EA%B4%80%EA%B3%84">테이블 관계</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%ED%94%84%EB%9D%BC%EC%9D%B4%EB%A8%B8%EB%A6%AC-%ED%82%A4">프라이머리 키</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%ED%8F%AC%EB%A6%B0-%ED%82%A4">포린 키</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EC%A1%B0%EC%9D%B8">조인</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-테이블-관계">1. 테이블 관계<a hidden class="anchor" aria-hidden="true" href="#1-테이블-관계">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>데이터를 효과적으로 관리하고 분석하기 위해서는 데이터가 어떻게 저장되고 연결되는지 이해하는 것이 필수적이었어요. ERD는 이 데이터 구조를 시각적으로 보여주기 때문에, 복잡한 데이터베이스 쿼리를 작성하거나 데이터 모델을 설계할 때 필요한 중요한 도구라는 것을 알게 됐습니다. 덕분에 데이터가 어떻게 연결되는지 파악하고 필요한 정보를 정확하게 가져오는 쿼리를 만들 수 있게 될 것 같습니다.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>처음에는 테이블들을 단순히 나열된 목록으로 생각해서 테이블 간의 관계가 어떻게 연결되는지 파악하는 데 어려움을 겪었습니다. 테이블을 부품으로 생각하라는 비유 때문에 오히려 더 복잡하게 느껴졌고, Primary Key나 Foreign Key가 어떤 역할을 하는지 명확히 이해하지 못했습니다. 테이블 간의 연결이 회로도처럼 복잡하게 얽혀 있다는 점을 깨닫고, 각 연결고리가 의미하는 바를 하나씩 파악해야 할 필요성을 느꼈습니다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    artists.Name <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">아티스트</span>_이름,
+</span></span><span style="display:flex;"><span>    albums.Title <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">앨범</span>_제목
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> artists
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">JOIN</span> albums <span style="color:#66d9ef">ON</span> artists.ArtistId <span style="color:#f92672">=</span> albums.ArtistId;
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p>Chinook 데이터베이스 예시처럼, 테이블 간의 관계를 파악하고 JOIN 구문을 활용하여 필요한 데이터를 결합하는 쿼리를 작성할 수 있었습니다.  아티스트와 앨범 테이블을 연결하여 아티스트 이름과 앨범 제목을 동시에 가져오는 쿼리를 성공적으로 작성하며 ERD를 활용한 데이터 조회 능력이 향상된 것 같습니다.  이처럼 ERD를 통해 테이블 간의 관계를 시각적으로 이해하고, 이를 SQL 쿼리에 반영하는 연습이 필요합니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>ERD는 테이블 간의 연결 관계를 시각적으로 보여주는 지도와 같아서, 테이블 이름, Primary Key, Foreign Key를 파악하며 데이터가 어떻게 연결되는지 이해하는 것이 중요합니다. 테이블 관계를 명확히 이해하면 JOIN을 사용하여 필요한 데이터를 효과적으로 결합하는 쿼리를 작성할 수 있습니다.</p>
+<h2 id="2-프라이머리-키">2. 프라이머리 키<a hidden class="anchor" aria-hidden="true" href="#2-프라이머리-키">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>데이터를 효율적으로 관리하고 테이블 간의 연결고리를 명확하게 파악하기 위해 프라이머리 키 개념이 필요했어요. 각 테이블에서 특정 레코드를 식별하고, 다른 테이블과 연결할 때 기준이 되는 중요한 역할을 한다는 걸 알게 됐습니다. ERD를 제대로 이해하고 관계형 데이터베이스 쿼리를 작성하려면 반드시 알아야 하는 핵심 개념이라고 생각합니다.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>처음에는 프라이머리 키가 단순히 테이블에서 &lsquo;중요한&rsquo; 컬럼이라고 생각했었는데, 각 행을 유일하게 식별하는 역할이라는 것을 정확히 이해하지 못했어. 테이블을 여러 개 연결할 때, 다른 테이블에서 이 프라이머리 키를 외래 키로 참조해야 관계를 제대로 활용할 수 있다는 점이 늦게 알게 됐어. 프라이머리 키가 데이터의 &lsquo;정체성&rsquo;을 나타내는 중요한 역할이라는 것을 깨닫고 다시 보니 이해가 훨씬 잘 돼.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 예시: artists 테이블에서 ArtistId (프라이머리 키)를 사용하여 아티스트 정보를 가져옴
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> ArtistId, Name <span style="color:#66d9ef">FROM</span> artists;
+</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p>프라이머리 키는 각 테이블 내에서 레코드를 유일하게 식별하는 컬럼이고, 데이터 중복 없이 레코드를 구분하는 중요한 역할을 합니다. Chinook 데이터베이스에서 <code>artists</code> 테이블의 <code>ArtistId</code>가 프라이머리 키인데, 이 ID를 통해 각 아티스트를 정확하게 찾고 연결할 수 있습니다. 이를 통해 다른 테이블과 관계를 맺고 데이터를 결합하는 기반이 됩니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>프라이머리 키는 각 테이블 내에서 특정 레코드를 유일하게 식별하는 역할을 하는 컬럼이야. 마치 각 부품을 구분하는 고유한 번호와 같고, 테이블 내의 데이터를 정확하게 지칭할 수 있도록 해줘. 이를 통해 다른 테이블과의 관계를 연결하고 데이터를 찾거나 수정할 때 오류를 줄일 수 있어.</p>
+<h2 id="3-포린-키">3. 포린 키<a hidden class="anchor" aria-hidden="true" href="#3-포린-키">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>테이블 간 연결고리가 있어야 데이터가 의미를 갖게 되고, 여러 테이블에 흩어진 정보를 조합해서 필요한 정보를 얻을 수 있기 때문입니다. 포린 키를 이해해야 테이블 간의 관계를 정확히 파악하고, 복잡한 쿼리를 작성하여 원하는 데이터를 효율적으로 추출할 수 있습니다. 결국, 데이터베이스 전체의 구조를 이해하고 활용하는 데 필수적인 개념이라고 생각합니다.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>포린 키가 단순히 다른 테이블의 컬럼을 참조하는 것임을 인지했지만, 왜 그렇게 연결되어야 하는지에 대한 데이터 모델링의 이유를 제대로 이해하지 못했던 것 같아요. 단순히 테이블 간의 연결고리라는 기능적인 측면만 생각하고, 데이터의 의미적 연관성을 간과했던 부분이 있었습니다. 결국, 포린 키는 데이터의 일관성과 무결성을 유지하기 위한 중요한 설계 요소임을 깨닫게 되었습니다.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    artists.Name <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">아티스트</span>_이름,
+</span></span><span style="display:flex;"><span>    albums.Title <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">앨범</span>_제목
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> artists
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">JOIN</span> albums <span style="color:#66d9ef">ON</span> artists.ArtistId <span style="color:#f92672">=</span> albums.ArtistId;
+</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p>포린 키는 다른 테이블의 Primary Key를 참조하여 두 테이블 간의 관계를 설정하는 컬럼이야. 예를 들어, <code>albums</code> 테이블의 <code>ArtistId</code>가 <code>artists</code> 테이블의 <code>ArtistId</code>를 참조하는 포린 키가 되면, 앨범과 아티스트가 어떻게 연결되는지 알 수 있어. 이걸 통해 서로 관련된 데이터를 쿼리할 때 테이블을 조인(JOIN)하는 데 핵심적인 역할을 해.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>포린 키는 다른 테이블의 Primary Key를 참조하여 테이블 간의 관계를 연결하는 컬럼이야. 마치 다른 부품을 연결하는 전선처럼, 데이터를 서로 묶어줌으로써 관련 정보를 함께 활용할 수 있게 도와줘. 이를 통해 테이블을 조인하여 필요한 데이터를 추출할 수 있어.</p>
+<h2 id="4-조인">4. 조인<a hidden class="anchor" aria-hidden="true" href="#4-조인">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>ERD를 읽고 테이블 간의 관계를 파악하는 과정에서 데이터를 효과적으로 가져오기 위해 여러 테이블을 연결해야 한다는 것을 알게 되었고, 바로 이 연결 방식이 &lsquo;조인&rsquo;이라는 개념으로 이어지는 것을 깨달았습니다. 조인을 통해 데이터를 여러 테이블에서 조합하여 원하는 정보를 얻을 수 있게 되었고, 이는 쿼리 작성의 필수적인 부분임을 알게 되었습니다.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>처음에는 조인이 단순히 테이블을 합치는 것이라고 생각했는데, 실제로는 테이블 간의 연결 고리(Foreign Key)를 통해 관련된 데이터를 가져오는 과정이라는 것을 깨달았습니다. 어떤 테이블을 먼저 조인해야 하는지, 어떤 컬럼을 기준으로 연결해야 하는지 파악하는 것이 중요하다고 생각했습니다. 특히, 여러 테이블을 조인할 때는 조인 순서에 따라 결과가 달라질 수 있다는 점이 헷갈렸습니다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    artists.Name <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">아티스트</span>_이름,
+</span></span><span style="display:flex;"><span>    albums.Title <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">앨범</span>_제목
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> artists
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">JOIN</span> albums <span style="color:#66d9ef">ON</span> artists.ArtistId <span style="color:#f92672">=</span> albums.ArtistId;
+</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<p>JOIN은 두 테이블의 공통된 컬럼(Foreign Key)을 기반으로 데이터를 연결하여 원하는 정보를 추출하는 방법이야. 위의 예시처럼 아티스트 테이블과 앨범 테이블을 ArtistId를 기준으로 JOIN하면, 각 아티스트가 가진 앨범 정보를 함께 확인할 수 있어. 이를 통해 ERD에서 파악한 테이블 간 관계를 실제 쿼리에 적용할 수 있음을 알게 되었어.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>조인은 테이블 간의 관계를 나타내는 Foreign Key를 이용하여, 여러 테이블에 흩어진 데이터를 하나의 결과 집합으로 결합하는 핵심적인 SQL 연산이야. ERD에서 테이블 간의 연결 관계를 파악하고, 그 관계에 맞춰 JOIN 조건을 설정하면 원하는 데이터를 효과적으로 추출할 수 있어. 결국 조인은 데이터베이스에서 정보를 연결하고 분석하는 데 필수적인 도구라고 이해하고 있어.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>ERD를 통해 테이블 간의 관계를 시각적으로 이해하고, 이를 바탕으로 필요한 데이터를 조인하여 가져오는 쿼리를 생성하는 방법을 익혔습니다. 테이블과 컬럼을 부품과 단자로 비유하여 관계를 파악하면 ERD를 좀 더 쉽게 이해할 수 있다는 것을 알게 되었습니다. Chinook 데이터베이스 예제를 통해 실제 쿼리 작성에 ERD가 어떻게 활용되는지 경험했습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>테이블 간의 관계를 파악할 때, 단순히 연결된 컬럼을 보는 것이 아니라, 테이블이 어떻게 상호작용하는지 전체적인 맥락을 이해해야겠다. JOIN 조건을 잘못 설정하면 원하는 데이터를 얻지 못하거나, 불필요한 데이터까지 가져올 수 있으므로 주의해야겠다. 테이블 관계를 시각적으로 명확하게 떠올리는 연습을 꾸준히 해야겠다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>N:M 관계를 나타내는 테이블을 어떻게 설계하고 쿼리하는지 좀 더 자세히 알아봐야겠다. 복잡한 ERD에서 원하는 데이터의 위치를 빠르게 파악하는 연습이 필요하고, 다양한 JOIN 유형을 익혀야 실무에서 활용할 수 있을 것 같다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/pm-04-subquery-learning-friction/">
+    <span class="title">« Prev</span>
+    <span>pm-04-subquery-learning-friction</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/rlhf-good-bad-response/">
+    <span class="title">Next »</span>
+    <span>rlhf-good-bad-response</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

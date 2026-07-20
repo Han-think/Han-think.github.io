@@ -1,50 +1,472 @@
-<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지 | Han-think Blog</title><meta name=keywords content="kaggle,machine-learning,pipeline,eda,validation,balanced-accuracy"><meta name=description content="2026-07-13 오전 수업에서 Kaggle 베이스라인, EDA 기반 변수 선택, 점수 설계와 개인 최적화의 관계를 정리했다."><meta name=author content><link rel=canonical href=https://Han-think.github.io/learning/2026-07-13-am-daily/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/learning/2026-07-13-am-daily/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-13-am-daily/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지"><meta property="og:description" content="2026-07-13 오전 수업에서 Kaggle 베이스라인, EDA 기반 변수 선택, 점수 설계와 개인 최적화의 관계를 정리했다."><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="learning"><meta property="article:published_time" content="2026-07-13T00:00:00+00:00"><meta property="article:modified_time" content="2026-07-13T00:00:00+00:00"><meta property="article:tag" content="Kaggle"><meta property="article:tag" content="Machine-Learning"><meta property="article:tag" content="Pipeline"><meta property="article:tag" content="Eda"><meta property="article:tag" content="Validation"><meta property="article:tag" content="Balanced-Accuracy"><meta name=twitter:card content="summary"><meta name=twitter:title content="Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지"><meta name=twitter:description content="2026-07-13 오전 수업에서 Kaggle 베이스라인, EDA 기반 변수 선택, 점수 설계와 개인 최적화의 관계를 정리했다."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"학습 기록","item":"https://Han-think.github.io/learning/"},{"@type":"ListItem","position":2,"name":"Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지","item":"https://Han-think.github.io/learning/2026-07-13-am-daily/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지","name":"Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지","description":"2026-07-13 오전 수업에서 Kaggle 베이스라인, EDA 기반 변수 선택, 점수 설계와 개인 최적화의 관계를 정리했다.","keywords":["kaggle","machine-learning","pipeline","eda","validation","balanced-accuracy"],"articleBody":"목차 Pipeline으로 Kaggle 베이스라인 완주하기 EDA를 변수 선택의 근거로 사용하기 점수 설계와 검증 가능한 의사결정 구조 수업 베이스라인과 개인 최적화의 역할 구분 총평 1. Pipeline으로 Kaggle 베이스라인 완주하기 무엇을 배웠나 오전 수업에서는 Kaggle 프로젝트를 처음부터 제출까지 한 번 완주하는 표준 흐름을 확인했다.\n문제 정의 -\u003e 데이터 확인 -\u003e 독립변수와 종속변수 분리 -\u003e 전처리 Pipeline 구성 -\u003e 베이스라인 모델 학습 -\u003e Balanced Accuracy 확인 -\u003e 테스트 데이터 예측 -\u003e submission.csv 생성 -\u003e Kaggle 제출 및 점수 확인 처음부터 최고 점수를 노리는 것보다, 같은 입력에서 같은 결과를 다시 만들 수 있는 기준선부터 완성하는 것이 중요했다. 기준선이 있어야 이후의 피처 엔지니어링이나 앙상블이 실제 개선인지 비교할 수 있다.\n헷갈렸던 점 강사님의 제출 코드는 짧았고, 개인 프로젝트에서 만든 앙상블과 보정 코드는 훨씬 복잡했다. 그래서 코드가 짧으면 분석이 단순한 것인지, 내 방식이 필요 이상으로 복잡한 것인지 헷갈렸다.\n정리된 이해 제출 코드가 짧은 이유는 전처리와 모델이 이미 final_pipeline 안에 묶여 있기 때문이다. 중요한 것은 마지막 세 줄의 길이가 아니라, 학습할 때 적용한 전처리가 테스트 데이터에도 같은 순서로 적용된다는 점이다.\ntest_pred = final_pipeline.predict(X_test_kaggle) submission = pd.DataFrame({ id_col: test_ids, target_col: test_pred }) submission.to_csv(\"submission_1th.csv\", index=False) Pipeline 문법은 코드를 예쁘게 줄이는 장치가 아니다. 전처리 누락과 데이터 누수를 줄이고, 학습과 예측의 절차를 하나의 재현 가능한 객체로 고정하는 장치다.\n2. EDA를 변수 선택의 근거로 사용하기 무엇을 배웠나 EDA는 발표용 그래프를 만드는 단계가 아니라 어떤 변수를 왜 사용하고 어떻게 가공할지 결정하는 근거를 만드는 과정이었다.\nVariable Selection -\u003e Issues with Data -\u003e Feature Engineering -\u003e EDA -\u003e Statistical Analysis 실제 작업에서는 이 단계들이 한 방향으로만 흐르지 않는다. EDA에서 이상한 분포를 발견하면 데이터 문제를 다시 확인하고, 새로운 관계가 보이면 파생 변수를 만든 뒤 통계와 모델 점수로 다시 검증한다.\n헷갈렸던 점 처음에는 EDA를 결과 보고서에 넣기 위한 시각화 정도로 생각했다. 그러나 수업 사례에서는 EDA가 변수 선택, 점수 설계, 클러스터링, 최종 우선순위까지 이어졌다.\n정리된 이해 각 단계의 역할은 다음처럼 구분할 수 있다.\n단계 확인하는 것 EDA 데이터의 분포, 이상치, 변수 간 관계 상관분석 선형 관계와 중복 가능성 통계 검정 관찰한 차이가 우연일 가능성 Feature Engineering 관찰과 가설을 모델 입력으로 변환 모델링 만든 정보가 예측에 실제로 도움이 되는지 확인 개인 Kaggle 프로젝트에서 stress_level과 physical_activity_level의 관계를 다시 살펴보고 교차 피처를 만든 과정도 같은 흐름이었다. 그래프에서 끝내지 않고 모델 입력과 검증 점수까지 연결해야 EDA가 의사결정 근거가 된다.\n3. 점수 설계와 검증 가능한 의사결정 구조 무엇을 배웠나 수업 사례에서는 알고리즘 결과만 보여주는 것이 아니라 우선순위 점수가 어떻게 구성되고 검증되는지 전체 과정을 다뤘다.\n점수 구성 요소 선정 -\u003e 방향성 통일 -\u003e 단위 정규화 -\u003e 가중치 산정 -\u003e 클러스터링 -\u003e 군집별 특성 분석 -\u003e 최종 점수 계산 -\u003e 민감도 분석 -\u003e 현장 적용 서로 단위가 다른 값을 바로 더할 수 없고, 값이 클수록 좋은 변수와 나쁜 변수를 같은 방향으로 맞춰야 한다. 가중치도 단순한 감으로 정하기보다 왜 그 비중을 사용했는지 설명하고, 가중치가 조금 달라져도 결론이 유지되는지 확인해야 한다.\n헷갈렸던 점 처음에는 모델이나 클러스터링 알고리즘을 사용했다는 사실 자체가 전문성을 보여준다고 생각했다. 하지만 알고리즘 이름만으로는 입력이 어떻게 결과와 액션으로 이어졌는지 설명할 수 없었다.\n정리된 이해 검증 가능한 결과물에는 다음 연결이 남아야 한다.\n입력 데이터 -\u003e 정제 규칙 -\u003e 변수와 방향성 -\u003e 점수 또는 모델 -\u003e 검증 결과 -\u003e 해석 -\u003e 실제 액션 좋은 분석은 “모델을 돌렸더니 이런 숫자가 나왔다”에서 멈추지 않는다. 입력과 규칙을 바꾸면 결과가 어떻게 달라지는지 추적할 수 있어야 하고, 최종 사용자가 그 결과를 어떤 판단에 사용할 수 있는지도 설명해야 한다.\n4. 수업 베이스라인과 개인 최적화의 역할 구분 무엇을 배웠나 수업의 베이스라인은 표준 Pipeline으로 전체 흐름을 완주하는 데 목적이 있었고, 개인 프로젝트는 그 기준선 이후에 성능을 개선하고 검증을 강화하는 작업이었다.\n수업 베이스라인 = 재현 가능한 전체 과정 학습 개인 최적화 = 기준선 이후 성능 개선과 검증 강화 강사님의 기본 제출에서 확인한 점수와 개인 프로젝트 점수는 사용한 특성, 모델, 보정, 검증 조건이 다르다. 따라서 숫자만 나란히 두고 어느 모델이 절대적으로 우수하다고 결론 내리면 안 된다. 비교할 때는 데이터, metric, split, 전처리와 제출 조건을 먼저 맞춰야 한다.\n헷갈렸던 점 개인 프로젝트를 너무 복잡하게 만든 것은 아닌지 걱정했다. 하지만 기준선과 최적화의 목적이 다르다는 점을 구분하자, 주말에 진행한 실험은 수업과 동떨어진 작업이 아니라 수업의 다음 단계를 먼저 경험한 것이었다.\n정리된 이해 기존 프로젝트를 처음부터 다시 만들 필요는 없다. 먼저 이미 존재하는 코드, 실험 결과, 그래프와 제출 기록을 조사하고, 수업의 분석 항목에 맞춰 재배치하면 된다. 없는 증빙만 추가하고, 조건이 다른 점수는 직접 비교하지 않으며, 모델을 다시 학습할 때는 그 이유와 기대 효과를 먼저 정해야 한다.\n총평 오늘 오전 전체에서 배운 것 Kaggle 프로젝트는 높은 점수 하나를 만드는 활동이 아니라 문제 정의부터 제출까지 재현 가능한 흐름을 세우고, 기준선 이후의 개선을 검증하는 과정이라는 점을 배웠다. Pipeline, EDA, 통계, 점수 설계와 모델링은 따로 떨어진 기술이 아니라 하나의 판단 경로를 구성한다.\n다음에 조심할 것 조건이 다른 점수를 숫자만으로 비교하지 않는다. 새로운 피처나 앙상블이 좋아 보이더라도 같은 검증 조건에서 기준선을 넘는지 확인하고, 탐색에 사용하지 않은 fold나 표본에서도 결과가 유지되는지 다시 확인한다.\n다음 복습 주제 개인 Kaggle 프로젝트의 실험 원장을 기준으로 각 피처와 모델이 어떤 가설에서 시작됐고 어떤 검증에서 채택되거나 기각됐는지 연결해 본다. 이후 발표자료에서는 점수보다 문제 정의, 판단 근거와 재현 가능한 흐름이 먼저 보이도록 구성한다.\n이 글은 작성 시각이 남지 않은 2026-07-13 오전 personal note 4개를 파일 순서와 기록 날짜를 기준으로 복구해 합본한 학습로그입니다.\n","wordCount":"808","inLanguage":"en","datePublished":"2026-07-13T00:00:00Z","dateModified":"2026-07-13T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/learning/2026-07-13-am-daily/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
-<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지</h1><div class=post-description>2026-07-13 오전 수업에서 Kaggle 베이스라인, EDA 기반 변수 선택, 점수 설계와 개인 최적화의 관계를 정리했다.</div><div class=post-meta><span title='2026-07-13 00:00:00 +0000 UTC'>2026년 7월 13일</span>&nbsp;·&nbsp;<span>4 min</span></div></header><div class="post-content md-content"><h2 id=목차>목차<a hidden class=anchor aria-hidden=true href=#목차>#</a></h2><ul><li><ol><li><a href=#1-pipeline%EC%9C%BC%EB%A1%9C-kaggle-%EB%B2%A0%EC%9D%B4%EC%8A%A4%EB%9D%BC%EC%9D%B8-%EC%99%84%EC%A3%BC%ED%95%98%EA%B8%B0>Pipeline으로 Kaggle 베이스라인 완주하기</a></li></ol></li><li><ol start=2><li><a href=#2-eda%EB%A5%BC-%EB%B3%80%EC%88%98-%EC%84%A0%ED%83%9D%EC%9D%98-%EA%B7%BC%EA%B1%B0%EB%A1%9C-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0>EDA를 변수 선택의 근거로 사용하기</a></li></ol></li><li><ol start=3><li><a href=#3-%EC%A0%90%EC%88%98-%EC%84%A4%EA%B3%84%EC%99%80-%EA%B2%80%EC%A6%9D-%EA%B0%80%EB%8A%A5%ED%95%9C-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95-%EA%B5%AC%EC%A1%B0>점수 설계와 검증 가능한 의사결정 구조</a></li></ol></li><li><ol start=4><li><a href=#4-%EC%88%98%EC%97%85-%EB%B2%A0%EC%9D%B4%EC%8A%A4%EB%9D%BC%EC%9D%B8%EA%B3%BC-%EA%B0%9C%EC%9D%B8-%EC%B5%9C%EC%A0%81%ED%99%94%EC%9D%98-%EC%97%AD%ED%95%A0-%EA%B5%AC%EB%B6%84>수업 베이스라인과 개인 최적화의 역할 구분</a></li></ol></li><li><a href=#%EC%B4%9D%ED%8F%89>총평</a></li></ul><h2 id=1-pipeline으로-kaggle-베이스라인-완주하기>1. Pipeline으로 Kaggle 베이스라인 완주하기<a hidden class=anchor aria-hidden=true href=#1-pipeline으로-kaggle-베이스라인-완주하기>#</a></h2><h3 id=무엇을-배웠나>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나>#</a></h3><p>오전 수업에서는 Kaggle 프로젝트를 처음부터 제출까지 한 번 완주하는 표준 흐름을 확인했다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>문제 정의
-</span></span><span style=display:flex><span>-&gt; 데이터 확인
-</span></span><span style=display:flex><span>-&gt; 독립변수와 종속변수 분리
-</span></span><span style=display:flex><span>-&gt; 전처리 Pipeline 구성
-</span></span><span style=display:flex><span>-&gt; 베이스라인 모델 학습
-</span></span><span style=display:flex><span>-&gt; Balanced Accuracy 확인
-</span></span><span style=display:flex><span>-&gt; 테스트 데이터 예측
-</span></span><span style=display:flex><span>-&gt; submission.csv 생성
-</span></span><span style=display:flex><span>-&gt; Kaggle 제출 및 점수 확인
-</span></span></code></pre></div><p>처음부터 최고 점수를 노리는 것보다, 같은 입력에서 같은 결과를 다시 만들 수 있는 기준선부터 완성하는 것이 중요했다. 기준선이 있어야 이후의 피처 엔지니어링이나 앙상블이 실제 개선인지 비교할 수 있다.</p><h3 id=헷갈렸던-점>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점>#</a></h3><p>강사님의 제출 코드는 짧았고, 개인 프로젝트에서 만든 앙상블과 보정 코드는 훨씬 복잡했다. 그래서 코드가 짧으면 분석이 단순한 것인지, 내 방식이 필요 이상으로 복잡한 것인지 헷갈렸다.</p><h3 id=정리된-이해>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해>#</a></h3><p>제출 코드가 짧은 이유는 전처리와 모델이 이미 <code>final_pipeline</code> 안에 묶여 있기 때문이다. 중요한 것은 마지막 세 줄의 길이가 아니라, 학습할 때 적용한 전처리가 테스트 데이터에도 같은 순서로 적용된다는 점이다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>test_pred <span style=color:#f92672>=</span> final_pipeline<span style=color:#f92672>.</span>predict(X_test_kaggle)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>submission <span style=color:#f92672>=</span> pd<span style=color:#f92672>.</span>DataFrame({
-</span></span><span style=display:flex><span>    id_col: test_ids,
-</span></span><span style=display:flex><span>    target_col: test_pred
-</span></span><span style=display:flex><span>})
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>submission<span style=color:#f92672>.</span>to_csv(<span style=color:#e6db74>&#34;submission_1th.csv&#34;</span>, index<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>)
-</span></span></code></pre></div><p><code>Pipeline</code> 문법은 코드를 예쁘게 줄이는 장치가 아니다. 전처리 누락과 데이터 누수를 줄이고, 학습과 예측의 절차를 하나의 재현 가능한 객체로 고정하는 장치다.</p><h2 id=2-eda를-변수-선택의-근거로-사용하기>2. EDA를 변수 선택의 근거로 사용하기<a hidden class=anchor aria-hidden=true href=#2-eda를-변수-선택의-근거로-사용하기>#</a></h2><h3 id=무엇을-배웠나-1>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-1>#</a></h3><p>EDA는 발표용 그래프를 만드는 단계가 아니라 어떤 변수를 왜 사용하고 어떻게 가공할지 결정하는 근거를 만드는 과정이었다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>Variable Selection
-</span></span><span style=display:flex><span>-&gt; Issues with Data
-</span></span><span style=display:flex><span>-&gt; Feature Engineering
-</span></span><span style=display:flex><span>-&gt; EDA
-</span></span><span style=display:flex><span>-&gt; Statistical Analysis
-</span></span></code></pre></div><p>실제 작업에서는 이 단계들이 한 방향으로만 흐르지 않는다. EDA에서 이상한 분포를 발견하면 데이터 문제를 다시 확인하고, 새로운 관계가 보이면 파생 변수를 만든 뒤 통계와 모델 점수로 다시 검증한다.</p><h3 id=헷갈렸던-점-1>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-1>#</a></h3><p>처음에는 EDA를 결과 보고서에 넣기 위한 시각화 정도로 생각했다. 그러나 수업 사례에서는 EDA가 변수 선택, 점수 설계, 클러스터링, 최종 우선순위까지 이어졌다.</p><h3 id=정리된-이해-1>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-1>#</a></h3><p>각 단계의 역할은 다음처럼 구분할 수 있다.</p><table><thead><tr><th>단계</th><th>확인하는 것</th></tr></thead><tbody><tr><td>EDA</td><td>데이터의 분포, 이상치, 변수 간 관계</td></tr><tr><td>상관분석</td><td>선형 관계와 중복 가능성</td></tr><tr><td>통계 검정</td><td>관찰한 차이가 우연일 가능성</td></tr><tr><td>Feature Engineering</td><td>관찰과 가설을 모델 입력으로 변환</td></tr><tr><td>모델링</td><td>만든 정보가 예측에 실제로 도움이 되는지 확인</td></tr></tbody></table><p>개인 Kaggle 프로젝트에서 <code>stress_level</code>과 <code>physical_activity_level</code>의 관계를 다시 살펴보고 교차 피처를 만든 과정도 같은 흐름이었다. 그래프에서 끝내지 않고 모델 입력과 검증 점수까지 연결해야 EDA가 의사결정 근거가 된다.</p><h2 id=3-점수-설계와-검증-가능한-의사결정-구조>3. 점수 설계와 검증 가능한 의사결정 구조<a hidden class=anchor aria-hidden=true href=#3-점수-설계와-검증-가능한-의사결정-구조>#</a></h2><h3 id=무엇을-배웠나-2>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-2>#</a></h3><p>수업 사례에서는 알고리즘 결과만 보여주는 것이 아니라 우선순위 점수가 어떻게 구성되고 검증되는지 전체 과정을 다뤘다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>점수 구성 요소 선정
-</span></span><span style=display:flex><span>-&gt; 방향성 통일
-</span></span><span style=display:flex><span>-&gt; 단위 정규화
-</span></span><span style=display:flex><span>-&gt; 가중치 산정
-</span></span><span style=display:flex><span>-&gt; 클러스터링
-</span></span><span style=display:flex><span>-&gt; 군집별 특성 분석
-</span></span><span style=display:flex><span>-&gt; 최종 점수 계산
-</span></span><span style=display:flex><span>-&gt; 민감도 분석
-</span></span><span style=display:flex><span>-&gt; 현장 적용
-</span></span></code></pre></div><p>서로 단위가 다른 값을 바로 더할 수 없고, 값이 클수록 좋은 변수와 나쁜 변수를 같은 방향으로 맞춰야 한다. 가중치도 단순한 감으로 정하기보다 왜 그 비중을 사용했는지 설명하고, 가중치가 조금 달라져도 결론이 유지되는지 확인해야 한다.</p><h3 id=헷갈렸던-점-2>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-2>#</a></h3><p>처음에는 모델이나 클러스터링 알고리즘을 사용했다는 사실 자체가 전문성을 보여준다고 생각했다. 하지만 알고리즘 이름만으로는 입력이 어떻게 결과와 액션으로 이어졌는지 설명할 수 없었다.</p><h3 id=정리된-이해-2>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-2>#</a></h3><p>검증 가능한 결과물에는 다음 연결이 남아야 한다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>입력 데이터
-</span></span><span style=display:flex><span>-&gt; 정제 규칙
-</span></span><span style=display:flex><span>-&gt; 변수와 방향성
-</span></span><span style=display:flex><span>-&gt; 점수 또는 모델
-</span></span><span style=display:flex><span>-&gt; 검증 결과
-</span></span><span style=display:flex><span>-&gt; 해석
-</span></span><span style=display:flex><span>-&gt; 실제 액션
-</span></span></code></pre></div><p>좋은 분석은 “모델을 돌렸더니 이런 숫자가 나왔다”에서 멈추지 않는다. 입력과 규칙을 바꾸면 결과가 어떻게 달라지는지 추적할 수 있어야 하고, 최종 사용자가 그 결과를 어떤 판단에 사용할 수 있는지도 설명해야 한다.</p><h2 id=4-수업-베이스라인과-개인-최적화의-역할-구분>4. 수업 베이스라인과 개인 최적화의 역할 구분<a hidden class=anchor aria-hidden=true href=#4-수업-베이스라인과-개인-최적화의-역할-구분>#</a></h2><h3 id=무엇을-배웠나-3>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-3>#</a></h3><p>수업의 베이스라인은 표준 <code>Pipeline</code>으로 전체 흐름을 완주하는 데 목적이 있었고, 개인 프로젝트는 그 기준선 이후에 성능을 개선하고 검증을 강화하는 작업이었다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>수업 베이스라인 = 재현 가능한 전체 과정 학습
-</span></span><span style=display:flex><span>개인 최적화 = 기준선 이후 성능 개선과 검증 강화
-</span></span></code></pre></div><p>강사님의 기본 제출에서 확인한 점수와 개인 프로젝트 점수는 사용한 특성, 모델, 보정, 검증 조건이 다르다. 따라서 숫자만 나란히 두고 어느 모델이 절대적으로 우수하다고 결론 내리면 안 된다. 비교할 때는 데이터, metric, split, 전처리와 제출 조건을 먼저 맞춰야 한다.</p><h3 id=헷갈렸던-점-3>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-3>#</a></h3><p>개인 프로젝트를 너무 복잡하게 만든 것은 아닌지 걱정했다. 하지만 기준선과 최적화의 목적이 다르다는 점을 구분하자, 주말에 진행한 실험은 수업과 동떨어진 작업이 아니라 수업의 다음 단계를 먼저 경험한 것이었다.</p><h3 id=정리된-이해-3>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-3>#</a></h3><p>기존 프로젝트를 처음부터 다시 만들 필요는 없다. 먼저 이미 존재하는 코드, 실험 결과, 그래프와 제출 기록을 조사하고, 수업의 분석 항목에 맞춰 재배치하면 된다. 없는 증빙만 추가하고, 조건이 다른 점수는 직접 비교하지 않으며, 모델을 다시 학습할 때는 그 이유와 기대 효과를 먼저 정해야 한다.</p><h2 id=총평>총평<a hidden class=anchor aria-hidden=true href=#총평>#</a></h2><h3 id=오늘-오전-전체에서-배운-것>오늘 오전 전체에서 배운 것<a hidden class=anchor aria-hidden=true href=#오늘-오전-전체에서-배운-것>#</a></h3><p>Kaggle 프로젝트는 높은 점수 하나를 만드는 활동이 아니라 문제 정의부터 제출까지 재현 가능한 흐름을 세우고, 기준선 이후의 개선을 검증하는 과정이라는 점을 배웠다. <code>Pipeline</code>, EDA, 통계, 점수 설계와 모델링은 따로 떨어진 기술이 아니라 하나의 판단 경로를 구성한다.</p><h3 id=다음에-조심할-것>다음에 조심할 것<a hidden class=anchor aria-hidden=true href=#다음에-조심할-것>#</a></h3><p>조건이 다른 점수를 숫자만으로 비교하지 않는다. 새로운 피처나 앙상블이 좋아 보이더라도 같은 검증 조건에서 기준선을 넘는지 확인하고, 탐색에 사용하지 않은 fold나 표본에서도 결과가 유지되는지 다시 확인한다.</p><h3 id=다음-복습-주제>다음 복습 주제<a hidden class=anchor aria-hidden=true href=#다음-복습-주제>#</a></h3><p>개인 Kaggle 프로젝트의 실험 원장을 기준으로 각 피처와 모델이 어떤 가설에서 시작됐고 어떤 검증에서 채택되거나 기각됐는지 연결해 본다. 이후 발표자료에서는 점수보다 문제 정의, 판단 근거와 재현 가능한 흐름이 먼저 보이도록 구성한다.</p><blockquote><p>이 글은 작성 시각이 남지 않은 2026-07-13 오전 personal note 4개를 파일 순서와 기록 날짜를 기준으로 복구해 합본한 학습로그입니다.</p></blockquote></div><footer class=post-footer><ul class=post-tags><li><a href=https://Han-think.github.io/tags/kaggle/>Kaggle</a></li><li><a href=https://Han-think.github.io/tags/machine-learning/>Machine-Learning</a></li><li><a href=https://Han-think.github.io/tags/pipeline/>Pipeline</a></li><li><a href=https://Han-think.github.io/tags/eda/>Eda</a></li><li><a href=https://Han-think.github.io/tags/validation/>Validation</a></li><li><a href=https://Han-think.github.io/tags/balanced-accuracy/>Balanced-Accuracy</a></li></ul><nav class=paginav><a class=prev href=https://Han-think.github.io/learning/2026-07-16-am-daily/><span class=title>« Prev</span>
-<span>머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해</span>
-</a><a class=next href=https://Han-think.github.io/learning/2026-07-10-am-daily/><span class=title>Next »</span>
-<span>데이터 분석 기초 다지기: 비지도 학습부터 분류 모델까지</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
-<span>Powered by
-<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
-<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지 | Han-think Blog</title>
+<meta name="keywords" content="kaggle, machine-learning, pipeline, eda, validation, balanced-accuracy">
+<meta name="description" content="2026-07-13 오전 수업에서 Kaggle 베이스라인, EDA 기반 변수 선택, 점수 설계와 개인 최적화의 관계를 정리했다.">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-07-13-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-07-13-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-13-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지">
+  <meta property="og:description" content="2026-07-13 오전 수업에서 Kaggle 베이스라인, EDA 기반 변수 선택, 점수 설계와 개인 최적화의 관계를 정리했다.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-07-13T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-13T00:00:00+00:00">
+    <meta property="article:tag" content="Kaggle">
+    <meta property="article:tag" content="Machine-Learning">
+    <meta property="article:tag" content="Pipeline">
+    <meta property="article:tag" content="Eda">
+    <meta property="article:tag" content="Validation">
+    <meta property="article:tag" content="Balanced-Accuracy">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지">
+  <meta name="twitter:description" content="2026-07-13 오전 수업에서 Kaggle 베이스라인, EDA 기반 변수 선택, 점수 설계와 개인 최적화의 관계를 정리했다.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지",
+      "item": "https://Han-think.github.io/learning/2026-07-13-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지",
+  "name": "Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지",
+  "description": "2026-07-13 오전 수업에서 Kaggle 베이스라인, EDA 기반 변수 선택, 점수 설계와 개인 최적화의 관계를 정리했다.",
+  "keywords": [
+    "kaggle", "machine-learning", "pipeline", "eda", "validation", "balanced-accuracy"
+  ],
+  "articleBody": "목차 Pipeline으로 Kaggle 베이스라인 완주하기 EDA를 변수 선택의 근거로 사용하기 점수 설계와 검증 가능한 의사결정 구조 수업 베이스라인과 개인 최적화의 역할 구분 총평 1. Pipeline으로 Kaggle 베이스라인 완주하기 무엇을 배웠나 오전 수업에서는 Kaggle 프로젝트를 처음부터 제출까지 한 번 완주하는 표준 흐름을 확인했다.\n문제 정의 -\u003e 데이터 확인 -\u003e 독립변수와 종속변수 분리 -\u003e 전처리 Pipeline 구성 -\u003e 베이스라인 모델 학습 -\u003e Balanced Accuracy 확인 -\u003e 테스트 데이터 예측 -\u003e submission.csv 생성 -\u003e Kaggle 제출 및 점수 확인 처음부터 최고 점수를 노리는 것보다, 같은 입력에서 같은 결과를 다시 만들 수 있는 기준선부터 완성하는 것이 중요했다. 기준선이 있어야 이후의 피처 엔지니어링이나 앙상블이 실제 개선인지 비교할 수 있다.\n헷갈렸던 점 강사님의 제출 코드는 짧았고, 개인 프로젝트에서 만든 앙상블과 보정 코드는 훨씬 복잡했다. 그래서 코드가 짧으면 분석이 단순한 것인지, 내 방식이 필요 이상으로 복잡한 것인지 헷갈렸다.\n정리된 이해 제출 코드가 짧은 이유는 전처리와 모델이 이미 final_pipeline 안에 묶여 있기 때문이다. 중요한 것은 마지막 세 줄의 길이가 아니라, 학습할 때 적용한 전처리가 테스트 데이터에도 같은 순서로 적용된다는 점이다.\ntest_pred = final_pipeline.predict(X_test_kaggle) submission = pd.DataFrame({ id_col: test_ids, target_col: test_pred }) submission.to_csv(\"submission_1th.csv\", index=False) Pipeline 문법은 코드를 예쁘게 줄이는 장치가 아니다. 전처리 누락과 데이터 누수를 줄이고, 학습과 예측의 절차를 하나의 재현 가능한 객체로 고정하는 장치다.\n2. EDA를 변수 선택의 근거로 사용하기 무엇을 배웠나 EDA는 발표용 그래프를 만드는 단계가 아니라 어떤 변수를 왜 사용하고 어떻게 가공할지 결정하는 근거를 만드는 과정이었다.\nVariable Selection -\u003e Issues with Data -\u003e Feature Engineering -\u003e EDA -\u003e Statistical Analysis 실제 작업에서는 이 단계들이 한 방향으로만 흐르지 않는다. EDA에서 이상한 분포를 발견하면 데이터 문제를 다시 확인하고, 새로운 관계가 보이면 파생 변수를 만든 뒤 통계와 모델 점수로 다시 검증한다.\n헷갈렸던 점 처음에는 EDA를 결과 보고서에 넣기 위한 시각화 정도로 생각했다. 그러나 수업 사례에서는 EDA가 변수 선택, 점수 설계, 클러스터링, 최종 우선순위까지 이어졌다.\n정리된 이해 각 단계의 역할은 다음처럼 구분할 수 있다.\n단계 확인하는 것 EDA 데이터의 분포, 이상치, 변수 간 관계 상관분석 선형 관계와 중복 가능성 통계 검정 관찰한 차이가 우연일 가능성 Feature Engineering 관찰과 가설을 모델 입력으로 변환 모델링 만든 정보가 예측에 실제로 도움이 되는지 확인 개인 Kaggle 프로젝트에서 stress_level과 physical_activity_level의 관계를 다시 살펴보고 교차 피처를 만든 과정도 같은 흐름이었다. 그래프에서 끝내지 않고 모델 입력과 검증 점수까지 연결해야 EDA가 의사결정 근거가 된다.\n3. 점수 설계와 검증 가능한 의사결정 구조 무엇을 배웠나 수업 사례에서는 알고리즘 결과만 보여주는 것이 아니라 우선순위 점수가 어떻게 구성되고 검증되는지 전체 과정을 다뤘다.\n점수 구성 요소 선정 -\u003e 방향성 통일 -\u003e 단위 정규화 -\u003e 가중치 산정 -\u003e 클러스터링 -\u003e 군집별 특성 분석 -\u003e 최종 점수 계산 -\u003e 민감도 분석 -\u003e 현장 적용 서로 단위가 다른 값을 바로 더할 수 없고, 값이 클수록 좋은 변수와 나쁜 변수를 같은 방향으로 맞춰야 한다. 가중치도 단순한 감으로 정하기보다 왜 그 비중을 사용했는지 설명하고, 가중치가 조금 달라져도 결론이 유지되는지 확인해야 한다.\n헷갈렸던 점 처음에는 모델이나 클러스터링 알고리즘을 사용했다는 사실 자체가 전문성을 보여준다고 생각했다. 하지만 알고리즘 이름만으로는 입력이 어떻게 결과와 액션으로 이어졌는지 설명할 수 없었다.\n정리된 이해 검증 가능한 결과물에는 다음 연결이 남아야 한다.\n입력 데이터 -\u003e 정제 규칙 -\u003e 변수와 방향성 -\u003e 점수 또는 모델 -\u003e 검증 결과 -\u003e 해석 -\u003e 실제 액션 좋은 분석은 “모델을 돌렸더니 이런 숫자가 나왔다”에서 멈추지 않는다. 입력과 규칙을 바꾸면 결과가 어떻게 달라지는지 추적할 수 있어야 하고, 최종 사용자가 그 결과를 어떤 판단에 사용할 수 있는지도 설명해야 한다.\n4. 수업 베이스라인과 개인 최적화의 역할 구분 무엇을 배웠나 수업의 베이스라인은 표준 Pipeline으로 전체 흐름을 완주하는 데 목적이 있었고, 개인 프로젝트는 그 기준선 이후에 성능을 개선하고 검증을 강화하는 작업이었다.\n수업 베이스라인 = 재현 가능한 전체 과정 학습 개인 최적화 = 기준선 이후 성능 개선과 검증 강화 강사님의 기본 제출에서 확인한 점수와 개인 프로젝트 점수는 사용한 특성, 모델, 보정, 검증 조건이 다르다. 따라서 숫자만 나란히 두고 어느 모델이 절대적으로 우수하다고 결론 내리면 안 된다. 비교할 때는 데이터, metric, split, 전처리와 제출 조건을 먼저 맞춰야 한다.\n헷갈렸던 점 개인 프로젝트를 너무 복잡하게 만든 것은 아닌지 걱정했다. 하지만 기준선과 최적화의 목적이 다르다는 점을 구분하자, 주말에 진행한 실험은 수업과 동떨어진 작업이 아니라 수업의 다음 단계를 먼저 경험한 것이었다.\n정리된 이해 기존 프로젝트를 처음부터 다시 만들 필요는 없다. 먼저 이미 존재하는 코드, 실험 결과, 그래프와 제출 기록을 조사하고, 수업의 분석 항목에 맞춰 재배치하면 된다. 없는 증빙만 추가하고, 조건이 다른 점수는 직접 비교하지 않으며, 모델을 다시 학습할 때는 그 이유와 기대 효과를 먼저 정해야 한다.\n총평 오늘 오전 전체에서 배운 것 Kaggle 프로젝트는 높은 점수 하나를 만드는 활동이 아니라 문제 정의부터 제출까지 재현 가능한 흐름을 세우고, 기준선 이후의 개선을 검증하는 과정이라는 점을 배웠다. Pipeline, EDA, 통계, 점수 설계와 모델링은 따로 떨어진 기술이 아니라 하나의 판단 경로를 구성한다.\n다음에 조심할 것 조건이 다른 점수를 숫자만으로 비교하지 않는다. 새로운 피처나 앙상블이 좋아 보이더라도 같은 검증 조건에서 기준선을 넘는지 확인하고, 탐색에 사용하지 않은 fold나 표본에서도 결과가 유지되는지 다시 확인한다.\n다음 복습 주제 개인 Kaggle 프로젝트의 실험 원장을 기준으로 각 피처와 모델이 어떤 가설에서 시작됐고 어떤 검증에서 채택되거나 기각됐는지 연결해 본다. 이후 발표자료에서는 점수보다 문제 정의, 판단 근거와 재현 가능한 흐름이 먼저 보이도록 구성한다.\n이 글은 작성 시각이 남지 않은 2026-07-13 오전 personal note 4개를 파일 순서와 기록 날짜를 기준으로 복구해 합본한 학습로그입니다.\n",
+  "wordCount" : "808",
+  "inLanguage": "en",
+  "datePublished": "2026-07-13T00:00:00Z",
+  "dateModified": "2026-07-13T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-07-13-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지
+    </h1>
+    <div class="post-description">
+      2026-07-13 오전 수업에서 Kaggle 베이스라인, EDA 기반 변수 선택, 점수 설계와 개인 최적화의 관계를 정리했다.
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-13 00:00:00 +0000 UTC'>2026년 7월 13일</span>&nbsp;·&nbsp;<span>4 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-pipeline%EC%9C%BC%EB%A1%9C-kaggle-%EB%B2%A0%EC%9D%B4%EC%8A%A4%EB%9D%BC%EC%9D%B8-%EC%99%84%EC%A3%BC%ED%95%98%EA%B8%B0">Pipeline으로 Kaggle 베이스라인 완주하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-eda%EB%A5%BC-%EB%B3%80%EC%88%98-%EC%84%A0%ED%83%9D%EC%9D%98-%EA%B7%BC%EA%B1%B0%EB%A1%9C-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0">EDA를 변수 선택의 근거로 사용하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%A0%90%EC%88%98-%EC%84%A4%EA%B3%84%EC%99%80-%EA%B2%80%EC%A6%9D-%EA%B0%80%EB%8A%A5%ED%95%9C-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95-%EA%B5%AC%EC%A1%B0">점수 설계와 검증 가능한 의사결정 구조</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EC%88%98%EC%97%85-%EB%B2%A0%EC%9D%B4%EC%8A%A4%EB%9D%BC%EC%9D%B8%EA%B3%BC-%EA%B0%9C%EC%9D%B8-%EC%B5%9C%EC%A0%81%ED%99%94%EC%9D%98-%EC%97%AD%ED%95%A0-%EA%B5%AC%EB%B6%84">수업 베이스라인과 개인 최적화의 역할 구분</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-pipeline으로-kaggle-베이스라인-완주하기">1. Pipeline으로 Kaggle 베이스라인 완주하기<a hidden class="anchor" aria-hidden="true" href="#1-pipeline으로-kaggle-베이스라인-완주하기">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>오전 수업에서는 Kaggle 프로젝트를 처음부터 제출까지 한 번 완주하는 표준 흐름을 확인했다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>문제 정의
+</span></span><span style="display:flex;"><span>-&gt; 데이터 확인
+</span></span><span style="display:flex;"><span>-&gt; 독립변수와 종속변수 분리
+</span></span><span style="display:flex;"><span>-&gt; 전처리 Pipeline 구성
+</span></span><span style="display:flex;"><span>-&gt; 베이스라인 모델 학습
+</span></span><span style="display:flex;"><span>-&gt; Balanced Accuracy 확인
+</span></span><span style="display:flex;"><span>-&gt; 테스트 데이터 예측
+</span></span><span style="display:flex;"><span>-&gt; submission.csv 생성
+</span></span><span style="display:flex;"><span>-&gt; Kaggle 제출 및 점수 확인
+</span></span></code></pre></div><p>처음부터 최고 점수를 노리는 것보다, 같은 입력에서 같은 결과를 다시 만들 수 있는 기준선부터 완성하는 것이 중요했다. 기준선이 있어야 이후의 피처 엔지니어링이나 앙상블이 실제 개선인지 비교할 수 있다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>강사님의 제출 코드는 짧았고, 개인 프로젝트에서 만든 앙상블과 보정 코드는 훨씬 복잡했다. 그래서 코드가 짧으면 분석이 단순한 것인지, 내 방식이 필요 이상으로 복잡한 것인지 헷갈렸다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>제출 코드가 짧은 이유는 전처리와 모델이 이미 <code>final_pipeline</code> 안에 묶여 있기 때문이다. 중요한 것은 마지막 세 줄의 길이가 아니라, 학습할 때 적용한 전처리가 테스트 데이터에도 같은 순서로 적용된다는 점이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>test_pred <span style="color:#f92672">=</span> final_pipeline<span style="color:#f92672">.</span>predict(X_test_kaggle)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>submission <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame({
+</span></span><span style="display:flex;"><span>    id_col: test_ids,
+</span></span><span style="display:flex;"><span>    target_col: test_pred
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>submission<span style="color:#f92672">.</span>to_csv(<span style="color:#e6db74">&#34;submission_1th.csv&#34;</span>, index<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span></code></pre></div><p><code>Pipeline</code> 문법은 코드를 예쁘게 줄이는 장치가 아니다. 전처리 누락과 데이터 누수를 줄이고, 학습과 예측의 절차를 하나의 재현 가능한 객체로 고정하는 장치다.</p>
+<h2 id="2-eda를-변수-선택의-근거로-사용하기">2. EDA를 변수 선택의 근거로 사용하기<a hidden class="anchor" aria-hidden="true" href="#2-eda를-변수-선택의-근거로-사용하기">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>EDA는 발표용 그래프를 만드는 단계가 아니라 어떤 변수를 왜 사용하고 어떻게 가공할지 결정하는 근거를 만드는 과정이었다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Variable Selection
+</span></span><span style="display:flex;"><span>-&gt; Issues with Data
+</span></span><span style="display:flex;"><span>-&gt; Feature Engineering
+</span></span><span style="display:flex;"><span>-&gt; EDA
+</span></span><span style="display:flex;"><span>-&gt; Statistical Analysis
+</span></span></code></pre></div><p>실제 작업에서는 이 단계들이 한 방향으로만 흐르지 않는다. EDA에서 이상한 분포를 발견하면 데이터 문제를 다시 확인하고, 새로운 관계가 보이면 파생 변수를 만든 뒤 통계와 모델 점수로 다시 검증한다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음에는 EDA를 결과 보고서에 넣기 위한 시각화 정도로 생각했다. 그러나 수업 사례에서는 EDA가 변수 선택, 점수 설계, 클러스터링, 최종 우선순위까지 이어졌다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>각 단계의 역할은 다음처럼 구분할 수 있다.</p>
+<table>
+	<thead>
+			<tr>
+					<th>단계</th>
+					<th>확인하는 것</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>EDA</td>
+					<td>데이터의 분포, 이상치, 변수 간 관계</td>
+			</tr>
+			<tr>
+					<td>상관분석</td>
+					<td>선형 관계와 중복 가능성</td>
+			</tr>
+			<tr>
+					<td>통계 검정</td>
+					<td>관찰한 차이가 우연일 가능성</td>
+			</tr>
+			<tr>
+					<td>Feature Engineering</td>
+					<td>관찰과 가설을 모델 입력으로 변환</td>
+			</tr>
+			<tr>
+					<td>모델링</td>
+					<td>만든 정보가 예측에 실제로 도움이 되는지 확인</td>
+			</tr>
+	</tbody>
+</table>
+<p>개인 Kaggle 프로젝트에서 <code>stress_level</code>과 <code>physical_activity_level</code>의 관계를 다시 살펴보고 교차 피처를 만든 과정도 같은 흐름이었다. 그래프에서 끝내지 않고 모델 입력과 검증 점수까지 연결해야 EDA가 의사결정 근거가 된다.</p>
+<h2 id="3-점수-설계와-검증-가능한-의사결정-구조">3. 점수 설계와 검증 가능한 의사결정 구조<a hidden class="anchor" aria-hidden="true" href="#3-점수-설계와-검증-가능한-의사결정-구조">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>수업 사례에서는 알고리즘 결과만 보여주는 것이 아니라 우선순위 점수가 어떻게 구성되고 검증되는지 전체 과정을 다뤘다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>점수 구성 요소 선정
+</span></span><span style="display:flex;"><span>-&gt; 방향성 통일
+</span></span><span style="display:flex;"><span>-&gt; 단위 정규화
+</span></span><span style="display:flex;"><span>-&gt; 가중치 산정
+</span></span><span style="display:flex;"><span>-&gt; 클러스터링
+</span></span><span style="display:flex;"><span>-&gt; 군집별 특성 분석
+</span></span><span style="display:flex;"><span>-&gt; 최종 점수 계산
+</span></span><span style="display:flex;"><span>-&gt; 민감도 분석
+</span></span><span style="display:flex;"><span>-&gt; 현장 적용
+</span></span></code></pre></div><p>서로 단위가 다른 값을 바로 더할 수 없고, 값이 클수록 좋은 변수와 나쁜 변수를 같은 방향으로 맞춰야 한다. 가중치도 단순한 감으로 정하기보다 왜 그 비중을 사용했는지 설명하고, 가중치가 조금 달라져도 결론이 유지되는지 확인해야 한다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>처음에는 모델이나 클러스터링 알고리즘을 사용했다는 사실 자체가 전문성을 보여준다고 생각했다. 하지만 알고리즘 이름만으로는 입력이 어떻게 결과와 액션으로 이어졌는지 설명할 수 없었다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>검증 가능한 결과물에는 다음 연결이 남아야 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>입력 데이터
+</span></span><span style="display:flex;"><span>-&gt; 정제 규칙
+</span></span><span style="display:flex;"><span>-&gt; 변수와 방향성
+</span></span><span style="display:flex;"><span>-&gt; 점수 또는 모델
+</span></span><span style="display:flex;"><span>-&gt; 검증 결과
+</span></span><span style="display:flex;"><span>-&gt; 해석
+</span></span><span style="display:flex;"><span>-&gt; 실제 액션
+</span></span></code></pre></div><p>좋은 분석은 “모델을 돌렸더니 이런 숫자가 나왔다”에서 멈추지 않는다. 입력과 규칙을 바꾸면 결과가 어떻게 달라지는지 추적할 수 있어야 하고, 최종 사용자가 그 결과를 어떤 판단에 사용할 수 있는지도 설명해야 한다.</p>
+<h2 id="4-수업-베이스라인과-개인-최적화의-역할-구분">4. 수업 베이스라인과 개인 최적화의 역할 구분<a hidden class="anchor" aria-hidden="true" href="#4-수업-베이스라인과-개인-최적화의-역할-구분">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>수업의 베이스라인은 표준 <code>Pipeline</code>으로 전체 흐름을 완주하는 데 목적이 있었고, 개인 프로젝트는 그 기준선 이후에 성능을 개선하고 검증을 강화하는 작업이었다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>수업 베이스라인 = 재현 가능한 전체 과정 학습
+</span></span><span style="display:flex;"><span>개인 최적화 = 기준선 이후 성능 개선과 검증 강화
+</span></span></code></pre></div><p>강사님의 기본 제출에서 확인한 점수와 개인 프로젝트 점수는 사용한 특성, 모델, 보정, 검증 조건이 다르다. 따라서 숫자만 나란히 두고 어느 모델이 절대적으로 우수하다고 결론 내리면 안 된다. 비교할 때는 데이터, metric, split, 전처리와 제출 조건을 먼저 맞춰야 한다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>개인 프로젝트를 너무 복잡하게 만든 것은 아닌지 걱정했다. 하지만 기준선과 최적화의 목적이 다르다는 점을 구분하자, 주말에 진행한 실험은 수업과 동떨어진 작업이 아니라 수업의 다음 단계를 먼저 경험한 것이었다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>기존 프로젝트를 처음부터 다시 만들 필요는 없다. 먼저 이미 존재하는 코드, 실험 결과, 그래프와 제출 기록을 조사하고, 수업의 분석 항목에 맞춰 재배치하면 된다. 없는 증빙만 추가하고, 조건이 다른 점수는 직접 비교하지 않으며, 모델을 다시 학습할 때는 그 이유와 기대 효과를 먼저 정해야 한다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>Kaggle 프로젝트는 높은 점수 하나를 만드는 활동이 아니라 문제 정의부터 제출까지 재현 가능한 흐름을 세우고, 기준선 이후의 개선을 검증하는 과정이라는 점을 배웠다. <code>Pipeline</code>, EDA, 통계, 점수 설계와 모델링은 따로 떨어진 기술이 아니라 하나의 판단 경로를 구성한다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>조건이 다른 점수를 숫자만으로 비교하지 않는다. 새로운 피처나 앙상블이 좋아 보이더라도 같은 검증 조건에서 기준선을 넘는지 확인하고, 탐색에 사용하지 않은 fold나 표본에서도 결과가 유지되는지 다시 확인한다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>개인 Kaggle 프로젝트의 실험 원장을 기준으로 각 피처와 모델이 어떤 가설에서 시작됐고 어떤 검증에서 채택되거나 기각됐는지 연결해 본다. 이후 발표자료에서는 점수보다 문제 정의, 판단 근거와 재현 가능한 흐름이 먼저 보이도록 구성한다.</p>
+<blockquote>
+<p>이 글은 작성 시각이 남지 않은 2026-07-13 오전 personal note 4개를 파일 순서와 기록 날짜를 기준으로 복구해 합본한 학습로그입니다.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/kaggle/">Kaggle</a></li>
+      <li><a href="https://Han-think.github.io/tags/machine-learning/">Machine-Learning</a></li>
+      <li><a href="https://Han-think.github.io/tags/pipeline/">Pipeline</a></li>
+      <li><a href="https://Han-think.github.io/tags/eda/">Eda</a></li>
+      <li><a href="https://Han-think.github.io/tags/validation/">Validation</a></li>
+      <li><a href="https://Han-think.github.io/tags/balanced-accuracy/">Balanced-Accuracy</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-07-16-am-daily/">
+    <span class="title">« Prev</span>
+    <span>머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-07-10-am-daily/">
+    <span class="title">Next »</span>
+    <span>데이터 분석 기초 다지기: 비지도 학습부터 분류 모델까지</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

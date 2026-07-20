@@ -1,71 +1,378 @@
-<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험 | Han-think Blog</title><meta name=keywords content><meta name=description content="2026-07-08 오후 학습 정리"><meta name=author content><link rel=canonical href=https://Han-think.github.io/learning/2026-07-08-pm-daily/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/learning/2026-07-08-pm-daily/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-08-pm-daily/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험"><meta property="og:description" content="2026-07-08 오후 학습 정리"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="learning"><meta property="article:published_time" content="2026-07-08T00:00:00+00:00"><meta property="article:modified_time" content="2026-07-08T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험"><meta name=twitter:description content="2026-07-08 오후 학습 정리"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"학습 기록","item":"https://Han-think.github.io/learning/"},{"@type":"ListItem","position":2,"name":"회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험","item":"https://Han-think.github.io/learning/2026-07-08-pm-daily/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험","name":"회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험","description":"2026-07-08 오후 학습 정리","keywords":[],"articleBody":"목차 결정계수와 SST·SSR·SSE 그래프, 초보자를 위한 해석 다항 회귀 과적합과 손실 지표 이해하기 데이터 누수 방지를 위한 전처리 파이프라인 구축 가이드 교차검증과 모델 선택: 성능 평가의 핵심 이해 하이퍼파라미터 탐색: 시간과 성능의 균형 잡기 SHAP을 활용한 모델 해석 및 시각화 워크노트 Stacking 모델 학습의 어려움과 올바른 이해 PyCaret AutoML 실습 환경 구축 및 버전 호환성 문제 해결 회귀 미니 프로젝트 설계 및 분석 가이드 총평 1. 결정계수와 SST·SSR·SSE 그래프, 초보자를 위한 해석 무엇을 배웠나 결정계수 (R^2)를 이해하는 데 필요한 SST, SSR, SSE 각각이 의미하는 바를 명확히 알게 되었다. SST는 전체 데이터의 변동성, SSR은 모델이 설명하는 변동성, SSE는 모델이 설명하지 못한 오차를 나타냄을 이해했다. 특히, SSR과 SSE의 혼동을 바로잡고, 이들의 관계를 통해 모델의 설명력을 파악하는 방법을 익혔다.\n헷갈렸던 점 결정계수 R²와 관련된 그래프에서 회귀선, 평균선, 실제값-예측값 거리 요소들의 의미를 명확하게 구분하는 데 어려움을 느꼈다. SSR과 SSE의 정의가 자료마다 다르게 사용되어 혼란스러웠고, R² 값을 모델의 정확도를 나타내는 수치로 단순하게 해석하는 것이 맞는지 확신이 없었다. 전체적인 데이터 변동성과 모델이 설명하는 변동성, 그리고 예측하지 못한 오차를 어떻게 그래프로 표현하는지 파악하는 것이 중요했다.\n정리된 이해 전체 데이터의 변동성(SST)은 실제값과 전체 평균의 차이, 모델이 설명하는 변동성(SSR)은 예측값이 전체 평균과 얼마나 차이가 나는지, 그리고 모델이 설명하지 못한 오차(SSE)는 실제값과 예측값의 차이로 각각 이해하면 된다. 결정계수 R²는 SSR을 SST로 나눈 값으로, 모델이 데이터의 변동성을 얼마나 설명하는지를 나타내는 지표이며, 1에 가까울수록 모델의 설명력이 높다. SSR과 SSE의 정확한 정의는 자료에 따라 달라질 수 있으므로 주의해야 한다.\nSST = \\sum (y_i - \\bar{y})^2 SSR = \\sum (\\hat{y}_i - \\bar{y})^2 2. 다항 회귀 과적합과 손실 지표 이해하기 무엇을 배웠나 초보자를 위한 회귀 분석 학습 과정에서 과적합 판단과 손실 지표 해석에 대한 잘못된 이해가 있었음을 깨달았습니다. 훈련 데이터 오차 감소만으로 모델 개선을 판단하는 오류를 범했고, 손실 값의 변화에만 지나치게 집중했습니다. 이제는 훈련/검증 오차의 변화를 종합적으로 고려하고, 다양한 요인을 염두에 둔 손실 지표 해석이 중요하다는 것을 알게 되었습니다.\n헷갈렸던 점 처음에는 훈련 데이터의 오차가 계속 줄어들면 모델이 잘 학습되고 있다고 생각했는데, 테스트 데이터의 오차를 간과하고 과적합을 제대로 판단하지 못했습니다. 손실 값이 감소할 때마다 모델이 항상 좋아지는 것처럼 생각했고, 손실 변화에 너무 의미를 부여하여 다른 요인을 고려하지 못했습니다.\n정리된 이해 초보자도 쉽게 이해할 수 있도록 단순 및 다항 회귀 분석에서 과적합과 손실 지표에 대한 이해를 정리했습니다. 훈련 데이터 오차가 계속 줄어든다고 모델이 좋아지는 것이 아니라, 검증 데이터 오차의 증가를 통해 과적합을 판단해야 하며, 손실 지표(RMSE, MAE)를 통해 모델의 성능을 균형있게 평가해야 합니다. 이 내용을 바탕으로 학습 진행 과정에서 발생할 수 있는 실수를 줄이고 더 나은 모델을 구축할 수 있을 것입니다.\nimport numpy as np from sklearn.metrics import mean_squared_error, mean_absolute_error y_ex = np.array([2.0, 2.5, 3.0, 2.8, 3.2]) yhat_ex = np.array([2.1, 2.4]) 3. 데이터 누수 방지를 위한 전처리 파이프라인 구축 가이드 무엇을 배웠나 데이터 탐색과 전처리 학습은 분리해서 진행해야 하며, 특히 전처리 기준은 훈련 데이터에만 적용하여 데이터 누수를 방지해야 한다는 점을 명확히 이해하게 되었다. 데이터셋을 다룰 때 변수명 관리를 철저히 하고, Pipeline을 활용하면 전처리 과정을 일관성 있게 관리하고 데이터 누수를 예방할 수 있다는 것을 알게 되었다. 이번 학습을 통해 데이터 분석의 기본적인 원칙과 실제 적용 방식을 더욱 명확하게 이해하게 되었다.\n헷갈렸던 점 데이터를 탐색하면서 전처리를 동시에 해야 하는 건 줄 알았는데, 훈련 데이터에만 전처리 기준을 적용해야 한다는 점이 헷갈렸어. 또, 데이터셋 이름을 계속 바꿔서 현재 어떤 데이터 상태인지 파악하는 데 어려움을 겪었어. Pipeline을 사용해서 전처리 과정을 명확하게 분리하고 일관성을 유지하면 데이터 누수를 막을 수 있다는 것을 알게 됐어.\n정리된 이해 데이터 탐색 단계에서는 데이터의 전체적인 특징을 파악하고, 전처리 학습 단계에서는 훈련 데이터에만 통계적 기준을 적용하여 데이터 누수를 방지해야 한다는 것을 이해했다. Pipeline을 사용하면 전처리 과정을 체계적으로 관리하고 교차 검증 시에도 데이터 누수를 막을 수 있어 유용하다. 앞으로는 변수명 관리를 철저히 하고 Pipeline을 적극 활용하여 분석의 신뢰도를 높이도록 노력해야겠다.\nfrom sklearn.pipeline import Pipeline from sklearn.impute import SimpleImputer from sklearn.preprocessing import StandardScaler from sklearn.linear_model import Ridge 4. 교차검증과 모델 선택: 성능 평가의 핵심 이해 무엇을 배웠나 교차검증이 단순히 데이터를 반복 사용하는 것이 아니라, 모델 성능을 보다 안정적으로 평가하기 위한 중요한 기법임을 깨달았습니다. Train/Test 분할만으로는 모델 성능을 제대로 판단하기 어렵고, 특히 데이터의 편향에 취약하다는 점을 알게 되었습니다. neg_root_mean_squared_error 스코어는 실제 RMSE를 구하기 위해 음수를 취한 값이라는 것을 이해했고, 이를 통해 모델 선택에 더욱 신중해질 수 있을 것 같습니다.\n헷갈렸던 점 처음에는 교차검증이 데이터를 그냥 반복해서 쓰는 것처럼 보여서 데이터 낭비라고 생각했고, neg_root_mean_squared_error가 음수로 나오는 이유가 궁금했습니다. 또한, 단일 Train/Test 분할만으로도 충분할 거라 생각해서 교차검증의 필요성을 명확하게 인지하지 못했습니다.\n정리된 이해 교차검증은 데이터의 특정 부분에 모델 성능이 지나치게 의존하는 것을 방지하기 위해, 데이터를 여러 조각으로 나누어 반복적으로 학습하고 검증하는 방법이다. neg_root_mean_squared_error와 같은 음수 스코어는 실제 RMSE를 나타내므로 음수를 취해 변환해야 한다. 교차검증을 통해 모델 선택 시 더 안정적이고 일반화된 성능을 확보할 수 있다.\nfrom sklearn.pipeline import Pipeline from sklearn.preprocessing import StandardScaler from sklearn.linear_model import Ridge from sklearn.model_selection import cross_val_score pipeline = Pipeline([ (\"scaler\", StandardScaler()), (\"model\", Ridge()) ]) scores = cross_val_score( pipeline, X, y, cv=5, # 5-Fold 교차검증 scoring=\"neg_root_mean_squared_error\" ) # 음수 스코어를 실제 RMSE로 변환 rmse_scores = -scores mean_rmse = rmse_scores.mean() std_rmse = rmse_scores.std() print( 5. 하이퍼파라미터 탐색: 시간과 성능의 균형 잡기 무엇을 배웠나 하이퍼파라미터 탐색은 단순히 가장 낮은 RMSE를 찾는 것이 아니라, 시간과 성능을 고려한 효율적인 모델 구축 과정이라는 것을 알게 되었습니다. Grid Search, Random Search, Bayesian Optimization 각각의 장단점을 이해하고 상황에 맞게 선택하는 것이 중요하며, CV RMSE와 Test RMSE의 관계를 통해 모델의 일반화 성능을 제대로 평가해야 한다는 점을 깨달았습니다. 그리고 시각화 도구를 활용하여 하이퍼파라미터와 성능 지표 간의 관계를 파악하는 것이 도움이 된다는 것을 확인했습니다.\n헷갈렸던 점 하이퍼파라미터 탐색을 할 때 가장 낮은 RMSE 값을 가진 모델이 항상 최선의 선택일 거라고 생각했는데, 시간과 컴퓨팅 자원을 고려해야 한다는 점이 헷갈렸어요. 교차 검증 결과만으로 모델의 성능을 완벽하게 평가할 수 있을까 의문이었고, 다양한 평가 지표들을 어떻게 조합해야 할지 감을 잡지 못했습니다.\n정리된 이해 하이퍼파라미터 탐색은 시간과 성능의 균형을 맞추는 과정이며, Grid Search, Random Search, Bayesian Optimization 중 상황에 맞는 방법을 선택해야 합니다. 단순히 RMSE가 낮은 모델을 찾는 것보다 CV RMSE, Test RMSE, 그리고 학습 시간을 종합적으로 고려하여 최적의 자원 활용 계획을 세우는 것이 중요합니다. 다양한 평가 지표와 시간 제약을 함께 고려하면 더 나은 모델을 효율적으로 찾을 수 있습니다.\n# Simple Grid Search 예시 (가상) import numpy as np from sklearn.linear_model import Ridge from sklearn.model_selection import cross_val_score alphas = np.arange(0.01, 2, 0.1) cv_rmse_values = [] training_times = [] for alpha in alphas: ridge = Ridge(alpha=alpha) scores = cross_val_score(ridge, X_train, y_train, cv=5, scoring='neg_mean_squared_error') # X_train, y_train 정의 필요 rmse = np.sqrt(-scores.mean()) cv_rmse_values.append(rmse) # 학습 시간 측정 부분 추가 필요 (time.time() 활용) # training_times.append(training_time) # Random Search 예시 (가상) import numpy as np from sklearn.linear_model import ElasticNet from sklearn.model_selection import RandomizedSearchCV param_distributions = { 'alpha': np.random.uniform(0, 1, 100), 'l1_ratio': np.random.uniform(0, 1, 100) } random_search = RandomizedSearchCV(ElasticNet(), param_distributions, n_iter=10, scoring='neg_mean_squared_error') # X_train, y_train, X_val, y_val 정의 필요 random_search.fit(X_train, y_train) # 결과 시각화 및 분석 6. SHAP을 활용한 모델 해석 및 시각화 워크노트 무엇을 배웠나 SHAP 값이 선형 모델 계수와는 다른, 각 데이터 포인트별 변수의 기여도를 보여주는 개별적인 지표라는 점을 이해하게 되었다. SHAP 값이 높다고 해서 반드시 인과관계를 의미하는 것은 아니며, 모델 해석 시 주의해야 함을 알게 되었다. SHAP Summary Plot을 통해 데이터 포인트와 변수 중요도를 시각적으로 분석하는 방법을 익혔다.\n헷갈렸던 점 선형 모델의 계수와 SHAP 값의 차이를 명확히 이해하지 못해서, 그래프들을 비교하며 어떤 정보를 얻어야 하는지 혼란스러웠습니다. SHAP 값이 높다고 해서 반드시 변수가 예측의 주요 원인이라고 단정할 수 있는지 확신이 없었고, 파생 변수들의 방향성이 직관과 맞지 않을 때 모델이나 데이터의 문제인지 판단하기 어려웠습니다. SHAP 값 해석이 단순한 상관관계 설명에 그치는 건 아닌가 고민했습니다.\n정리된 이해 SHAP 값은 선형 모델 계수와 달리 특정 샘플에 대한 변수의 영향력을 세밀하게 보여주는 도구이며, 모델의 예측 결과를 설명하는 데 유용하지만 인과관계를 증명하지는 않습니다. SHAP Summary Plot을 통해 개별 데이터 샘플의 변수 영향력을 시각적으로 분석할 수 있으며, 이를 통해 모델의 예측 방향성을 파악하고 잠재적인 문제를 발견할 수 있습니다. 예를 들어, 특정 변수의 SHAP 값이 직관과 다를 경우 데이터나 모델 자체를 다시 검토해야 할 수 있습니다.\n# SHAP Summary Plot 예시 (가정: shap, matplotlib 설치 필요) import shap import matplotlib.pyplot as plt import sklearn # 예시 모델 (scikit-learn 모델) model = sklearn.linear_model.LinearRegression() # ... 모델 학습 ... # SHAP Explainer 생성 explainer = shap.LinearExplainer(model.predict, feature_names=model.feature_names_in_) # SHAP 값 계산 shap_values = explainer.shap_values(X_test) # SHAP Summary Plot 시각화 shap.summary_plot(shap_values, show=False) plt.savefig(\"shap_summary_plot.png\") # 파일로 저장 7. Stacking 모델 학습의 어려움과 올바른 이해 무엇을 배웠나 Stacking 모델을 사용할 때, OOF 예측값을 활용하여 누수를 방지하고 모델 성능을 개선해야 한다는 것을 알게 되었다. 또한 Stacking이 무조건적으로 성능 향상을 보장하는 것이 아니며, 시간 효율성과 해석 가능성 등의 요소를 함께 고려해야 함을 깨달았다. 다양한 기반 모델을 선택하여 예측 패턴을 활용하는 실습도 앞으로 진행해봐야겠다.\n헷갈렸던 점 Stacking 모델을 처음 접했을 때, 기반 모델들이 훈련 데이터를 재사용하는 부분이 누수처럼 느껴져서 과적합이 될까 봐 걱정했어요. 또, Stacking이 항상 다른 모델보다 성능이 좋을 것이라는 막연한 기대 때문에, 실제로는 성능 향상이 크지 않더라도 억지로 적용하려는 경향이 있었던 것 같아요.\n정리된 이해 Stacking 모델은 OOF 예측값을 활용하여 누수를 방지해야 하며, 항상 성능이 좋다고 단정 지을 수 없어 시간 효율성과 해석 가능성도 함께 고려해야 합니다. 기반 모델들의 다양한 예측 패턴을 활용하여 메타 모델을 학습시키는 것이 중요하며, 경우에 따라서는 단일 모델이 더 효율적일 수 있습니다. 성능 개선 효과와 시간 증가를 균형 있게 판단하는 것이 핵심입니다.\nfrom sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor from sklearn.svm import SVR base_models = [ RandomForestRegressor(), GradientBoostingRegressor(), SVR() ] 8. PyCaret AutoML 실습 환경 구축 및 버전 호환성 문제 해결 무엇을 배웠나 PyCaret 실습 시 pip 설치 완료 여부가 실행 환경 호환성을 보장하지 않는다는 점을 깨달았습니다. 패키지 버전, 파이썬 버전 등의 호환성 문제를 확인하는 것이 중요하며, pip check 명령어를 통해 의존성 충돌을 진단해야 합니다. 정확한 환경 확인 과정을 거쳐야 강의 내용과 동일한 결과를 얻을 수 있음을 알게 되었습니다.\n헷갈렸던 점 강사님 화면에서는 모델 비교표가 바로 출력되었는데, 제 코드를 실행하니 비교표가 나타나지 않아 코드를 잘못 썼다고 생각했습니다. 설치 로그가 길게 나오길래 필요한 패키지가 모두 설치된 줄 알았고, 실행 환경에 문제는 없을 거라고 생각했습니다. 결국 환경 버전과 의존성 문제를 제대로 확인하지 않았기에 오류가 발생한 것이었습니다.\n정리된 이해 PyCaret 실습 시 패키지 설치가 완료되었다고 해서 곧바로 실행이 가능하다는 착각을 했지만, Python 버전, 패키지 버전, PyCaret 버전 간의 호환성 문제가 발생할 수 있다는 것을 깨달았습니다. 앞으로는 환경 진단 명령어를 활용하여 정확한 환경을 확인하고, pip check 명령어를 통해 의존성 충돌을 해결해야 원활한 PyCaret 사용이 가능할 것 같습니다.\n# 환경 버전 확인 import sys print(\"Python 버전:\", sys.version) print(\"NumPy 버전:\", np.__version__) print(\"Pandas 버전:\", pd.__version__) print(\"scikit-learn 버전:\", sklearn.__version__) print(\"PyCaret 버전:\", pycaret.__version__) # 의존성 확인 및 충돌 해결 !pip check 9. 회귀 미니 프로젝트 설계 및 분석 가이드 무엇을 배웠나 회귀 미니 프로젝트를 진행하면서 여러 기법들을 닥치는 대로 적용할 필요는 없다는 것을 알게 되었다. 모델 선택은 단순히 성능 지표뿐 아니라 신뢰성, 설명 가능성, 운영 비용 등 다양한 요소를 종합적으로 고려해야 하며, 각 기법이 어떤 상황에서 유용한지 이해하는 것이 중요하다. 앞으로는 문제 상황에 맞는 적절한 기법을 선택하고 적용하는 데 집중해야겠다.\n헷갈렸던 점 여러 회귀 기법들을 모두 적용해야 하는지 몰라 어떤 것을 우선적으로 사용할지 혼란스러웠고, 모델 성능 지표와 실제 서비스 적용 가능성 사이의 관계가 명확하게 느껴지지 않았다. 시계열 데이터 분석에 주로 쓰이는 차분 기법이 일반적인 회귀 분석에서 필수적인지 의문스러웠다.\n정리된 이해 다양한 회귀 기법을 무조건 적용하기보다는 데이터의 특성과 문제 상황에 맞게 필요한 기법을 선택적으로 사용하는 것이 중요합니다. 모델의 성능 지표 외에도 신뢰성, 설명 가능성, 운영 비용과 같은 기능적 측면을 함께 고려하여 최적의 모델을 선택해야 합니다. 특히, 시계열 데이터의 차분 기법이나 모델 스태킹은 필요에 따라 신중하게 적용해야 합니다.\nimport pandas as pd data = pd.read_csv('price_demand_data.csv') data.isnull().sum() data.fillna(method='ffill', inplace=True) 총평 오늘 오후 전체에서 배운 것 오늘 학습을 통해 결정계수와 교차검증의 중요성을 다시 한번 깨닫고, 데이터 누수 방지를 위한 전처리 파이프라인 구축 및 모델 해석 기법(SHAP) 활용 능력도 향상되었습니다. 특히, 모델 선택 및 하이퍼파라미터 탐색 시 단순히 성능 지표에만 집중하지 않고, 다양한 요소를 고려하는 균형 잡힌 접근 방식이 필요하다는 점을 알게 되었습니다. 앞으로는 학습 내용을 바탕으로 실제 문제에 적용해 보며 실력 향상을 이뤄나가겠습니다.\n다음에 조심할 것 앞으로는 과적합 판단 시 훈련/검증 오차를 함께 고려하고, 손실 지표에만 매몰되지 않도록 주의해야겠다. 또한, PyCaret이나 다른 라이브러리를 사용할 때 버전 호환성 문제를 꼼꼼히 확인하여 예상치 못한 오류를 방지해야 할 것 같다.\n다음 복습 주제 결정계수(R²) 해석 시 SST, SSR, SSE의 관계를 다시 한번 짚어보고, 과적합 판단과 손실 지표 해석에 대한 이해를 더 깊게 해야겠다. 특히 훈련/검증 오차의 변화를 종합적으로 고려하는 연습을 꾸준히 해야 할 것 같다. PyCaret을 사용할 때 패키지 버전 호환성을 더욱 꼼꼼하게 확인하고, 환경 설정에 필요한 단계를 명확히 숙지하여 오류 발생을 최소화해야 할 것이다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n","wordCount":"1971","inLanguage":"en","datePublished":"2026-07-08T00:00:00Z","dateModified":"2026-07-08T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/learning/2026-07-08-pm-daily/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
-<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험</h1><div class=post-description>2026-07-08 오후 학습 정리</div><div class=post-meta><span title='2026-07-08 00:00:00 +0000 UTC'>2026년 7월 8일</span>&nbsp;·&nbsp;<span>10 min</span></div></header><div class="post-content md-content"><h2 id=목차>목차<a hidden class=anchor aria-hidden=true href=#목차>#</a></h2><ul><li><ol><li><a href=#1-%EA%B2%B0%EC%A0%95%EA%B3%84%EC%88%98%EC%99%80-sstssrsse-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%ED%95%B4%EC%84%9D>결정계수와 SST·SSR·SSE 그래프, 초보자를 위한 해석</a></li></ol></li><li><ol start=2><li><a href=#2-%EB%8B%A4%ED%95%AD-%ED%9A%8C%EA%B7%80-%EA%B3%BC%EC%A0%81%ED%95%A9%EA%B3%BC-%EC%86%90%EC%8B%A4-%EC%A7%80%ED%91%9C-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0>다항 회귀 과적합과 손실 지표 이해하기</a></li></ol></li><li><ol start=3><li><a href=#3-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%88%84%EC%88%98-%EB%B0%A9%EC%A7%80%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%A0%84%EC%B2%98%EB%A6%AC-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95-%EA%B0%80%EC%9D%B4%EB%93%9C>데이터 누수 방지를 위한 전처리 파이프라인 구축 가이드</a></li></ol></li><li><ol start=4><li><a href=#4-%EA%B5%90%EC%B0%A8%EA%B2%80%EC%A6%9D%EA%B3%BC-%EB%AA%A8%EB%8D%B8-%EC%84%A0%ED%83%9D-%EC%84%B1%EB%8A%A5-%ED%8F%89%EA%B0%80%EC%9D%98-%ED%95%B5%EC%8B%AC-%EC%9D%B4%ED%95%B4>교차검증과 모델 선택: 성능 평가의 핵심 이해</a></li></ol></li><li><ol start=5><li><a href=#5-%ED%95%98%EC%9D%B4%ED%8D%BC%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0-%ED%83%90%EC%83%89-%EC%8B%9C%EA%B0%84%EA%B3%BC-%EC%84%B1%EB%8A%A5%EC%9D%98-%EA%B7%A0%ED%98%95-%EC%9E%A1%EA%B8%B0>하이퍼파라미터 탐색: 시간과 성능의 균형 잡기</a></li></ol></li><li><ol start=6><li><a href=#6-shap%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%9C-%EB%AA%A8%EB%8D%B8-%ED%95%B4%EC%84%9D-%EB%B0%8F-%EC%8B%9C%EA%B0%81%ED%99%94-%EC%9B%8C%ED%81%AC%EB%85%B8%ED%8A%B8>SHAP을 활용한 모델 해석 및 시각화 워크노트</a></li></ol></li><li><ol start=7><li><a href=#7-stacking-%EB%AA%A8%EB%8D%B8-%ED%95%99%EC%8A%B5%EC%9D%98-%EC%96%B4%EB%A0%A4%EC%9B%80%EA%B3%BC-%EC%98%AC%EB%B0%94%EB%A5%B8-%EC%9D%B4%ED%95%B4>Stacking 모델 학습의 어려움과 올바른 이해</a></li></ol></li><li><ol start=8><li><a href=#8-pycaret-automl-%EC%8B%A4%EC%8A%B5-%ED%99%98%EA%B2%BD-%EA%B5%AC%EC%B6%95-%EB%B0%8F-%EB%B2%84%EC%A0%84-%ED%98%B8%ED%99%98%EC%84%B1-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0>PyCaret AutoML 실습 환경 구축 및 버전 호환성 문제 해결</a></li></ol></li><li><ol start=9><li><a href=#9-%ED%9A%8C%EA%B7%80-%EB%AF%B8%EB%8B%88-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%84%A4%EA%B3%84-%EB%B0%8F-%EB%B6%84%EC%84%9D-%EA%B0%80%EC%9D%B4%EB%93%9C>회귀 미니 프로젝트 설계 및 분석 가이드</a></li></ol></li><li><a href=#%EC%B4%9D%ED%8F%89>총평</a></li></ul><h2 id=1-결정계수와-sstssrsse-그래프-초보자를-위한-해석>1. 결정계수와 SST·SSR·SSE 그래프, 초보자를 위한 해석<a hidden class=anchor aria-hidden=true href=#1-결정계수와-sstssrsse-그래프-초보자를-위한-해석>#</a></h2><h3 id=무엇을-배웠나>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나>#</a></h3><p>결정계수 (R^2)를 이해하는 데 필요한 SST, SSR, SSE 각각이 의미하는 바를 명확히 알게 되었다. SST는 전체 데이터의 변동성, SSR은 모델이 설명하는 변동성, SSE는 모델이 설명하지 못한 오차를 나타냄을 이해했다. 특히, SSR과 SSE의 혼동을 바로잡고, 이들의 관계를 통해 모델의 설명력을 파악하는 방법을 익혔다.</p><h3 id=헷갈렸던-점>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점>#</a></h3><p>결정계수 R²와 관련된 그래프에서 회귀선, 평균선, 실제값-예측값 거리 요소들의 의미를 명확하게 구분하는 데 어려움을 느꼈다. SSR과 SSE의 정의가 자료마다 다르게 사용되어 혼란스러웠고, R² 값을 모델의 정확도를 나타내는 수치로 단순하게 해석하는 것이 맞는지 확신이 없었다. 전체적인 데이터 변동성과 모델이 설명하는 변동성, 그리고 예측하지 못한 오차를 어떻게 그래프로 표현하는지 파악하는 것이 중요했다.</p><h3 id=정리된-이해>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해>#</a></h3><p>전체 데이터의 변동성(SST)은 실제값과 전체 평균의 차이, 모델이 설명하는 변동성(SSR)은 예측값이 전체 평균과 얼마나 차이가 나는지, 그리고 모델이 설명하지 못한 오차(SSE)는 실제값과 예측값의 차이로 각각 이해하면 된다. 결정계수 R²는 SSR을 SST로 나눈 값으로, 모델이 데이터의 변동성을 얼마나 설명하는지를 나타내는 지표이며, 1에 가까울수록 모델의 설명력이 높다. SSR과 SSE의 정확한 정의는 자료에 따라 달라질 수 있으므로 주의해야 한다.</p><pre tabindex=0><code>SST = \sum (y_i - \bar{y})^2
-</code></pre><pre tabindex=0><code>SSR = \sum (\hat{y}_i - \bar{y})^2
-</code></pre><h2 id=2-다항-회귀-과적합과-손실-지표-이해하기>2. 다항 회귀 과적합과 손실 지표 이해하기<a hidden class=anchor aria-hidden=true href=#2-다항-회귀-과적합과-손실-지표-이해하기>#</a></h2><h3 id=무엇을-배웠나-1>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-1>#</a></h3><p>초보자를 위한 회귀 분석 학습 과정에서 과적합 판단과 손실 지표 해석에 대한 잘못된 이해가 있었음을 깨달았습니다. 훈련 데이터 오차 감소만으로 모델 개선을 판단하는 오류를 범했고, 손실 값의 변화에만 지나치게 집중했습니다. 이제는 훈련/검증 오차의 변화를 종합적으로 고려하고, 다양한 요인을 염두에 둔 손실 지표 해석이 중요하다는 것을 알게 되었습니다.</p><h3 id=헷갈렸던-점-1>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-1>#</a></h3><p>처음에는 훈련 데이터의 오차가 계속 줄어들면 모델이 잘 학습되고 있다고 생각했는데, 테스트 데이터의 오차를 간과하고 과적합을 제대로 판단하지 못했습니다. 손실 값이 감소할 때마다 모델이 항상 좋아지는 것처럼 생각했고, 손실 변화에 너무 의미를 부여하여 다른 요인을 고려하지 못했습니다.</p><h3 id=정리된-이해-1>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-1>#</a></h3><p>초보자도 쉽게 이해할 수 있도록 단순 및 다항 회귀 분석에서 과적합과 손실 지표에 대한 이해를 정리했습니다. 훈련 데이터 오차가 계속 줄어든다고 모델이 좋아지는 것이 아니라, 검증 데이터 오차의 증가를 통해 과적합을 판단해야 하며, 손실 지표(RMSE, MAE)를 통해 모델의 성능을 균형있게 평가해야 합니다. 이 내용을 바탕으로 학습 진행 과정에서 발생할 수 있는 실수를 줄이고 더 나은 모델을 구축할 수 있을 것입니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> numpy <span style=color:#66d9ef>as</span> np
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.metrics <span style=color:#f92672>import</span> mean_squared_error, mean_absolute_error
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>y_ex <span style=color:#f92672>=</span> np<span style=color:#f92672>.</span>array([<span style=color:#ae81ff>2.0</span>, <span style=color:#ae81ff>2.5</span>, <span style=color:#ae81ff>3.0</span>, <span style=color:#ae81ff>2.8</span>, <span style=color:#ae81ff>3.2</span>])
-</span></span><span style=display:flex><span>yhat_ex <span style=color:#f92672>=</span> np<span style=color:#f92672>.</span>array([<span style=color:#ae81ff>2.1</span>, <span style=color:#ae81ff>2.4</span>])
-</span></span></code></pre></div><h2 id=3-데이터-누수-방지를-위한-전처리-파이프라인-구축-가이드>3. 데이터 누수 방지를 위한 전처리 파이프라인 구축 가이드<a hidden class=anchor aria-hidden=true href=#3-데이터-누수-방지를-위한-전처리-파이프라인-구축-가이드>#</a></h2><h3 id=무엇을-배웠나-2>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-2>#</a></h3><p>데이터 탐색과 전처리 학습은 분리해서 진행해야 하며, 특히 전처리 기준은 훈련 데이터에만 적용하여 데이터 누수를 방지해야 한다는 점을 명확히 이해하게 되었다. 데이터셋을 다룰 때 변수명 관리를 철저히 하고, Pipeline을 활용하면 전처리 과정을 일관성 있게 관리하고 데이터 누수를 예방할 수 있다는 것을 알게 되었다. 이번 학습을 통해 데이터 분석의 기본적인 원칙과 실제 적용 방식을 더욱 명확하게 이해하게 되었다.</p><h3 id=헷갈렸던-점-2>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-2>#</a></h3><p>데이터를 탐색하면서 전처리를 동시에 해야 하는 건 줄 알았는데, 훈련 데이터에만 전처리 기준을 적용해야 한다는 점이 헷갈렸어. 또, 데이터셋 이름을 계속 바꿔서 현재 어떤 데이터 상태인지 파악하는 데 어려움을 겪었어. Pipeline을 사용해서 전처리 과정을 명확하게 분리하고 일관성을 유지하면 데이터 누수를 막을 수 있다는 것을 알게 됐어.</p><h3 id=정리된-이해-2>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-2>#</a></h3><p>데이터 탐색 단계에서는 데이터의 전체적인 특징을 파악하고, 전처리 학습 단계에서는 훈련 데이터에만 통계적 기준을 적용하여 데이터 누수를 방지해야 한다는 것을 이해했다. Pipeline을 사용하면 전처리 과정을 체계적으로 관리하고 교차 검증 시에도 데이터 누수를 막을 수 있어 유용하다. 앞으로는 변수명 관리를 철저히 하고 Pipeline을 적극 활용하여 분석의 신뢰도를 높이도록 노력해야겠다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.pipeline <span style=color:#f92672>import</span> Pipeline
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.impute <span style=color:#f92672>import</span> SimpleImputer
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.preprocessing <span style=color:#f92672>import</span> StandardScaler
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.linear_model <span style=color:#f92672>import</span> Ridge
-</span></span></code></pre></div><h2 id=4-교차검증과-모델-선택-성능-평가의-핵심-이해>4. 교차검증과 모델 선택: 성능 평가의 핵심 이해<a hidden class=anchor aria-hidden=true href=#4-교차검증과-모델-선택-성능-평가의-핵심-이해>#</a></h2><h3 id=무엇을-배웠나-3>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-3>#</a></h3><p>교차검증이 단순히 데이터를 반복 사용하는 것이 아니라, 모델 성능을 보다 안정적으로 평가하기 위한 중요한 기법임을 깨달았습니다. Train/Test 분할만으로는 모델 성능을 제대로 판단하기 어렵고, 특히 데이터의 편향에 취약하다는 점을 알게 되었습니다. <code>neg_root_mean_squared_error</code> 스코어는 실제 RMSE를 구하기 위해 음수를 취한 값이라는 것을 이해했고, 이를 통해 모델 선택에 더욱 신중해질 수 있을 것 같습니다.</p><h3 id=헷갈렸던-점-3>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-3>#</a></h3><p>처음에는 교차검증이 데이터를 그냥 반복해서 쓰는 것처럼 보여서 데이터 낭비라고 생각했고, <code>neg_root_mean_squared_error</code>가 음수로 나오는 이유가 궁금했습니다. 또한, 단일 Train/Test 분할만으로도 충분할 거라 생각해서 교차검증의 필요성을 명확하게 인지하지 못했습니다.</p><h3 id=정리된-이해-3>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-3>#</a></h3><p>교차검증은 데이터의 특정 부분에 모델 성능이 지나치게 의존하는 것을 방지하기 위해, 데이터를 여러 조각으로 나누어 반복적으로 학습하고 검증하는 방법이다. <code>neg_root_mean_squared_error</code>와 같은 음수 스코어는 실제 RMSE를 나타내므로 음수를 취해 변환해야 한다. 교차검증을 통해 모델 선택 시 더 안정적이고 일반화된 성능을 확보할 수 있다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.pipeline <span style=color:#f92672>import</span> Pipeline
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.preprocessing <span style=color:#f92672>import</span> StandardScaler
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.linear_model <span style=color:#f92672>import</span> Ridge
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.model_selection <span style=color:#f92672>import</span> cross_val_score
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>pipeline <span style=color:#f92672>=</span> Pipeline([
-</span></span><span style=display:flex><span>    (<span style=color:#e6db74>&#34;scaler&#34;</span>, StandardScaler()),
-</span></span><span style=display:flex><span>    (<span style=color:#e6db74>&#34;model&#34;</span>, Ridge())
-</span></span><span style=display:flex><span>])
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>scores <span style=color:#f92672>=</span> cross_val_score(
-</span></span><span style=display:flex><span>    pipeline,
-</span></span><span style=display:flex><span>    X,
-</span></span><span style=display:flex><span>    y,
-</span></span><span style=display:flex><span>    cv<span style=color:#f92672>=</span><span style=color:#ae81ff>5</span>,  <span style=color:#75715e># 5-Fold 교차검증</span>
-</span></span><span style=display:flex><span>    scoring<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;neg_root_mean_squared_error&#34;</span>
-</span></span><span style=display:flex><span>)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 음수 스코어를 실제 RMSE로 변환</span>
-</span></span><span style=display:flex><span>rmse_scores <span style=color:#f92672>=</span> <span style=color:#f92672>-</span>scores
-</span></span><span style=display:flex><span>mean_rmse <span style=color:#f92672>=</span> rmse_scores<span style=color:#f92672>.</span>mean()
-</span></span><span style=display:flex><span>std_rmse <span style=color:#f92672>=</span> rmse_scores<span style=color:#f92672>.</span>std()
-</span></span><span style=display:flex><span>print(
-</span></span></code></pre></div><h2 id=5-하이퍼파라미터-탐색-시간과-성능의-균형-잡기>5. 하이퍼파라미터 탐색: 시간과 성능의 균형 잡기<a hidden class=anchor aria-hidden=true href=#5-하이퍼파라미터-탐색-시간과-성능의-균형-잡기>#</a></h2><h3 id=무엇을-배웠나-4>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-4>#</a></h3><p>하이퍼파라미터 탐색은 단순히 가장 낮은 RMSE를 찾는 것이 아니라, 시간과 성능을 고려한 효율적인 모델 구축 과정이라는 것을 알게 되었습니다. Grid Search, Random Search, Bayesian Optimization 각각의 장단점을 이해하고 상황에 맞게 선택하는 것이 중요하며, CV RMSE와 Test RMSE의 관계를 통해 모델의 일반화 성능을 제대로 평가해야 한다는 점을 깨달았습니다. 그리고 시각화 도구를 활용하여 하이퍼파라미터와 성능 지표 간의 관계를 파악하는 것이 도움이 된다는 것을 확인했습니다.</p><h3 id=헷갈렸던-점-4>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-4>#</a></h3><p>하이퍼파라미터 탐색을 할 때 가장 낮은 RMSE 값을 가진 모델이 항상 최선의 선택일 거라고 생각했는데, 시간과 컴퓨팅 자원을 고려해야 한다는 점이 헷갈렸어요. 교차 검증 결과만으로 모델의 성능을 완벽하게 평가할 수 있을까 의문이었고, 다양한 평가 지표들을 어떻게 조합해야 할지 감을 잡지 못했습니다.</p><h3 id=정리된-이해-4>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-4>#</a></h3><p>하이퍼파라미터 탐색은 시간과 성능의 균형을 맞추는 과정이며, Grid Search, Random Search, Bayesian Optimization 중 상황에 맞는 방법을 선택해야 합니다. 단순히 RMSE가 낮은 모델을 찾는 것보다 CV RMSE, Test RMSE, 그리고 학습 시간을 종합적으로 고려하여 최적의 자원 활용 계획을 세우는 것이 중요합니다. 다양한 평가 지표와 시간 제약을 함께 고려하면 더 나은 모델을 효율적으로 찾을 수 있습니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># Simple Grid Search 예시 (가상)</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> numpy <span style=color:#66d9ef>as</span> np
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.linear_model <span style=color:#f92672>import</span> Ridge
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.model_selection <span style=color:#f92672>import</span> cross_val_score
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>alphas <span style=color:#f92672>=</span> np<span style=color:#f92672>.</span>arange(<span style=color:#ae81ff>0.01</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>0.1</span>)
-</span></span><span style=display:flex><span>cv_rmse_values <span style=color:#f92672>=</span> []
-</span></span><span style=display:flex><span>training_times <span style=color:#f92672>=</span> []
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>for</span> alpha <span style=color:#f92672>in</span> alphas:
-</span></span><span style=display:flex><span>    ridge <span style=color:#f92672>=</span> Ridge(alpha<span style=color:#f92672>=</span>alpha)
-</span></span><span style=display:flex><span>    scores <span style=color:#f92672>=</span> cross_val_score(ridge, X_train, y_train, cv<span style=color:#f92672>=</span><span style=color:#ae81ff>5</span>, scoring<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;neg_mean_squared_error&#39;</span>) <span style=color:#75715e># X_train, y_train 정의 필요</span>
-</span></span><span style=display:flex><span>    rmse <span style=color:#f92672>=</span> np<span style=color:#f92672>.</span>sqrt(<span style=color:#f92672>-</span>scores<span style=color:#f92672>.</span>mean())
-</span></span><span style=display:flex><span>    cv_rmse_values<span style=color:#f92672>.</span>append(rmse)
-</span></span><span style=display:flex><span>    <span style=color:#75715e># 학습 시간 측정 부분 추가 필요 (time.time() 활용)</span>
-</span></span><span style=display:flex><span>    <span style=color:#75715e># training_times.append(training_time)</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># Random Search 예시 (가상)</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> numpy <span style=color:#66d9ef>as</span> np
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.linear_model <span style=color:#f92672>import</span> ElasticNet
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.model_selection <span style=color:#f92672>import</span> RandomizedSearchCV
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>param_distributions <span style=color:#f92672>=</span> {
-</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;alpha&#39;</span>: np<span style=color:#f92672>.</span>random<span style=color:#f92672>.</span>uniform(<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>100</span>),
-</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;l1_ratio&#39;</span>: np<span style=color:#f92672>.</span>random<span style=color:#f92672>.</span>uniform(<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>100</span>)
-</span></span><span style=display:flex><span>}
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>random_search <span style=color:#f92672>=</span> RandomizedSearchCV(ElasticNet(), param_distributions, n_iter<span style=color:#f92672>=</span><span style=color:#ae81ff>10</span>, scoring<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;neg_mean_squared_error&#39;</span>)
-</span></span><span style=display:flex><span><span style=color:#75715e># X_train, y_train, X_val, y_val 정의 필요</span>
-</span></span><span style=display:flex><span>random_search<span style=color:#f92672>.</span>fit(X_train, y_train)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 결과 시각화 및 분석</span>
-</span></span></code></pre></div><h2 id=6-shap을-활용한-모델-해석-및-시각화-워크노트>6. SHAP을 활용한 모델 해석 및 시각화 워크노트<a hidden class=anchor aria-hidden=true href=#6-shap을-활용한-모델-해석-및-시각화-워크노트>#</a></h2><h3 id=무엇을-배웠나-5>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-5>#</a></h3><p>SHAP 값이 선형 모델 계수와는 다른, 각 데이터 포인트별 변수의 기여도를 보여주는 개별적인 지표라는 점을 이해하게 되었다. SHAP 값이 높다고 해서 반드시 인과관계를 의미하는 것은 아니며, 모델 해석 시 주의해야 함을 알게 되었다. SHAP Summary Plot을 통해 데이터 포인트와 변수 중요도를 시각적으로 분석하는 방법을 익혔다.</p><h3 id=헷갈렸던-점-5>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-5>#</a></h3><p>선형 모델의 계수와 SHAP 값의 차이를 명확히 이해하지 못해서, 그래프들을 비교하며 어떤 정보를 얻어야 하는지 혼란스러웠습니다. SHAP 값이 높다고 해서 반드시 변수가 예측의 주요 원인이라고 단정할 수 있는지 확신이 없었고, 파생 변수들의 방향성이 직관과 맞지 않을 때 모델이나 데이터의 문제인지 판단하기 어려웠습니다. SHAP 값 해석이 단순한 상관관계 설명에 그치는 건 아닌가 고민했습니다.</p><h3 id=정리된-이해-5>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-5>#</a></h3><p>SHAP 값은 선형 모델 계수와 달리 특정 샘플에 대한 변수의 영향력을 세밀하게 보여주는 도구이며, 모델의 예측 결과를 설명하는 데 유용하지만 인과관계를 증명하지는 않습니다. SHAP Summary Plot을 통해 개별 데이터 샘플의 변수 영향력을 시각적으로 분석할 수 있으며, 이를 통해 모델의 예측 방향성을 파악하고 잠재적인 문제를 발견할 수 있습니다. 예를 들어, 특정 변수의 SHAP 값이 직관과 다를 경우 데이터나 모델 자체를 다시 검토해야 할 수 있습니다.</p><pre tabindex=0><code># SHAP Summary Plot 예시 (가정: shap, matplotlib 설치 필요)
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-07-08 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-07-08-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-07-08-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-08-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험">
+  <meta property="og:description" content="2026-07-08 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-07-08T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-08T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험">
+  <meta name="twitter:description" content="2026-07-08 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험",
+      "item": "https://Han-think.github.io/learning/2026-07-08-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험",
+  "name": "회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험",
+  "description": "2026-07-08 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 결정계수와 SST·SSR·SSE 그래프, 초보자를 위한 해석 다항 회귀 과적합과 손실 지표 이해하기 데이터 누수 방지를 위한 전처리 파이프라인 구축 가이드 교차검증과 모델 선택: 성능 평가의 핵심 이해 하이퍼파라미터 탐색: 시간과 성능의 균형 잡기 SHAP을 활용한 모델 해석 및 시각화 워크노트 Stacking 모델 학습의 어려움과 올바른 이해 PyCaret AutoML 실습 환경 구축 및 버전 호환성 문제 해결 회귀 미니 프로젝트 설계 및 분석 가이드 총평 1. 결정계수와 SST·SSR·SSE 그래프, 초보자를 위한 해석 무엇을 배웠나 결정계수 (R^2)를 이해하는 데 필요한 SST, SSR, SSE 각각이 의미하는 바를 명확히 알게 되었다. SST는 전체 데이터의 변동성, SSR은 모델이 설명하는 변동성, SSE는 모델이 설명하지 못한 오차를 나타냄을 이해했다. 특히, SSR과 SSE의 혼동을 바로잡고, 이들의 관계를 통해 모델의 설명력을 파악하는 방법을 익혔다.\n헷갈렸던 점 결정계수 R²와 관련된 그래프에서 회귀선, 평균선, 실제값-예측값 거리 요소들의 의미를 명확하게 구분하는 데 어려움을 느꼈다. SSR과 SSE의 정의가 자료마다 다르게 사용되어 혼란스러웠고, R² 값을 모델의 정확도를 나타내는 수치로 단순하게 해석하는 것이 맞는지 확신이 없었다. 전체적인 데이터 변동성과 모델이 설명하는 변동성, 그리고 예측하지 못한 오차를 어떻게 그래프로 표현하는지 파악하는 것이 중요했다.\n정리된 이해 전체 데이터의 변동성(SST)은 실제값과 전체 평균의 차이, 모델이 설명하는 변동성(SSR)은 예측값이 전체 평균과 얼마나 차이가 나는지, 그리고 모델이 설명하지 못한 오차(SSE)는 실제값과 예측값의 차이로 각각 이해하면 된다. 결정계수 R²는 SSR을 SST로 나눈 값으로, 모델이 데이터의 변동성을 얼마나 설명하는지를 나타내는 지표이며, 1에 가까울수록 모델의 설명력이 높다. SSR과 SSE의 정확한 정의는 자료에 따라 달라질 수 있으므로 주의해야 한다.\nSST = \\sum (y_i - \\bar{y})^2 SSR = \\sum (\\hat{y}_i - \\bar{y})^2 2. 다항 회귀 과적합과 손실 지표 이해하기 무엇을 배웠나 초보자를 위한 회귀 분석 학습 과정에서 과적합 판단과 손실 지표 해석에 대한 잘못된 이해가 있었음을 깨달았습니다. 훈련 데이터 오차 감소만으로 모델 개선을 판단하는 오류를 범했고, 손실 값의 변화에만 지나치게 집중했습니다. 이제는 훈련/검증 오차의 변화를 종합적으로 고려하고, 다양한 요인을 염두에 둔 손실 지표 해석이 중요하다는 것을 알게 되었습니다.\n헷갈렸던 점 처음에는 훈련 데이터의 오차가 계속 줄어들면 모델이 잘 학습되고 있다고 생각했는데, 테스트 데이터의 오차를 간과하고 과적합을 제대로 판단하지 못했습니다. 손실 값이 감소할 때마다 모델이 항상 좋아지는 것처럼 생각했고, 손실 변화에 너무 의미를 부여하여 다른 요인을 고려하지 못했습니다.\n정리된 이해 초보자도 쉽게 이해할 수 있도록 단순 및 다항 회귀 분석에서 과적합과 손실 지표에 대한 이해를 정리했습니다. 훈련 데이터 오차가 계속 줄어든다고 모델이 좋아지는 것이 아니라, 검증 데이터 오차의 증가를 통해 과적합을 판단해야 하며, 손실 지표(RMSE, MAE)를 통해 모델의 성능을 균형있게 평가해야 합니다. 이 내용을 바탕으로 학습 진행 과정에서 발생할 수 있는 실수를 줄이고 더 나은 모델을 구축할 수 있을 것입니다.\nimport numpy as np from sklearn.metrics import mean_squared_error, mean_absolute_error y_ex = np.array([2.0, 2.5, 3.0, 2.8, 3.2]) yhat_ex = np.array([2.1, 2.4]) 3. 데이터 누수 방지를 위한 전처리 파이프라인 구축 가이드 무엇을 배웠나 데이터 탐색과 전처리 학습은 분리해서 진행해야 하며, 특히 전처리 기준은 훈련 데이터에만 적용하여 데이터 누수를 방지해야 한다는 점을 명확히 이해하게 되었다. 데이터셋을 다룰 때 변수명 관리를 철저히 하고, Pipeline을 활용하면 전처리 과정을 일관성 있게 관리하고 데이터 누수를 예방할 수 있다는 것을 알게 되었다. 이번 학습을 통해 데이터 분석의 기본적인 원칙과 실제 적용 방식을 더욱 명확하게 이해하게 되었다.\n헷갈렸던 점 데이터를 탐색하면서 전처리를 동시에 해야 하는 건 줄 알았는데, 훈련 데이터에만 전처리 기준을 적용해야 한다는 점이 헷갈렸어. 또, 데이터셋 이름을 계속 바꿔서 현재 어떤 데이터 상태인지 파악하는 데 어려움을 겪었어. Pipeline을 사용해서 전처리 과정을 명확하게 분리하고 일관성을 유지하면 데이터 누수를 막을 수 있다는 것을 알게 됐어.\n정리된 이해 데이터 탐색 단계에서는 데이터의 전체적인 특징을 파악하고, 전처리 학습 단계에서는 훈련 데이터에만 통계적 기준을 적용하여 데이터 누수를 방지해야 한다는 것을 이해했다. Pipeline을 사용하면 전처리 과정을 체계적으로 관리하고 교차 검증 시에도 데이터 누수를 막을 수 있어 유용하다. 앞으로는 변수명 관리를 철저히 하고 Pipeline을 적극 활용하여 분석의 신뢰도를 높이도록 노력해야겠다.\nfrom sklearn.pipeline import Pipeline from sklearn.impute import SimpleImputer from sklearn.preprocessing import StandardScaler from sklearn.linear_model import Ridge 4. 교차검증과 모델 선택: 성능 평가의 핵심 이해 무엇을 배웠나 교차검증이 단순히 데이터를 반복 사용하는 것이 아니라, 모델 성능을 보다 안정적으로 평가하기 위한 중요한 기법임을 깨달았습니다. Train/Test 분할만으로는 모델 성능을 제대로 판단하기 어렵고, 특히 데이터의 편향에 취약하다는 점을 알게 되었습니다. neg_root_mean_squared_error 스코어는 실제 RMSE를 구하기 위해 음수를 취한 값이라는 것을 이해했고, 이를 통해 모델 선택에 더욱 신중해질 수 있을 것 같습니다.\n헷갈렸던 점 처음에는 교차검증이 데이터를 그냥 반복해서 쓰는 것처럼 보여서 데이터 낭비라고 생각했고, neg_root_mean_squared_error가 음수로 나오는 이유가 궁금했습니다. 또한, 단일 Train/Test 분할만으로도 충분할 거라 생각해서 교차검증의 필요성을 명확하게 인지하지 못했습니다.\n정리된 이해 교차검증은 데이터의 특정 부분에 모델 성능이 지나치게 의존하는 것을 방지하기 위해, 데이터를 여러 조각으로 나누어 반복적으로 학습하고 검증하는 방법이다. neg_root_mean_squared_error와 같은 음수 스코어는 실제 RMSE를 나타내므로 음수를 취해 변환해야 한다. 교차검증을 통해 모델 선택 시 더 안정적이고 일반화된 성능을 확보할 수 있다.\nfrom sklearn.pipeline import Pipeline from sklearn.preprocessing import StandardScaler from sklearn.linear_model import Ridge from sklearn.model_selection import cross_val_score pipeline = Pipeline([ (\"scaler\", StandardScaler()), (\"model\", Ridge()) ]) scores = cross_val_score( pipeline, X, y, cv=5, # 5-Fold 교차검증 scoring=\"neg_root_mean_squared_error\" ) # 음수 스코어를 실제 RMSE로 변환 rmse_scores = -scores mean_rmse = rmse_scores.mean() std_rmse = rmse_scores.std() print( 5. 하이퍼파라미터 탐색: 시간과 성능의 균형 잡기 무엇을 배웠나 하이퍼파라미터 탐색은 단순히 가장 낮은 RMSE를 찾는 것이 아니라, 시간과 성능을 고려한 효율적인 모델 구축 과정이라는 것을 알게 되었습니다. Grid Search, Random Search, Bayesian Optimization 각각의 장단점을 이해하고 상황에 맞게 선택하는 것이 중요하며, CV RMSE와 Test RMSE의 관계를 통해 모델의 일반화 성능을 제대로 평가해야 한다는 점을 깨달았습니다. 그리고 시각화 도구를 활용하여 하이퍼파라미터와 성능 지표 간의 관계를 파악하는 것이 도움이 된다는 것을 확인했습니다.\n헷갈렸던 점 하이퍼파라미터 탐색을 할 때 가장 낮은 RMSE 값을 가진 모델이 항상 최선의 선택일 거라고 생각했는데, 시간과 컴퓨팅 자원을 고려해야 한다는 점이 헷갈렸어요. 교차 검증 결과만으로 모델의 성능을 완벽하게 평가할 수 있을까 의문이었고, 다양한 평가 지표들을 어떻게 조합해야 할지 감을 잡지 못했습니다.\n정리된 이해 하이퍼파라미터 탐색은 시간과 성능의 균형을 맞추는 과정이며, Grid Search, Random Search, Bayesian Optimization 중 상황에 맞는 방법을 선택해야 합니다. 단순히 RMSE가 낮은 모델을 찾는 것보다 CV RMSE, Test RMSE, 그리고 학습 시간을 종합적으로 고려하여 최적의 자원 활용 계획을 세우는 것이 중요합니다. 다양한 평가 지표와 시간 제약을 함께 고려하면 더 나은 모델을 효율적으로 찾을 수 있습니다.\n# Simple Grid Search 예시 (가상) import numpy as np from sklearn.linear_model import Ridge from sklearn.model_selection import cross_val_score alphas = np.arange(0.01, 2, 0.1) cv_rmse_values = [] training_times = [] for alpha in alphas: ridge = Ridge(alpha=alpha) scores = cross_val_score(ridge, X_train, y_train, cv=5, scoring='neg_mean_squared_error') # X_train, y_train 정의 필요 rmse = np.sqrt(-scores.mean()) cv_rmse_values.append(rmse) # 학습 시간 측정 부분 추가 필요 (time.time() 활용) # training_times.append(training_time) # Random Search 예시 (가상) import numpy as np from sklearn.linear_model import ElasticNet from sklearn.model_selection import RandomizedSearchCV param_distributions = { 'alpha': np.random.uniform(0, 1, 100), 'l1_ratio': np.random.uniform(0, 1, 100) } random_search = RandomizedSearchCV(ElasticNet(), param_distributions, n_iter=10, scoring='neg_mean_squared_error') # X_train, y_train, X_val, y_val 정의 필요 random_search.fit(X_train, y_train) # 결과 시각화 및 분석 6. SHAP을 활용한 모델 해석 및 시각화 워크노트 무엇을 배웠나 SHAP 값이 선형 모델 계수와는 다른, 각 데이터 포인트별 변수의 기여도를 보여주는 개별적인 지표라는 점을 이해하게 되었다. SHAP 값이 높다고 해서 반드시 인과관계를 의미하는 것은 아니며, 모델 해석 시 주의해야 함을 알게 되었다. SHAP Summary Plot을 통해 데이터 포인트와 변수 중요도를 시각적으로 분석하는 방법을 익혔다.\n헷갈렸던 점 선형 모델의 계수와 SHAP 값의 차이를 명확히 이해하지 못해서, 그래프들을 비교하며 어떤 정보를 얻어야 하는지 혼란스러웠습니다. SHAP 값이 높다고 해서 반드시 변수가 예측의 주요 원인이라고 단정할 수 있는지 확신이 없었고, 파생 변수들의 방향성이 직관과 맞지 않을 때 모델이나 데이터의 문제인지 판단하기 어려웠습니다. SHAP 값 해석이 단순한 상관관계 설명에 그치는 건 아닌가 고민했습니다.\n정리된 이해 SHAP 값은 선형 모델 계수와 달리 특정 샘플에 대한 변수의 영향력을 세밀하게 보여주는 도구이며, 모델의 예측 결과를 설명하는 데 유용하지만 인과관계를 증명하지는 않습니다. SHAP Summary Plot을 통해 개별 데이터 샘플의 변수 영향력을 시각적으로 분석할 수 있으며, 이를 통해 모델의 예측 방향성을 파악하고 잠재적인 문제를 발견할 수 있습니다. 예를 들어, 특정 변수의 SHAP 값이 직관과 다를 경우 데이터나 모델 자체를 다시 검토해야 할 수 있습니다.\n# SHAP Summary Plot 예시 (가정: shap, matplotlib 설치 필요) import shap import matplotlib.pyplot as plt import sklearn # 예시 모델 (scikit-learn 모델) model = sklearn.linear_model.LinearRegression() # ... 모델 학습 ... # SHAP Explainer 생성 explainer = shap.LinearExplainer(model.predict, feature_names=model.feature_names_in_) # SHAP 값 계산 shap_values = explainer.shap_values(X_test) # SHAP Summary Plot 시각화 shap.summary_plot(shap_values, show=False) plt.savefig(\"shap_summary_plot.png\") # 파일로 저장 7. Stacking 모델 학습의 어려움과 올바른 이해 무엇을 배웠나 Stacking 모델을 사용할 때, OOF 예측값을 활용하여 누수를 방지하고 모델 성능을 개선해야 한다는 것을 알게 되었다. 또한 Stacking이 무조건적으로 성능 향상을 보장하는 것이 아니며, 시간 효율성과 해석 가능성 등의 요소를 함께 고려해야 함을 깨달았다. 다양한 기반 모델을 선택하여 예측 패턴을 활용하는 실습도 앞으로 진행해봐야겠다.\n헷갈렸던 점 Stacking 모델을 처음 접했을 때, 기반 모델들이 훈련 데이터를 재사용하는 부분이 누수처럼 느껴져서 과적합이 될까 봐 걱정했어요. 또, Stacking이 항상 다른 모델보다 성능이 좋을 것이라는 막연한 기대 때문에, 실제로는 성능 향상이 크지 않더라도 억지로 적용하려는 경향이 있었던 것 같아요.\n정리된 이해 Stacking 모델은 OOF 예측값을 활용하여 누수를 방지해야 하며, 항상 성능이 좋다고 단정 지을 수 없어 시간 효율성과 해석 가능성도 함께 고려해야 합니다. 기반 모델들의 다양한 예측 패턴을 활용하여 메타 모델을 학습시키는 것이 중요하며, 경우에 따라서는 단일 모델이 더 효율적일 수 있습니다. 성능 개선 효과와 시간 증가를 균형 있게 판단하는 것이 핵심입니다.\nfrom sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor from sklearn.svm import SVR base_models = [ RandomForestRegressor(), GradientBoostingRegressor(), SVR() ] 8. PyCaret AutoML 실습 환경 구축 및 버전 호환성 문제 해결 무엇을 배웠나 PyCaret 실습 시 pip 설치 완료 여부가 실행 환경 호환성을 보장하지 않는다는 점을 깨달았습니다. 패키지 버전, 파이썬 버전 등의 호환성 문제를 확인하는 것이 중요하며, pip check 명령어를 통해 의존성 충돌을 진단해야 합니다. 정확한 환경 확인 과정을 거쳐야 강의 내용과 동일한 결과를 얻을 수 있음을 알게 되었습니다.\n헷갈렸던 점 강사님 화면에서는 모델 비교표가 바로 출력되었는데, 제 코드를 실행하니 비교표가 나타나지 않아 코드를 잘못 썼다고 생각했습니다. 설치 로그가 길게 나오길래 필요한 패키지가 모두 설치된 줄 알았고, 실행 환경에 문제는 없을 거라고 생각했습니다. 결국 환경 버전과 의존성 문제를 제대로 확인하지 않았기에 오류가 발생한 것이었습니다.\n정리된 이해 PyCaret 실습 시 패키지 설치가 완료되었다고 해서 곧바로 실행이 가능하다는 착각을 했지만, Python 버전, 패키지 버전, PyCaret 버전 간의 호환성 문제가 발생할 수 있다는 것을 깨달았습니다. 앞으로는 환경 진단 명령어를 활용하여 정확한 환경을 확인하고, pip check 명령어를 통해 의존성 충돌을 해결해야 원활한 PyCaret 사용이 가능할 것 같습니다.\n# 환경 버전 확인 import sys print(\"Python 버전:\", sys.version) print(\"NumPy 버전:\", np.__version__) print(\"Pandas 버전:\", pd.__version__) print(\"scikit-learn 버전:\", sklearn.__version__) print(\"PyCaret 버전:\", pycaret.__version__) # 의존성 확인 및 충돌 해결 !pip check 9. 회귀 미니 프로젝트 설계 및 분석 가이드 무엇을 배웠나 회귀 미니 프로젝트를 진행하면서 여러 기법들을 닥치는 대로 적용할 필요는 없다는 것을 알게 되었다. 모델 선택은 단순히 성능 지표뿐 아니라 신뢰성, 설명 가능성, 운영 비용 등 다양한 요소를 종합적으로 고려해야 하며, 각 기법이 어떤 상황에서 유용한지 이해하는 것이 중요하다. 앞으로는 문제 상황에 맞는 적절한 기법을 선택하고 적용하는 데 집중해야겠다.\n헷갈렸던 점 여러 회귀 기법들을 모두 적용해야 하는지 몰라 어떤 것을 우선적으로 사용할지 혼란스러웠고, 모델 성능 지표와 실제 서비스 적용 가능성 사이의 관계가 명확하게 느껴지지 않았다. 시계열 데이터 분석에 주로 쓰이는 차분 기법이 일반적인 회귀 분석에서 필수적인지 의문스러웠다.\n정리된 이해 다양한 회귀 기법을 무조건 적용하기보다는 데이터의 특성과 문제 상황에 맞게 필요한 기법을 선택적으로 사용하는 것이 중요합니다. 모델의 성능 지표 외에도 신뢰성, 설명 가능성, 운영 비용과 같은 기능적 측면을 함께 고려하여 최적의 모델을 선택해야 합니다. 특히, 시계열 데이터의 차분 기법이나 모델 스태킹은 필요에 따라 신중하게 적용해야 합니다.\nimport pandas as pd data = pd.read_csv('price_demand_data.csv') data.isnull().sum() data.fillna(method='ffill', inplace=True) 총평 오늘 오후 전체에서 배운 것 오늘 학습을 통해 결정계수와 교차검증의 중요성을 다시 한번 깨닫고, 데이터 누수 방지를 위한 전처리 파이프라인 구축 및 모델 해석 기법(SHAP) 활용 능력도 향상되었습니다. 특히, 모델 선택 및 하이퍼파라미터 탐색 시 단순히 성능 지표에만 집중하지 않고, 다양한 요소를 고려하는 균형 잡힌 접근 방식이 필요하다는 점을 알게 되었습니다. 앞으로는 학습 내용을 바탕으로 실제 문제에 적용해 보며 실력 향상을 이뤄나가겠습니다.\n다음에 조심할 것 앞으로는 과적합 판단 시 훈련/검증 오차를 함께 고려하고, 손실 지표에만 매몰되지 않도록 주의해야겠다. 또한, PyCaret이나 다른 라이브러리를 사용할 때 버전 호환성 문제를 꼼꼼히 확인하여 예상치 못한 오류를 방지해야 할 것 같다.\n다음 복습 주제 결정계수(R²) 해석 시 SST, SSR, SSE의 관계를 다시 한번 짚어보고, 과적합 판단과 손실 지표 해석에 대한 이해를 더 깊게 해야겠다. 특히 훈련/검증 오차의 변화를 종합적으로 고려하는 연습을 꾸준히 해야 할 것 같다. PyCaret을 사용할 때 패키지 버전 호환성을 더욱 꼼꼼하게 확인하고, 환경 설정에 필요한 단계를 명확히 숙지하여 오류 발생을 최소화해야 할 것이다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "1971",
+  "inLanguage": "en",
+  "datePublished": "2026-07-08T00:00:00Z",
+  "dateModified": "2026-07-08T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-07-08-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험
+    </h1>
+    <div class="post-description">
+      2026-07-08 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-08 00:00:00 +0000 UTC'>2026년 7월 8일</span>&nbsp;·&nbsp;<span>10 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EA%B2%B0%EC%A0%95%EA%B3%84%EC%88%98%EC%99%80-sstssrsse-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%ED%95%B4%EC%84%9D">결정계수와 SST·SSR·SSE 그래프, 초보자를 위한 해석</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EB%8B%A4%ED%95%AD-%ED%9A%8C%EA%B7%80-%EA%B3%BC%EC%A0%81%ED%95%A9%EA%B3%BC-%EC%86%90%EC%8B%A4-%EC%A7%80%ED%91%9C-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">다항 회귀 과적합과 손실 지표 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%88%84%EC%88%98-%EB%B0%A9%EC%A7%80%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%A0%84%EC%B2%98%EB%A6%AC-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95-%EA%B0%80%EC%9D%B4%EB%93%9C">데이터 누수 방지를 위한 전처리 파이프라인 구축 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EA%B5%90%EC%B0%A8%EA%B2%80%EC%A6%9D%EA%B3%BC-%EB%AA%A8%EB%8D%B8-%EC%84%A0%ED%83%9D-%EC%84%B1%EB%8A%A5-%ED%8F%89%EA%B0%80%EC%9D%98-%ED%95%B5%EC%8B%AC-%EC%9D%B4%ED%95%B4">교차검증과 모델 선택: 성능 평가의 핵심 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-%ED%95%98%EC%9D%B4%ED%8D%BC%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0-%ED%83%90%EC%83%89-%EC%8B%9C%EA%B0%84%EA%B3%BC-%EC%84%B1%EB%8A%A5%EC%9D%98-%EA%B7%A0%ED%98%95-%EC%9E%A1%EA%B8%B0">하이퍼파라미터 탐색: 시간과 성능의 균형 잡기</a></li>
+</ol>
+</li>
+<li>
+<ol start="6">
+<li><a href="#6-shap%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%9C-%EB%AA%A8%EB%8D%B8-%ED%95%B4%EC%84%9D-%EB%B0%8F-%EC%8B%9C%EA%B0%81%ED%99%94-%EC%9B%8C%ED%81%AC%EB%85%B8%ED%8A%B8">SHAP을 활용한 모델 해석 및 시각화 워크노트</a></li>
+</ol>
+</li>
+<li>
+<ol start="7">
+<li><a href="#7-stacking-%EB%AA%A8%EB%8D%B8-%ED%95%99%EC%8A%B5%EC%9D%98-%EC%96%B4%EB%A0%A4%EC%9B%80%EA%B3%BC-%EC%98%AC%EB%B0%94%EB%A5%B8-%EC%9D%B4%ED%95%B4">Stacking 모델 학습의 어려움과 올바른 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="8">
+<li><a href="#8-pycaret-automl-%EC%8B%A4%EC%8A%B5-%ED%99%98%EA%B2%BD-%EA%B5%AC%EC%B6%95-%EB%B0%8F-%EB%B2%84%EC%A0%84-%ED%98%B8%ED%99%98%EC%84%B1-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0">PyCaret AutoML 실습 환경 구축 및 버전 호환성 문제 해결</a></li>
+</ol>
+</li>
+<li>
+<ol start="9">
+<li><a href="#9-%ED%9A%8C%EA%B7%80-%EB%AF%B8%EB%8B%88-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%84%A4%EA%B3%84-%EB%B0%8F-%EB%B6%84%EC%84%9D-%EA%B0%80%EC%9D%B4%EB%93%9C">회귀 미니 프로젝트 설계 및 분석 가이드</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-결정계수와-sstssrsse-그래프-초보자를-위한-해석">1. 결정계수와 SST·SSR·SSE 그래프, 초보자를 위한 해석<a hidden class="anchor" aria-hidden="true" href="#1-결정계수와-sstssrsse-그래프-초보자를-위한-해석">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>결정계수 (R^2)를 이해하는 데 필요한 SST, SSR, SSE 각각이 의미하는 바를 명확히 알게 되었다. SST는 전체 데이터의 변동성, SSR은 모델이 설명하는 변동성, SSE는 모델이 설명하지 못한 오차를 나타냄을 이해했다. 특히, SSR과 SSE의 혼동을 바로잡고, 이들의 관계를 통해 모델의 설명력을 파악하는 방법을 익혔다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>결정계수 R²와 관련된 그래프에서 회귀선, 평균선, 실제값-예측값 거리 요소들의 의미를 명확하게 구분하는 데 어려움을 느꼈다. SSR과 SSE의 정의가 자료마다 다르게 사용되어 혼란스러웠고, R² 값을 모델의 정확도를 나타내는 수치로 단순하게 해석하는 것이 맞는지 확신이 없었다. 전체적인 데이터 변동성과 모델이 설명하는 변동성, 그리고 예측하지 못한 오차를 어떻게 그래프로 표현하는지 파악하는 것이 중요했다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>전체 데이터의 변동성(SST)은 실제값과 전체 평균의 차이, 모델이 설명하는 변동성(SSR)은 예측값이 전체 평균과 얼마나 차이가 나는지, 그리고 모델이 설명하지 못한 오차(SSE)는 실제값과 예측값의 차이로 각각 이해하면 된다. 결정계수 R²는 SSR을 SST로 나눈 값으로, 모델이 데이터의 변동성을 얼마나 설명하는지를 나타내는 지표이며, 1에 가까울수록 모델의 설명력이 높다. SSR과 SSE의 정확한 정의는 자료에 따라 달라질 수 있으므로 주의해야 한다.</p>
+<pre tabindex="0"><code>SST = \sum (y_i - \bar{y})^2
+</code></pre><pre tabindex="0"><code>SSR = \sum (\hat{y}_i - \bar{y})^2
+</code></pre><h2 id="2-다항-회귀-과적합과-손실-지표-이해하기">2. 다항 회귀 과적합과 손실 지표 이해하기<a hidden class="anchor" aria-hidden="true" href="#2-다항-회귀-과적합과-손실-지표-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>초보자를 위한 회귀 분석 학습 과정에서 과적합 판단과 손실 지표 해석에 대한 잘못된 이해가 있었음을 깨달았습니다. 훈련 데이터 오차 감소만으로 모델 개선을 판단하는 오류를 범했고, 손실 값의 변화에만 지나치게 집중했습니다. 이제는 훈련/검증 오차의 변화를 종합적으로 고려하고, 다양한 요인을 염두에 둔 손실 지표 해석이 중요하다는 것을 알게 되었습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음에는 훈련 데이터의 오차가 계속 줄어들면 모델이 잘 학습되고 있다고 생각했는데, 테스트 데이터의 오차를 간과하고 과적합을 제대로 판단하지 못했습니다. 손실 값이 감소할 때마다 모델이 항상 좋아지는 것처럼 생각했고, 손실 변화에 너무 의미를 부여하여 다른 요인을 고려하지 못했습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>초보자도 쉽게 이해할 수 있도록 단순 및 다항 회귀 분석에서 과적합과 손실 지표에 대한 이해를 정리했습니다. 훈련 데이터 오차가 계속 줄어든다고 모델이 좋아지는 것이 아니라, 검증 데이터 오차의 증가를 통해 과적합을 판단해야 하며, 손실 지표(RMSE, MAE)를 통해 모델의 성능을 균형있게 평가해야 합니다. 이 내용을 바탕으로 학습 진행 과정에서 발생할 수 있는 실수를 줄이고 더 나은 모델을 구축할 수 있을 것입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.metrics <span style="color:#f92672">import</span> mean_squared_error, mean_absolute_error
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>y_ex <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">2.0</span>, <span style="color:#ae81ff">2.5</span>, <span style="color:#ae81ff">3.0</span>, <span style="color:#ae81ff">2.8</span>, <span style="color:#ae81ff">3.2</span>])
+</span></span><span style="display:flex;"><span>yhat_ex <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">2.1</span>, <span style="color:#ae81ff">2.4</span>])
+</span></span></code></pre></div><h2 id="3-데이터-누수-방지를-위한-전처리-파이프라인-구축-가이드">3. 데이터 누수 방지를 위한 전처리 파이프라인 구축 가이드<a hidden class="anchor" aria-hidden="true" href="#3-데이터-누수-방지를-위한-전처리-파이프라인-구축-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>데이터 탐색과 전처리 학습은 분리해서 진행해야 하며, 특히 전처리 기준은 훈련 데이터에만 적용하여 데이터 누수를 방지해야 한다는 점을 명확히 이해하게 되었다. 데이터셋을 다룰 때 변수명 관리를 철저히 하고, Pipeline을 활용하면 전처리 과정을 일관성 있게 관리하고 데이터 누수를 예방할 수 있다는 것을 알게 되었다. 이번 학습을 통해 데이터 분석의 기본적인 원칙과 실제 적용 방식을 더욱 명확하게 이해하게 되었다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>데이터를 탐색하면서 전처리를 동시에 해야 하는 건 줄 알았는데, 훈련 데이터에만 전처리 기준을 적용해야 한다는 점이 헷갈렸어. 또, 데이터셋 이름을 계속 바꿔서 현재 어떤 데이터 상태인지 파악하는 데 어려움을 겪었어. Pipeline을 사용해서 전처리 과정을 명확하게 분리하고 일관성을 유지하면 데이터 누수를 막을 수 있다는 것을 알게 됐어.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>데이터 탐색 단계에서는 데이터의 전체적인 특징을 파악하고, 전처리 학습 단계에서는 훈련 데이터에만 통계적 기준을 적용하여 데이터 누수를 방지해야 한다는 것을 이해했다. Pipeline을 사용하면 전처리 과정을 체계적으로 관리하고 교차 검증 시에도 데이터 누수를 막을 수 있어 유용하다. 앞으로는 변수명 관리를 철저히 하고 Pipeline을 적극 활용하여 분석의 신뢰도를 높이도록 노력해야겠다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.pipeline <span style="color:#f92672">import</span> Pipeline
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.impute <span style="color:#f92672">import</span> SimpleImputer
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.preprocessing <span style="color:#f92672">import</span> StandardScaler
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.linear_model <span style="color:#f92672">import</span> Ridge
+</span></span></code></pre></div><h2 id="4-교차검증과-모델-선택-성능-평가의-핵심-이해">4. 교차검증과 모델 선택: 성능 평가의 핵심 이해<a hidden class="anchor" aria-hidden="true" href="#4-교차검증과-모델-선택-성능-평가의-핵심-이해">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>교차검증이 단순히 데이터를 반복 사용하는 것이 아니라, 모델 성능을 보다 안정적으로 평가하기 위한 중요한 기법임을 깨달았습니다. Train/Test 분할만으로는 모델 성능을 제대로 판단하기 어렵고, 특히 데이터의 편향에 취약하다는 점을 알게 되었습니다. <code>neg_root_mean_squared_error</code> 스코어는 실제 RMSE를 구하기 위해 음수를 취한 값이라는 것을 이해했고, 이를 통해 모델 선택에 더욱 신중해질 수 있을 것 같습니다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>처음에는 교차검증이 데이터를 그냥 반복해서 쓰는 것처럼 보여서 데이터 낭비라고 생각했고, <code>neg_root_mean_squared_error</code>가 음수로 나오는 이유가 궁금했습니다. 또한, 단일 Train/Test 분할만으로도 충분할 거라 생각해서 교차검증의 필요성을 명확하게 인지하지 못했습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>교차검증은 데이터의 특정 부분에 모델 성능이 지나치게 의존하는 것을 방지하기 위해, 데이터를 여러 조각으로 나누어 반복적으로 학습하고 검증하는 방법이다. <code>neg_root_mean_squared_error</code>와 같은 음수 스코어는 실제 RMSE를 나타내므로 음수를 취해 변환해야 한다. 교차검증을 통해 모델 선택 시 더 안정적이고 일반화된 성능을 확보할 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.pipeline <span style="color:#f92672">import</span> Pipeline
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.preprocessing <span style="color:#f92672">import</span> StandardScaler
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.linear_model <span style="color:#f92672">import</span> Ridge
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.model_selection <span style="color:#f92672">import</span> cross_val_score
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pipeline <span style="color:#f92672">=</span> Pipeline([
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#34;scaler&#34;</span>, StandardScaler()),
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#34;model&#34;</span>, Ridge())
+</span></span><span style="display:flex;"><span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>scores <span style="color:#f92672">=</span> cross_val_score(
+</span></span><span style="display:flex;"><span>    pipeline,
+</span></span><span style="display:flex;"><span>    X,
+</span></span><span style="display:flex;"><span>    y,
+</span></span><span style="display:flex;"><span>    cv<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>,  <span style="color:#75715e"># 5-Fold 교차검증</span>
+</span></span><span style="display:flex;"><span>    scoring<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;neg_root_mean_squared_error&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 음수 스코어를 실제 RMSE로 변환</span>
+</span></span><span style="display:flex;"><span>rmse_scores <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>scores
+</span></span><span style="display:flex;"><span>mean_rmse <span style="color:#f92672">=</span> rmse_scores<span style="color:#f92672">.</span>mean()
+</span></span><span style="display:flex;"><span>std_rmse <span style="color:#f92672">=</span> rmse_scores<span style="color:#f92672">.</span>std()
+</span></span><span style="display:flex;"><span>print(
+</span></span></code></pre></div><h2 id="5-하이퍼파라미터-탐색-시간과-성능의-균형-잡기">5. 하이퍼파라미터 탐색: 시간과 성능의 균형 잡기<a hidden class="anchor" aria-hidden="true" href="#5-하이퍼파라미터-탐색-시간과-성능의-균형-잡기">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>하이퍼파라미터 탐색은 단순히 가장 낮은 RMSE를 찾는 것이 아니라, 시간과 성능을 고려한 효율적인 모델 구축 과정이라는 것을 알게 되었습니다. Grid Search, Random Search, Bayesian Optimization 각각의 장단점을 이해하고 상황에 맞게 선택하는 것이 중요하며, CV RMSE와 Test RMSE의 관계를 통해 모델의 일반화 성능을 제대로 평가해야 한다는 점을 깨달았습니다. 그리고 시각화 도구를 활용하여 하이퍼파라미터와 성능 지표 간의 관계를 파악하는 것이 도움이 된다는 것을 확인했습니다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>하이퍼파라미터 탐색을 할 때 가장 낮은 RMSE 값을 가진 모델이 항상 최선의 선택일 거라고 생각했는데, 시간과 컴퓨팅 자원을 고려해야 한다는 점이 헷갈렸어요. 교차 검증 결과만으로 모델의 성능을 완벽하게 평가할 수 있을까 의문이었고, 다양한 평가 지표들을 어떻게 조합해야 할지 감을 잡지 못했습니다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>하이퍼파라미터 탐색은 시간과 성능의 균형을 맞추는 과정이며, Grid Search, Random Search, Bayesian Optimization 중 상황에 맞는 방법을 선택해야 합니다. 단순히 RMSE가 낮은 모델을 찾는 것보다 CV RMSE, Test RMSE, 그리고 학습 시간을 종합적으로 고려하여 최적의 자원 활용 계획을 세우는 것이 중요합니다. 다양한 평가 지표와 시간 제약을 함께 고려하면 더 나은 모델을 효율적으로 찾을 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Simple Grid Search 예시 (가상)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.linear_model <span style="color:#f92672">import</span> Ridge
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.model_selection <span style="color:#f92672">import</span> cross_val_score
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>alphas <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">0.01</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0.1</span>)
+</span></span><span style="display:flex;"><span>cv_rmse_values <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>training_times <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> alpha <span style="color:#f92672">in</span> alphas:
+</span></span><span style="display:flex;"><span>    ridge <span style="color:#f92672">=</span> Ridge(alpha<span style="color:#f92672">=</span>alpha)
+</span></span><span style="display:flex;"><span>    scores <span style="color:#f92672">=</span> cross_val_score(ridge, X_train, y_train, cv<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>, scoring<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;neg_mean_squared_error&#39;</span>) <span style="color:#75715e"># X_train, y_train 정의 필요</span>
+</span></span><span style="display:flex;"><span>    rmse <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>sqrt(<span style="color:#f92672">-</span>scores<span style="color:#f92672">.</span>mean())
+</span></span><span style="display:flex;"><span>    cv_rmse_values<span style="color:#f92672">.</span>append(rmse)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 학습 시간 측정 부분 추가 필요 (time.time() 활용)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># training_times.append(training_time)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Random Search 예시 (가상)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.linear_model <span style="color:#f92672">import</span> ElasticNet
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.model_selection <span style="color:#f92672">import</span> RandomizedSearchCV
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>param_distributions <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;alpha&#39;</span>: np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>uniform(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">100</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;l1_ratio&#39;</span>: np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>uniform(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>random_search <span style="color:#f92672">=</span> RandomizedSearchCV(ElasticNet(), param_distributions, n_iter<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>, scoring<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;neg_mean_squared_error&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># X_train, y_train, X_val, y_val 정의 필요</span>
+</span></span><span style="display:flex;"><span>random_search<span style="color:#f92672">.</span>fit(X_train, y_train)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 결과 시각화 및 분석</span>
+</span></span></code></pre></div><h2 id="6-shap을-활용한-모델-해석-및-시각화-워크노트">6. SHAP을 활용한 모델 해석 및 시각화 워크노트<a hidden class="anchor" aria-hidden="true" href="#6-shap을-활용한-모델-해석-및-시각화-워크노트">#</a></h2>
+<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
+<p>SHAP 값이 선형 모델 계수와는 다른, 각 데이터 포인트별 변수의 기여도를 보여주는 개별적인 지표라는 점을 이해하게 되었다. SHAP 값이 높다고 해서 반드시 인과관계를 의미하는 것은 아니며, 모델 해석 시 주의해야 함을 알게 되었다. SHAP Summary Plot을 통해 데이터 포인트와 변수 중요도를 시각적으로 분석하는 방법을 익혔다.</p>
+<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
+<p>선형 모델의 계수와 SHAP 값의 차이를 명확히 이해하지 못해서, 그래프들을 비교하며 어떤 정보를 얻어야 하는지 혼란스러웠습니다. SHAP 값이 높다고 해서 반드시 변수가 예측의 주요 원인이라고 단정할 수 있는지 확신이 없었고, 파생 변수들의 방향성이 직관과 맞지 않을 때 모델이나 데이터의 문제인지 판단하기 어려웠습니다. SHAP 값 해석이 단순한 상관관계 설명에 그치는 건 아닌가 고민했습니다.</p>
+<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
+<p>SHAP 값은 선형 모델 계수와 달리 특정 샘플에 대한 변수의 영향력을 세밀하게 보여주는 도구이며, 모델의 예측 결과를 설명하는 데 유용하지만 인과관계를 증명하지는 않습니다. SHAP Summary Plot을 통해 개별 데이터 샘플의 변수 영향력을 시각적으로 분석할 수 있으며, 이를 통해 모델의 예측 방향성을 파악하고 잠재적인 문제를 발견할 수 있습니다. 예를 들어, 특정 변수의 SHAP 값이 직관과 다를 경우 데이터나 모델 자체를 다시 검토해야 할 수 있습니다.</p>
+<pre tabindex="0"><code># SHAP Summary Plot 예시 (가정: shap, matplotlib 설치 필요)
 import shap
 import matplotlib.pyplot as plt
 import sklearn
@@ -83,34 +390,160 @@ shap_values = explainer.shap_values(X_test)
 # SHAP Summary Plot 시각화
 shap.summary_plot(shap_values, show=False)
 plt.savefig(&#34;shap_summary_plot.png&#34;) # 파일로 저장
-</code></pre><h2 id=7-stacking-모델-학습의-어려움과-올바른-이해>7. Stacking 모델 학습의 어려움과 올바른 이해<a hidden class=anchor aria-hidden=true href=#7-stacking-모델-학습의-어려움과-올바른-이해>#</a></h2><h3 id=무엇을-배웠나-6>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-6>#</a></h3><p>Stacking 모델을 사용할 때, OOF 예측값을 활용하여 누수를 방지하고 모델 성능을 개선해야 한다는 것을 알게 되었다. 또한 Stacking이 무조건적으로 성능 향상을 보장하는 것이 아니며, 시간 효율성과 해석 가능성 등의 요소를 함께 고려해야 함을 깨달았다. 다양한 기반 모델을 선택하여 예측 패턴을 활용하는 실습도 앞으로 진행해봐야겠다.</p><h3 id=헷갈렸던-점-6>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-6>#</a></h3><p>Stacking 모델을 처음 접했을 때, 기반 모델들이 훈련 데이터를 재사용하는 부분이 누수처럼 느껴져서 과적합이 될까 봐 걱정했어요. 또, Stacking이 항상 다른 모델보다 성능이 좋을 것이라는 막연한 기대 때문에, 실제로는 성능 향상이 크지 않더라도 억지로 적용하려는 경향이 있었던 것 같아요.</p><h3 id=정리된-이해-6>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-6>#</a></h3><p>Stacking 모델은 OOF 예측값을 활용하여 누수를 방지해야 하며, 항상 성능이 좋다고 단정 지을 수 없어 시간 효율성과 해석 가능성도 함께 고려해야 합니다. 기반 모델들의 다양한 예측 패턴을 활용하여 메타 모델을 학습시키는 것이 중요하며, 경우에 따라서는 단일 모델이 더 효율적일 수 있습니다. 성능 개선 효과와 시간 증가를 균형 있게 판단하는 것이 핵심입니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.ensemble <span style=color:#f92672>import</span> RandomForestRegressor, GradientBoostingRegressor
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.svm <span style=color:#f92672>import</span> SVR
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>base_models <span style=color:#f92672>=</span> [
-</span></span><span style=display:flex><span>    RandomForestRegressor(),
-</span></span><span style=display:flex><span>    GradientBoostingRegressor(),
-</span></span><span style=display:flex><span>    SVR()
-</span></span><span style=display:flex><span>]
-</span></span></code></pre></div><h2 id=8-pycaret-automl-실습-환경-구축-및-버전-호환성-문제-해결>8. PyCaret AutoML 실습 환경 구축 및 버전 호환성 문제 해결<a hidden class=anchor aria-hidden=true href=#8-pycaret-automl-실습-환경-구축-및-버전-호환성-문제-해결>#</a></h2><h3 id=무엇을-배웠나-7>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-7>#</a></h3><p>PyCaret 실습 시 <code>pip</code> 설치 완료 여부가 실행 환경 호환성을 보장하지 않는다는 점을 깨달았습니다. 패키지 버전, 파이썬 버전 등의 호환성 문제를 확인하는 것이 중요하며, <code>pip check</code> 명령어를 통해 의존성 충돌을 진단해야 합니다. 정확한 환경 확인 과정을 거쳐야 강의 내용과 동일한 결과를 얻을 수 있음을 알게 되었습니다.</p><h3 id=헷갈렸던-점-7>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-7>#</a></h3><p>강사님 화면에서는 모델 비교표가 바로 출력되었는데, 제 코드를 실행하니 비교표가 나타나지 않아 코드를 잘못 썼다고 생각했습니다. 설치 로그가 길게 나오길래 필요한 패키지가 모두 설치된 줄 알았고, 실행 환경에 문제는 없을 거라고 생각했습니다. 결국 환경 버전과 의존성 문제를 제대로 확인하지 않았기에 오류가 발생한 것이었습니다.</p><h3 id=정리된-이해-7>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-7>#</a></h3><p>PyCaret 실습 시 패키지 설치가 완료되었다고 해서 곧바로 실행이 가능하다는 착각을 했지만, Python 버전, 패키지 버전, PyCaret 버전 간의 호환성 문제가 발생할 수 있다는 것을 깨달았습니다. 앞으로는 환경 진단 명령어를 활용하여 정확한 환경을 확인하고, <code>pip check</code> 명령어를 통해 의존성 충돌을 해결해야 원활한 PyCaret 사용이 가능할 것 같습니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># 환경 버전 확인</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> sys
-</span></span><span style=display:flex><span>print(<span style=color:#e6db74>&#34;Python 버전:&#34;</span>, sys<span style=color:#f92672>.</span>version)
-</span></span><span style=display:flex><span>print(<span style=color:#e6db74>&#34;NumPy 버전:&#34;</span>, np<span style=color:#f92672>.</span>__version__)
-</span></span><span style=display:flex><span>print(<span style=color:#e6db74>&#34;Pandas 버전:&#34;</span>, pd<span style=color:#f92672>.</span>__version__)
-</span></span><span style=display:flex><span>print(<span style=color:#e6db74>&#34;scikit-learn 버전:&#34;</span>, sklearn<span style=color:#f92672>.</span>__version__)
-</span></span><span style=display:flex><span>print(<span style=color:#e6db74>&#34;PyCaret 버전:&#34;</span>, pycaret<span style=color:#f92672>.</span>__version__)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 의존성 확인 및 충돌 해결</span>
-</span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>!</span>pip check
-</span></span></code></pre></div><h2 id=9-회귀-미니-프로젝트-설계-및-분석-가이드>9. 회귀 미니 프로젝트 설계 및 분석 가이드<a hidden class=anchor aria-hidden=true href=#9-회귀-미니-프로젝트-설계-및-분석-가이드>#</a></h2><h3 id=무엇을-배웠나-8>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-8>#</a></h3><p>회귀 미니 프로젝트를 진행하면서 여러 기법들을 닥치는 대로 적용할 필요는 없다는 것을 알게 되었다. 모델 선택은 단순히 성능 지표뿐 아니라 신뢰성, 설명 가능성, 운영 비용 등 다양한 요소를 종합적으로 고려해야 하며, 각 기법이 어떤 상황에서 유용한지 이해하는 것이 중요하다. 앞으로는 문제 상황에 맞는 적절한 기법을 선택하고 적용하는 데 집중해야겠다.</p><h3 id=헷갈렸던-점-8>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-8>#</a></h3><p>여러 회귀 기법들을 모두 적용해야 하는지 몰라 어떤 것을 우선적으로 사용할지 혼란스러웠고, 모델 성능 지표와 실제 서비스 적용 가능성 사이의 관계가 명확하게 느껴지지 않았다. 시계열 데이터 분석에 주로 쓰이는 차분 기법이 일반적인 회귀 분석에서 필수적인지 의문스러웠다.</p><h3 id=정리된-이해-8>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-8>#</a></h3><p>다양한 회귀 기법을 무조건 적용하기보다는 데이터의 특성과 문제 상황에 맞게 필요한 기법을 선택적으로 사용하는 것이 중요합니다. 모델의 성능 지표 외에도 신뢰성, 설명 가능성, 운영 비용과 같은 기능적 측면을 함께 고려하여 최적의 모델을 선택해야 합니다. 특히, 시계열 데이터의 차분 기법이나 모델 스태킹은 필요에 따라 신중하게 적용해야 합니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> pandas <span style=color:#66d9ef>as</span> pd
-</span></span><span style=display:flex><span>data <span style=color:#f92672>=</span> pd<span style=color:#f92672>.</span>read_csv(<span style=color:#e6db74>&#39;price_demand_data.csv&#39;</span>)
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>data<span style=color:#f92672>.</span>isnull()<span style=color:#f92672>.</span>sum()
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>data<span style=color:#f92672>.</span>fillna(method<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;ffill&#39;</span>, inplace<span style=color:#f92672>=</span><span style=color:#66d9ef>True</span>)
-</span></span></code></pre></div><h2 id=총평>총평<a hidden class=anchor aria-hidden=true href=#총평>#</a></h2><h3 id=오늘-오후-전체에서-배운-것>오늘 오후 전체에서 배운 것<a hidden class=anchor aria-hidden=true href=#오늘-오후-전체에서-배운-것>#</a></h3><p>오늘 학습을 통해 결정계수와 교차검증의 중요성을 다시 한번 깨닫고, 데이터 누수 방지를 위한 전처리 파이프라인 구축 및 모델 해석 기법(SHAP) 활용 능력도 향상되었습니다. 특히, 모델 선택 및 하이퍼파라미터 탐색 시 단순히 성능 지표에만 집중하지 않고, 다양한 요소를 고려하는 균형 잡힌 접근 방식이 필요하다는 점을 알게 되었습니다. 앞으로는 학습 내용을 바탕으로 실제 문제에 적용해 보며 실력 향상을 이뤄나가겠습니다.</p><h3 id=다음에-조심할-것>다음에 조심할 것<a hidden class=anchor aria-hidden=true href=#다음에-조심할-것>#</a></h3><p>앞으로는 과적합 판단 시 훈련/검증 오차를 함께 고려하고, 손실 지표에만 매몰되지 않도록 주의해야겠다. 또한, PyCaret이나 다른 라이브러리를 사용할 때 버전 호환성 문제를 꼼꼼히 확인하여 예상치 못한 오류를 방지해야 할 것 같다.</p><h3 id=다음-복습-주제>다음 복습 주제<a hidden class=anchor aria-hidden=true href=#다음-복습-주제>#</a></h3><p>결정계수(R²) 해석 시 SST, SSR, SSE의 관계를 다시 한번 짚어보고, 과적합 판단과 손실 지표 해석에 대한 이해를 더 깊게 해야겠다. 특히 훈련/검증 오차의 변화를 종합적으로 고려하는 연습을 꾸준히 해야 할 것 같다. PyCaret을 사용할 때 패키지 버전 호환성을 더욱 꼼꼼하게 확인하고, 환경 설정에 필요한 단계를 명확히 숙지하여 오류 발생을 최소화해야 할 것이다.</p><blockquote><p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
-This post was written with the help of a local LLM (AI).</p></blockquote></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://Han-think.github.io/learning/2026-07-08-am-daily/><span class=title>« Prev</span>
-<span>시계열 분석부터 머신러닝 핵심 개념까지, 완전정복 학습 정리</span>
-</a><a class=next href=https://Han-think.github.io/learning/2026-07-07-am-daily/><span class=title>Next »</span>
-<span>API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
-<span>Powered by
-<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
-<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
+</code></pre><h2 id="7-stacking-모델-학습의-어려움과-올바른-이해">7. Stacking 모델 학습의 어려움과 올바른 이해<a hidden class="anchor" aria-hidden="true" href="#7-stacking-모델-학습의-어려움과-올바른-이해">#</a></h2>
+<h3 id="무엇을-배웠나-6">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-6">#</a></h3>
+<p>Stacking 모델을 사용할 때, OOF 예측값을 활용하여 누수를 방지하고 모델 성능을 개선해야 한다는 것을 알게 되었다. 또한 Stacking이 무조건적으로 성능 향상을 보장하는 것이 아니며, 시간 효율성과 해석 가능성 등의 요소를 함께 고려해야 함을 깨달았다. 다양한 기반 모델을 선택하여 예측 패턴을 활용하는 실습도 앞으로 진행해봐야겠다.</p>
+<h3 id="헷갈렸던-점-6">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-6">#</a></h3>
+<p>Stacking 모델을 처음 접했을 때, 기반 모델들이 훈련 데이터를 재사용하는 부분이 누수처럼 느껴져서 과적합이 될까 봐 걱정했어요. 또, Stacking이 항상 다른 모델보다 성능이 좋을 것이라는 막연한 기대 때문에, 실제로는 성능 향상이 크지 않더라도 억지로 적용하려는 경향이 있었던 것 같아요.</p>
+<h3 id="정리된-이해-6">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-6">#</a></h3>
+<p>Stacking 모델은 OOF 예측값을 활용하여 누수를 방지해야 하며, 항상 성능이 좋다고 단정 지을 수 없어 시간 효율성과 해석 가능성도 함께 고려해야 합니다. 기반 모델들의 다양한 예측 패턴을 활용하여 메타 모델을 학습시키는 것이 중요하며, 경우에 따라서는 단일 모델이 더 효율적일 수 있습니다. 성능 개선 효과와 시간 증가를 균형 있게 판단하는 것이 핵심입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.ensemble <span style="color:#f92672">import</span> RandomForestRegressor, GradientBoostingRegressor
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.svm <span style="color:#f92672">import</span> SVR
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>base_models <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    RandomForestRegressor(),
+</span></span><span style="display:flex;"><span>    GradientBoostingRegressor(),
+</span></span><span style="display:flex;"><span>    SVR()
+</span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div><h2 id="8-pycaret-automl-실습-환경-구축-및-버전-호환성-문제-해결">8. PyCaret AutoML 실습 환경 구축 및 버전 호환성 문제 해결<a hidden class="anchor" aria-hidden="true" href="#8-pycaret-automl-실습-환경-구축-및-버전-호환성-문제-해결">#</a></h2>
+<h3 id="무엇을-배웠나-7">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-7">#</a></h3>
+<p>PyCaret 실습 시 <code>pip</code> 설치 완료 여부가 실행 환경 호환성을 보장하지 않는다는 점을 깨달았습니다. 패키지 버전, 파이썬 버전 등의 호환성 문제를 확인하는 것이 중요하며, <code>pip check</code> 명령어를 통해 의존성 충돌을 진단해야 합니다. 정확한 환경 확인 과정을 거쳐야 강의 내용과 동일한 결과를 얻을 수 있음을 알게 되었습니다.</p>
+<h3 id="헷갈렸던-점-7">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-7">#</a></h3>
+<p>강사님 화면에서는 모델 비교표가 바로 출력되었는데, 제 코드를 실행하니 비교표가 나타나지 않아 코드를 잘못 썼다고 생각했습니다. 설치 로그가 길게 나오길래 필요한 패키지가 모두 설치된 줄 알았고, 실행 환경에 문제는 없을 거라고 생각했습니다. 결국 환경 버전과 의존성 문제를 제대로 확인하지 않았기에 오류가 발생한 것이었습니다.</p>
+<h3 id="정리된-이해-7">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-7">#</a></h3>
+<p>PyCaret 실습 시 패키지 설치가 완료되었다고 해서 곧바로 실행이 가능하다는 착각을 했지만, Python 버전, 패키지 버전, PyCaret 버전 간의 호환성 문제가 발생할 수 있다는 것을 깨달았습니다. 앞으로는 환경 진단 명령어를 활용하여 정확한 환경을 확인하고, <code>pip check</code> 명령어를 통해 의존성 충돌을 해결해야 원활한 PyCaret 사용이 가능할 것 같습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 환경 버전 확인</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Python 버전:&#34;</span>, sys<span style="color:#f92672">.</span>version)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;NumPy 버전:&#34;</span>, np<span style="color:#f92672">.</span>__version__)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Pandas 버전:&#34;</span>, pd<span style="color:#f92672">.</span>__version__)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;scikit-learn 버전:&#34;</span>, sklearn<span style="color:#f92672">.</span>__version__)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;PyCaret 버전:&#34;</span>, pycaret<span style="color:#f92672">.</span>__version__)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 의존성 확인 및 충돌 해결</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">!</span>pip check
+</span></span></code></pre></div><h2 id="9-회귀-미니-프로젝트-설계-및-분석-가이드">9. 회귀 미니 프로젝트 설계 및 분석 가이드<a hidden class="anchor" aria-hidden="true" href="#9-회귀-미니-프로젝트-설계-및-분석-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-8">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-8">#</a></h3>
+<p>회귀 미니 프로젝트를 진행하면서 여러 기법들을 닥치는 대로 적용할 필요는 없다는 것을 알게 되었다. 모델 선택은 단순히 성능 지표뿐 아니라 신뢰성, 설명 가능성, 운영 비용 등 다양한 요소를 종합적으로 고려해야 하며, 각 기법이 어떤 상황에서 유용한지 이해하는 것이 중요하다. 앞으로는 문제 상황에 맞는 적절한 기법을 선택하고 적용하는 데 집중해야겠다.</p>
+<h3 id="헷갈렸던-점-8">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-8">#</a></h3>
+<p>여러 회귀 기법들을 모두 적용해야 하는지 몰라 어떤 것을 우선적으로 사용할지 혼란스러웠고, 모델 성능 지표와 실제 서비스 적용 가능성 사이의 관계가 명확하게 느껴지지 않았다. 시계열 데이터 분석에 주로 쓰이는 차분 기법이 일반적인 회귀 분석에서 필수적인지 의문스러웠다.</p>
+<h3 id="정리된-이해-8">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-8">#</a></h3>
+<p>다양한 회귀 기법을 무조건 적용하기보다는 데이터의 특성과 문제 상황에 맞게 필요한 기법을 선택적으로 사용하는 것이 중요합니다. 모델의 성능 지표 외에도 신뢰성, 설명 가능성, 운영 비용과 같은 기능적 측면을 함께 고려하여 최적의 모델을 선택해야 합니다. 특히, 시계열 데이터의 차분 기법이나 모델 스태킹은 필요에 따라 신중하게 적용해야 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#39;price_demand_data.csv&#39;</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>data<span style="color:#f92672">.</span>isnull()<span style="color:#f92672">.</span>sum()
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>data<span style="color:#f92672">.</span>fillna(method<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;ffill&#39;</span>, inplace<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>오늘 학습을 통해 결정계수와 교차검증의 중요성을 다시 한번 깨닫고, 데이터 누수 방지를 위한 전처리 파이프라인 구축 및 모델 해석 기법(SHAP) 활용 능력도 향상되었습니다. 특히, 모델 선택 및 하이퍼파라미터 탐색 시 단순히 성능 지표에만 집중하지 않고, 다양한 요소를 고려하는 균형 잡힌 접근 방식이 필요하다는 점을 알게 되었습니다. 앞으로는 학습 내용을 바탕으로 실제 문제에 적용해 보며 실력 향상을 이뤄나가겠습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>앞으로는 과적합 판단 시 훈련/검증 오차를 함께 고려하고, 손실 지표에만 매몰되지 않도록 주의해야겠다. 또한, PyCaret이나 다른 라이브러리를 사용할 때 버전 호환성 문제를 꼼꼼히 확인하여 예상치 못한 오류를 방지해야 할 것 같다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>결정계수(R²) 해석 시 SST, SSR, SSE의 관계를 다시 한번 짚어보고, 과적합 판단과 손실 지표 해석에 대한 이해를 더 깊게 해야겠다. 특히 훈련/검증 오차의 변화를 종합적으로 고려하는 연습을 꾸준히 해야 할 것 같다. PyCaret을 사용할 때 패키지 버전 호환성을 더욱 꼼꼼하게 확인하고, 환경 설정에 필요한 단계를 명확히 숙지하여 오류 발생을 최소화해야 할 것이다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-07-08-am-daily/">
+    <span class="title">« Prev</span>
+    <span>시계열 분석부터 머신러닝 핵심 개념까지, 완전정복 학습 정리</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-07-07-am-daily/">
+    <span class="title">Next »</span>
+    <span>API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

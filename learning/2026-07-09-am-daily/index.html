@@ -1,59 +1,354 @@
-<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터 | Han-think Blog</title><meta name=keywords content><meta name=description content="2026-07-09 오전 학습 정리"><meta name=author content><link rel=canonical href=https://Han-think.github.io/learning/2026-07-09-am-daily/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/learning/2026-07-09-am-daily/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-09-am-daily/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터"><meta property="og:description" content="2026-07-09 오전 학습 정리"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="learning"><meta property="article:published_time" content="2026-07-09T00:00:00+00:00"><meta property="article:modified_time" content="2026-07-09T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터"><meta name=twitter:description content="2026-07-09 오전 학습 정리"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"학습 기록","item":"https://Han-think.github.io/learning/"},{"@type":"ListItem","position":2,"name":"분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터","item":"https://Han-think.github.io/learning/2026-07-09-am-daily/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터","name":"분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터","description":"2026-07-09 오전 학습 정리","keywords":[],"articleBody":"목차 분류 문제 기초: 알고리즘 선택 가이드 층화 분할과 검증 데이터셋 구축 가이드 혼동행렬과 불균형 데이터 분류 평가지표 이해 ROC-AUC와 임계값 조정: 초보자를 위한 이해 의사결정나무, 배깅, 부스팅: 앙상블 학습 핵심 원리 XGBoost \u0026 LightGBM Native API와 Early Stopping 완벽 이해 로지스틱 회귀와 오즈비, 통계적 이해와 해석 가이드 분류 미니프로젝트 학습 노트: 초보자를 위한 성능 평가 가이드 총평 1. 분류 문제 기초: 알고리즘 선택 가이드 무엇을 배웠나 분류 문제와 회귀 문제의 차이점과 다양한 분류 알고리즘(로지스틱 회귀, SVM, Naive Bayes, KNN 등)의 기본적인 작동 원리를 배웠어요. 특히 SVM의 결정 경계 설정 방식과 서포트 벡터의 중요성을 이해하게 되었고, 각 알고리즘의 특징을 고려하여 문제에 적합한 알고리즘을 선택하는 기준을 세우는 데 도움이 될 것 같아요. 각 알고리즘의 실용성을 고민하며 앞으로 학습 방향을 설정해야겠다는 생각이 들었어요.\n헷갈렸던 점 알고리즘 이름들이 너무 많아서, 각각이 무엇을 하는지, 그리고 왜 이 알고리즘을 선택해야 하는지 파악하기 어려웠어. SVM의 결정 경계가 어떻게 설정되는지 명확하게 이해하지 못했고, KNN이나 Naive Bayes 같은 알고리즘들이 실제 프로젝트에서 얼마나 쓸모가 있을지 의문이었어.\n정리된 이해 분류 문제는 정답이 범주로 주어지기 때문에, 로지스틱 회귀, SVM, Naive Bayes, KNN, 결정 트리, 부스팅 등 다양한 알고리즘을 활용하여 데이터를 분류할 수 있습니다. 각 알고리즘은 예측 방식과 특징이 다르므로, 데이터의 특성과 문제의 요구사항에 맞춰 적절한 알고리즘을 선택하는 것이 중요합니다. 특히 SVM은 서포트 벡터를 기준으로 결정 경계를 설정하여 데이터 분류에 효과적이며, Naive Bayes는 간단하지만 빠른 예측이 필요한 경우 유용합니다.\n# Naive Bayes 예시 (텍스트 분류) from sklearn.naive_bayes import MultinomialNB from sklearn.feature_extraction.text import CountVectorizer # 데이터 (예시) documents = [\"이것은 좋은 문서입니다\", \"이것은 나쁜 문서입니다\", \"또 다른 좋은 문서입니다\"] labels = [1, 0, 1] # 1: 좋은 문서, 0: 나쁜 문서 # 텍스트를 숫자 벡터로 변환 vectorizer = CountVectorizer() X = vectorizer.fit_transform(documents) # Naive Bayes 모델 학습 model = MultinomialNB() model.fit(X, labels) # 새로운 문서 예측 new_document = [\"이것은 훌륭한 문서입니다\"] new_X = vectorizer.transform(new_document) prediction = model.predict(new_X)[0] print(f\"새로운 문서 예측: {prediction}\") 2. 층화 분할과 검증 데이터셋 구축 가이드 무엇을 배웠나 분류 모델 학습 시 stratify 옵션을 무조건 사용하는 것이 아니라 데이터 특성을 고려해야 한다는 점을 깨달았다. 검증 데이터와 테스트 데이터의 역할을 명확히 구분하여 모델 평가의 공정성을 확보해야 한다는 것도 중요하게 알게 되었다. StratifiedKFold를 활용한 층화 분할 방법을 실습하며 이해도를 높였다.\n헷갈렸던 점 분류 모델에서 stratify=y만 넣으면 층화 분할이 된다고 단순하게 생각했고, 검증 데이터와 테스트 데이터의 역할이 비슷해서 테스트 데이터로 모델 파라미터를 조정해도 괜찮을 거라고 생각했었다. 전체적인 데이터셋의 특성을 고려하지 않고 층화 분할을 적용할 수 있다는 착각을 했고, 모델 평가의 공정성을 해칠 수 있다는 점을 간과했었다.\n정리된 이해 층화 분할은 단순히 stratify=y를 넣는 것 이상으로, 데이터의 특성에 따라 더 복잡하게 고려해야 하며, 시계열 데이터처럼 시간 순서가 중요한 경우에는 특히 주의해야 한다. 검증 데이터는 하이퍼파라미터 튜닝과 모델 성능 모니터링에 사용하고, 테스트 데이터는 최종 모델의 객관적인 성능을 평가하는 데 사용해야 한다. 이 두 데이터를 혼동하면 모델 평가의 공정성이 훼손될 수 있다.\nfrom sklearn.model_selection import train_test_split from sklearn.datasets import make_classification # 가상 데이터셋 생성 X, y = make_classification(n_samples=1000, n_features=20, n_classes=2, random_state=42) # 층화 분할로 Train/Validation/Test 분리 X_train_val, X_test, y_train_val, y_test = train_test_split( X, y, test_size=0.2, random_state=42, stratify=y ) X_train, X_val, y_train, y_val = train_test_split( X_train_val, y_train_val, test_size=0.25, random_state=42 ) 3. 혼동행렬과 불균형 데이터 분류 평가지표 이해 무엇을 배웠나 정밀도와 재현율의 개념을 명확히 이해하고, 각각의 의미와 중요성을 제대로 파악하게 되었어. 스팸 메일 필터링이나 의료 선별 검사 비유를 통해 직관적인 이해를 높일 수 있었고, F1 점수를 활용하여 모델 성능을 균형 있게 평가하는 방법도 알게 되었어. 불균형 데이터셋에서 모델을 평가할 때 정밀도, 재현율, F1 점수를 함께 고려해야 한다는 점을 기억해야겠어.\n헷갈렸던 점 정밀도와 재현율의 개념을 정확히 구분 짓는 데 어려움을 느꼈고, 각각의 지표가 어떤 상황에서 중요하게 고려되어야 하는지 파악하는 데 혼란스러웠습니다. 특히, 실제 적용 시 어떤 지표를 우선적으로 높여야 할지 판단하기 어려웠습니다.\n정리된 이해 정밀도는 모델이 양성으로 예측한 것 중에서 실제 양성인 비율을 나타내며, 재현율은 실제 양성 데이터 중 모델이 얼마나 잘 찾아냈는지를 의미합니다. 이 두 지표는 서로 상충될 수 있는데, F1 점수는 정밀도와 재현율의 균형을 평가하여 모델 성능을 종합적으로 판단하는 데 도움을 줍니다. 불균형 데이터 분류 문제에서는 특히 이 세 지표를 잘 이해하고 상황에 맞게 활용하는 것이 중요합니다.\n# 예시 데이터셋 (실제 데이터셋에 맞게 조정해야 함) y_true = [0] * 990 + [1] * 10 # 0: 정상, 1: 이상 y_pred = [0] * 1000 # 모든 데이터를 정상으로 예측 from sklearn.metrics import precision_score, recall_score, f1_score # 정밀도 계산 precision = precision_score(y_true, y_pred) print(f\"정밀도: {precision}\") # 재현율 계산 recall = recall_score(y_true, y_pred) print(f\"재현율: {recall}\") # F1 점수 계산 f1 = f1_score(y_true, y_pred) print(f\"F1 점수: {f1}\") 4. ROC-AUC와 임계값 조정: 초보자를 위한 이해 무엇을 배웠나 ROC 곡선과 AUC는 분류 모델 성능을 평가하는 데 중요한 지표라는 것을 알게 되었고, 특히 두 ROC 곡선이 겹칠 때 AUC 값으로 비교해야 한다는 점을 명확히 이해했다. 임계값 조절을 통해 Precision과 Recall을 조절할 수 있으며, 문제 상황에 따라 적절한 임계값을 선택해야 한다는 점도 깨달았다. 이 노트는 ROC 곡선 해석과 임계값 튜닝에 대한 초보적인 이해를 갖추는 데 도움이 되었다.\n헷갈렸던 점 ROC 곡선이 교차할 때 어느 모델이 더 좋은지 판단하는 기준이 명확하지 않았고, 임계값 조정이 Recall과 Precision에 어떤 식으로 영향을 주는지 직관적으로 이해하기 어려웠다. 0.5라는 임계값을 무조건적으로 따라야 한다는 생각에 갇혀 있었고, 상황에 따라 임계값을 조정해야 한다는 점을 깨닫는 데 시간이 걸렸다.\n정리된 이해 분류 모델은 확률값을 내고, 내가 정한 임계값에 따라 결과가 달라지는데, 이 임계값을 조절하면 Precision과 Recall이 서로 반대 방향으로 영향을 받는다. ROC 곡선은 실제 양성과 음성을 얼마나 잘 구별하는지 보여주며, 곡선 아래 면적인 AUC 값이 높을수록 모델의 성능이 좋다고 볼 수 있다. 즉, 임계값과 ROC 곡선, AUC를 함께 고려해야 모델을 제대로 평가할 수 있다.\ny_pred = (proba \u003e= 0.5).astype(int) 5. 의사결정나무, 배깅, 부스팅: 앙상블 학습 핵심 원리 무엇을 배웠나 의사결정나무는 직관적이지만 과적합 위험이 있고, 배깅은 여러 모델의 결과를 묶어 분산을 줄이는 방법론이라는 것을 알게 되었다. 부스팅은 이전 모델의 오류를 보완하는 방식으로, AdaBoost와 그래디언트 부스팅은 이를 구현하는 대표적인 알고리즘이라는 점을 숙지했다. 특히 부스팅의 작동 방식에 대한 이해가 부족했기에, 이 부분을 다시 학습해야 할 것 같다.\n헷갈렸던 점 처음에는 배깅과 부스팅의 핵심적인 차이점을 명확하게 이해하지 못했다. 특히 부스팅이 어떻게 이전 모델의 오류를 보완하는지, 그리고 AdaBoost의 가중치 부여 방식이 구체적으로 어떻게 작동하는지 헷갈렸다.\n정리된 이해 의사결정나무는 데이터를 분할하는 간단한 모델이지만 과적합 위험이 있고, 배깅은 여러 의사결정나무를 독립적으로 학습시켜 분산을 줄이는 방법, 부스팅은 이전 모델의 오류를 보완하는 방식으로 약한 모델들을 순차적으로 연결하는 방법이다. 특히 부스팅의 AdaBoost는 틀린 데이터에 가중치를 부여하고, 그래디언트 부스팅은 손실 함수의 기울기를 활용하여 오류를 줄여나간다는 점이 핵심이라고 생각한다. 앞으로는 자료들을 구분해서 공부해야겠다.\n# 예시 코드 (실제 코드는 없음) # 이 코드는 설명을 위한 예시이며, 학습 노트에 제시된 내용과 직접적인 관련이 없습니다. # from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier # import numpy as np # # 랜덤 포레스트 예시 # X = np.random.rand(100, 2) # y = np.random.randint(0, 2, 100) # rf = RandomForestClassifier(n_estimators=10) # rf.fit(X, y) # # AdaBoost 예시 # abc = AdaBoostClassifier(n_estimators=10) # abc.fit(X, y) # # Gradient Boosting 예시 # gbc = GradientBoostingClassifier(n_estimators=10) # gbc.fit(X, y) 6. XGBoost \u0026 LightGBM Native API와 Early Stopping 완벽 이해 무엇을 배웠나 XGBoost와 LightGBM의 조기 종료(Early Stopping) 기능이 단순히 best_iteration 값을 저장하는 것이 아니라, 검증 성능이 개선되지 않는 라운드 수를 기준으로 학습을 멈춘다는 것을 알게 되었다. 또한 boosting 라운드가 트리의 개수를 의미하는 것이 아니라, 모델을 보완하는 반복 횟수를 나타낸다는 점을 명확히 이해하게 되었다. 이제 조기 종료 파라미터 설정과 boosting 라운드의 의미를 바탕으로 모델 과적합을 더 효과적으로 방지할 수 있을 것 같다.\n헷갈렸던 점 Early Stopping이 단순히 best_iteration을 나타내는 줄 알고 있었고, num_boost_round를 트리 개수로만 생각해서 다중 클래스에서 각 라운드가 여러 트리를 생성할 수 있다는 점을 놓쳤었습니다. 이러한 오해로 인해 모델 성능 개선 및 과적합 방지에 어려움을 겪었습니다.\n정리된 이해 조기 종료는 검증 데이터 성능이 개선되지 않는 라운드까지 학습을 멈춰 과적합을 방지하는 중요한 기능이며, best_iteration은 가장 좋은 성능을 보인 라운드를 기록합니다. XGBoost나 LightGBM에서 num_boost_round는 트리 개수가 아닌 반복 학습 횟수를 의미하며, 다중 클래스 분류에서는 한 라운드에 여러 트리가 생성될 수 있습니다. 이러한 점을 이해하면 모델 튜닝 시 조기 종료 및 반복 횟수를 적절하게 설정하여 성능을 최적화할 수 있습니다.\nimport xgboost as xgb import pandas as pd # 데이터 준비 dtrain = xgb.DMatrix(X_train, label=y_train) dval = xgb.DMatrix(X_val, label=y_val) 7. 로지스틱 회귀와 오즈비, 통계적 이해와 해석 가이드 무엇을 배웠나 로지스틱 회귀는 단순히 예측 모델이 아니라 변수들의 영향력을 통계적으로 분석하는 데 사용될 수 있다는 점을 깨달았습니다. 특히 오즈비는 확률비와 직접적으로 연결되지 않으며, p-value, 신뢰구간 등과 함께 해석해야 효과를 정확하게 파악할 수 있다는 것을 알게 되었습니다. 앞으로는 로지스틱 회귀 분석 시 통계적 의미와 실제 효과를 함께 고려하여 해석할 필요가 있음을 인지하게 되었습니다.\n헷갈렸던 점 로지스틱 회귀를 단순히 분류 모델로만 생각하고 있었는데, 통계적인 해석도 가능하다는 점이 처음에는 이해가 잘 안 갔습니다. 특히 오즈비가 확률과 직접적으로 연결된다고 생각해서 해석에 어려움을 겪었습니다. 결과 해석 시 p-value, 신뢰구간, 기준 범주 등 여러 요소를 종합적으로 고려해야 한다는 점을 간과했습니다.\n정리된 이해 로지스틱 회귀는 예측 모델일 뿐 아니라 각 변수가 결과에 미치는 통계적 영향력을 분석하는 데 유용하다는 것을 알게 되었다. 오즈비는 로그 오즈의 지수 변환으로, 변수의 영향력을 이해하기 쉽게 만들어주지만, 확률과는 다른 개념이라는 점을 명확히 해야 한다. 신뢰구간과 p-value를 활용하여 변수의 효과와 유의성을 종합적으로 판단하는 것이 중요하다.\nfrom sklearn.linear_model import LogisticRegression from sklearn.model_selection import train_test_split import pandas as pd # 예시 데이터 로드 data = pd.read_csv('your_dataset.csv') X = data[['변수1', '변수2']] y = data['결과'] # 데이터 분할 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42) # 로지스틱 회귀 모델 학습 8. 분류 미니프로젝트 학습 노트: 초보자를 위한 성능 평가 가이드 무엇을 배웠나 분류 모델 평가 지표를 이해하는 데 어려움을 겪었는데, 이 노트에서 대회 성과 측정, 분석 품질 평가, 실행 가치와 적용이라는 세 가지 측면으로 분류 모델의 성능을 다각적으로 살펴보는 방법을 배웠습니다. 특히 다중 분류 시 임계값 설정의 중요성과, 단순히 F1-score만으로는 충분하지 않고 ROC-AUC 등 다양한 지표를 활용하여 모델을 평가해야 한다는 점을 깨달았습니다. 이 지식은 앞으로 진행하는 프로젝트에서 모델의 성능을 더욱 정확하게 분석하고 개선하는 데 도움이 될 것입니다.\n헷갈렸던 점 분류 프로젝트 평가 지표를 어디까지 챙겨야 할지, 그리고 다중 분류에서 임계값 설정을 어떻게 해야 할지 감이 잘 안 잡혔어요. F1-score만으로 충분한지, ROC-AUC를 꼭 봐야 하는지, 그리고 각 클래스별 임계값을 따로 설정해야 하는지 하나도 모르겠어서 막막했어요.\n정리된 이해 분류 모델 성능 평가는 단순히 F1-score만 보는 것이 아니라 정확도, 재현율, ROC-AUC 등 다양한 지표를 통해 모델의 강점과 약점을 다각도로 파악해야 합니다. 특히 다중 분류에서는 클래스별 임계값 설정이나 확률 조정 등 추가적인 고려사항이 필요하며, 실제 적용 시에는 예측 결과가 가져올 영향과 비용을 종합적으로 고려해야 합니다.\n# 예시: 다중 클래스 분류에서 클래스별 임계값 설정 (가정) # 실제 구현은 데이터와 모델에 따라 달라짐 # 클래스별 예측 확률을 기반으로 임계값 설정 # 예: 각 클래스별로 0.7 이상의 확률을 가진 경우 해당 클래스로 예측 # def predict_with_thresholds(probabilities, thresholds): # predictions = [] # for i in range(len(probabilities)): # max_prob = max(probabilities[i]) # predicted_class = probabilities[i].index(max_prob) # if probabilities[i][predicted_class] \u003e= thresholds[predicted_class]: # predictions.append(predicted_class) # else: # # 예측 실패 시 처리 (예: 가장 높은 확률의 클래스 선택 또는 예측 불확실성 표시) # predictions.append(-1) # -1은 예측 불확실성을 나타낸다고 가정 # return predictions 총평 오늘 오전 전체에서 배운 것 오늘 오전에는 분류 문제의 기초부터 앙상블 학습, 그리고 로지스틱 회귀의 통계적 해석까지 다양한 내용을 배웠어요. 특히 모델 평가 지표와 앙상블 학습 알고리즘의 핵심 원리를 이해하고, 실제 프로젝트에 적용할 수 있도록 노력해야겠다는 생각이 들었어요. 앞으로 부족한 부분은 다시 학습하고, 실전 경험을 통해 지식을 더욱 solid하게 만들어나가야겠습니다.\n다음에 조심할 것 부스팅 알고리즘의 작동 방식에 대한 이해가 부족했던 점을 다시 학습하고, 로지스틱 회귀 분석 시 통계적 의미와 실제 효과를 함께 고려하여 해석하는 연습을 꾸준히 해야겠어. 또한, 다중 분류 시 다양한 평가 지표를 활용하여 모델을 평가하는 습관을 들이고, 임계값 설정의 중요성을 항상 염두에 두어야 해.\n다음 복습 주제 부스팅 알고리즘의 작동 방식에 대한 이해가 아직 부족해서 다시 학습해야 할 것 같아. 특히 XGBoost와 LightGBM의 내부적인 작동 원리를 좀 더 깊이 파고들어서, 조기 종료(Early Stopping) 기능이 어떻게 모델 성능에 영향을 미치는지 정확하게 이해하고 싶어. 로지스틱 회귀 분석 시 통계적 의미와 실제 효과를 연결하여 해석하는 능력도 향상시켜야 할 것 같아.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n","wordCount":"1886","inLanguage":"en","datePublished":"2026-07-09T00:00:00Z","dateModified":"2026-07-09T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/learning/2026-07-09-am-daily/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
-<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터</h1><div class=post-description>2026-07-09 오전 학습 정리</div><div class=post-meta><span title='2026-07-09 00:00:00 +0000 UTC'>2026년 7월 9일</span>&nbsp;·&nbsp;<span>9 min</span></div></header><div class="post-content md-content"><h2 id=목차>목차<a hidden class=anchor aria-hidden=true href=#목차>#</a></h2><ul><li><ol><li><a href=#1-%EB%B6%84%EB%A5%98-%EB%AC%B8%EC%A0%9C-%EA%B8%B0%EC%B4%88-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EC%84%A0%ED%83%9D-%EA%B0%80%EC%9D%B4%EB%93%9C>분류 문제 기초: 알고리즘 선택 가이드</a></li></ol></li><li><ol start=2><li><a href=#2-%EC%B8%B5%ED%99%94-%EB%B6%84%ED%95%A0%EA%B3%BC-%EA%B2%80%EC%A6%9D-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%85%8B-%EA%B5%AC%EC%B6%95-%EA%B0%80%EC%9D%B4%EB%93%9C>층화 분할과 검증 데이터셋 구축 가이드</a></li></ol></li><li><ol start=3><li><a href=#3-%ED%98%BC%EB%8F%99%ED%96%89%EB%A0%AC%EA%B3%BC-%EB%B6%88%EA%B7%A0%ED%98%95-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EB%A5%98-%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C-%EC%9D%B4%ED%95%B4>혼동행렬과 불균형 데이터 분류 평가지표 이해</a></li></ol></li><li><ol start=4><li><a href=#4-roc-auc%EC%99%80-%EC%9E%84%EA%B3%84%EA%B0%92-%EC%A1%B0%EC%A0%95-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%9D%B4%ED%95%B4>ROC-AUC와 임계값 조정: 초보자를 위한 이해</a></li></ol></li><li><ol start=5><li><a href=#5-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95%EB%82%98%EB%AC%B4-%EB%B0%B0%EA%B9%85-%EB%B6%80%EC%8A%A4%ED%8C%85-%EC%95%99%EC%83%81%EB%B8%94-%ED%95%99%EC%8A%B5-%ED%95%B5%EC%8B%AC-%EC%9B%90%EB%A6%AC>의사결정나무, 배깅, 부스팅: 앙상블 학습 핵심 원리</a></li></ol></li><li><ol start=6><li><a href=#6-xgboost-lightgbm-native-api%EC%99%80-early-stopping-%EC%99%84%EB%B2%BD-%EC%9D%B4%ED%95%B4>XGBoost & LightGBM Native API와 Early Stopping 완벽 이해</a></li></ol></li><li><ol start=7><li><a href=#7-%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1-%ED%9A%8C%EA%B7%80%EC%99%80-%EC%98%A4%EC%A6%88%EB%B9%84-%ED%86%B5%EA%B3%84%EC%A0%81-%EC%9D%B4%ED%95%B4%EC%99%80-%ED%95%B4%EC%84%9D-%EA%B0%80%EC%9D%B4%EB%93%9C>로지스틱 회귀와 오즈비, 통계적 이해와 해석 가이드</a></li></ol></li><li><ol start=8><li><a href=#8-%EB%B6%84%EB%A5%98-%EB%AF%B8%EB%8B%88%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%95%99%EC%8A%B5-%EB%85%B8%ED%8A%B8-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%84%B1%EB%8A%A5-%ED%8F%89%EA%B0%80-%EA%B0%80%EC%9D%B4%EB%93%9C>분류 미니프로젝트 학습 노트: 초보자를 위한 성능 평가 가이드</a></li></ol></li><li><a href=#%EC%B4%9D%ED%8F%89>총평</a></li></ul><h2 id=1-분류-문제-기초-알고리즘-선택-가이드>1. 분류 문제 기초: 알고리즘 선택 가이드<a hidden class=anchor aria-hidden=true href=#1-분류-문제-기초-알고리즘-선택-가이드>#</a></h2><h3 id=무엇을-배웠나>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나>#</a></h3><p>분류 문제와 회귀 문제의 차이점과 다양한 분류 알고리즘(로지스틱 회귀, SVM, Naive Bayes, KNN 등)의 기본적인 작동 원리를 배웠어요. 특히 SVM의 결정 경계 설정 방식과 서포트 벡터의 중요성을 이해하게 되었고, 각 알고리즘의 특징을 고려하여 문제에 적합한 알고리즘을 선택하는 기준을 세우는 데 도움이 될 것 같아요. 각 알고리즘의 실용성을 고민하며 앞으로 학습 방향을 설정해야겠다는 생각이 들었어요.</p><h3 id=헷갈렸던-점>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점>#</a></h3><p>알고리즘 이름들이 너무 많아서, 각각이 무엇을 하는지, 그리고 왜 이 알고리즘을 선택해야 하는지 파악하기 어려웠어. SVM의 결정 경계가 어떻게 설정되는지 명확하게 이해하지 못했고, KNN이나 Naive Bayes 같은 알고리즘들이 실제 프로젝트에서 얼마나 쓸모가 있을지 의문이었어.</p><h3 id=정리된-이해>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해>#</a></h3><p>분류 문제는 정답이 범주로 주어지기 때문에, 로지스틱 회귀, SVM, Naive Bayes, KNN, 결정 트리, 부스팅 등 다양한 알고리즘을 활용하여 데이터를 분류할 수 있습니다. 각 알고리즘은 예측 방식과 특징이 다르므로, 데이터의 특성과 문제의 요구사항에 맞춰 적절한 알고리즘을 선택하는 것이 중요합니다. 특히 SVM은 서포트 벡터를 기준으로 결정 경계를 설정하여 데이터 분류에 효과적이며, Naive Bayes는 간단하지만 빠른 예측이 필요한 경우 유용합니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># Naive Bayes 예시 (텍스트 분류)</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.naive_bayes <span style=color:#f92672>import</span> MultinomialNB
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.feature_extraction.text <span style=color:#f92672>import</span> CountVectorizer
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 데이터 (예시)</span>
-</span></span><span style=display:flex><span>documents <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#34;이것은 좋은 문서입니다&#34;</span>, <span style=color:#e6db74>&#34;이것은 나쁜 문서입니다&#34;</span>, <span style=color:#e6db74>&#34;또 다른 좋은 문서입니다&#34;</span>]
-</span></span><span style=display:flex><span>labels <span style=color:#f92672>=</span> [<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>1</span>]  <span style=color:#75715e># 1: 좋은 문서, 0: 나쁜 문서</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 텍스트를 숫자 벡터로 변환</span>
-</span></span><span style=display:flex><span>vectorizer <span style=color:#f92672>=</span> CountVectorizer()
-</span></span><span style=display:flex><span>X <span style=color:#f92672>=</span> vectorizer<span style=color:#f92672>.</span>fit_transform(documents)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Naive Bayes 모델 학습</span>
-</span></span><span style=display:flex><span>model <span style=color:#f92672>=</span> MultinomialNB()
-</span></span><span style=display:flex><span>model<span style=color:#f92672>.</span>fit(X, labels)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 새로운 문서 예측</span>
-</span></span><span style=display:flex><span>new_document <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#34;이것은 훌륭한 문서입니다&#34;</span>]
-</span></span><span style=display:flex><span>new_X <span style=color:#f92672>=</span> vectorizer<span style=color:#f92672>.</span>transform(new_document)
-</span></span><span style=display:flex><span>prediction <span style=color:#f92672>=</span> model<span style=color:#f92672>.</span>predict(new_X)[<span style=color:#ae81ff>0</span>]
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;새로운 문서 예측: </span><span style=color:#e6db74>{</span>prediction<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
-</span></span></code></pre></div><h2 id=2-층화-분할과-검증-데이터셋-구축-가이드>2. 층화 분할과 검증 데이터셋 구축 가이드<a hidden class=anchor aria-hidden=true href=#2-층화-분할과-검증-데이터셋-구축-가이드>#</a></h2><h3 id=무엇을-배웠나-1>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-1>#</a></h3><p>분류 모델 학습 시 <code>stratify</code> 옵션을 무조건 사용하는 것이 아니라 데이터 특성을 고려해야 한다는 점을 깨달았다. 검증 데이터와 테스트 데이터의 역할을 명확히 구분하여 모델 평가의 공정성을 확보해야 한다는 것도 중요하게 알게 되었다. StratifiedKFold를 활용한 층화 분할 방법을 실습하며 이해도를 높였다.</p><h3 id=헷갈렸던-점-1>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-1>#</a></h3><p>분류 모델에서 <code>stratify=y</code>만 넣으면 층화 분할이 된다고 단순하게 생각했고, 검증 데이터와 테스트 데이터의 역할이 비슷해서 테스트 데이터로 모델 파라미터를 조정해도 괜찮을 거라고 생각했었다. 전체적인 데이터셋의 특성을 고려하지 않고 층화 분할을 적용할 수 있다는 착각을 했고, 모델 평가의 공정성을 해칠 수 있다는 점을 간과했었다.</p><h3 id=정리된-이해-1>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-1>#</a></h3><p>층화 분할은 단순히 <code>stratify=y</code>를 넣는 것 이상으로, 데이터의 특성에 따라 더 복잡하게 고려해야 하며, 시계열 데이터처럼 시간 순서가 중요한 경우에는 특히 주의해야 한다. 검증 데이터는 하이퍼파라미터 튜닝과 모델 성능 모니터링에 사용하고, 테스트 데이터는 최종 모델의 객관적인 성능을 평가하는 데 사용해야 한다. 이 두 데이터를 혼동하면 모델 평가의 공정성이 훼손될 수 있다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.model_selection <span style=color:#f92672>import</span> train_test_split
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.datasets <span style=color:#f92672>import</span> make_classification
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 가상 데이터셋 생성</span>
-</span></span><span style=display:flex><span>X, y <span style=color:#f92672>=</span> make_classification(n_samples<span style=color:#f92672>=</span><span style=color:#ae81ff>1000</span>, n_features<span style=color:#f92672>=</span><span style=color:#ae81ff>20</span>, n_classes<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>, random_state<span style=color:#f92672>=</span><span style=color:#ae81ff>42</span>)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 층화 분할로 Train/Validation/Test 분리</span>
-</span></span><span style=display:flex><span>X_train_val, X_test, y_train_val, y_test <span style=color:#f92672>=</span> train_test_split(
-</span></span><span style=display:flex><span>    X, y, test_size<span style=color:#f92672>=</span><span style=color:#ae81ff>0.2</span>, random_state<span style=color:#f92672>=</span><span style=color:#ae81ff>42</span>, stratify<span style=color:#f92672>=</span>y
-</span></span><span style=display:flex><span>)
-</span></span><span style=display:flex><span>X_train, X_val, y_train, y_val <span style=color:#f92672>=</span> train_test_split(
-</span></span><span style=display:flex><span>    X_train_val, y_train_val, test_size<span style=color:#f92672>=</span><span style=color:#ae81ff>0.25</span>, random_state<span style=color:#f92672>=</span><span style=color:#ae81ff>42</span>
-</span></span><span style=display:flex><span>)
-</span></span></code></pre></div><h2 id=3-혼동행렬과-불균형-데이터-분류-평가지표-이해>3. 혼동행렬과 불균형 데이터 분류 평가지표 이해<a hidden class=anchor aria-hidden=true href=#3-혼동행렬과-불균형-데이터-분류-평가지표-이해>#</a></h2><h3 id=무엇을-배웠나-2>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-2>#</a></h3><p>정밀도와 재현율의 개념을 명확히 이해하고, 각각의 의미와 중요성을 제대로 파악하게 되었어. 스팸 메일 필터링이나 의료 선별 검사 비유를 통해 직관적인 이해를 높일 수 있었고, F1 점수를 활용하여 모델 성능을 균형 있게 평가하는 방법도 알게 되었어. 불균형 데이터셋에서 모델을 평가할 때 정밀도, 재현율, F1 점수를 함께 고려해야 한다는 점을 기억해야겠어.</p><h3 id=헷갈렸던-점-2>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-2>#</a></h3><p>정밀도와 재현율의 개념을 정확히 구분 짓는 데 어려움을 느꼈고, 각각의 지표가 어떤 상황에서 중요하게 고려되어야 하는지 파악하는 데 혼란스러웠습니다. 특히, 실제 적용 시 어떤 지표를 우선적으로 높여야 할지 판단하기 어려웠습니다.</p><h3 id=정리된-이해-2>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-2>#</a></h3><p>정밀도는 모델이 양성으로 예측한 것 중에서 실제 양성인 비율을 나타내며, 재현율은 실제 양성 데이터 중 모델이 얼마나 잘 찾아냈는지를 의미합니다. 이 두 지표는 서로 상충될 수 있는데, F1 점수는 정밀도와 재현율의 균형을 평가하여 모델 성능을 종합적으로 판단하는 데 도움을 줍니다. 불균형 데이터 분류 문제에서는 특히 이 세 지표를 잘 이해하고 상황에 맞게 활용하는 것이 중요합니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># 예시 데이터셋 (실제 데이터셋에 맞게 조정해야 함)</span>
-</span></span><span style=display:flex><span>y_true <span style=color:#f92672>=</span> [<span style=color:#ae81ff>0</span>] <span style=color:#f92672>*</span> <span style=color:#ae81ff>990</span> <span style=color:#f92672>+</span> [<span style=color:#ae81ff>1</span>] <span style=color:#f92672>*</span> <span style=color:#ae81ff>10</span>  <span style=color:#75715e># 0: 정상, 1: 이상</span>
-</span></span><span style=display:flex><span>y_pred <span style=color:#f92672>=</span> [<span style=color:#ae81ff>0</span>] <span style=color:#f92672>*</span> <span style=color:#ae81ff>1000</span> <span style=color:#75715e># 모든 데이터를 정상으로 예측</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.metrics <span style=color:#f92672>import</span> precision_score, recall_score, f1_score
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 정밀도 계산</span>
-</span></span><span style=display:flex><span>precision <span style=color:#f92672>=</span> precision_score(y_true, y_pred)
-</span></span><span style=display:flex><span>print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;정밀도: </span><span style=color:#e6db74>{</span>precision<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 재현율 계산</span>
-</span></span><span style=display:flex><span>recall <span style=color:#f92672>=</span> recall_score(y_true, y_pred)
-</span></span><span style=display:flex><span>print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;재현율: </span><span style=color:#e6db74>{</span>recall<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># F1 점수 계산</span>
-</span></span><span style=display:flex><span>f1 <span style=color:#f92672>=</span> f1_score(y_true, y_pred)
-</span></span><span style=display:flex><span>print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;F1 점수: </span><span style=color:#e6db74>{</span>f1<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
-</span></span></code></pre></div><h2 id=4-roc-auc와-임계값-조정-초보자를-위한-이해>4. ROC-AUC와 임계값 조정: 초보자를 위한 이해<a hidden class=anchor aria-hidden=true href=#4-roc-auc와-임계값-조정-초보자를-위한-이해>#</a></h2><h3 id=무엇을-배웠나-3>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-3>#</a></h3><p>ROC 곡선과 AUC는 분류 모델 성능을 평가하는 데 중요한 지표라는 것을 알게 되었고, 특히 두 ROC 곡선이 겹칠 때 AUC 값으로 비교해야 한다는 점을 명확히 이해했다. 임계값 조절을 통해 Precision과 Recall을 조절할 수 있으며, 문제 상황에 따라 적절한 임계값을 선택해야 한다는 점도 깨달았다. 이 노트는 ROC 곡선 해석과 임계값 튜닝에 대한 초보적인 이해를 갖추는 데 도움이 되었다.</p><h3 id=헷갈렸던-점-3>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-3>#</a></h3><p>ROC 곡선이 교차할 때 어느 모델이 더 좋은지 판단하는 기준이 명확하지 않았고, 임계값 조정이 Recall과 Precision에 어떤 식으로 영향을 주는지 직관적으로 이해하기 어려웠다. 0.5라는 임계값을 무조건적으로 따라야 한다는 생각에 갇혀 있었고, 상황에 따라 임계값을 조정해야 한다는 점을 깨닫는 데 시간이 걸렸다.</p><h3 id=정리된-이해-3>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-3>#</a></h3><p>분류 모델은 확률값을 내고, 내가 정한 임계값에 따라 결과가 달라지는데, 이 임계값을 조절하면 Precision과 Recall이 서로 반대 방향으로 영향을 받는다. ROC 곡선은 실제 양성과 음성을 얼마나 잘 구별하는지 보여주며, 곡선 아래 면적인 AUC 값이 높을수록 모델의 성능이 좋다고 볼 수 있다. 즉, 임계값과 ROC 곡선, AUC를 함께 고려해야 모델을 제대로 평가할 수 있다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>y_pred <span style=color:#f92672>=</span> (proba <span style=color:#f92672>&gt;=</span> <span style=color:#ae81ff>0.5</span>)<span style=color:#f92672>.</span>astype(int)
-</span></span></code></pre></div><h2 id=5-의사결정나무-배깅-부스팅-앙상블-학습-핵심-원리>5. 의사결정나무, 배깅, 부스팅: 앙상블 학습 핵심 원리<a hidden class=anchor aria-hidden=true href=#5-의사결정나무-배깅-부스팅-앙상블-학습-핵심-원리>#</a></h2><h3 id=무엇을-배웠나-4>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-4>#</a></h3><p>의사결정나무는 직관적이지만 과적합 위험이 있고, 배깅은 여러 모델의 결과를 묶어 분산을 줄이는 방법론이라는 것을 알게 되었다. 부스팅은 이전 모델의 오류를 보완하는 방식으로, AdaBoost와 그래디언트 부스팅은 이를 구현하는 대표적인 알고리즘이라는 점을 숙지했다. 특히 부스팅의 작동 방식에 대한 이해가 부족했기에, 이 부분을 다시 학습해야 할 것 같다.</p><h3 id=헷갈렸던-점-4>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-4>#</a></h3><p>처음에는 배깅과 부스팅의 핵심적인 차이점을 명확하게 이해하지 못했다. 특히 부스팅이 어떻게 이전 모델의 오류를 보완하는지, 그리고 AdaBoost의 가중치 부여 방식이 구체적으로 어떻게 작동하는지 헷갈렸다.</p><h3 id=정리된-이해-4>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-4>#</a></h3><p>의사결정나무는 데이터를 분할하는 간단한 모델이지만 과적합 위험이 있고, 배깅은 여러 의사결정나무를 독립적으로 학습시켜 분산을 줄이는 방법, 부스팅은 이전 모델의 오류를 보완하는 방식으로 약한 모델들을 순차적으로 연결하는 방법이다. 특히 부스팅의 AdaBoost는 틀린 데이터에 가중치를 부여하고, 그래디언트 부스팅은 손실 함수의 기울기를 활용하여 오류를 줄여나간다는 점이 핵심이라고 생각한다. 앞으로는 자료들을 구분해서 공부해야겠다.</p><pre tabindex=0><code># 예시 코드 (실제 코드는 없음)
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-07-09 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-07-09-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-07-09-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-09-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터">
+  <meta property="og:description" content="2026-07-09 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-07-09T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-09T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터">
+  <meta name="twitter:description" content="2026-07-09 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터",
+      "item": "https://Han-think.github.io/learning/2026-07-09-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터",
+  "name": "분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터",
+  "description": "2026-07-09 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 분류 문제 기초: 알고리즘 선택 가이드 층화 분할과 검증 데이터셋 구축 가이드 혼동행렬과 불균형 데이터 분류 평가지표 이해 ROC-AUC와 임계값 조정: 초보자를 위한 이해 의사결정나무, 배깅, 부스팅: 앙상블 학습 핵심 원리 XGBoost \u0026 LightGBM Native API와 Early Stopping 완벽 이해 로지스틱 회귀와 오즈비, 통계적 이해와 해석 가이드 분류 미니프로젝트 학습 노트: 초보자를 위한 성능 평가 가이드 총평 1. 분류 문제 기초: 알고리즘 선택 가이드 무엇을 배웠나 분류 문제와 회귀 문제의 차이점과 다양한 분류 알고리즘(로지스틱 회귀, SVM, Naive Bayes, KNN 등)의 기본적인 작동 원리를 배웠어요. 특히 SVM의 결정 경계 설정 방식과 서포트 벡터의 중요성을 이해하게 되었고, 각 알고리즘의 특징을 고려하여 문제에 적합한 알고리즘을 선택하는 기준을 세우는 데 도움이 될 것 같아요. 각 알고리즘의 실용성을 고민하며 앞으로 학습 방향을 설정해야겠다는 생각이 들었어요.\n헷갈렸던 점 알고리즘 이름들이 너무 많아서, 각각이 무엇을 하는지, 그리고 왜 이 알고리즘을 선택해야 하는지 파악하기 어려웠어. SVM의 결정 경계가 어떻게 설정되는지 명확하게 이해하지 못했고, KNN이나 Naive Bayes 같은 알고리즘들이 실제 프로젝트에서 얼마나 쓸모가 있을지 의문이었어.\n정리된 이해 분류 문제는 정답이 범주로 주어지기 때문에, 로지스틱 회귀, SVM, Naive Bayes, KNN, 결정 트리, 부스팅 등 다양한 알고리즘을 활용하여 데이터를 분류할 수 있습니다. 각 알고리즘은 예측 방식과 특징이 다르므로, 데이터의 특성과 문제의 요구사항에 맞춰 적절한 알고리즘을 선택하는 것이 중요합니다. 특히 SVM은 서포트 벡터를 기준으로 결정 경계를 설정하여 데이터 분류에 효과적이며, Naive Bayes는 간단하지만 빠른 예측이 필요한 경우 유용합니다.\n# Naive Bayes 예시 (텍스트 분류) from sklearn.naive_bayes import MultinomialNB from sklearn.feature_extraction.text import CountVectorizer # 데이터 (예시) documents = [\"이것은 좋은 문서입니다\", \"이것은 나쁜 문서입니다\", \"또 다른 좋은 문서입니다\"] labels = [1, 0, 1] # 1: 좋은 문서, 0: 나쁜 문서 # 텍스트를 숫자 벡터로 변환 vectorizer = CountVectorizer() X = vectorizer.fit_transform(documents) # Naive Bayes 모델 학습 model = MultinomialNB() model.fit(X, labels) # 새로운 문서 예측 new_document = [\"이것은 훌륭한 문서입니다\"] new_X = vectorizer.transform(new_document) prediction = model.predict(new_X)[0] print(f\"새로운 문서 예측: {prediction}\") 2. 층화 분할과 검증 데이터셋 구축 가이드 무엇을 배웠나 분류 모델 학습 시 stratify 옵션을 무조건 사용하는 것이 아니라 데이터 특성을 고려해야 한다는 점을 깨달았다. 검증 데이터와 테스트 데이터의 역할을 명확히 구분하여 모델 평가의 공정성을 확보해야 한다는 것도 중요하게 알게 되었다. StratifiedKFold를 활용한 층화 분할 방법을 실습하며 이해도를 높였다.\n헷갈렸던 점 분류 모델에서 stratify=y만 넣으면 층화 분할이 된다고 단순하게 생각했고, 검증 데이터와 테스트 데이터의 역할이 비슷해서 테스트 데이터로 모델 파라미터를 조정해도 괜찮을 거라고 생각했었다. 전체적인 데이터셋의 특성을 고려하지 않고 층화 분할을 적용할 수 있다는 착각을 했고, 모델 평가의 공정성을 해칠 수 있다는 점을 간과했었다.\n정리된 이해 층화 분할은 단순히 stratify=y를 넣는 것 이상으로, 데이터의 특성에 따라 더 복잡하게 고려해야 하며, 시계열 데이터처럼 시간 순서가 중요한 경우에는 특히 주의해야 한다. 검증 데이터는 하이퍼파라미터 튜닝과 모델 성능 모니터링에 사용하고, 테스트 데이터는 최종 모델의 객관적인 성능을 평가하는 데 사용해야 한다. 이 두 데이터를 혼동하면 모델 평가의 공정성이 훼손될 수 있다.\nfrom sklearn.model_selection import train_test_split from sklearn.datasets import make_classification # 가상 데이터셋 생성 X, y = make_classification(n_samples=1000, n_features=20, n_classes=2, random_state=42) # 층화 분할로 Train/Validation/Test 분리 X_train_val, X_test, y_train_val, y_test = train_test_split( X, y, test_size=0.2, random_state=42, stratify=y ) X_train, X_val, y_train, y_val = train_test_split( X_train_val, y_train_val, test_size=0.25, random_state=42 ) 3. 혼동행렬과 불균형 데이터 분류 평가지표 이해 무엇을 배웠나 정밀도와 재현율의 개념을 명확히 이해하고, 각각의 의미와 중요성을 제대로 파악하게 되었어. 스팸 메일 필터링이나 의료 선별 검사 비유를 통해 직관적인 이해를 높일 수 있었고, F1 점수를 활용하여 모델 성능을 균형 있게 평가하는 방법도 알게 되었어. 불균형 데이터셋에서 모델을 평가할 때 정밀도, 재현율, F1 점수를 함께 고려해야 한다는 점을 기억해야겠어.\n헷갈렸던 점 정밀도와 재현율의 개념을 정확히 구분 짓는 데 어려움을 느꼈고, 각각의 지표가 어떤 상황에서 중요하게 고려되어야 하는지 파악하는 데 혼란스러웠습니다. 특히, 실제 적용 시 어떤 지표를 우선적으로 높여야 할지 판단하기 어려웠습니다.\n정리된 이해 정밀도는 모델이 양성으로 예측한 것 중에서 실제 양성인 비율을 나타내며, 재현율은 실제 양성 데이터 중 모델이 얼마나 잘 찾아냈는지를 의미합니다. 이 두 지표는 서로 상충될 수 있는데, F1 점수는 정밀도와 재현율의 균형을 평가하여 모델 성능을 종합적으로 판단하는 데 도움을 줍니다. 불균형 데이터 분류 문제에서는 특히 이 세 지표를 잘 이해하고 상황에 맞게 활용하는 것이 중요합니다.\n# 예시 데이터셋 (실제 데이터셋에 맞게 조정해야 함) y_true = [0] * 990 + [1] * 10 # 0: 정상, 1: 이상 y_pred = [0] * 1000 # 모든 데이터를 정상으로 예측 from sklearn.metrics import precision_score, recall_score, f1_score # 정밀도 계산 precision = precision_score(y_true, y_pred) print(f\"정밀도: {precision}\") # 재현율 계산 recall = recall_score(y_true, y_pred) print(f\"재현율: {recall}\") # F1 점수 계산 f1 = f1_score(y_true, y_pred) print(f\"F1 점수: {f1}\") 4. ROC-AUC와 임계값 조정: 초보자를 위한 이해 무엇을 배웠나 ROC 곡선과 AUC는 분류 모델 성능을 평가하는 데 중요한 지표라는 것을 알게 되었고, 특히 두 ROC 곡선이 겹칠 때 AUC 값으로 비교해야 한다는 점을 명확히 이해했다. 임계값 조절을 통해 Precision과 Recall을 조절할 수 있으며, 문제 상황에 따라 적절한 임계값을 선택해야 한다는 점도 깨달았다. 이 노트는 ROC 곡선 해석과 임계값 튜닝에 대한 초보적인 이해를 갖추는 데 도움이 되었다.\n헷갈렸던 점 ROC 곡선이 교차할 때 어느 모델이 더 좋은지 판단하는 기준이 명확하지 않았고, 임계값 조정이 Recall과 Precision에 어떤 식으로 영향을 주는지 직관적으로 이해하기 어려웠다. 0.5라는 임계값을 무조건적으로 따라야 한다는 생각에 갇혀 있었고, 상황에 따라 임계값을 조정해야 한다는 점을 깨닫는 데 시간이 걸렸다.\n정리된 이해 분류 모델은 확률값을 내고, 내가 정한 임계값에 따라 결과가 달라지는데, 이 임계값을 조절하면 Precision과 Recall이 서로 반대 방향으로 영향을 받는다. ROC 곡선은 실제 양성과 음성을 얼마나 잘 구별하는지 보여주며, 곡선 아래 면적인 AUC 값이 높을수록 모델의 성능이 좋다고 볼 수 있다. 즉, 임계값과 ROC 곡선, AUC를 함께 고려해야 모델을 제대로 평가할 수 있다.\ny_pred = (proba \u003e= 0.5).astype(int) 5. 의사결정나무, 배깅, 부스팅: 앙상블 학습 핵심 원리 무엇을 배웠나 의사결정나무는 직관적이지만 과적합 위험이 있고, 배깅은 여러 모델의 결과를 묶어 분산을 줄이는 방법론이라는 것을 알게 되었다. 부스팅은 이전 모델의 오류를 보완하는 방식으로, AdaBoost와 그래디언트 부스팅은 이를 구현하는 대표적인 알고리즘이라는 점을 숙지했다. 특히 부스팅의 작동 방식에 대한 이해가 부족했기에, 이 부분을 다시 학습해야 할 것 같다.\n헷갈렸던 점 처음에는 배깅과 부스팅의 핵심적인 차이점을 명확하게 이해하지 못했다. 특히 부스팅이 어떻게 이전 모델의 오류를 보완하는지, 그리고 AdaBoost의 가중치 부여 방식이 구체적으로 어떻게 작동하는지 헷갈렸다.\n정리된 이해 의사결정나무는 데이터를 분할하는 간단한 모델이지만 과적합 위험이 있고, 배깅은 여러 의사결정나무를 독립적으로 학습시켜 분산을 줄이는 방법, 부스팅은 이전 모델의 오류를 보완하는 방식으로 약한 모델들을 순차적으로 연결하는 방법이다. 특히 부스팅의 AdaBoost는 틀린 데이터에 가중치를 부여하고, 그래디언트 부스팅은 손실 함수의 기울기를 활용하여 오류를 줄여나간다는 점이 핵심이라고 생각한다. 앞으로는 자료들을 구분해서 공부해야겠다.\n# 예시 코드 (실제 코드는 없음) # 이 코드는 설명을 위한 예시이며, 학습 노트에 제시된 내용과 직접적인 관련이 없습니다. # from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier # import numpy as np # # 랜덤 포레스트 예시 # X = np.random.rand(100, 2) # y = np.random.randint(0, 2, 100) # rf = RandomForestClassifier(n_estimators=10) # rf.fit(X, y) # # AdaBoost 예시 # abc = AdaBoostClassifier(n_estimators=10) # abc.fit(X, y) # # Gradient Boosting 예시 # gbc = GradientBoostingClassifier(n_estimators=10) # gbc.fit(X, y) 6. XGBoost \u0026 LightGBM Native API와 Early Stopping 완벽 이해 무엇을 배웠나 XGBoost와 LightGBM의 조기 종료(Early Stopping) 기능이 단순히 best_iteration 값을 저장하는 것이 아니라, 검증 성능이 개선되지 않는 라운드 수를 기준으로 학습을 멈춘다는 것을 알게 되었다. 또한 boosting 라운드가 트리의 개수를 의미하는 것이 아니라, 모델을 보완하는 반복 횟수를 나타낸다는 점을 명확히 이해하게 되었다. 이제 조기 종료 파라미터 설정과 boosting 라운드의 의미를 바탕으로 모델 과적합을 더 효과적으로 방지할 수 있을 것 같다.\n헷갈렸던 점 Early Stopping이 단순히 best_iteration을 나타내는 줄 알고 있었고, num_boost_round를 트리 개수로만 생각해서 다중 클래스에서 각 라운드가 여러 트리를 생성할 수 있다는 점을 놓쳤었습니다. 이러한 오해로 인해 모델 성능 개선 및 과적합 방지에 어려움을 겪었습니다.\n정리된 이해 조기 종료는 검증 데이터 성능이 개선되지 않는 라운드까지 학습을 멈춰 과적합을 방지하는 중요한 기능이며, best_iteration은 가장 좋은 성능을 보인 라운드를 기록합니다. XGBoost나 LightGBM에서 num_boost_round는 트리 개수가 아닌 반복 학습 횟수를 의미하며, 다중 클래스 분류에서는 한 라운드에 여러 트리가 생성될 수 있습니다. 이러한 점을 이해하면 모델 튜닝 시 조기 종료 및 반복 횟수를 적절하게 설정하여 성능을 최적화할 수 있습니다.\nimport xgboost as xgb import pandas as pd # 데이터 준비 dtrain = xgb.DMatrix(X_train, label=y_train) dval = xgb.DMatrix(X_val, label=y_val) 7. 로지스틱 회귀와 오즈비, 통계적 이해와 해석 가이드 무엇을 배웠나 로지스틱 회귀는 단순히 예측 모델이 아니라 변수들의 영향력을 통계적으로 분석하는 데 사용될 수 있다는 점을 깨달았습니다. 특히 오즈비는 확률비와 직접적으로 연결되지 않으며, p-value, 신뢰구간 등과 함께 해석해야 효과를 정확하게 파악할 수 있다는 것을 알게 되었습니다. 앞으로는 로지스틱 회귀 분석 시 통계적 의미와 실제 효과를 함께 고려하여 해석할 필요가 있음을 인지하게 되었습니다.\n헷갈렸던 점 로지스틱 회귀를 단순히 분류 모델로만 생각하고 있었는데, 통계적인 해석도 가능하다는 점이 처음에는 이해가 잘 안 갔습니다. 특히 오즈비가 확률과 직접적으로 연결된다고 생각해서 해석에 어려움을 겪었습니다. 결과 해석 시 p-value, 신뢰구간, 기준 범주 등 여러 요소를 종합적으로 고려해야 한다는 점을 간과했습니다.\n정리된 이해 로지스틱 회귀는 예측 모델일 뿐 아니라 각 변수가 결과에 미치는 통계적 영향력을 분석하는 데 유용하다는 것을 알게 되었다. 오즈비는 로그 오즈의 지수 변환으로, 변수의 영향력을 이해하기 쉽게 만들어주지만, 확률과는 다른 개념이라는 점을 명확히 해야 한다. 신뢰구간과 p-value를 활용하여 변수의 효과와 유의성을 종합적으로 판단하는 것이 중요하다.\nfrom sklearn.linear_model import LogisticRegression from sklearn.model_selection import train_test_split import pandas as pd # 예시 데이터 로드 data = pd.read_csv('your_dataset.csv') X = data[['변수1', '변수2']] y = data['결과'] # 데이터 분할 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42) # 로지스틱 회귀 모델 학습 8. 분류 미니프로젝트 학습 노트: 초보자를 위한 성능 평가 가이드 무엇을 배웠나 분류 모델 평가 지표를 이해하는 데 어려움을 겪었는데, 이 노트에서 대회 성과 측정, 분석 품질 평가, 실행 가치와 적용이라는 세 가지 측면으로 분류 모델의 성능을 다각적으로 살펴보는 방법을 배웠습니다. 특히 다중 분류 시 임계값 설정의 중요성과, 단순히 F1-score만으로는 충분하지 않고 ROC-AUC 등 다양한 지표를 활용하여 모델을 평가해야 한다는 점을 깨달았습니다. 이 지식은 앞으로 진행하는 프로젝트에서 모델의 성능을 더욱 정확하게 분석하고 개선하는 데 도움이 될 것입니다.\n헷갈렸던 점 분류 프로젝트 평가 지표를 어디까지 챙겨야 할지, 그리고 다중 분류에서 임계값 설정을 어떻게 해야 할지 감이 잘 안 잡혔어요. F1-score만으로 충분한지, ROC-AUC를 꼭 봐야 하는지, 그리고 각 클래스별 임계값을 따로 설정해야 하는지 하나도 모르겠어서 막막했어요.\n정리된 이해 분류 모델 성능 평가는 단순히 F1-score만 보는 것이 아니라 정확도, 재현율, ROC-AUC 등 다양한 지표를 통해 모델의 강점과 약점을 다각도로 파악해야 합니다. 특히 다중 분류에서는 클래스별 임계값 설정이나 확률 조정 등 추가적인 고려사항이 필요하며, 실제 적용 시에는 예측 결과가 가져올 영향과 비용을 종합적으로 고려해야 합니다.\n# 예시: 다중 클래스 분류에서 클래스별 임계값 설정 (가정) # 실제 구현은 데이터와 모델에 따라 달라짐 # 클래스별 예측 확률을 기반으로 임계값 설정 # 예: 각 클래스별로 0.7 이상의 확률을 가진 경우 해당 클래스로 예측 # def predict_with_thresholds(probabilities, thresholds): # predictions = [] # for i in range(len(probabilities)): # max_prob = max(probabilities[i]) # predicted_class = probabilities[i].index(max_prob) # if probabilities[i][predicted_class] \u003e= thresholds[predicted_class]: # predictions.append(predicted_class) # else: # # 예측 실패 시 처리 (예: 가장 높은 확률의 클래스 선택 또는 예측 불확실성 표시) # predictions.append(-1) # -1은 예측 불확실성을 나타낸다고 가정 # return predictions 총평 오늘 오전 전체에서 배운 것 오늘 오전에는 분류 문제의 기초부터 앙상블 학습, 그리고 로지스틱 회귀의 통계적 해석까지 다양한 내용을 배웠어요. 특히 모델 평가 지표와 앙상블 학습 알고리즘의 핵심 원리를 이해하고, 실제 프로젝트에 적용할 수 있도록 노력해야겠다는 생각이 들었어요. 앞으로 부족한 부분은 다시 학습하고, 실전 경험을 통해 지식을 더욱 solid하게 만들어나가야겠습니다.\n다음에 조심할 것 부스팅 알고리즘의 작동 방식에 대한 이해가 부족했던 점을 다시 학습하고, 로지스틱 회귀 분석 시 통계적 의미와 실제 효과를 함께 고려하여 해석하는 연습을 꾸준히 해야겠어. 또한, 다중 분류 시 다양한 평가 지표를 활용하여 모델을 평가하는 습관을 들이고, 임계값 설정의 중요성을 항상 염두에 두어야 해.\n다음 복습 주제 부스팅 알고리즘의 작동 방식에 대한 이해가 아직 부족해서 다시 학습해야 할 것 같아. 특히 XGBoost와 LightGBM의 내부적인 작동 원리를 좀 더 깊이 파고들어서, 조기 종료(Early Stopping) 기능이 어떻게 모델 성능에 영향을 미치는지 정확하게 이해하고 싶어. 로지스틱 회귀 분석 시 통계적 의미와 실제 효과를 연결하여 해석하는 능력도 향상시켜야 할 것 같아.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "1886",
+  "inLanguage": "en",
+  "datePublished": "2026-07-09T00:00:00Z",
+  "dateModified": "2026-07-09T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-07-09-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터
+    </h1>
+    <div class="post-description">
+      2026-07-09 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-09 00:00:00 +0000 UTC'>2026년 7월 9일</span>&nbsp;·&nbsp;<span>9 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EB%B6%84%EB%A5%98-%EB%AC%B8%EC%A0%9C-%EA%B8%B0%EC%B4%88-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EC%84%A0%ED%83%9D-%EA%B0%80%EC%9D%B4%EB%93%9C">분류 문제 기초: 알고리즘 선택 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%B8%B5%ED%99%94-%EB%B6%84%ED%95%A0%EA%B3%BC-%EA%B2%80%EC%A6%9D-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%85%8B-%EA%B5%AC%EC%B6%95-%EA%B0%80%EC%9D%B4%EB%93%9C">층화 분할과 검증 데이터셋 구축 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%ED%98%BC%EB%8F%99%ED%96%89%EB%A0%AC%EA%B3%BC-%EB%B6%88%EA%B7%A0%ED%98%95-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EB%A5%98-%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C-%EC%9D%B4%ED%95%B4">혼동행렬과 불균형 데이터 분류 평가지표 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-roc-auc%EC%99%80-%EC%9E%84%EA%B3%84%EA%B0%92-%EC%A1%B0%EC%A0%95-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%9D%B4%ED%95%B4">ROC-AUC와 임계값 조정: 초보자를 위한 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95%EB%82%98%EB%AC%B4-%EB%B0%B0%EA%B9%85-%EB%B6%80%EC%8A%A4%ED%8C%85-%EC%95%99%EC%83%81%EB%B8%94-%ED%95%99%EC%8A%B5-%ED%95%B5%EC%8B%AC-%EC%9B%90%EB%A6%AC">의사결정나무, 배깅, 부스팅: 앙상블 학습 핵심 원리</a></li>
+</ol>
+</li>
+<li>
+<ol start="6">
+<li><a href="#6-xgboost-lightgbm-native-api%EC%99%80-early-stopping-%EC%99%84%EB%B2%BD-%EC%9D%B4%ED%95%B4">XGBoost &amp; LightGBM Native API와 Early Stopping 완벽 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="7">
+<li><a href="#7-%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1-%ED%9A%8C%EA%B7%80%EC%99%80-%EC%98%A4%EC%A6%88%EB%B9%84-%ED%86%B5%EA%B3%84%EC%A0%81-%EC%9D%B4%ED%95%B4%EC%99%80-%ED%95%B4%EC%84%9D-%EA%B0%80%EC%9D%B4%EB%93%9C">로지스틱 회귀와 오즈비, 통계적 이해와 해석 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="8">
+<li><a href="#8-%EB%B6%84%EB%A5%98-%EB%AF%B8%EB%8B%88%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%95%99%EC%8A%B5-%EB%85%B8%ED%8A%B8-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%84%B1%EB%8A%A5-%ED%8F%89%EA%B0%80-%EA%B0%80%EC%9D%B4%EB%93%9C">분류 미니프로젝트 학습 노트: 초보자를 위한 성능 평가 가이드</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-분류-문제-기초-알고리즘-선택-가이드">1. 분류 문제 기초: 알고리즘 선택 가이드<a hidden class="anchor" aria-hidden="true" href="#1-분류-문제-기초-알고리즘-선택-가이드">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>분류 문제와 회귀 문제의 차이점과 다양한 분류 알고리즘(로지스틱 회귀, SVM, Naive Bayes, KNN 등)의 기본적인 작동 원리를 배웠어요. 특히 SVM의 결정 경계 설정 방식과 서포트 벡터의 중요성을 이해하게 되었고, 각 알고리즘의 특징을 고려하여 문제에 적합한 알고리즘을 선택하는 기준을 세우는 데 도움이 될 것 같아요. 각 알고리즘의 실용성을 고민하며 앞으로 학습 방향을 설정해야겠다는 생각이 들었어요.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>알고리즘 이름들이 너무 많아서, 각각이 무엇을 하는지, 그리고 왜 이 알고리즘을 선택해야 하는지 파악하기 어려웠어. SVM의 결정 경계가 어떻게 설정되는지 명확하게 이해하지 못했고, KNN이나 Naive Bayes 같은 알고리즘들이 실제 프로젝트에서 얼마나 쓸모가 있을지 의문이었어.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>분류 문제는 정답이 범주로 주어지기 때문에, 로지스틱 회귀, SVM, Naive Bayes, KNN, 결정 트리, 부스팅 등 다양한 알고리즘을 활용하여 데이터를 분류할 수 있습니다. 각 알고리즘은 예측 방식과 특징이 다르므로, 데이터의 특성과 문제의 요구사항에 맞춰 적절한 알고리즘을 선택하는 것이 중요합니다. 특히 SVM은 서포트 벡터를 기준으로 결정 경계를 설정하여 데이터 분류에 효과적이며, Naive Bayes는 간단하지만 빠른 예측이 필요한 경우 유용합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Naive Bayes 예시 (텍스트 분류)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.naive_bayes <span style="color:#f92672">import</span> MultinomialNB
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.feature_extraction.text <span style="color:#f92672">import</span> CountVectorizer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 데이터 (예시)</span>
+</span></span><span style="display:flex;"><span>documents <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;이것은 좋은 문서입니다&#34;</span>, <span style="color:#e6db74">&#34;이것은 나쁜 문서입니다&#34;</span>, <span style="color:#e6db74">&#34;또 다른 좋은 문서입니다&#34;</span>]
+</span></span><span style="display:flex;"><span>labels <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>]  <span style="color:#75715e"># 1: 좋은 문서, 0: 나쁜 문서</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 텍스트를 숫자 벡터로 변환</span>
+</span></span><span style="display:flex;"><span>vectorizer <span style="color:#f92672">=</span> CountVectorizer()
+</span></span><span style="display:flex;"><span>X <span style="color:#f92672">=</span> vectorizer<span style="color:#f92672">.</span>fit_transform(documents)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Naive Bayes 모델 학습</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> MultinomialNB()
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>fit(X, labels)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 새로운 문서 예측</span>
+</span></span><span style="display:flex;"><span>new_document <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;이것은 훌륭한 문서입니다&#34;</span>]
+</span></span><span style="display:flex;"><span>new_X <span style="color:#f92672">=</span> vectorizer<span style="color:#f92672">.</span>transform(new_document)
+</span></span><span style="display:flex;"><span>prediction <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict(new_X)[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;새로운 문서 예측: </span><span style="color:#e6db74">{</span>prediction<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><h2 id="2-층화-분할과-검증-데이터셋-구축-가이드">2. 층화 분할과 검증 데이터셋 구축 가이드<a hidden class="anchor" aria-hidden="true" href="#2-층화-분할과-검증-데이터셋-구축-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>분류 모델 학습 시 <code>stratify</code> 옵션을 무조건 사용하는 것이 아니라 데이터 특성을 고려해야 한다는 점을 깨달았다. 검증 데이터와 테스트 데이터의 역할을 명확히 구분하여 모델 평가의 공정성을 확보해야 한다는 것도 중요하게 알게 되었다. StratifiedKFold를 활용한 층화 분할 방법을 실습하며 이해도를 높였다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>분류 모델에서 <code>stratify=y</code>만 넣으면 층화 분할이 된다고 단순하게 생각했고, 검증 데이터와 테스트 데이터의 역할이 비슷해서 테스트 데이터로 모델 파라미터를 조정해도 괜찮을 거라고 생각했었다. 전체적인 데이터셋의 특성을 고려하지 않고 층화 분할을 적용할 수 있다는 착각을 했고, 모델 평가의 공정성을 해칠 수 있다는 점을 간과했었다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>층화 분할은 단순히 <code>stratify=y</code>를 넣는 것 이상으로, 데이터의 특성에 따라 더 복잡하게 고려해야 하며, 시계열 데이터처럼 시간 순서가 중요한 경우에는 특히 주의해야 한다. 검증 데이터는 하이퍼파라미터 튜닝과 모델 성능 모니터링에 사용하고, 테스트 데이터는 최종 모델의 객관적인 성능을 평가하는 데 사용해야 한다. 이 두 데이터를 혼동하면 모델 평가의 공정성이 훼손될 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.model_selection <span style="color:#f92672">import</span> train_test_split
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.datasets <span style="color:#f92672">import</span> make_classification
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 가상 데이터셋 생성</span>
+</span></span><span style="display:flex;"><span>X, y <span style="color:#f92672">=</span> make_classification(n_samples<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>, n_features<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>, n_classes<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 층화 분할로 Train/Validation/Test 분리</span>
+</span></span><span style="display:flex;"><span>X_train_val, X_test, y_train_val, y_test <span style="color:#f92672">=</span> train_test_split(
+</span></span><span style="display:flex;"><span>    X, y, test_size<span style="color:#f92672">=</span><span style="color:#ae81ff">0.2</span>, random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>, stratify<span style="color:#f92672">=</span>y
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>X_train, X_val, y_train, y_val <span style="color:#f92672">=</span> train_test_split(
+</span></span><span style="display:flex;"><span>    X_train_val, y_train_val, test_size<span style="color:#f92672">=</span><span style="color:#ae81ff">0.25</span>, random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><h2 id="3-혼동행렬과-불균형-데이터-분류-평가지표-이해">3. 혼동행렬과 불균형 데이터 분류 평가지표 이해<a hidden class="anchor" aria-hidden="true" href="#3-혼동행렬과-불균형-데이터-분류-평가지표-이해">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>정밀도와 재현율의 개념을 명확히 이해하고, 각각의 의미와 중요성을 제대로 파악하게 되었어. 스팸 메일 필터링이나 의료 선별 검사 비유를 통해 직관적인 이해를 높일 수 있었고, F1 점수를 활용하여 모델 성능을 균형 있게 평가하는 방법도 알게 되었어. 불균형 데이터셋에서 모델을 평가할 때 정밀도, 재현율, F1 점수를 함께 고려해야 한다는 점을 기억해야겠어.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>정밀도와 재현율의 개념을 정확히 구분 짓는 데 어려움을 느꼈고, 각각의 지표가 어떤 상황에서 중요하게 고려되어야 하는지 파악하는 데 혼란스러웠습니다. 특히, 실제 적용 시 어떤 지표를 우선적으로 높여야 할지 판단하기 어려웠습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>정밀도는 모델이 양성으로 예측한 것 중에서 실제 양성인 비율을 나타내며, 재현율은 실제 양성 데이터 중 모델이 얼마나 잘 찾아냈는지를 의미합니다. 이 두 지표는 서로 상충될 수 있는데, F1 점수는 정밀도와 재현율의 균형을 평가하여 모델 성능을 종합적으로 판단하는 데 도움을 줍니다. 불균형 데이터 분류 문제에서는 특히 이 세 지표를 잘 이해하고 상황에 맞게 활용하는 것이 중요합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 예시 데이터셋 (실제 데이터셋에 맞게 조정해야 함)</span>
+</span></span><span style="display:flex;"><span>y_true <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>] <span style="color:#f92672">*</span> <span style="color:#ae81ff">990</span> <span style="color:#f92672">+</span> [<span style="color:#ae81ff">1</span>] <span style="color:#f92672">*</span> <span style="color:#ae81ff">10</span>  <span style="color:#75715e"># 0: 정상, 1: 이상</span>
+</span></span><span style="display:flex;"><span>y_pred <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>] <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span> <span style="color:#75715e"># 모든 데이터를 정상으로 예측</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.metrics <span style="color:#f92672">import</span> precision_score, recall_score, f1_score
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 정밀도 계산</span>
+</span></span><span style="display:flex;"><span>precision <span style="color:#f92672">=</span> precision_score(y_true, y_pred)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;정밀도: </span><span style="color:#e6db74">{</span>precision<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 재현율 계산</span>
+</span></span><span style="display:flex;"><span>recall <span style="color:#f92672">=</span> recall_score(y_true, y_pred)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;재현율: </span><span style="color:#e6db74">{</span>recall<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># F1 점수 계산</span>
+</span></span><span style="display:flex;"><span>f1 <span style="color:#f92672">=</span> f1_score(y_true, y_pred)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;F1 점수: </span><span style="color:#e6db74">{</span>f1<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><h2 id="4-roc-auc와-임계값-조정-초보자를-위한-이해">4. ROC-AUC와 임계값 조정: 초보자를 위한 이해<a hidden class="anchor" aria-hidden="true" href="#4-roc-auc와-임계값-조정-초보자를-위한-이해">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>ROC 곡선과 AUC는 분류 모델 성능을 평가하는 데 중요한 지표라는 것을 알게 되었고, 특히 두 ROC 곡선이 겹칠 때 AUC 값으로 비교해야 한다는 점을 명확히 이해했다. 임계값 조절을 통해 Precision과 Recall을 조절할 수 있으며, 문제 상황에 따라 적절한 임계값을 선택해야 한다는 점도 깨달았다. 이 노트는 ROC 곡선 해석과 임계값 튜닝에 대한 초보적인 이해를 갖추는 데 도움이 되었다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>ROC 곡선이 교차할 때 어느 모델이 더 좋은지 판단하는 기준이 명확하지 않았고, 임계값 조정이 Recall과 Precision에 어떤 식으로 영향을 주는지 직관적으로 이해하기 어려웠다. 0.5라는 임계값을 무조건적으로 따라야 한다는 생각에 갇혀 있었고, 상황에 따라 임계값을 조정해야 한다는 점을 깨닫는 데 시간이 걸렸다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>분류 모델은 확률값을 내고, 내가 정한 임계값에 따라 결과가 달라지는데, 이 임계값을 조절하면 Precision과 Recall이 서로 반대 방향으로 영향을 받는다. ROC 곡선은 실제 양성과 음성을 얼마나 잘 구별하는지 보여주며, 곡선 아래 면적인 AUC 값이 높을수록 모델의 성능이 좋다고 볼 수 있다. 즉, 임계값과 ROC 곡선, AUC를 함께 고려해야 모델을 제대로 평가할 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>y_pred <span style="color:#f92672">=</span> (proba <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0.5</span>)<span style="color:#f92672">.</span>astype(int)
+</span></span></code></pre></div><h2 id="5-의사결정나무-배깅-부스팅-앙상블-학습-핵심-원리">5. 의사결정나무, 배깅, 부스팅: 앙상블 학습 핵심 원리<a hidden class="anchor" aria-hidden="true" href="#5-의사결정나무-배깅-부스팅-앙상블-학습-핵심-원리">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>의사결정나무는 직관적이지만 과적합 위험이 있고, 배깅은 여러 모델의 결과를 묶어 분산을 줄이는 방법론이라는 것을 알게 되었다. 부스팅은 이전 모델의 오류를 보완하는 방식으로, AdaBoost와 그래디언트 부스팅은 이를 구현하는 대표적인 알고리즘이라는 점을 숙지했다. 특히 부스팅의 작동 방식에 대한 이해가 부족했기에, 이 부분을 다시 학습해야 할 것 같다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>처음에는 배깅과 부스팅의 핵심적인 차이점을 명확하게 이해하지 못했다. 특히 부스팅이 어떻게 이전 모델의 오류를 보완하는지, 그리고 AdaBoost의 가중치 부여 방식이 구체적으로 어떻게 작동하는지 헷갈렸다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>의사결정나무는 데이터를 분할하는 간단한 모델이지만 과적합 위험이 있고, 배깅은 여러 의사결정나무를 독립적으로 학습시켜 분산을 줄이는 방법, 부스팅은 이전 모델의 오류를 보완하는 방식으로 약한 모델들을 순차적으로 연결하는 방법이다. 특히 부스팅의 AdaBoost는 틀린 데이터에 가중치를 부여하고, 그래디언트 부스팅은 손실 함수의 기울기를 활용하여 오류를 줄여나간다는 점이 핵심이라고 생각한다. 앞으로는 자료들을 구분해서 공부해야겠다.</p>
+<pre tabindex="0"><code># 예시 코드 (실제 코드는 없음)
 # 이 코드는 설명을 위한 예시이며, 학습 노트에 제시된 내용과 직접적인 관련이 없습니다.
 
 # from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier
@@ -72,48 +367,174 @@
 # # Gradient Boosting 예시
 # gbc = GradientBoostingClassifier(n_estimators=10)
 # gbc.fit(X, y)
-</code></pre><h2 id=6-xgboost--lightgbm-native-api와-early-stopping-완벽-이해>6. XGBoost & LightGBM Native API와 Early Stopping 완벽 이해<a hidden class=anchor aria-hidden=true href=#6-xgboost--lightgbm-native-api와-early-stopping-완벽-이해>#</a></h2><h3 id=무엇을-배웠나-5>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-5>#</a></h3><p>XGBoost와 LightGBM의 조기 종료(Early Stopping) 기능이 단순히 <code>best_iteration</code> 값을 저장하는 것이 아니라, 검증 성능이 개선되지 않는 라운드 수를 기준으로 학습을 멈춘다는 것을 알게 되었다. 또한 boosting 라운드가 트리의 개수를 의미하는 것이 아니라, 모델을 보완하는 반복 횟수를 나타낸다는 점을 명확히 이해하게 되었다. 이제 조기 종료 파라미터 설정과 boosting 라운드의 의미를 바탕으로 모델 과적합을 더 효과적으로 방지할 수 있을 것 같다.</p><h3 id=헷갈렸던-점-5>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-5>#</a></h3><p>Early Stopping이 단순히 <code>best_iteration</code>을 나타내는 줄 알고 있었고, <code>num_boost_round</code>를 트리 개수로만 생각해서 다중 클래스에서 각 라운드가 여러 트리를 생성할 수 있다는 점을 놓쳤었습니다. 이러한 오해로 인해 모델 성능 개선 및 과적합 방지에 어려움을 겪었습니다.</p><h3 id=정리된-이해-5>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-5>#</a></h3><p>조기 종료는 검증 데이터 성능이 개선되지 않는 라운드까지 학습을 멈춰 과적합을 방지하는 중요한 기능이며, <code>best_iteration</code>은 가장 좋은 성능을 보인 라운드를 기록합니다. XGBoost나 LightGBM에서 <code>num_boost_round</code>는 트리 개수가 아닌 반복 학습 횟수를 의미하며, 다중 클래스 분류에서는 한 라운드에 여러 트리가 생성될 수 있습니다. 이러한 점을 이해하면 모델 튜닝 시 조기 종료 및 반복 횟수를 적절하게 설정하여 성능을 최적화할 수 있습니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> xgboost <span style=color:#66d9ef>as</span> xgb
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> pandas <span style=color:#66d9ef>as</span> pd
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 데이터 준비</span>
-</span></span><span style=display:flex><span>dtrain <span style=color:#f92672>=</span> xgb<span style=color:#f92672>.</span>DMatrix(X_train, label<span style=color:#f92672>=</span>y_train)
-</span></span><span style=display:flex><span>dval <span style=color:#f92672>=</span> xgb<span style=color:#f92672>.</span>DMatrix(X_val, label<span style=color:#f92672>=</span>y_val)
-</span></span></code></pre></div><h2 id=7-로지스틱-회귀와-오즈비-통계적-이해와-해석-가이드>7. 로지스틱 회귀와 오즈비, 통계적 이해와 해석 가이드<a hidden class=anchor aria-hidden=true href=#7-로지스틱-회귀와-오즈비-통계적-이해와-해석-가이드>#</a></h2><h3 id=무엇을-배웠나-6>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-6>#</a></h3><p>로지스틱 회귀는 단순히 예측 모델이 아니라 변수들의 영향력을 통계적으로 분석하는 데 사용될 수 있다는 점을 깨달았습니다. 특히 오즈비는 확률비와 직접적으로 연결되지 않으며, p-value, 신뢰구간 등과 함께 해석해야 효과를 정확하게 파악할 수 있다는 것을 알게 되었습니다. 앞으로는 로지스틱 회귀 분석 시 통계적 의미와 실제 효과를 함께 고려하여 해석할 필요가 있음을 인지하게 되었습니다.</p><h3 id=헷갈렸던-점-6>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-6>#</a></h3><p>로지스틱 회귀를 단순히 분류 모델로만 생각하고 있었는데, 통계적인 해석도 가능하다는 점이 처음에는 이해가 잘 안 갔습니다. 특히 오즈비가 확률과 직접적으로 연결된다고 생각해서 해석에 어려움을 겪었습니다. 결과 해석 시 p-value, 신뢰구간, 기준 범주 등 여러 요소를 종합적으로 고려해야 한다는 점을 간과했습니다.</p><h3 id=정리된-이해-6>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-6>#</a></h3><p>로지스틱 회귀는 예측 모델일 뿐 아니라 각 변수가 결과에 미치는 통계적 영향력을 분석하는 데 유용하다는 것을 알게 되었다. 오즈비는 로그 오즈의 지수 변환으로, 변수의 영향력을 이해하기 쉽게 만들어주지만, 확률과는 다른 개념이라는 점을 명확히 해야 한다. 신뢰구간과 p-value를 활용하여 변수의 효과와 유의성을 종합적으로 판단하는 것이 중요하다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.linear_model <span style=color:#f92672>import</span> LogisticRegression
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.model_selection <span style=color:#f92672>import</span> train_test_split
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> pandas <span style=color:#66d9ef>as</span> pd
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 예시 데이터 로드</span>
-</span></span><span style=display:flex><span>data <span style=color:#f92672>=</span> pd<span style=color:#f92672>.</span>read_csv(<span style=color:#e6db74>&#39;your_dataset.csv&#39;</span>)
-</span></span><span style=display:flex><span>X <span style=color:#f92672>=</span> data[[<span style=color:#e6db74>&#39;변수1&#39;</span>, <span style=color:#e6db74>&#39;변수2&#39;</span>]]
-</span></span><span style=display:flex><span>y <span style=color:#f92672>=</span> data[<span style=color:#e6db74>&#39;결과&#39;</span>]
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 데이터 분할</span>
-</span></span><span style=display:flex><span>X_train, X_test, y_train, y_test <span style=color:#f92672>=</span> train_test_split(X, y, test_size<span style=color:#f92672>=</span><span style=color:#ae81ff>0.2</span>, random_state<span style=color:#f92672>=</span><span style=color:#ae81ff>42</span>)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 로지스틱 회귀 모델 학습</span>
-</span></span></code></pre></div><h2 id=8-분류-미니프로젝트-학습-노트-초보자를-위한-성능-평가-가이드>8. 분류 미니프로젝트 학습 노트: 초보자를 위한 성능 평가 가이드<a hidden class=anchor aria-hidden=true href=#8-분류-미니프로젝트-학습-노트-초보자를-위한-성능-평가-가이드>#</a></h2><h3 id=무엇을-배웠나-7>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-7>#</a></h3><p>분류 모델 평가 지표를 이해하는 데 어려움을 겪었는데, 이 노트에서 대회 성과 측정, 분석 품질 평가, 실행 가치와 적용이라는 세 가지 측면으로 분류 모델의 성능을 다각적으로 살펴보는 방법을 배웠습니다. 특히 다중 분류 시 임계값 설정의 중요성과, 단순히 F1-score만으로는 충분하지 않고 ROC-AUC 등 다양한 지표를 활용하여 모델을 평가해야 한다는 점을 깨달았습니다. 이 지식은 앞으로 진행하는 프로젝트에서 모델의 성능을 더욱 정확하게 분석하고 개선하는 데 도움이 될 것입니다.</p><h3 id=헷갈렸던-점-7>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-7>#</a></h3><p>분류 프로젝트 평가 지표를 어디까지 챙겨야 할지, 그리고 다중 분류에서 임계값 설정을 어떻게 해야 할지 감이 잘 안 잡혔어요. F1-score만으로 충분한지, ROC-AUC를 꼭 봐야 하는지, 그리고 각 클래스별 임계값을 따로 설정해야 하는지 하나도 모르겠어서 막막했어요.</p><h3 id=정리된-이해-7>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-7>#</a></h3><p>분류 모델 성능 평가는 단순히 F1-score만 보는 것이 아니라 정확도, 재현율, ROC-AUC 등 다양한 지표를 통해 모델의 강점과 약점을 다각도로 파악해야 합니다. 특히 다중 분류에서는 클래스별 임계값 설정이나 확률 조정 등 추가적인 고려사항이 필요하며, 실제 적용 시에는 예측 결과가 가져올 영향과 비용을 종합적으로 고려해야 합니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># 예시: 다중 클래스 분류에서 클래스별 임계값 설정 (가정)</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 실제 구현은 데이터와 모델에 따라 달라짐</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 클래스별 예측 확률을 기반으로 임계값 설정</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 예: 각 클래스별로 0.7 이상의 확률을 가진 경우 해당 클래스로 예측</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># def predict_with_thresholds(probabilities, thresholds):</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>#     predictions = []</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>#     for i in range(len(probabilities)):</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>#         max_prob = max(probabilities[i])</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>#         predicted_class = probabilities[i].index(max_prob)</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>#         if probabilities[i][predicted_class] &gt;= thresholds[predicted_class]:</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>#             predictions.append(predicted_class)</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>#         else:</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>#             # 예측 실패 시 처리 (예: 가장 높은 확률의 클래스 선택 또는 예측 불확실성 표시)</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>#             predictions.append(-1) # -1은 예측 불확실성을 나타낸다고 가정</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>#     return predictions</span>
-</span></span></code></pre></div><h2 id=총평>총평<a hidden class=anchor aria-hidden=true href=#총평>#</a></h2><h3 id=오늘-오전-전체에서-배운-것>오늘 오전 전체에서 배운 것<a hidden class=anchor aria-hidden=true href=#오늘-오전-전체에서-배운-것>#</a></h3><p>오늘 오전에는 분류 문제의 기초부터 앙상블 학습, 그리고 로지스틱 회귀의 통계적 해석까지 다양한 내용을 배웠어요. 특히 모델 평가 지표와 앙상블 학습 알고리즘의 핵심 원리를 이해하고, 실제 프로젝트에 적용할 수 있도록 노력해야겠다는 생각이 들었어요. 앞으로 부족한 부분은 다시 학습하고, 실전 경험을 통해 지식을 더욱 solid하게 만들어나가야겠습니다.</p><h3 id=다음에-조심할-것>다음에 조심할 것<a hidden class=anchor aria-hidden=true href=#다음에-조심할-것>#</a></h3><p>부스팅 알고리즘의 작동 방식에 대한 이해가 부족했던 점을 다시 학습하고, 로지스틱 회귀 분석 시 통계적 의미와 실제 효과를 함께 고려하여 해석하는 연습을 꾸준히 해야겠어. 또한, 다중 분류 시 다양한 평가 지표를 활용하여 모델을 평가하는 습관을 들이고, 임계값 설정의 중요성을 항상 염두에 두어야 해.</p><h3 id=다음-복습-주제>다음 복습 주제<a hidden class=anchor aria-hidden=true href=#다음-복습-주제>#</a></h3><p>부스팅 알고리즘의 작동 방식에 대한 이해가 아직 부족해서 다시 학습해야 할 것 같아. 특히 XGBoost와 LightGBM의 내부적인 작동 원리를 좀 더 깊이 파고들어서, 조기 종료(Early Stopping) 기능이 어떻게 모델 성능에 영향을 미치는지 정확하게 이해하고 싶어. 로지스틱 회귀 분석 시 통계적 의미와 실제 효과를 연결하여 해석하는 능력도 향상시켜야 할 것 같아.</p><blockquote><p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
-This post was written with the help of a local LLM (AI).</p></blockquote></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://Han-think.github.io/learning/2026-07-10-pm-daily/><span class=title>« Prev</span>
-<span>비지도 학습, 데이터 분석의 핵심과 실제 적용 노하우 습득</span>
-</a><a class=next href=https://Han-think.github.io/learning/2026-07-09-pm-daily/><span class=title>Next »</span>
-<span>분류부터 시계열 분석까지, 머신러닝 핵심 개념과 실무 적용 노하우 정리</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
-<span>Powered by
-<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
-<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
+</code></pre><h2 id="6-xgboost--lightgbm-native-api와-early-stopping-완벽-이해">6. XGBoost &amp; LightGBM Native API와 Early Stopping 완벽 이해<a hidden class="anchor" aria-hidden="true" href="#6-xgboost--lightgbm-native-api와-early-stopping-완벽-이해">#</a></h2>
+<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
+<p>XGBoost와 LightGBM의 조기 종료(Early Stopping) 기능이 단순히 <code>best_iteration</code> 값을 저장하는 것이 아니라, 검증 성능이 개선되지 않는 라운드 수를 기준으로 학습을 멈춘다는 것을 알게 되었다. 또한 boosting 라운드가 트리의 개수를 의미하는 것이 아니라, 모델을 보완하는 반복 횟수를 나타낸다는 점을 명확히 이해하게 되었다. 이제 조기 종료 파라미터 설정과 boosting 라운드의 의미를 바탕으로 모델 과적합을 더 효과적으로 방지할 수 있을 것 같다.</p>
+<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
+<p>Early Stopping이 단순히 <code>best_iteration</code>을 나타내는 줄 알고 있었고, <code>num_boost_round</code>를 트리 개수로만 생각해서 다중 클래스에서 각 라운드가 여러 트리를 생성할 수 있다는 점을 놓쳤었습니다. 이러한 오해로 인해 모델 성능 개선 및 과적합 방지에 어려움을 겪었습니다.</p>
+<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
+<p>조기 종료는 검증 데이터 성능이 개선되지 않는 라운드까지 학습을 멈춰 과적합을 방지하는 중요한 기능이며, <code>best_iteration</code>은 가장 좋은 성능을 보인 라운드를 기록합니다. XGBoost나 LightGBM에서 <code>num_boost_round</code>는 트리 개수가 아닌 반복 학습 횟수를 의미하며, 다중 클래스 분류에서는 한 라운드에 여러 트리가 생성될 수 있습니다. 이러한 점을 이해하면 모델 튜닝 시 조기 종료 및 반복 횟수를 적절하게 설정하여 성능을 최적화할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> xgboost <span style="color:#66d9ef">as</span> xgb
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 데이터 준비</span>
+</span></span><span style="display:flex;"><span>dtrain <span style="color:#f92672">=</span> xgb<span style="color:#f92672">.</span>DMatrix(X_train, label<span style="color:#f92672">=</span>y_train)
+</span></span><span style="display:flex;"><span>dval <span style="color:#f92672">=</span> xgb<span style="color:#f92672">.</span>DMatrix(X_val, label<span style="color:#f92672">=</span>y_val)
+</span></span></code></pre></div><h2 id="7-로지스틱-회귀와-오즈비-통계적-이해와-해석-가이드">7. 로지스틱 회귀와 오즈비, 통계적 이해와 해석 가이드<a hidden class="anchor" aria-hidden="true" href="#7-로지스틱-회귀와-오즈비-통계적-이해와-해석-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-6">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-6">#</a></h3>
+<p>로지스틱 회귀는 단순히 예측 모델이 아니라 변수들의 영향력을 통계적으로 분석하는 데 사용될 수 있다는 점을 깨달았습니다. 특히 오즈비는 확률비와 직접적으로 연결되지 않으며, p-value, 신뢰구간 등과 함께 해석해야 효과를 정확하게 파악할 수 있다는 것을 알게 되었습니다. 앞으로는 로지스틱 회귀 분석 시 통계적 의미와 실제 효과를 함께 고려하여 해석할 필요가 있음을 인지하게 되었습니다.</p>
+<h3 id="헷갈렸던-점-6">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-6">#</a></h3>
+<p>로지스틱 회귀를 단순히 분류 모델로만 생각하고 있었는데, 통계적인 해석도 가능하다는 점이 처음에는 이해가 잘 안 갔습니다. 특히 오즈비가 확률과 직접적으로 연결된다고 생각해서 해석에 어려움을 겪었습니다. 결과 해석 시 p-value, 신뢰구간, 기준 범주 등 여러 요소를 종합적으로 고려해야 한다는 점을 간과했습니다.</p>
+<h3 id="정리된-이해-6">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-6">#</a></h3>
+<p>로지스틱 회귀는 예측 모델일 뿐 아니라 각 변수가 결과에 미치는 통계적 영향력을 분석하는 데 유용하다는 것을 알게 되었다. 오즈비는 로그 오즈의 지수 변환으로, 변수의 영향력을 이해하기 쉽게 만들어주지만, 확률과는 다른 개념이라는 점을 명확히 해야 한다. 신뢰구간과 p-value를 활용하여 변수의 효과와 유의성을 종합적으로 판단하는 것이 중요하다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.linear_model <span style="color:#f92672">import</span> LogisticRegression
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.model_selection <span style="color:#f92672">import</span> train_test_split
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 예시 데이터 로드</span>
+</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#39;your_dataset.csv&#39;</span>)
+</span></span><span style="display:flex;"><span>X <span style="color:#f92672">=</span> data[[<span style="color:#e6db74">&#39;변수1&#39;</span>, <span style="color:#e6db74">&#39;변수2&#39;</span>]]
+</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> data[<span style="color:#e6db74">&#39;결과&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 데이터 분할</span>
+</span></span><span style="display:flex;"><span>X_train, X_test, y_train, y_test <span style="color:#f92672">=</span> train_test_split(X, y, test_size<span style="color:#f92672">=</span><span style="color:#ae81ff">0.2</span>, random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 로지스틱 회귀 모델 학습</span>
+</span></span></code></pre></div><h2 id="8-분류-미니프로젝트-학습-노트-초보자를-위한-성능-평가-가이드">8. 분류 미니프로젝트 학습 노트: 초보자를 위한 성능 평가 가이드<a hidden class="anchor" aria-hidden="true" href="#8-분류-미니프로젝트-학습-노트-초보자를-위한-성능-평가-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-7">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-7">#</a></h3>
+<p>분류 모델 평가 지표를 이해하는 데 어려움을 겪었는데, 이 노트에서 대회 성과 측정, 분석 품질 평가, 실행 가치와 적용이라는 세 가지 측면으로 분류 모델의 성능을 다각적으로 살펴보는 방법을 배웠습니다. 특히 다중 분류 시 임계값 설정의 중요성과, 단순히 F1-score만으로는 충분하지 않고 ROC-AUC 등 다양한 지표를 활용하여 모델을 평가해야 한다는 점을 깨달았습니다. 이 지식은 앞으로 진행하는 프로젝트에서 모델의 성능을 더욱 정확하게 분석하고 개선하는 데 도움이 될 것입니다.</p>
+<h3 id="헷갈렸던-점-7">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-7">#</a></h3>
+<p>분류 프로젝트 평가 지표를 어디까지 챙겨야 할지, 그리고 다중 분류에서 임계값 설정을 어떻게 해야 할지 감이 잘 안 잡혔어요. F1-score만으로 충분한지, ROC-AUC를 꼭 봐야 하는지, 그리고 각 클래스별 임계값을 따로 설정해야 하는지 하나도 모르겠어서 막막했어요.</p>
+<h3 id="정리된-이해-7">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-7">#</a></h3>
+<p>분류 모델 성능 평가는 단순히 F1-score만 보는 것이 아니라 정확도, 재현율, ROC-AUC 등 다양한 지표를 통해 모델의 강점과 약점을 다각도로 파악해야 합니다. 특히 다중 분류에서는 클래스별 임계값 설정이나 확률 조정 등 추가적인 고려사항이 필요하며, 실제 적용 시에는 예측 결과가 가져올 영향과 비용을 종합적으로 고려해야 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 예시: 다중 클래스 분류에서 클래스별 임계값 설정 (가정)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 실제 구현은 데이터와 모델에 따라 달라짐</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 클래스별 예측 확률을 기반으로 임계값 설정</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 예: 각 클래스별로 0.7 이상의 확률을 가진 경우 해당 클래스로 예측</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># def predict_with_thresholds(probabilities, thresholds):</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#     predictions = []</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#     for i in range(len(probabilities)):</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#         max_prob = max(probabilities[i])</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#         predicted_class = probabilities[i].index(max_prob)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#         if probabilities[i][predicted_class] &gt;= thresholds[predicted_class]:</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#             predictions.append(predicted_class)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#         else:</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#             # 예측 실패 시 처리 (예: 가장 높은 확률의 클래스 선택 또는 예측 불확실성 표시)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#             predictions.append(-1) # -1은 예측 불확실성을 나타낸다고 가정</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#     return predictions</span>
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>오늘 오전에는 분류 문제의 기초부터 앙상블 학습, 그리고 로지스틱 회귀의 통계적 해석까지 다양한 내용을 배웠어요. 특히 모델 평가 지표와 앙상블 학습 알고리즘의 핵심 원리를 이해하고, 실제 프로젝트에 적용할 수 있도록 노력해야겠다는 생각이 들었어요. 앞으로 부족한 부분은 다시 학습하고, 실전 경험을 통해 지식을 더욱 solid하게 만들어나가야겠습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>부스팅 알고리즘의 작동 방식에 대한 이해가 부족했던 점을 다시 학습하고, 로지스틱 회귀 분석 시 통계적 의미와 실제 효과를 함께 고려하여 해석하는 연습을 꾸준히 해야겠어. 또한, 다중 분류 시 다양한 평가 지표를 활용하여 모델을 평가하는 습관을 들이고, 임계값 설정의 중요성을 항상 염두에 두어야 해.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>부스팅 알고리즘의 작동 방식에 대한 이해가 아직 부족해서 다시 학습해야 할 것 같아. 특히 XGBoost와 LightGBM의 내부적인 작동 원리를 좀 더 깊이 파고들어서, 조기 종료(Early Stopping) 기능이 어떻게 모델 성능에 영향을 미치는지 정확하게 이해하고 싶어. 로지스틱 회귀 분석 시 통계적 의미와 실제 효과를 연결하여 해석하는 능력도 향상시켜야 할 것 같아.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-07-10-pm-daily/">
+    <span class="title">« Prev</span>
+    <span>비지도 학습, 데이터 분석의 핵심과 실제 적용 노하우 습득</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-07-09-pm-daily/">
+    <span class="title">Next »</span>
+    <span>분류부터 시계열 분석까지, 머신러닝 핵심 개념과 실무 적용 노하우 정리</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

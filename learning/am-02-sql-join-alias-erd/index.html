@@ -1,30 +1,412 @@
-<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>am-02-sql-join-alias-erd | Han-think Blog</title><meta name=keywords content><meta name=description content="am-02-sql-join-alias-erd 학습 정리"><meta name=author content><link rel=canonical href=https://Han-think.github.io/learning/am-02-sql-join-alias-erd/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/learning/am-02-sql-join-alias-erd/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/learning/am-02-sql-join-alias-erd/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="am-02-sql-join-alias-erd"><meta property="og:description" content="am-02-sql-join-alias-erd 학습 정리"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="learning"><meta property="article:published_time" content="2026-06-09T00:00:00+00:00"><meta property="article:modified_time" content="2026-06-09T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="am-02-sql-join-alias-erd"><meta name=twitter:description content="am-02-sql-join-alias-erd 학습 정리"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"학습 기록","item":"https://Han-think.github.io/learning/"},{"@type":"ListItem","position":2,"name":"am-02-sql-join-alias-erd","item":"https://Han-think.github.io/learning/am-02-sql-join-alias-erd/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"am-02-sql-join-alias-erd","name":"am-02-sql-join-alias-erd","description":"am-02-sql-join-alias-erd 학습 정리","keywords":[],"articleBody":"목차 ERD 이해 점 표기 Alias 사용 JOIN의 본질 총평 1. ERD 이해 왜 이걸 보게 됐나 SQL 쿼리를 작성할 때 여러 테이블의 데이터를 조합해야 했는데, 테이블 간의 관계를 제대로 파악하지 못해서 어떤 컬럼을 기준으로 연결해야 할지 막막했어. ERD를 제대로 이해하면 테이블 간의 관계를 시각적으로 보여주기 때문에, 어떤 데이터를 어떻게 가져와야 할지 판단하는 데 도움이 될 거라고 생각했어. 결국 ERD를 통해 데이터를 연결하는 과정을 명확히 이해하고 싶었어.\n내가 헷갈린 지점 ERD를 보면 테이블들이 연결되어 있지만, 그 연결이 실제로 어떤 데이터가 어떻게 연결되는지를 명확하게 보여주지 못한다고 생각했어요. 테이블 간의 관계가 있다는 것만으로는 데이터가 어떻게 조인되는지, 어떤 컬럼이 연결되어야 하는지 파악하기 어려웠습니다. 테이블 구조를 나열한 단순한 그림이라고만 생각했던 탓인지, 실제 데이터 흐름을 나타내는 지도가 아니라고 생각했습니다.\n시도한 코드 / 예시 SELECT t.Name AS TrackName 결과와 해석 ERD를 통해 tracks 테이블과 genres 테이블 간의 GenreId 연결을 명확히 파악하고, 이를 바탕으로 쿼리를 작성하여 각 트랙의 이름을 장르 이름과 함께 가져올 수 있었다. ERD를 그림으로 떠올리니 테이블 간의 관계를 시각적으로 이해하고 JOIN 조건을 설정하는 데 도움이 되었다. 이 실습을 통해 ERD가 단순히 테이블 구조를 보여주는 것이 아니라, 실제 데이터가 어떻게 연결되는지 보여주는 중요한 도구임을 깨달았다.\n정리된 이해 ERD는 테이블 간의 데이터 연결 경로를 보여주는 회로도와 같아서, 테이블 구조뿐 아니라 실제 데이터가 어떻게 연결되는지 파악하는 데 도움을 줘요. ERD를 보면 기본 키와 외래 키를 통해 어떤 컬럼들이 연결되는지 쉽게 알 수 있어서 JOIN 조건 설정에 필요한 정보를 얻을 수 있습니다.\n2. 점 표기 왜 이걸 보게 됐나 여러 테이블에 동일한 컬럼명이 존재할 때, 어떤 테이블의 컬럼을 참조해야 하는지 명확하게 하기 위해 점 표기법을 배우게 됐어. 예를 들어 tracks 테이블과 invoice_items 테이블 모두 TrackId라는 컬럼을 가지고 있는데, 쿼리에서 어떤 테이블의 TrackId를 가져와야 하는지 구분하기 위해 tracks.TrackId와 같이 점으로 표기해야 했어. 이렇게 하면 쿼리 엔진이 정확히 어떤 컬럼을 사용해야 하는지 알 수 있어서 오류를 줄일 수 있었어.\n내가 헷갈린 지점 처음에는 invoice_items.TrackId나 tracks.TrackId처럼 점으로 구분된 컬럼명이 어떤 의미인지, 그리고 왜 두 개의 같은 이름 컬럼을 구별해야 하는지 몰랐어. 테이블 이름을 명시해야 한다는 건 알겠는데, 어떤 상황에서 점 표기를 해야 하는지, 또 점 표기 없이 사용하면 어떻게 되는 건지 명확하게 이해하지 못했어. 강의를 듣고 나서야 테이블의 관계를 고려해서 특정 컬럼을 지칭하는 표기법이라는 것을 알게 되었어.\n시도한 코드 / 예시 SELECT ins.InvoiceId, ins.Total, cu.FirstName, cu.LastName FROM invoices ins INNER JOIN customers cu ON ins.CustomerId = cu.CustomerId; 결과와 해석 invoice_items.TrackId와 tracks.TrackId는 같은 이름의 컬럼이라도 어느 테이블에 속해 있는지 명확히 구분해야 한다는 걸 알게 되었어. 점 표기는 테이블 이름을 명시하여 어떤 테이블의 컬럼인지 혼동을 피하게 해주는 중요한 표기법이야. 예를 들어, invoice_items.TrackId는 송장 항목 테이블의 TrackId를 의미하고, tracks.TrackId는 트랙 테이블의 TrackId를 의미하는 것을 알 수 있어.\n정리된 이해 점 표기법은 테이블이 여러 개일 때 어떤 테이블의 어떤 컬럼을 참조하는지 명확하게 알려주는 방식이야. 테이블명.컬럼명처럼 사용하면, 동일한 컬럼명이라도 어느 테이블에 속한 컬럼인지 구분할 수 있어서 쿼리가 훨씬 명확해지고 오류를 줄일 수 있어. 예를 들어 invoices.InvoiceId와 customers.InvoiceId는 완전히 다른 컬럼을 가리키는 것을 나타내지.\n3. Alias 사용 왜 이걸 보게 됐나 복잡한 쿼리를 작성할 때 테이블 이름이 너무 길어서 가독성이 떨어지고 쿼리 작성 자체가 불편해졌어. 그래서 테이블 이름을 줄여주는 별칭을 배우게 됐고, 특히 여러 테이블을 연결하는 JOIN 쿼리에서 효율적으로 쿼리를 작성하고 이해하는 데 필요하다는 것을 깨달았어.\n내가 헷갈린 지점 처음에는 Alias가 테이블 이름을 줄여주는 것 이상으로 어떤 특별한 의미나 역할을 하는 건가 싶었는데, JOIN 조건이나 SELECT 절에서 컬럼을 명확하게 지정하기 위해 필수적인 도구라는 걸 이해하지 못했다. 특히 여러 테이블을 JOIN할 때 어떤 컬럼이 어느 테이블에 속하는지 혼동될 때 Alias가 없으면 코드가 너무 길어지고 가독성이 떨어지는 것을 경험했다. Alias를 효과적으로 사용해야 복잡한 쿼리를 깔끔하게 작성할 수 있다는 것을 깨달았다.\n시도한 코드 / 예시 SELECT tr.Name AS TrackName 결과와 해석 별칭을 사용하면 쿼리가 더 읽기 쉽고 간결해져서 복잡한 JOIN 구문에서도 테이블 이름을 줄여가며 가독성을 높일 수 있어 편리하다. 예를 들어, tracks 테이블에 tr이라는 별칭을 부여하여 tr.Name과 같이 짧게 참조할 수 있다. 이렇게 하면 쿼리 전체의 가독성을 향상시키고 오타의 가능성도 줄일 수 있다.\n정리된 이해 별칭은 테이블 이름을 줄여서 쿼리를 더 읽기 쉽게 만들어주는 기능이야. 특히 JOIN을 여러 번 사용할 때나 테이블 이름이 길 경우, 쿼리 가독성을 높여주고 실수할 가능성을 줄여줘. 복잡한 쿼리에서 테이블과 컬럼을 구분하기 어려울 때 alias를 활용하면 훨씬 명확하게 표현할 수 있어.\n4. JOIN의 본질 왜 이걸 보게 됐나 테이블이 여러 개일 때 어떤 데이터를 가져와야 할지 감이 잘 안 잡혀서, JOIN이 어떻게 데이터를 연결하는지 정확히 알아야 쿼리를 작성할 수 있다는 생각에 JOIN의 본질을 배우게 됐어. ERD를 보고도 테이블 간의 관계를 파악하는 데 어려움을 겪었기에, JOIN의 작동 원리를 이해하면 ERD를 더 효과적으로 활용할 수 있을 거라고 생각했어. 결국은 복잡한 쿼리도 자신감 있게 작성할 수 있도록 돕기 위한 과정이라고 느껴졌어.\n내가 헷갈린 지점 처음에는 JOIN을 테이블을 합치는 단순한 작업 정도로 생각해서, 어떤 기준으로 연결해야 할지 막막했어요. ERD를 보더라도 테이블 간의 관계를 정확히 이해하지 못하고, 어떤 컬럼이 연결되어야 하는지 파악하는 데 어려움이 있었습니다. 테이블명이 똑같은 컬럼이 여러 테이블에 존재할 때 어떻게 구별해야 할지 혼란스러웠습니다.\n시도한 코드 / 예시 SELECT ins.InvoiceId, ins.Total, cu.FirstName, cu.LastName FROM invoices ins INNER JOIN customers cu ON ins.CustomerId = cu.CustomerId; 결과와 해석 위 쿼리는 트랙 정보와 장르 정보를 연결하여 트랙 이름과 해당 장르 이름을 함께 보여주는 예제입니다. INNER JOIN을 사용하여 두 테이블을 연결하고, 테이블 이름을 tr과 g라는 별칭으로 줄여서 쿼리를 더 읽기 쉽게 만들었습니다. 이를 통해 테이블 간의 관계를 이해하고 데이터를 효율적으로 추출할 수 있습니다.\n정리된 이해 JOIN은 여러 테이블의 데이터를 연결하여 원하는 정보를 얻어내는 문법이고, 특정 컬럼을 기준으로 테이블을 연결한다. 단순히 테이블을 합치는 것이 아니라, 관계를 기반으로 데이터를 가져온다는 점이 중요하다. 이를 통해 필요한 정보만 효율적으로 추출할 수 있다.\n총평 오늘 전체에서 배운 것 ERD를 통해 테이블 간 데이터 연결 경로를 시각적으로 파악하고, 테이블명.컬럼명 표기법을 이해하여 SQL 쿼리 작성 시 혼동을 줄일 수 있게 되었다. 별칭을 사용하면 쿼리를 간결하게 만들고 가독성을 높일 수 있다는 점도 명확해졌다.\n다음에 조심할 것 ERD를 보면서 데이터가 어떻게 연결되는지 경로를 명확히 따라가도록 연습해야겠다. JOIN 쿼리 작성 시, 별칭의 사용이 필수적임을 잊지 않고, 테이블명.컬럼명 표기법을 꾸준히 숙달해야겠다.\n다음 복습 주제 JOIN 조건 설정 시, 외래 키와 기본 키 간의 관계를 ERD와 함께 명확하게 파악하는 연습을 더 해야겠다. 복잡한 JOIN 쿼리에서 별칭 사용의 우선순위를 정하는 기준을 알아보고 싶다.\n","wordCount":"957","inLanguage":"en","datePublished":"2026-06-09T00:00:00Z","dateModified":"2026-06-09T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/learning/am-02-sql-join-alias-erd/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
-<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">am-02-sql-join-alias-erd</h1><div class=post-description>am-02-sql-join-alias-erd 학습 정리</div><div class=post-meta><span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></div></header><div class="post-content md-content"><h2 id=목차>목차<a hidden class=anchor aria-hidden=true href=#목차>#</a></h2><ul><li><ol><li><a href=#1-erd-%EC%9D%B4%ED%95%B4>ERD 이해</a></li></ol></li><li><ol start=2><li><a href=#2-%EC%A0%90-%ED%91%9C%EA%B8%B0>점 표기</a></li></ol></li><li><ol start=3><li><a href=#3-alias-%EC%82%AC%EC%9A%A9>Alias 사용</a></li></ol></li><li><ol start=4><li><a href=#4-join%EC%9D%98-%EB%B3%B8%EC%A7%88>JOIN의 본질</a></li></ol></li><li><a href=#%EC%B4%9D%ED%8F%89>총평</a></li></ul><h2 id=1-erd-이해>1. ERD 이해<a hidden class=anchor aria-hidden=true href=#1-erd-이해>#</a></h2><h3 id=왜-이걸-보게-됐나>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나>#</a></h3><p>SQL 쿼리를 작성할 때 여러 테이블의 데이터를 조합해야 했는데, 테이블 간의 관계를 제대로 파악하지 못해서 어떤 컬럼을 기준으로 연결해야 할지 막막했어. ERD를 제대로 이해하면 테이블 간의 관계를 시각적으로 보여주기 때문에, 어떤 데이터를 어떻게 가져와야 할지 판단하는 데 도움이 될 거라고 생각했어. 결국 ERD를 통해 데이터를 연결하는 과정을 명확히 이해하고 싶었어.</p><h3 id=내가-헷갈린-지점>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점>#</a></h3><p>ERD를 보면 테이블들이 연결되어 있지만, 그 연결이 실제로 어떤 데이터가 어떻게 연결되는지를 명확하게 보여주지 못한다고 생각했어요. 테이블 간의 관계가 있다는 것만으로는 데이터가 어떻게 조인되는지, 어떤 컬럼이 연결되어야 하는지 파악하기 어려웠습니다. 테이블 구조를 나열한 단순한 그림이라고만 생각했던 탓인지, 실제 데이터 흐름을 나타내는 지도가 아니라고 생각했습니다.</p><h3 id=시도한-코드--예시>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>    t.Name <span style=color:#66d9ef>AS</span> TrackName
-</span></span></code></pre></div><h3 id=결과와-해석>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석>#</a></h3><p>ERD를 통해 <code>tracks</code> 테이블과 <code>genres</code> 테이블 간의 <code>GenreId</code> 연결을 명확히 파악하고, 이를 바탕으로 쿼리를 작성하여 각 트랙의 이름을 장르 이름과 함께 가져올 수 있었다. ERD를 그림으로 떠올리니 테이블 간의 관계를 시각적으로 이해하고 JOIN 조건을 설정하는 데 도움이 되었다. 이 실습을 통해 ERD가 단순히 테이블 구조를 보여주는 것이 아니라, 실제 데이터가 어떻게 연결되는지 보여주는 중요한 도구임을 깨달았다.</p><h3 id=정리된-이해>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해>#</a></h3><p>ERD는 테이블 간의 데이터 연결 경로를 보여주는 회로도와 같아서, 테이블 구조뿐 아니라 실제 데이터가 어떻게 연결되는지 파악하는 데 도움을 줘요. ERD를 보면 기본 키와 외래 키를 통해 어떤 컬럼들이 연결되는지 쉽게 알 수 있어서 JOIN 조건 설정에 필요한 정보를 얻을 수 있습니다.</p><h2 id=2-점-표기>2. 점 표기<a hidden class=anchor aria-hidden=true href=#2-점-표기>#</a></h2><h3 id=왜-이걸-보게-됐나-1>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-1>#</a></h3><p>여러 테이블에 동일한 컬럼명이 존재할 때, 어떤 테이블의 컬럼을 참조해야 하는지 명확하게 하기 위해 점 표기법을 배우게 됐어. 예를 들어 <code>tracks</code> 테이블과 <code>invoice_items</code> 테이블 모두 <code>TrackId</code>라는 컬럼을 가지고 있는데, 쿼리에서 어떤 테이블의 <code>TrackId</code>를 가져와야 하는지 구분하기 위해 <code>tracks.TrackId</code>와 같이 점으로 표기해야 했어. 이렇게 하면 쿼리 엔진이 정확히 어떤 컬럼을 사용해야 하는지 알 수 있어서 오류를 줄일 수 있었어.</p><h3 id=내가-헷갈린-지점-1>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-1>#</a></h3><p>처음에는 <code>invoice_items.TrackId</code>나 <code>tracks.TrackId</code>처럼 점으로 구분된 컬럼명이 어떤 의미인지, 그리고 왜 두 개의 같은 이름 컬럼을 구별해야 하는지 몰랐어. 테이블 이름을 명시해야 한다는 건 알겠는데, 어떤 상황에서 점 표기를 해야 하는지, 또 점 표기 없이 사용하면 어떻게 되는 건지 명확하게 이해하지 못했어. 강의를 듣고 나서야 테이블의 관계를 고려해서 특정 컬럼을 지칭하는 표기법이라는 것을 알게 되었어.</p><h3 id=시도한-코드--예시-1>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-1>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>    ins.InvoiceId,
-</span></span><span style=display:flex><span>    ins.Total,
-</span></span><span style=display:flex><span>    cu.FirstName,
-</span></span><span style=display:flex><span>    cu.LastName
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> invoices ins
-</span></span><span style=display:flex><span><span style=color:#66d9ef>INNER</span> <span style=color:#66d9ef>JOIN</span> customers cu
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>ON</span> ins.CustomerId <span style=color:#f92672>=</span> cu.CustomerId;
-</span></span></code></pre></div><h3 id=결과와-해석-1>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-1>#</a></h3><p><code>invoice_items.TrackId</code>와 <code>tracks.TrackId</code>는 같은 이름의 컬럼이라도 어느 테이블에 속해 있는지 명확히 구분해야 한다는 걸 알게 되었어. 점 표기는 테이블 이름을 명시하여 어떤 테이블의 컬럼인지 혼동을 피하게 해주는 중요한 표기법이야. 예를 들어, <code>invoice_items.TrackId</code>는 송장 항목 테이블의 TrackId를 의미하고, <code>tracks.TrackId</code>는 트랙 테이블의 TrackId를 의미하는 것을 알 수 있어.</p><h3 id=정리된-이해-1>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-1>#</a></h3><p>점 표기법은 테이블이 여러 개일 때 어떤 테이블의 어떤 컬럼을 참조하는지 명확하게 알려주는 방식이야. <code>테이블명.컬럼명</code>처럼 사용하면, 동일한 컬럼명이라도 어느 테이블에 속한 컬럼인지 구분할 수 있어서 쿼리가 훨씬 명확해지고 오류를 줄일 수 있어. 예를 들어 <code>invoices.InvoiceId</code>와 <code>customers.InvoiceId</code>는 완전히 다른 컬럼을 가리키는 것을 나타내지.</p><h2 id=3-alias-사용>3. Alias 사용<a hidden class=anchor aria-hidden=true href=#3-alias-사용>#</a></h2><h3 id=왜-이걸-보게-됐나-2>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-2>#</a></h3><p>복잡한 쿼리를 작성할 때 테이블 이름이 너무 길어서 가독성이 떨어지고 쿼리 작성 자체가 불편해졌어. 그래서 테이블 이름을 줄여주는 별칭을 배우게 됐고, 특히 여러 테이블을 연결하는 JOIN 쿼리에서 효율적으로 쿼리를 작성하고 이해하는 데 필요하다는 것을 깨달았어.</p><h3 id=내가-헷갈린-지점-2>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-2>#</a></h3><p>처음에는 Alias가 테이블 이름을 줄여주는 것 이상으로 어떤 특별한 의미나 역할을 하는 건가 싶었는데, JOIN 조건이나 SELECT 절에서 컬럼을 명확하게 지정하기 위해 필수적인 도구라는 걸 이해하지 못했다. 특히 여러 테이블을 JOIN할 때 어떤 컬럼이 어느 테이블에 속하는지 혼동될 때 Alias가 없으면 코드가 너무 길어지고 가독성이 떨어지는 것을 경험했다. Alias를 효과적으로 사용해야 복잡한 쿼리를 깔끔하게 작성할 수 있다는 것을 깨달았다.</p><h3 id=시도한-코드--예시-2>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-2>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>    tr.Name <span style=color:#66d9ef>AS</span> TrackName
-</span></span></code></pre></div><h3 id=결과와-해석-2>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-2>#</a></h3><p>별칭을 사용하면 쿼리가 더 읽기 쉽고 간결해져서 복잡한 JOIN 구문에서도 테이블 이름을 줄여가며 가독성을 높일 수 있어 편리하다. 예를 들어, <code>tracks</code> 테이블에 <code>tr</code>이라는 별칭을 부여하여 <code>tr.Name</code>과 같이 짧게 참조할 수 있다. 이렇게 하면 쿼리 전체의 가독성을 향상시키고 오타의 가능성도 줄일 수 있다.</p><h3 id=정리된-이해-2>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-2>#</a></h3><p>별칭은 테이블 이름을 줄여서 쿼리를 더 읽기 쉽게 만들어주는 기능이야. 특히 JOIN을 여러 번 사용할 때나 테이블 이름이 길 경우, 쿼리 가독성을 높여주고 실수할 가능성을 줄여줘. 복잡한 쿼리에서 테이블과 컬럼을 구분하기 어려울 때 alias를 활용하면 훨씬 명확하게 표현할 수 있어.</p><h2 id=4-join의-본질>4. JOIN의 본질<a hidden class=anchor aria-hidden=true href=#4-join의-본질>#</a></h2><h3 id=왜-이걸-보게-됐나-3>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-3>#</a></h3><p>테이블이 여러 개일 때 어떤 데이터를 가져와야 할지 감이 잘 안 잡혀서, JOIN이 어떻게 데이터를 연결하는지 정확히 알아야 쿼리를 작성할 수 있다는 생각에 JOIN의 본질을 배우게 됐어. ERD를 보고도 테이블 간의 관계를 파악하는 데 어려움을 겪었기에, JOIN의 작동 원리를 이해하면 ERD를 더 효과적으로 활용할 수 있을 거라고 생각했어. 결국은 복잡한 쿼리도 자신감 있게 작성할 수 있도록 돕기 위한 과정이라고 느껴졌어.</p><h3 id=내가-헷갈린-지점-3>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-3>#</a></h3><p>처음에는 JOIN을 테이블을 합치는 단순한 작업 정도로 생각해서, 어떤 기준으로 연결해야 할지 막막했어요. ERD를 보더라도 테이블 간의 관계를 정확히 이해하지 못하고, 어떤 컬럼이 연결되어야 하는지 파악하는 데 어려움이 있었습니다. 테이블명이 똑같은 컬럼이 여러 테이블에 존재할 때 어떻게 구별해야 할지 혼란스러웠습니다.</p><h3 id=시도한-코드--예시-3>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-3>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>    ins.InvoiceId,
-</span></span><span style=display:flex><span>    ins.Total,
-</span></span><span style=display:flex><span>    cu.FirstName,
-</span></span><span style=display:flex><span>    cu.LastName
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> invoices ins
-</span></span><span style=display:flex><span><span style=color:#66d9ef>INNER</span> <span style=color:#66d9ef>JOIN</span> customers cu
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>ON</span> ins.CustomerId <span style=color:#f92672>=</span> cu.CustomerId;
-</span></span></code></pre></div><h3 id=결과와-해석-3>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-3>#</a></h3><p>위 쿼리는 트랙 정보와 장르 정보를 연결하여 트랙 이름과 해당 장르 이름을 함께 보여주는 예제입니다. INNER JOIN을 사용하여 두 테이블을 연결하고, 테이블 이름을 <code>tr</code>과 <code>g</code>라는 별칭으로 줄여서 쿼리를 더 읽기 쉽게 만들었습니다. 이를 통해 테이블 간의 관계를 이해하고 데이터를 효율적으로 추출할 수 있습니다.</p><h3 id=정리된-이해-3>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-3>#</a></h3><p>JOIN은 여러 테이블의 데이터를 연결하여 원하는 정보를 얻어내는 문법이고, 특정 컬럼을 기준으로 테이블을 연결한다. 단순히 테이블을 합치는 것이 아니라, 관계를 기반으로 데이터를 가져온다는 점이 중요하다. 이를 통해 필요한 정보만 효율적으로 추출할 수 있다.</p><h2 id=총평>총평<a hidden class=anchor aria-hidden=true href=#총평>#</a></h2><h3 id=오늘-전체에서-배운-것>오늘 전체에서 배운 것<a hidden class=anchor aria-hidden=true href=#오늘-전체에서-배운-것>#</a></h3><p>ERD를 통해 테이블 간 데이터 연결 경로를 시각적으로 파악하고, <code>테이블명.컬럼명</code> 표기법을 이해하여 SQL 쿼리 작성 시 혼동을 줄일 수 있게 되었다. 별칭을 사용하면 쿼리를 간결하게 만들고 가독성을 높일 수 있다는 점도 명확해졌다.</p><h3 id=다음에-조심할-것>다음에 조심할 것<a hidden class=anchor aria-hidden=true href=#다음에-조심할-것>#</a></h3><p>ERD를 보면서 데이터가 어떻게 연결되는지 경로를 명확히 따라가도록 연습해야겠다. JOIN 쿼리 작성 시, 별칭의 사용이 필수적임을 잊지 않고, 테이블명.컬럼명 표기법을 꾸준히 숙달해야겠다.</p><h3 id=다음-복습-주제>다음 복습 주제<a hidden class=anchor aria-hidden=true href=#다음-복습-주제>#</a></h3><p>JOIN 조건 설정 시, 외래 키와 기본 키 간의 관계를 ERD와 함께 명확하게 파악하는 연습을 더 해야겠다. 복잡한 JOIN 쿼리에서 별칭 사용의 우선순위를 정하는 기준을 알아보고 싶다.</p></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://Han-think.github.io/learning/am-01-sql-groupby-having/><span class=title>« Prev</span>
-<span>am-01-sql-groupby-having</span>
-</a><a class=next href=https://Han-think.github.io/learning/am-03-sql-join-problem-solving/><span class=title>Next »</span>
-<span>am-03-sql-join-problem-solving</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
-<span>Powered by
-<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
-<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>am-02-sql-join-alias-erd | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="am-02-sql-join-alias-erd 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/am-02-sql-join-alias-erd/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/am-02-sql-join-alias-erd/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/am-02-sql-join-alias-erd/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="am-02-sql-join-alias-erd">
+  <meta property="og:description" content="am-02-sql-join-alias-erd 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-09T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-09T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="am-02-sql-join-alias-erd">
+  <meta name="twitter:description" content="am-02-sql-join-alias-erd 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "am-02-sql-join-alias-erd",
+      "item": "https://Han-think.github.io/learning/am-02-sql-join-alias-erd/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "am-02-sql-join-alias-erd",
+  "name": "am-02-sql-join-alias-erd",
+  "description": "am-02-sql-join-alias-erd 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 ERD 이해 점 표기 Alias 사용 JOIN의 본질 총평 1. ERD 이해 왜 이걸 보게 됐나 SQL 쿼리를 작성할 때 여러 테이블의 데이터를 조합해야 했는데, 테이블 간의 관계를 제대로 파악하지 못해서 어떤 컬럼을 기준으로 연결해야 할지 막막했어. ERD를 제대로 이해하면 테이블 간의 관계를 시각적으로 보여주기 때문에, 어떤 데이터를 어떻게 가져와야 할지 판단하는 데 도움이 될 거라고 생각했어. 결국 ERD를 통해 데이터를 연결하는 과정을 명확히 이해하고 싶었어.\n내가 헷갈린 지점 ERD를 보면 테이블들이 연결되어 있지만, 그 연결이 실제로 어떤 데이터가 어떻게 연결되는지를 명확하게 보여주지 못한다고 생각했어요. 테이블 간의 관계가 있다는 것만으로는 데이터가 어떻게 조인되는지, 어떤 컬럼이 연결되어야 하는지 파악하기 어려웠습니다. 테이블 구조를 나열한 단순한 그림이라고만 생각했던 탓인지, 실제 데이터 흐름을 나타내는 지도가 아니라고 생각했습니다.\n시도한 코드 / 예시 SELECT t.Name AS TrackName 결과와 해석 ERD를 통해 tracks 테이블과 genres 테이블 간의 GenreId 연결을 명확히 파악하고, 이를 바탕으로 쿼리를 작성하여 각 트랙의 이름을 장르 이름과 함께 가져올 수 있었다. ERD를 그림으로 떠올리니 테이블 간의 관계를 시각적으로 이해하고 JOIN 조건을 설정하는 데 도움이 되었다. 이 실습을 통해 ERD가 단순히 테이블 구조를 보여주는 것이 아니라, 실제 데이터가 어떻게 연결되는지 보여주는 중요한 도구임을 깨달았다.\n정리된 이해 ERD는 테이블 간의 데이터 연결 경로를 보여주는 회로도와 같아서, 테이블 구조뿐 아니라 실제 데이터가 어떻게 연결되는지 파악하는 데 도움을 줘요. ERD를 보면 기본 키와 외래 키를 통해 어떤 컬럼들이 연결되는지 쉽게 알 수 있어서 JOIN 조건 설정에 필요한 정보를 얻을 수 있습니다.\n2. 점 표기 왜 이걸 보게 됐나 여러 테이블에 동일한 컬럼명이 존재할 때, 어떤 테이블의 컬럼을 참조해야 하는지 명확하게 하기 위해 점 표기법을 배우게 됐어. 예를 들어 tracks 테이블과 invoice_items 테이블 모두 TrackId라는 컬럼을 가지고 있는데, 쿼리에서 어떤 테이블의 TrackId를 가져와야 하는지 구분하기 위해 tracks.TrackId와 같이 점으로 표기해야 했어. 이렇게 하면 쿼리 엔진이 정확히 어떤 컬럼을 사용해야 하는지 알 수 있어서 오류를 줄일 수 있었어.\n내가 헷갈린 지점 처음에는 invoice_items.TrackId나 tracks.TrackId처럼 점으로 구분된 컬럼명이 어떤 의미인지, 그리고 왜 두 개의 같은 이름 컬럼을 구별해야 하는지 몰랐어. 테이블 이름을 명시해야 한다는 건 알겠는데, 어떤 상황에서 점 표기를 해야 하는지, 또 점 표기 없이 사용하면 어떻게 되는 건지 명확하게 이해하지 못했어. 강의를 듣고 나서야 테이블의 관계를 고려해서 특정 컬럼을 지칭하는 표기법이라는 것을 알게 되었어.\n시도한 코드 / 예시 SELECT ins.InvoiceId, ins.Total, cu.FirstName, cu.LastName FROM invoices ins INNER JOIN customers cu ON ins.CustomerId = cu.CustomerId; 결과와 해석 invoice_items.TrackId와 tracks.TrackId는 같은 이름의 컬럼이라도 어느 테이블에 속해 있는지 명확히 구분해야 한다는 걸 알게 되었어. 점 표기는 테이블 이름을 명시하여 어떤 테이블의 컬럼인지 혼동을 피하게 해주는 중요한 표기법이야. 예를 들어, invoice_items.TrackId는 송장 항목 테이블의 TrackId를 의미하고, tracks.TrackId는 트랙 테이블의 TrackId를 의미하는 것을 알 수 있어.\n정리된 이해 점 표기법은 테이블이 여러 개일 때 어떤 테이블의 어떤 컬럼을 참조하는지 명확하게 알려주는 방식이야. 테이블명.컬럼명처럼 사용하면, 동일한 컬럼명이라도 어느 테이블에 속한 컬럼인지 구분할 수 있어서 쿼리가 훨씬 명확해지고 오류를 줄일 수 있어. 예를 들어 invoices.InvoiceId와 customers.InvoiceId는 완전히 다른 컬럼을 가리키는 것을 나타내지.\n3. Alias 사용 왜 이걸 보게 됐나 복잡한 쿼리를 작성할 때 테이블 이름이 너무 길어서 가독성이 떨어지고 쿼리 작성 자체가 불편해졌어. 그래서 테이블 이름을 줄여주는 별칭을 배우게 됐고, 특히 여러 테이블을 연결하는 JOIN 쿼리에서 효율적으로 쿼리를 작성하고 이해하는 데 필요하다는 것을 깨달았어.\n내가 헷갈린 지점 처음에는 Alias가 테이블 이름을 줄여주는 것 이상으로 어떤 특별한 의미나 역할을 하는 건가 싶었는데, JOIN 조건이나 SELECT 절에서 컬럼을 명확하게 지정하기 위해 필수적인 도구라는 걸 이해하지 못했다. 특히 여러 테이블을 JOIN할 때 어떤 컬럼이 어느 테이블에 속하는지 혼동될 때 Alias가 없으면 코드가 너무 길어지고 가독성이 떨어지는 것을 경험했다. Alias를 효과적으로 사용해야 복잡한 쿼리를 깔끔하게 작성할 수 있다는 것을 깨달았다.\n시도한 코드 / 예시 SELECT tr.Name AS TrackName 결과와 해석 별칭을 사용하면 쿼리가 더 읽기 쉽고 간결해져서 복잡한 JOIN 구문에서도 테이블 이름을 줄여가며 가독성을 높일 수 있어 편리하다. 예를 들어, tracks 테이블에 tr이라는 별칭을 부여하여 tr.Name과 같이 짧게 참조할 수 있다. 이렇게 하면 쿼리 전체의 가독성을 향상시키고 오타의 가능성도 줄일 수 있다.\n정리된 이해 별칭은 테이블 이름을 줄여서 쿼리를 더 읽기 쉽게 만들어주는 기능이야. 특히 JOIN을 여러 번 사용할 때나 테이블 이름이 길 경우, 쿼리 가독성을 높여주고 실수할 가능성을 줄여줘. 복잡한 쿼리에서 테이블과 컬럼을 구분하기 어려울 때 alias를 활용하면 훨씬 명확하게 표현할 수 있어.\n4. JOIN의 본질 왜 이걸 보게 됐나 테이블이 여러 개일 때 어떤 데이터를 가져와야 할지 감이 잘 안 잡혀서, JOIN이 어떻게 데이터를 연결하는지 정확히 알아야 쿼리를 작성할 수 있다는 생각에 JOIN의 본질을 배우게 됐어. ERD를 보고도 테이블 간의 관계를 파악하는 데 어려움을 겪었기에, JOIN의 작동 원리를 이해하면 ERD를 더 효과적으로 활용할 수 있을 거라고 생각했어. 결국은 복잡한 쿼리도 자신감 있게 작성할 수 있도록 돕기 위한 과정이라고 느껴졌어.\n내가 헷갈린 지점 처음에는 JOIN을 테이블을 합치는 단순한 작업 정도로 생각해서, 어떤 기준으로 연결해야 할지 막막했어요. ERD를 보더라도 테이블 간의 관계를 정확히 이해하지 못하고, 어떤 컬럼이 연결되어야 하는지 파악하는 데 어려움이 있었습니다. 테이블명이 똑같은 컬럼이 여러 테이블에 존재할 때 어떻게 구별해야 할지 혼란스러웠습니다.\n시도한 코드 / 예시 SELECT ins.InvoiceId, ins.Total, cu.FirstName, cu.LastName FROM invoices ins INNER JOIN customers cu ON ins.CustomerId = cu.CustomerId; 결과와 해석 위 쿼리는 트랙 정보와 장르 정보를 연결하여 트랙 이름과 해당 장르 이름을 함께 보여주는 예제입니다. INNER JOIN을 사용하여 두 테이블을 연결하고, 테이블 이름을 tr과 g라는 별칭으로 줄여서 쿼리를 더 읽기 쉽게 만들었습니다. 이를 통해 테이블 간의 관계를 이해하고 데이터를 효율적으로 추출할 수 있습니다.\n정리된 이해 JOIN은 여러 테이블의 데이터를 연결하여 원하는 정보를 얻어내는 문법이고, 특정 컬럼을 기준으로 테이블을 연결한다. 단순히 테이블을 합치는 것이 아니라, 관계를 기반으로 데이터를 가져온다는 점이 중요하다. 이를 통해 필요한 정보만 효율적으로 추출할 수 있다.\n총평 오늘 전체에서 배운 것 ERD를 통해 테이블 간 데이터 연결 경로를 시각적으로 파악하고, 테이블명.컬럼명 표기법을 이해하여 SQL 쿼리 작성 시 혼동을 줄일 수 있게 되었다. 별칭을 사용하면 쿼리를 간결하게 만들고 가독성을 높일 수 있다는 점도 명확해졌다.\n다음에 조심할 것 ERD를 보면서 데이터가 어떻게 연결되는지 경로를 명확히 따라가도록 연습해야겠다. JOIN 쿼리 작성 시, 별칭의 사용이 필수적임을 잊지 않고, 테이블명.컬럼명 표기법을 꾸준히 숙달해야겠다.\n다음 복습 주제 JOIN 조건 설정 시, 외래 키와 기본 키 간의 관계를 ERD와 함께 명확하게 파악하는 연습을 더 해야겠다. 복잡한 JOIN 쿼리에서 별칭 사용의 우선순위를 정하는 기준을 알아보고 싶다.\n",
+  "wordCount" : "957",
+  "inLanguage": "en",
+  "datePublished": "2026-06-09T00:00:00Z",
+  "dateModified": "2026-06-09T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/am-02-sql-join-alias-erd/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      am-02-sql-join-alias-erd
+    </h1>
+    <div class="post-description">
+      am-02-sql-join-alias-erd 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-erd-%EC%9D%B4%ED%95%B4">ERD 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%A0%90-%ED%91%9C%EA%B8%B0">점 표기</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-alias-%EC%82%AC%EC%9A%A9">Alias 사용</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-join%EC%9D%98-%EB%B3%B8%EC%A7%88">JOIN의 본질</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-erd-이해">1. ERD 이해<a hidden class="anchor" aria-hidden="true" href="#1-erd-이해">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>SQL 쿼리를 작성할 때 여러 테이블의 데이터를 조합해야 했는데, 테이블 간의 관계를 제대로 파악하지 못해서 어떤 컬럼을 기준으로 연결해야 할지 막막했어. ERD를 제대로 이해하면 테이블 간의 관계를 시각적으로 보여주기 때문에, 어떤 데이터를 어떻게 가져와야 할지 판단하는 데 도움이 될 거라고 생각했어. 결국 ERD를 통해 데이터를 연결하는 과정을 명확히 이해하고 싶었어.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>ERD를 보면 테이블들이 연결되어 있지만, 그 연결이 실제로 어떤 데이터가 어떻게 연결되는지를 명확하게 보여주지 못한다고 생각했어요. 테이블 간의 관계가 있다는 것만으로는 데이터가 어떻게 조인되는지, 어떤 컬럼이 연결되어야 하는지 파악하기 어려웠습니다. 테이블 구조를 나열한 단순한 그림이라고만 생각했던 탓인지, 실제 데이터 흐름을 나타내는 지도가 아니라고 생각했습니다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    t.Name <span style="color:#66d9ef">AS</span> TrackName
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p>ERD를 통해 <code>tracks</code> 테이블과 <code>genres</code> 테이블 간의 <code>GenreId</code> 연결을 명확히 파악하고, 이를 바탕으로 쿼리를 작성하여 각 트랙의 이름을 장르 이름과 함께 가져올 수 있었다. ERD를 그림으로 떠올리니 테이블 간의 관계를 시각적으로 이해하고 JOIN 조건을 설정하는 데 도움이 되었다. 이 실습을 통해 ERD가 단순히 테이블 구조를 보여주는 것이 아니라, 실제 데이터가 어떻게 연결되는지 보여주는 중요한 도구임을 깨달았다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>ERD는 테이블 간의 데이터 연결 경로를 보여주는 회로도와 같아서, 테이블 구조뿐 아니라 실제 데이터가 어떻게 연결되는지 파악하는 데 도움을 줘요. ERD를 보면 기본 키와 외래 키를 통해 어떤 컬럼들이 연결되는지 쉽게 알 수 있어서 JOIN 조건 설정에 필요한 정보를 얻을 수 있습니다.</p>
+<h2 id="2-점-표기">2. 점 표기<a hidden class="anchor" aria-hidden="true" href="#2-점-표기">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>여러 테이블에 동일한 컬럼명이 존재할 때, 어떤 테이블의 컬럼을 참조해야 하는지 명확하게 하기 위해 점 표기법을 배우게 됐어. 예를 들어 <code>tracks</code> 테이블과 <code>invoice_items</code> 테이블 모두 <code>TrackId</code>라는 컬럼을 가지고 있는데, 쿼리에서 어떤 테이블의 <code>TrackId</code>를 가져와야 하는지 구분하기 위해 <code>tracks.TrackId</code>와 같이 점으로 표기해야 했어. 이렇게 하면 쿼리 엔진이 정확히 어떤 컬럼을 사용해야 하는지 알 수 있어서 오류를 줄일 수 있었어.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>처음에는 <code>invoice_items.TrackId</code>나 <code>tracks.TrackId</code>처럼 점으로 구분된 컬럼명이 어떤 의미인지, 그리고 왜 두 개의 같은 이름 컬럼을 구별해야 하는지 몰랐어. 테이블 이름을 명시해야 한다는 건 알겠는데, 어떤 상황에서 점 표기를 해야 하는지, 또 점 표기 없이 사용하면 어떻게 되는 건지 명확하게 이해하지 못했어. 강의를 듣고 나서야 테이블의 관계를 고려해서 특정 컬럼을 지칭하는 표기법이라는 것을 알게 되었어.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    ins.InvoiceId,
+</span></span><span style="display:flex;"><span>    ins.Total,
+</span></span><span style="display:flex;"><span>    cu.FirstName,
+</span></span><span style="display:flex;"><span>    cu.LastName
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> invoices ins
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span> customers cu
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ON</span> ins.CustomerId <span style="color:#f92672">=</span> cu.CustomerId;
+</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p><code>invoice_items.TrackId</code>와 <code>tracks.TrackId</code>는 같은 이름의 컬럼이라도 어느 테이블에 속해 있는지 명확히 구분해야 한다는 걸 알게 되었어. 점 표기는 테이블 이름을 명시하여 어떤 테이블의 컬럼인지 혼동을 피하게 해주는 중요한 표기법이야. 예를 들어, <code>invoice_items.TrackId</code>는 송장 항목 테이블의 TrackId를 의미하고, <code>tracks.TrackId</code>는 트랙 테이블의 TrackId를 의미하는 것을 알 수 있어.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>점 표기법은 테이블이 여러 개일 때 어떤 테이블의 어떤 컬럼을 참조하는지 명확하게 알려주는 방식이야. <code>테이블명.컬럼명</code>처럼 사용하면, 동일한 컬럼명이라도 어느 테이블에 속한 컬럼인지 구분할 수 있어서 쿼리가 훨씬 명확해지고 오류를 줄일 수 있어. 예를 들어 <code>invoices.InvoiceId</code>와 <code>customers.InvoiceId</code>는 완전히 다른 컬럼을 가리키는 것을 나타내지.</p>
+<h2 id="3-alias-사용">3. Alias 사용<a hidden class="anchor" aria-hidden="true" href="#3-alias-사용">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>복잡한 쿼리를 작성할 때 테이블 이름이 너무 길어서 가독성이 떨어지고 쿼리 작성 자체가 불편해졌어. 그래서 테이블 이름을 줄여주는 별칭을 배우게 됐고, 특히 여러 테이블을 연결하는 JOIN 쿼리에서 효율적으로 쿼리를 작성하고 이해하는 데 필요하다는 것을 깨달았어.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>처음에는 Alias가 테이블 이름을 줄여주는 것 이상으로 어떤 특별한 의미나 역할을 하는 건가 싶었는데, JOIN 조건이나 SELECT 절에서 컬럼을 명확하게 지정하기 위해 필수적인 도구라는 걸 이해하지 못했다. 특히 여러 테이블을 JOIN할 때 어떤 컬럼이 어느 테이블에 속하는지 혼동될 때 Alias가 없으면 코드가 너무 길어지고 가독성이 떨어지는 것을 경험했다. Alias를 효과적으로 사용해야 복잡한 쿼리를 깔끔하게 작성할 수 있다는 것을 깨달았다.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    tr.Name <span style="color:#66d9ef">AS</span> TrackName
+</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p>별칭을 사용하면 쿼리가 더 읽기 쉽고 간결해져서 복잡한 JOIN 구문에서도 테이블 이름을 줄여가며 가독성을 높일 수 있어 편리하다. 예를 들어, <code>tracks</code> 테이블에 <code>tr</code>이라는 별칭을 부여하여 <code>tr.Name</code>과 같이 짧게 참조할 수 있다. 이렇게 하면 쿼리 전체의 가독성을 향상시키고 오타의 가능성도 줄일 수 있다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>별칭은 테이블 이름을 줄여서 쿼리를 더 읽기 쉽게 만들어주는 기능이야. 특히 JOIN을 여러 번 사용할 때나 테이블 이름이 길 경우, 쿼리 가독성을 높여주고 실수할 가능성을 줄여줘. 복잡한 쿼리에서 테이블과 컬럼을 구분하기 어려울 때 alias를 활용하면 훨씬 명확하게 표현할 수 있어.</p>
+<h2 id="4-join의-본질">4. JOIN의 본질<a hidden class="anchor" aria-hidden="true" href="#4-join의-본질">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>테이블이 여러 개일 때 어떤 데이터를 가져와야 할지 감이 잘 안 잡혀서, JOIN이 어떻게 데이터를 연결하는지 정확히 알아야 쿼리를 작성할 수 있다는 생각에 JOIN의 본질을 배우게 됐어. ERD를 보고도 테이블 간의 관계를 파악하는 데 어려움을 겪었기에, JOIN의 작동 원리를 이해하면 ERD를 더 효과적으로 활용할 수 있을 거라고 생각했어. 결국은 복잡한 쿼리도 자신감 있게 작성할 수 있도록 돕기 위한 과정이라고 느껴졌어.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>처음에는 JOIN을 테이블을 합치는 단순한 작업 정도로 생각해서, 어떤 기준으로 연결해야 할지 막막했어요. ERD를 보더라도 테이블 간의 관계를 정확히 이해하지 못하고, 어떤 컬럼이 연결되어야 하는지 파악하는 데 어려움이 있었습니다. 테이블명이 똑같은 컬럼이 여러 테이블에 존재할 때 어떻게 구별해야 할지 혼란스러웠습니다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    ins.InvoiceId,
+</span></span><span style="display:flex;"><span>    ins.Total,
+</span></span><span style="display:flex;"><span>    cu.FirstName,
+</span></span><span style="display:flex;"><span>    cu.LastName
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> invoices ins
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span> customers cu
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ON</span> ins.CustomerId <span style="color:#f92672">=</span> cu.CustomerId;
+</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<p>위 쿼리는 트랙 정보와 장르 정보를 연결하여 트랙 이름과 해당 장르 이름을 함께 보여주는 예제입니다. INNER JOIN을 사용하여 두 테이블을 연결하고, 테이블 이름을 <code>tr</code>과 <code>g</code>라는 별칭으로 줄여서 쿼리를 더 읽기 쉽게 만들었습니다. 이를 통해 테이블 간의 관계를 이해하고 데이터를 효율적으로 추출할 수 있습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>JOIN은 여러 테이블의 데이터를 연결하여 원하는 정보를 얻어내는 문법이고, 특정 컬럼을 기준으로 테이블을 연결한다. 단순히 테이블을 합치는 것이 아니라, 관계를 기반으로 데이터를 가져온다는 점이 중요하다. 이를 통해 필요한 정보만 효율적으로 추출할 수 있다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>ERD를 통해 테이블 간 데이터 연결 경로를 시각적으로 파악하고, <code>테이블명.컬럼명</code> 표기법을 이해하여 SQL 쿼리 작성 시 혼동을 줄일 수 있게 되었다. 별칭을 사용하면 쿼리를 간결하게 만들고 가독성을 높일 수 있다는 점도 명확해졌다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>ERD를 보면서 데이터가 어떻게 연결되는지 경로를 명확히 따라가도록 연습해야겠다. JOIN 쿼리 작성 시, 별칭의 사용이 필수적임을 잊지 않고, 테이블명.컬럼명 표기법을 꾸준히 숙달해야겠다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>JOIN 조건 설정 시, 외래 키와 기본 키 간의 관계를 ERD와 함께 명확하게 파악하는 연습을 더 해야겠다. 복잡한 JOIN 쿼리에서 별칭 사용의 우선순위를 정하는 기준을 알아보고 싶다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/am-01-sql-groupby-having/">
+    <span class="title">« Prev</span>
+    <span>am-01-sql-groupby-having</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/am-03-sql-join-problem-solving/">
+    <span class="title">Next »</span>
+    <span>am-03-sql-join-problem-solving</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

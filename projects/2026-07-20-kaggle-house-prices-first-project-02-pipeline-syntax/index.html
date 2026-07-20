@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Kaggle House Prices 첫 프로젝트 회고 - 2. Pipeline 문법이 중요한 이유 | Han-think Blog</title>
+<meta name="keywords" content="pipeline, sklearn, data-leakage, projects">
+<meta name="description" content="수업 지시사항이었던 pipeline 문법을 프로젝트 관점에서 해석한다.">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-02-pipeline-syntax/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-02-pipeline-syntax/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-02-pipeline-syntax/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="Kaggle House Prices 첫 프로젝트 회고 - 2. Pipeline 문법이 중요한 이유">
+  <meta property="og:description" content="수업 지시사항이었던 pipeline 문법을 프로젝트 관점에서 해석한다.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2026-07-20T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-20T00:00:00+00:00">
+    <meta property="article:tag" content="Pipeline">
+    <meta property="article:tag" content="Sklearn">
+    <meta property="article:tag" content="Data-Leakage">
+    <meta property="article:tag" content="Projects">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kaggle House Prices 첫 프로젝트 회고 - 2. Pipeline 문법이 중요한 이유">
+  <meta name="twitter:description" content="수업 지시사항이었던 pipeline 문법을 프로젝트 관점에서 해석한다.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "프로젝트",
+      "item": "https://Han-think.github.io/projects/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Kaggle House Prices 첫 프로젝트 회고 - 2. Pipeline 문법이 중요한 이유",
+      "item": "https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-02-pipeline-syntax/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Kaggle House Prices 첫 프로젝트 회고 - 2. Pipeline 문법이 중요한 이유",
+  "name": "Kaggle House Prices 첫 프로젝트 회고 - 2. Pipeline 문법이 중요한 이유",
+  "description": "수업 지시사항이었던 pipeline 문법을 프로젝트 관점에서 해석한다.",
+  "keywords": [
+    "pipeline", "sklearn", "data-leakage", "projects"
+  ],
+  "articleBody": "목차 Pipeline은 절차를 고정하는 문법이다 데이터 누수를 막는 기준 실험 비교가 쉬워지는 이유 강사님 지시사항의 의미 총평 1. Pipeline은 절차를 고정하는 문법이다 초보자에게 pipeline은 처음에는 복잡해 보이지만, 실제 의미는 전처리와 모델을 순서대로 묶는 것이다. 결측치 처리, 스케일링, 원핫 인코딩, 모델 학습을 한 묶음으로 만들면 실험마다 같은 순서를 유지할 수 있다.\n2. 데이터 누수를 막는 기준 train 데이터에서 배운 전처리 기준이 test 데이터에 섞이면 평가가 부풀려질 수 있다. Pipeline과 ColumnTransformer를 쓰면 fit은 학습 데이터에서만 하고, transform은 그 규칙을 적용하는 방식으로 분리하기 쉬워진다.\n3. 실험 비교가 쉬워지는 이유 모델만 바꾸고 전처리 흐름은 유지하면 어떤 차이가 모델 때문인지 판단하기 쉬워진다. 반대로 매번 수작업으로 전처리를 바꾸면 결과가 좋아져도 이유를 설명하기 어렵다.\n4. 강사님 지시사항의 의미 pipeline 문법을 쓰라는 요구는 단순한 형식 요구가 아니라 프로젝트를 재현 가능하게 만들라는 뜻에 가깝다. 제출 파일 하나보다 같은 흐름을 다시 실행할 수 있는 코드가 더 중요해진다.\n총평 이번 글에서 정리한 것 Pipeline은 초보자를 괴롭히는 문법이 아니라 실험 순서와 재현성을 지키는 장치라는 점을 정리했다.\n다음에 조심할 것 전처리와 모델을 따로 수작업하면 데이터 누수와 실험 혼선이 생길 수 있다.\n다음 액션 분석 결과를 여러 축으로 나누어 비교한다.\n이 글은 LearningLog projects 흐름에서 생성한 프로젝트 시리즈 초안입니다.\n",
+  "wordCount" : "185",
+  "inLanguage": "en",
+  "datePublished": "2026-07-20T00:00:00Z",
+  "dateModified": "2026-07-20T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-02-pipeline-syntax/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Kaggle House Prices 첫 프로젝트 회고 - 2. Pipeline 문법이 중요한 이유
+    </h1>
+    <div class="post-description">
+      수업 지시사항이었던 pipeline 문법을 프로젝트 관점에서 해석한다.
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-20 00:00:00 +0000 UTC'>2026년 7월 20일</span>&nbsp;·&nbsp;<span>1 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-pipeline%EC%9D%80-%EC%A0%88%EC%B0%A8%EB%A5%BC-%EA%B3%A0%EC%A0%95%ED%95%98%EB%8A%94-%EB%AC%B8%EB%B2%95%EC%9D%B4%EB%8B%A4">Pipeline은 절차를 고정하는 문법이다</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%88%84%EC%88%98%EB%A5%BC-%EB%A7%89%EB%8A%94-%EA%B8%B0%EC%A4%80">데이터 누수를 막는 기준</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%8B%A4%ED%97%98-%EB%B9%84%EA%B5%90%EA%B0%80-%EC%89%AC%EC%9B%8C%EC%A7%80%EB%8A%94-%EC%9D%B4%EC%9C%A0">실험 비교가 쉬워지는 이유</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EA%B0%95%EC%82%AC%EB%8B%98-%EC%A7%80%EC%8B%9C%EC%82%AC%ED%95%AD%EC%9D%98-%EC%9D%98%EB%AF%B8">강사님 지시사항의 의미</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-pipeline은-절차를-고정하는-문법이다">1. Pipeline은 절차를 고정하는 문법이다<a hidden class="anchor" aria-hidden="true" href="#1-pipeline은-절차를-고정하는-문법이다">#</a></h2>
+<p>초보자에게 pipeline은 처음에는 복잡해 보이지만, 실제 의미는 전처리와 모델을 순서대로 묶는 것이다. 결측치 처리, 스케일링, 원핫 인코딩, 모델 학습을 한 묶음으로 만들면 실험마다 같은 순서를 유지할 수 있다.</p>
+<h2 id="2-데이터-누수를-막는-기준">2. 데이터 누수를 막는 기준<a hidden class="anchor" aria-hidden="true" href="#2-데이터-누수를-막는-기준">#</a></h2>
+<p>train 데이터에서 배운 전처리 기준이 test 데이터에 섞이면 평가가 부풀려질 수 있다. Pipeline과 ColumnTransformer를 쓰면 fit은 학습 데이터에서만 하고, transform은 그 규칙을 적용하는 방식으로 분리하기 쉬워진다.</p>
+<h2 id="3-실험-비교가-쉬워지는-이유">3. 실험 비교가 쉬워지는 이유<a hidden class="anchor" aria-hidden="true" href="#3-실험-비교가-쉬워지는-이유">#</a></h2>
+<p>모델만 바꾸고 전처리 흐름은 유지하면 어떤 차이가 모델 때문인지 판단하기 쉬워진다. 반대로 매번 수작업으로 전처리를 바꾸면 결과가 좋아져도 이유를 설명하기 어렵다.</p>
+<h2 id="4-강사님-지시사항의-의미">4. 강사님 지시사항의 의미<a hidden class="anchor" aria-hidden="true" href="#4-강사님-지시사항의-의미">#</a></h2>
+<p>pipeline 문법을 쓰라는 요구는 단순한 형식 요구가 아니라 프로젝트를 재현 가능하게 만들라는 뜻에 가깝다. 제출 파일 하나보다 같은 흐름을 다시 실행할 수 있는 코드가 더 중요해진다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="이번-글에서-정리한-것">이번 글에서 정리한 것<a hidden class="anchor" aria-hidden="true" href="#이번-글에서-정리한-것">#</a></h3>
+<p>Pipeline은 초보자를 괴롭히는 문법이 아니라 실험 순서와 재현성을 지키는 장치라는 점을 정리했다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>전처리와 모델을 따로 수작업하면 데이터 누수와 실험 혼선이 생길 수 있다.</p>
+<h3 id="다음-액션">다음 액션<a hidden class="anchor" aria-hidden="true" href="#다음-액션">#</a></h3>
+<p>분석 결과를 여러 축으로 나누어 비교한다.</p>
+<blockquote>
+<p>이 글은 LearningLog projects 흐름에서 생성한 프로젝트 시리즈 초안입니다.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/pipeline/">Pipeline</a></li>
+      <li><a href="https://Han-think.github.io/tags/sklearn/">Sklearn</a></li>
+      <li><a href="https://Han-think.github.io/tags/data-leakage/">Data-Leakage</a></li>
+      <li><a href="https://Han-think.github.io/tags/projects/">Projects</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

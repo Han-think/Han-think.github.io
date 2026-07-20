@@ -1,1 +1,47 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>LLM on Han-think Blog</title><link>https://Han-think.github.io/tags/llm/</link><description>Recent content in LLM on Han-think Blog</description><generator>Hugo</generator><language>ko-KR</language><lastBuildDate>Mon, 06 Jul 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://Han-think.github.io/tags/llm/index.xml" rel="self" type="application/rss+xml"/><item><title>첫 Kaggle House Prices 도전: 4개의 선형 분석과 4개의 LLM 관점</title><link>https://Han-think.github.io/projects/kaggle-house-prices-first-challenge/</link><pubDate>Mon, 06 Jul 2026 00:00:00 +0000</pubDate><guid>https://Han-think.github.io/projects/kaggle-house-prices-first-challenge/</guid><description>첫 Kaggle House Prices 프로젝트를 5편의 시리즈로 나누어 정리한 입구 글</description></item><item><title>Kaggle House Prices 3: 4개의 LLM은 같은 실험을 어떻게 다르게 읽었나</title><link>https://Han-think.github.io/projects/kaggle-house-prices-four-llm-review/</link><pubDate>Mon, 06 Jul 2026 03:00:00 +0900</pubDate><guid>https://Han-think.github.io/projects/kaggle-house-prices-four-llm-review/</guid><description>GPT-OSS, Gemma, Magistral, Hermes가 Kaggle 실험 해석에서 맡은 역할 비교</description></item><item><title>[환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인</title><link>https://Han-think.github.io/dev/learninglog-kit/</link><pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate><guid>https://Han-think.github.io/dev/learninglog-kit/</guid><description>강의자료와 개인 학습 노트, 프로젝트 시리즈를 분리해 intake, extract, preview, approve, publish 흐름으로 정리하는 학습 기록 파이프라인. v0.5.4는 LearningLog와 Projects 메뉴 분리를 포함한다.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>LLM on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/llm/</link>
+    <description>Recent content in LLM on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Mon, 20 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/llm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kaggle House Prices 첫 프로젝트 회고 - 4. 네 가지 LLM 리뷰 관점</title>
+      <link>https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-04-four-llm-review/</link>
+      <pubDate>Mon, 20 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-04-four-llm-review/</guid>
+      <description>LLM을 프로젝트 해석 보조 도구로 쓰는 방식을 정리한다.</description>
+    </item>
+    <item>
+      <title>Kaggle House Prices 첫 프로젝트 회고 - 4. 네 가지 LLM 리뷰 관점</title>
+      <link>https://Han-think.github.io/projects/2026-07-06-kaggle-house-prices-first-project-04-four-llm-review/</link>
+      <pubDate>Mon, 06 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/2026-07-06-kaggle-house-prices-first-project-04-four-llm-review/</guid>
+      <description>LLM을 프로젝트 해석 보조 도구로 쓰는 방식을 정리한다.</description>
+    </item>
+    <item>
+      <title>첫 Kaggle House Prices 도전: 4개의 선형 분석과 4개의 LLM 관점</title>
+      <link>https://Han-think.github.io/projects/kaggle-house-prices-first-challenge/</link>
+      <pubDate>Mon, 06 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/kaggle-house-prices-first-challenge/</guid>
+      <description>첫 Kaggle House Prices 프로젝트를 5편의 시리즈로 나누어 정리한 입구 글</description>
+    </item>
+    <item>
+      <title>Kaggle House Prices 3: 4개의 LLM은 같은 실험을 어떻게 다르게 읽었나</title>
+      <link>https://Han-think.github.io/projects/kaggle-house-prices-four-llm-review/</link>
+      <pubDate>Mon, 06 Jul 2026 03:00:00 +0900</pubDate>
+      <guid>https://Han-think.github.io/projects/kaggle-house-prices-four-llm-review/</guid>
+      <description>GPT-OSS, Gemma, Magistral, Hermes가 Kaggle 실험 해석에서 맡은 역할 비교</description>
+    </item>
+    <item>
+      <title>[환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인</title>
+      <link>https://Han-think.github.io/dev/learninglog-kit/</link>
+      <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/dev/learninglog-kit/</guid>
+      <description>강의자료와 개인 학습 노트, 프로젝트 시리즈를 분리해 intake, extract, preview, approve, publish 흐름으로 정리하는 학습 기록 파이프라인. v0.5.4는 LearningLog와 Projects 메뉴 분리를 포함한다.</description>
+    </item>
+  </channel>
+</rss>

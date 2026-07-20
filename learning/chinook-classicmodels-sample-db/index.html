@@ -1,58 +1,440 @@
-<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>chinook-classicmodels-sample-db | Han-think Blog</title><meta name=keywords content><meta name=description content="chinook-classicmodels-sample-db 학습 정리"><meta name=author content><link rel=canonical href=https://Han-think.github.io/learning/chinook-classicmodels-sample-db/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/learning/chinook-classicmodels-sample-db/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/learning/chinook-classicmodels-sample-db/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="chinook-classicmodels-sample-db"><meta property="og:description" content="chinook-classicmodels-sample-db 학습 정리"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="learning"><meta property="article:published_time" content="2026-06-08T00:00:00+00:00"><meta property="article:modified_time" content="2026-06-08T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="chinook-classicmodels-sample-db"><meta name=twitter:description content="chinook-classicmodels-sample-db 학습 정리"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"학습 기록","item":"https://Han-think.github.io/learning/"},{"@type":"ListItem","position":2,"name":"chinook-classicmodels-sample-db","item":"https://Han-think.github.io/learning/chinook-classicmodels-sample-db/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"chinook-classicmodels-sample-db","name":"chinook-classicmodels-sample-db","description":"chinook-classicmodels-sample-db 학습 정리","keywords":[],"articleBody":"목차 샘플 데이터베이스 관계형 데이터베이스 테이블 구조 판매 관계 총평 1. 샘플 데이터베이스 왜 이걸 보게 됐나 SQL 실습을 통해 데이터베이스를 다루는 감각을 익히고, 실제 업무에서 활용될 수 있는 데이터 분석 능력을 키우기 위해 샘플 데이터베이스를 공부하게 됐어. Chinook과 ClassicModels는 다양한 규모와 주제를 가진 데이터베이스를 경험하며, SQL 쿼리 작성 및 데이터 조작에 대한 이해도를 높이는 데 도움이 될 것 같아. 특히 관계형 데이터베이스의 기본 원리를 실질적으로 적용해보고 싶었어.\n내가 헷갈린 지점 샘플 데이터베이스라는 이름에 너무 집중해서, 실제 데이터베이스와 얼마나 차이가 나는지, 어떤 규모로 활용해야 하는지 불확실했습니다. 특히 두 개의 데이터베이스 파일을 동시에 제시했을 때, 어느 것을 중심으로 실습해야 할지 판단하기 어려웠고, 강의 자료에서 Chinook DB가 더 중요하게 다뤄진다는 언급은 혼란을 가중시켰습니다. 처음에는 어떤 목적을 가지고 만들어진 데이터베이스인지 명확하게 파악하지 못했습니다.\n시도한 코드 / 예시 -- Chinook DB: artists 테이블에서 아티스트 이름과 앨범 개수 조회 SELECT a.ArtistId, a.Artist, COUNT(al.AlbumId) AS AlbumCount FROM artists AS a JOIN albums AS al ON a.ArtistId = al.ArtistId GROUP BY a.ArtistId, a.Artist; 결과와 해석 Chinook과 ClassicModels 샘플 데이터베이스를 실습하면서 RDBMS의 관계형 구조를 시각적으로 파악하는 데 집중했어. Chinook DB는 음악 판매 데이터를 통해 테이블 간의 JOIN 관계를 이해하는 데 유용했고, ClassicModels DB는 실제 비즈니스 데이터를 다루는 데이터베이스 구조를 간접적으로 경험하게 해주었어. 두 데이터베이스를 비교하면서, 데이터베이스 디자인이 목적에 따라 어떻게 달라지는지 알 수 있었다.\n정리된 이해 샘플 데이터베이스는 RDBMS 기본 개념 학습을 위한 좋은 자료이며, Chinook DB는 음악 판매 예제를 통해 JOIN 쿼리 이해에 특화되어 있고, ClassicModels DB는 실제 영업 시스템 모델링을 통해 실무 SQL 쿼리 학습에 도움을 준다. 두 데이터베이스를 활용하면 데이터베이스와 SQL 쿼리 실력 향상에 도움이 될 것 같다.\n2. 관계형 데이터베이스 왜 이걸 보게 됐나 데이터를 효율적으로 관리하고 분석하기 위해서는 단순한 텍스트 파일이나 스프레드시트로는 한계가 있다는 것을 깨달았어요. 관계형 데이터베이스는 여러 테이블 간의 관계를 설정하여 데이터를 체계적으로 저장하고, 원하는 정보를 빠르고 정확하게 찾아낼 수 있도록 해주기 때문이죠. 결국, 실제 업무에서 데이터를 다루려면 관계형 데이터베이스의 개념을 이해하는 것이 필수적이라는 판단이 들었습니다.\n내가 헷갈린 지점 처음 관계형 데이터베이스를 접했을 때, 여러 테이블 간의 연결이 복잡해 보였고, 단순히 데이터가 저장되는 공간이라고만 생각했습니다. 테이블 간의 관계를 시각적으로 표현하는 것조차 어려웠고, 어떤 기준으로 테이블을 설계해야 하는지 막막했습니다. 테이블 간의 관계가 어떻게 데이터를 효율적으로 관리하고 쿼리하는 데 영향을 미치는지 명확히 이해하지 못했습니다.\n시도한 코드 / 예시 -- Chinook DB: Artists 테이블과 Albums 테이블을 JOIN하여 아티스트 이름과 앨범 제목을 함께 조회하는 쿼리 SELECT a.ArtistId, a.Name AS ArtistName, al.AlbumId, al.Title AS AlbumTitle FROM artists AS a JOIN albums AS al ON a.ArtistId = al.ArtistId; 결과와 해석 관계형 데이터베이스는 테이블 간의 관계를 활용하여 데이터를 구조화하는 방식인데, Chinook DB를 통해 아티스트, 앨범, 트랙 같은 테이블들이 어떻게 연결되는지 JOIN 쿼리를 사용해서 직접 확인하며 이해할 수 있었다. ClassicModels DB는 더 복잡한 비즈니스 모델을 표현하기 위해 다양한 테이블 간의 관계를 보여주며, 실제 데이터 분석 시 유용하게 사용될 것 같다. 이 데이터베이스들을 통해 테이블 간의 관계를 파악하고 쿼리를 작성하는 연습이 중요하다고 느꼈다.\n정리된 이해 관계형 데이터베이스는 여러 테이블 간의 관계를 정의하여 데이터를 구조적으로 저장하고 관리하는 방식이야. 테이블들은 서로 연결되어 있고, 이 연결을 통해 필요한 정보를 조합하거나 분석할 수 있어. 예를 들어, 고객 정보 테이블과 주문 정보 테이블을 연결하면 특정 고객의 주문 내역을 쉽게 확인할 수 있겠지.\n3. 테이블 구조 왜 이걸 보게 됐나 데이터베이스 실습을 시작하면서 테이블 간의 관계를 파악하고, 어떤 정보가 어떻게 연결되어 있는지 이해하는 것이 중요했기 때문에 테이블 구조를 배우게 됐어. 이해를 돕기 위해 각 테이블이 어떤 역할을 하고, 어떻게 서로 영향을 주고받는지 파악해야 복잡한 쿼리를 작성하고 원하는 결과를 얻을 수 있을 것 같았어. 실제 데이터베이스를 다룰 때, 테이블 구조를 제대로 알면 데이터 분석 및 활용에 큰 도움이 될 거라고 생각했어.\n내가 헷갈린 지점 처음에는 테이블들이 어떻게 연결되는지 파악하는 데 어려움을 느꼈다. 테이블 간의 관계가 명확하게 드러나지 않아서, 어떤 테이블이 어떤 기준으로 연결되는지 한눈에 보기 힘들었다. 특히, ClassicModels DB에서는 더 많은 테이블이 존재해서 전체적인 구조를 이해하는 데 시간이 더 걸렸다.\n시도한 코드 / 예시 -- Chinook DB 관계 구조 예시: -- artists → albums → tracks (장르와 미디어 유형은 하단 카테고리로 연결) -- genres ───────────┘ -- media_types ──────┘ -- customers → invoices → invoice_items → tracks (판매 관계) 결과와 해석 테이블 구조를 살펴보니 chinook.db는 artists 테이블에서 albums 테이블로, 다시 tracks 테이블로 연결되는 방식으로 음악 관련 데이터를 조직하고 있음을 알 수 있었다. ClassicModels.db는 Chinook DB보다 테이블 간의 관계가 복잡해서 처음에는 파악하기 어려웠지만, 데이터의 흐름을 따라가면서 어떤 정보가 어떻게 연결되는지 이해하려고 노력했다. 각 테이블의 이름과 컬럼들을 분석하면서 데이터베이스 설계의 기본 원리를 다시 한번 되새기게 되었다.\n정리된 이해 테이블 구조는 각 데이터베이스 내에서 정보가 어떻게 조직되고 연결되는지를 나타내며, 각 테이블 간의 관계를 파악하는 것이 데이터 분석의 핵심이다. Chinook DB는 음악 관련 데이터의 관계를, ClassicModels DB는 실제 영업 시스템의 구조를 이해하는 데 도움을 준다. 테이블 간의 관계를 시각적으로 표현하면 데이터베이스의 전체적인 구조를 더 쉽게 이해할 수 있다.\n4. 판매 관계 왜 이걸 보게 됐나 음악 판매 예제를 통해 데이터베이스 테이블 간의 관계가 어떻게 연결되어 판매 기록을 추적하는지 이해하기 위해 ‘판매 관계’라는 개념을 배우게 됐어. 송장(invoices) 테이블과 음악 트랙(tracks) 테이블 사이의 연결고리가 어떻게 만들어지는지 파악하면 실제 데이터 분석에서 필요한 SQL 쿼리 작성에 도움이 될 것 같아서였지. 단순히 테이블 구조를 아는 것보다 데이터 흐름을 이해하는 게 중요하다고 생각했어.\n내가 헷갈린 지점 처음에는 ‘판매 관계’가 고객이 트랙을 직접 구매하는 관계를 의미한다고 생각했어요. 트랙 테이블에 고객 ID를 직접 저장하는 방식이라고 착각했었죠. 실제로는 고객, 송장, 송장 항목, 트랙 테이블이 연결되어 간접적으로 판매 관계를 나타내는 것을 깨달았어요.\n시도한 코드 / 예시 -- 예시: 고객(customers) 테이블과 송장(invoices) 테이블, 송장 항목(invoice_items) 테이블을 조인하여 특정 고객의 구매 트랙 정보를 가져오는 쿼리 SELECT c.customer_id, c.first_name, c.last_name, t.track_id, t.title FROM customers c JOIN invoices i ON c.customer_id = i.customer_id JOIN invoice_items ii ON i.invoice_id = ii.invoice_id JOIN tracks t ON ii.track_id = t.track_id WHERE c.customer_id = 1; -- 특정 고객 ID를 지정 결과와 해석 customers, invoices, invoice_items, tracks 테이블을 연결하여 판매 관계를 확인하는 쿼리를 작성해 봤습니다. 예를 들어, 특정 고객이 어떤 트랙을 구매했는지 조회하는 쿼리를 통해 고객과 구매한 음악 간의 연결 고리를 확인할 수 있었습니다. 이를 통해 데이터베이스에서 복잡한 관계를 파악하고 원하는 정보를 추출하는 방법을 익혔습니다.\n정리된 이해 ClassicModels DB는 고객이 주문한 상품과 관련된 정보를 담고 있고, 이 흐름을 따라가다 보면 결국 어떤 트랙이 판매되었는지 알 수 있습니다. 즉, 고객의 주문을 통해 어떤 음악 트랙이 판매되었는지 파악할 수 있는 연결 고리 역할을 합니다. 이를 통해 실제 비즈니스 데이터베이스의 복잡한 관계를 이해하는 데 도움이 됩니다.\n총평 오늘 전체에서 배운 것 샘플 Chinook과 ClassicModels 데이터베이스를 실습하면서 테이블 구조와 관계를 파악하는 과정에서 처음에는 어떤 데이터베이스부터 공부해야 할지 혼란스러웠습니다. Chinook DB는 RDBMS 기본 개념 학습에, ClassicModels DB는 실무 SQL 쿼리 이해에 유용하다는 것을 알게 되었습니다.\n다음에 조심할 것 다음에는 테이블 관계를 단순화해서 파악하고, 각 샘플 데이터베이스의 특징을 고려하여 학습 순서를 정해야겠다. Chinook DB의 관계를 완벽하게 이해한 후 ClassicModels DB를 파고드는 것이 효율적일 것 같다.\n다음 복습 주제 ClassicModels DB의 테이블 간 관계도를 더 자세히 살펴보고, 실제 비즈니스 상황에 맞는 쿼리를 작성하는 연습을 해봐야겠다. Chinook DB의 JOIN 쿼리 복잡도를 조금 더 높여서 다양한 조합을 시도해보고 싶다.\n","wordCount":"1089","inLanguage":"en","datePublished":"2026-06-08T00:00:00Z","dateModified":"2026-06-08T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/learning/chinook-classicmodels-sample-db/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
-<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">chinook-classicmodels-sample-db</h1><div class=post-description>chinook-classicmodels-sample-db 학습 정리</div><div class=post-meta><span title='2026-06-08 00:00:00 +0000 UTC'>2026년 6월 8일</span>&nbsp;·&nbsp;<span>6 min</span></div></header><div class="post-content md-content"><h2 id=목차>목차<a hidden class=anchor aria-hidden=true href=#목차>#</a></h2><ul><li><ol><li><a href=#1-%EC%83%98%ED%94%8C-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4>샘플 데이터베이스</a></li></ol></li><li><ol start=2><li><a href=#2-%EA%B4%80%EA%B3%84%ED%98%95-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4>관계형 데이터베이스</a></li></ol></li><li><ol start=3><li><a href=#3-%ED%85%8C%EC%9D%B4%EB%B8%94-%EA%B5%AC%EC%A1%B0>테이블 구조</a></li></ol></li><li><ol start=4><li><a href=#4-%ED%8C%90%EB%A7%A4-%EA%B4%80%EA%B3%84>판매 관계</a></li></ol></li><li><a href=#%EC%B4%9D%ED%8F%89>총평</a></li></ul><h2 id=1-샘플-데이터베이스>1. 샘플 데이터베이스<a hidden class=anchor aria-hidden=true href=#1-샘플-데이터베이스>#</a></h2><h3 id=왜-이걸-보게-됐나>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나>#</a></h3><p>SQL 실습을 통해 데이터베이스를 다루는 감각을 익히고, 실제 업무에서 활용될 수 있는 데이터 분석 능력을 키우기 위해 샘플 데이터베이스를 공부하게 됐어. Chinook과 ClassicModels는 다양한 규모와 주제를 가진 데이터베이스를 경험하며, SQL 쿼리 작성 및 데이터 조작에 대한 이해도를 높이는 데 도움이 될 것 같아. 특히 관계형 데이터베이스의 기본 원리를 실질적으로 적용해보고 싶었어.</p><h3 id=내가-헷갈린-지점>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점>#</a></h3><p>샘플 데이터베이스라는 이름에 너무 집중해서, 실제 데이터베이스와 얼마나 차이가 나는지, 어떤 규모로 활용해야 하는지 불확실했습니다. 특히 두 개의 데이터베이스 파일을 동시에 제시했을 때, 어느 것을 중심으로 실습해야 할지 판단하기 어려웠고, 강의 자료에서 Chinook DB가 더 중요하게 다뤄진다는 언급은 혼란을 가중시켰습니다. 처음에는 어떤 목적을 가지고 만들어진 데이터베이스인지 명확하게 파악하지 못했습니다.</p><h3 id=시도한-코드--예시>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#75715e>-- Chinook DB: artists 테이블에서 아티스트 이름과 앨범 개수 조회
-</span></span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>  a.ArtistId,
-</span></span><span style=display:flex><span>  a.Artist,
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>COUNT</span>(al.AlbumId) <span style=color:#66d9ef>AS</span> AlbumCount
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span>
-</span></span><span style=display:flex><span>  artists <span style=color:#66d9ef>AS</span> a
-</span></span><span style=display:flex><span><span style=color:#66d9ef>JOIN</span>
-</span></span><span style=display:flex><span>  albums <span style=color:#66d9ef>AS</span> al
-</span></span><span style=display:flex><span><span style=color:#66d9ef>ON</span>
-</span></span><span style=display:flex><span>  a.ArtistId <span style=color:#f92672>=</span> al.ArtistId
-</span></span><span style=display:flex><span><span style=color:#66d9ef>GROUP</span> <span style=color:#66d9ef>BY</span>
-</span></span><span style=display:flex><span>  a.ArtistId, a.Artist;
-</span></span></code></pre></div><h3 id=결과와-해석>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석>#</a></h3><p>Chinook과 ClassicModels 샘플 데이터베이스를 실습하면서 RDBMS의 관계형 구조를 시각적으로 파악하는 데 집중했어. Chinook DB는 음악 판매 데이터를 통해 테이블 간의 JOIN 관계를 이해하는 데 유용했고, ClassicModels DB는 실제 비즈니스 데이터를 다루는 데이터베이스 구조를 간접적으로 경험하게 해주었어. 두 데이터베이스를 비교하면서, 데이터베이스 디자인이 목적에 따라 어떻게 달라지는지 알 수 있었다.</p><h3 id=정리된-이해>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해>#</a></h3><p>샘플 데이터베이스는 RDBMS 기본 개념 학습을 위한 좋은 자료이며, Chinook DB는 음악 판매 예제를 통해 JOIN 쿼리 이해에 특화되어 있고, ClassicModels DB는 실제 영업 시스템 모델링을 통해 실무 SQL 쿼리 학습에 도움을 준다. 두 데이터베이스를 활용하면 데이터베이스와 SQL 쿼리 실력 향상에 도움이 될 것 같다.</p><h2 id=2-관계형-데이터베이스>2. 관계형 데이터베이스<a hidden class=anchor aria-hidden=true href=#2-관계형-데이터베이스>#</a></h2><h3 id=왜-이걸-보게-됐나-1>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-1>#</a></h3><p>데이터를 효율적으로 관리하고 분석하기 위해서는 단순한 텍스트 파일이나 스프레드시트로는 한계가 있다는 것을 깨달았어요. 관계형 데이터베이스는 여러 테이블 간의 관계를 설정하여 데이터를 체계적으로 저장하고, 원하는 정보를 빠르고 정확하게 찾아낼 수 있도록 해주기 때문이죠. 결국, 실제 업무에서 데이터를 다루려면 관계형 데이터베이스의 개념을 이해하는 것이 필수적이라는 판단이 들었습니다.</p><h3 id=내가-헷갈린-지점-1>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-1>#</a></h3><p>처음 관계형 데이터베이스를 접했을 때, 여러 테이블 간의 연결이 복잡해 보였고, 단순히 데이터가 저장되는 공간이라고만 생각했습니다. 테이블 간의 관계를 시각적으로 표현하는 것조차 어려웠고, 어떤 기준으로 테이블을 설계해야 하는지 막막했습니다. 테이블 간의 관계가 어떻게 데이터를 효율적으로 관리하고 쿼리하는 데 영향을 미치는지 명확히 이해하지 못했습니다.</p><h3 id=시도한-코드--예시-1>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-1>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#75715e>-- Chinook DB: Artists 테이블과 Albums 테이블을 JOIN하여 아티스트 이름과 앨범 제목을 함께 조회하는 쿼리
-</span></span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>  a.ArtistId,
-</span></span><span style=display:flex><span>  a.Name <span style=color:#66d9ef>AS</span> ArtistName,
-</span></span><span style=display:flex><span>  al.AlbumId,
-</span></span><span style=display:flex><span>  al.Title <span style=color:#66d9ef>AS</span> AlbumTitle
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span>
-</span></span><span style=display:flex><span>  artists <span style=color:#66d9ef>AS</span> a
-</span></span><span style=display:flex><span><span style=color:#66d9ef>JOIN</span>
-</span></span><span style=display:flex><span>  albums <span style=color:#66d9ef>AS</span> al
-</span></span><span style=display:flex><span><span style=color:#66d9ef>ON</span>
-</span></span><span style=display:flex><span>  a.ArtistId <span style=color:#f92672>=</span> al.ArtistId;
-</span></span></code></pre></div><h3 id=결과와-해석-1>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-1>#</a></h3><p>관계형 데이터베이스는 테이블 간의 관계를 활용하여 데이터를 구조화하는 방식인데, Chinook DB를 통해 아티스트, 앨범, 트랙 같은 테이블들이 어떻게 연결되는지 JOIN 쿼리를 사용해서 직접 확인하며 이해할 수 있었다. ClassicModels DB는 더 복잡한 비즈니스 모델을 표현하기 위해 다양한 테이블 간의 관계를 보여주며, 실제 데이터 분석 시 유용하게 사용될 것 같다. 이 데이터베이스들을 통해 테이블 간의 관계를 파악하고 쿼리를 작성하는 연습이 중요하다고 느꼈다.</p><h3 id=정리된-이해-1>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-1>#</a></h3><p>관계형 데이터베이스는 여러 테이블 간의 관계를 정의하여 데이터를 구조적으로 저장하고 관리하는 방식이야. 테이블들은 서로 연결되어 있고, 이 연결을 통해 필요한 정보를 조합하거나 분석할 수 있어. 예를 들어, 고객 정보 테이블과 주문 정보 테이블을 연결하면 특정 고객의 주문 내역을 쉽게 확인할 수 있겠지.</p><h2 id=3-테이블-구조>3. 테이블 구조<a hidden class=anchor aria-hidden=true href=#3-테이블-구조>#</a></h2><h3 id=왜-이걸-보게-됐나-2>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-2>#</a></h3><p>데이터베이스 실습을 시작하면서 테이블 간의 관계를 파악하고, 어떤 정보가 어떻게 연결되어 있는지 이해하는 것이 중요했기 때문에 테이블 구조를 배우게 됐어. 이해를 돕기 위해 각 테이블이 어떤 역할을 하고, 어떻게 서로 영향을 주고받는지 파악해야 복잡한 쿼리를 작성하고 원하는 결과를 얻을 수 있을 것 같았어. 실제 데이터베이스를 다룰 때, 테이블 구조를 제대로 알면 데이터 분석 및 활용에 큰 도움이 될 거라고 생각했어.</p><h3 id=내가-헷갈린-지점-2>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-2>#</a></h3><p>처음에는 테이블들이 어떻게 연결되는지 파악하는 데 어려움을 느꼈다. 테이블 간의 관계가 명확하게 드러나지 않아서, 어떤 테이블이 어떤 기준으로 연결되는지 한눈에 보기 힘들었다. 특히, ClassicModels DB에서는 더 많은 테이블이 존재해서 전체적인 구조를 이해하는 데 시간이 더 걸렸다.</p><h3 id=시도한-코드--예시-2>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-2>#</a></h3><pre tabindex=0><code>-- Chinook DB 관계 구조 예시:
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>chinook-classicmodels-sample-db | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="chinook-classicmodels-sample-db 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/chinook-classicmodels-sample-db/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/chinook-classicmodels-sample-db/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/chinook-classicmodels-sample-db/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="chinook-classicmodels-sample-db">
+  <meta property="og:description" content="chinook-classicmodels-sample-db 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-08T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-08T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="chinook-classicmodels-sample-db">
+  <meta name="twitter:description" content="chinook-classicmodels-sample-db 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "chinook-classicmodels-sample-db",
+      "item": "https://Han-think.github.io/learning/chinook-classicmodels-sample-db/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "chinook-classicmodels-sample-db",
+  "name": "chinook-classicmodels-sample-db",
+  "description": "chinook-classicmodels-sample-db 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 샘플 데이터베이스 관계형 데이터베이스 테이블 구조 판매 관계 총평 1. 샘플 데이터베이스 왜 이걸 보게 됐나 SQL 실습을 통해 데이터베이스를 다루는 감각을 익히고, 실제 업무에서 활용될 수 있는 데이터 분석 능력을 키우기 위해 샘플 데이터베이스를 공부하게 됐어. Chinook과 ClassicModels는 다양한 규모와 주제를 가진 데이터베이스를 경험하며, SQL 쿼리 작성 및 데이터 조작에 대한 이해도를 높이는 데 도움이 될 것 같아. 특히 관계형 데이터베이스의 기본 원리를 실질적으로 적용해보고 싶었어.\n내가 헷갈린 지점 샘플 데이터베이스라는 이름에 너무 집중해서, 실제 데이터베이스와 얼마나 차이가 나는지, 어떤 규모로 활용해야 하는지 불확실했습니다. 특히 두 개의 데이터베이스 파일을 동시에 제시했을 때, 어느 것을 중심으로 실습해야 할지 판단하기 어려웠고, 강의 자료에서 Chinook DB가 더 중요하게 다뤄진다는 언급은 혼란을 가중시켰습니다. 처음에는 어떤 목적을 가지고 만들어진 데이터베이스인지 명확하게 파악하지 못했습니다.\n시도한 코드 / 예시 -- Chinook DB: artists 테이블에서 아티스트 이름과 앨범 개수 조회 SELECT a.ArtistId, a.Artist, COUNT(al.AlbumId) AS AlbumCount FROM artists AS a JOIN albums AS al ON a.ArtistId = al.ArtistId GROUP BY a.ArtistId, a.Artist; 결과와 해석 Chinook과 ClassicModels 샘플 데이터베이스를 실습하면서 RDBMS의 관계형 구조를 시각적으로 파악하는 데 집중했어. Chinook DB는 음악 판매 데이터를 통해 테이블 간의 JOIN 관계를 이해하는 데 유용했고, ClassicModels DB는 실제 비즈니스 데이터를 다루는 데이터베이스 구조를 간접적으로 경험하게 해주었어. 두 데이터베이스를 비교하면서, 데이터베이스 디자인이 목적에 따라 어떻게 달라지는지 알 수 있었다.\n정리된 이해 샘플 데이터베이스는 RDBMS 기본 개념 학습을 위한 좋은 자료이며, Chinook DB는 음악 판매 예제를 통해 JOIN 쿼리 이해에 특화되어 있고, ClassicModels DB는 실제 영업 시스템 모델링을 통해 실무 SQL 쿼리 학습에 도움을 준다. 두 데이터베이스를 활용하면 데이터베이스와 SQL 쿼리 실력 향상에 도움이 될 것 같다.\n2. 관계형 데이터베이스 왜 이걸 보게 됐나 데이터를 효율적으로 관리하고 분석하기 위해서는 단순한 텍스트 파일이나 스프레드시트로는 한계가 있다는 것을 깨달았어요. 관계형 데이터베이스는 여러 테이블 간의 관계를 설정하여 데이터를 체계적으로 저장하고, 원하는 정보를 빠르고 정확하게 찾아낼 수 있도록 해주기 때문이죠. 결국, 실제 업무에서 데이터를 다루려면 관계형 데이터베이스의 개념을 이해하는 것이 필수적이라는 판단이 들었습니다.\n내가 헷갈린 지점 처음 관계형 데이터베이스를 접했을 때, 여러 테이블 간의 연결이 복잡해 보였고, 단순히 데이터가 저장되는 공간이라고만 생각했습니다. 테이블 간의 관계를 시각적으로 표현하는 것조차 어려웠고, 어떤 기준으로 테이블을 설계해야 하는지 막막했습니다. 테이블 간의 관계가 어떻게 데이터를 효율적으로 관리하고 쿼리하는 데 영향을 미치는지 명확히 이해하지 못했습니다.\n시도한 코드 / 예시 -- Chinook DB: Artists 테이블과 Albums 테이블을 JOIN하여 아티스트 이름과 앨범 제목을 함께 조회하는 쿼리 SELECT a.ArtistId, a.Name AS ArtistName, al.AlbumId, al.Title AS AlbumTitle FROM artists AS a JOIN albums AS al ON a.ArtistId = al.ArtistId; 결과와 해석 관계형 데이터베이스는 테이블 간의 관계를 활용하여 데이터를 구조화하는 방식인데, Chinook DB를 통해 아티스트, 앨범, 트랙 같은 테이블들이 어떻게 연결되는지 JOIN 쿼리를 사용해서 직접 확인하며 이해할 수 있었다. ClassicModels DB는 더 복잡한 비즈니스 모델을 표현하기 위해 다양한 테이블 간의 관계를 보여주며, 실제 데이터 분석 시 유용하게 사용될 것 같다. 이 데이터베이스들을 통해 테이블 간의 관계를 파악하고 쿼리를 작성하는 연습이 중요하다고 느꼈다.\n정리된 이해 관계형 데이터베이스는 여러 테이블 간의 관계를 정의하여 데이터를 구조적으로 저장하고 관리하는 방식이야. 테이블들은 서로 연결되어 있고, 이 연결을 통해 필요한 정보를 조합하거나 분석할 수 있어. 예를 들어, 고객 정보 테이블과 주문 정보 테이블을 연결하면 특정 고객의 주문 내역을 쉽게 확인할 수 있겠지.\n3. 테이블 구조 왜 이걸 보게 됐나 데이터베이스 실습을 시작하면서 테이블 간의 관계를 파악하고, 어떤 정보가 어떻게 연결되어 있는지 이해하는 것이 중요했기 때문에 테이블 구조를 배우게 됐어. 이해를 돕기 위해 각 테이블이 어떤 역할을 하고, 어떻게 서로 영향을 주고받는지 파악해야 복잡한 쿼리를 작성하고 원하는 결과를 얻을 수 있을 것 같았어. 실제 데이터베이스를 다룰 때, 테이블 구조를 제대로 알면 데이터 분석 및 활용에 큰 도움이 될 거라고 생각했어.\n내가 헷갈린 지점 처음에는 테이블들이 어떻게 연결되는지 파악하는 데 어려움을 느꼈다. 테이블 간의 관계가 명확하게 드러나지 않아서, 어떤 테이블이 어떤 기준으로 연결되는지 한눈에 보기 힘들었다. 특히, ClassicModels DB에서는 더 많은 테이블이 존재해서 전체적인 구조를 이해하는 데 시간이 더 걸렸다.\n시도한 코드 / 예시 -- Chinook DB 관계 구조 예시: -- artists → albums → tracks (장르와 미디어 유형은 하단 카테고리로 연결) -- genres ───────────┘ -- media_types ──────┘ -- customers → invoices → invoice_items → tracks (판매 관계) 결과와 해석 테이블 구조를 살펴보니 chinook.db는 artists 테이블에서 albums 테이블로, 다시 tracks 테이블로 연결되는 방식으로 음악 관련 데이터를 조직하고 있음을 알 수 있었다. ClassicModels.db는 Chinook DB보다 테이블 간의 관계가 복잡해서 처음에는 파악하기 어려웠지만, 데이터의 흐름을 따라가면서 어떤 정보가 어떻게 연결되는지 이해하려고 노력했다. 각 테이블의 이름과 컬럼들을 분석하면서 데이터베이스 설계의 기본 원리를 다시 한번 되새기게 되었다.\n정리된 이해 테이블 구조는 각 데이터베이스 내에서 정보가 어떻게 조직되고 연결되는지를 나타내며, 각 테이블 간의 관계를 파악하는 것이 데이터 분석의 핵심이다. Chinook DB는 음악 관련 데이터의 관계를, ClassicModels DB는 실제 영업 시스템의 구조를 이해하는 데 도움을 준다. 테이블 간의 관계를 시각적으로 표현하면 데이터베이스의 전체적인 구조를 더 쉽게 이해할 수 있다.\n4. 판매 관계 왜 이걸 보게 됐나 음악 판매 예제를 통해 데이터베이스 테이블 간의 관계가 어떻게 연결되어 판매 기록을 추적하는지 이해하기 위해 ‘판매 관계’라는 개념을 배우게 됐어. 송장(invoices) 테이블과 음악 트랙(tracks) 테이블 사이의 연결고리가 어떻게 만들어지는지 파악하면 실제 데이터 분석에서 필요한 SQL 쿼리 작성에 도움이 될 것 같아서였지. 단순히 테이블 구조를 아는 것보다 데이터 흐름을 이해하는 게 중요하다고 생각했어.\n내가 헷갈린 지점 처음에는 ‘판매 관계’가 고객이 트랙을 직접 구매하는 관계를 의미한다고 생각했어요. 트랙 테이블에 고객 ID를 직접 저장하는 방식이라고 착각했었죠. 실제로는 고객, 송장, 송장 항목, 트랙 테이블이 연결되어 간접적으로 판매 관계를 나타내는 것을 깨달았어요.\n시도한 코드 / 예시 -- 예시: 고객(customers) 테이블과 송장(invoices) 테이블, 송장 항목(invoice_items) 테이블을 조인하여 특정 고객의 구매 트랙 정보를 가져오는 쿼리 SELECT c.customer_id, c.first_name, c.last_name, t.track_id, t.title FROM customers c JOIN invoices i ON c.customer_id = i.customer_id JOIN invoice_items ii ON i.invoice_id = ii.invoice_id JOIN tracks t ON ii.track_id = t.track_id WHERE c.customer_id = 1; -- 특정 고객 ID를 지정 결과와 해석 customers, invoices, invoice_items, tracks 테이블을 연결하여 판매 관계를 확인하는 쿼리를 작성해 봤습니다. 예를 들어, 특정 고객이 어떤 트랙을 구매했는지 조회하는 쿼리를 통해 고객과 구매한 음악 간의 연결 고리를 확인할 수 있었습니다. 이를 통해 데이터베이스에서 복잡한 관계를 파악하고 원하는 정보를 추출하는 방법을 익혔습니다.\n정리된 이해 ClassicModels DB는 고객이 주문한 상품과 관련된 정보를 담고 있고, 이 흐름을 따라가다 보면 결국 어떤 트랙이 판매되었는지 알 수 있습니다. 즉, 고객의 주문을 통해 어떤 음악 트랙이 판매되었는지 파악할 수 있는 연결 고리 역할을 합니다. 이를 통해 실제 비즈니스 데이터베이스의 복잡한 관계를 이해하는 데 도움이 됩니다.\n총평 오늘 전체에서 배운 것 샘플 Chinook과 ClassicModels 데이터베이스를 실습하면서 테이블 구조와 관계를 파악하는 과정에서 처음에는 어떤 데이터베이스부터 공부해야 할지 혼란스러웠습니다. Chinook DB는 RDBMS 기본 개념 학습에, ClassicModels DB는 실무 SQL 쿼리 이해에 유용하다는 것을 알게 되었습니다.\n다음에 조심할 것 다음에는 테이블 관계를 단순화해서 파악하고, 각 샘플 데이터베이스의 특징을 고려하여 학습 순서를 정해야겠다. Chinook DB의 관계를 완벽하게 이해한 후 ClassicModels DB를 파고드는 것이 효율적일 것 같다.\n다음 복습 주제 ClassicModels DB의 테이블 간 관계도를 더 자세히 살펴보고, 실제 비즈니스 상황에 맞는 쿼리를 작성하는 연습을 해봐야겠다. Chinook DB의 JOIN 쿼리 복잡도를 조금 더 높여서 다양한 조합을 시도해보고 싶다.\n",
+  "wordCount" : "1089",
+  "inLanguage": "en",
+  "datePublished": "2026-06-08T00:00:00Z",
+  "dateModified": "2026-06-08T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/chinook-classicmodels-sample-db/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      chinook-classicmodels-sample-db
+    </h1>
+    <div class="post-description">
+      chinook-classicmodels-sample-db 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-08 00:00:00 +0000 UTC'>2026년 6월 8일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EC%83%98%ED%94%8C-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4">샘플 데이터베이스</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EA%B4%80%EA%B3%84%ED%98%95-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4">관계형 데이터베이스</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%ED%85%8C%EC%9D%B4%EB%B8%94-%EA%B5%AC%EC%A1%B0">테이블 구조</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%ED%8C%90%EB%A7%A4-%EA%B4%80%EA%B3%84">판매 관계</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-샘플-데이터베이스">1. 샘플 데이터베이스<a hidden class="anchor" aria-hidden="true" href="#1-샘플-데이터베이스">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>SQL 실습을 통해 데이터베이스를 다루는 감각을 익히고, 실제 업무에서 활용될 수 있는 데이터 분석 능력을 키우기 위해 샘플 데이터베이스를 공부하게 됐어. Chinook과 ClassicModels는 다양한 규모와 주제를 가진 데이터베이스를 경험하며, SQL 쿼리 작성 및 데이터 조작에 대한 이해도를 높이는 데 도움이 될 것 같아. 특히 관계형 데이터베이스의 기본 원리를 실질적으로 적용해보고 싶었어.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>샘플 데이터베이스라는 이름에 너무 집중해서, 실제 데이터베이스와 얼마나 차이가 나는지, 어떤 규모로 활용해야 하는지 불확실했습니다. 특히 두 개의 데이터베이스 파일을 동시에 제시했을 때, 어느 것을 중심으로 실습해야 할지 판단하기 어려웠고, 강의 자료에서 Chinook DB가 더 중요하게 다뤄진다는 언급은 혼란을 가중시켰습니다. 처음에는 어떤 목적을 가지고 만들어진 데이터베이스인지 명확하게 파악하지 못했습니다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- Chinook DB: artists 테이블에서 아티스트 이름과 앨범 개수 조회
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>  a.ArtistId,
+</span></span><span style="display:flex;"><span>  a.Artist,
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">COUNT</span>(al.AlbumId) <span style="color:#66d9ef">AS</span> AlbumCount
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span>
+</span></span><span style="display:flex;"><span>  artists <span style="color:#66d9ef">AS</span> a
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">JOIN</span>
+</span></span><span style="display:flex;"><span>  albums <span style="color:#66d9ef">AS</span> al
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ON</span>
+</span></span><span style="display:flex;"><span>  a.ArtistId <span style="color:#f92672">=</span> al.ArtistId
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span>
+</span></span><span style="display:flex;"><span>  a.ArtistId, a.Artist;
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p>Chinook과 ClassicModels 샘플 데이터베이스를 실습하면서 RDBMS의 관계형 구조를 시각적으로 파악하는 데 집중했어. Chinook DB는 음악 판매 데이터를 통해 테이블 간의 JOIN 관계를 이해하는 데 유용했고, ClassicModels DB는 실제 비즈니스 데이터를 다루는 데이터베이스 구조를 간접적으로 경험하게 해주었어. 두 데이터베이스를 비교하면서, 데이터베이스 디자인이 목적에 따라 어떻게 달라지는지 알 수 있었다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>샘플 데이터베이스는 RDBMS 기본 개념 학습을 위한 좋은 자료이며, Chinook DB는 음악 판매 예제를 통해 JOIN 쿼리 이해에 특화되어 있고, ClassicModels DB는 실제 영업 시스템 모델링을 통해 실무 SQL 쿼리 학습에 도움을 준다. 두 데이터베이스를 활용하면 데이터베이스와 SQL 쿼리 실력 향상에 도움이 될 것 같다.</p>
+<h2 id="2-관계형-데이터베이스">2. 관계형 데이터베이스<a hidden class="anchor" aria-hidden="true" href="#2-관계형-데이터베이스">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>데이터를 효율적으로 관리하고 분석하기 위해서는 단순한 텍스트 파일이나 스프레드시트로는 한계가 있다는 것을 깨달았어요. 관계형 데이터베이스는 여러 테이블 간의 관계를 설정하여 데이터를 체계적으로 저장하고, 원하는 정보를 빠르고 정확하게 찾아낼 수 있도록 해주기 때문이죠. 결국, 실제 업무에서 데이터를 다루려면 관계형 데이터베이스의 개념을 이해하는 것이 필수적이라는 판단이 들었습니다.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>처음 관계형 데이터베이스를 접했을 때, 여러 테이블 간의 연결이 복잡해 보였고, 단순히 데이터가 저장되는 공간이라고만 생각했습니다. 테이블 간의 관계를 시각적으로 표현하는 것조차 어려웠고, 어떤 기준으로 테이블을 설계해야 하는지 막막했습니다. 테이블 간의 관계가 어떻게 데이터를 효율적으로 관리하고 쿼리하는 데 영향을 미치는지 명확히 이해하지 못했습니다.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- Chinook DB: Artists 테이블과 Albums 테이블을 JOIN하여 아티스트 이름과 앨범 제목을 함께 조회하는 쿼리
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>  a.ArtistId,
+</span></span><span style="display:flex;"><span>  a.Name <span style="color:#66d9ef">AS</span> ArtistName,
+</span></span><span style="display:flex;"><span>  al.AlbumId,
+</span></span><span style="display:flex;"><span>  al.Title <span style="color:#66d9ef">AS</span> AlbumTitle
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span>
+</span></span><span style="display:flex;"><span>  artists <span style="color:#66d9ef">AS</span> a
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">JOIN</span>
+</span></span><span style="display:flex;"><span>  albums <span style="color:#66d9ef">AS</span> al
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ON</span>
+</span></span><span style="display:flex;"><span>  a.ArtistId <span style="color:#f92672">=</span> al.ArtistId;
+</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p>관계형 데이터베이스는 테이블 간의 관계를 활용하여 데이터를 구조화하는 방식인데, Chinook DB를 통해 아티스트, 앨범, 트랙 같은 테이블들이 어떻게 연결되는지 JOIN 쿼리를 사용해서 직접 확인하며 이해할 수 있었다. ClassicModels DB는 더 복잡한 비즈니스 모델을 표현하기 위해 다양한 테이블 간의 관계를 보여주며, 실제 데이터 분석 시 유용하게 사용될 것 같다. 이 데이터베이스들을 통해 테이블 간의 관계를 파악하고 쿼리를 작성하는 연습이 중요하다고 느꼈다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>관계형 데이터베이스는 여러 테이블 간의 관계를 정의하여 데이터를 구조적으로 저장하고 관리하는 방식이야. 테이블들은 서로 연결되어 있고, 이 연결을 통해 필요한 정보를 조합하거나 분석할 수 있어. 예를 들어, 고객 정보 테이블과 주문 정보 테이블을 연결하면 특정 고객의 주문 내역을 쉽게 확인할 수 있겠지.</p>
+<h2 id="3-테이블-구조">3. 테이블 구조<a hidden class="anchor" aria-hidden="true" href="#3-테이블-구조">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>데이터베이스 실습을 시작하면서 테이블 간의 관계를 파악하고, 어떤 정보가 어떻게 연결되어 있는지 이해하는 것이 중요했기 때문에 테이블 구조를 배우게 됐어.  이해를 돕기 위해 각 테이블이 어떤 역할을 하고, 어떻게 서로 영향을 주고받는지 파악해야 복잡한 쿼리를 작성하고 원하는 결과를 얻을 수 있을 것 같았어.  실제 데이터베이스를 다룰 때, 테이블 구조를 제대로 알면 데이터 분석 및 활용에 큰 도움이 될 거라고 생각했어.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>처음에는 테이블들이 어떻게 연결되는지 파악하는 데 어려움을 느꼈다. 테이블 간의 관계가 명확하게 드러나지 않아서, 어떤 테이블이 어떤 기준으로 연결되는지 한눈에 보기 힘들었다. 특히, ClassicModels DB에서는 더 많은 테이블이 존재해서 전체적인 구조를 이해하는 데 시간이 더 걸렸다.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<pre tabindex="0"><code>-- Chinook DB 관계 구조 예시:
 -- artists → albums → tracks  (장르와 미디어 유형은 하단 카테고리로 연결)
 -- genres ───────────┘
 -- media_types ──────┘
 
 -- customers → invoices → invoice_items → tracks (판매 관계)
-</code></pre><h3 id=결과와-해석-2>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-2>#</a></h3><p>테이블 구조를 살펴보니 <code>chinook.db</code>는 <code>artists</code> 테이블에서 <code>albums</code> 테이블로, 다시 <code>tracks</code> 테이블로 연결되는 방식으로 음악 관련 데이터를 조직하고 있음을 알 수 있었다. <code>ClassicModels.db</code>는 Chinook DB보다 테이블 간의 관계가 복잡해서 처음에는 파악하기 어려웠지만, 데이터의 흐름을 따라가면서 어떤 정보가 어떻게 연결되는지 이해하려고 노력했다. 각 테이블의 이름과 컬럼들을 분석하면서 데이터베이스 설계의 기본 원리를 다시 한번 되새기게 되었다.</p><h3 id=정리된-이해-2>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-2>#</a></h3><p>테이블 구조는 각 데이터베이스 내에서 정보가 어떻게 조직되고 연결되는지를 나타내며, 각 테이블 간의 관계를 파악하는 것이 데이터 분석의 핵심이다. Chinook DB는 음악 관련 데이터의 관계를, ClassicModels DB는 실제 영업 시스템의 구조를 이해하는 데 도움을 준다. 테이블 간의 관계를 시각적으로 표현하면 데이터베이스의 전체적인 구조를 더 쉽게 이해할 수 있다.</p><h2 id=4-판매-관계>4. 판매 관계<a hidden class=anchor aria-hidden=true href=#4-판매-관계>#</a></h2><h3 id=왜-이걸-보게-됐나-3>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-3>#</a></h3><p>음악 판매 예제를 통해 데이터베이스 테이블 간의 관계가 어떻게 연결되어 판매 기록을 추적하는지 이해하기 위해 &lsquo;판매 관계&rsquo;라는 개념을 배우게 됐어. 송장(invoices) 테이블과 음악 트랙(tracks) 테이블 사이의 연결고리가 어떻게 만들어지는지 파악하면 실제 데이터 분석에서 필요한 SQL 쿼리 작성에 도움이 될 것 같아서였지. 단순히 테이블 구조를 아는 것보다 데이터 흐름을 이해하는 게 중요하다고 생각했어.</p><h3 id=내가-헷갈린-지점-3>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-3>#</a></h3><p>처음에는 &lsquo;판매 관계&rsquo;가 고객이 트랙을 직접 구매하는 관계를 의미한다고 생각했어요. 트랙 테이블에 고객 ID를 직접 저장하는 방식이라고 착각했었죠. 실제로는 고객, 송장, 송장 항목, 트랙 테이블이 연결되어 간접적으로 판매 관계를 나타내는 것을 깨달았어요.</p><h3 id=시도한-코드--예시-3>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-3>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#75715e>-- 예시: 고객(customers) 테이블과 송장(invoices) 테이블, 송장 항목(invoice_items) 테이블을 조인하여 특정 고객의 구매 트랙 정보를 가져오는 쿼리
-</span></span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>c</span>.customer_id,
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>c</span>.first_name,
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>c</span>.last_name,
-</span></span><span style=display:flex><span>    t.track_id,
-</span></span><span style=display:flex><span>    t.title
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span>
-</span></span><span style=display:flex><span>    customers <span style=color:#66d9ef>c</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>JOIN</span>
-</span></span><span style=display:flex><span>    invoices i <span style=color:#66d9ef>ON</span> <span style=color:#66d9ef>c</span>.customer_id <span style=color:#f92672>=</span> i.customer_id
-</span></span><span style=display:flex><span><span style=color:#66d9ef>JOIN</span>
-</span></span><span style=display:flex><span>    invoice_items ii <span style=color:#66d9ef>ON</span> i.invoice_id <span style=color:#f92672>=</span> ii.invoice_id
-</span></span><span style=display:flex><span><span style=color:#66d9ef>JOIN</span>
-</span></span><span style=display:flex><span>    tracks t <span style=color:#66d9ef>ON</span> ii.track_id <span style=color:#f92672>=</span> t.track_id
-</span></span><span style=display:flex><span><span style=color:#66d9ef>WHERE</span>
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>c</span>.customer_id <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>; <span style=color:#75715e>-- 특정 고객 ID를 지정
-</span></span></span></code></pre></div><h3 id=결과와-해석-3>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-3>#</a></h3><p><code>customers</code>, <code>invoices</code>, <code>invoice_items</code>, <code>tracks</code> 테이블을 연결하여 판매 관계를 확인하는 쿼리를 작성해 봤습니다. 예를 들어, 특정 고객이 어떤 트랙을 구매했는지 조회하는 쿼리를 통해 고객과 구매한 음악 간의 연결 고리를 확인할 수 있었습니다. 이를 통해 데이터베이스에서 복잡한 관계를 파악하고 원하는 정보를 추출하는 방법을 익혔습니다.</p><h3 id=정리된-이해-3>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-3>#</a></h3><p>ClassicModels DB는 고객이 주문한 상품과 관련된 정보를 담고 있고, 이 흐름을 따라가다 보면 결국 어떤 트랙이 판매되었는지 알 수 있습니다. 즉, 고객의 주문을 통해 어떤 음악 트랙이 판매되었는지 파악할 수 있는 연결 고리 역할을 합니다. 이를 통해 실제 비즈니스 데이터베이스의 복잡한 관계를 이해하는 데 도움이 됩니다.</p><h2 id=총평>총평<a hidden class=anchor aria-hidden=true href=#총평>#</a></h2><h3 id=오늘-전체에서-배운-것>오늘 전체에서 배운 것<a hidden class=anchor aria-hidden=true href=#오늘-전체에서-배운-것>#</a></h3><p>샘플 Chinook과 ClassicModels 데이터베이스를 실습하면서 테이블 구조와 관계를 파악하는 과정에서 처음에는 어떤 데이터베이스부터 공부해야 할지 혼란스러웠습니다. Chinook DB는 RDBMS 기본 개념 학습에, ClassicModels DB는 실무 SQL 쿼리 이해에 유용하다는 것을 알게 되었습니다.</p><h3 id=다음에-조심할-것>다음에 조심할 것<a hidden class=anchor aria-hidden=true href=#다음에-조심할-것>#</a></h3><p>다음에는 테이블 관계를 단순화해서 파악하고, 각 샘플 데이터베이스의 특징을 고려하여 학습 순서를 정해야겠다. Chinook DB의 관계를 완벽하게 이해한 후 ClassicModels DB를 파고드는 것이 효율적일 것 같다.</p><h3 id=다음-복습-주제>다음 복습 주제<a hidden class=anchor aria-hidden=true href=#다음-복습-주제>#</a></h3><p>ClassicModels DB의 테이블 간 관계도를 더 자세히 살펴보고, 실제 비즈니스 상황에 맞는 쿼리를 작성하는 연습을 해봐야겠다. Chinook DB의 JOIN 쿼리 복잡도를 조금 더 높여서 다양한 조합을 시도해보고 싶다.</p></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://Han-think.github.io/learning/ai-tools-cursor-perplexity-qwen/><span class=title>« Prev</span>
-<span>ai-tools-cursor-perplexity-qwen</span>
-</a><a class=next href=https://Han-think.github.io/learning/colab-local-environment-and-sources/><span class=title>Next »</span>
-<span>colab-local-environment-and-sources</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
-<span>Powered by
-<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
-<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
+</code></pre><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p>테이블 구조를 살펴보니 <code>chinook.db</code>는 <code>artists</code> 테이블에서 <code>albums</code> 테이블로, 다시 <code>tracks</code> 테이블로 연결되는 방식으로 음악 관련 데이터를 조직하고 있음을 알 수 있었다.  <code>ClassicModels.db</code>는 Chinook DB보다 테이블 간의 관계가 복잡해서 처음에는 파악하기 어려웠지만, 데이터의 흐름을 따라가면서 어떤 정보가 어떻게 연결되는지 이해하려고 노력했다.  각 테이블의 이름과 컬럼들을 분석하면서 데이터베이스 설계의 기본 원리를 다시 한번 되새기게 되었다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>테이블 구조는 각 데이터베이스 내에서 정보가 어떻게 조직되고 연결되는지를 나타내며, 각 테이블 간의 관계를 파악하는 것이 데이터 분석의 핵심이다. Chinook DB는 음악 관련 데이터의 관계를, ClassicModels DB는 실제 영업 시스템의 구조를 이해하는 데 도움을 준다. 테이블 간의 관계를 시각적으로 표현하면 데이터베이스의 전체적인 구조를 더 쉽게 이해할 수 있다.</p>
+<h2 id="4-판매-관계">4. 판매 관계<a hidden class="anchor" aria-hidden="true" href="#4-판매-관계">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>음악 판매 예제를 통해 데이터베이스 테이블 간의 관계가 어떻게 연결되어 판매 기록을 추적하는지 이해하기 위해 &lsquo;판매 관계&rsquo;라는 개념을 배우게 됐어. 송장(invoices) 테이블과 음악 트랙(tracks) 테이블 사이의 연결고리가 어떻게 만들어지는지 파악하면 실제 데이터 분석에서 필요한 SQL 쿼리 작성에 도움이 될 것 같아서였지. 단순히 테이블 구조를 아는 것보다 데이터 흐름을 이해하는 게 중요하다고 생각했어.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>처음에는 &lsquo;판매 관계&rsquo;가 고객이 트랙을 직접 구매하는 관계를 의미한다고 생각했어요. 트랙 테이블에 고객 ID를 직접 저장하는 방식이라고 착각했었죠. 실제로는 고객, 송장, 송장 항목, 트랙 테이블이 연결되어 간접적으로 판매 관계를 나타내는 것을 깨달았어요.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 예시: 고객(customers) 테이블과 송장(invoices) 테이블, 송장 항목(invoice_items) 테이블을 조인하여 특정 고객의 구매 트랙 정보를 가져오는 쿼리
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">c</span>.customer_id,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">c</span>.first_name,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">c</span>.last_name,
+</span></span><span style="display:flex;"><span>    t.track_id,
+</span></span><span style="display:flex;"><span>    t.title
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span>
+</span></span><span style="display:flex;"><span>    customers <span style="color:#66d9ef">c</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">JOIN</span>
+</span></span><span style="display:flex;"><span>    invoices i <span style="color:#66d9ef">ON</span> <span style="color:#66d9ef">c</span>.customer_id <span style="color:#f92672">=</span> i.customer_id
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">JOIN</span>
+</span></span><span style="display:flex;"><span>    invoice_items ii <span style="color:#66d9ef">ON</span> i.invoice_id <span style="color:#f92672">=</span> ii.invoice_id
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">JOIN</span>
+</span></span><span style="display:flex;"><span>    tracks t <span style="color:#66d9ef">ON</span> ii.track_id <span style="color:#f92672">=</span> t.track_id
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">c</span>.customer_id <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; <span style="color:#75715e">-- 특정 고객 ID를 지정
+</span></span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<p><code>customers</code>, <code>invoices</code>, <code>invoice_items</code>, <code>tracks</code> 테이블을 연결하여 판매 관계를 확인하는 쿼리를 작성해 봤습니다. 예를 들어, 특정 고객이 어떤 트랙을 구매했는지 조회하는 쿼리를 통해 고객과 구매한 음악 간의 연결 고리를 확인할 수 있었습니다. 이를 통해 데이터베이스에서 복잡한 관계를 파악하고 원하는 정보를 추출하는 방법을 익혔습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>ClassicModels DB는 고객이 주문한 상품과 관련된 정보를 담고 있고, 이 흐름을 따라가다 보면 결국 어떤 트랙이 판매되었는지 알 수 있습니다. 즉, 고객의 주문을 통해 어떤 음악 트랙이 판매되었는지 파악할 수 있는 연결 고리 역할을 합니다. 이를 통해 실제 비즈니스 데이터베이스의 복잡한 관계를 이해하는 데 도움이 됩니다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>샘플 Chinook과 ClassicModels 데이터베이스를 실습하면서 테이블 구조와 관계를 파악하는 과정에서 처음에는 어떤 데이터베이스부터 공부해야 할지 혼란스러웠습니다. Chinook DB는 RDBMS 기본 개념 학습에, ClassicModels DB는 실무 SQL 쿼리 이해에 유용하다는 것을 알게 되었습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>다음에는 테이블 관계를 단순화해서 파악하고, 각 샘플 데이터베이스의 특징을 고려하여 학습 순서를 정해야겠다. Chinook DB의 관계를 완벽하게 이해한 후 ClassicModels DB를 파고드는 것이 효율적일 것 같다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>ClassicModels DB의 테이블 간 관계도를 더 자세히 살펴보고, 실제 비즈니스 상황에 맞는 쿼리를 작성하는 연습을 해봐야겠다. Chinook DB의 JOIN 쿼리 복잡도를 조금 더 높여서 다양한 조합을 시도해보고 싶다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/ai-tools-cursor-perplexity-qwen/">
+    <span class="title">« Prev</span>
+    <span>ai-tools-cursor-perplexity-qwen</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/colab-local-environment-and-sources/">
+    <span class="title">Next »</span>
+    <span>colab-local-environment-and-sources</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

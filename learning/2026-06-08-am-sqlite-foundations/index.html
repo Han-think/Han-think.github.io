@@ -1,49 +1,517 @@
-<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>SQLite 입문 오전: SQLTools 실행부터 ERD까지 | Han-think Blog</title><meta name=keywords content="sqlite,sql,select,crud,erd,database,beginner"><meta name=description content="VS Code SQLTools로 SQLite를 다루며 SELECT/CRUD 기본기와 ERD·샘플 DB 구조를 익힌 오전 학습 정리"><meta name=author content><link rel=canonical href=https://Han-think.github.io/learning/2026-06-08-am-sqlite-foundations/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/learning/2026-06-08-am-sqlite-foundations/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/learning/2026-06-08-am-sqlite-foundations/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="SQLite 입문 오전: SQLTools 실행부터 ERD까지"><meta property="og:description" content="VS Code SQLTools로 SQLite를 다루며 SELECT/CRUD 기본기와 ERD·샘플 DB 구조를 익힌 오전 학습 정리"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="learning"><meta property="article:published_time" content="2026-06-08T00:00:00+00:00"><meta property="article:modified_time" content="2026-06-08T00:00:00+00:00"><meta property="article:tag" content="SQLite"><meta property="article:tag" content="Sql"><meta property="article:tag" content="Select"><meta property="article:tag" content="Crud"><meta property="article:tag" content="Erd"><meta property="article:tag" content="Database"><meta name=twitter:card content="summary"><meta name=twitter:title content="SQLite 입문 오전: SQLTools 실행부터 ERD까지"><meta name=twitter:description content="VS Code SQLTools로 SQLite를 다루며 SELECT/CRUD 기본기와 ERD·샘플 DB 구조를 익힌 오전 학습 정리"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"학습 기록","item":"https://Han-think.github.io/learning/"},{"@type":"ListItem","position":2,"name":"SQLite 입문 오전: SQLTools 실행부터 ERD까지","item":"https://Han-think.github.io/learning/2026-06-08-am-sqlite-foundations/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"SQLite 입문 오전: SQLTools 실행부터 ERD까지","name":"SQLite 입문 오전: SQLTools 실행부터 ERD까지","description":"VS Code SQLTools로 SQLite를 다루며 SELECT/CRUD 기본기와 ERD·샘플 DB 구조를 익힌 오전 학습 정리","keywords":["sqlite","sql","select","crud","erd","database","beginner"],"articleBody":"목차 SQLTools에서 SQL 선택 실행하기 SELECT와 CRUD 기본 문법 ERD와 Crow’s Foot 표기법 읽기 Chinook과 ClassicModels 샘플 DB 살펴보기 학습 자료를 source로 보존하기 총평 1. SQLTools에서 SQL 선택 실행하기 무엇을 배웠나 오전 실습은 VS Code의 SQLTools로 SQLite DB에 연결하고, SQL 문장을 선택해서 실행하는 감각을 잡는 것부터 시작했다. 핵심은 “전체 실행\"과 “선택 실행\"의 차이였다.\n전체 파일 실행 = 위에서 아래로 모든 SQL 문장을 실행 선택 영역 실행 = 드래그한 SQL 문장만 실행 CREATE TABLE, INSERT, SELECT가 한 파일에 같이 있을 때 SELECT * FROM study_notes;만 드래그해서 실행하면 조회만 수행된다.\n헷갈렸던 점 결과가 안 나오거나 빨간 표시가 뜨면 처음엔 문법이 틀린 줄 알았다. 하지만 실제로는 실행 순서와 연결 상태가 더 중요했다. 테이블을 만들기 전에 조회하면 당연히 결과가 없다.\nCREATE TABLE 실행 → INSERT 실행 → SELECT 실행 정리된 이해 SQLTools에서는 SQL을 한 덩어리씩 나눠 실행하는 습관이 안전하다. 처음 한 번은 전체 실행으로 테이블과 데이터를 만들고, 이후에는 조회문만 선택 실행한다.\nCREATE TABLE IF NOT EXISTS study_notes ( id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, category TEXT NOT NULL ); INSERT INTO study_notes (title, category) VALUES ('SELECT 기본', 'database'); SELECT * FROM study_notes; 2. SELECT와 CRUD 기본 문법 무엇을 배웠나 SQL은 Structured Query Language, 즉 구조화된 데이터에게 질문하는 언어다. 가장 기본이 되는 조회문은 다음 형태다.\nSELECT * FROM study_notes; 여기서 *는 “모든 컬럼\"을 뜻하고, 위 문장은 “study_notes 테이블의 모든 컬럼과 모든 행을 보여줘\"라는 의미다.\n헷갈렸던 점 SQL이 단순 명령어처럼 보였지만, 강의에서는 핵심을 “질의(質疑)“라고 짚었다. 즉 데이터베이스에게 질문을 던지고 표 형태의 답을 받는 것이 SELECT의 본질이다.\n정리된 이해 데이터를 다루는 네 가지 동작(CRUD)은 SQL 명령과 다음처럼 대응된다.\nCRUD 의미 SQL Create 데이터 추가 INSERT Read 데이터 조회 SELECT Update 데이터 수정 UPDATE Delete 데이터 삭제 DELETE 테이블 자체를 만드는 일은 CREATE TABLE로 처리한다. 조회의 기본 공식은 다음과 같다.\nSELECT 컬럼명 FROM 테이블명 WHERE 조건 ORDER BY 정렬기준 LIMIT 개수; 3. ERD와 Crow’s Foot 표기법 읽기 무엇을 배웠나 ERD는 Entity-Relationship Diagram의 약자로, 테이블들이 서로 어떻게 연결되는지 보여주는 그림이다. 나는 ERD를 회로도/관계망으로 비유해서 이해했다. 테이블은 부품, Primary Key와 Foreign Key는 부품을 잇는 연결선이다.\n헷갈렸던 점 처음에는 ERD가 위에서 아래로 갈라지는 트리 구조처럼 보였다. 하지만 관계형 데이터베이스는 한 방향으로만 내려가지 않는다. 특히 playlists와 tracks는 직접 연결되지 않고 playlist_track이라는 중간 테이블을 통해 이어진다.\nartists → albums → tracks customers → invoices → invoice_items → tracks playlists ↔ playlist_track ↔ tracks 정리된 이해 ERD의 기본 요소와 Crow’s Foot 표기의 감각을 정리하면 다음과 같다.\n개념 의미 Entity 테이블 Attribute 컬럼 Primary Key 각 행을 구분하는 고유값 Foreign Key 다른 테이블의 PK를 참조하는 값 Relationship 테이블 간 연결 Cardinality 1:1, 1:N, N:M 같은 관계 수 ERD를 보고 두 테이블을 연결하면 곧 JOIN이 된다.\nSELECT artists.Name AS artist_name, albums.Title AS album_title FROM artists JOIN albums ON artists.ArtistId = albums.ArtistId; 4. Chinook과 ClassicModels 샘플 DB 살펴보기 무엇을 배웠나 강의 자료로 SQLite 샘플 DB 두 개가 제공되었다. chinook.db는 음악/음원 판매 예제 DB, classicmodels.db는 상품·주문·고객·결제 구조를 가진 영업 관리 예제 DB다.\n헷갈렸던 점 DB 파일이 두 개라 무엇을 기준으로 봐야 할지 헷갈렸다. 정리하면 역할이 다르다.\nchinook.db = 음악 가게 DB, ERD/JOIN 감 잡기 좋음 classicmodels.db = 주문 관리 DB, 실무형 SQL 구조 배우기 좋음 정리된 이해 샘플 DB는 단순 쿼리 연습용이 아니라 관계형 구조를 읽기 위한 지도다. 먼저 각 테이블을 SELECT *로 훑고, 이후 ERD를 보며 관계를 따라가면 된다.\nSELECT * FROM artists; SELECT * FROM albums; SELECT * FROM tracks; SELECT * FROM customers; Chinook의 음악 카탈로그는 artists → albums → tracks로, 판매 구조는 customers → invoices → invoice_items → tracks로 이어진다.\n5. 학습 자료를 source로 보존하기 무엇을 배웠나 강의에서 기준 참고 자료로 SQLite 튜토리얼의 공개 샘플 DB 페이지가 언급되었다. 이 페이지에서 Chinook 샘플 DB, ERD, SQLite 학습 흐름을 한눈에 볼 수 있다. 노션 공개 페이지는 사람이 브라우저로 볼 때는 잘 보였지만, 자동화 도구로 직접 가져오기는 어려웠다.\n헷갈렸던 점 공개 링크인데도 자동 fetch가 막히는 이유가 처음엔 의아했다. 가능한 원인은 JS 렌더링 페이지, 봇 접근 제한, 워크스페이스 권한 정책, export 제한 등이었다.\n정리된 이해 공개 페이지 자료는 자동으로 긁기보다 PDF로 인쇄 저장하거나 텍스트로 복사해 raw source로 보존하는 편이 현실적이었다. 수업 자료가 외부에 있어도, 내 LearningLog에서는 원본을 따로 보존하고 학습 내용은 주제별 노트로 분리한다는 원칙을 다시 확인했다.\nsource는 보존하고, note는 내 것으로 만들고, draft는 검토 후 공개한다. 총평 오늘 오전 전체에서 배운 것 SQLTools로 SQL을 선택 실행하는 감각을 잡고, SELECT와 CRUD의 대응 관계, ERD/Crow’s Foot로 테이블 관계를 읽는 법, 그리고 Chinook·ClassicModels 샘플 DB의 구조까지 한 흐름으로 연결했다. SQL은 결국 “데이터베이스에게 질문하는 언어\"라는 점이 핵심이었다.\n다음에 조심할 것 조회 결과가 비어 보일 때는 문법보다 실행 순서와 연결 상태를 먼저 의심하자. 또 ERD를 트리로 착각하지 말고, 중간 테이블(N:M)을 항상 염두에 둔다.\n다음 복습 주제 WHERE 조건 조합, ORDER BY와 LIMIT, 그리고 ERD를 보고 어떤 테이블을 JOIN할지 찾는 연습을 이어서 한다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n","wordCount":"773","inLanguage":"en","datePublished":"2026-06-08T00:00:00Z","dateModified":"2026-06-08T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/learning/2026-06-08-am-sqlite-foundations/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
-<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">SQLite 입문 오전: SQLTools 실행부터 ERD까지</h1><div class=post-description>VS Code SQLTools로 SQLite를 다루며 SELECT/CRUD 기본기와 ERD·샘플 DB 구조를 익힌 오전 학습 정리</div><div class=post-meta><span title='2026-06-08 00:00:00 +0000 UTC'>2026년 6월 8일</span>&nbsp;·&nbsp;<span>4 min</span></div></header><div class="post-content md-content"><h2 id=목차>목차<a hidden class=anchor aria-hidden=true href=#목차>#</a></h2><ul><li><ol><li><a href=#1-sqltools%EC%97%90%EC%84%9C-sql-%EC%84%A0%ED%83%9D-%EC%8B%A4%ED%96%89%ED%95%98%EA%B8%B0>SQLTools에서 SQL 선택 실행하기</a></li></ol></li><li><ol start=2><li><a href=#2-select%EC%99%80-crud-%EA%B8%B0%EB%B3%B8-%EB%AC%B8%EB%B2%95>SELECT와 CRUD 기본 문법</a></li></ol></li><li><ol start=3><li><a href=#3-erd%EC%99%80-crows-foot-%ED%91%9C%EA%B8%B0%EB%B2%95-%EC%9D%BD%EA%B8%B0>ERD와 Crow&rsquo;s Foot 표기법 읽기</a></li></ol></li><li><ol start=4><li><a href=#4-chinook%EA%B3%BC-classicmodels-%EC%83%98%ED%94%8C-db-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0>Chinook과 ClassicModels 샘플 DB 살펴보기</a></li></ol></li><li><ol start=5><li><a href=#5-%ED%95%99%EC%8A%B5-%EC%9E%90%EB%A3%8C%EB%A5%BC-source%EB%A1%9C-%EB%B3%B4%EC%A1%B4%ED%95%98%EA%B8%B0>학습 자료를 source로 보존하기</a></li></ol></li><li><a href=#%EC%B4%9D%ED%8F%89>총평</a></li></ul><h2 id=1-sqltools에서-sql-선택-실행하기>1. SQLTools에서 SQL 선택 실행하기<a hidden class=anchor aria-hidden=true href=#1-sqltools에서-sql-선택-실행하기>#</a></h2><h3 id=무엇을-배웠나>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나>#</a></h3><p>오전 실습은 VS Code의 SQLTools로 SQLite DB에 연결하고, SQL 문장을 <strong>선택해서 실행</strong>하는 감각을 잡는 것부터 시작했다. 핵심은 &ldquo;전체 실행"과 &ldquo;선택 실행"의 차이였다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>전체 파일 실행 = 위에서 아래로 모든 SQL 문장을 실행
-</span></span><span style=display:flex><span>선택 영역 실행 = 드래그한 SQL 문장만 실행
-</span></span></code></pre></div><p><code>CREATE TABLE</code>, <code>INSERT</code>, <code>SELECT</code>가 한 파일에 같이 있을 때 <code>SELECT * FROM study_notes;</code>만 드래그해서 실행하면 조회만 수행된다.</p><h3 id=헷갈렸던-점>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점>#</a></h3><p>결과가 안 나오거나 빨간 표시가 뜨면 처음엔 문법이 틀린 줄 알았다. 하지만 실제로는 <strong>실행 순서와 연결 상태</strong>가 더 중요했다. 테이블을 만들기 전에 조회하면 당연히 결과가 없다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>CREATE TABLE 실행 → INSERT 실행 → SELECT 실행
-</span></span></code></pre></div><h3 id=정리된-이해>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해>#</a></h3><p>SQLTools에서는 SQL을 한 덩어리씩 나눠 실행하는 습관이 안전하다. 처음 한 번은 전체 실행으로 테이블과 데이터를 만들고, 이후에는 조회문만 선택 실행한다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>CREATE</span> <span style=color:#66d9ef>TABLE</span> <span style=color:#66d9ef>IF</span> <span style=color:#66d9ef>NOT</span> <span style=color:#66d9ef>EXISTS</span> study_notes (
-</span></span><span style=display:flex><span>    id INTEGER <span style=color:#66d9ef>PRIMARY</span> <span style=color:#66d9ef>KEY</span> AUTOINCREMENT,
-</span></span><span style=display:flex><span>    title TEXT <span style=color:#66d9ef>NOT</span> <span style=color:#66d9ef>NULL</span>,
-</span></span><span style=display:flex><span>    category TEXT <span style=color:#66d9ef>NOT</span> <span style=color:#66d9ef>NULL</span>
-</span></span><span style=display:flex><span>);
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>INSERT</span> <span style=color:#66d9ef>INTO</span> study_notes (title, category) <span style=color:#66d9ef>VALUES</span>
-</span></span><span style=display:flex><span>    (<span style=color:#e6db74>&#39;SELECT 기본&#39;</span>, <span style=color:#e6db74>&#39;database&#39;</span>);
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#f92672>*</span> <span style=color:#66d9ef>FROM</span> study_notes;
-</span></span></code></pre></div><h2 id=2-select와-crud-기본-문법>2. SELECT와 CRUD 기본 문법<a hidden class=anchor aria-hidden=true href=#2-select와-crud-기본-문법>#</a></h2><h3 id=무엇을-배웠나-1>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-1>#</a></h3><p>SQL은 Structured Query Language, 즉 구조화된 데이터에게 질문하는 언어다. 가장 기본이 되는 조회문은 다음 형태다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#f92672>*</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> study_notes;
-</span></span></code></pre></div><p>여기서 <code>*</code>는 &ldquo;모든 컬럼"을 뜻하고, 위 문장은 &ldquo;study_notes 테이블의 모든 컬럼과 모든 행을 보여줘"라는 의미다.</p><h3 id=헷갈렸던-점-1>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-1>#</a></h3><p>SQL이 단순 명령어처럼 보였지만, 강의에서는 핵심을 &ldquo;질의(質疑)&ldquo;라고 짚었다. 즉 데이터베이스에게 <strong>질문을 던지고 표 형태의 답을 받는 것</strong>이 SELECT의 본질이다.</p><h3 id=정리된-이해-1>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-1>#</a></h3><p>데이터를 다루는 네 가지 동작(CRUD)은 SQL 명령과 다음처럼 대응된다.</p><table><thead><tr><th>CRUD</th><th>의미</th><th>SQL</th></tr></thead><tbody><tr><td>Create</td><td>데이터 추가</td><td>INSERT</td></tr><tr><td>Read</td><td>데이터 조회</td><td>SELECT</td></tr><tr><td>Update</td><td>데이터 수정</td><td>UPDATE</td></tr><tr><td>Delete</td><td>데이터 삭제</td><td>DELETE</td></tr></tbody></table><p>테이블 자체를 만드는 일은 <code>CREATE TABLE</code>로 처리한다. 조회의 기본 공식은 다음과 같다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#960050;background-color:#1e0010>컬럼명</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> <span style=color:#960050;background-color:#1e0010>테이블명</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>WHERE</span> <span style=color:#960050;background-color:#1e0010>조건</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>ORDER</span> <span style=color:#66d9ef>BY</span> <span style=color:#960050;background-color:#1e0010>정렬기준</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>LIMIT</span> <span style=color:#960050;background-color:#1e0010>개수</span>;
-</span></span></code></pre></div><h2 id=3-erd와-crows-foot-표기법-읽기>3. ERD와 Crow&rsquo;s Foot 표기법 읽기<a hidden class=anchor aria-hidden=true href=#3-erd와-crows-foot-표기법-읽기>#</a></h2><h3 id=무엇을-배웠나-2>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-2>#</a></h3><p>ERD는 Entity-Relationship Diagram의 약자로, 테이블들이 서로 어떻게 연결되는지 보여주는 그림이다. 나는 ERD를 <strong>회로도/관계망</strong>으로 비유해서 이해했다. 테이블은 부품, Primary Key와 Foreign Key는 부품을 잇는 연결선이다.</p><h3 id=헷갈렸던-점-2>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-2>#</a></h3><p>처음에는 ERD가 위에서 아래로 갈라지는 트리 구조처럼 보였다. 하지만 관계형 데이터베이스는 한 방향으로만 내려가지 않는다. 특히 <code>playlists</code>와 <code>tracks</code>는 직접 연결되지 않고 <code>playlist_track</code>이라는 <strong>중간 테이블</strong>을 통해 이어진다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>artists → albums → tracks
-</span></span><span style=display:flex><span>customers → invoices → invoice_items → tracks
-</span></span><span style=display:flex><span>playlists ↔ playlist_track ↔ tracks
-</span></span></code></pre></div><h3 id=정리된-이해-2>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-2>#</a></h3><p>ERD의 기본 요소와 Crow&rsquo;s Foot 표기의 감각을 정리하면 다음과 같다.</p><table><thead><tr><th>개념</th><th>의미</th></tr></thead><tbody><tr><td>Entity</td><td>테이블</td></tr><tr><td>Attribute</td><td>컬럼</td></tr><tr><td>Primary Key</td><td>각 행을 구분하는 고유값</td></tr><tr><td>Foreign Key</td><td>다른 테이블의 PK를 참조하는 값</td></tr><tr><td>Relationship</td><td>테이블 간 연결</td></tr><tr><td>Cardinality</td><td>1:1, 1:N, N:M 같은 관계 수</td></tr></tbody></table><p>ERD를 보고 두 테이블을 연결하면 곧 JOIN이 된다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
-</span></span><span style=display:flex><span>    artists.Name <span style=color:#66d9ef>AS</span> artist_name,
-</span></span><span style=display:flex><span>    albums.Title <span style=color:#66d9ef>AS</span> album_title
-</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> artists
-</span></span><span style=display:flex><span><span style=color:#66d9ef>JOIN</span> albums
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>ON</span> artists.ArtistId <span style=color:#f92672>=</span> albums.ArtistId;
-</span></span></code></pre></div><h2 id=4-chinook과-classicmodels-샘플-db-살펴보기>4. Chinook과 ClassicModels 샘플 DB 살펴보기<a hidden class=anchor aria-hidden=true href=#4-chinook과-classicmodels-샘플-db-살펴보기>#</a></h2><h3 id=무엇을-배웠나-3>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-3>#</a></h3><p>강의 자료로 SQLite 샘플 DB 두 개가 제공되었다. <code>chinook.db</code>는 음악/음원 판매 예제 DB, <code>classicmodels.db</code>는 상품·주문·고객·결제 구조를 가진 영업 관리 예제 DB다.</p><h3 id=헷갈렸던-점-3>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-3>#</a></h3><p>DB 파일이 두 개라 무엇을 기준으로 봐야 할지 헷갈렸다. 정리하면 역할이 다르다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>chinook.db      = 음악 가게 DB, ERD/JOIN 감 잡기 좋음
-</span></span><span style=display:flex><span>classicmodels.db = 주문 관리 DB, 실무형 SQL 구조 배우기 좋음
-</span></span></code></pre></div><h3 id=정리된-이해-3>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-3>#</a></h3><p>샘플 DB는 단순 쿼리 연습용이 아니라 <strong>관계형 구조를 읽기 위한 지도</strong>다. 먼저 각 테이블을 <code>SELECT *</code>로 훑고, 이후 ERD를 보며 관계를 따라가면 된다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#f92672>*</span> <span style=color:#66d9ef>FROM</span> artists;
-</span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#f92672>*</span> <span style=color:#66d9ef>FROM</span> albums;
-</span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#f92672>*</span> <span style=color:#66d9ef>FROM</span> tracks;
-</span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#f92672>*</span> <span style=color:#66d9ef>FROM</span> customers;
-</span></span></code></pre></div><p>Chinook의 음악 카탈로그는 <code>artists → albums → tracks</code>로, 판매 구조는 <code>customers → invoices → invoice_items → tracks</code>로 이어진다.</p><h2 id=5-학습-자료를-source로-보존하기>5. 학습 자료를 source로 보존하기<a hidden class=anchor aria-hidden=true href=#5-학습-자료를-source로-보존하기>#</a></h2><h3 id=무엇을-배웠나-4>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-4>#</a></h3><p>강의에서 기준 참고 자료로 SQLite 튜토리얼의 공개 샘플 DB 페이지가 언급되었다. 이 페이지에서 Chinook 샘플 DB, ERD, SQLite 학습 흐름을 한눈에 볼 수 있다. 노션 공개 페이지는 사람이 브라우저로 볼 때는 잘 보였지만, 자동화 도구로 직접 가져오기는 어려웠다.</p><h3 id=헷갈렸던-점-4>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-4>#</a></h3><p>공개 링크인데도 자동 fetch가 막히는 이유가 처음엔 의아했다. 가능한 원인은 JS 렌더링 페이지, 봇 접근 제한, 워크스페이스 권한 정책, export 제한 등이었다.</p><h3 id=정리된-이해-4>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-4>#</a></h3><p>공개 페이지 자료는 자동으로 긁기보다 <strong>PDF로 인쇄 저장하거나 텍스트로 복사해 raw source로 보존</strong>하는 편이 현실적이었다. 수업 자료가 외부에 있어도, 내 LearningLog에서는 원본을 따로 보존하고 학습 내용은 주제별 노트로 분리한다는 원칙을 다시 확인했다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>source는 보존하고,
-</span></span><span style=display:flex><span>note는 내 것으로 만들고,
-</span></span><span style=display:flex><span>draft는 검토 후 공개한다.
-</span></span></code></pre></div><h2 id=총평>총평<a hidden class=anchor aria-hidden=true href=#총평>#</a></h2><h3 id=오늘-오전-전체에서-배운-것>오늘 오전 전체에서 배운 것<a hidden class=anchor aria-hidden=true href=#오늘-오전-전체에서-배운-것>#</a></h3><p>SQLTools로 SQL을 선택 실행하는 감각을 잡고, SELECT와 CRUD의 대응 관계, ERD/Crow&rsquo;s Foot로 테이블 관계를 읽는 법, 그리고 Chinook·ClassicModels 샘플 DB의 구조까지 한 흐름으로 연결했다. SQL은 결국 &ldquo;데이터베이스에게 질문하는 언어"라는 점이 핵심이었다.</p><h3 id=다음에-조심할-것>다음에 조심할 것<a hidden class=anchor aria-hidden=true href=#다음에-조심할-것>#</a></h3><p>조회 결과가 비어 보일 때는 문법보다 <strong>실행 순서와 연결 상태</strong>를 먼저 의심하자. 또 ERD를 트리로 착각하지 말고, 중간 테이블(N:M)을 항상 염두에 둔다.</p><h3 id=다음-복습-주제>다음 복습 주제<a hidden class=anchor aria-hidden=true href=#다음-복습-주제>#</a></h3><p>WHERE 조건 조합, ORDER BY와 LIMIT, 그리고 ERD를 보고 어떤 테이블을 JOIN할지 찾는 연습을 이어서 한다.</p><blockquote><p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
-This post was written with the help of a local LLM (AI).</p></blockquote></div><footer class=post-footer><ul class=post-tags><li><a href=https://Han-think.github.io/tags/sqlite/>SQLite</a></li><li><a href=https://Han-think.github.io/tags/sql/>Sql</a></li><li><a href=https://Han-think.github.io/tags/select/>Select</a></li><li><a href=https://Han-think.github.io/tags/crud/>Crud</a></li><li><a href=https://Han-think.github.io/tags/erd/>Erd</a></li><li><a href=https://Han-think.github.io/tags/database/>Database</a></li><li><a href=https://Han-think.github.io/tags/beginner/>Beginner</a></li></ul><nav class=paginav><a class=prev href=https://Han-think.github.io/learning/python-while-menu-design/><span class=title>« Prev</span>
-<span>python-while-menu-design</span>
-</a><a class=next href=https://Han-think.github.io/learning/2026-06-08-pm-sql-select-dml-erd/><span class=title>Next »</span>
-<span>SQLite 입문 오후: SELECT 실습부터 DML과 ERD 읽기까지</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
-<span>Powered by
-<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
-<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>SQLite 입문 오전: SQLTools 실행부터 ERD까지 | Han-think Blog</title>
+<meta name="keywords" content="sqlite, sql, select, crud, erd, database, beginner">
+<meta name="description" content="VS Code SQLTools로 SQLite를 다루며 SELECT/CRUD 기본기와 ERD·샘플 DB 구조를 익힌 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-06-08-am-sqlite-foundations/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-06-08-am-sqlite-foundations/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-06-08-am-sqlite-foundations/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="SQLite 입문 오전: SQLTools 실행부터 ERD까지">
+  <meta property="og:description" content="VS Code SQLTools로 SQLite를 다루며 SELECT/CRUD 기본기와 ERD·샘플 DB 구조를 익힌 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-08T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-08T00:00:00+00:00">
+    <meta property="article:tag" content="SQLite">
+    <meta property="article:tag" content="Sql">
+    <meta property="article:tag" content="Select">
+    <meta property="article:tag" content="Crud">
+    <meta property="article:tag" content="Erd">
+    <meta property="article:tag" content="Database">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="SQLite 입문 오전: SQLTools 실행부터 ERD까지">
+  <meta name="twitter:description" content="VS Code SQLTools로 SQLite를 다루며 SELECT/CRUD 기본기와 ERD·샘플 DB 구조를 익힌 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "SQLite 입문 오전: SQLTools 실행부터 ERD까지",
+      "item": "https://Han-think.github.io/learning/2026-06-08-am-sqlite-foundations/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "SQLite 입문 오전: SQLTools 실행부터 ERD까지",
+  "name": "SQLite 입문 오전: SQLTools 실행부터 ERD까지",
+  "description": "VS Code SQLTools로 SQLite를 다루며 SELECT/CRUD 기본기와 ERD·샘플 DB 구조를 익힌 오전 학습 정리",
+  "keywords": [
+    "sqlite", "sql", "select", "crud", "erd", "database", "beginner"
+  ],
+  "articleBody": "목차 SQLTools에서 SQL 선택 실행하기 SELECT와 CRUD 기본 문법 ERD와 Crow’s Foot 표기법 읽기 Chinook과 ClassicModels 샘플 DB 살펴보기 학습 자료를 source로 보존하기 총평 1. SQLTools에서 SQL 선택 실행하기 무엇을 배웠나 오전 실습은 VS Code의 SQLTools로 SQLite DB에 연결하고, SQL 문장을 선택해서 실행하는 감각을 잡는 것부터 시작했다. 핵심은 “전체 실행\"과 “선택 실행\"의 차이였다.\n전체 파일 실행 = 위에서 아래로 모든 SQL 문장을 실행 선택 영역 실행 = 드래그한 SQL 문장만 실행 CREATE TABLE, INSERT, SELECT가 한 파일에 같이 있을 때 SELECT * FROM study_notes;만 드래그해서 실행하면 조회만 수행된다.\n헷갈렸던 점 결과가 안 나오거나 빨간 표시가 뜨면 처음엔 문법이 틀린 줄 알았다. 하지만 실제로는 실행 순서와 연결 상태가 더 중요했다. 테이블을 만들기 전에 조회하면 당연히 결과가 없다.\nCREATE TABLE 실행 → INSERT 실행 → SELECT 실행 정리된 이해 SQLTools에서는 SQL을 한 덩어리씩 나눠 실행하는 습관이 안전하다. 처음 한 번은 전체 실행으로 테이블과 데이터를 만들고, 이후에는 조회문만 선택 실행한다.\nCREATE TABLE IF NOT EXISTS study_notes ( id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, category TEXT NOT NULL ); INSERT INTO study_notes (title, category) VALUES ('SELECT 기본', 'database'); SELECT * FROM study_notes; 2. SELECT와 CRUD 기본 문법 무엇을 배웠나 SQL은 Structured Query Language, 즉 구조화된 데이터에게 질문하는 언어다. 가장 기본이 되는 조회문은 다음 형태다.\nSELECT * FROM study_notes; 여기서 *는 “모든 컬럼\"을 뜻하고, 위 문장은 “study_notes 테이블의 모든 컬럼과 모든 행을 보여줘\"라는 의미다.\n헷갈렸던 점 SQL이 단순 명령어처럼 보였지만, 강의에서는 핵심을 “질의(質疑)“라고 짚었다. 즉 데이터베이스에게 질문을 던지고 표 형태의 답을 받는 것이 SELECT의 본질이다.\n정리된 이해 데이터를 다루는 네 가지 동작(CRUD)은 SQL 명령과 다음처럼 대응된다.\nCRUD 의미 SQL Create 데이터 추가 INSERT Read 데이터 조회 SELECT Update 데이터 수정 UPDATE Delete 데이터 삭제 DELETE 테이블 자체를 만드는 일은 CREATE TABLE로 처리한다. 조회의 기본 공식은 다음과 같다.\nSELECT 컬럼명 FROM 테이블명 WHERE 조건 ORDER BY 정렬기준 LIMIT 개수; 3. ERD와 Crow’s Foot 표기법 읽기 무엇을 배웠나 ERD는 Entity-Relationship Diagram의 약자로, 테이블들이 서로 어떻게 연결되는지 보여주는 그림이다. 나는 ERD를 회로도/관계망으로 비유해서 이해했다. 테이블은 부품, Primary Key와 Foreign Key는 부품을 잇는 연결선이다.\n헷갈렸던 점 처음에는 ERD가 위에서 아래로 갈라지는 트리 구조처럼 보였다. 하지만 관계형 데이터베이스는 한 방향으로만 내려가지 않는다. 특히 playlists와 tracks는 직접 연결되지 않고 playlist_track이라는 중간 테이블을 통해 이어진다.\nartists → albums → tracks customers → invoices → invoice_items → tracks playlists ↔ playlist_track ↔ tracks 정리된 이해 ERD의 기본 요소와 Crow’s Foot 표기의 감각을 정리하면 다음과 같다.\n개념 의미 Entity 테이블 Attribute 컬럼 Primary Key 각 행을 구분하는 고유값 Foreign Key 다른 테이블의 PK를 참조하는 값 Relationship 테이블 간 연결 Cardinality 1:1, 1:N, N:M 같은 관계 수 ERD를 보고 두 테이블을 연결하면 곧 JOIN이 된다.\nSELECT artists.Name AS artist_name, albums.Title AS album_title FROM artists JOIN albums ON artists.ArtistId = albums.ArtistId; 4. Chinook과 ClassicModels 샘플 DB 살펴보기 무엇을 배웠나 강의 자료로 SQLite 샘플 DB 두 개가 제공되었다. chinook.db는 음악/음원 판매 예제 DB, classicmodels.db는 상품·주문·고객·결제 구조를 가진 영업 관리 예제 DB다.\n헷갈렸던 점 DB 파일이 두 개라 무엇을 기준으로 봐야 할지 헷갈렸다. 정리하면 역할이 다르다.\nchinook.db = 음악 가게 DB, ERD/JOIN 감 잡기 좋음 classicmodels.db = 주문 관리 DB, 실무형 SQL 구조 배우기 좋음 정리된 이해 샘플 DB는 단순 쿼리 연습용이 아니라 관계형 구조를 읽기 위한 지도다. 먼저 각 테이블을 SELECT *로 훑고, 이후 ERD를 보며 관계를 따라가면 된다.\nSELECT * FROM artists; SELECT * FROM albums; SELECT * FROM tracks; SELECT * FROM customers; Chinook의 음악 카탈로그는 artists → albums → tracks로, 판매 구조는 customers → invoices → invoice_items → tracks로 이어진다.\n5. 학습 자료를 source로 보존하기 무엇을 배웠나 강의에서 기준 참고 자료로 SQLite 튜토리얼의 공개 샘플 DB 페이지가 언급되었다. 이 페이지에서 Chinook 샘플 DB, ERD, SQLite 학습 흐름을 한눈에 볼 수 있다. 노션 공개 페이지는 사람이 브라우저로 볼 때는 잘 보였지만, 자동화 도구로 직접 가져오기는 어려웠다.\n헷갈렸던 점 공개 링크인데도 자동 fetch가 막히는 이유가 처음엔 의아했다. 가능한 원인은 JS 렌더링 페이지, 봇 접근 제한, 워크스페이스 권한 정책, export 제한 등이었다.\n정리된 이해 공개 페이지 자료는 자동으로 긁기보다 PDF로 인쇄 저장하거나 텍스트로 복사해 raw source로 보존하는 편이 현실적이었다. 수업 자료가 외부에 있어도, 내 LearningLog에서는 원본을 따로 보존하고 학습 내용은 주제별 노트로 분리한다는 원칙을 다시 확인했다.\nsource는 보존하고, note는 내 것으로 만들고, draft는 검토 후 공개한다. 총평 오늘 오전 전체에서 배운 것 SQLTools로 SQL을 선택 실행하는 감각을 잡고, SELECT와 CRUD의 대응 관계, ERD/Crow’s Foot로 테이블 관계를 읽는 법, 그리고 Chinook·ClassicModels 샘플 DB의 구조까지 한 흐름으로 연결했다. SQL은 결국 “데이터베이스에게 질문하는 언어\"라는 점이 핵심이었다.\n다음에 조심할 것 조회 결과가 비어 보일 때는 문법보다 실행 순서와 연결 상태를 먼저 의심하자. 또 ERD를 트리로 착각하지 말고, 중간 테이블(N:M)을 항상 염두에 둔다.\n다음 복습 주제 WHERE 조건 조합, ORDER BY와 LIMIT, 그리고 ERD를 보고 어떤 테이블을 JOIN할지 찾는 연습을 이어서 한다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "773",
+  "inLanguage": "en",
+  "datePublished": "2026-06-08T00:00:00Z",
+  "dateModified": "2026-06-08T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-06-08-am-sqlite-foundations/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      SQLite 입문 오전: SQLTools 실행부터 ERD까지
+    </h1>
+    <div class="post-description">
+      VS Code SQLTools로 SQLite를 다루며 SELECT/CRUD 기본기와 ERD·샘플 DB 구조를 익힌 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-08 00:00:00 +0000 UTC'>2026년 6월 8일</span>&nbsp;·&nbsp;<span>4 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-sqltools%EC%97%90%EC%84%9C-sql-%EC%84%A0%ED%83%9D-%EC%8B%A4%ED%96%89%ED%95%98%EA%B8%B0">SQLTools에서 SQL 선택 실행하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-select%EC%99%80-crud-%EA%B8%B0%EB%B3%B8-%EB%AC%B8%EB%B2%95">SELECT와 CRUD 기본 문법</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-erd%EC%99%80-crows-foot-%ED%91%9C%EA%B8%B0%EB%B2%95-%EC%9D%BD%EA%B8%B0">ERD와 Crow&rsquo;s Foot 표기법 읽기</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-chinook%EA%B3%BC-classicmodels-%EC%83%98%ED%94%8C-db-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0">Chinook과 ClassicModels 샘플 DB 살펴보기</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-%ED%95%99%EC%8A%B5-%EC%9E%90%EB%A3%8C%EB%A5%BC-source%EB%A1%9C-%EB%B3%B4%EC%A1%B4%ED%95%98%EA%B8%B0">학습 자료를 source로 보존하기</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-sqltools에서-sql-선택-실행하기">1. SQLTools에서 SQL 선택 실행하기<a hidden class="anchor" aria-hidden="true" href="#1-sqltools에서-sql-선택-실행하기">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>오전 실습은 VS Code의 SQLTools로 SQLite DB에 연결하고, SQL 문장을 <strong>선택해서 실행</strong>하는 감각을 잡는 것부터 시작했다. 핵심은 &ldquo;전체 실행&quot;과 &ldquo;선택 실행&quot;의 차이였다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>전체 파일 실행 = 위에서 아래로 모든 SQL 문장을 실행
+</span></span><span style="display:flex;"><span>선택 영역 실행 = 드래그한 SQL 문장만 실행
+</span></span></code></pre></div><p><code>CREATE TABLE</code>, <code>INSERT</code>, <code>SELECT</code>가 한 파일에 같이 있을 때 <code>SELECT * FROM study_notes;</code>만 드래그해서 실행하면 조회만 수행된다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>결과가 안 나오거나 빨간 표시가 뜨면 처음엔 문법이 틀린 줄 알았다. 하지만 실제로는 <strong>실행 순서와 연결 상태</strong>가 더 중요했다. 테이블을 만들기 전에 조회하면 당연히 결과가 없다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>CREATE TABLE 실행 → INSERT 실행 → SELECT 실행
+</span></span></code></pre></div><h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>SQLTools에서는 SQL을 한 덩어리씩 나눠 실행하는 습관이 안전하다. 처음 한 번은 전체 실행으로 테이블과 데이터를 만들고, 이후에는 조회문만 선택 실행한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">EXISTS</span> study_notes (
+</span></span><span style="display:flex;"><span>    id INTEGER <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> AUTOINCREMENT,
+</span></span><span style="display:flex;"><span>    title TEXT <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>    category TEXT <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>
+</span></span><span style="display:flex;"><span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> study_notes (title, category) <span style="color:#66d9ef">VALUES</span>
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;SELECT 기본&#39;</span>, <span style="color:#e6db74">&#39;database&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> study_notes;
+</span></span></code></pre></div><h2 id="2-select와-crud-기본-문법">2. SELECT와 CRUD 기본 문법<a hidden class="anchor" aria-hidden="true" href="#2-select와-crud-기본-문법">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>SQL은 Structured Query Language, 즉 구조화된 데이터에게 질문하는 언어다. 가장 기본이 되는 조회문은 다음 형태다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> study_notes;
+</span></span></code></pre></div><p>여기서 <code>*</code>는 &ldquo;모든 컬럼&quot;을 뜻하고, 위 문장은 &ldquo;study_notes 테이블의 모든 컬럼과 모든 행을 보여줘&quot;라는 의미다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>SQL이 단순 명령어처럼 보였지만, 강의에서는 핵심을 &ldquo;질의(質疑)&ldquo;라고 짚었다. 즉 데이터베이스에게 <strong>질문을 던지고 표 형태의 답을 받는 것</strong>이 SELECT의 본질이다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>데이터를 다루는 네 가지 동작(CRUD)은 SQL 명령과 다음처럼 대응된다.</p>
+<table>
+	<thead>
+			<tr>
+					<th>CRUD</th>
+					<th>의미</th>
+					<th>SQL</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Create</td>
+					<td>데이터 추가</td>
+					<td>INSERT</td>
+			</tr>
+			<tr>
+					<td>Read</td>
+					<td>데이터 조회</td>
+					<td>SELECT</td>
+			</tr>
+			<tr>
+					<td>Update</td>
+					<td>데이터 수정</td>
+					<td>UPDATE</td>
+			</tr>
+			<tr>
+					<td>Delete</td>
+					<td>데이터 삭제</td>
+					<td>DELETE</td>
+			</tr>
+	</tbody>
+</table>
+<p>테이블 자체를 만드는 일은 <code>CREATE TABLE</code>로 처리한다. 조회의 기본 공식은 다음과 같다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#960050;background-color:#1e0010">컬럼명</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> <span style="color:#960050;background-color:#1e0010">테이블명</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> <span style="color:#960050;background-color:#1e0010">조건</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#960050;background-color:#1e0010">정렬기준</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">LIMIT</span> <span style="color:#960050;background-color:#1e0010">개수</span>;
+</span></span></code></pre></div><h2 id="3-erd와-crows-foot-표기법-읽기">3. ERD와 Crow&rsquo;s Foot 표기법 읽기<a hidden class="anchor" aria-hidden="true" href="#3-erd와-crows-foot-표기법-읽기">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>ERD는 Entity-Relationship Diagram의 약자로, 테이블들이 서로 어떻게 연결되는지 보여주는 그림이다. 나는 ERD를 <strong>회로도/관계망</strong>으로 비유해서 이해했다. 테이블은 부품, Primary Key와 Foreign Key는 부품을 잇는 연결선이다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>처음에는 ERD가 위에서 아래로 갈라지는 트리 구조처럼 보였다. 하지만 관계형 데이터베이스는 한 방향으로만 내려가지 않는다. 특히 <code>playlists</code>와 <code>tracks</code>는 직접 연결되지 않고 <code>playlist_track</code>이라는 <strong>중간 테이블</strong>을 통해 이어진다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>artists → albums → tracks
+</span></span><span style="display:flex;"><span>customers → invoices → invoice_items → tracks
+</span></span><span style="display:flex;"><span>playlists ↔ playlist_track ↔ tracks
+</span></span></code></pre></div><h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>ERD의 기본 요소와 Crow&rsquo;s Foot 표기의 감각을 정리하면 다음과 같다.</p>
+<table>
+	<thead>
+			<tr>
+					<th>개념</th>
+					<th>의미</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Entity</td>
+					<td>테이블</td>
+			</tr>
+			<tr>
+					<td>Attribute</td>
+					<td>컬럼</td>
+			</tr>
+			<tr>
+					<td>Primary Key</td>
+					<td>각 행을 구분하는 고유값</td>
+			</tr>
+			<tr>
+					<td>Foreign Key</td>
+					<td>다른 테이블의 PK를 참조하는 값</td>
+			</tr>
+			<tr>
+					<td>Relationship</td>
+					<td>테이블 간 연결</td>
+			</tr>
+			<tr>
+					<td>Cardinality</td>
+					<td>1:1, 1:N, N:M 같은 관계 수</td>
+			</tr>
+	</tbody>
+</table>
+<p>ERD를 보고 두 테이블을 연결하면 곧 JOIN이 된다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    artists.Name <span style="color:#66d9ef">AS</span> artist_name,
+</span></span><span style="display:flex;"><span>    albums.Title <span style="color:#66d9ef">AS</span> album_title
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> artists
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">JOIN</span> albums
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ON</span> artists.ArtistId <span style="color:#f92672">=</span> albums.ArtistId;
+</span></span></code></pre></div><h2 id="4-chinook과-classicmodels-샘플-db-살펴보기">4. Chinook과 ClassicModels 샘플 DB 살펴보기<a hidden class="anchor" aria-hidden="true" href="#4-chinook과-classicmodels-샘플-db-살펴보기">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>강의 자료로 SQLite 샘플 DB 두 개가 제공되었다. <code>chinook.db</code>는 음악/음원 판매 예제 DB, <code>classicmodels.db</code>는 상품·주문·고객·결제 구조를 가진 영업 관리 예제 DB다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>DB 파일이 두 개라 무엇을 기준으로 봐야 할지 헷갈렸다. 정리하면 역할이 다르다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>chinook.db      = 음악 가게 DB, ERD/JOIN 감 잡기 좋음
+</span></span><span style="display:flex;"><span>classicmodels.db = 주문 관리 DB, 실무형 SQL 구조 배우기 좋음
+</span></span></code></pre></div><h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>샘플 DB는 단순 쿼리 연습용이 아니라 <strong>관계형 구조를 읽기 위한 지도</strong>다. 먼저 각 테이블을 <code>SELECT *</code>로 훑고, 이후 ERD를 보며 관계를 따라가면 된다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> artists;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> albums;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> tracks;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> customers;
+</span></span></code></pre></div><p>Chinook의 음악 카탈로그는 <code>artists → albums → tracks</code>로, 판매 구조는 <code>customers → invoices → invoice_items → tracks</code>로 이어진다.</p>
+<h2 id="5-학습-자료를-source로-보존하기">5. 학습 자료를 source로 보존하기<a hidden class="anchor" aria-hidden="true" href="#5-학습-자료를-source로-보존하기">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>강의에서 기준 참고 자료로 SQLite 튜토리얼의 공개 샘플 DB 페이지가 언급되었다. 이 페이지에서 Chinook 샘플 DB, ERD, SQLite 학습 흐름을 한눈에 볼 수 있다. 노션 공개 페이지는 사람이 브라우저로 볼 때는 잘 보였지만, 자동화 도구로 직접 가져오기는 어려웠다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>공개 링크인데도 자동 fetch가 막히는 이유가 처음엔 의아했다. 가능한 원인은 JS 렌더링 페이지, 봇 접근 제한, 워크스페이스 권한 정책, export 제한 등이었다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>공개 페이지 자료는 자동으로 긁기보다 <strong>PDF로 인쇄 저장하거나 텍스트로 복사해 raw source로 보존</strong>하는 편이 현실적이었다. 수업 자료가 외부에 있어도, 내 LearningLog에서는 원본을 따로 보존하고 학습 내용은 주제별 노트로 분리한다는 원칙을 다시 확인했다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>source는 보존하고,
+</span></span><span style="display:flex;"><span>note는 내 것으로 만들고,
+</span></span><span style="display:flex;"><span>draft는 검토 후 공개한다.
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>SQLTools로 SQL을 선택 실행하는 감각을 잡고, SELECT와 CRUD의 대응 관계, ERD/Crow&rsquo;s Foot로 테이블 관계를 읽는 법, 그리고 Chinook·ClassicModels 샘플 DB의 구조까지 한 흐름으로 연결했다. SQL은 결국 &ldquo;데이터베이스에게 질문하는 언어&quot;라는 점이 핵심이었다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>조회 결과가 비어 보일 때는 문법보다 <strong>실행 순서와 연결 상태</strong>를 먼저 의심하자. 또 ERD를 트리로 착각하지 말고, 중간 테이블(N:M)을 항상 염두에 둔다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>WHERE 조건 조합, ORDER BY와 LIMIT, 그리고 ERD를 보고 어떤 테이블을 JOIN할지 찾는 연습을 이어서 한다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/sqlite/">SQLite</a></li>
+      <li><a href="https://Han-think.github.io/tags/sql/">Sql</a></li>
+      <li><a href="https://Han-think.github.io/tags/select/">Select</a></li>
+      <li><a href="https://Han-think.github.io/tags/crud/">Crud</a></li>
+      <li><a href="https://Han-think.github.io/tags/erd/">Erd</a></li>
+      <li><a href="https://Han-think.github.io/tags/database/">Database</a></li>
+      <li><a href="https://Han-think.github.io/tags/beginner/">Beginner</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/python-while-menu-design/">
+    <span class="title">« Prev</span>
+    <span>python-while-menu-design</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-06-08-pm-sql-select-dml-erd/">
+    <span class="title">Next »</span>
+    <span>SQLite 입문 오후: SELECT 실습부터 DML과 ERD 읽기까지</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

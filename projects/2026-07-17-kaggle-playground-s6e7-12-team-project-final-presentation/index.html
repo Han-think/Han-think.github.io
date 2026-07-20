@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Kaggle Playground S6E7 팀 프로젝트 - 12. 분석을 리듬ON 제안으로 연결한 최종 발표자료 | Han-think Blog</title>
+<meta name="keywords" content="kaggle, team-project, machine-learning, balanced-accuracy, rhythmon, presentation">
+<meta name="description" content="팀원들과 Kaggle 건강 상태 분류 결과를 재현 가능한 분석, 사람의 검토, 참여자의 선택이 이어지는 리듬ON 서비스 제안으로 정리한 최종 발표자료 제작 기록.">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/projects/2026-07-17-kaggle-playground-s6e7-12-team-project-final-presentation/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/projects/2026-07-17-kaggle-playground-s6e7-12-team-project-final-presentation/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/projects/2026-07-17-kaggle-playground-s6e7-12-team-project-final-presentation/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="Kaggle Playground S6E7 팀 프로젝트 - 12. 분석을 리듬ON 제안으로 연결한 최종 발표자료">
+  <meta property="og:description" content="팀원들과 Kaggle 건강 상태 분류 결과를 재현 가능한 분석, 사람의 검토, 참여자의 선택이 이어지는 리듬ON 서비스 제안으로 정리한 최종 발표자료 제작 기록.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2026-07-17T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-17T00:00:00+00:00">
+    <meta property="article:tag" content="Kaggle">
+    <meta property="article:tag" content="Team-Project">
+    <meta property="article:tag" content="Machine-Learning">
+    <meta property="article:tag" content="Balanced-Accuracy">
+    <meta property="article:tag" content="Rhythmon">
+    <meta property="article:tag" content="Presentation">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kaggle Playground S6E7 팀 프로젝트 - 12. 분석을 리듬ON 제안으로 연결한 최종 발표자료">
+  <meta name="twitter:description" content="팀원들과 Kaggle 건강 상태 분류 결과를 재현 가능한 분석, 사람의 검토, 참여자의 선택이 이어지는 리듬ON 서비스 제안으로 정리한 최종 발표자료 제작 기록.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "프로젝트",
+      "item": "https://Han-think.github.io/projects/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Kaggle Playground S6E7 팀 프로젝트 - 12. 분석을 리듬ON 제안으로 연결한 최종 발표자료",
+      "item": "https://Han-think.github.io/projects/2026-07-17-kaggle-playground-s6e7-12-team-project-final-presentation/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Kaggle Playground S6E7 팀 프로젝트 - 12. 분석을 리듬ON 제안으로 연결한 최종 발표자료",
+  "name": "Kaggle Playground S6E7 팀 프로젝트 - 12. 분석을 리듬ON 제안으로 연결한 최종 발표자료",
+  "description": "팀원들과 Kaggle 건강 상태 분류 결과를 재현 가능한 분석, 사람의 검토, 참여자의 선택이 이어지는 리듬ON 서비스 제안으로 정리한 최종 발표자료 제작 기록.",
+  "keywords": [
+    "kaggle", "team-project", "machine-learning", "balanced-accuracy", "rhythmon", "presentation"
+  ],
+  "articleBody": " 1~11편이 개인 실험의 점수와 검증 과정을 기록했다면, 12편부터는 팀원들과 그 결과를 하나의 문제 정의와 서비스 제안으로 묶은 팀 프로젝트의 마무리를 기록한다.\n이 글은 실제 발표 수행 기록이 아니라, 팀원들과 완성한 최종 발표자료와 그 제작 과정을 남기는 기록이다.\n목차 개인 실험에서 팀 프로젝트로 결론부터 시작한 이유 분석을 서비스로 잇는 다섯 고리 팀원들과 역할을 나눠 만든 결과 발표자료에 끝까지 담은 경계 총평 개인 실험에서 팀 프로젝트로 이 프로젝트의 출발점은 Kaggle Playground Series S6E7의 학생 건강 상태 분류 문제였다. 입력은 수면, 활동, 스트레스 등 13개 생활습관 특성이었고, 목표는 at-risk, fit, unhealthy 세 상태를 구분하는 것이었다.\n개인 실험에서는 모델과 피처, OOF, Public 점수를 끝까지 파고들었다. 하지만 팀 프로젝트의 최종 발표자료는 높은 점수를 얻은 과정을 그대로 나열하는 문서가 아니었다. 팀원들과 함께 다음 질문에 답해야 했다.\n분류 점수를 실제 건강지원 흐름으로 연결한다면, 모델은 어디까지 하고 사람은 어디서 결정해야 할까?\n그래서 최종 결과물의 중심을 정확한 분류 모델이 아니라 재현 가능한 신호를 사람이 안전하게 검토하는 과정으로 옮겼다. 서비스 이름은 청소년이 자신의 생활 리듬을 확인하고 작은 실천을 시작한다는 뜻을 담아 리듬ON으로 정했다.\n결론부터 시작한 이유 발표자료 첫 부분에서는 분석 과정을 시간순으로 설명하지 않고 최종 결론을 먼저 제시했다.\n합성 학습 데이터 690,088행을 사용했다. 13개 원본 특성에서 결측, 교차, 해석 피처를 포함한 30개 신호를 구성했다. 전체 데이터의 5-fold OOF로 최종 후보를 다시 검증했다. 재현 가능한 제품 근거는 Public 0.95005, fixed OOF 0.949873인 코어로 정했다. 모델은 지원 대상을 확정하지 않고 담당자가 먼저 검토할 후보만 제안한다. 참여자는 안내를 받은 뒤 동의, 거절, 철회를 직접 선택한다. 개인 실험에서 기록한 0.95113은 더 높은 대회 점수였다. 그러나 외부 anchor와 특정 행 수정에 의존한 별도 최적화 트랙이었기 때문에 같은 파이프라인으로 다시 학습하고 배포할 수 있는 제품 근거와 분리했다.\n좋은 발표자료는 가장 큰 숫자를 앞세우는 것이 아니라, 어떤 숫자를 무엇에 사용할 수 있는지를 먼저 밝혀야 한다는 것을 배웠다.\n분석을 서비스로 잇는 다섯 고리 팀 발표자료의 전체 흐름은 다섯 고리로 정리했다.\n단계 산출물 통제 주체 생활 데이터 수면·활동·스트레스 신호 참여자 재현 분석 상태 확률과 검토 우선순위 모델 기관 확인 승인·수정·보류 담당자 참여자 선택 동의·거절·철회 참여자 리듬ON 기록·비교·작은 실천 서비스 이 구조에서 모델 점수는 행동의 결론이 아니다. 담당자가 다시 확인할 이유를 만드는 시작 신호다. 담당자의 검토와 참여자의 선택이 모두 통과된 뒤에야 리듬ON의 기록과 행동 제안이 시작된다.\n다섯 고리 중 하나라도 빠지면 문제가 생긴다.\n분석만 있고 담당자 확인이 없으면 자동 판단이 된다. 담당자 판단만 있고 참여자 동의가 없으면 강제 연결이 된다. 앱만 있고 분석 근거가 없으면 일반적인 생활습관 콘텐츠에 머문다. 점수만 있고 감사 기록이 없으면 나중에 결정 과정을 설명할 수 없다. 팀원들과 역할을 나눠 만든 결과 이번 결과물은 혼자 완성한 프로젝트가 아니다. 팀원들과 역할을 나눠 분석 근거, 모델 비교, 서비스 흐름, 화면 제안, 발표자료의 논리를 서로 확인했다.\n협업 과정에서 특히 중요했던 것은 각자 만든 결과를 단순히 한 문서에 붙이는 일이 아니었다. 서로 다른 작업을 같은 기준으로 다시 연결해야 했다.\n분석 수치는 어떤 검증 조건에서 나온 것인지 확인했다. 모델의 출력이 실제 서비스에서 어떤 행동으로 이어지는지 정의했다. 완료된 분석과 아직 검증하지 않은 서비스 제안을 구분했다. 자동 진단이나 자동 배정으로 오해될 표현을 걷어냈다. 발표자료 전체를 문제, 근거, 서비스, 파일럿, 한계의 순서로 통일했다. 개별 이름이나 기여를 나열하기보다, 이 글에서는 팀원들과 함께 판단 기준을 맞추고 하나의 흐름을 만든 과정에 집중한다.\n발표자료에 끝까지 담은 경계 리듬ON은 의료 진단 서비스로 제안하지 않았다. 모델이 계산한 상태 확률만으로 지원 대상을 자동 배정하거나 앱을 자동 설치하는 구조도 아니다.\n발표자료에는 다음 네 가지 금지선을 분명히 담았다.\n의료 진단을 대신하지 않는다. 모델 점수로 지원 대상을 자동 배정하지 않는다. 참여자의 동의 없이 앱이나 정보를 연결하지 않는다. 개인에게 건강 문제의 책임을 돌리지 않는다. 또한 현재 확인된 범위도 제한했다. Kaggle 합성 데이터에서 분류 가능성과 재현성을 확인했지만, 실제 청소년 데이터의 대표성, 보호 집단별 공정성, 앱 사용 지속성, 개인정보 보호와 보안 운영은 아직 확인하지 않았다.\n총평 개인 실험에서는 왜 점수가 오르거나 떨어졌는가가 가장 큰 질문이었다. 팀 프로젝트에서는 질문이 한 단계 더 넓어졌다.\n이 결과를 누가 보고, 어떤 결정을 내리며, 잘못됐을 때 누가 멈출 수 있는가?\n팀원들과 발표자료를 만들면서 모델 성능, 서비스 화면, 운영 책임을 한 흐름으로 설명하는 법을 배웠다. 높은 점수는 좋은 출발점이지만, 실제 제안이 되려면 재현성, 사람의 검토, 참여자의 선택, 중단 기준까지 함께 있어야 했다.\n다음 13편에서는 왜 0.95113이 아니라 재현 가능한 0.95005 코어를 제품 근거로 택했는지, 그리고 이를 8주 파일럿으로 어떻게 검증하려 했는지 정리한다.\n시리즈 이동: 11편 - 최종 제출과 재현성 | 13편 - 재현 모델과 리듬ON 파일럿\n",
+  "wordCount" : "672",
+  "inLanguage": "en",
+  "datePublished": "2026-07-17T00:00:00Z",
+  "dateModified": "2026-07-17T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/projects/2026-07-17-kaggle-playground-s6e7-12-team-project-final-presentation/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Kaggle Playground S6E7 팀 프로젝트 - 12. 분석을 리듬ON 제안으로 연결한 최종 발표자료
+    </h1>
+    <div class="post-description">
+      팀원들과 Kaggle 건강 상태 분류 결과를 재현 가능한 분석, 사람의 검토, 참여자의 선택이 이어지는 리듬ON 서비스 제안으로 정리한 최종 발표자료 제작 기록.
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-17 00:00:00 +0000 UTC'>2026년 7월 17일</span>&nbsp;·&nbsp;<span>4 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><blockquote>
+<p>1~11편이 개인 실험의 점수와 검증 과정을 기록했다면, 12편부터는 팀원들과 그 결과를 하나의 문제 정의와 서비스 제안으로 묶은 팀 프로젝트의 마무리를 기록한다.</p>
+<p>이 글은 실제 발표 수행 기록이 아니라, 팀원들과 완성한 최종 발표자료와 그 제작 과정을 남기는 기록이다.</p>
+</blockquote>
+<h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li><a href="#%EA%B0%9C%EC%9D%B8-%EC%8B%A4%ED%97%98%EC%97%90%EC%84%9C-%ED%8C%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EB%A1%9C">개인 실험에서 팀 프로젝트로</a></li>
+<li><a href="#%EA%B2%B0%EB%A1%A0%EB%B6%80%ED%84%B0-%EC%8B%9C%EC%9E%91%ED%95%9C-%EC%9D%B4%EC%9C%A0">결론부터 시작한 이유</a></li>
+<li><a href="#%EB%B6%84%EC%84%9D%EC%9D%84-%EC%84%9C%EB%B9%84%EC%8A%A4%EB%A1%9C-%EC%9E%87%EB%8A%94-%EB%8B%A4%EC%84%AF-%EA%B3%A0%EB%A6%AC">분석을 서비스로 잇는 다섯 고리</a></li>
+<li><a href="#%ED%8C%80%EC%9B%90%EB%93%A4%EA%B3%BC-%EC%97%AD%ED%95%A0%EC%9D%84-%EB%82%98%EB%88%A0-%EB%A7%8C%EB%93%A0-%EA%B2%B0%EA%B3%BC">팀원들과 역할을 나눠 만든 결과</a></li>
+<li><a href="#%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C%EC%97%90-%EB%81%9D%EA%B9%8C%EC%A7%80-%EB%8B%B4%EC%9D%80-%EA%B2%BD%EA%B3%84">발표자료에 끝까지 담은 경계</a></li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="개인-실험에서-팀-프로젝트로">개인 실험에서 팀 프로젝트로<a hidden class="anchor" aria-hidden="true" href="#개인-실험에서-팀-프로젝트로">#</a></h2>
+<p>이 프로젝트의 출발점은 Kaggle Playground Series S6E7의 학생 건강 상태 분류 문제였다. 입력은 수면, 활동, 스트레스 등 13개 생활습관 특성이었고, 목표는 <code>at-risk</code>, <code>fit</code>, <code>unhealthy</code> 세 상태를 구분하는 것이었다.</p>
+<p>개인 실험에서는 모델과 피처, OOF, Public 점수를 끝까지 파고들었다. 하지만 팀 프로젝트의 최종 발표자료는 높은 점수를 얻은 과정을 그대로 나열하는 문서가 아니었다. 팀원들과 함께 다음 질문에 답해야 했다.</p>
+<blockquote>
+<p>분류 점수를 실제 건강지원 흐름으로 연결한다면, 모델은 어디까지 하고 사람은 어디서 결정해야 할까?</p>
+</blockquote>
+<p>그래서 최종 결과물의 중심을 <code>정확한 분류 모델</code>이 아니라 <strong>재현 가능한 신호를 사람이 안전하게 검토하는 과정</strong>으로 옮겼다. 서비스 이름은 청소년이 자신의 생활 리듬을 확인하고 작은 실천을 시작한다는 뜻을 담아 <code>리듬ON</code>으로 정했다.</p>
+<h2 id="결론부터-시작한-이유">결론부터 시작한 이유<a hidden class="anchor" aria-hidden="true" href="#결론부터-시작한-이유">#</a></h2>
+<p><img alt="최종 의사결정 요약" loading="lazy" src="/images/projects/sixon-rhythmon-team-final/01-final-decision.png"></p>
+<p>발표자료 첫 부분에서는 분석 과정을 시간순으로 설명하지 않고 최종 결론을 먼저 제시했다.</p>
+<ul>
+<li>합성 학습 데이터 690,088행을 사용했다.</li>
+<li>13개 원본 특성에서 결측, 교차, 해석 피처를 포함한 30개 신호를 구성했다.</li>
+<li>전체 데이터의 5-fold OOF로 최종 후보를 다시 검증했다.</li>
+<li>재현 가능한 제품 근거는 Public <code>0.95005</code>, fixed OOF <code>0.949873</code>인 코어로 정했다.</li>
+<li>모델은 지원 대상을 확정하지 않고 담당자가 먼저 검토할 후보만 제안한다.</li>
+<li>참여자는 안내를 받은 뒤 동의, 거절, 철회를 직접 선택한다.</li>
+</ul>
+<p>개인 실험에서 기록한 <code>0.95113</code>은 더 높은 대회 점수였다. 그러나 외부 anchor와 특정 행 수정에 의존한 별도 최적화 트랙이었기 때문에 같은 파이프라인으로 다시 학습하고 배포할 수 있는 제품 근거와 분리했다.</p>
+<p>좋은 발표자료는 가장 큰 숫자를 앞세우는 것이 아니라, <strong>어떤 숫자를 무엇에 사용할 수 있는지</strong>를 먼저 밝혀야 한다는 것을 배웠다.</p>
+<h2 id="분석을-서비스로-잇는-다섯-고리">분석을 서비스로 잇는 다섯 고리<a hidden class="anchor" aria-hidden="true" href="#분석을-서비스로-잇는-다섯-고리">#</a></h2>
+<p><img alt="안전한 지원 연결 구조" loading="lazy" src="/images/projects/sixon-rhythmon-team-final/02-safe-support-blueprint.png"></p>
+<p>팀 발표자료의 전체 흐름은 다섯 고리로 정리했다.</p>
+<table>
+	<thead>
+			<tr>
+					<th>단계</th>
+					<th>산출물</th>
+					<th>통제 주체</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>생활 데이터</td>
+					<td>수면·활동·스트레스 신호</td>
+					<td>참여자</td>
+			</tr>
+			<tr>
+					<td>재현 분석</td>
+					<td>상태 확률과 검토 우선순위</td>
+					<td>모델</td>
+			</tr>
+			<tr>
+					<td>기관 확인</td>
+					<td>승인·수정·보류</td>
+					<td>담당자</td>
+			</tr>
+			<tr>
+					<td>참여자 선택</td>
+					<td>동의·거절·철회</td>
+					<td>참여자</td>
+			</tr>
+			<tr>
+					<td>리듬ON</td>
+					<td>기록·비교·작은 실천</td>
+					<td>서비스</td>
+			</tr>
+	</tbody>
+</table>
+<p>이 구조에서 모델 점수는 행동의 결론이 아니다. 담당자가 다시 확인할 이유를 만드는 <strong>시작 신호</strong>다. 담당자의 검토와 참여자의 선택이 모두 통과된 뒤에야 리듬ON의 기록과 행동 제안이 시작된다.</p>
+<p>다섯 고리 중 하나라도 빠지면 문제가 생긴다.</p>
+<ul>
+<li>분석만 있고 담당자 확인이 없으면 자동 판단이 된다.</li>
+<li>담당자 판단만 있고 참여자 동의가 없으면 강제 연결이 된다.</li>
+<li>앱만 있고 분석 근거가 없으면 일반적인 생활습관 콘텐츠에 머문다.</li>
+<li>점수만 있고 감사 기록이 없으면 나중에 결정 과정을 설명할 수 없다.</li>
+</ul>
+<h2 id="팀원들과-역할을-나눠-만든-결과">팀원들과 역할을 나눠 만든 결과<a hidden class="anchor" aria-hidden="true" href="#팀원들과-역할을-나눠-만든-결과">#</a></h2>
+<p>이번 결과물은 혼자 완성한 프로젝트가 아니다. 팀원들과 역할을 나눠 분석 근거, 모델 비교, 서비스 흐름, 화면 제안, 발표자료의 논리를 서로 확인했다.</p>
+<p>협업 과정에서 특히 중요했던 것은 각자 만든 결과를 단순히 한 문서에 붙이는 일이 아니었다. 서로 다른 작업을 같은 기준으로 다시 연결해야 했다.</p>
+<ol>
+<li>분석 수치는 어떤 검증 조건에서 나온 것인지 확인했다.</li>
+<li>모델의 출력이 실제 서비스에서 어떤 행동으로 이어지는지 정의했다.</li>
+<li>완료된 분석과 아직 검증하지 않은 서비스 제안을 구분했다.</li>
+<li>자동 진단이나 자동 배정으로 오해될 표현을 걷어냈다.</li>
+<li>발표자료 전체를 문제, 근거, 서비스, 파일럿, 한계의 순서로 통일했다.</li>
+</ol>
+<p>개별 이름이나 기여를 나열하기보다, 이 글에서는 <strong>팀원들과 함께 판단 기준을 맞추고 하나의 흐름을 만든 과정</strong>에 집중한다.</p>
+<h2 id="발표자료에-끝까지-담은-경계">발표자료에 끝까지 담은 경계<a hidden class="anchor" aria-hidden="true" href="#발표자료에-끝까지-담은-경계">#</a></h2>
+<p>리듬ON은 의료 진단 서비스로 제안하지 않았다. 모델이 계산한 상태 확률만으로 지원 대상을 자동 배정하거나 앱을 자동 설치하는 구조도 아니다.</p>
+<p>발표자료에는 다음 네 가지 금지선을 분명히 담았다.</p>
+<ul>
+<li>의료 진단을 대신하지 않는다.</li>
+<li>모델 점수로 지원 대상을 자동 배정하지 않는다.</li>
+<li>참여자의 동의 없이 앱이나 정보를 연결하지 않는다.</li>
+<li>개인에게 건강 문제의 책임을 돌리지 않는다.</li>
+</ul>
+<p>또한 현재 확인된 범위도 제한했다. Kaggle 합성 데이터에서 분류 가능성과 재현성을 확인했지만, 실제 청소년 데이터의 대표성, 보호 집단별 공정성, 앱 사용 지속성, 개인정보 보호와 보안 운영은 아직 확인하지 않았다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<p>개인 실험에서는 <code>왜 점수가 오르거나 떨어졌는가</code>가 가장 큰 질문이었다. 팀 프로젝트에서는 질문이 한 단계 더 넓어졌다.</p>
+<blockquote>
+<p>이 결과를 누가 보고, 어떤 결정을 내리며, 잘못됐을 때 누가 멈출 수 있는가?</p>
+</blockquote>
+<p>팀원들과 발표자료를 만들면서 모델 성능, 서비스 화면, 운영 책임을 한 흐름으로 설명하는 법을 배웠다. 높은 점수는 좋은 출발점이지만, 실제 제안이 되려면 재현성, 사람의 검토, 참여자의 선택, 중단 기준까지 함께 있어야 했다.</p>
+<p>다음 13편에서는 왜 <code>0.95113</code>이 아니라 재현 가능한 <code>0.95005</code> 코어를 제품 근거로 택했는지, 그리고 이를 8주 파일럿으로 어떻게 검증하려 했는지 정리한다.</p>
+<blockquote>
+<p>시리즈 이동: <a href="/projects/2026-07-14-kaggle-playground-s6e7-11-final-submissions-and-reproducibility/">11편 - 최종 제출과 재현성</a> | <a href="/projects/2026-07-17-kaggle-playground-s6e7-13-rhythmon-model-and-pilot/">13편 - 재현 모델과 리듬ON 파일럿</a></p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/kaggle/">Kaggle</a></li>
+      <li><a href="https://Han-think.github.io/tags/team-project/">Team-Project</a></li>
+      <li><a href="https://Han-think.github.io/tags/machine-learning/">Machine-Learning</a></li>
+      <li><a href="https://Han-think.github.io/tags/balanced-accuracy/">Balanced-Accuracy</a></li>
+      <li><a href="https://Han-think.github.io/tags/rhythmon/">Rhythmon</a></li>
+      <li><a href="https://Han-think.github.io/tags/presentation/">Presentation</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

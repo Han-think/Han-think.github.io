@@ -1,180 +1,722 @@
-<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>데이터 분석 기초 다지기: Pandas, NumPy, 그리고 문제 해결 실전 | Han-think Blog</title><meta name=keywords content><meta name=description content="2026-06-20 오후 학습 정리"><meta name=author content><link rel=canonical href=https://Han-think.github.io/learning/2026-06-20-pm-daily/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/learning/2026-06-20-pm-daily/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/learning/2026-06-20-pm-daily/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="데이터 분석 기초 다지기: Pandas, NumPy, 그리고 문제 해결 실전"><meta property="og:description" content="2026-06-20 오후 학습 정리"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="learning"><meta property="article:published_time" content="2026-06-20T00:00:00+00:00"><meta property="article:modified_time" content="2026-06-20T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="데이터 분석 기초 다지기: Pandas, NumPy, 그리고 문제 해결 실전"><meta name=twitter:description content="2026-06-20 오후 학습 정리"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"학습 기록","item":"https://Han-think.github.io/learning/"},{"@type":"ListItem","position":2,"name":"데이터 분석 기초 다지기: Pandas, NumPy, 그리고 문제 해결 실전","item":"https://Han-think.github.io/learning/2026-06-20-pm-daily/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"데이터 분석 기초 다지기: Pandas, NumPy, 그리고 문제 해결 실전","name":"데이터 분석 기초 다지기: Pandas, NumPy, 그리고 문제 해결 실전","description":"2026-06-20 오후 학습 정리","keywords":[],"articleBody":"목차 데이터 문제 정의 및 품질 이해 Pandas 파일 입출력과 Colab 경로 이해 Pandas 표의 핵심 개념과 혼란 해결하기 Pandas 조건 필터링: loc 사용법과 Boolean Mask 활용 Pandas read_excel 함수 활용법: 초보자를 위한 핵심 옵션 가이드 데이터 분석 기초: 통계, 변수, 역할 구분 완벽 가이드 Pandas groupby와 다양한 집계 함수 활용 가이드 결측치 처리: 데이터 품질 향상을 위한 정책 및 실습 NumPy 핵심 개념과 활용법: 초보자를 위한 완전 정복 NumPy 배열의 형태 변환과 브로드캐스팅 완벽 가이드 Titanic 데이터셋 학습 및 테스트 계획 Pandas transform, groupby, unstack 활용 및 디버깅 가이드 데이터 품질 점검과 파생변수 생성: 혼란을 이해로 NumPy Boolean 마스크와 배열 조작: 이해와 활용 서울 아파트 데이터 전처리 및 특징 엔지니어링 가이드 CAD 검증을 위한 알고리즘 개발 및 JSON 파이프라인 이해 데이터 로드 오류 해결 및 워킹 노트 판다스 실습 문제 해결과 핵심 용어 정리 총평 1. 데이터 문제 정의 및 품질 이해 무엇을 배웠나 데이터 분석 프로젝트는 데이터의 상태에서 시작되어야 하며, 문제 정의는 확보 가능한 데이터를 기반으로 설정해야 한다는 점을 배웠다. 데이터가 부족한 경우, 획득 가능한 데이터와 향후 수집 가능성을 고려하여 문제 정의를 조정해야 한다는 것을 알게 되었다. 또한 데이터 품질 검증과 처리 과정을 통해 “Garbage In, Garbage Out” 문제를 해결하는 것이 중요하다는 것을 이해했다.\n헷갈렸던 점 데이터가 부족하거나 없을 때 문제 정의를 어떻게 해야 할지, 그리고 문제 정의를 유지해야 할지 기다려야 할지 혼란스러웠습니다. 초기에는 ‘있는 데이터에 억지로 맞추는 것’과 ‘기다리는 것’ 두 가지 선택지만 생각했는데, 둘 다 현실적인 방법이라고 생각하지 못했습니다.\n정리된 이해 데이터 분석 프로젝트는 현재 확보 가능한 데이터 상태에서 시작해야 하며, 부족한 데이터는 수집 가능성을 고려하여 문제 정의를 수정하거나 추가적인 데이터 확보 계획을 세워야 합니다. 데이터 품질은 분석 결과에 직접적인 영향을 미치므로, 수집부터 검증, 처리, 저장까지 체계적인 과정을 거쳐야 합니다. 핵심은 “쓰레기 입력하면 쓰레기 출력\"이라는 점을 명심하고 데이터 중심적인 접근법을 취하는 것입니다.\nimport numpy as np # 예시 데이터 수집 raw_data = np.array([[1, 2], [2, np.nan], [3, 4]]) # 결측치 포함 # 결측치 처리 validated_data = raw_data[~np.isnan(raw_data).any(axis=1)] print(\"검증된 데이터:\\n\", validated_data) 2. Pandas 파일 입출력과 Colab 경로 이해 무엇을 배웠나 Pandas 파일 입출력 시 to_csv나 to_excel 함수는 파일 자체를 열어주는 것이 아니라 지정된 경로에 파일을 저장하는 역할이라는 것을 명확히 이해하게 되었습니다. Colab에서 파일 작업을 할 때마다 Google Drive 마운트와 경로 설정을 잊지 말아야 하며, 파일 저장 및 불러오기 함수들의 역할을 정확히 기억해야 한다는 점도 알게 되었습니다. 이제 경로 감각을 가지고 파일 입출력 작업을 더 효율적으로 수행할 수 있을 것 같습니다.\n헷갈렸던 점 처음 Pandas 파일 입출력을 할 때, to_csv나 to_excel 함수를 실행하면 파일이 바로 열릴 거라고 생각했어요. 그리고 Colab을 다시 시작할 때마다 드라이브 마운트와 경로 설정을 계속 해야 한다는 점이 번거롭게 느껴졌습니다.\n정리된 이해 파일 입출력 시에는 실행 환경의 경로를 정확히 파악하고, to_csv/to_excel 함수는 단순히 파일을 저장하는 역할임을 이해해야 했습니다. Colab 세션이 재시작될 때마다 Drive 연결과 경로 설정이 초기화된다는 점도 기억해야 할 중요한 부분입니다. 파일 저장 및 불러오기 함수들의 역할과 사용법을 명확히 알아야 원하는 결과물을 얻을 수 있다는 것을 깨달았습니다.\n# Google Drive 연결 drive.mount('/content/drive') 3. Pandas 표의 핵심 개념과 혼란 해결하기 무엇을 배웠나 pandas DataFrame과 Series의 차이점을 명확히 이해하게 되었고, Index와 Columns의 역할이 어떻게 작동하는지 파악하게 되었다. 특히, loc 함수를 사용할 때 단순히 데이터 선택을 넘어, DataFrame 내에서 특정 조건에 맞는 데이터에 접근하는 방법을 이해하게 되었다. 앞으로 pandas를 활용한 데이터 분석 작업을 더욱 효율적으로 수행할 수 있을 것 같다.\n헷갈렸던 점 pandas를 처음 배울 때 DataFrame과 Series가 어떻게 다른지 감이 잘 안 잡혔어요. 특히 Series가 행인지 열인지 혼동될 때가 많았고, index와 columns의 역할도 명확하게 이해하지 못해서 데이터를 잘못 선택하는 실수를 종종 했습니다.\n정리된 이해 pandas에서 DataFrame은 표 전체를 나타내고, Series는 DataFrame 내의 특정 열이나 행을 나타내는 1차원 데이터라는 것을 명확히 이해하게 되었습니다. Index는 행을 식별하는 번호이고, Columns는 열을 식별하는 이름이라는 점도 이제는 헷갈리지 않습니다. 특히, loc 함수를 사용할 때 Index와 Columns의 역할을 고려해야 한다는 것을 깨달았습니다.\nprint(df.index) # 행 번호표 print(df.columns) 4. Pandas 조건 필터링: loc 사용법과 Boolean Mask 활용 무엇을 배웠나 Pandas에서 컬럼을 추출할 때 loc를 잘못 사용했던 오류를 바로잡았고, 조건 필터링 시 between() 함수와 AND, OR 연산자를 활용하여 Boolean Mask를 적용하는 방법을 익혔습니다. .head() 함수가 데이터프레임의 앞부분을 미리 확인하는 용도로 사용된다는 점도 알게 되었습니다. 이제 Pandas 데이터프레임에서 원하는 데이터를 더 정확하게 필터링하고 분석할 수 있게 되었습니다.\n헷갈렸던 점 처음에는 loc를 컬럼 선택에 사용하려다가 KeyError가 발생했고, .head()가 단순히 결과를 출력하는 기능이라고 생각해서 데이터프레임의 처음 몇 줄을 확인하는 용도로 활용하지 못했습니다. 컬럼을 추출하고 조건 필터링을 적용하는 과정에서 정확한 구문과 개념을 혼동했습니다.\n정리된 이해 Pandas에서 컬럼을 추출할 때는 df[\"컬럼명\"]과 같이 컬럼명을 직접 사용해야 하며, loc를 사용할 때는 인덱스 라벨이 아닌 컬럼명을 사용해야 한다는 점을 알게 되었습니다. 조건 필터링 시 Boolean Mask를 활용하여 between() 함수와 AND, OR 연산자를 조합하면 다양한 조건을 만족하는 데이터를 추출할 수 있습니다. 특히, 조건을 조합할 때는 괄호를 사용하여 정확한 결과를 얻도록 주의해야 합니다.\nmental_scores = df_wel[\"mental_wellbeing_score\"] mask = df_wel[\"mental_wellbeing_score\"].between(6, 8) filtered_df = df_wel.loc[mask, :] combined_mask = (df_wel[\"mental_wellbeing_score\"] \u003e 5) \u0026 (df_wel[\"mental_wellbeing_score\"] \u003c= 7) filtered_df = df_wel.loc[combined_mask, :] 5. Pandas read_excel 함수 활용법: 초보자를 위한 핵심 옵션 가이드 무엇을 배웠나 Pandas 공식 문서의 read_excel 함수를 읽으면서 다양한 옵션 때문에 어려움을 겪었지만, 필수적인 옵션인 io와 sheet_name을 중심으로 핵심 개념을 파악할 수 있었다. Excel 파일을 읽고 데이터프레임을 생성하는 기본적인 과정을 이해했으며, 향후 header, usecols 등 추가적인 옵션들을 학습할 필요가 있다는 것을 알게 되었다. 간단한 예시를 통해 파일 읽기와 데이터 내보내기를 경험하면서 Pandas 사용의 기초를 다졌다.\n헷갈렸던 점 read_excel 함수의 다양한 옵션들이 너무 많아서 어떤 옵션이 실제로 중요한지, 그리고 각 옵션이 어떤 역할을 하는지 파악하는 게 어려웠다. 특히 header, usecols, dtype 같은 옵션들의 의미와 사용법이 명확하게 이해되지 않았었다. 옵션들을 하나씩 테스트하면서 각 옵션이 데이터프레임에 어떤 영향을 미치는지 확인해봐야겠다.\n정리된 이해 Pandas 공식문서를 읽으면서 read_excel 함수의 다양한 옵션에 압도되었지만, 핵심은 파일 경로(io)와 읽을 시트 이름(sheet_name)을 정확히 지정하는 것이라는 점을 파악했습니다. 이제는 데이터 프레임 입출력의 기본 원리를 이해하고, 필요에 따라 추가적인 옵션들을 학습해나가면서 좀 더 복잡한 Excel 파일을 다룰 수 있을 것입니다.\nimport pandas as pd # Excel 파일 읽기 예시 file_path = \"C:\\\\Ollama-IPEX\\\\데이터\\\\example_data.xlsx\" sheet_name = \"tips\" # 데이터프레임 생성 df = pd.read_excel(io=file_path, sheet_name=sheet_name) # 읽어온 데이터 확인 print(df.head()) # 간단한 데이터 내보내기 예시 (이해를 돕기 위한) df.to_excel(\"output_tips.xlsx\", index=False, sheet_name=\"OutputSheet\") 6. 데이터 분석 기초: 통계, 변수, 역할 구분 완벽 가이드 무엇을 배웠나 통계청 자료처럼 이미 요약된 데이터는 분석 목적에 맞게 활용하기 어렵고, 데이터 분석을 위해서는 데이터의 척도와 원천성을 고려해야 한다는 점을 깨달았습니다. 또한, 데이터베이스 관리자와 분석가의 역할이 다르며, 각 역할에 따른 관점이 어떻게 다른지를 이해하게 되었습니다. 이제는 데이터 분석을 위한 데이터 준비 과정의 중요성을 더욱 명확하게 알게 되었습니다.\n헷갈렸던 점 통계청 자료가 바로 분석에 사용할 수 있을 것이라고 생각했고, 변수 척도별로 분석 방법이 어떻게 달라지는지 이해하는 데 어려움이 있었습니다. 또한, SQL 수업에서 DBA와 분석가의 역할 차이를 명확히 구분하지 못해 혼란스러웠습니다.\n정리된 이해 데이터 분석을 위해서는 단순히 데이터가 있다는 것만으로는 부족하며, 데이터의 척도, 형태, 그리고 원천을 고려하여 분석 목적에 맞게 가공해야 합니다. 데이터 분석 과정에서 데이터베이스 관리자와 분석가의 역할은 명확히 구분되며, 각 역할은 데이터의 안정성과 활용성에 초점을 맞추어 서로 다른 관점을 가지고 있습니다. 이러한 이해를 바탕으로 데이터 분석의 전 과정을 효과적으로 수행할 수 있을 것입니다.\n노트에 코드 예시가 없습니다.\n7. Pandas groupby와 다양한 집계 함수 활용 가이드 무엇을 배웠나 Pandas groupby 함수를 사용하여 데이터를 그룹화하고, count, sum, mean과 같은 집계 함수를 적용하는 방법을 익혔습니다. 특히 agg() 함수를 사용하여 여러 집계 함수를 동시에 적용하고, 각 컬럼에 다른 함수를 적용하는 방법을 이해하게 되었습니다. size 컬럼의 경우 단순히 합계를 계산하는 것이 아니라 개수를 세는 것이 중요하다는 점을 깨달았습니다.\n헷갈렸던 점 처음에는 ‘size’ 컬럼을 요일별로 더하는 것이 옳다고 생각했지만, 인원 수를 나타내는 컬럼이므로 개수를 세는 것이 맞다는 것을 깨달았습니다. 또한 agg() 함수를 사용하여 여러 통계값을 동시에 계산하는 방법을 익히는 데 어려움을 겪었습니다. 여러 컬럼에 대해 다른 집계 함수를 적용하는 구문이 복잡하게 느껴졌습니다.\n정리된 이해 Pandas의 groupby는 데이터를 특정 기준으로 묶어 분석할 수 있게 해주며, 집계 함수는 각 그룹에 대해 다양한 통계 값을 계산하는 데 사용됩니다. agg() 함수를 활용하면 여러 집계 함수를 동시에 적용하여 결과를 효율적으로 요약할 수 있다는 점을 명확히 이해했습니다. 특히 size 컬럼과 같은 인원수를 나타내는 컬럼은 sum()이 아닌 count()를 사용해야 한다는 점을 재정의했습니다.\n# 요일별 인원 수 세기 (count) tips.groupby(\"day\")[\"size\"].count() # 요일별 총 빌링 금액 합산 (sum) tips.groupby(\"day\")[\"total_bill\"].sum() # 요일별 평균 빌링 금액 계산 (mean) tips.groupby(\"day\")[\"total_bill\"].mean() 8. 결측치 처리: 데이터 품질 향상을 위한 정책 및 실습 무엇을 배웠나 결측치를 채우는 것은 데이터 해석을 돕는 처리일 뿐, 실제 값을 복원하는 것이 아니라는 점을 깨달았다. NaN 대신 “정보없음\"과 같은 명확한 레이블을 사용하여 데이터의 불확실성을 투명하게 드러내는 것이 중요하며, 결측 여부를 별도 컬럼으로 기록하는 방법도 고려해야 한다는 점을 알게 되었다. 데이터 품질 향상을 위해 결측치 처리 정책을 신중하게 결정해야 함을 배웠다.\n헷갈렸던 점 결측치를 채우는 것이 데이터 품질을 높이는 것처럼 생각했지만, 무작위 값을 넣으면 오히려 정보를 왜곡할 수 있다는 점이 처음에는 헷갈렸어. 특히 임의의 문자열을 넣어 포장하면 실제 데이터의 불확실성을 숨길 수 있다는 점이 걱정됐어. 데이터 보존에 대한 책임감 때문인지, 섣불리 값을 채우는 것 자체를 망설였던 것 같아.\n정리된 이해 결측치를 채우는 것은 데이터 분석을 위한 편리함을 제공하지만, 실제 값을 복원하는 것은 아니라는 점을 명확히 이해했다. 임의의 값을 넣는 것보다 “정보없음\"과 같은 명확한 레이블을 사용하거나, 결측 여부를 표시하는 별도의 컬럼을 만드는 것이 데이터의 정확성을 유지하는 더 나은 방법이다. 결측치 자체도 중요한 정보를 담고 있을 수 있다는 점을 기억해야 한다.\nimport pandas as pd titanic = pd.read_csv('titanic.csv') # 예시 데이터 불러오기 df = titanic.copy() df['deck'] = df['deck'].astype(\"object\") df['deck'] = df['deck'].fillna(\"정보없음\") df['deck_missing'] = df['deck'].isna().astype(bool) 9. NumPy 핵심 개념과 활용법: 초보자를 위한 완전 정복 무엇을 배웠나 NumPy를 단순한 리스트 처리 도구가 아닌, 빠른 수치 연산을 위한 핵심 패키지라는 것을 이해하게 되었다. 배열의 모양(shape), 차원(ndim), 데이터 타입(dtype)과 같은 핵심 개념을 정확히 파악하는 것이 중요하며, 이 개념들을 활용하여 데이터 분석 관련 다른 패키지들과 연계하여 활용할 수 있다는 것을 알게 되었다. 앞으로는 NumPy 배열의 구조를 이해하고, 다양한 기능을 숙달하여 데이터 분석 역량을 키워나가야겠다.\n헷갈렸던 점 처음에는 NumPy를 단순히 파이썬 리스트보다 조금 더 빠른 연산 도구라고 생각했어요. 특히 배열의 모양, 차원, 데이터 타입 같은 개념들이 꼬리에 꼬리를 물어서 어려웠고, 실제로 어떻게 활용해야 할지 감이 잘 안 잡혔습니다. 실습을 통해 좀 더 익숙해져야 할 것 같아요.\n정리된 이해 NumPy는 단순히 리스트를 빠르게 처리하는 도구가 아니라, 과학적 계산과 데이터 분석을 위한 핵심적인 배열 계산 엔진이라는 것을 알게 되었다. 배열의 shape, ndim, dtype, axis 등의 개념을 정확히 이해하고 활용해야 NumPy의 잠재력을 최대한으로 활용할 수 있으며, Pandas, Matplotlib, SciPy 등 다른 중요한 데이터 분석 라이브러리들과의 연관성도 명확히 파악하게 되었다. 이제 NumPy를 통해 데이터 분석의 기반을 다질 수 있다는 자신감이 생겼다.\nimport numpy as np # Shape 예시 a = np.array([[1, 2, 3], [4, 5, 6]]) print(a.shape) # ndim 예시 print(a.ndim) # dtype 예시 print(a.dtype) # Axis 예시 print(a.sum(axis=0)) 10. NumPy 배열의 형태 변환과 브로드캐스팅 완벽 가이드 무엇을 배웠나 NumPy의 reshape 함수는 배열의 총 원소 수를 유지하며 모양을 변경할 수 있다는 것을 알게 되었고, axis는 단순히 행과 열을 나타내는 것이 아니라 계산 방향을 지정한다는 점을 이해하게 되었습니다. 또한 broadcasting을 통해 크기가 다른 배열 간의 연산이 어떻게 이루어지는지 명확하게 이해하여, NumPy 배열 연산에 대한 이해도를 높일 수 있었습니다. 앞으로는 이 개념들을 활용하여 더 복잡한 NumPy 연산을 수행할 수 있을 것 같습니다.\n헷갈렸던 점 NumPy의 reshape 함수를 사용할 때, 배열의 총 원소 개수가 변하지 않으면서 다양한 형태를 가질 수 있다는 점이 처음에는 이해하기 어려웠습니다. axis를 행과 열로만 단순하게 생각하다 보니, 실제 계산 방향이 어떻게 되는지 혼란스러웠고, broadcasting의 경우 배열 크기가 다를 때 어떻게 자동으로 조정되는지 규칙이 불명확하게 느껴졌습니다.\n정리된 이해 NumPy 배열의 reshape 함수는 배열 내 원소의 총 개수를 유지하며 배열의 형태를 변경하는 기능이고, 이 때 곱셈 결과가 동일한 형태를 가질 수 있는 다양한 형태 변환이 가능하다는 것을 알게 되었다. axis는 단순히 행과 열의 개념을 넘어 실제 계산이 이루어지는 방향을 나타내며, broadcasting은 크기가 다른 배열 간 연산 시 NumPy가 자동으로 크기를 맞춰 계산하는 규칙이다.\na = np.arange(12).reshape(3, 4) b = np.arange(12).reshape(2, 2, 3) b = np.array([[1, 1], [2, 2]]).sum(axis=0) matrix = np.array([[2, 4, 2], [6, 5, 9], [9, 4, 7]]) result = matrix + 5 11. Titanic 데이터셋 학습 및 테스트 계획 무엇을 배웠나 월요일 학습 과정에서 데이터셋 전환 혼동과 준비 부족으로 어려움을 겪었지만, titanic 데이터셋에 집중해야 함을 명확히 했다. 데이터셋별 핵심 코드와 예상 문제 유형을 정리하여 앞으로의 학습에 도움이 될 만한 가이드를 만들었다. 이번 과정을 통해 데이터셋 전환 시 주의할 점과 코드 실행 전 데이터 로드 상태 확인의 중요성을 깨달았다.\n헷갈렸던 점 수업 중 데이터셋이 계속 바뀌어서 지금 어떤 데이터셋을 가지고 있는지 파악하는 데 어려움을 겪었다. 특히 answer 노트북에서 데이터 로드에 실패할 때마다 예상치 못한 오류들이 발생해서 전체적인 학습 흐름이 끊기는 듯한 느낌이었다. 여러 데이터셋을 정확히 구분하고 로드하는 과정이 중요하다는 것을 깨달았다.\n정리된 이해 월요일 학습 중 titanic 데이터셋에 집중해야 함을 깨달았고, 데이터셋 전환 혼동으로 인해 발생하던 오류들을 방지하기 위해 데이터 로딩 과정을 명확히 하기로 했다. titanic 데이터셋의 기본적인 정보 확인, 결측치 처리, 조건 필터링, 집계 분석 등을 중심으로 예상 문제 유형을 정리하여 앞으로 학습 방향을 설정했다.\nimport pandas as pd import seaborn as sns titanic = sns.load_dataset(\"titanic\") titanic.head() titanic.info() titanic.dtypes titanic.isna().sum() titanic.loc[titanic[\"age\"].notnull(), :] titanic[\"age\"].fillna(titanic[\"age\"].median()) titanic.loc[(조건1) \u0026 (조건2), :] titanic.groupby(\"sex\")[\"survived\"].mean() titanic.groupby(\"pclass\")[\"survived\"].mean() 12. Pandas transform, groupby, unstack 활용 및 디버깅 가이드 무엇을 배웠나 Pandas의 agg()는 그룹별 요약 통계를, transform()은 원본 행에 적용되는 그룹 계산 결과를 반환한다는 것을 명확히 이해하게 되었다. 다중 groupby() 후 unstack()을 사용할 때는 메서드 체이닝을 위해 쉼표 대신 점(.)을 사용해야 한다는 오류를 수정했다. 이 학습을 통해 Pandas 데이터 분석 작업 효율성을 높일 수 있을 것 같다.\n헷갈렸던 점 agg()와 transform()의 차이점을 명확히 이해하지 못해서 agg()를 사용해야 할 곳에 transform()을 쓰려고 시도했고, 다중 groupby()와 unstack()을 사용할 때 쉼표를 잘못 사용해 메서드 체인이 끊기는 오류가 발생했었다. 특히 transform()이 원본 행 수를 유지한다는 점을 간과하고 있었고, 쉼표를 통해 여러 메서드를 연쇄적으로 실행할 수 있다는 것을 잊고 있었다.\n정리된 이해 agg()는 그룹별 요약 통계를 계산하여 결과를 요약하는 반면, transform()은 그룹 계산 결과를 원본 데이터의 각 행에 적용하여 새로운 열을 생성한다. 다중 groupby()를 사용할 때는 쉼표 대신 and를 사용하여 메서드를 체이닝해야 하며, head()와 같은 메서드는 별도로 호출해야 한다. 이 점들을 기억하고 예제를 통해 연습하면 Pandas transform, multi-column groupby, unstack 사용법을 익히는 데 도움이 될 것이다.\ntips.groupby(\"day\")[\"total_bill\"].agg([\"sum\", \"mean\", \"count\"]) tips[\"day_avg_total_bill 13. 데이터 품질 점검과 파생변수 생성: 혼란을 이해로 무엇을 배웠나 데이터 분석 전에 데이터 품질 점검과 파생변수 생성의 중요성을 알게 되었어. 데이터 품질은 결측, 중복, 정합성, 오염값 등을 확인하고 처리하는 과정이고, 파생변수는 기존 데이터를 활용해 새로운 변수를 만드는 것을 의미해. 마치 요리 전 재료를 검수하고 새로운 요리를 만드는 과정과 비슷하네!\n헷갈렸던 점 데이터 품질과 파생변수라는 단어 자체에 압도당해서 뭘 어떻게 시작해야 할지 감이 잘 안 잡혔어요. 특히 어떤 데이터 품질 문제가 있는지, 그리고 그걸 어떻게 해결해야 하는지 구체적으로 어떻게 판단해야 할지 막막했어요. 파생변수를 만들 때 어떤 기준으로 새로운 변수를 만들어야 하는지 예시가 부족해서 어려웠어요.\n정리된 이해 데이터 분석 전에 데이터 품질을 점검하고 파생변수를 생성하는 것은 마치 요리 전 재료를 검수하고 새로운 레시피를 만드는 과정과 같아요. 데이터 품질은 결측값, 중복, 정합성, 오염값을 확인하는 것이고, 파생변수는 기존 데이터를 활용해 새로운 정보를 만들어내는 작업이에요. 이 과정을 통해 분석의 정확성과 효율성을 높일 수 있다는 것을 알게 되었어요.\n# 숫자 데이터의 빈칸을 중앙값으로 채우기 예시 df_example = df_example.copy() df_example['숫자컬럼'] = df_example['숫자컬럼'].fillna(df_example['숫자컬럼'].median()) 14. NumPy Boolean 마스크와 배열 조작: 이해와 활용 무엇을 배웠나 NumPy의 Boolean Mask를 사용해서 배열에서 특정 조건을 만족하는 값들만 선택하는 방법을 알게 되었다. and나 or 대신 \u0026와 |를 복합 조건에서 사용해야 한다는 점을 다시 확인했고, 조건식 실행 결과와 실제 값 추출의 차이점을 명확히 이해하게 되었다. 이제 Boolean Mask를 활용하여 배열에서 원하는 값들을 효율적으로 추출할 수 있을 것 같다.\n헷갈렸던 점 NumPy Boolean masking을 사용할 때, 조건문들을 연결할 때 and, or를 써야 하는지 \u0026, |를 써야 하는지 헷갈렸고, 조건식을 출력하는 것과 실제 값을 추출하는 것이 왜 다른지 명확히 이해하지 못했다. Boolean 마스크를 통해 배열의 특정 요소들을 선택하는 개념은 SQL의 WHERE절과 비슷하다는 점을 알게 되었다.\n정리된 이해 NumPy Boolean 마스크는 배열에서 특정 조건을 만족하는 요소들을 선택하는 데 사용되며, 복합 조건에서는 \u0026와 | 연산자를 사용해야 한다는 점을 명확히 알게 되었다. 조건식을 적용했을 때 True/False 배열이 출력되는 것과, 실제 배열 값들을 추출하는 과정이 다르다는 것도 이해했다. Boolean 마스크는 배열을 필터링하는 SQL의 WHERE 절과 비슷한 역할을 한다.\nimport numpy as np a = np.array([ [1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12] ]) keep = a \u003c 5 print(keep) print(a[keep]) print(a[(a \u003e 2) \u0026 (a \u003c 11)]) print(a[(a \u003e 5) | (a == 5)]) 15. 서울 아파트 데이터 전처리 및 특징 엔지니어링 가이드 무엇을 배웠나 데이터 전처리의 중요성을 깨달았고, 단순히 데이터를 정리하는 것이 아니라 분석에 적합한 형태로 만드는 체계적인 과정임을 알게 되었다. 불필요한 컬럼 삭제 순서와 결측치 처리 방법이 분석 결과에 미치는 영향에 대해 고민하고, 데이터 전처리 과정을 단계별로 정리하는 것이 효율적임을 학습했다. 앞으로는 데이터 분석의 정확성을 높이기 위해 전처리 단계에 더욱 신중을 기해야겠다.\n헷갈렸던 점 데이터 삭제 순서가 왜 그렇게 중요하고, 특정 컬럼을 삭제하는 것이 분석 결과에 어떤 영향을 미치는지 잘 몰랐어요. 그리고 결측치 처리할 때 단순히 삭제하면 안 되는 이유와 어떤 방식으로 대체해야 하는지 고민이었습니다.\n정리된 이해 데이터 전처리는 분석에 필요한 형태로 데이터를 만들기 위한 체계적인 과정이며, 불필요한 데이터 제거부터 결측치 처리, 데이터 타입 변환, 새로운 특징 생성까지 포함합니다. 이 과정을 통해 데이터의 정확성과 분석 효율성을 높일 수 있으며, 각 단계는 분석 결과에 영향을 미칠 수 있으므로 신중하게 접근해야 합니다.\ndf.drop(columns=drop_cols, inplace=True) df = df.dropna(subset=[\"거래금액(만원)\"], ignore_index=True) df.head() df.info() df.columns pd.to_numeric() pd.to_datetime() df.sort_values() df.groupby() 16. CAD 검증을 위한 알고리즘 개발 및 JSON 파이프라인 이해 무엇을 배웠나 처음에는 알고리즘을 복잡한 공식으로 생각했지만, 실제로는 단순한 규칙의 반복적인 과정이라는 것을 깨달았습니다. 이미지 수치화부터 CAD 검증까지 유사한 구조를 가지는 파이프라인으로 이해하게 되었고, JSON을 활용하여 데이터를 구조화하고 관리하는 것이 중요하다는 점을 알게 되었습니다. 특히, 검증 결과를 피드백 루프로 활용하여 알고리즘을 개선하는 것이 중요하다는 점을 배웠습니다.\n헷갈렸던 점 처음에는 알고리즘을 복잡한 수학 공식처럼 생각해서, 어떻게 적용해야 할지 막막했습니다. 특히 이미지 수치화, JSON 저장, CAD 변환이 어떻게 연결되는지 이해하기 어려웠어요. 알고리즘 개발이라는 것이 단순히 공식을 반복하는 것 이상이라고 생각했지만, 그 ‘이상’이 무엇인지 파악하는 데 시간이 걸렸습니다.\n정리된 이해 알고리즘은 복잡한 공식이 아니라, 입력 데이터를 받아 규칙에 따라 처리하고 저장하며, 그 결과를 바탕으로 반복적인 개선을 거치는 과정이라는 것을 알게 되었습니다. 이미지 수치화, JSON 저장, CAD 변환과 같은 과정들이 유사한 알고리즘 구조를 가진다는 점을 이해하게 되었고, 이를 통해 초보적인 설계 파이프라인을 구축하는 데 도움이 될 것이라고 생각합니다. JSON을 활용하여 데이터를 구조화하고, CAD 도구를 이용하여 설계를 검증하는 전체적인 흐름을 파악하는 것이 중요합니다.\n{ \"part\": \"bracket\", \"material\": \"PLA\", \"thickness_mm\": 4.0, \"load_n\": 80, \"span_mm\": 120, \"joint_type\": \"screw_2point\" } { \"fos\": 1.42, \"status\": \"fail\", \"reason\": \"두께 부족으로 인한 부하 불안정\", \"suggestion\": \"두께를 6mm로 늘리거나 보강 리브 추가\" } 17. 데이터 로드 오류 해결 및 워킹 노트 무엇을 배웠나 노트에서 데이터셋 로드 오류의 원인이 코드 실행 순서에 있음을 알게 되었다. 특히 데이터 로드 코드는 항상 노트북에서 가장 먼저 실행해야 변수가 정의되고, 이후 코드들이 정상적으로 작동한다. 데이터셋을 불러오는 단계를 건너뛰면 NameError나 KeyError와 같은 오류가 발생하는 것을 확인했다.\n헷갈렸던 점 코드가 보인다고 해서 바로 실행되는 게 아니고, 데이터 로드 부분부터 제대로 실행해야 한다는 점이 처음에는 이해가 안 되었습니다. 중간 셀부터 실행하면 변수가 정의되지 않아 오류가 발생한다는 것도 몰랐고, 데이터 로드 셀을 가장 먼저 실행해야 한다는 것을 깨달으니 문제 해결의 실마리가 풀렸습니다.\n정리된 이해 노트북에서 코드가 보이는 것만으로는 실행되지 않기 때문에, 데이터 로드 코드를 항상 가장 먼저 실행해야 문제를 해결할 수 있다는 걸 알게 됐어. 데이터셋을 불러오는 단계를 건너뛰고 아래 셀부터 실행하면 변수가 정의되지 않아 오류가 발생할 수 있다는 점을 명심해야겠다.\nimport pandas as pd import seaborn as sns titanic = sns.load_dataset(\"titanic\") import seaborn as sns tips = sns.load_dataset(\"tips\") # df_srv 데이터셋 로드 예시 df_srv = pd.read_csv(\"path/to/df_srv.csv\") # 실제 파일 경로를 넣어주세요 18. 판다스 실습 문제 해결과 핵심 용어 정리 무엇을 배웠나 Pandas를 처음 배우면서 sum()과 count() 함수의 차이, agg()의 활용, transform()과 agg()의 구분, unstack()의 역할 등 여러 부분이 헷갈렸던 경험을 통해 개념을 정리했습니다. loc 사용 오류와 같은 실수를 통해 정확한 인덱스 지정의 중요성을 깨달았고, 데이터프레임과 시리즈의 관계, 그리고 행/열/인덱스/컬럼 등의 기본적인 용어에 대한 이해를 높였습니다. 이 학습 노트를 통해 Pandas 기본 기능을 더욱 명확하게 이해하게 되었습니다.\n헷갈렸던 점 sum()과 count() 함수가 비슷해서 데이터 개수를 세는 방식이 다른지 몰랐고, agg() 함수는 복잡해서 그 유용성을 제대로 파악하지 못했습니다. transform()과 agg()의 차이점도 명확히 이해하지 못했고, loc 사용 시 인덱스 오류가 자주 발생했습니다.\n정리된 이해 Pandas를 사용하면서 sum()과 count()의 차이, agg()의 활용, transform()과 agg()의 구분 등 기본적인 함수 사용법에서 어려움을 겪었습니다. 하지만 DataFrame, Series, loc, iloc 등의 개념과 boolean mask, isin() 함수를 통해 데이터 선택과 조작에 대한 이해도를 높일 수 있었습니다. 앞으로는 꾸준한 실습을 통해 Pandas 사용법을 숙달하고, 데이터 분석 능력을 향상시키도록 노력해야겠습니다.\n# sum() vs count() 예시 import pandas as pd data = {'col1': [1, 2, 3, 2, 1], 'col2': [4, 5, 2, 1, 5]} df = pd.DataFrame(data) print(df['col1'].sum()) # 값의 합: 9 print(df['col1'].count()) # 항목의 개수: 5 # agg() 예시 data = {'col1': [1, 2, 3, 2, 1], 'col2': [4, 5, 2, 1, 5]} df = pd.DataFrame(data) print(df.agg({'col1': 'sum', 'col2': 'mean'})) # transform() vs agg() 예시 data = {'col1': [1, 2, 3, 2, 1], 'col2': [4, 5, 2, 1, 5]} df = pd.DataFrame(data) df['col1_mean'] = df['col1'].transform(lambda x: x - df['col1'].mean()) print(df) df['col1_sum'] = df['col1'].agg('sum') print(df) # unstack() 예시 import pandas as pd data = {'A': {'x': 1, 'y': 2}, 'B': {'x': 3, 'y': 4}} df = pd.DataFrame(data) print(df.unstack()) # loc 사용 오류 예시 (정확한 인덱스 지정 중요) import pandas as pd data = {'col1': [1, 2, 3], 'col2': [4, 5, 6]} df = pd.DataFrame(data) # 잘못된 예시: KeyError 발생 가능 # print(df.loc[99, 'col1']) # 올바른 예시 print(df.loc[0, 'col1']) 총평 오늘 오후 전체에서 배운 것 데이터 분석 프로젝트의 시작은 데이터 상태를 정확히 이해하고, 확보 가능한 데이터를 기반으로 문제 정의를 설정하는 것임을 배웠습니다. Pandas와 NumPy를 활용한 데이터 전처리, 필터링, 그룹화, 통계 계산 등 다양한 기능을 익히면서 데이터 분석의 기초를 다졌고, 데이터 로딩 순서, 결측치 처리, 특징 엔지니어링 등의 중요성을 깨달았습니다. 앞으로 배운 내용을 바탕으로 실제 데이터 분석 프로젝트를 수행하며 실력을 더욱 향상시켜 나가겠습니다.\n다음에 조심할 것 데이터셋을 로드할 때마다 코드 실행 순서를 다시 한번 확인하고, 변수 정의가 제대로 되었는지 꼼꼼하게 점검해야겠다. 특히 복잡한 분석을 수행하기 전에 데이터 전처리 과정을 충분히 거치고, 각 단계의 영향을 분석 결과에 어떻게 미치는지를 고려해야 실수를 줄일 수 있을 것 같다. 마지막으로, Pandas의 다양한 함수들의 역할과 사용법을 꾸준히 복습하고, 실제 문제에 적용해보면서 숙련도를 높여야겠다.\n다음 복습 주제 NumPy Boolean Mask를 좀 더 다양한 예제를 통해 복습해서 활용도를 높이고 싶어. 특히 배열의 크기가 다를 때 broadcasting이 어떻게 동작하는지 그림과 함께 다시 살펴보면 이해가 더 명확해질 것 같아. 서울 아파트 데이터 전처리 과정에서 어떤 순서로 컬럼을 삭제해야 분석 결과에 가장 적합한지 좀 더 깊이 고민해보고 싶어.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n","wordCount":"3541","inLanguage":"en","datePublished":"2026-06-20T00:00:00Z","dateModified":"2026-06-20T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/learning/2026-06-20-pm-daily/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
-<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">데이터 분석 기초 다지기: Pandas, NumPy, 그리고 문제 해결 실전</h1><div class=post-description>2026-06-20 오후 학습 정리</div><div class=post-meta><span title='2026-06-20 00:00:00 +0000 UTC'>2026년 6월 20일</span>&nbsp;·&nbsp;<span>17 min</span></div></header><div class="post-content md-content"><h2 id=목차>목차<a hidden class=anchor aria-hidden=true href=#목차>#</a></h2><ul><li><ol><li><a href=#1-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%AC%B8%EC%A0%9C-%EC%A0%95%EC%9D%98-%EB%B0%8F-%ED%92%88%EC%A7%88-%EC%9D%B4%ED%95%B4>데이터 문제 정의 및 품질 이해</a></li></ol></li><li><ol start=2><li><a href=#2-pandas-%ED%8C%8C%EC%9D%BC-%EC%9E%85%EC%B6%9C%EB%A0%A5%EA%B3%BC-colab-%EA%B2%BD%EB%A1%9C-%EC%9D%B4%ED%95%B4>Pandas 파일 입출력과 Colab 경로 이해</a></li></ol></li><li><ol start=3><li><a href=#3-pandas-%ED%91%9C%EC%9D%98-%ED%95%B5%EC%8B%AC-%EA%B0%9C%EB%85%90%EA%B3%BC-%ED%98%BC%EB%9E%80-%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0>Pandas 표의 핵심 개념과 혼란 해결하기</a></li></ol></li><li><ol start=4><li><a href=#4-pandas-%EC%A1%B0%EA%B1%B4-%ED%95%84%ED%84%B0%EB%A7%81-loc-%EC%82%AC%EC%9A%A9%EB%B2%95%EA%B3%BC-boolean-mask-%ED%99%9C%EC%9A%A9>Pandas 조건 필터링: <code>loc</code> 사용법과 Boolean Mask 활용</a></li></ol></li><li><ol start=5><li><a href=#5-pandas-readexcel-%ED%95%A8%EC%88%98-%ED%99%9C%EC%9A%A9%EB%B2%95-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%ED%95%B5%EC%8B%AC-%EC%98%B5%EC%85%98-%EA%B0%80%EC%9D%B4%EB%93%9C>Pandas <code>read_excel</code> 함수 활용법: 초보자를 위한 핵심 옵션 가이드</a></li></ol></li><li><ol start=6><li><a href=#6-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D-%EA%B8%B0%EC%B4%88-%ED%86%B5%EA%B3%84-%EB%B3%80%EC%88%98-%EC%97%AD%ED%95%A0-%EA%B5%AC%EB%B6%84-%EC%99%84%EB%B2%BD-%EA%B0%80%EC%9D%B4%EB%93%9C>데이터 분석 기초: 통계, 변수, 역할 구분 완벽 가이드</a></li></ol></li><li><ol start=7><li><a href=#7-pandas-groupby%EC%99%80-%EB%8B%A4%EC%96%91%ED%95%9C-%EC%A7%91%EA%B3%84-%ED%95%A8%EC%88%98-%ED%99%9C%EC%9A%A9-%EA%B0%80%EC%9D%B4%EB%93%9C>Pandas <code>groupby</code>와 다양한 집계 함수 활용 가이드</a></li></ol></li><li><ol start=8><li><a href=#8-%EA%B2%B0%EC%B8%A1%EC%B9%98-%EC%B2%98%EB%A6%AC-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%92%88%EC%A7%88-%ED%96%A5%EC%83%81%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%A0%95%EC%B1%85-%EB%B0%8F-%EC%8B%A4%EC%8A%B5>결측치 처리: 데이터 품질 향상을 위한 정책 및 실습</a></li></ol></li><li><ol start=9><li><a href=#9-numpy-%ED%95%B5%EC%8B%AC-%EA%B0%9C%EB%85%90%EA%B3%BC-%ED%99%9C%EC%9A%A9%EB%B2%95-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%99%84%EC%A0%84-%EC%A0%95%EB%B3%B5>NumPy 핵심 개념과 활용법: 초보자를 위한 완전 정복</a></li></ol></li><li><ol start=10><li><a href=#10-numpy-%EB%B0%B0%EC%97%B4%EC%9D%98-%ED%98%95%ED%83%9C-%EB%B3%80%ED%99%98%EA%B3%BC-%EB%B8%8C%EB%A1%9C%EB%93%9C%EC%BA%90%EC%8A%A4%ED%8C%85-%EC%99%84%EB%B2%BD-%EA%B0%80%EC%9D%B4%EB%93%9C>NumPy 배열의 형태 변환과 브로드캐스팅 완벽 가이드</a></li></ol></li><li><ol start=11><li><a href=#11-titanic-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%85%8B-%ED%95%99%EC%8A%B5-%EB%B0%8F-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EA%B3%84%ED%9A%8D>Titanic 데이터셋 학습 및 테스트 계획</a></li></ol></li><li><ol start=12><li><a href=#12-pandas-transform-groupby-unstack-%ED%99%9C%EC%9A%A9-%EB%B0%8F-%EB%94%94%EB%B2%84%EA%B9%85-%EA%B0%80%EC%9D%B4%EB%93%9C>Pandas <code>transform</code>, <code>groupby</code>, <code>unstack</code> 활용 및 디버깅 가이드</a></li></ol></li><li><ol start=13><li><a href=#13-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%92%88%EC%A7%88-%EC%A0%90%EA%B2%80%EA%B3%BC-%ED%8C%8C%EC%83%9D%EB%B3%80%EC%88%98-%EC%83%9D%EC%84%B1-%ED%98%BC%EB%9E%80%EC%9D%84-%EC%9D%B4%ED%95%B4%EB%A1%9C>데이터 품질 점검과 파생변수 생성: 혼란을 이해로</a></li></ol></li><li><ol start=14><li><a href=#14-numpy-boolean-%EB%A7%88%EC%8A%A4%ED%81%AC%EC%99%80-%EB%B0%B0%EC%97%B4-%EC%A1%B0%EC%9E%91-%EC%9D%B4%ED%95%B4%EC%99%80-%ED%99%9C%EC%9A%A9>NumPy Boolean 마스크와 배열 조작: 이해와 활용</a></li></ol></li><li><ol start=15><li><a href=#15-%EC%84%9C%EC%9A%B8-%EC%95%84%ED%8C%8C%ED%8A%B8-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%84%EC%B2%98%EB%A6%AC-%EB%B0%8F-%ED%8A%B9%EC%A7%95-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A7%81-%EA%B0%80%EC%9D%B4%EB%93%9C>서울 아파트 데이터 전처리 및 특징 엔지니어링 가이드</a></li></ol></li><li><ol start=16><li><a href=#16-cad-%EA%B2%80%EC%A6%9D%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%9C%EB%B0%9C-%EB%B0%8F-json-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EC%9D%B4%ED%95%B4>CAD 검증을 위한 알고리즘 개발 및 JSON 파이프라인 이해</a></li></ol></li><li><ol start=17><li><a href=#17-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%A1%9C%EB%93%9C-%EC%98%A4%EB%A5%98-%ED%95%B4%EA%B2%B0-%EB%B0%8F-%EC%9B%8C%ED%82%B9-%EB%85%B8%ED%8A%B8>데이터 로드 오류 해결 및 워킹 노트</a></li></ol></li><li><ol start=18><li><a href=#18-%ED%8C%90%EB%8B%A4%EC%8A%A4-%EC%8B%A4%EC%8A%B5-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0%EA%B3%BC-%ED%95%B5%EC%8B%AC-%EC%9A%A9%EC%96%B4-%EC%A0%95%EB%A6%AC>판다스 실습 문제 해결과 핵심 용어 정리</a></li></ol></li><li><a href=#%EC%B4%9D%ED%8F%89>총평</a></li></ul><h2 id=1-데이터-문제-정의-및-품질-이해>1. 데이터 문제 정의 및 품질 이해<a hidden class=anchor aria-hidden=true href=#1-데이터-문제-정의-및-품질-이해>#</a></h2><h3 id=무엇을-배웠나>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나>#</a></h3><p>데이터 분석 프로젝트는 데이터의 상태에서 시작되어야 하며, 문제 정의는 확보 가능한 데이터를 기반으로 설정해야 한다는 점을 배웠다. 데이터가 부족한 경우, 획득 가능한 데이터와 향후 수집 가능성을 고려하여 문제 정의를 조정해야 한다는 것을 알게 되었다. 또한 데이터 품질 검증과 처리 과정을 통해 &ldquo;Garbage In, Garbage Out&rdquo; 문제를 해결하는 것이 중요하다는 것을 이해했다.</p><h3 id=헷갈렸던-점>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점>#</a></h3><p>데이터가 부족하거나 없을 때 문제 정의를 어떻게 해야 할지, 그리고 문제 정의를 유지해야 할지 기다려야 할지 혼란스러웠습니다. 초기에는 &lsquo;있는 데이터에 억지로 맞추는 것&rsquo;과 &lsquo;기다리는 것&rsquo; 두 가지 선택지만 생각했는데, 둘 다 현실적인 방법이라고 생각하지 못했습니다.</p><h3 id=정리된-이해>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해>#</a></h3><p>데이터 분석 프로젝트는 현재 확보 가능한 데이터 상태에서 시작해야 하며, 부족한 데이터는 수집 가능성을 고려하여 문제 정의를 수정하거나 추가적인 데이터 확보 계획을 세워야 합니다. 데이터 품질은 분석 결과에 직접적인 영향을 미치므로, 수집부터 검증, 처리, 저장까지 체계적인 과정을 거쳐야 합니다. 핵심은 &ldquo;쓰레기 입력하면 쓰레기 출력"이라는 점을 명심하고 데이터 중심적인 접근법을 취하는 것입니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> numpy <span style=color:#66d9ef>as</span> np
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 예시 데이터 수집</span>
-</span></span><span style=display:flex><span>raw_data <span style=color:#f92672>=</span> np<span style=color:#f92672>.</span>array([[<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>2</span>], [<span style=color:#ae81ff>2</span>, np<span style=color:#f92672>.</span>nan], [<span style=color:#ae81ff>3</span>, <span style=color:#ae81ff>4</span>]])  <span style=color:#75715e># 결측치 포함</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 결측치 처리</span>
-</span></span><span style=display:flex><span>validated_data <span style=color:#f92672>=</span> raw_data[<span style=color:#f92672>~</span>np<span style=color:#f92672>.</span>isnan(raw_data)<span style=color:#f92672>.</span>any(axis<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)]
-</span></span><span style=display:flex><span>print(<span style=color:#e6db74>&#34;검증된 데이터:</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, validated_data)
-</span></span></code></pre></div><h2 id=2-pandas-파일-입출력과-colab-경로-이해>2. Pandas 파일 입출력과 Colab 경로 이해<a hidden class=anchor aria-hidden=true href=#2-pandas-파일-입출력과-colab-경로-이해>#</a></h2><h3 id=무엇을-배웠나-1>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-1>#</a></h3><p>Pandas 파일 입출력 시 <code>to_csv</code>나 <code>to_excel</code> 함수는 파일 자체를 열어주는 것이 아니라 지정된 경로에 파일을 저장하는 역할이라는 것을 명확히 이해하게 되었습니다. Colab에서 파일 작업을 할 때마다 Google Drive 마운트와 경로 설정을 잊지 말아야 하며, 파일 저장 및 불러오기 함수들의 역할을 정확히 기억해야 한다는 점도 알게 되었습니다. 이제 경로 감각을 가지고 파일 입출력 작업을 더 효율적으로 수행할 수 있을 것 같습니다.</p><h3 id=헷갈렸던-점-1>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-1>#</a></h3><p>처음 Pandas 파일 입출력을 할 때, <code>to_csv</code>나 <code>to_excel</code> 함수를 실행하면 파일이 바로 열릴 거라고 생각했어요. 그리고 Colab을 다시 시작할 때마다 드라이브 마운트와 경로 설정을 계속 해야 한다는 점이 번거롭게 느껴졌습니다.</p><h3 id=정리된-이해-1>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-1>#</a></h3><p>파일 입출력 시에는 실행 환경의 경로를 정확히 파악하고, <code>to_csv</code>/<code>to_excel</code> 함수는 단순히 파일을 저장하는 역할임을 이해해야 했습니다. Colab 세션이 재시작될 때마다 Drive 연결과 경로 설정이 초기화된다는 점도 기억해야 할 중요한 부분입니다. 파일 저장 및 불러오기 함수들의 역할과 사용법을 명확히 알아야 원하는 결과물을 얻을 수 있다는 것을 깨달았습니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># Google Drive 연결</span>
-</span></span><span style=display:flex><span>drive<span style=color:#f92672>.</span>mount(<span style=color:#e6db74>&#39;/content/drive&#39;</span>)
-</span></span></code></pre></div><h2 id=3-pandas-표의-핵심-개념과-혼란-해결하기>3. Pandas 표의 핵심 개념과 혼란 해결하기<a hidden class=anchor aria-hidden=true href=#3-pandas-표의-핵심-개념과-혼란-해결하기>#</a></h2><h3 id=무엇을-배웠나-2>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-2>#</a></h3><p>pandas DataFrame과 Series의 차이점을 명확히 이해하게 되었고, Index와 Columns의 역할이 어떻게 작동하는지 파악하게 되었다. 특히, <code>loc</code> 함수를 사용할 때 단순히 데이터 선택을 넘어, DataFrame 내에서 특정 조건에 맞는 데이터에 접근하는 방법을 이해하게 되었다. 앞으로 pandas를 활용한 데이터 분석 작업을 더욱 효율적으로 수행할 수 있을 것 같다.</p><h3 id=헷갈렸던-점-2>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-2>#</a></h3><p>pandas를 처음 배울 때 DataFrame과 Series가 어떻게 다른지 감이 잘 안 잡혔어요. 특히 Series가 행인지 열인지 혼동될 때가 많았고, index와 columns의 역할도 명확하게 이해하지 못해서 데이터를 잘못 선택하는 실수를 종종 했습니다.</p><h3 id=정리된-이해-2>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-2>#</a></h3><p>pandas에서 DataFrame은 표 전체를 나타내고, Series는 DataFrame 내의 특정 열이나 행을 나타내는 1차원 데이터라는 것을 명확히 이해하게 되었습니다. Index는 행을 식별하는 번호이고, Columns는 열을 식별하는 이름이라는 점도 이제는 헷갈리지 않습니다. 특히, loc 함수를 사용할 때 Index와 Columns의 역할을 고려해야 한다는 것을 깨달았습니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>  print(df<span style=color:#f92672>.</span>index)  <span style=color:#75715e># 행 번호표</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>  print(df<span style=color:#f92672>.</span>columns)
-</span></span></code></pre></div><h2 id=4-pandas-조건-필터링-loc-사용법과-boolean-mask-활용>4. Pandas 조건 필터링: <code>loc</code> 사용법과 Boolean Mask 활용<a hidden class=anchor aria-hidden=true href=#4-pandas-조건-필터링-loc-사용법과-boolean-mask-활용>#</a></h2><h3 id=무엇을-배웠나-3>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-3>#</a></h3><p>Pandas에서 컬럼을 추출할 때 <code>loc</code>를 잘못 사용했던 오류를 바로잡았고, 조건 필터링 시 <code>between()</code> 함수와 AND, OR 연산자를 활용하여 Boolean Mask를 적용하는 방법을 익혔습니다. <code>.head()</code> 함수가 데이터프레임의 앞부분을 미리 확인하는 용도로 사용된다는 점도 알게 되었습니다. 이제 Pandas 데이터프레임에서 원하는 데이터를 더 정확하게 필터링하고 분석할 수 있게 되었습니다.</p><h3 id=헷갈렸던-점-3>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-3>#</a></h3><p>처음에는 <code>loc</code>를 컬럼 선택에 사용하려다가 <code>KeyError</code>가 발생했고, <code>.head()</code>가 단순히 결과를 출력하는 기능이라고 생각해서 데이터프레임의 처음 몇 줄을 확인하는 용도로 활용하지 못했습니다. 컬럼을 추출하고 조건 필터링을 적용하는 과정에서 정확한 구문과 개념을 혼동했습니다.</p><h3 id=정리된-이해-3>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-3>#</a></h3><p>Pandas에서 컬럼을 추출할 때는 <code>df["컬럼명"]</code>과 같이 컬럼명을 직접 사용해야 하며, <code>loc</code>를 사용할 때는 인덱스 라벨이 아닌 컬럼명을 사용해야 한다는 점을 알게 되었습니다. 조건 필터링 시 Boolean Mask를 활용하여 <code>between()</code> 함수와 AND, OR 연산자를 조합하면 다양한 조건을 만족하는 데이터를 추출할 수 있습니다. 특히, 조건을 조합할 때는 괄호를 사용하여 정확한 결과를 얻도록 주의해야 합니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>mental_scores <span style=color:#f92672>=</span> df_wel[<span style=color:#e6db74>&#34;mental_wellbeing_score&#34;</span>]
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>mask <span style=color:#f92672>=</span> df_wel[<span style=color:#e6db74>&#34;mental_wellbeing_score&#34;</span>]<span style=color:#f92672>.</span>between(<span style=color:#ae81ff>6</span>, <span style=color:#ae81ff>8</span>)
-</span></span><span style=display:flex><span>filtered_df <span style=color:#f92672>=</span> df_wel<span style=color:#f92672>.</span>loc[mask, :]
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>combined_mask <span style=color:#f92672>=</span> (df_wel[<span style=color:#e6db74>&#34;mental_wellbeing_score&#34;</span>] <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>5</span>) <span style=color:#f92672>&amp;</span> (df_wel[<span style=color:#e6db74>&#34;mental_wellbeing_score&#34;</span>] <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>7</span>)
-</span></span><span style=display:flex><span>filtered_df <span style=color:#f92672>=</span> df_wel<span style=color:#f92672>.</span>loc[combined_mask, :]
-</span></span></code></pre></div><h2 id=5-pandas-read_excel-함수-활용법-초보자를-위한-핵심-옵션-가이드>5. Pandas <code>read_excel</code> 함수 활용법: 초보자를 위한 핵심 옵션 가이드<a hidden class=anchor aria-hidden=true href=#5-pandas-read_excel-함수-활용법-초보자를-위한-핵심-옵션-가이드>#</a></h2><h3 id=무엇을-배웠나-4>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-4>#</a></h3><p>Pandas 공식 문서의 <code>read_excel</code> 함수를 읽으면서 다양한 옵션 때문에 어려움을 겪었지만, 필수적인 옵션인 <code>io</code>와 <code>sheet_name</code>을 중심으로 핵심 개념을 파악할 수 있었다. Excel 파일을 읽고 데이터프레임을 생성하는 기본적인 과정을 이해했으며, 향후 <code>header</code>, <code>usecols</code> 등 추가적인 옵션들을 학습할 필요가 있다는 것을 알게 되었다. 간단한 예시를 통해 파일 읽기와 데이터 내보내기를 경험하면서 Pandas 사용의 기초를 다졌다.</p><h3 id=헷갈렸던-점-4>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-4>#</a></h3><p><code>read_excel</code> 함수의 다양한 옵션들이 너무 많아서 어떤 옵션이 실제로 중요한지, 그리고 각 옵션이 어떤 역할을 하는지 파악하는 게 어려웠다. 특히 <code>header</code>, <code>usecols</code>, <code>dtype</code> 같은 옵션들의 의미와 사용법이 명확하게 이해되지 않았었다. 옵션들을 하나씩 테스트하면서 각 옵션이 데이터프레임에 어떤 영향을 미치는지 확인해봐야겠다.</p><h3 id=정리된-이해-4>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-4>#</a></h3><p>Pandas 공식문서를 읽으면서 <code>read_excel</code> 함수의 다양한 옵션에 압도되었지만, 핵심은 파일 경로(<code>io</code>)와 읽을 시트 이름(<code>sheet_name</code>)을 정확히 지정하는 것이라는 점을 파악했습니다. 이제는 데이터 프레임 입출력의 기본 원리를 이해하고, 필요에 따라 추가적인 옵션들을 학습해나가면서 좀 더 복잡한 Excel 파일을 다룰 수 있을 것입니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> pandas <span style=color:#66d9ef>as</span> pd
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Excel 파일 읽기 예시</span>
-</span></span><span style=display:flex><span>file_path <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;C:</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>Ollama-IPEX</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>데이터</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>example_data.xlsx&#34;</span>
-</span></span><span style=display:flex><span>sheet_name <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;tips&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 데이터프레임 생성</span>
-</span></span><span style=display:flex><span>df <span style=color:#f92672>=</span> pd<span style=color:#f92672>.</span>read_excel(io<span style=color:#f92672>=</span>file_path, sheet_name<span style=color:#f92672>=</span>sheet_name)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 읽어온 데이터 확인</span>
-</span></span><span style=display:flex><span>print(df<span style=color:#f92672>.</span>head())
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 간단한 데이터 내보내기 예시 (이해를 돕기 위한)</span>
-</span></span><span style=display:flex><span>df<span style=color:#f92672>.</span>to_excel(<span style=color:#e6db74>&#34;output_tips.xlsx&#34;</span>, index<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, sheet_name<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;OutputSheet&#34;</span>)
-</span></span></code></pre></div><h2 id=6-데이터-분석-기초-통계-변수-역할-구분-완벽-가이드>6. 데이터 분석 기초: 통계, 변수, 역할 구분 완벽 가이드<a hidden class=anchor aria-hidden=true href=#6-데이터-분석-기초-통계-변수-역할-구분-완벽-가이드>#</a></h2><h3 id=무엇을-배웠나-5>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-5>#</a></h3><p>통계청 자료처럼 이미 요약된 데이터는 분석 목적에 맞게 활용하기 어렵고, 데이터 분석을 위해서는 데이터의 척도와 원천성을 고려해야 한다는 점을 깨달았습니다. 또한, 데이터베이스 관리자와 분석가의 역할이 다르며, 각 역할에 따른 관점이 어떻게 다른지를 이해하게 되었습니다. 이제는 데이터 분석을 위한 데이터 준비 과정의 중요성을 더욱 명확하게 알게 되었습니다.</p><h3 id=헷갈렸던-점-5>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-5>#</a></h3><p>통계청 자료가 바로 분석에 사용할 수 있을 것이라고 생각했고, 변수 척도별로 분석 방법이 어떻게 달라지는지 이해하는 데 어려움이 있었습니다. 또한, SQL 수업에서 DBA와 분석가의 역할 차이를 명확히 구분하지 못해 혼란스러웠습니다.</p><h3 id=정리된-이해-5>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-5>#</a></h3><p>데이터 분석을 위해서는 단순히 데이터가 있다는 것만으로는 부족하며, 데이터의 척도, 형태, 그리고 원천을 고려하여 분석 목적에 맞게 가공해야 합니다. 데이터 분석 과정에서 데이터베이스 관리자와 분석가의 역할은 명확히 구분되며, 각 역할은 데이터의 안정성과 활용성에 초점을 맞추어 서로 다른 관점을 가지고 있습니다. 이러한 이해를 바탕으로 데이터 분석의 전 과정을 효과적으로 수행할 수 있을 것입니다.</p><p>노트에 코드 예시가 없습니다.</p><h2 id=7-pandas-groupby와-다양한-집계-함수-활용-가이드>7. Pandas <code>groupby</code>와 다양한 집계 함수 활용 가이드<a hidden class=anchor aria-hidden=true href=#7-pandas-groupby와-다양한-집계-함수-활용-가이드>#</a></h2><h3 id=무엇을-배웠나-6>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-6>#</a></h3><p>Pandas <code>groupby</code> 함수를 사용하여 데이터를 그룹화하고, <code>count</code>, <code>sum</code>, <code>mean</code>과 같은 집계 함수를 적용하는 방법을 익혔습니다. 특히 <code>agg()</code> 함수를 사용하여 여러 집계 함수를 동시에 적용하고, 각 컬럼에 다른 함수를 적용하는 방법을 이해하게 되었습니다. <code>size</code> 컬럼의 경우 단순히 합계를 계산하는 것이 아니라 개수를 세는 것이 중요하다는 점을 깨달았습니다.</p><h3 id=헷갈렸던-점-6>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-6>#</a></h3><p>처음에는 &lsquo;size&rsquo; 컬럼을 요일별로 더하는 것이 옳다고 생각했지만, 인원 수를 나타내는 컬럼이므로 개수를 세는 것이 맞다는 것을 깨달았습니다. 또한 <code>agg()</code> 함수를 사용하여 여러 통계값을 동시에 계산하는 방법을 익히는 데 어려움을 겪었습니다. 여러 컬럼에 대해 다른 집계 함수를 적용하는 구문이 복잡하게 느껴졌습니다.</p><h3 id=정리된-이해-6>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-6>#</a></h3><p>Pandas의 <code>groupby</code>는 데이터를 특정 기준으로 묶어 분석할 수 있게 해주며, 집계 함수는 각 그룹에 대해 다양한 통계 값을 계산하는 데 사용됩니다. <code>agg()</code> 함수를 활용하면 여러 집계 함수를 동시에 적용하여 결과를 효율적으로 요약할 수 있다는 점을 명확히 이해했습니다. 특히 <code>size</code> 컬럼과 같은 인원수를 나타내는 컬럼은 <code>sum()</code>이 아닌 <code>count()</code>를 사용해야 한다는 점을 재정의했습니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># 요일별 인원 수 세기 (count)</span>
-</span></span><span style=display:flex><span>tips<span style=color:#f92672>.</span>groupby(<span style=color:#e6db74>&#34;day&#34;</span>)[<span style=color:#e6db74>&#34;size&#34;</span>]<span style=color:#f92672>.</span>count()
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 요일별 총 빌링 금액 합산 (sum)</span>
-</span></span><span style=display:flex><span>tips<span style=color:#f92672>.</span>groupby(<span style=color:#e6db74>&#34;day&#34;</span>)[<span style=color:#e6db74>&#34;total_bill&#34;</span>]<span style=color:#f92672>.</span>sum()
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 요일별 평균 빌링 금액 계산 (mean)</span>
-</span></span><span style=display:flex><span>tips<span style=color:#f92672>.</span>groupby(<span style=color:#e6db74>&#34;day&#34;</span>)[<span style=color:#e6db74>&#34;total_bill&#34;</span>]<span style=color:#f92672>.</span>mean()
-</span></span></code></pre></div><h2 id=8-결측치-처리-데이터-품질-향상을-위한-정책-및-실습>8. 결측치 처리: 데이터 품질 향상을 위한 정책 및 실습<a hidden class=anchor aria-hidden=true href=#8-결측치-처리-데이터-품질-향상을-위한-정책-및-실습>#</a></h2><h3 id=무엇을-배웠나-7>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-7>#</a></h3><p>결측치를 채우는 것은 데이터 해석을 돕는 처리일 뿐, 실제 값을 복원하는 것이 아니라는 점을 깨달았다. <code>NaN</code> 대신 &ldquo;정보없음"과 같은 명확한 레이블을 사용하여 데이터의 불확실성을 투명하게 드러내는 것이 중요하며, 결측 여부를 별도 컬럼으로 기록하는 방법도 고려해야 한다는 점을 알게 되었다. 데이터 품질 향상을 위해 결측치 처리 정책을 신중하게 결정해야 함을 배웠다.</p><h3 id=헷갈렸던-점-7>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-7>#</a></h3><p>결측치를 채우는 것이 데이터 품질을 높이는 것처럼 생각했지만, 무작위 값을 넣으면 오히려 정보를 왜곡할 수 있다는 점이 처음에는 헷갈렸어. 특히 임의의 문자열을 넣어 포장하면 실제 데이터의 불확실성을 숨길 수 있다는 점이 걱정됐어. 데이터 보존에 대한 책임감 때문인지, 섣불리 값을 채우는 것 자체를 망설였던 것 같아.</p><h3 id=정리된-이해-7>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-7>#</a></h3><p>결측치를 채우는 것은 데이터 분석을 위한 편리함을 제공하지만, 실제 값을 복원하는 것은 아니라는 점을 명확히 이해했다. 임의의 값을 넣는 것보다 &ldquo;정보없음"과 같은 명확한 레이블을 사용하거나, 결측 여부를 표시하는 별도의 컬럼을 만드는 것이 데이터의 정확성을 유지하는 더 나은 방법이다. 결측치 자체도 중요한 정보를 담고 있을 수 있다는 점을 기억해야 한다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> pandas <span style=color:#66d9ef>as</span> pd
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>titanic <span style=color:#f92672>=</span> pd<span style=color:#f92672>.</span>read_csv(<span style=color:#e6db74>&#39;titanic.csv&#39;</span>)  <span style=color:#75715e># 예시 데이터 불러오기</span>
-</span></span><span style=display:flex><span>df <span style=color:#f92672>=</span> titanic<span style=color:#f92672>.</span>copy()
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>df[<span style=color:#e6db74>&#39;deck&#39;</span>] <span style=color:#f92672>=</span> df[<span style=color:#e6db74>&#39;deck&#39;</span>]<span style=color:#f92672>.</span>astype(<span style=color:#e6db74>&#34;object&#34;</span>)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>df[<span style=color:#e6db74>&#39;deck&#39;</span>] <span style=color:#f92672>=</span> df[<span style=color:#e6db74>&#39;deck&#39;</span>]<span style=color:#f92672>.</span>fillna(<span style=color:#e6db74>&#34;정보없음&#34;</span>)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>df[<span style=color:#e6db74>&#39;deck_missing&#39;</span>] <span style=color:#f92672>=</span> df[<span style=color:#e6db74>&#39;deck&#39;</span>]<span style=color:#f92672>.</span>isna()<span style=color:#f92672>.</span>astype(bool)
-</span></span></code></pre></div><h2 id=9-numpy-핵심-개념과-활용법-초보자를-위한-완전-정복>9. NumPy 핵심 개념과 활용법: 초보자를 위한 완전 정복<a hidden class=anchor aria-hidden=true href=#9-numpy-핵심-개념과-활용법-초보자를-위한-완전-정복>#</a></h2><h3 id=무엇을-배웠나-8>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-8>#</a></h3><p>NumPy를 단순한 리스트 처리 도구가 아닌, 빠른 수치 연산을 위한 핵심 패키지라는 것을 이해하게 되었다. 배열의 모양(shape), 차원(ndim), 데이터 타입(dtype)과 같은 핵심 개념을 정확히 파악하는 것이 중요하며, 이 개념들을 활용하여 데이터 분석 관련 다른 패키지들과 연계하여 활용할 수 있다는 것을 알게 되었다. 앞으로는 NumPy 배열의 구조를 이해하고, 다양한 기능을 숙달하여 데이터 분석 역량을 키워나가야겠다.</p><h3 id=헷갈렸던-점-8>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-8>#</a></h3><p>처음에는 NumPy를 단순히 파이썬 리스트보다 조금 더 빠른 연산 도구라고 생각했어요. 특히 배열의 모양, 차원, 데이터 타입 같은 개념들이 꼬리에 꼬리를 물어서 어려웠고, 실제로 어떻게 활용해야 할지 감이 잘 안 잡혔습니다. 실습을 통해 좀 더 익숙해져야 할 것 같아요.</p><h3 id=정리된-이해-8>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-8>#</a></h3><p>NumPy는 단순히 리스트를 빠르게 처리하는 도구가 아니라, 과학적 계산과 데이터 분석을 위한 핵심적인 배열 계산 엔진이라는 것을 알게 되었다. 배열의 shape, ndim, dtype, axis 등의 개념을 정확히 이해하고 활용해야 NumPy의 잠재력을 최대한으로 활용할 수 있으며, Pandas, Matplotlib, SciPy 등 다른 중요한 데이터 분석 라이브러리들과의 연관성도 명확히 파악하게 되었다. 이제 NumPy를 통해 데이터 분석의 기반을 다질 수 있다는 자신감이 생겼다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> numpy <span style=color:#66d9ef>as</span> np
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Shape 예시</span>
-</span></span><span style=display:flex><span>a <span style=color:#f92672>=</span> np<span style=color:#f92672>.</span>array([[<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>3</span>], [<span style=color:#ae81ff>4</span>, <span style=color:#ae81ff>5</span>, <span style=color:#ae81ff>6</span>]])
-</span></span><span style=display:flex><span>print(a<span style=color:#f92672>.</span>shape)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># ndim 예시</span>
-</span></span><span style=display:flex><span>print(a<span style=color:#f92672>.</span>ndim)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># dtype 예시</span>
-</span></span><span style=display:flex><span>print(a<span style=color:#f92672>.</span>dtype)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Axis 예시</span>
-</span></span><span style=display:flex><span>print(a<span style=color:#f92672>.</span>sum(axis<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>))
-</span></span></code></pre></div><h2 id=10-numpy-배열의-형태-변환과-브로드캐스팅-완벽-가이드>10. NumPy 배열의 형태 변환과 브로드캐스팅 완벽 가이드<a hidden class=anchor aria-hidden=true href=#10-numpy-배열의-형태-변환과-브로드캐스팅-완벽-가이드>#</a></h2><h3 id=무엇을-배웠나-9>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-9>#</a></h3><p>NumPy의 <code>reshape</code> 함수는 배열의 총 원소 수를 유지하며 모양을 변경할 수 있다는 것을 알게 되었고, <code>axis</code>는 단순히 행과 열을 나타내는 것이 아니라 계산 방향을 지정한다는 점을 이해하게 되었습니다. 또한 <code>broadcasting</code>을 통해 크기가 다른 배열 간의 연산이 어떻게 이루어지는지 명확하게 이해하여, NumPy 배열 연산에 대한 이해도를 높일 수 있었습니다. 앞으로는 이 개념들을 활용하여 더 복잡한 NumPy 연산을 수행할 수 있을 것 같습니다.</p><h3 id=헷갈렸던-점-9>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-9>#</a></h3><p>NumPy의 <code>reshape</code> 함수를 사용할 때, 배열의 총 원소 개수가 변하지 않으면서 다양한 형태를 가질 수 있다는 점이 처음에는 이해하기 어려웠습니다. <code>axis</code>를 행과 열로만 단순하게 생각하다 보니, 실제 계산 방향이 어떻게 되는지 혼란스러웠고, <code>broadcasting</code>의 경우 배열 크기가 다를 때 어떻게 자동으로 조정되는지 규칙이 불명확하게 느껴졌습니다.</p><h3 id=정리된-이해-9>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-9>#</a></h3><p>NumPy 배열의 <code>reshape</code> 함수는 배열 내 원소의 총 개수를 유지하며 배열의 형태를 변경하는 기능이고, 이 때 곱셈 결과가 동일한 형태를 가질 수 있는 다양한 형태 변환이 가능하다는 것을 알게 되었다. <code>axis</code>는 단순히 행과 열의 개념을 넘어 실제 계산이 이루어지는 방향을 나타내며, <code>broadcasting</code>은 크기가 다른 배열 간 연산 시 NumPy가 자동으로 크기를 맞춰 계산하는 규칙이다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>a <span style=color:#f92672>=</span> np<span style=color:#f92672>.</span>arange(<span style=color:#ae81ff>12</span>)<span style=color:#f92672>.</span>reshape(<span style=color:#ae81ff>3</span>, <span style=color:#ae81ff>4</span>)
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>b <span style=color:#f92672>=</span> np<span style=color:#f92672>.</span>arange(<span style=color:#ae81ff>12</span>)<span style=color:#f92672>.</span>reshape(<span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>3</span>)
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>b <span style=color:#f92672>=</span> np<span style=color:#f92672>.</span>array([[<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>], [<span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>2</span>]])<span style=color:#f92672>.</span>sum(axis<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>)
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>matrix <span style=color:#f92672>=</span> np<span style=color:#f92672>.</span>array([[<span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>4</span>, <span style=color:#ae81ff>2</span>], [<span style=color:#ae81ff>6</span>, <span style=color:#ae81ff>5</span>, <span style=color:#ae81ff>9</span>], [<span style=color:#ae81ff>9</span>, <span style=color:#ae81ff>4</span>, <span style=color:#ae81ff>7</span>]])
-</span></span><span style=display:flex><span>result <span style=color:#f92672>=</span> matrix <span style=color:#f92672>+</span> <span style=color:#ae81ff>5</span>
-</span></span></code></pre></div><h2 id=11-titanic-데이터셋-학습-및-테스트-계획>11. Titanic 데이터셋 학습 및 테스트 계획<a hidden class=anchor aria-hidden=true href=#11-titanic-데이터셋-학습-및-테스트-계획>#</a></h2><h3 id=무엇을-배웠나-10>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-10>#</a></h3><p>월요일 학습 과정에서 데이터셋 전환 혼동과 준비 부족으로 어려움을 겪었지만, <code>titanic</code> 데이터셋에 집중해야 함을 명확히 했다. 데이터셋별 핵심 코드와 예상 문제 유형을 정리하여 앞으로의 학습에 도움이 될 만한 가이드를 만들었다. 이번 과정을 통해 데이터셋 전환 시 주의할 점과 코드 실행 전 데이터 로드 상태 확인의 중요성을 깨달았다.</p><h3 id=헷갈렸던-점-10>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-10>#</a></h3><p>수업 중 데이터셋이 계속 바뀌어서 지금 어떤 데이터셋을 가지고 있는지 파악하는 데 어려움을 겪었다. 특히 <code>answer</code> 노트북에서 데이터 로드에 실패할 때마다 예상치 못한 오류들이 발생해서 전체적인 학습 흐름이 끊기는 듯한 느낌이었다. 여러 데이터셋을 정확히 구분하고 로드하는 과정이 중요하다는 것을 깨달았다.</p><h3 id=정리된-이해-10>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-10>#</a></h3><p>월요일 학습 중 <code>titanic</code> 데이터셋에 집중해야 함을 깨달았고, 데이터셋 전환 혼동으로 인해 발생하던 오류들을 방지하기 위해 데이터 로딩 과정을 명확히 하기로 했다. <code>titanic</code> 데이터셋의 기본적인 정보 확인, 결측치 처리, 조건 필터링, 집계 분석 등을 중심으로 예상 문제 유형을 정리하여 앞으로 학습 방향을 설정했다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> pandas <span style=color:#66d9ef>as</span> pd
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> seaborn <span style=color:#66d9ef>as</span> sns
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>titanic <span style=color:#f92672>=</span> sns<span style=color:#f92672>.</span>load_dataset(<span style=color:#e6db74>&#34;titanic&#34;</span>)
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>titanic<span style=color:#f92672>.</span>head()
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>titanic<span style=color:#f92672>.</span>info()
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>titanic<span style=color:#f92672>.</span>dtypes
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>titanic<span style=color:#f92672>.</span>isna()<span style=color:#f92672>.</span>sum()
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>titanic<span style=color:#f92672>.</span>loc[titanic[<span style=color:#e6db74>&#34;age&#34;</span>]<span style=color:#f92672>.</span>notnull(), :]
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>titanic[<span style=color:#e6db74>&#34;age&#34;</span>]<span style=color:#f92672>.</span>fillna(titanic[<span style=color:#e6db74>&#34;age&#34;</span>]<span style=color:#f92672>.</span>median())
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>titanic<span style=color:#f92672>.</span>loc[(조건1) <span style=color:#f92672>&amp;</span> (조건2), :]
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>titanic<span style=color:#f92672>.</span>groupby(<span style=color:#e6db74>&#34;sex&#34;</span>)[<span style=color:#e6db74>&#34;survived&#34;</span>]<span style=color:#f92672>.</span>mean()
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>titanic<span style=color:#f92672>.</span>groupby(<span style=color:#e6db74>&#34;pclass&#34;</span>)[<span style=color:#e6db74>&#34;survived&#34;</span>]<span style=color:#f92672>.</span>mean()
-</span></span></code></pre></div><h2 id=12-pandas-transform-groupby-unstack-활용-및-디버깅-가이드>12. Pandas <code>transform</code>, <code>groupby</code>, <code>unstack</code> 활용 및 디버깅 가이드<a hidden class=anchor aria-hidden=true href=#12-pandas-transform-groupby-unstack-활용-및-디버깅-가이드>#</a></h2><h3 id=무엇을-배웠나-11>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-11>#</a></h3><p>Pandas의 <code>agg()</code>는 그룹별 요약 통계를, <code>transform()</code>은 원본 행에 적용되는 그룹 계산 결과를 반환한다는 것을 명확히 이해하게 되었다. 다중 <code>groupby()</code> 후 <code>unstack()</code>을 사용할 때는 메서드 체이닝을 위해 쉼표 대신 점(<code>.</code>)을 사용해야 한다는 오류를 수정했다. 이 학습을 통해 Pandas 데이터 분석 작업 효율성을 높일 수 있을 것 같다.</p><h3 id=헷갈렸던-점-11>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-11>#</a></h3><p><code>agg()</code>와 <code>transform()</code>의 차이점을 명확히 이해하지 못해서 <code>agg()</code>를 사용해야 할 곳에 <code>transform()</code>을 쓰려고 시도했고, 다중 <code>groupby()</code>와 <code>unstack()</code>을 사용할 때 쉼표를 잘못 사용해 메서드 체인이 끊기는 오류가 발생했었다. 특히 <code>transform()</code>이 원본 행 수를 유지한다는 점을 간과하고 있었고, 쉼표를 통해 여러 메서드를 연쇄적으로 실행할 수 있다는 것을 잊고 있었다.</p><h3 id=정리된-이해-11>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-11>#</a></h3><p><code>agg()</code>는 그룹별 요약 통계를 계산하여 결과를 요약하는 반면, <code>transform()</code>은 그룹 계산 결과를 원본 데이터의 각 행에 적용하여 새로운 열을 생성한다. 다중 <code>groupby()</code>를 사용할 때는 쉼표 대신 <code>and</code>를 사용하여 메서드를 체이닝해야 하며, <code>head()</code>와 같은 메서드는 별도로 호출해야 한다. 이 점들을 기억하고 예제를 통해 연습하면 Pandas <code>transform</code>, <code>multi-column groupby</code>, <code>unstack</code> 사용법을 익히는 데 도움이 될 것이다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>tips<span style=color:#f92672>.</span>groupby(<span style=color:#e6db74>&#34;day&#34;</span>)[<span style=color:#e6db74>&#34;total_bill&#34;</span>]<span style=color:#f92672>.</span>agg([<span style=color:#e6db74>&#34;sum&#34;</span>, <span style=color:#e6db74>&#34;mean&#34;</span>, <span style=color:#e6db74>&#34;count&#34;</span>])
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>tips[<span style=color:#e6db74>&#34;day_avg_total_bill</span>
-</span></span></code></pre></div><h2 id=13-데이터-품질-점검과-파생변수-생성-혼란을-이해로>13. 데이터 품질 점검과 파생변수 생성: 혼란을 이해로<a hidden class=anchor aria-hidden=true href=#13-데이터-품질-점검과-파생변수-생성-혼란을-이해로>#</a></h2><h3 id=무엇을-배웠나-12>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-12>#</a></h3><p>데이터 분석 전에 데이터 품질 점검과 파생변수 생성의 중요성을 알게 되었어. 데이터 품질은 결측, 중복, 정합성, 오염값 등을 확인하고 처리하는 과정이고, 파생변수는 기존 데이터를 활용해 새로운 변수를 만드는 것을 의미해. 마치 요리 전 재료를 검수하고 새로운 요리를 만드는 과정과 비슷하네!</p><h3 id=헷갈렸던-점-12>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-12>#</a></h3><p>데이터 품질과 파생변수라는 단어 자체에 압도당해서 뭘 어떻게 시작해야 할지 감이 잘 안 잡혔어요. 특히 어떤 데이터 품질 문제가 있는지, 그리고 그걸 어떻게 해결해야 하는지 구체적으로 어떻게 판단해야 할지 막막했어요. 파생변수를 만들 때 어떤 기준으로 새로운 변수를 만들어야 하는지 예시가 부족해서 어려웠어요.</p><h3 id=정리된-이해-12>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-12>#</a></h3><p>데이터 분석 전에 데이터 품질을 점검하고 파생변수를 생성하는 것은 마치 요리 전 재료를 검수하고 새로운 레시피를 만드는 과정과 같아요. 데이터 품질은 결측값, 중복, 정합성, 오염값을 확인하는 것이고, 파생변수는 기존 데이터를 활용해 새로운 정보를 만들어내는 작업이에요. 이 과정을 통해 분석의 정확성과 효율성을 높일 수 있다는 것을 알게 되었어요.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>   <span style=color:#75715e># 숫자 데이터의 빈칸을 중앙값으로 채우기 예시</span>
-</span></span><span style=display:flex><span>   df_example <span style=color:#f92672>=</span> df_example<span style=color:#f92672>.</span>copy()
-</span></span><span style=display:flex><span>   df_example[<span style=color:#e6db74>&#39;숫자컬럼&#39;</span>] <span style=color:#f92672>=</span> df_example[<span style=color:#e6db74>&#39;숫자컬럼&#39;</span>]<span style=color:#f92672>.</span>fillna(df_example[<span style=color:#e6db74>&#39;숫자컬럼&#39;</span>]<span style=color:#f92672>.</span>median())
-</span></span></code></pre></div><h2 id=14-numpy-boolean-마스크와-배열-조작-이해와-활용>14. NumPy Boolean 마스크와 배열 조작: 이해와 활용<a hidden class=anchor aria-hidden=true href=#14-numpy-boolean-마스크와-배열-조작-이해와-활용>#</a></h2><h3 id=무엇을-배웠나-13>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-13>#</a></h3><p>NumPy의 Boolean Mask를 사용해서 배열에서 특정 조건을 만족하는 값들만 선택하는 방법을 알게 되었다. <code>and</code>나 <code>or</code> 대신 <code>&</code>와 <code>|</code>를 복합 조건에서 사용해야 한다는 점을 다시 확인했고, 조건식 실행 결과와 실제 값 추출의 차이점을 명확히 이해하게 되었다. 이제 Boolean Mask를 활용하여 배열에서 원하는 값들을 효율적으로 추출할 수 있을 것 같다.</p><h3 id=헷갈렸던-점-13>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-13>#</a></h3><p>NumPy Boolean masking을 사용할 때, 조건문들을 연결할 때 <code>and</code>, <code>or</code>를 써야 하는지 <code>&</code>, <code>|</code>를 써야 하는지 헷갈렸고, 조건식을 출력하는 것과 실제 값을 추출하는 것이 왜 다른지 명확히 이해하지 못했다. Boolean 마스크를 통해 배열의 특정 요소들을 선택하는 개념은 SQL의 WHERE절과 비슷하다는 점을 알게 되었다.</p><h3 id=정리된-이해-13>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-13>#</a></h3><p>NumPy Boolean 마스크는 배열에서 특정 조건을 만족하는 요소들을 선택하는 데 사용되며, 복합 조건에서는 <code>&</code>와 <code>|</code> 연산자를 사용해야 한다는 점을 명확히 알게 되었다. 조건식을 적용했을 때 True/False 배열이 출력되는 것과, 실제 배열 값들을 추출하는 과정이 다르다는 것도 이해했다. Boolean 마스크는 배열을 필터링하는 SQL의 <code>WHERE</code> 절과 비슷한 역할을 한다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> numpy <span style=color:#66d9ef>as</span> np
-</span></span><span style=display:flex><span>a <span style=color:#f92672>=</span> np<span style=color:#f92672>.</span>array([
-</span></span><span style=display:flex><span>    [<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>3</span>, <span style=color:#ae81ff>4</span>],
-</span></span><span style=display:flex><span>    [<span style=color:#ae81ff>5</span>, <span style=color:#ae81ff>6</span>, <span style=color:#ae81ff>7</span>, <span style=color:#ae81ff>8</span>],
-</span></span><span style=display:flex><span>    [<span style=color:#ae81ff>9</span>, <span style=color:#ae81ff>10</span>, <span style=color:#ae81ff>11</span>, <span style=color:#ae81ff>12</span>]
-</span></span><span style=display:flex><span>])
-</span></span><span style=display:flex><span>keep <span style=color:#f92672>=</span> a <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>5</span>
-</span></span><span style=display:flex><span>print(keep)
-</span></span><span style=display:flex><span>print(a[keep])
-</span></span><span style=display:flex><span>print(a[(a <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>2</span>) <span style=color:#f92672>&amp;</span> (a <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>11</span>)])
-</span></span><span style=display:flex><span>print(a[(a <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>5</span>) <span style=color:#f92672>|</span> (a <span style=color:#f92672>==</span> <span style=color:#ae81ff>5</span>)])
-</span></span></code></pre></div><h2 id=15-서울-아파트-데이터-전처리-및-특징-엔지니어링-가이드>15. 서울 아파트 데이터 전처리 및 특징 엔지니어링 가이드<a hidden class=anchor aria-hidden=true href=#15-서울-아파트-데이터-전처리-및-특징-엔지니어링-가이드>#</a></h2><h3 id=무엇을-배웠나-14>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-14>#</a></h3><p>데이터 전처리의 중요성을 깨달았고, 단순히 데이터를 정리하는 것이 아니라 분석에 적합한 형태로 만드는 체계적인 과정임을 알게 되었다. 불필요한 컬럼 삭제 순서와 결측치 처리 방법이 분석 결과에 미치는 영향에 대해 고민하고, 데이터 전처리 과정을 단계별로 정리하는 것이 효율적임을 학습했다. 앞으로는 데이터 분석의 정확성을 높이기 위해 전처리 단계에 더욱 신중을 기해야겠다.</p><h3 id=헷갈렸던-점-14>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-14>#</a></h3><p>데이터 삭제 순서가 왜 그렇게 중요하고, 특정 컬럼을 삭제하는 것이 분석 결과에 어떤 영향을 미치는지 잘 몰랐어요. 그리고 결측치 처리할 때 단순히 삭제하면 안 되는 이유와 어떤 방식으로 대체해야 하는지 고민이었습니다.</p><h3 id=정리된-이해-14>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-14>#</a></h3><p>데이터 전처리는 분석에 필요한 형태로 데이터를 만들기 위한 체계적인 과정이며, 불필요한 데이터 제거부터 결측치 처리, 데이터 타입 변환, 새로운 특징 생성까지 포함합니다. 이 과정을 통해 데이터의 정확성과 분석 효율성을 높일 수 있으며, 각 단계는 분석 결과에 영향을 미칠 수 있으므로 신중하게 접근해야 합니다.</p><pre tabindex=0><code>df.drop(columns=drop_cols, inplace=True)
-</code></pre><pre tabindex=0><code>df = df.dropna(subset=[&#34;거래금액(만원)&#34;], ignore_index=True)
-</code></pre><pre tabindex=0><code>df.head()
-</code></pre><pre tabindex=0><code>df.info()
-</code></pre><pre tabindex=0><code>df.columns
-</code></pre><pre tabindex=0><code>pd.to_numeric()
-</code></pre><pre tabindex=0><code>pd.to_datetime()
-</code></pre><pre tabindex=0><code>df.sort_values()
-</code></pre><pre tabindex=0><code>df.groupby()
-</code></pre><h2 id=16-cad-검증을-위한-알고리즘-개발-및-json-파이프라인-이해>16. CAD 검증을 위한 알고리즘 개발 및 JSON 파이프라인 이해<a hidden class=anchor aria-hidden=true href=#16-cad-검증을-위한-알고리즘-개발-및-json-파이프라인-이해>#</a></h2><h3 id=무엇을-배웠나-15>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-15>#</a></h3><p>처음에는 알고리즘을 복잡한 공식으로 생각했지만, 실제로는 단순한 규칙의 반복적인 과정이라는 것을 깨달았습니다. 이미지 수치화부터 CAD 검증까지 유사한 구조를 가지는 파이프라인으로 이해하게 되었고, JSON을 활용하여 데이터를 구조화하고 관리하는 것이 중요하다는 점을 알게 되었습니다. 특히, 검증 결과를 피드백 루프로 활용하여 알고리즘을 개선하는 것이 중요하다는 점을 배웠습니다.</p><h3 id=헷갈렸던-점-15>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-15>#</a></h3><p>처음에는 알고리즘을 복잡한 수학 공식처럼 생각해서, 어떻게 적용해야 할지 막막했습니다. 특히 이미지 수치화, JSON 저장, CAD 변환이 어떻게 연결되는지 이해하기 어려웠어요. 알고리즘 개발이라는 것이 단순히 공식을 반복하는 것 이상이라고 생각했지만, 그 &lsquo;이상&rsquo;이 무엇인지 파악하는 데 시간이 걸렸습니다.</p><h3 id=정리된-이해-15>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-15>#</a></h3><p>알고리즘은 복잡한 공식이 아니라, 입력 데이터를 받아 규칙에 따라 처리하고 저장하며, 그 결과를 바탕으로 반복적인 개선을 거치는 과정이라는 것을 알게 되었습니다. 이미지 수치화, JSON 저장, CAD 변환과 같은 과정들이 유사한 알고리즘 구조를 가진다는 점을 이해하게 되었고, 이를 통해 초보적인 설계 파이프라인을 구축하는 데 도움이 될 것이라고 생각합니다. JSON을 활용하여 데이터를 구조화하고, CAD 도구를 이용하여 설계를 검증하는 전체적인 흐름을 파악하는 것이 중요합니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;part&#34;</span>: <span style=color:#e6db74>&#34;bracket&#34;</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;material&#34;</span>: <span style=color:#e6db74>&#34;PLA&#34;</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;thickness_mm&#34;</span>: <span style=color:#ae81ff>4.0</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;load_n&#34;</span>: <span style=color:#ae81ff>80</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;span_mm&#34;</span>: <span style=color:#ae81ff>120</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;joint_type&#34;</span>: <span style=color:#e6db74>&#34;screw_2point&#34;</span>
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;fos&#34;</span>: <span style=color:#ae81ff>1.42</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;status&#34;</span>: <span style=color:#e6db74>&#34;fail&#34;</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;reason&#34;</span>: <span style=color:#e6db74>&#34;두께 부족으로 인한 부하 불안정&#34;</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;suggestion&#34;</span>: <span style=color:#e6db74>&#34;두께를 6mm로 늘리거나 보강 리브 추가&#34;</span>
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><h2 id=17-데이터-로드-오류-해결-및-워킹-노트>17. 데이터 로드 오류 해결 및 워킹 노트<a hidden class=anchor aria-hidden=true href=#17-데이터-로드-오류-해결-및-워킹-노트>#</a></h2><h3 id=무엇을-배웠나-16>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-16>#</a></h3><p>노트에서 데이터셋 로드 오류의 원인이 코드 실행 순서에 있음을 알게 되었다. 특히 데이터 로드 코드는 항상 노트북에서 가장 먼저 실행해야 변수가 정의되고, 이후 코드들이 정상적으로 작동한다. 데이터셋을 불러오는 단계를 건너뛰면 NameError나 KeyError와 같은 오류가 발생하는 것을 확인했다.</p><h3 id=헷갈렸던-점-16>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-16>#</a></h3><p>코드가 보인다고 해서 바로 실행되는 게 아니고, 데이터 로드 부분부터 제대로 실행해야 한다는 점이 처음에는 이해가 안 되었습니다. 중간 셀부터 실행하면 변수가 정의되지 않아 오류가 발생한다는 것도 몰랐고, 데이터 로드 셀을 가장 먼저 실행해야 한다는 것을 깨달으니 문제 해결의 실마리가 풀렸습니다.</p><h3 id=정리된-이해-16>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-16>#</a></h3><p>노트북에서 코드가 보이는 것만으로는 실행되지 않기 때문에, 데이터 로드 코드를 항상 가장 먼저 실행해야 문제를 해결할 수 있다는 걸 알게 됐어. 데이터셋을 불러오는 단계를 건너뛰고 아래 셀부터 실행하면 변수가 정의되지 않아 오류가 발생할 수 있다는 점을 명심해야겠다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> pandas <span style=color:#66d9ef>as</span> pd
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> seaborn <span style=color:#66d9ef>as</span> sns
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>titanic <span style=color:#f92672>=</span> sns<span style=color:#f92672>.</span>load_dataset(<span style=color:#e6db74>&#34;titanic&#34;</span>)
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> seaborn <span style=color:#66d9ef>as</span> sns
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>tips <span style=color:#f92672>=</span> sns<span style=color:#f92672>.</span>load_dataset(<span style=color:#e6db74>&#34;tips&#34;</span>)
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># df_srv 데이터셋 로드 예시</span>
-</span></span><span style=display:flex><span>df_srv <span style=color:#f92672>=</span> pd<span style=color:#f92672>.</span>read_csv(<span style=color:#e6db74>&#34;path/to/df_srv.csv&#34;</span>)  <span style=color:#75715e># 실제 파일 경로를 넣어주세요</span>
-</span></span></code></pre></div><h2 id=18-판다스-실습-문제-해결과-핵심-용어-정리>18. 판다스 실습 문제 해결과 핵심 용어 정리<a hidden class=anchor aria-hidden=true href=#18-판다스-실습-문제-해결과-핵심-용어-정리>#</a></h2><h3 id=무엇을-배웠나-17>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-17>#</a></h3><p>Pandas를 처음 배우면서 <code>sum()</code>과 <code>count()</code> 함수의 차이, <code>agg()</code>의 활용, <code>transform()</code>과 <code>agg()</code>의 구분, <code>unstack()</code>의 역할 등 여러 부분이 헷갈렸던 경험을 통해 개념을 정리했습니다. <code>loc</code> 사용 오류와 같은 실수를 통해 정확한 인덱스 지정의 중요성을 깨달았고, 데이터프레임과 시리즈의 관계, 그리고 행/열/인덱스/컬럼 등의 기본적인 용어에 대한 이해를 높였습니다. 이 학습 노트를 통해 Pandas 기본 기능을 더욱 명확하게 이해하게 되었습니다.</p><h3 id=헷갈렸던-점-17>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-17>#</a></h3><p><code>sum()</code>과 <code>count()</code> 함수가 비슷해서 데이터 개수를 세는 방식이 다른지 몰랐고, <code>agg()</code> 함수는 복잡해서 그 유용성을 제대로 파악하지 못했습니다. <code>transform()</code>과 <code>agg()</code>의 차이점도 명확히 이해하지 못했고, <code>loc</code> 사용 시 인덱스 오류가 자주 발생했습니다.</p><h3 id=정리된-이해-17>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-17>#</a></h3><p>Pandas를 사용하면서 <code>sum()</code>과 <code>count()</code>의 차이, <code>agg()</code>의 활용, <code>transform()</code>과 <code>agg()</code>의 구분 등 기본적인 함수 사용법에서 어려움을 겪었습니다. 하지만 DataFrame, Series, loc, iloc 등의 개념과 boolean mask, isin() 함수를 통해 데이터 선택과 조작에 대한 이해도를 높일 수 있었습니다. 앞으로는 꾸준한 실습을 통해 Pandas 사용법을 숙달하고, 데이터 분석 능력을 향상시키도록 노력해야겠습니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># sum() vs count() 예시</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> pandas <span style=color:#66d9ef>as</span> pd
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>data <span style=color:#f92672>=</span> {<span style=color:#e6db74>&#39;col1&#39;</span>: [<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>3</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>1</span>], <span style=color:#e6db74>&#39;col2&#39;</span>: [<span style=color:#ae81ff>4</span>, <span style=color:#ae81ff>5</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>5</span>]}
-</span></span><span style=display:flex><span>df <span style=color:#f92672>=</span> pd<span style=color:#f92672>.</span>DataFrame(data)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>print(df[<span style=color:#e6db74>&#39;col1&#39;</span>]<span style=color:#f92672>.</span>sum())  <span style=color:#75715e># 값의 합: 9</span>
-</span></span><span style=display:flex><span>print(df[<span style=color:#e6db74>&#39;col1&#39;</span>]<span style=color:#f92672>.</span>count()) <span style=color:#75715e># 항목의 개수: 5</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># agg() 예시</span>
-</span></span><span style=display:flex><span>data <span style=color:#f92672>=</span> {<span style=color:#e6db74>&#39;col1&#39;</span>: [<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>3</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>1</span>], <span style=color:#e6db74>&#39;col2&#39;</span>: [<span style=color:#ae81ff>4</span>, <span style=color:#ae81ff>5</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>5</span>]}
-</span></span><span style=display:flex><span>df <span style=color:#f92672>=</span> pd<span style=color:#f92672>.</span>DataFrame(data)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>print(df<span style=color:#f92672>.</span>agg({<span style=color:#e6db74>&#39;col1&#39;</span>: <span style=color:#e6db74>&#39;sum&#39;</span>, <span style=color:#e6db74>&#39;col2&#39;</span>: <span style=color:#e6db74>&#39;mean&#39;</span>}))
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># transform() vs agg() 예시</span>
-</span></span><span style=display:flex><span>data <span style=color:#f92672>=</span> {<span style=color:#e6db74>&#39;col1&#39;</span>: [<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>3</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>1</span>], <span style=color:#e6db74>&#39;col2&#39;</span>: [<span style=color:#ae81ff>4</span>, <span style=color:#ae81ff>5</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>5</span>]}
-</span></span><span style=display:flex><span>df <span style=color:#f92672>=</span> pd<span style=color:#f92672>.</span>DataFrame(data)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>df[<span style=color:#e6db74>&#39;col1_mean&#39;</span>] <span style=color:#f92672>=</span> df[<span style=color:#e6db74>&#39;col1&#39;</span>]<span style=color:#f92672>.</span>transform(<span style=color:#66d9ef>lambda</span> x: x <span style=color:#f92672>-</span> df[<span style=color:#e6db74>&#39;col1&#39;</span>]<span style=color:#f92672>.</span>mean())
-</span></span><span style=display:flex><span>print(df)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>df[<span style=color:#e6db74>&#39;col1_sum&#39;</span>] <span style=color:#f92672>=</span> df[<span style=color:#e6db74>&#39;col1&#39;</span>]<span style=color:#f92672>.</span>agg(<span style=color:#e6db74>&#39;sum&#39;</span>)
-</span></span><span style=display:flex><span>print(df)
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># unstack() 예시</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> pandas <span style=color:#66d9ef>as</span> pd
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>data <span style=color:#f92672>=</span> {<span style=color:#e6db74>&#39;A&#39;</span>: {<span style=color:#e6db74>&#39;x&#39;</span>: <span style=color:#ae81ff>1</span>, <span style=color:#e6db74>&#39;y&#39;</span>: <span style=color:#ae81ff>2</span>}, <span style=color:#e6db74>&#39;B&#39;</span>: {<span style=color:#e6db74>&#39;x&#39;</span>: <span style=color:#ae81ff>3</span>, <span style=color:#e6db74>&#39;y&#39;</span>: <span style=color:#ae81ff>4</span>}}
-</span></span><span style=display:flex><span>df <span style=color:#f92672>=</span> pd<span style=color:#f92672>.</span>DataFrame(data)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>print(df<span style=color:#f92672>.</span>unstack())
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># loc 사용 오류 예시 (정확한 인덱스 지정 중요)</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> pandas <span style=color:#66d9ef>as</span> pd
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>data <span style=color:#f92672>=</span> {<span style=color:#e6db74>&#39;col1&#39;</span>: [<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>3</span>], <span style=color:#e6db74>&#39;col2&#39;</span>: [<span style=color:#ae81ff>4</span>, <span style=color:#ae81ff>5</span>, <span style=color:#ae81ff>6</span>]}
-</span></span><span style=display:flex><span>df <span style=color:#f92672>=</span> pd<span style=color:#f92672>.</span>DataFrame(data)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 잘못된 예시: KeyError 발생 가능</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># print(df.loc[99, &#39;col1&#39;])</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 올바른 예시</span>
-</span></span><span style=display:flex><span>print(df<span style=color:#f92672>.</span>loc[<span style=color:#ae81ff>0</span>, <span style=color:#e6db74>&#39;col1&#39;</span>])
-</span></span></code></pre></div><h2 id=총평>총평<a hidden class=anchor aria-hidden=true href=#총평>#</a></h2><h3 id=오늘-오후-전체에서-배운-것>오늘 오후 전체에서 배운 것<a hidden class=anchor aria-hidden=true href=#오늘-오후-전체에서-배운-것>#</a></h3><p>데이터 분석 프로젝트의 시작은 데이터 상태를 정확히 이해하고, 확보 가능한 데이터를 기반으로 문제 정의를 설정하는 것임을 배웠습니다. Pandas와 NumPy를 활용한 데이터 전처리, 필터링, 그룹화, 통계 계산 등 다양한 기능을 익히면서 데이터 분석의 기초를 다졌고, 데이터 로딩 순서, 결측치 처리, 특징 엔지니어링 등의 중요성을 깨달았습니다. 앞으로 배운 내용을 바탕으로 실제 데이터 분석 프로젝트를 수행하며 실력을 더욱 향상시켜 나가겠습니다.</p><h3 id=다음에-조심할-것>다음에 조심할 것<a hidden class=anchor aria-hidden=true href=#다음에-조심할-것>#</a></h3><p>데이터셋을 로드할 때마다 코드 실행 순서를 다시 한번 확인하고, 변수 정의가 제대로 되었는지 꼼꼼하게 점검해야겠다. 특히 복잡한 분석을 수행하기 전에 데이터 전처리 과정을 충분히 거치고, 각 단계의 영향을 분석 결과에 어떻게 미치는지를 고려해야 실수를 줄일 수 있을 것 같다. 마지막으로, Pandas의 다양한 함수들의 역할과 사용법을 꾸준히 복습하고, 실제 문제에 적용해보면서 숙련도를 높여야겠다.</p><h3 id=다음-복습-주제>다음 복습 주제<a hidden class=anchor aria-hidden=true href=#다음-복습-주제>#</a></h3><p>NumPy Boolean Mask를 좀 더 다양한 예제를 통해 복습해서 활용도를 높이고 싶어. 특히 배열의 크기가 다를 때 broadcasting이 어떻게 동작하는지 그림과 함께 다시 살펴보면 이해가 더 명확해질 것 같아. 서울 아파트 데이터 전처리 과정에서 어떤 순서로 컬럼을 삭제해야 분석 결과에 가장 적합한지 좀 더 깊이 고민해보고 싶어.</p><blockquote><p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
-This post was written with the help of a local LLM (AI).</p></blockquote></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://Han-think.github.io/learning/2026-06-22-pm-daily/><span class=title>« Prev</span>
-<span>통계 분석 핵심 개념 정립 및 데이터 분석 자동화 설계</span>
-</a><a class=next href=https://Han-think.github.io/learning/2026-06-20-am-daily/><span class=title>Next »</span>
-<span>데이터 분석 기초 다지기: pandas, SQL, 시각화, 품질 관리, 통계 이해</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
-<span>Powered by
-<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
-<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>데이터 분석 기초 다지기: Pandas, NumPy, 그리고 문제 해결 실전 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-06-20 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-06-20-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-06-20-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-06-20-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="데이터 분석 기초 다지기: Pandas, NumPy, 그리고 문제 해결 실전">
+  <meta property="og:description" content="2026-06-20 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-06-20T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-20T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="데이터 분석 기초 다지기: Pandas, NumPy, 그리고 문제 해결 실전">
+  <meta name="twitter:description" content="2026-06-20 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "데이터 분석 기초 다지기: Pandas, NumPy, 그리고 문제 해결 실전",
+      "item": "https://Han-think.github.io/learning/2026-06-20-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "데이터 분석 기초 다지기: Pandas, NumPy, 그리고 문제 해결 실전",
+  "name": "데이터 분석 기초 다지기: Pandas, NumPy, 그리고 문제 해결 실전",
+  "description": "2026-06-20 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 데이터 문제 정의 및 품질 이해 Pandas 파일 입출력과 Colab 경로 이해 Pandas 표의 핵심 개념과 혼란 해결하기 Pandas 조건 필터링: loc 사용법과 Boolean Mask 활용 Pandas read_excel 함수 활용법: 초보자를 위한 핵심 옵션 가이드 데이터 분석 기초: 통계, 변수, 역할 구분 완벽 가이드 Pandas groupby와 다양한 집계 함수 활용 가이드 결측치 처리: 데이터 품질 향상을 위한 정책 및 실습 NumPy 핵심 개념과 활용법: 초보자를 위한 완전 정복 NumPy 배열의 형태 변환과 브로드캐스팅 완벽 가이드 Titanic 데이터셋 학습 및 테스트 계획 Pandas transform, groupby, unstack 활용 및 디버깅 가이드 데이터 품질 점검과 파생변수 생성: 혼란을 이해로 NumPy Boolean 마스크와 배열 조작: 이해와 활용 서울 아파트 데이터 전처리 및 특징 엔지니어링 가이드 CAD 검증을 위한 알고리즘 개발 및 JSON 파이프라인 이해 데이터 로드 오류 해결 및 워킹 노트 판다스 실습 문제 해결과 핵심 용어 정리 총평 1. 데이터 문제 정의 및 품질 이해 무엇을 배웠나 데이터 분석 프로젝트는 데이터의 상태에서 시작되어야 하며, 문제 정의는 확보 가능한 데이터를 기반으로 설정해야 한다는 점을 배웠다. 데이터가 부족한 경우, 획득 가능한 데이터와 향후 수집 가능성을 고려하여 문제 정의를 조정해야 한다는 것을 알게 되었다. 또한 데이터 품질 검증과 처리 과정을 통해 “Garbage In, Garbage Out” 문제를 해결하는 것이 중요하다는 것을 이해했다.\n헷갈렸던 점 데이터가 부족하거나 없을 때 문제 정의를 어떻게 해야 할지, 그리고 문제 정의를 유지해야 할지 기다려야 할지 혼란스러웠습니다. 초기에는 ‘있는 데이터에 억지로 맞추는 것’과 ‘기다리는 것’ 두 가지 선택지만 생각했는데, 둘 다 현실적인 방법이라고 생각하지 못했습니다.\n정리된 이해 데이터 분석 프로젝트는 현재 확보 가능한 데이터 상태에서 시작해야 하며, 부족한 데이터는 수집 가능성을 고려하여 문제 정의를 수정하거나 추가적인 데이터 확보 계획을 세워야 합니다. 데이터 품질은 분석 결과에 직접적인 영향을 미치므로, 수집부터 검증, 처리, 저장까지 체계적인 과정을 거쳐야 합니다. 핵심은 “쓰레기 입력하면 쓰레기 출력\"이라는 점을 명심하고 데이터 중심적인 접근법을 취하는 것입니다.\nimport numpy as np # 예시 데이터 수집 raw_data = np.array([[1, 2], [2, np.nan], [3, 4]]) # 결측치 포함 # 결측치 처리 validated_data = raw_data[~np.isnan(raw_data).any(axis=1)] print(\"검증된 데이터:\\n\", validated_data) 2. Pandas 파일 입출력과 Colab 경로 이해 무엇을 배웠나 Pandas 파일 입출력 시 to_csv나 to_excel 함수는 파일 자체를 열어주는 것이 아니라 지정된 경로에 파일을 저장하는 역할이라는 것을 명확히 이해하게 되었습니다. Colab에서 파일 작업을 할 때마다 Google Drive 마운트와 경로 설정을 잊지 말아야 하며, 파일 저장 및 불러오기 함수들의 역할을 정확히 기억해야 한다는 점도 알게 되었습니다. 이제 경로 감각을 가지고 파일 입출력 작업을 더 효율적으로 수행할 수 있을 것 같습니다.\n헷갈렸던 점 처음 Pandas 파일 입출력을 할 때, to_csv나 to_excel 함수를 실행하면 파일이 바로 열릴 거라고 생각했어요. 그리고 Colab을 다시 시작할 때마다 드라이브 마운트와 경로 설정을 계속 해야 한다는 점이 번거롭게 느껴졌습니다.\n정리된 이해 파일 입출력 시에는 실행 환경의 경로를 정확히 파악하고, to_csv/to_excel 함수는 단순히 파일을 저장하는 역할임을 이해해야 했습니다. Colab 세션이 재시작될 때마다 Drive 연결과 경로 설정이 초기화된다는 점도 기억해야 할 중요한 부분입니다. 파일 저장 및 불러오기 함수들의 역할과 사용법을 명확히 알아야 원하는 결과물을 얻을 수 있다는 것을 깨달았습니다.\n# Google Drive 연결 drive.mount('/content/drive') 3. Pandas 표의 핵심 개념과 혼란 해결하기 무엇을 배웠나 pandas DataFrame과 Series의 차이점을 명확히 이해하게 되었고, Index와 Columns의 역할이 어떻게 작동하는지 파악하게 되었다. 특히, loc 함수를 사용할 때 단순히 데이터 선택을 넘어, DataFrame 내에서 특정 조건에 맞는 데이터에 접근하는 방법을 이해하게 되었다. 앞으로 pandas를 활용한 데이터 분석 작업을 더욱 효율적으로 수행할 수 있을 것 같다.\n헷갈렸던 점 pandas를 처음 배울 때 DataFrame과 Series가 어떻게 다른지 감이 잘 안 잡혔어요. 특히 Series가 행인지 열인지 혼동될 때가 많았고, index와 columns의 역할도 명확하게 이해하지 못해서 데이터를 잘못 선택하는 실수를 종종 했습니다.\n정리된 이해 pandas에서 DataFrame은 표 전체를 나타내고, Series는 DataFrame 내의 특정 열이나 행을 나타내는 1차원 데이터라는 것을 명확히 이해하게 되었습니다. Index는 행을 식별하는 번호이고, Columns는 열을 식별하는 이름이라는 점도 이제는 헷갈리지 않습니다. 특히, loc 함수를 사용할 때 Index와 Columns의 역할을 고려해야 한다는 것을 깨달았습니다.\nprint(df.index) # 행 번호표 print(df.columns) 4. Pandas 조건 필터링: loc 사용법과 Boolean Mask 활용 무엇을 배웠나 Pandas에서 컬럼을 추출할 때 loc를 잘못 사용했던 오류를 바로잡았고, 조건 필터링 시 between() 함수와 AND, OR 연산자를 활용하여 Boolean Mask를 적용하는 방법을 익혔습니다. .head() 함수가 데이터프레임의 앞부분을 미리 확인하는 용도로 사용된다는 점도 알게 되었습니다. 이제 Pandas 데이터프레임에서 원하는 데이터를 더 정확하게 필터링하고 분석할 수 있게 되었습니다.\n헷갈렸던 점 처음에는 loc를 컬럼 선택에 사용하려다가 KeyError가 발생했고, .head()가 단순히 결과를 출력하는 기능이라고 생각해서 데이터프레임의 처음 몇 줄을 확인하는 용도로 활용하지 못했습니다. 컬럼을 추출하고 조건 필터링을 적용하는 과정에서 정확한 구문과 개념을 혼동했습니다.\n정리된 이해 Pandas에서 컬럼을 추출할 때는 df[\"컬럼명\"]과 같이 컬럼명을 직접 사용해야 하며, loc를 사용할 때는 인덱스 라벨이 아닌 컬럼명을 사용해야 한다는 점을 알게 되었습니다. 조건 필터링 시 Boolean Mask를 활용하여 between() 함수와 AND, OR 연산자를 조합하면 다양한 조건을 만족하는 데이터를 추출할 수 있습니다. 특히, 조건을 조합할 때는 괄호를 사용하여 정확한 결과를 얻도록 주의해야 합니다.\nmental_scores = df_wel[\"mental_wellbeing_score\"] mask = df_wel[\"mental_wellbeing_score\"].between(6, 8) filtered_df = df_wel.loc[mask, :] combined_mask = (df_wel[\"mental_wellbeing_score\"] \u003e 5) \u0026 (df_wel[\"mental_wellbeing_score\"] \u003c= 7) filtered_df = df_wel.loc[combined_mask, :] 5. Pandas read_excel 함수 활용법: 초보자를 위한 핵심 옵션 가이드 무엇을 배웠나 Pandas 공식 문서의 read_excel 함수를 읽으면서 다양한 옵션 때문에 어려움을 겪었지만, 필수적인 옵션인 io와 sheet_name을 중심으로 핵심 개념을 파악할 수 있었다. Excel 파일을 읽고 데이터프레임을 생성하는 기본적인 과정을 이해했으며, 향후 header, usecols 등 추가적인 옵션들을 학습할 필요가 있다는 것을 알게 되었다. 간단한 예시를 통해 파일 읽기와 데이터 내보내기를 경험하면서 Pandas 사용의 기초를 다졌다.\n헷갈렸던 점 read_excel 함수의 다양한 옵션들이 너무 많아서 어떤 옵션이 실제로 중요한지, 그리고 각 옵션이 어떤 역할을 하는지 파악하는 게 어려웠다. 특히 header, usecols, dtype 같은 옵션들의 의미와 사용법이 명확하게 이해되지 않았었다. 옵션들을 하나씩 테스트하면서 각 옵션이 데이터프레임에 어떤 영향을 미치는지 확인해봐야겠다.\n정리된 이해 Pandas 공식문서를 읽으면서 read_excel 함수의 다양한 옵션에 압도되었지만, 핵심은 파일 경로(io)와 읽을 시트 이름(sheet_name)을 정확히 지정하는 것이라는 점을 파악했습니다. 이제는 데이터 프레임 입출력의 기본 원리를 이해하고, 필요에 따라 추가적인 옵션들을 학습해나가면서 좀 더 복잡한 Excel 파일을 다룰 수 있을 것입니다.\nimport pandas as pd # Excel 파일 읽기 예시 file_path = \"C:\\\\Ollama-IPEX\\\\데이터\\\\example_data.xlsx\" sheet_name = \"tips\" # 데이터프레임 생성 df = pd.read_excel(io=file_path, sheet_name=sheet_name) # 읽어온 데이터 확인 print(df.head()) # 간단한 데이터 내보내기 예시 (이해를 돕기 위한) df.to_excel(\"output_tips.xlsx\", index=False, sheet_name=\"OutputSheet\") 6. 데이터 분석 기초: 통계, 변수, 역할 구분 완벽 가이드 무엇을 배웠나 통계청 자료처럼 이미 요약된 데이터는 분석 목적에 맞게 활용하기 어렵고, 데이터 분석을 위해서는 데이터의 척도와 원천성을 고려해야 한다는 점을 깨달았습니다. 또한, 데이터베이스 관리자와 분석가의 역할이 다르며, 각 역할에 따른 관점이 어떻게 다른지를 이해하게 되었습니다. 이제는 데이터 분석을 위한 데이터 준비 과정의 중요성을 더욱 명확하게 알게 되었습니다.\n헷갈렸던 점 통계청 자료가 바로 분석에 사용할 수 있을 것이라고 생각했고, 변수 척도별로 분석 방법이 어떻게 달라지는지 이해하는 데 어려움이 있었습니다. 또한, SQL 수업에서 DBA와 분석가의 역할 차이를 명확히 구분하지 못해 혼란스러웠습니다.\n정리된 이해 데이터 분석을 위해서는 단순히 데이터가 있다는 것만으로는 부족하며, 데이터의 척도, 형태, 그리고 원천을 고려하여 분석 목적에 맞게 가공해야 합니다. 데이터 분석 과정에서 데이터베이스 관리자와 분석가의 역할은 명확히 구분되며, 각 역할은 데이터의 안정성과 활용성에 초점을 맞추어 서로 다른 관점을 가지고 있습니다. 이러한 이해를 바탕으로 데이터 분석의 전 과정을 효과적으로 수행할 수 있을 것입니다.\n노트에 코드 예시가 없습니다.\n7. Pandas groupby와 다양한 집계 함수 활용 가이드 무엇을 배웠나 Pandas groupby 함수를 사용하여 데이터를 그룹화하고, count, sum, mean과 같은 집계 함수를 적용하는 방법을 익혔습니다. 특히 agg() 함수를 사용하여 여러 집계 함수를 동시에 적용하고, 각 컬럼에 다른 함수를 적용하는 방법을 이해하게 되었습니다. size 컬럼의 경우 단순히 합계를 계산하는 것이 아니라 개수를 세는 것이 중요하다는 점을 깨달았습니다.\n헷갈렸던 점 처음에는 ‘size’ 컬럼을 요일별로 더하는 것이 옳다고 생각했지만, 인원 수를 나타내는 컬럼이므로 개수를 세는 것이 맞다는 것을 깨달았습니다. 또한 agg() 함수를 사용하여 여러 통계값을 동시에 계산하는 방법을 익히는 데 어려움을 겪었습니다. 여러 컬럼에 대해 다른 집계 함수를 적용하는 구문이 복잡하게 느껴졌습니다.\n정리된 이해 Pandas의 groupby는 데이터를 특정 기준으로 묶어 분석할 수 있게 해주며, 집계 함수는 각 그룹에 대해 다양한 통계 값을 계산하는 데 사용됩니다. agg() 함수를 활용하면 여러 집계 함수를 동시에 적용하여 결과를 효율적으로 요약할 수 있다는 점을 명확히 이해했습니다. 특히 size 컬럼과 같은 인원수를 나타내는 컬럼은 sum()이 아닌 count()를 사용해야 한다는 점을 재정의했습니다.\n# 요일별 인원 수 세기 (count) tips.groupby(\"day\")[\"size\"].count() # 요일별 총 빌링 금액 합산 (sum) tips.groupby(\"day\")[\"total_bill\"].sum() # 요일별 평균 빌링 금액 계산 (mean) tips.groupby(\"day\")[\"total_bill\"].mean() 8. 결측치 처리: 데이터 품질 향상을 위한 정책 및 실습 무엇을 배웠나 결측치를 채우는 것은 데이터 해석을 돕는 처리일 뿐, 실제 값을 복원하는 것이 아니라는 점을 깨달았다. NaN 대신 “정보없음\"과 같은 명확한 레이블을 사용하여 데이터의 불확실성을 투명하게 드러내는 것이 중요하며, 결측 여부를 별도 컬럼으로 기록하는 방법도 고려해야 한다는 점을 알게 되었다. 데이터 품질 향상을 위해 결측치 처리 정책을 신중하게 결정해야 함을 배웠다.\n헷갈렸던 점 결측치를 채우는 것이 데이터 품질을 높이는 것처럼 생각했지만, 무작위 값을 넣으면 오히려 정보를 왜곡할 수 있다는 점이 처음에는 헷갈렸어. 특히 임의의 문자열을 넣어 포장하면 실제 데이터의 불확실성을 숨길 수 있다는 점이 걱정됐어. 데이터 보존에 대한 책임감 때문인지, 섣불리 값을 채우는 것 자체를 망설였던 것 같아.\n정리된 이해 결측치를 채우는 것은 데이터 분석을 위한 편리함을 제공하지만, 실제 값을 복원하는 것은 아니라는 점을 명확히 이해했다. 임의의 값을 넣는 것보다 “정보없음\"과 같은 명확한 레이블을 사용하거나, 결측 여부를 표시하는 별도의 컬럼을 만드는 것이 데이터의 정확성을 유지하는 더 나은 방법이다. 결측치 자체도 중요한 정보를 담고 있을 수 있다는 점을 기억해야 한다.\nimport pandas as pd titanic = pd.read_csv('titanic.csv') # 예시 데이터 불러오기 df = titanic.copy() df['deck'] = df['deck'].astype(\"object\") df['deck'] = df['deck'].fillna(\"정보없음\") df['deck_missing'] = df['deck'].isna().astype(bool) 9. NumPy 핵심 개념과 활용법: 초보자를 위한 완전 정복 무엇을 배웠나 NumPy를 단순한 리스트 처리 도구가 아닌, 빠른 수치 연산을 위한 핵심 패키지라는 것을 이해하게 되었다. 배열의 모양(shape), 차원(ndim), 데이터 타입(dtype)과 같은 핵심 개념을 정확히 파악하는 것이 중요하며, 이 개념들을 활용하여 데이터 분석 관련 다른 패키지들과 연계하여 활용할 수 있다는 것을 알게 되었다. 앞으로는 NumPy 배열의 구조를 이해하고, 다양한 기능을 숙달하여 데이터 분석 역량을 키워나가야겠다.\n헷갈렸던 점 처음에는 NumPy를 단순히 파이썬 리스트보다 조금 더 빠른 연산 도구라고 생각했어요. 특히 배열의 모양, 차원, 데이터 타입 같은 개념들이 꼬리에 꼬리를 물어서 어려웠고, 실제로 어떻게 활용해야 할지 감이 잘 안 잡혔습니다. 실습을 통해 좀 더 익숙해져야 할 것 같아요.\n정리된 이해 NumPy는 단순히 리스트를 빠르게 처리하는 도구가 아니라, 과학적 계산과 데이터 분석을 위한 핵심적인 배열 계산 엔진이라는 것을 알게 되었다. 배열의 shape, ndim, dtype, axis 등의 개념을 정확히 이해하고 활용해야 NumPy의 잠재력을 최대한으로 활용할 수 있으며, Pandas, Matplotlib, SciPy 등 다른 중요한 데이터 분석 라이브러리들과의 연관성도 명확히 파악하게 되었다. 이제 NumPy를 통해 데이터 분석의 기반을 다질 수 있다는 자신감이 생겼다.\nimport numpy as np # Shape 예시 a = np.array([[1, 2, 3], [4, 5, 6]]) print(a.shape) # ndim 예시 print(a.ndim) # dtype 예시 print(a.dtype) # Axis 예시 print(a.sum(axis=0)) 10. NumPy 배열의 형태 변환과 브로드캐스팅 완벽 가이드 무엇을 배웠나 NumPy의 reshape 함수는 배열의 총 원소 수를 유지하며 모양을 변경할 수 있다는 것을 알게 되었고, axis는 단순히 행과 열을 나타내는 것이 아니라 계산 방향을 지정한다는 점을 이해하게 되었습니다. 또한 broadcasting을 통해 크기가 다른 배열 간의 연산이 어떻게 이루어지는지 명확하게 이해하여, NumPy 배열 연산에 대한 이해도를 높일 수 있었습니다. 앞으로는 이 개념들을 활용하여 더 복잡한 NumPy 연산을 수행할 수 있을 것 같습니다.\n헷갈렸던 점 NumPy의 reshape 함수를 사용할 때, 배열의 총 원소 개수가 변하지 않으면서 다양한 형태를 가질 수 있다는 점이 처음에는 이해하기 어려웠습니다. axis를 행과 열로만 단순하게 생각하다 보니, 실제 계산 방향이 어떻게 되는지 혼란스러웠고, broadcasting의 경우 배열 크기가 다를 때 어떻게 자동으로 조정되는지 규칙이 불명확하게 느껴졌습니다.\n정리된 이해 NumPy 배열의 reshape 함수는 배열 내 원소의 총 개수를 유지하며 배열의 형태를 변경하는 기능이고, 이 때 곱셈 결과가 동일한 형태를 가질 수 있는 다양한 형태 변환이 가능하다는 것을 알게 되었다. axis는 단순히 행과 열의 개념을 넘어 실제 계산이 이루어지는 방향을 나타내며, broadcasting은 크기가 다른 배열 간 연산 시 NumPy가 자동으로 크기를 맞춰 계산하는 규칙이다.\na = np.arange(12).reshape(3, 4) b = np.arange(12).reshape(2, 2, 3) b = np.array([[1, 1], [2, 2]]).sum(axis=0) matrix = np.array([[2, 4, 2], [6, 5, 9], [9, 4, 7]]) result = matrix + 5 11. Titanic 데이터셋 학습 및 테스트 계획 무엇을 배웠나 월요일 학습 과정에서 데이터셋 전환 혼동과 준비 부족으로 어려움을 겪었지만, titanic 데이터셋에 집중해야 함을 명확히 했다. 데이터셋별 핵심 코드와 예상 문제 유형을 정리하여 앞으로의 학습에 도움이 될 만한 가이드를 만들었다. 이번 과정을 통해 데이터셋 전환 시 주의할 점과 코드 실행 전 데이터 로드 상태 확인의 중요성을 깨달았다.\n헷갈렸던 점 수업 중 데이터셋이 계속 바뀌어서 지금 어떤 데이터셋을 가지고 있는지 파악하는 데 어려움을 겪었다. 특히 answer 노트북에서 데이터 로드에 실패할 때마다 예상치 못한 오류들이 발생해서 전체적인 학습 흐름이 끊기는 듯한 느낌이었다. 여러 데이터셋을 정확히 구분하고 로드하는 과정이 중요하다는 것을 깨달았다.\n정리된 이해 월요일 학습 중 titanic 데이터셋에 집중해야 함을 깨달았고, 데이터셋 전환 혼동으로 인해 발생하던 오류들을 방지하기 위해 데이터 로딩 과정을 명확히 하기로 했다. titanic 데이터셋의 기본적인 정보 확인, 결측치 처리, 조건 필터링, 집계 분석 등을 중심으로 예상 문제 유형을 정리하여 앞으로 학습 방향을 설정했다.\nimport pandas as pd import seaborn as sns titanic = sns.load_dataset(\"titanic\") titanic.head() titanic.info() titanic.dtypes titanic.isna().sum() titanic.loc[titanic[\"age\"].notnull(), :] titanic[\"age\"].fillna(titanic[\"age\"].median()) titanic.loc[(조건1) \u0026 (조건2), :] titanic.groupby(\"sex\")[\"survived\"].mean() titanic.groupby(\"pclass\")[\"survived\"].mean() 12. Pandas transform, groupby, unstack 활용 및 디버깅 가이드 무엇을 배웠나 Pandas의 agg()는 그룹별 요약 통계를, transform()은 원본 행에 적용되는 그룹 계산 결과를 반환한다는 것을 명확히 이해하게 되었다. 다중 groupby() 후 unstack()을 사용할 때는 메서드 체이닝을 위해 쉼표 대신 점(.)을 사용해야 한다는 오류를 수정했다. 이 학습을 통해 Pandas 데이터 분석 작업 효율성을 높일 수 있을 것 같다.\n헷갈렸던 점 agg()와 transform()의 차이점을 명확히 이해하지 못해서 agg()를 사용해야 할 곳에 transform()을 쓰려고 시도했고, 다중 groupby()와 unstack()을 사용할 때 쉼표를 잘못 사용해 메서드 체인이 끊기는 오류가 발생했었다. 특히 transform()이 원본 행 수를 유지한다는 점을 간과하고 있었고, 쉼표를 통해 여러 메서드를 연쇄적으로 실행할 수 있다는 것을 잊고 있었다.\n정리된 이해 agg()는 그룹별 요약 통계를 계산하여 결과를 요약하는 반면, transform()은 그룹 계산 결과를 원본 데이터의 각 행에 적용하여 새로운 열을 생성한다. 다중 groupby()를 사용할 때는 쉼표 대신 and를 사용하여 메서드를 체이닝해야 하며, head()와 같은 메서드는 별도로 호출해야 한다. 이 점들을 기억하고 예제를 통해 연습하면 Pandas transform, multi-column groupby, unstack 사용법을 익히는 데 도움이 될 것이다.\ntips.groupby(\"day\")[\"total_bill\"].agg([\"sum\", \"mean\", \"count\"]) tips[\"day_avg_total_bill 13. 데이터 품질 점검과 파생변수 생성: 혼란을 이해로 무엇을 배웠나 데이터 분석 전에 데이터 품질 점검과 파생변수 생성의 중요성을 알게 되었어. 데이터 품질은 결측, 중복, 정합성, 오염값 등을 확인하고 처리하는 과정이고, 파생변수는 기존 데이터를 활용해 새로운 변수를 만드는 것을 의미해. 마치 요리 전 재료를 검수하고 새로운 요리를 만드는 과정과 비슷하네!\n헷갈렸던 점 데이터 품질과 파생변수라는 단어 자체에 압도당해서 뭘 어떻게 시작해야 할지 감이 잘 안 잡혔어요. 특히 어떤 데이터 품질 문제가 있는지, 그리고 그걸 어떻게 해결해야 하는지 구체적으로 어떻게 판단해야 할지 막막했어요. 파생변수를 만들 때 어떤 기준으로 새로운 변수를 만들어야 하는지 예시가 부족해서 어려웠어요.\n정리된 이해 데이터 분석 전에 데이터 품질을 점검하고 파생변수를 생성하는 것은 마치 요리 전 재료를 검수하고 새로운 레시피를 만드는 과정과 같아요. 데이터 품질은 결측값, 중복, 정합성, 오염값을 확인하는 것이고, 파생변수는 기존 데이터를 활용해 새로운 정보를 만들어내는 작업이에요. 이 과정을 통해 분석의 정확성과 효율성을 높일 수 있다는 것을 알게 되었어요.\n# 숫자 데이터의 빈칸을 중앙값으로 채우기 예시 df_example = df_example.copy() df_example['숫자컬럼'] = df_example['숫자컬럼'].fillna(df_example['숫자컬럼'].median()) 14. NumPy Boolean 마스크와 배열 조작: 이해와 활용 무엇을 배웠나 NumPy의 Boolean Mask를 사용해서 배열에서 특정 조건을 만족하는 값들만 선택하는 방법을 알게 되었다. and나 or 대신 \u0026와 |를 복합 조건에서 사용해야 한다는 점을 다시 확인했고, 조건식 실행 결과와 실제 값 추출의 차이점을 명확히 이해하게 되었다. 이제 Boolean Mask를 활용하여 배열에서 원하는 값들을 효율적으로 추출할 수 있을 것 같다.\n헷갈렸던 점 NumPy Boolean masking을 사용할 때, 조건문들을 연결할 때 and, or를 써야 하는지 \u0026, |를 써야 하는지 헷갈렸고, 조건식을 출력하는 것과 실제 값을 추출하는 것이 왜 다른지 명확히 이해하지 못했다. Boolean 마스크를 통해 배열의 특정 요소들을 선택하는 개념은 SQL의 WHERE절과 비슷하다는 점을 알게 되었다.\n정리된 이해 NumPy Boolean 마스크는 배열에서 특정 조건을 만족하는 요소들을 선택하는 데 사용되며, 복합 조건에서는 \u0026와 | 연산자를 사용해야 한다는 점을 명확히 알게 되었다. 조건식을 적용했을 때 True/False 배열이 출력되는 것과, 실제 배열 값들을 추출하는 과정이 다르다는 것도 이해했다. Boolean 마스크는 배열을 필터링하는 SQL의 WHERE 절과 비슷한 역할을 한다.\nimport numpy as np a = np.array([ [1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12] ]) keep = a \u003c 5 print(keep) print(a[keep]) print(a[(a \u003e 2) \u0026 (a \u003c 11)]) print(a[(a \u003e 5) | (a == 5)]) 15. 서울 아파트 데이터 전처리 및 특징 엔지니어링 가이드 무엇을 배웠나 데이터 전처리의 중요성을 깨달았고, 단순히 데이터를 정리하는 것이 아니라 분석에 적합한 형태로 만드는 체계적인 과정임을 알게 되었다. 불필요한 컬럼 삭제 순서와 결측치 처리 방법이 분석 결과에 미치는 영향에 대해 고민하고, 데이터 전처리 과정을 단계별로 정리하는 것이 효율적임을 학습했다. 앞으로는 데이터 분석의 정확성을 높이기 위해 전처리 단계에 더욱 신중을 기해야겠다.\n헷갈렸던 점 데이터 삭제 순서가 왜 그렇게 중요하고, 특정 컬럼을 삭제하는 것이 분석 결과에 어떤 영향을 미치는지 잘 몰랐어요. 그리고 결측치 처리할 때 단순히 삭제하면 안 되는 이유와 어떤 방식으로 대체해야 하는지 고민이었습니다.\n정리된 이해 데이터 전처리는 분석에 필요한 형태로 데이터를 만들기 위한 체계적인 과정이며, 불필요한 데이터 제거부터 결측치 처리, 데이터 타입 변환, 새로운 특징 생성까지 포함합니다. 이 과정을 통해 데이터의 정확성과 분석 효율성을 높일 수 있으며, 각 단계는 분석 결과에 영향을 미칠 수 있으므로 신중하게 접근해야 합니다.\ndf.drop(columns=drop_cols, inplace=True) df = df.dropna(subset=[\"거래금액(만원)\"], ignore_index=True) df.head() df.info() df.columns pd.to_numeric() pd.to_datetime() df.sort_values() df.groupby() 16. CAD 검증을 위한 알고리즘 개발 및 JSON 파이프라인 이해 무엇을 배웠나 처음에는 알고리즘을 복잡한 공식으로 생각했지만, 실제로는 단순한 규칙의 반복적인 과정이라는 것을 깨달았습니다. 이미지 수치화부터 CAD 검증까지 유사한 구조를 가지는 파이프라인으로 이해하게 되었고, JSON을 활용하여 데이터를 구조화하고 관리하는 것이 중요하다는 점을 알게 되었습니다. 특히, 검증 결과를 피드백 루프로 활용하여 알고리즘을 개선하는 것이 중요하다는 점을 배웠습니다.\n헷갈렸던 점 처음에는 알고리즘을 복잡한 수학 공식처럼 생각해서, 어떻게 적용해야 할지 막막했습니다. 특히 이미지 수치화, JSON 저장, CAD 변환이 어떻게 연결되는지 이해하기 어려웠어요. 알고리즘 개발이라는 것이 단순히 공식을 반복하는 것 이상이라고 생각했지만, 그 ‘이상’이 무엇인지 파악하는 데 시간이 걸렸습니다.\n정리된 이해 알고리즘은 복잡한 공식이 아니라, 입력 데이터를 받아 규칙에 따라 처리하고 저장하며, 그 결과를 바탕으로 반복적인 개선을 거치는 과정이라는 것을 알게 되었습니다. 이미지 수치화, JSON 저장, CAD 변환과 같은 과정들이 유사한 알고리즘 구조를 가진다는 점을 이해하게 되었고, 이를 통해 초보적인 설계 파이프라인을 구축하는 데 도움이 될 것이라고 생각합니다. JSON을 활용하여 데이터를 구조화하고, CAD 도구를 이용하여 설계를 검증하는 전체적인 흐름을 파악하는 것이 중요합니다.\n{ \"part\": \"bracket\", \"material\": \"PLA\", \"thickness_mm\": 4.0, \"load_n\": 80, \"span_mm\": 120, \"joint_type\": \"screw_2point\" } { \"fos\": 1.42, \"status\": \"fail\", \"reason\": \"두께 부족으로 인한 부하 불안정\", \"suggestion\": \"두께를 6mm로 늘리거나 보강 리브 추가\" } 17. 데이터 로드 오류 해결 및 워킹 노트 무엇을 배웠나 노트에서 데이터셋 로드 오류의 원인이 코드 실행 순서에 있음을 알게 되었다. 특히 데이터 로드 코드는 항상 노트북에서 가장 먼저 실행해야 변수가 정의되고, 이후 코드들이 정상적으로 작동한다. 데이터셋을 불러오는 단계를 건너뛰면 NameError나 KeyError와 같은 오류가 발생하는 것을 확인했다.\n헷갈렸던 점 코드가 보인다고 해서 바로 실행되는 게 아니고, 데이터 로드 부분부터 제대로 실행해야 한다는 점이 처음에는 이해가 안 되었습니다. 중간 셀부터 실행하면 변수가 정의되지 않아 오류가 발생한다는 것도 몰랐고, 데이터 로드 셀을 가장 먼저 실행해야 한다는 것을 깨달으니 문제 해결의 실마리가 풀렸습니다.\n정리된 이해 노트북에서 코드가 보이는 것만으로는 실행되지 않기 때문에, 데이터 로드 코드를 항상 가장 먼저 실행해야 문제를 해결할 수 있다는 걸 알게 됐어. 데이터셋을 불러오는 단계를 건너뛰고 아래 셀부터 실행하면 변수가 정의되지 않아 오류가 발생할 수 있다는 점을 명심해야겠다.\nimport pandas as pd import seaborn as sns titanic = sns.load_dataset(\"titanic\") import seaborn as sns tips = sns.load_dataset(\"tips\") # df_srv 데이터셋 로드 예시 df_srv = pd.read_csv(\"path/to/df_srv.csv\") # 실제 파일 경로를 넣어주세요 18. 판다스 실습 문제 해결과 핵심 용어 정리 무엇을 배웠나 Pandas를 처음 배우면서 sum()과 count() 함수의 차이, agg()의 활용, transform()과 agg()의 구분, unstack()의 역할 등 여러 부분이 헷갈렸던 경험을 통해 개념을 정리했습니다. loc 사용 오류와 같은 실수를 통해 정확한 인덱스 지정의 중요성을 깨달았고, 데이터프레임과 시리즈의 관계, 그리고 행/열/인덱스/컬럼 등의 기본적인 용어에 대한 이해를 높였습니다. 이 학습 노트를 통해 Pandas 기본 기능을 더욱 명확하게 이해하게 되었습니다.\n헷갈렸던 점 sum()과 count() 함수가 비슷해서 데이터 개수를 세는 방식이 다른지 몰랐고, agg() 함수는 복잡해서 그 유용성을 제대로 파악하지 못했습니다. transform()과 agg()의 차이점도 명확히 이해하지 못했고, loc 사용 시 인덱스 오류가 자주 발생했습니다.\n정리된 이해 Pandas를 사용하면서 sum()과 count()의 차이, agg()의 활용, transform()과 agg()의 구분 등 기본적인 함수 사용법에서 어려움을 겪었습니다. 하지만 DataFrame, Series, loc, iloc 등의 개념과 boolean mask, isin() 함수를 통해 데이터 선택과 조작에 대한 이해도를 높일 수 있었습니다. 앞으로는 꾸준한 실습을 통해 Pandas 사용법을 숙달하고, 데이터 분석 능력을 향상시키도록 노력해야겠습니다.\n# sum() vs count() 예시 import pandas as pd data = {'col1': [1, 2, 3, 2, 1], 'col2': [4, 5, 2, 1, 5]} df = pd.DataFrame(data) print(df['col1'].sum()) # 값의 합: 9 print(df['col1'].count()) # 항목의 개수: 5 # agg() 예시 data = {'col1': [1, 2, 3, 2, 1], 'col2': [4, 5, 2, 1, 5]} df = pd.DataFrame(data) print(df.agg({'col1': 'sum', 'col2': 'mean'})) # transform() vs agg() 예시 data = {'col1': [1, 2, 3, 2, 1], 'col2': [4, 5, 2, 1, 5]} df = pd.DataFrame(data) df['col1_mean'] = df['col1'].transform(lambda x: x - df['col1'].mean()) print(df) df['col1_sum'] = df['col1'].agg('sum') print(df) # unstack() 예시 import pandas as pd data = {'A': {'x': 1, 'y': 2}, 'B': {'x': 3, 'y': 4}} df = pd.DataFrame(data) print(df.unstack()) # loc 사용 오류 예시 (정확한 인덱스 지정 중요) import pandas as pd data = {'col1': [1, 2, 3], 'col2': [4, 5, 6]} df = pd.DataFrame(data) # 잘못된 예시: KeyError 발생 가능 # print(df.loc[99, 'col1']) # 올바른 예시 print(df.loc[0, 'col1']) 총평 오늘 오후 전체에서 배운 것 데이터 분석 프로젝트의 시작은 데이터 상태를 정확히 이해하고, 확보 가능한 데이터를 기반으로 문제 정의를 설정하는 것임을 배웠습니다. Pandas와 NumPy를 활용한 데이터 전처리, 필터링, 그룹화, 통계 계산 등 다양한 기능을 익히면서 데이터 분석의 기초를 다졌고, 데이터 로딩 순서, 결측치 처리, 특징 엔지니어링 등의 중요성을 깨달았습니다. 앞으로 배운 내용을 바탕으로 실제 데이터 분석 프로젝트를 수행하며 실력을 더욱 향상시켜 나가겠습니다.\n다음에 조심할 것 데이터셋을 로드할 때마다 코드 실행 순서를 다시 한번 확인하고, 변수 정의가 제대로 되었는지 꼼꼼하게 점검해야겠다. 특히 복잡한 분석을 수행하기 전에 데이터 전처리 과정을 충분히 거치고, 각 단계의 영향을 분석 결과에 어떻게 미치는지를 고려해야 실수를 줄일 수 있을 것 같다. 마지막으로, Pandas의 다양한 함수들의 역할과 사용법을 꾸준히 복습하고, 실제 문제에 적용해보면서 숙련도를 높여야겠다.\n다음 복습 주제 NumPy Boolean Mask를 좀 더 다양한 예제를 통해 복습해서 활용도를 높이고 싶어. 특히 배열의 크기가 다를 때 broadcasting이 어떻게 동작하는지 그림과 함께 다시 살펴보면 이해가 더 명확해질 것 같아. 서울 아파트 데이터 전처리 과정에서 어떤 순서로 컬럼을 삭제해야 분석 결과에 가장 적합한지 좀 더 깊이 고민해보고 싶어.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "3541",
+  "inLanguage": "en",
+  "datePublished": "2026-06-20T00:00:00Z",
+  "dateModified": "2026-06-20T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-06-20-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      데이터 분석 기초 다지기: Pandas, NumPy, 그리고 문제 해결 실전
+    </h1>
+    <div class="post-description">
+      2026-06-20 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-06-20 00:00:00 +0000 UTC'>2026년 6월 20일</span>&nbsp;·&nbsp;<span>17 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%AC%B8%EC%A0%9C-%EC%A0%95%EC%9D%98-%EB%B0%8F-%ED%92%88%EC%A7%88-%EC%9D%B4%ED%95%B4">데이터 문제 정의 및 품질 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-pandas-%ED%8C%8C%EC%9D%BC-%EC%9E%85%EC%B6%9C%EB%A0%A5%EA%B3%BC-colab-%EA%B2%BD%EB%A1%9C-%EC%9D%B4%ED%95%B4">Pandas 파일 입출력과 Colab 경로 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-pandas-%ED%91%9C%EC%9D%98-%ED%95%B5%EC%8B%AC-%EA%B0%9C%EB%85%90%EA%B3%BC-%ED%98%BC%EB%9E%80-%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0">Pandas 표의 핵심 개념과 혼란 해결하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-pandas-%EC%A1%B0%EA%B1%B4-%ED%95%84%ED%84%B0%EB%A7%81-loc-%EC%82%AC%EC%9A%A9%EB%B2%95%EA%B3%BC-boolean-mask-%ED%99%9C%EC%9A%A9">Pandas 조건 필터링: <code>loc</code> 사용법과 Boolean Mask 활용</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-pandas-readexcel-%ED%95%A8%EC%88%98-%ED%99%9C%EC%9A%A9%EB%B2%95-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%ED%95%B5%EC%8B%AC-%EC%98%B5%EC%85%98-%EA%B0%80%EC%9D%B4%EB%93%9C">Pandas <code>read_excel</code> 함수 활용법: 초보자를 위한 핵심 옵션 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="6">
+<li><a href="#6-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D-%EA%B8%B0%EC%B4%88-%ED%86%B5%EA%B3%84-%EB%B3%80%EC%88%98-%EC%97%AD%ED%95%A0-%EA%B5%AC%EB%B6%84-%EC%99%84%EB%B2%BD-%EA%B0%80%EC%9D%B4%EB%93%9C">데이터 분석 기초: 통계, 변수, 역할 구분 완벽 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="7">
+<li><a href="#7-pandas-groupby%EC%99%80-%EB%8B%A4%EC%96%91%ED%95%9C-%EC%A7%91%EA%B3%84-%ED%95%A8%EC%88%98-%ED%99%9C%EC%9A%A9-%EA%B0%80%EC%9D%B4%EB%93%9C">Pandas <code>groupby</code>와 다양한 집계 함수 활용 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="8">
+<li><a href="#8-%EA%B2%B0%EC%B8%A1%EC%B9%98-%EC%B2%98%EB%A6%AC-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%92%88%EC%A7%88-%ED%96%A5%EC%83%81%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%A0%95%EC%B1%85-%EB%B0%8F-%EC%8B%A4%EC%8A%B5">결측치 처리: 데이터 품질 향상을 위한 정책 및 실습</a></li>
+</ol>
+</li>
+<li>
+<ol start="9">
+<li><a href="#9-numpy-%ED%95%B5%EC%8B%AC-%EA%B0%9C%EB%85%90%EA%B3%BC-%ED%99%9C%EC%9A%A9%EB%B2%95-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%99%84%EC%A0%84-%EC%A0%95%EB%B3%B5">NumPy 핵심 개념과 활용법: 초보자를 위한 완전 정복</a></li>
+</ol>
+</li>
+<li>
+<ol start="10">
+<li><a href="#10-numpy-%EB%B0%B0%EC%97%B4%EC%9D%98-%ED%98%95%ED%83%9C-%EB%B3%80%ED%99%98%EA%B3%BC-%EB%B8%8C%EB%A1%9C%EB%93%9C%EC%BA%90%EC%8A%A4%ED%8C%85-%EC%99%84%EB%B2%BD-%EA%B0%80%EC%9D%B4%EB%93%9C">NumPy 배열의 형태 변환과 브로드캐스팅 완벽 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="11">
+<li><a href="#11-titanic-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%85%8B-%ED%95%99%EC%8A%B5-%EB%B0%8F-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EA%B3%84%ED%9A%8D">Titanic 데이터셋 학습 및 테스트 계획</a></li>
+</ol>
+</li>
+<li>
+<ol start="12">
+<li><a href="#12-pandas-transform-groupby-unstack-%ED%99%9C%EC%9A%A9-%EB%B0%8F-%EB%94%94%EB%B2%84%EA%B9%85-%EA%B0%80%EC%9D%B4%EB%93%9C">Pandas <code>transform</code>, <code>groupby</code>, <code>unstack</code> 활용 및 디버깅 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="13">
+<li><a href="#13-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%92%88%EC%A7%88-%EC%A0%90%EA%B2%80%EA%B3%BC-%ED%8C%8C%EC%83%9D%EB%B3%80%EC%88%98-%EC%83%9D%EC%84%B1-%ED%98%BC%EB%9E%80%EC%9D%84-%EC%9D%B4%ED%95%B4%EB%A1%9C">데이터 품질 점검과 파생변수 생성: 혼란을 이해로</a></li>
+</ol>
+</li>
+<li>
+<ol start="14">
+<li><a href="#14-numpy-boolean-%EB%A7%88%EC%8A%A4%ED%81%AC%EC%99%80-%EB%B0%B0%EC%97%B4-%EC%A1%B0%EC%9E%91-%EC%9D%B4%ED%95%B4%EC%99%80-%ED%99%9C%EC%9A%A9">NumPy Boolean 마스크와 배열 조작: 이해와 활용</a></li>
+</ol>
+</li>
+<li>
+<ol start="15">
+<li><a href="#15-%EC%84%9C%EC%9A%B8-%EC%95%84%ED%8C%8C%ED%8A%B8-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%84%EC%B2%98%EB%A6%AC-%EB%B0%8F-%ED%8A%B9%EC%A7%95-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A7%81-%EA%B0%80%EC%9D%B4%EB%93%9C">서울 아파트 데이터 전처리 및 특징 엔지니어링 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="16">
+<li><a href="#16-cad-%EA%B2%80%EC%A6%9D%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%9C%EB%B0%9C-%EB%B0%8F-json-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EC%9D%B4%ED%95%B4">CAD 검증을 위한 알고리즘 개발 및 JSON 파이프라인 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="17">
+<li><a href="#17-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%A1%9C%EB%93%9C-%EC%98%A4%EB%A5%98-%ED%95%B4%EA%B2%B0-%EB%B0%8F-%EC%9B%8C%ED%82%B9-%EB%85%B8%ED%8A%B8">데이터 로드 오류 해결 및 워킹 노트</a></li>
+</ol>
+</li>
+<li>
+<ol start="18">
+<li><a href="#18-%ED%8C%90%EB%8B%A4%EC%8A%A4-%EC%8B%A4%EC%8A%B5-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0%EA%B3%BC-%ED%95%B5%EC%8B%AC-%EC%9A%A9%EC%96%B4-%EC%A0%95%EB%A6%AC">판다스 실습 문제 해결과 핵심 용어 정리</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-데이터-문제-정의-및-품질-이해">1. 데이터 문제 정의 및 품질 이해<a hidden class="anchor" aria-hidden="true" href="#1-데이터-문제-정의-및-품질-이해">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>데이터 분석 프로젝트는 데이터의 상태에서 시작되어야 하며, 문제 정의는 확보 가능한 데이터를 기반으로 설정해야 한다는 점을 배웠다. 데이터가 부족한 경우, 획득 가능한 데이터와 향후 수집 가능성을 고려하여 문제 정의를 조정해야 한다는 것을 알게 되었다. 또한 데이터 품질 검증과 처리 과정을 통해 &ldquo;Garbage In, Garbage Out&rdquo; 문제를 해결하는 것이 중요하다는 것을 이해했다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>데이터가 부족하거나 없을 때 문제 정의를 어떻게 해야 할지, 그리고 문제 정의를 유지해야 할지 기다려야 할지 혼란스러웠습니다. 초기에는 &lsquo;있는 데이터에 억지로 맞추는 것&rsquo;과 &lsquo;기다리는 것&rsquo; 두 가지 선택지만 생각했는데, 둘 다 현실적인 방법이라고 생각하지 못했습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>데이터 분석 프로젝트는 현재 확보 가능한 데이터 상태에서 시작해야 하며, 부족한 데이터는 수집 가능성을 고려하여 문제 정의를 수정하거나 추가적인 데이터 확보 계획을 세워야 합니다. 데이터 품질은 분석 결과에 직접적인 영향을 미치므로, 수집부터 검증, 처리, 저장까지 체계적인 과정을 거쳐야 합니다. 핵심은 &ldquo;쓰레기 입력하면 쓰레기 출력&quot;이라는 점을 명심하고 데이터 중심적인 접근법을 취하는 것입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 예시 데이터 수집</span>
+</span></span><span style="display:flex;"><span>raw_data <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([[<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>], [<span style="color:#ae81ff">2</span>, np<span style="color:#f92672">.</span>nan], [<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>]])  <span style="color:#75715e"># 결측치 포함</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 결측치 처리</span>
+</span></span><span style="display:flex;"><span>validated_data <span style="color:#f92672">=</span> raw_data[<span style="color:#f92672">~</span>np<span style="color:#f92672">.</span>isnan(raw_data)<span style="color:#f92672">.</span>any(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)]
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;검증된 데이터:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, validated_data)
+</span></span></code></pre></div><h2 id="2-pandas-파일-입출력과-colab-경로-이해">2. Pandas 파일 입출력과 Colab 경로 이해<a hidden class="anchor" aria-hidden="true" href="#2-pandas-파일-입출력과-colab-경로-이해">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>Pandas 파일 입출력 시 <code>to_csv</code>나 <code>to_excel</code> 함수는 파일 자체를 열어주는 것이 아니라 지정된 경로에 파일을 저장하는 역할이라는 것을 명확히 이해하게 되었습니다. Colab에서 파일 작업을 할 때마다 Google Drive 마운트와 경로 설정을 잊지 말아야 하며, 파일 저장 및 불러오기 함수들의 역할을 정확히 기억해야 한다는 점도 알게 되었습니다. 이제 경로 감각을 가지고 파일 입출력 작업을 더 효율적으로 수행할 수 있을 것 같습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음 Pandas 파일 입출력을 할 때, <code>to_csv</code>나 <code>to_excel</code> 함수를 실행하면 파일이 바로 열릴 거라고 생각했어요. 그리고 Colab을 다시 시작할 때마다 드라이브 마운트와 경로 설정을 계속 해야 한다는 점이 번거롭게 느껴졌습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>파일 입출력 시에는 실행 환경의 경로를 정확히 파악하고, <code>to_csv</code>/<code>to_excel</code> 함수는 단순히 파일을 저장하는 역할임을 이해해야 했습니다. Colab 세션이 재시작될 때마다 Drive 연결과 경로 설정이 초기화된다는 점도 기억해야 할 중요한 부분입니다. 파일 저장 및 불러오기 함수들의 역할과 사용법을 명확히 알아야 원하는 결과물을 얻을 수 있다는 것을 깨달았습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Google Drive 연결</span>
+</span></span><span style="display:flex;"><span>drive<span style="color:#f92672">.</span>mount(<span style="color:#e6db74">&#39;/content/drive&#39;</span>)
+</span></span></code></pre></div><h2 id="3-pandas-표의-핵심-개념과-혼란-해결하기">3. Pandas 표의 핵심 개념과 혼란 해결하기<a hidden class="anchor" aria-hidden="true" href="#3-pandas-표의-핵심-개념과-혼란-해결하기">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>pandas DataFrame과 Series의 차이점을 명확히 이해하게 되었고, Index와 Columns의 역할이 어떻게 작동하는지 파악하게 되었다. 특히, <code>loc</code> 함수를 사용할 때 단순히 데이터 선택을 넘어, DataFrame 내에서 특정 조건에 맞는 데이터에 접근하는 방법을 이해하게 되었다. 앞으로 pandas를 활용한 데이터 분석 작업을 더욱 효율적으로 수행할 수 있을 것 같다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>pandas를 처음 배울 때 DataFrame과 Series가 어떻게 다른지 감이 잘 안 잡혔어요. 특히 Series가 행인지 열인지 혼동될 때가 많았고, index와 columns의 역할도 명확하게 이해하지 못해서 데이터를 잘못 선택하는 실수를 종종 했습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>pandas에서 DataFrame은 표 전체를 나타내고, Series는 DataFrame 내의 특정 열이나 행을 나타내는 1차원 데이터라는 것을 명확히 이해하게 되었습니다. Index는 행을 식별하는 번호이고, Columns는 열을 식별하는 이름이라는 점도 이제는 헷갈리지 않습니다. 특히, loc 함수를 사용할 때 Index와 Columns의 역할을 고려해야 한다는 것을 깨달았습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>  print(df<span style="color:#f92672">.</span>index)  <span style="color:#75715e"># 행 번호표</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>  print(df<span style="color:#f92672">.</span>columns)
+</span></span></code></pre></div><h2 id="4-pandas-조건-필터링-loc-사용법과-boolean-mask-활용">4. Pandas 조건 필터링: <code>loc</code> 사용법과 Boolean Mask 활용<a hidden class="anchor" aria-hidden="true" href="#4-pandas-조건-필터링-loc-사용법과-boolean-mask-활용">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>Pandas에서 컬럼을 추출할 때 <code>loc</code>를 잘못 사용했던 오류를 바로잡았고, 조건 필터링 시 <code>between()</code> 함수와 AND, OR 연산자를 활용하여 Boolean Mask를 적용하는 방법을 익혔습니다. <code>.head()</code> 함수가 데이터프레임의 앞부분을 미리 확인하는 용도로 사용된다는 점도 알게 되었습니다. 이제 Pandas 데이터프레임에서 원하는 데이터를 더 정확하게 필터링하고 분석할 수 있게 되었습니다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>처음에는 <code>loc</code>를 컬럼 선택에 사용하려다가 <code>KeyError</code>가 발생했고, <code>.head()</code>가 단순히 결과를 출력하는 기능이라고 생각해서 데이터프레임의 처음 몇 줄을 확인하는 용도로 활용하지 못했습니다. 컬럼을 추출하고 조건 필터링을 적용하는 과정에서 정확한 구문과 개념을 혼동했습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>Pandas에서 컬럼을 추출할 때는 <code>df[&quot;컬럼명&quot;]</code>과 같이 컬럼명을 직접 사용해야 하며, <code>loc</code>를 사용할 때는 인덱스 라벨이 아닌 컬럼명을 사용해야 한다는 점을 알게 되었습니다. 조건 필터링 시 Boolean Mask를 활용하여 <code>between()</code> 함수와 AND, OR 연산자를 조합하면 다양한 조건을 만족하는 데이터를 추출할 수 있습니다. 특히, 조건을 조합할 때는 괄호를 사용하여 정확한 결과를 얻도록 주의해야 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>mental_scores <span style="color:#f92672">=</span> df_wel[<span style="color:#e6db74">&#34;mental_wellbeing_score&#34;</span>]
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>mask <span style="color:#f92672">=</span> df_wel[<span style="color:#e6db74">&#34;mental_wellbeing_score&#34;</span>]<span style="color:#f92672">.</span>between(<span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">8</span>)
+</span></span><span style="display:flex;"><span>filtered_df <span style="color:#f92672">=</span> df_wel<span style="color:#f92672">.</span>loc[mask, :]
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>combined_mask <span style="color:#f92672">=</span> (df_wel[<span style="color:#e6db74">&#34;mental_wellbeing_score&#34;</span>] <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">5</span>) <span style="color:#f92672">&amp;</span> (df_wel[<span style="color:#e6db74">&#34;mental_wellbeing_score&#34;</span>] <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">7</span>)
+</span></span><span style="display:flex;"><span>filtered_df <span style="color:#f92672">=</span> df_wel<span style="color:#f92672">.</span>loc[combined_mask, :]
+</span></span></code></pre></div><h2 id="5-pandas-read_excel-함수-활용법-초보자를-위한-핵심-옵션-가이드">5. Pandas <code>read_excel</code> 함수 활용법: 초보자를 위한 핵심 옵션 가이드<a hidden class="anchor" aria-hidden="true" href="#5-pandas-read_excel-함수-활용법-초보자를-위한-핵심-옵션-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>Pandas 공식 문서의 <code>read_excel</code> 함수를 읽으면서 다양한 옵션 때문에 어려움을 겪었지만, 필수적인 옵션인 <code>io</code>와 <code>sheet_name</code>을 중심으로 핵심 개념을 파악할 수 있었다. Excel 파일을 읽고 데이터프레임을 생성하는 기본적인 과정을 이해했으며, 향후 <code>header</code>, <code>usecols</code> 등 추가적인 옵션들을 학습할 필요가 있다는 것을 알게 되었다. 간단한 예시를 통해 파일 읽기와 데이터 내보내기를 경험하면서 Pandas 사용의 기초를 다졌다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p><code>read_excel</code> 함수의 다양한 옵션들이 너무 많아서 어떤 옵션이 실제로 중요한지, 그리고 각 옵션이 어떤 역할을 하는지 파악하는 게 어려웠다. 특히 <code>header</code>, <code>usecols</code>, <code>dtype</code> 같은 옵션들의 의미와 사용법이 명확하게 이해되지 않았었다. 옵션들을 하나씩 테스트하면서 각 옵션이 데이터프레임에 어떤 영향을 미치는지 확인해봐야겠다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>Pandas 공식문서를 읽으면서 <code>read_excel</code> 함수의 다양한 옵션에 압도되었지만, 핵심은 파일 경로(<code>io</code>)와 읽을 시트 이름(<code>sheet_name</code>)을 정확히 지정하는 것이라는 점을 파악했습니다.  이제는 데이터 프레임 입출력의 기본 원리를 이해하고, 필요에 따라 추가적인 옵션들을 학습해나가면서 좀 더 복잡한 Excel 파일을 다룰 수 있을 것입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Excel 파일 읽기 예시</span>
+</span></span><span style="display:flex;"><span>file_path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;C:</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">Ollama-IPEX</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">데이터</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">example_data.xlsx&#34;</span>
+</span></span><span style="display:flex;"><span>sheet_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;tips&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 데이터프레임 생성</span>
+</span></span><span style="display:flex;"><span>df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_excel(io<span style="color:#f92672">=</span>file_path, sheet_name<span style="color:#f92672">=</span>sheet_name)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 읽어온 데이터 확인</span>
+</span></span><span style="display:flex;"><span>print(df<span style="color:#f92672">.</span>head())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 간단한 데이터 내보내기 예시 (이해를 돕기 위한)</span>
+</span></span><span style="display:flex;"><span>df<span style="color:#f92672">.</span>to_excel(<span style="color:#e6db74">&#34;output_tips.xlsx&#34;</span>, index<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, sheet_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;OutputSheet&#34;</span>)
+</span></span></code></pre></div><h2 id="6-데이터-분석-기초-통계-변수-역할-구분-완벽-가이드">6. 데이터 분석 기초: 통계, 변수, 역할 구분 완벽 가이드<a hidden class="anchor" aria-hidden="true" href="#6-데이터-분석-기초-통계-변수-역할-구분-완벽-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
+<p>통계청 자료처럼 이미 요약된 데이터는 분석 목적에 맞게 활용하기 어렵고, 데이터 분석을 위해서는 데이터의 척도와 원천성을 고려해야 한다는 점을 깨달았습니다. 또한, 데이터베이스 관리자와 분석가의 역할이 다르며, 각 역할에 따른 관점이 어떻게 다른지를 이해하게 되었습니다. 이제는 데이터 분석을 위한 데이터 준비 과정의 중요성을 더욱 명확하게 알게 되었습니다.</p>
+<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
+<p>통계청 자료가 바로 분석에 사용할 수 있을 것이라고 생각했고, 변수 척도별로 분석 방법이 어떻게 달라지는지 이해하는 데 어려움이 있었습니다. 또한, SQL 수업에서 DBA와 분석가의 역할 차이를 명확히 구분하지 못해 혼란스러웠습니다.</p>
+<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
+<p>데이터 분석을 위해서는 단순히 데이터가 있다는 것만으로는 부족하며, 데이터의 척도, 형태, 그리고 원천을 고려하여 분석 목적에 맞게 가공해야 합니다. 데이터 분석 과정에서 데이터베이스 관리자와 분석가의 역할은 명확히 구분되며, 각 역할은 데이터의 안정성과 활용성에 초점을 맞추어 서로 다른 관점을 가지고 있습니다. 이러한 이해를 바탕으로 데이터 분석의 전 과정을 효과적으로 수행할 수 있을 것입니다.</p>
+<p>노트에 코드 예시가 없습니다.</p>
+<h2 id="7-pandas-groupby와-다양한-집계-함수-활용-가이드">7. Pandas <code>groupby</code>와 다양한 집계 함수 활용 가이드<a hidden class="anchor" aria-hidden="true" href="#7-pandas-groupby와-다양한-집계-함수-활용-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-6">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-6">#</a></h3>
+<p>Pandas <code>groupby</code> 함수를 사용하여 데이터를 그룹화하고, <code>count</code>, <code>sum</code>, <code>mean</code>과 같은 집계 함수를 적용하는 방법을 익혔습니다. 특히 <code>agg()</code> 함수를 사용하여 여러 집계 함수를 동시에 적용하고, 각 컬럼에 다른 함수를 적용하는 방법을 이해하게 되었습니다. <code>size</code> 컬럼의 경우 단순히 합계를 계산하는 것이 아니라 개수를 세는 것이 중요하다는 점을 깨달았습니다.</p>
+<h3 id="헷갈렸던-점-6">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-6">#</a></h3>
+<p>처음에는 &lsquo;size&rsquo; 컬럼을 요일별로 더하는 것이 옳다고 생각했지만, 인원 수를 나타내는 컬럼이므로 개수를 세는 것이 맞다는 것을 깨달았습니다. 또한 <code>agg()</code> 함수를 사용하여 여러 통계값을 동시에 계산하는 방법을 익히는 데 어려움을 겪었습니다. 여러 컬럼에 대해 다른 집계 함수를 적용하는 구문이 복잡하게 느껴졌습니다.</p>
+<h3 id="정리된-이해-6">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-6">#</a></h3>
+<p>Pandas의 <code>groupby</code>는 데이터를 특정 기준으로 묶어 분석할 수 있게 해주며, 집계 함수는 각 그룹에 대해 다양한 통계 값을 계산하는 데 사용됩니다. <code>agg()</code> 함수를 활용하면 여러 집계 함수를 동시에 적용하여 결과를 효율적으로 요약할 수 있다는 점을 명확히 이해했습니다. 특히 <code>size</code> 컬럼과 같은 인원수를 나타내는 컬럼은 <code>sum()</code>이 아닌 <code>count()</code>를 사용해야 한다는 점을 재정의했습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 요일별 인원 수 세기 (count)</span>
+</span></span><span style="display:flex;"><span>tips<span style="color:#f92672">.</span>groupby(<span style="color:#e6db74">&#34;day&#34;</span>)[<span style="color:#e6db74">&#34;size&#34;</span>]<span style="color:#f92672">.</span>count()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 요일별 총 빌링 금액 합산 (sum)</span>
+</span></span><span style="display:flex;"><span>tips<span style="color:#f92672">.</span>groupby(<span style="color:#e6db74">&#34;day&#34;</span>)[<span style="color:#e6db74">&#34;total_bill&#34;</span>]<span style="color:#f92672">.</span>sum()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 요일별 평균 빌링 금액 계산 (mean)</span>
+</span></span><span style="display:flex;"><span>tips<span style="color:#f92672">.</span>groupby(<span style="color:#e6db74">&#34;day&#34;</span>)[<span style="color:#e6db74">&#34;total_bill&#34;</span>]<span style="color:#f92672">.</span>mean()
+</span></span></code></pre></div><h2 id="8-결측치-처리-데이터-품질-향상을-위한-정책-및-실습">8. 결측치 처리: 데이터 품질 향상을 위한 정책 및 실습<a hidden class="anchor" aria-hidden="true" href="#8-결측치-처리-데이터-품질-향상을-위한-정책-및-실습">#</a></h2>
+<h3 id="무엇을-배웠나-7">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-7">#</a></h3>
+<p>결측치를 채우는 것은 데이터 해석을 돕는 처리일 뿐, 실제 값을 복원하는 것이 아니라는 점을 깨달았다. <code>NaN</code> 대신 &ldquo;정보없음&quot;과 같은 명확한 레이블을 사용하여 데이터의 불확실성을 투명하게 드러내는 것이 중요하며, 결측 여부를 별도 컬럼으로 기록하는 방법도 고려해야 한다는 점을 알게 되었다. 데이터 품질 향상을 위해 결측치 처리 정책을 신중하게 결정해야 함을 배웠다.</p>
+<h3 id="헷갈렸던-점-7">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-7">#</a></h3>
+<p>결측치를 채우는 것이 데이터 품질을 높이는 것처럼 생각했지만, 무작위 값을 넣으면 오히려 정보를 왜곡할 수 있다는 점이 처음에는 헷갈렸어. 특히 임의의 문자열을 넣어 포장하면 실제 데이터의 불확실성을 숨길 수 있다는 점이 걱정됐어. 데이터 보존에 대한 책임감 때문인지, 섣불리 값을 채우는 것 자체를 망설였던 것 같아.</p>
+<h3 id="정리된-이해-7">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-7">#</a></h3>
+<p>결측치를 채우는 것은 데이터 분석을 위한 편리함을 제공하지만, 실제 값을 복원하는 것은 아니라는 점을 명확히 이해했다. 임의의 값을 넣는 것보다 &ldquo;정보없음&quot;과 같은 명확한 레이블을 사용하거나, 결측 여부를 표시하는 별도의 컬럼을 만드는 것이 데이터의 정확성을 유지하는 더 나은 방법이다. 결측치 자체도 중요한 정보를 담고 있을 수 있다는 점을 기억해야 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>titanic <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#39;titanic.csv&#39;</span>)  <span style="color:#75715e"># 예시 데이터 불러오기</span>
+</span></span><span style="display:flex;"><span>df <span style="color:#f92672">=</span> titanic<span style="color:#f92672">.</span>copy()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>df[<span style="color:#e6db74">&#39;deck&#39;</span>] <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;deck&#39;</span>]<span style="color:#f92672">.</span>astype(<span style="color:#e6db74">&#34;object&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>df[<span style="color:#e6db74">&#39;deck&#39;</span>] <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;deck&#39;</span>]<span style="color:#f92672">.</span>fillna(<span style="color:#e6db74">&#34;정보없음&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>df[<span style="color:#e6db74">&#39;deck_missing&#39;</span>] <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;deck&#39;</span>]<span style="color:#f92672">.</span>isna()<span style="color:#f92672">.</span>astype(bool)
+</span></span></code></pre></div><h2 id="9-numpy-핵심-개념과-활용법-초보자를-위한-완전-정복">9. NumPy 핵심 개념과 활용법: 초보자를 위한 완전 정복<a hidden class="anchor" aria-hidden="true" href="#9-numpy-핵심-개념과-활용법-초보자를-위한-완전-정복">#</a></h2>
+<h3 id="무엇을-배웠나-8">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-8">#</a></h3>
+<p>NumPy를 단순한 리스트 처리 도구가 아닌, 빠른 수치 연산을 위한 핵심 패키지라는 것을 이해하게 되었다. 배열의 모양(shape), 차원(ndim), 데이터 타입(dtype)과 같은 핵심 개념을 정확히 파악하는 것이 중요하며, 이 개념들을 활용하여 데이터 분석 관련 다른 패키지들과 연계하여 활용할 수 있다는 것을 알게 되었다. 앞으로는 NumPy 배열의 구조를 이해하고, 다양한 기능을 숙달하여 데이터 분석 역량을 키워나가야겠다.</p>
+<h3 id="헷갈렸던-점-8">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-8">#</a></h3>
+<p>처음에는 NumPy를 단순히 파이썬 리스트보다 조금 더 빠른 연산 도구라고 생각했어요. 특히 배열의 모양, 차원, 데이터 타입 같은 개념들이 꼬리에 꼬리를 물어서 어려웠고, 실제로 어떻게 활용해야 할지 감이 잘 안 잡혔습니다. 실습을 통해 좀 더 익숙해져야 할 것 같아요.</p>
+<h3 id="정리된-이해-8">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-8">#</a></h3>
+<p>NumPy는 단순히 리스트를 빠르게 처리하는 도구가 아니라, 과학적 계산과 데이터 분석을 위한 핵심적인 배열 계산 엔진이라는 것을 알게 되었다. 배열의 shape, ndim, dtype, axis 등의 개념을 정확히 이해하고 활용해야 NumPy의 잠재력을 최대한으로 활용할 수 있으며, Pandas, Matplotlib, SciPy 등 다른 중요한 데이터 분석 라이브러리들과의 연관성도 명확히 파악하게 되었다. 이제 NumPy를 통해 데이터 분석의 기반을 다질 수 있다는 자신감이 생겼다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Shape 예시</span>
+</span></span><span style="display:flex;"><span>a <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([[<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>], [<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>]])
+</span></span><span style="display:flex;"><span>print(a<span style="color:#f92672">.</span>shape)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ndim 예시</span>
+</span></span><span style="display:flex;"><span>print(a<span style="color:#f92672">.</span>ndim)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># dtype 예시</span>
+</span></span><span style="display:flex;"><span>print(a<span style="color:#f92672">.</span>dtype)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Axis 예시</span>
+</span></span><span style="display:flex;"><span>print(a<span style="color:#f92672">.</span>sum(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>))
+</span></span></code></pre></div><h2 id="10-numpy-배열의-형태-변환과-브로드캐스팅-완벽-가이드">10. NumPy 배열의 형태 변환과 브로드캐스팅 완벽 가이드<a hidden class="anchor" aria-hidden="true" href="#10-numpy-배열의-형태-변환과-브로드캐스팅-완벽-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-9">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-9">#</a></h3>
+<p>NumPy의 <code>reshape</code> 함수는 배열의 총 원소 수를 유지하며 모양을 변경할 수 있다는 것을 알게 되었고, <code>axis</code>는 단순히 행과 열을 나타내는 것이 아니라 계산 방향을 지정한다는 점을 이해하게 되었습니다. 또한 <code>broadcasting</code>을 통해 크기가 다른 배열 간의 연산이 어떻게 이루어지는지 명확하게 이해하여, NumPy 배열 연산에 대한 이해도를 높일 수 있었습니다. 앞으로는 이 개념들을 활용하여 더 복잡한 NumPy 연산을 수행할 수 있을 것 같습니다.</p>
+<h3 id="헷갈렸던-점-9">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-9">#</a></h3>
+<p>NumPy의 <code>reshape</code> 함수를 사용할 때, 배열의 총 원소 개수가 변하지 않으면서 다양한 형태를 가질 수 있다는 점이 처음에는 이해하기 어려웠습니다. <code>axis</code>를 행과 열로만 단순하게 생각하다 보니, 실제 계산 방향이 어떻게 되는지 혼란스러웠고, <code>broadcasting</code>의 경우 배열 크기가 다를 때 어떻게 자동으로 조정되는지 규칙이 불명확하게 느껴졌습니다.</p>
+<h3 id="정리된-이해-9">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-9">#</a></h3>
+<p>NumPy 배열의 <code>reshape</code> 함수는 배열 내 원소의 총 개수를 유지하며 배열의 형태를 변경하는 기능이고, 이 때 곱셈 결과가 동일한 형태를 가질 수 있는 다양한 형태 변환이 가능하다는 것을 알게 되었다. <code>axis</code>는 단순히 행과 열의 개념을 넘어 실제 계산이 이루어지는 방향을 나타내며, <code>broadcasting</code>은 크기가 다른 배열 간 연산 시 NumPy가 자동으로 크기를 맞춰 계산하는 규칙이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>a <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">12</span>)<span style="color:#f92672">.</span>reshape(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>b <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">12</span>)<span style="color:#f92672">.</span>reshape(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>b <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([[<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>], [<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>]])<span style="color:#f92672">.</span>sum(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>matrix <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([[<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">2</span>], [<span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">9</span>], [<span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">7</span>]])
+</span></span><span style="display:flex;"><span>result <span style="color:#f92672">=</span> matrix <span style="color:#f92672">+</span> <span style="color:#ae81ff">5</span>
+</span></span></code></pre></div><h2 id="11-titanic-데이터셋-학습-및-테스트-계획">11. Titanic 데이터셋 학습 및 테스트 계획<a hidden class="anchor" aria-hidden="true" href="#11-titanic-데이터셋-학습-및-테스트-계획">#</a></h2>
+<h3 id="무엇을-배웠나-10">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-10">#</a></h3>
+<p>월요일 학습 과정에서 데이터셋 전환 혼동과 준비 부족으로 어려움을 겪었지만, <code>titanic</code> 데이터셋에 집중해야 함을 명확히 했다. 데이터셋별 핵심 코드와 예상 문제 유형을 정리하여 앞으로의 학습에 도움이 될 만한 가이드를 만들었다. 이번 과정을 통해 데이터셋 전환 시 주의할 점과 코드 실행 전 데이터 로드 상태 확인의 중요성을 깨달았다.</p>
+<h3 id="헷갈렸던-점-10">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-10">#</a></h3>
+<p>수업 중 데이터셋이 계속 바뀌어서 지금 어떤 데이터셋을 가지고 있는지 파악하는 데 어려움을 겪었다. 특히 <code>answer</code> 노트북에서 데이터 로드에 실패할 때마다 예상치 못한 오류들이 발생해서 전체적인 학습 흐름이 끊기는 듯한 느낌이었다. 여러 데이터셋을 정확히 구분하고 로드하는 과정이 중요하다는 것을 깨달았다.</p>
+<h3 id="정리된-이해-10">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-10">#</a></h3>
+<p>월요일 학습 중 <code>titanic</code> 데이터셋에 집중해야 함을 깨달았고, 데이터셋 전환 혼동으로 인해 발생하던 오류들을 방지하기 위해 데이터 로딩 과정을 명확히 하기로 했다. <code>titanic</code> 데이터셋의 기본적인 정보 확인, 결측치 처리, 조건 필터링, 집계 분석 등을 중심으로 예상 문제 유형을 정리하여 앞으로 학습 방향을 설정했다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> seaborn <span style="color:#66d9ef">as</span> sns
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>titanic <span style="color:#f92672">=</span> sns<span style="color:#f92672">.</span>load_dataset(<span style="color:#e6db74">&#34;titanic&#34;</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>titanic<span style="color:#f92672">.</span>head()
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>titanic<span style="color:#f92672">.</span>info()
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>titanic<span style="color:#f92672">.</span>dtypes
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>titanic<span style="color:#f92672">.</span>isna()<span style="color:#f92672">.</span>sum()
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>titanic<span style="color:#f92672">.</span>loc[titanic[<span style="color:#e6db74">&#34;age&#34;</span>]<span style="color:#f92672">.</span>notnull(), :]
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>titanic[<span style="color:#e6db74">&#34;age&#34;</span>]<span style="color:#f92672">.</span>fillna(titanic[<span style="color:#e6db74">&#34;age&#34;</span>]<span style="color:#f92672">.</span>median())
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>titanic<span style="color:#f92672">.</span>loc[(조건1) <span style="color:#f92672">&amp;</span> (조건2), :]
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>titanic<span style="color:#f92672">.</span>groupby(<span style="color:#e6db74">&#34;sex&#34;</span>)[<span style="color:#e6db74">&#34;survived&#34;</span>]<span style="color:#f92672">.</span>mean()
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>titanic<span style="color:#f92672">.</span>groupby(<span style="color:#e6db74">&#34;pclass&#34;</span>)[<span style="color:#e6db74">&#34;survived&#34;</span>]<span style="color:#f92672">.</span>mean()
+</span></span></code></pre></div><h2 id="12-pandas-transform-groupby-unstack-활용-및-디버깅-가이드">12. Pandas <code>transform</code>, <code>groupby</code>, <code>unstack</code> 활용 및 디버깅 가이드<a hidden class="anchor" aria-hidden="true" href="#12-pandas-transform-groupby-unstack-활용-및-디버깅-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-11">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-11">#</a></h3>
+<p>Pandas의 <code>agg()</code>는 그룹별 요약 통계를, <code>transform()</code>은 원본 행에 적용되는 그룹 계산 결과를 반환한다는 것을 명확히 이해하게 되었다. 다중 <code>groupby()</code> 후 <code>unstack()</code>을 사용할 때는 메서드 체이닝을 위해 쉼표 대신 점(<code>.</code>)을 사용해야 한다는 오류를 수정했다. 이 학습을 통해 Pandas 데이터 분석 작업 효율성을 높일 수 있을 것 같다.</p>
+<h3 id="헷갈렸던-점-11">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-11">#</a></h3>
+<p><code>agg()</code>와 <code>transform()</code>의 차이점을 명확히 이해하지 못해서 <code>agg()</code>를 사용해야 할 곳에 <code>transform()</code>을 쓰려고 시도했고, 다중 <code>groupby()</code>와 <code>unstack()</code>을 사용할 때 쉼표를 잘못 사용해 메서드 체인이 끊기는 오류가 발생했었다. 특히 <code>transform()</code>이 원본 행 수를 유지한다는 점을 간과하고 있었고, 쉼표를 통해 여러 메서드를 연쇄적으로 실행할 수 있다는 것을 잊고 있었다.</p>
+<h3 id="정리된-이해-11">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-11">#</a></h3>
+<p><code>agg()</code>는 그룹별 요약 통계를 계산하여 결과를 요약하는 반면, <code>transform()</code>은 그룹 계산 결과를 원본 데이터의 각 행에 적용하여 새로운 열을 생성한다. 다중 <code>groupby()</code>를 사용할 때는 쉼표 대신 <code>and</code>를 사용하여 메서드를 체이닝해야 하며, <code>head()</code>와 같은 메서드는 별도로 호출해야 한다. 이 점들을 기억하고 예제를 통해 연습하면 Pandas <code>transform</code>, <code>multi-column groupby</code>, <code>unstack</code> 사용법을 익히는 데 도움이 될 것이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>tips<span style="color:#f92672">.</span>groupby(<span style="color:#e6db74">&#34;day&#34;</span>)[<span style="color:#e6db74">&#34;total_bill&#34;</span>]<span style="color:#f92672">.</span>agg([<span style="color:#e6db74">&#34;sum&#34;</span>, <span style="color:#e6db74">&#34;mean&#34;</span>, <span style="color:#e6db74">&#34;count&#34;</span>])
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>tips[<span style="color:#e6db74">&#34;day_avg_total_bill</span>
+</span></span></code></pre></div><h2 id="13-데이터-품질-점검과-파생변수-생성-혼란을-이해로">13. 데이터 품질 점검과 파생변수 생성: 혼란을 이해로<a hidden class="anchor" aria-hidden="true" href="#13-데이터-품질-점검과-파생변수-생성-혼란을-이해로">#</a></h2>
+<h3 id="무엇을-배웠나-12">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-12">#</a></h3>
+<p>데이터 분석 전에 데이터 품질 점검과 파생변수 생성의 중요성을 알게 되었어. 데이터 품질은 결측, 중복, 정합성, 오염값 등을 확인하고 처리하는 과정이고, 파생변수는 기존 데이터를 활용해 새로운 변수를 만드는 것을 의미해. 마치 요리 전 재료를 검수하고 새로운 요리를 만드는 과정과 비슷하네!</p>
+<h3 id="헷갈렸던-점-12">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-12">#</a></h3>
+<p>데이터 품질과 파생변수라는 단어 자체에 압도당해서 뭘 어떻게 시작해야 할지 감이 잘 안 잡혔어요. 특히 어떤 데이터 품질 문제가 있는지, 그리고 그걸 어떻게 해결해야 하는지 구체적으로 어떻게 판단해야 할지 막막했어요. 파생변수를 만들 때 어떤 기준으로 새로운 변수를 만들어야 하는지 예시가 부족해서 어려웠어요.</p>
+<h3 id="정리된-이해-12">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-12">#</a></h3>
+<p>데이터 분석 전에 데이터 품질을 점검하고 파생변수를 생성하는 것은 마치 요리 전 재료를 검수하고 새로운 레시피를 만드는 과정과 같아요. 데이터 품질은 결측값, 중복, 정합성, 오염값을 확인하는 것이고, 파생변수는 기존 데이터를 활용해 새로운 정보를 만들어내는 작업이에요. 이 과정을 통해 분석의 정확성과 효율성을 높일 수 있다는 것을 알게 되었어요.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>   <span style="color:#75715e"># 숫자 데이터의 빈칸을 중앙값으로 채우기 예시</span>
+</span></span><span style="display:flex;"><span>   df_example <span style="color:#f92672">=</span> df_example<span style="color:#f92672">.</span>copy()
+</span></span><span style="display:flex;"><span>   df_example[<span style="color:#e6db74">&#39;숫자컬럼&#39;</span>] <span style="color:#f92672">=</span> df_example[<span style="color:#e6db74">&#39;숫자컬럼&#39;</span>]<span style="color:#f92672">.</span>fillna(df_example[<span style="color:#e6db74">&#39;숫자컬럼&#39;</span>]<span style="color:#f92672">.</span>median())
+</span></span></code></pre></div><h2 id="14-numpy-boolean-마스크와-배열-조작-이해와-활용">14. NumPy Boolean 마스크와 배열 조작: 이해와 활용<a hidden class="anchor" aria-hidden="true" href="#14-numpy-boolean-마스크와-배열-조작-이해와-활용">#</a></h2>
+<h3 id="무엇을-배웠나-13">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-13">#</a></h3>
+<p>NumPy의 Boolean Mask를 사용해서 배열에서 특정 조건을 만족하는 값들만 선택하는 방법을 알게 되었다. <code>and</code>나 <code>or</code> 대신 <code>&amp;</code>와 <code>|</code>를 복합 조건에서 사용해야 한다는 점을 다시 확인했고, 조건식 실행 결과와 실제 값 추출의 차이점을 명확히 이해하게 되었다. 이제 Boolean Mask를 활용하여 배열에서 원하는 값들을 효율적으로 추출할 수 있을 것 같다.</p>
+<h3 id="헷갈렸던-점-13">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-13">#</a></h3>
+<p>NumPy Boolean masking을 사용할 때, 조건문들을 연결할 때 <code>and</code>, <code>or</code>를 써야 하는지 <code>&amp;</code>, <code>|</code>를 써야 하는지 헷갈렸고, 조건식을 출력하는 것과 실제 값을 추출하는 것이 왜 다른지 명확히 이해하지 못했다. Boolean 마스크를 통해 배열의 특정 요소들을 선택하는 개념은 SQL의 WHERE절과 비슷하다는 점을 알게 되었다.</p>
+<h3 id="정리된-이해-13">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-13">#</a></h3>
+<p>NumPy Boolean 마스크는 배열에서 특정 조건을 만족하는 요소들을 선택하는 데 사용되며, 복합 조건에서는 <code>&amp;</code>와 <code>|</code> 연산자를 사용해야 한다는 점을 명확히 알게 되었다. 조건식을 적용했을 때 True/False 배열이 출력되는 것과, 실제 배열 값들을 추출하는 과정이 다르다는 것도 이해했다. Boolean 마스크는 배열을 필터링하는 SQL의 <code>WHERE</code> 절과 비슷한 역할을 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>a <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>],
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>],
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">11</span>, <span style="color:#ae81ff">12</span>]
+</span></span><span style="display:flex;"><span>])
+</span></span><span style="display:flex;"><span>keep <span style="color:#f92672">=</span> a <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>print(keep)
+</span></span><span style="display:flex;"><span>print(a[keep])
+</span></span><span style="display:flex;"><span>print(a[(a <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">&amp;</span> (a <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">11</span>)])
+</span></span><span style="display:flex;"><span>print(a[(a <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">5</span>) <span style="color:#f92672">|</span> (a <span style="color:#f92672">==</span> <span style="color:#ae81ff">5</span>)])
+</span></span></code></pre></div><h2 id="15-서울-아파트-데이터-전처리-및-특징-엔지니어링-가이드">15. 서울 아파트 데이터 전처리 및 특징 엔지니어링 가이드<a hidden class="anchor" aria-hidden="true" href="#15-서울-아파트-데이터-전처리-및-특징-엔지니어링-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-14">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-14">#</a></h3>
+<p>데이터 전처리의 중요성을 깨달았고, 단순히 데이터를 정리하는 것이 아니라 분석에 적합한 형태로 만드는 체계적인 과정임을 알게 되었다. 불필요한 컬럼 삭제 순서와 결측치 처리 방법이 분석 결과에 미치는 영향에 대해 고민하고, 데이터 전처리 과정을 단계별로 정리하는 것이 효율적임을 학습했다. 앞으로는 데이터 분석의 정확성을 높이기 위해 전처리 단계에 더욱 신중을 기해야겠다.</p>
+<h3 id="헷갈렸던-점-14">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-14">#</a></h3>
+<p>데이터 삭제 순서가 왜 그렇게 중요하고, 특정 컬럼을 삭제하는 것이 분석 결과에 어떤 영향을 미치는지 잘 몰랐어요. 그리고 결측치 처리할 때 단순히 삭제하면 안 되는 이유와 어떤 방식으로 대체해야 하는지 고민이었습니다.</p>
+<h3 id="정리된-이해-14">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-14">#</a></h3>
+<p>데이터 전처리는 분석에 필요한 형태로 데이터를 만들기 위한 체계적인 과정이며, 불필요한 데이터 제거부터 결측치 처리, 데이터 타입 변환, 새로운 특징 생성까지 포함합니다. 이 과정을 통해 데이터의 정확성과 분석 효율성을 높일 수 있으며, 각 단계는 분석 결과에 영향을 미칠 수 있으므로 신중하게 접근해야 합니다.</p>
+<pre tabindex="0"><code>df.drop(columns=drop_cols, inplace=True)
+</code></pre><pre tabindex="0"><code>df = df.dropna(subset=[&#34;거래금액(만원)&#34;], ignore_index=True)
+</code></pre><pre tabindex="0"><code>df.head()
+</code></pre><pre tabindex="0"><code>df.info()
+</code></pre><pre tabindex="0"><code>df.columns
+</code></pre><pre tabindex="0"><code>pd.to_numeric()
+</code></pre><pre tabindex="0"><code>pd.to_datetime()
+</code></pre><pre tabindex="0"><code>df.sort_values()
+</code></pre><pre tabindex="0"><code>df.groupby()
+</code></pre><h2 id="16-cad-검증을-위한-알고리즘-개발-및-json-파이프라인-이해">16. CAD 검증을 위한 알고리즘 개발 및 JSON 파이프라인 이해<a hidden class="anchor" aria-hidden="true" href="#16-cad-검증을-위한-알고리즘-개발-및-json-파이프라인-이해">#</a></h2>
+<h3 id="무엇을-배웠나-15">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-15">#</a></h3>
+<p>처음에는 알고리즘을 복잡한 공식으로 생각했지만, 실제로는 단순한 규칙의 반복적인 과정이라는 것을 깨달았습니다. 이미지 수치화부터 CAD 검증까지 유사한 구조를 가지는 파이프라인으로 이해하게 되었고, JSON을 활용하여 데이터를 구조화하고 관리하는 것이 중요하다는 점을 알게 되었습니다. 특히, 검증 결과를 피드백 루프로 활용하여 알고리즘을 개선하는 것이 중요하다는 점을 배웠습니다.</p>
+<h3 id="헷갈렸던-점-15">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-15">#</a></h3>
+<p>처음에는 알고리즘을 복잡한 수학 공식처럼 생각해서, 어떻게 적용해야 할지 막막했습니다. 특히 이미지 수치화, JSON 저장, CAD 변환이 어떻게 연결되는지 이해하기 어려웠어요. 알고리즘 개발이라는 것이 단순히 공식을 반복하는 것 이상이라고 생각했지만, 그 &lsquo;이상&rsquo;이 무엇인지 파악하는 데 시간이 걸렸습니다.</p>
+<h3 id="정리된-이해-15">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-15">#</a></h3>
+<p>알고리즘은 복잡한 공식이 아니라, 입력 데이터를 받아 규칙에 따라 처리하고 저장하며, 그 결과를 바탕으로 반복적인 개선을 거치는 과정이라는 것을 알게 되었습니다. 이미지 수치화, JSON 저장, CAD 변환과 같은 과정들이 유사한 알고리즘 구조를 가진다는 점을 이해하게 되었고, 이를 통해 초보적인 설계 파이프라인을 구축하는 데 도움이 될 것이라고 생각합니다. JSON을 활용하여 데이터를 구조화하고, CAD 도구를 이용하여 설계를 검증하는 전체적인 흐름을 파악하는 것이 중요합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;part&#34;</span>: <span style="color:#e6db74">&#34;bracket&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;material&#34;</span>: <span style="color:#e6db74">&#34;PLA&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;thickness_mm&#34;</span>: <span style="color:#ae81ff">4.0</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;load_n&#34;</span>: <span style="color:#ae81ff">80</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;span_mm&#34;</span>: <span style="color:#ae81ff">120</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;joint_type&#34;</span>: <span style="color:#e6db74">&#34;screw_2point&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;fos&#34;</span>: <span style="color:#ae81ff">1.42</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;fail&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;reason&#34;</span>: <span style="color:#e6db74">&#34;두께 부족으로 인한 부하 불안정&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;suggestion&#34;</span>: <span style="color:#e6db74">&#34;두께를 6mm로 늘리거나 보강 리브 추가&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="17-데이터-로드-오류-해결-및-워킹-노트">17. 데이터 로드 오류 해결 및 워킹 노트<a hidden class="anchor" aria-hidden="true" href="#17-데이터-로드-오류-해결-및-워킹-노트">#</a></h2>
+<h3 id="무엇을-배웠나-16">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-16">#</a></h3>
+<p>노트에서 데이터셋 로드 오류의 원인이 코드 실행 순서에 있음을 알게 되었다. 특히 데이터 로드 코드는 항상 노트북에서 가장 먼저 실행해야 변수가 정의되고, 이후 코드들이 정상적으로 작동한다. 데이터셋을 불러오는 단계를 건너뛰면 NameError나 KeyError와 같은 오류가 발생하는 것을 확인했다.</p>
+<h3 id="헷갈렸던-점-16">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-16">#</a></h3>
+<p>코드가 보인다고 해서 바로 실행되는 게 아니고, 데이터 로드 부분부터 제대로 실행해야 한다는 점이 처음에는 이해가 안 되었습니다. 중간 셀부터 실행하면 변수가 정의되지 않아 오류가 발생한다는 것도 몰랐고, 데이터 로드 셀을 가장 먼저 실행해야 한다는 것을 깨달으니 문제 해결의 실마리가 풀렸습니다.</p>
+<h3 id="정리된-이해-16">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-16">#</a></h3>
+<p>노트북에서 코드가 보이는 것만으로는 실행되지 않기 때문에, 데이터 로드 코드를 항상 가장 먼저 실행해야 문제를 해결할 수 있다는 걸 알게 됐어. 데이터셋을 불러오는 단계를 건너뛰고 아래 셀부터 실행하면 변수가 정의되지 않아 오류가 발생할 수 있다는 점을 명심해야겠다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> seaborn <span style="color:#66d9ef">as</span> sns
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>titanic <span style="color:#f92672">=</span> sns<span style="color:#f92672">.</span>load_dataset(<span style="color:#e6db74">&#34;titanic&#34;</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> seaborn <span style="color:#66d9ef">as</span> sns
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>tips <span style="color:#f92672">=</span> sns<span style="color:#f92672">.</span>load_dataset(<span style="color:#e6db74">&#34;tips&#34;</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># df_srv 데이터셋 로드 예시</span>
+</span></span><span style="display:flex;"><span>df_srv <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#34;path/to/df_srv.csv&#34;</span>)  <span style="color:#75715e"># 실제 파일 경로를 넣어주세요</span>
+</span></span></code></pre></div><h2 id="18-판다스-실습-문제-해결과-핵심-용어-정리">18. 판다스 실습 문제 해결과 핵심 용어 정리<a hidden class="anchor" aria-hidden="true" href="#18-판다스-실습-문제-해결과-핵심-용어-정리">#</a></h2>
+<h3 id="무엇을-배웠나-17">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-17">#</a></h3>
+<p>Pandas를 처음 배우면서 <code>sum()</code>과 <code>count()</code> 함수의 차이, <code>agg()</code>의 활용, <code>transform()</code>과 <code>agg()</code>의 구분, <code>unstack()</code>의 역할 등 여러 부분이 헷갈렸던 경험을 통해 개념을 정리했습니다. <code>loc</code> 사용 오류와 같은 실수를 통해 정확한 인덱스 지정의 중요성을 깨달았고, 데이터프레임과 시리즈의 관계, 그리고 행/열/인덱스/컬럼 등의 기본적인 용어에 대한 이해를 높였습니다. 이 학습 노트를 통해 Pandas 기본 기능을 더욱 명확하게 이해하게 되었습니다.</p>
+<h3 id="헷갈렸던-점-17">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-17">#</a></h3>
+<p><code>sum()</code>과 <code>count()</code> 함수가 비슷해서 데이터 개수를 세는 방식이 다른지 몰랐고, <code>agg()</code> 함수는 복잡해서 그 유용성을 제대로 파악하지 못했습니다. <code>transform()</code>과 <code>agg()</code>의 차이점도 명확히 이해하지 못했고, <code>loc</code> 사용 시 인덱스 오류가 자주 발생했습니다.</p>
+<h3 id="정리된-이해-17">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-17">#</a></h3>
+<p>Pandas를 사용하면서 <code>sum()</code>과 <code>count()</code>의 차이, <code>agg()</code>의 활용, <code>transform()</code>과 <code>agg()</code>의 구분 등 기본적인 함수 사용법에서 어려움을 겪었습니다. 하지만 DataFrame, Series, loc, iloc 등의 개념과 boolean mask, isin() 함수를 통해 데이터 선택과 조작에 대한 이해도를 높일 수 있었습니다. 앞으로는 꾸준한 실습을 통해 Pandas 사용법을 숙달하고, 데이터 분석 능력을 향상시키도록 노력해야겠습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># sum() vs count() 예시</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;col1&#39;</span>: [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>], <span style="color:#e6db74">&#39;col2&#39;</span>: [<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">5</span>]}
+</span></span><span style="display:flex;"><span>df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame(data)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(df[<span style="color:#e6db74">&#39;col1&#39;</span>]<span style="color:#f92672">.</span>sum())  <span style="color:#75715e"># 값의 합: 9</span>
+</span></span><span style="display:flex;"><span>print(df[<span style="color:#e6db74">&#39;col1&#39;</span>]<span style="color:#f92672">.</span>count()) <span style="color:#75715e"># 항목의 개수: 5</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># agg() 예시</span>
+</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;col1&#39;</span>: [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>], <span style="color:#e6db74">&#39;col2&#39;</span>: [<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">5</span>]}
+</span></span><span style="display:flex;"><span>df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame(data)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(df<span style="color:#f92672">.</span>agg({<span style="color:#e6db74">&#39;col1&#39;</span>: <span style="color:#e6db74">&#39;sum&#39;</span>, <span style="color:#e6db74">&#39;col2&#39;</span>: <span style="color:#e6db74">&#39;mean&#39;</span>}))
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># transform() vs agg() 예시</span>
+</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;col1&#39;</span>: [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>], <span style="color:#e6db74">&#39;col2&#39;</span>: [<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">5</span>]}
+</span></span><span style="display:flex;"><span>df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame(data)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>df[<span style="color:#e6db74">&#39;col1_mean&#39;</span>] <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;col1&#39;</span>]<span style="color:#f92672">.</span>transform(<span style="color:#66d9ef">lambda</span> x: x <span style="color:#f92672">-</span> df[<span style="color:#e6db74">&#39;col1&#39;</span>]<span style="color:#f92672">.</span>mean())
+</span></span><span style="display:flex;"><span>print(df)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>df[<span style="color:#e6db74">&#39;col1_sum&#39;</span>] <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;col1&#39;</span>]<span style="color:#f92672">.</span>agg(<span style="color:#e6db74">&#39;sum&#39;</span>)
+</span></span><span style="display:flex;"><span>print(df)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># unstack() 예시</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;A&#39;</span>: {<span style="color:#e6db74">&#39;x&#39;</span>: <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;y&#39;</span>: <span style="color:#ae81ff">2</span>}, <span style="color:#e6db74">&#39;B&#39;</span>: {<span style="color:#e6db74">&#39;x&#39;</span>: <span style="color:#ae81ff">3</span>, <span style="color:#e6db74">&#39;y&#39;</span>: <span style="color:#ae81ff">4</span>}}
+</span></span><span style="display:flex;"><span>df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame(data)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(df<span style="color:#f92672">.</span>unstack())
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># loc 사용 오류 예시 (정확한 인덱스 지정 중요)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;col1&#39;</span>: [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>], <span style="color:#e6db74">&#39;col2&#39;</span>: [<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>]}
+</span></span><span style="display:flex;"><span>df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame(data)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 잘못된 예시: KeyError 발생 가능</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># print(df.loc[99, &#39;col1&#39;])</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 올바른 예시</span>
+</span></span><span style="display:flex;"><span>print(df<span style="color:#f92672">.</span>loc[<span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#39;col1&#39;</span>])
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>데이터 분석 프로젝트의 시작은 데이터 상태를 정확히 이해하고, 확보 가능한 데이터를 기반으로 문제 정의를 설정하는 것임을 배웠습니다. Pandas와 NumPy를 활용한 데이터 전처리, 필터링, 그룹화, 통계 계산 등 다양한 기능을 익히면서 데이터 분석의 기초를 다졌고, 데이터 로딩 순서, 결측치 처리, 특징 엔지니어링 등의 중요성을 깨달았습니다. 앞으로 배운 내용을 바탕으로 실제 데이터 분석 프로젝트를 수행하며 실력을 더욱 향상시켜 나가겠습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>데이터셋을 로드할 때마다 코드 실행 순서를 다시 한번 확인하고, 변수 정의가 제대로 되었는지 꼼꼼하게 점검해야겠다. 특히 복잡한 분석을 수행하기 전에 데이터 전처리 과정을 충분히 거치고, 각 단계의 영향을 분석 결과에 어떻게 미치는지를 고려해야 실수를 줄일 수 있을 것 같다. 마지막으로, Pandas의 다양한 함수들의 역할과 사용법을 꾸준히 복습하고, 실제 문제에 적용해보면서 숙련도를 높여야겠다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>NumPy Boolean Mask를 좀 더 다양한 예제를 통해 복습해서 활용도를 높이고 싶어. 특히 배열의 크기가 다를 때 broadcasting이 어떻게 동작하는지 그림과 함께 다시 살펴보면 이해가 더 명확해질 것 같아. 서울 아파트 데이터 전처리 과정에서 어떤 순서로 컬럼을 삭제해야 분석 결과에 가장 적합한지 좀 더 깊이 고민해보고 싶어.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-06-22-pm-daily/">
+    <span class="title">« Prev</span>
+    <span>통계 분석 핵심 개념 정립 및 데이터 분석 자동화 설계</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-06-20-am-daily/">
+    <span class="title">Next »</span>
+    <span>데이터 분석 기초 다지기: pandas, SQL, 시각화, 품질 관리, 통계 이해</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

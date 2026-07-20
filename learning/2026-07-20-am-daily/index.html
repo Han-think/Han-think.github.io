@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>PyTorch 기초 다지기: 데이터 전처리부터 신경망 시각화까지 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-07-20 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-07-20-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-07-20-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-20-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="PyTorch 기초 다지기: 데이터 전처리부터 신경망 시각화까지">
+  <meta property="og:description" content="2026-07-20 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-07-20T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-20T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="PyTorch 기초 다지기: 데이터 전처리부터 신경망 시각화까지">
+  <meta name="twitter:description" content="2026-07-20 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "PyTorch 기초 다지기: 데이터 전처리부터 신경망 시각화까지",
+      "item": "https://Han-think.github.io/learning/2026-07-20-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "PyTorch 기초 다지기: 데이터 전처리부터 신경망 시각화까지",
+  "name": "PyTorch 기초 다지기: 데이터 전처리부터 신경망 시각화까지",
+  "description": "2026-07-20 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 PyTorch 생태계와 장치 설정 가이드 FashionMNIST 이미지 전처리 및 정규화 상세 이해 FashionMNIST를 활용한 미니배치 학습과 데이터 로더 이해 데이터 시각화와 신경망 구조 이해: 초보자 워킹 노트 총평 1. PyTorch 생태계와 장치 설정 가이드 무엇을 배웠나 PyTorch를 사용하면서 GPU 자동 인식 문제와 다양한 모듈의 역할을 명확히 구분하는 데 어려움을 겪었지만, 각 모듈의 역할과 실행 장치 설정을 이해하게 되었습니다. torch, torch.nn, torch.optim 등의 역할 차이를 정리하고, .to(device) 메서드를 사용하여 모델과 데이터를 GPU로 옮기는 방법을 알게 되었습니다. 이제 PyTorch 생태계를 좀 더 자신 있게 활용할 수 있을 것 같습니다.\n헷갈렸던 점 GPU가 설치되어 있음에도 PyTorch가 자동으로 GPU를 사용하지 않는 이유가 명확하지 않았고, torch, torch.nn, torch.optim 등 PyTorch 관련 모듈들의 역할 차이점을 정확히 이해하지 못했습니다. 데이터와 모델을 GPU로 옮겨야 하는 방법도 헷갈렸습니다.\n정리된 이해 PyTorch 생태계는 텐서 연산, 신경망 모델 정의, 최적화 알고리즘, 가중치 초기화 등 다양한 역할을 분담하여 수행하며, torch는 기본적인 계산 엔진 역할을 합니다. GPU를 사용하려면 PyTorch 설치 상태, 드라이버, CUDA 호환성 등 환경 설정이 중요하고, 모델과 데이터를 GPU로 옮기기 위해 .to(device) 메서드를 활용해야 합니다. 이러한 이해를 바탕으로 PyTorch 환경을 정확히 설정하고 모델을 학습시킬 수 있습니다.\n# PyTorch 모듈 임포트 import torch import torch.nn as nn import torch.optim as optim import torch.nn.init as init from torch.utils.data import DataLoader 2. FashionMNIST 이미지 전처리 및 정규화 상세 이해 무엇을 배웠나 FashionMNIST 이미지 전처리 과정에서 ToTensor()는 픽셀 값을 0~1 사이로 변환하고, Normalize()는 평균과 표준편차를 이용하여 데이터를 재조정하는 것을 알게 되었다. 특히, 이미지 정규화와 Batch Normalization은 서로 다른 역할을 수행하며, 정규화는 데이터 스케일링을 통해 학습 효율을 높이는 역할을 한다는 점을 명확히 이해했다. 이제 FashionMNIST 데이터셋을 전처리할 때 이 지식을 바탕으로 정확한 단계를 적용할 수 있을 것이다.\n헷갈렸던 점 이미지 전처리 과정에서 데이터 스케일링을 224로 나누는 이유를 이해하는 데 어려움이 있었고, 데이터 정규화와 Batch Normalization이 같은 개념인지 착각했습니다. 흑백 이미지의 픽셀 범위가 0~255인데 224라는 숫자가 등장하는 부분이 특히 헷갈렸습니다.\n정리된 이해 ToTensor()는 이미지 픽셀 값을 텐서로 변환하고 0~1 사이로 조정하며, Normalize()는 평균과 표준편차를 이용하여 데이터를 특정 범위로 재조정하는 역할을 합니다. 이미지 전처리는 데이터 스케일링을 통해 모델 학습을 안정화하고 속도를 높이는 데 도움을 주며, Batch Normalization은 신경망 레이어 뒤에 위치하여 각 배치에 대한 평균과 표준편차를 사용하여 데이터 분포를 정규화하는 방식입니다. 따라서, 전처리 단계에서 이미지 데이터의 스케일링을 진행하고, Batch Normalization은 신경망 내부에서 학습되는 파라미터를 통해 데이터를 정규화하는 것이 핵심입니다.\nimport torchvision.transforms as transforms from torchvision import datasets # 데이터 로더 설정 transform = transforms.Compose([ transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,)) ]) # FashionMNIST 데이터셋 로드 train_dataset = datasets.FashionMNIST(root='./data', train=True, download=True, transform=transform) 3. FashionMNIST를 활용한 미니배치 학습과 데이터 로더 이해 무엇을 배웠나 미니배치 학습은 전체 데이터셋을 작은 묶음으로 나누어 순차적으로 학습하는 방식이며, 세탁기 비유로 이해하는 것이 도움이 되었다. Dataset은 데이터와 접근 규칙을, DataLoader는 배치 구성, 셔플링, 반복 공급을 관리한다는 것을 명확히 알게 되었다. 이제 FashionMNIST 데이터를 활용한 딥러닝 모델 학습을 위한 기반을 다질 수 있을 것 같다.\n헷갈렸던 점 처음에는 미니배치 학습이 데이터 일부만 선택해서 학습하는 줄 알았고, Dataset과 DataLoader의 역할이 명확히 구분되지 않았습니다. 데이터가 어떻게 처리되고 접근되는지에 대한 혼동이 있었던 거죠. 전체 데이터셋을 작은 묶음으로 나누어 순차적으로 학습한다는 개념과 Dataset이 데이터 자체를 관리하고, DataLoader가 배치를 묶고 관리한다는 점을 제대로 이해하지 못했습니다.\n정리된 이해 전체 데이터셋을 작은 묶음인 미니배치로 나누어 순차적으로 학습하는 방식이며, 각 미니배치는 지정된 크기(batch_size)를 가집니다. Dataset은 데이터와 접근 규칙을 정의하고, DataLoader는 이 데이터를 배치 크기에 맞게 묶어 셔플링하고 반복적으로 모델에 공급하는 역할을 합니다. 이 둘을 잘 이해하면 효율적인 딥러닝 모델 학습이 가능합니다.\ntrain_dataset = torchvision.datasets.FashionMNIST( root='./data', train=True, download=True, transform=transform ) test_dataset = torchvision.datasets.FashionMNIST( root='./data', train=False, download=True, transform=transform ) 4. 데이터 시각화와 신경망 구조 이해: 초보자 워킹 노트 무엇을 배웠나 데이터 시각화의 중요성을 깨닫고, DataLoader에서 데이터를 가져와서 이미지와 라벨을 직접 확인하는 과정을 통해 데이터의 형태와 일관성을 점검하는 것이 필수적임을 알게 되었다. squeeze() 함수의 사용법에 대한 이해가 부족했던 점을 인지하고, NN-SVG를 활용하여 신경망 구조를 시각적으로 검토하는 것의 필요성을 배웠다. CNN과 MLP의 기본적인 작동 방식에 대한 이해를 바탕으로, 실제 데이터와 모델 구조를 연결하는 과정을 학습했다.\n헷갈렸던 점 데이터 시각화가 학습 과정의 필수적인 부분이라는 것을 제대로 이해하지 못했고, squeeze() 함수를 사용할 때 배치 차원 제거가 잘못될 수 있다는 점이 헷갈렸습니다. 또한 NN-SVG를 단순히 신경망 구조를 보여주는 도구로만 생각하고, 코드 구조를 분석하고 검토하는 데 활용하는 데에는 미흡했습니다.\n정리된 이해 데이터 시각화는 모델 학습 전에 데이터의 형태와 일관성을 확인하는 필수적인 과정이며, squeeze() 함수는 불필요한 차원을 제거하는 데 사용되지만 잘못 사용하면 데이터를 손상시킬 수 있습니다. NN-SVG는 단순히 신경망 구조를 보여주는 도구가 아니라, 코드의 구조를 파악하고 개선점을 찾는 데 중요한 역할을 한다는 것을 알게 되었습니다. 이제는 데이터 점검 순서와 CNN, MLP의 기본적인 구조를 이해하고 이미지 데이터를 신경망에 적용하는 과정을 좀 더 명확하게 수행할 수 있을 것 같습니다.\nimport matplotlib.pyplot as plt import torch # 데이터 시각화 예시 data_iter = iter(train_loader) images, labels = next(data_iter) # 정규화 역변환 images = images * 0.5 + 0.5 # 정규화 역변환 images = images.squeeze().numpy() # 크기 조정 및 NumPy 배열 변환 # 이미지 시각화 plt.figure(figsize=(8, 8)) for idx in range(16): # 16개 이미지 시각화 plt 총평 오늘 오전 전체에서 배운 것 오늘 오전 시간에는 PyTorch 생태계와 데이터 로딩 및 전처리, 그리고 기본적인 신경망 구조에 대한 이해를 높였습니다. 특히 PyTorch 모듈의 역할 구분과 GPU 설정, FashionMNIST 데이터 전처리 과정, 데이터 로더의 역할 등을 명확히 이해하게 되어 앞으로 딥러닝 모델 학습에 필요한 기반을 다질 수 있게 되었습니다. 또한 데이터 시각화와 신경망 구조 시각화의 중요성을 깨닫고, 모델과 데이터를 연결하는 과정을 학습했습니다.\n다음에 조심할 것 squeeze() 함수 사용법을 좀 더 숙달해서 데이터 형태를 정확하게 파악할 필요가 있을 것 같고, NN-SVG를 적극 활용하여 모델 구조를 시각적으로 검토하는 습관을 들여야겠다. 특히 데이터 로더를 사용할 때 데이터 형태를 꼼꼼하게 확인하는 것을 잊지 않도록 주의해야 할 것 같다.\n다음 복습 주제 squeeze() 함수를 좀 더 자세히 학습하고, NN-SVG를 활용하여 모델 구조를 시각적으로 검토하는 연습을 꾸준히 해야겠다. 또한, 데이터 시각화 과정을 통해 데이터의 형태와 일관성을 더욱 꼼꼼하게 점검하는 습관을 들여야 할 것 같다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "934",
+  "inLanguage": "en",
+  "datePublished": "2026-07-20T00:00:00Z",
+  "dateModified": "2026-07-20T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-07-20-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      PyTorch 기초 다지기: 데이터 전처리부터 신경망 시각화까지
+    </h1>
+    <div class="post-description">
+      2026-07-20 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-20 00:00:00 +0000 UTC'>2026년 7월 20일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-pytorch-%EC%83%9D%ED%83%9C%EA%B3%84%EC%99%80-%EC%9E%A5%EC%B9%98-%EC%84%A4%EC%A0%95-%EA%B0%80%EC%9D%B4%EB%93%9C">PyTorch 생태계와 장치 설정 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-fashionmnist-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%A0%84%EC%B2%98%EB%A6%AC-%EB%B0%8F-%EC%A0%95%EA%B7%9C%ED%99%94-%EC%83%81%EC%84%B8-%EC%9D%B4%ED%95%B4">FashionMNIST 이미지 전처리 및 정규화 상세 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-fashionmnist%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%EB%AF%B8%EB%8B%88%EB%B0%B0%EC%B9%98-%ED%95%99%EC%8A%B5%EA%B3%BC-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%A1%9C%EB%8D%94-%EC%9D%B4%ED%95%B4">FashionMNIST를 활용한 미니배치 학습과 데이터 로더 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%8B%9C%EA%B0%81%ED%99%94%EC%99%80-%EC%8B%A0%EA%B2%BD%EB%A7%9D-%EA%B5%AC%EC%A1%B0-%EC%9D%B4%ED%95%B4-%EC%B4%88%EB%B3%B4%EC%9E%90-%EC%9B%8C%ED%82%B9-%EB%85%B8%ED%8A%B8">데이터 시각화와 신경망 구조 이해: 초보자 워킹 노트</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-pytorch-생태계와-장치-설정-가이드">1. PyTorch 생태계와 장치 설정 가이드<a hidden class="anchor" aria-hidden="true" href="#1-pytorch-생태계와-장치-설정-가이드">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>PyTorch를 사용하면서 GPU 자동 인식 문제와 다양한 모듈의 역할을 명확히 구분하는 데 어려움을 겪었지만, 각 모듈의 역할과 실행 장치 설정을 이해하게 되었습니다. <code>torch</code>, <code>torch.nn</code>, <code>torch.optim</code> 등의 역할 차이를 정리하고, <code>.to(device)</code> 메서드를 사용하여 모델과 데이터를 GPU로 옮기는 방법을 알게 되었습니다. 이제 PyTorch 생태계를 좀 더 자신 있게 활용할 수 있을 것 같습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>GPU가 설치되어 있음에도 PyTorch가 자동으로 GPU를 사용하지 않는 이유가 명확하지 않았고, <code>torch</code>, <code>torch.nn</code>, <code>torch.optim</code> 등 PyTorch 관련 모듈들의 역할 차이점을 정확히 이해하지 못했습니다. 데이터와 모델을 GPU로 옮겨야 하는 방법도 헷갈렸습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>PyTorch 생태계는 텐서 연산, 신경망 모델 정의, 최적화 알고리즘, 가중치 초기화 등 다양한 역할을 분담하여 수행하며, <code>torch</code>는 기본적인 계산 엔진 역할을 합니다. GPU를 사용하려면 PyTorch 설치 상태, 드라이버, CUDA 호환성 등 환경 설정이 중요하고, 모델과 데이터를 GPU로 옮기기 위해 <code>.to(device)</code> 메서드를 활용해야 합니다. 이러한 이해를 바탕으로 PyTorch 환경을 정확히 설정하고 모델을 학습시킬 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># PyTorch 모듈 임포트</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch.nn <span style="color:#66d9ef">as</span> nn
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch.optim <span style="color:#66d9ef">as</span> optim
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch.nn.init <span style="color:#66d9ef">as</span> init
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch.utils.data <span style="color:#f92672">import</span> DataLoader
+</span></span></code></pre></div><h2 id="2-fashionmnist-이미지-전처리-및-정규화-상세-이해">2. FashionMNIST 이미지 전처리 및 정규화 상세 이해<a hidden class="anchor" aria-hidden="true" href="#2-fashionmnist-이미지-전처리-및-정규화-상세-이해">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>FashionMNIST 이미지 전처리 과정에서 <code>ToTensor()</code>는 픽셀 값을 0~1 사이로 변환하고, <code>Normalize()</code>는 평균과 표준편차를 이용하여 데이터를 재조정하는 것을 알게 되었다. 특히, 이미지 정규화와 Batch Normalization은 서로 다른 역할을 수행하며, 정규화는 데이터 스케일링을 통해 학습 효율을 높이는 역할을 한다는 점을 명확히 이해했다. 이제 FashionMNIST 데이터셋을 전처리할 때 이 지식을 바탕으로 정확한 단계를 적용할 수 있을 것이다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>이미지 전처리 과정에서 데이터 스케일링을 224로 나누는 이유를 이해하는 데 어려움이 있었고, 데이터 정규화와 Batch Normalization이 같은 개념인지 착각했습니다. 흑백 이미지의 픽셀 범위가 0~255인데 224라는 숫자가 등장하는 부분이 특히 헷갈렸습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>ToTensor()는 이미지 픽셀 값을 텐서로 변환하고 0~1 사이로 조정하며, Normalize()는 평균과 표준편차를 이용하여 데이터를 특정 범위로 재조정하는 역할을 합니다. 이미지 전처리는 데이터 스케일링을 통해 모델 학습을 안정화하고 속도를 높이는 데 도움을 주며, Batch Normalization은 신경망 레이어 뒤에 위치하여 각 배치에 대한 평균과 표준편차를 사용하여 데이터 분포를 정규화하는 방식입니다. 따라서, 전처리 단계에서 이미지 데이터의 스케일링을 진행하고, Batch Normalization은 신경망 내부에서 학습되는 파라미터를 통해 데이터를 정규화하는 것이 핵심입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torchvision.transforms <span style="color:#66d9ef">as</span> transforms
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torchvision <span style="color:#f92672">import</span> datasets
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 데이터 로더 설정</span>
+</span></span><span style="display:flex;"><span>transform <span style="color:#f92672">=</span> transforms<span style="color:#f92672">.</span>Compose([
+</span></span><span style="display:flex;"><span>    transforms<span style="color:#f92672">.</span>ToTensor(),
+</span></span><span style="display:flex;"><span>    transforms<span style="color:#f92672">.</span>Normalize((<span style="color:#ae81ff">0.5</span>,), (<span style="color:#ae81ff">0.5</span>,))
+</span></span><span style="display:flex;"><span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># FashionMNIST 데이터셋 로드</span>
+</span></span><span style="display:flex;"><span>train_dataset <span style="color:#f92672">=</span> datasets<span style="color:#f92672">.</span>FashionMNIST(root<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;./data&#39;</span>, train<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, download<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, transform<span style="color:#f92672">=</span>transform)
+</span></span></code></pre></div><h2 id="3-fashionmnist를-활용한-미니배치-학습과-데이터-로더-이해">3. FashionMNIST를 활용한 미니배치 학습과 데이터 로더 이해<a hidden class="anchor" aria-hidden="true" href="#3-fashionmnist를-활용한-미니배치-학습과-데이터-로더-이해">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>미니배치 학습은 전체 데이터셋을 작은 묶음으로 나누어 순차적으로 학습하는 방식이며, 세탁기 비유로 이해하는 것이 도움이 되었다. <code>Dataset</code>은 데이터와 접근 규칙을, <code>DataLoader</code>는 배치 구성, 셔플링, 반복 공급을 관리한다는 것을 명확히 알게 되었다. 이제 FashionMNIST 데이터를 활용한 딥러닝 모델 학습을 위한 기반을 다질 수 있을 것 같다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>처음에는 미니배치 학습이 데이터 일부만 선택해서 학습하는 줄 알았고, Dataset과 DataLoader의 역할이 명확히 구분되지 않았습니다. 데이터가 어떻게 처리되고 접근되는지에 대한 혼동이 있었던 거죠. 전체 데이터셋을 작은 묶음으로 나누어 순차적으로 학습한다는 개념과 Dataset이 데이터 자체를 관리하고, DataLoader가 배치를 묶고 관리한다는 점을 제대로 이해하지 못했습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>전체 데이터셋을 작은 묶음인 미니배치로 나누어 순차적으로 학습하는 방식이며, 각 미니배치는 지정된 크기(batch_size)를 가집니다. <code>Dataset</code>은 데이터와 접근 규칙을 정의하고, <code>DataLoader</code>는 이 데이터를 배치 크기에 맞게 묶어 셔플링하고 반복적으로 모델에 공급하는 역할을 합니다. 이 둘을 잘 이해하면 효율적인 딥러닝 모델 학습이 가능합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>train_dataset <span style="color:#f92672">=</span> torchvision<span style="color:#f92672">.</span>datasets<span style="color:#f92672">.</span>FashionMNIST(
+</span></span><span style="display:flex;"><span>    root<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;./data&#39;</span>,
+</span></span><span style="display:flex;"><span>    train<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    download<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    transform<span style="color:#f92672">=</span>transform
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>test_dataset <span style="color:#f92672">=</span> torchvision<span style="color:#f92672">.</span>datasets<span style="color:#f92672">.</span>FashionMNIST(
+</span></span><span style="display:flex;"><span>    root<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;./data&#39;</span>,
+</span></span><span style="display:flex;"><span>    train<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>    download<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    transform<span style="color:#f92672">=</span>transform
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><h2 id="4-데이터-시각화와-신경망-구조-이해-초보자-워킹-노트">4. 데이터 시각화와 신경망 구조 이해: 초보자 워킹 노트<a hidden class="anchor" aria-hidden="true" href="#4-데이터-시각화와-신경망-구조-이해-초보자-워킹-노트">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>데이터 시각화의 중요성을 깨닫고, DataLoader에서 데이터를 가져와서 이미지와 라벨을 직접 확인하는 과정을 통해 데이터의 형태와 일관성을 점검하는 것이 필수적임을 알게 되었다. <code>squeeze()</code> 함수의 사용법에 대한 이해가 부족했던 점을 인지하고, NN-SVG를 활용하여 신경망 구조를 시각적으로 검토하는 것의 필요성을 배웠다. CNN과 MLP의 기본적인 작동 방식에 대한 이해를 바탕으로, 실제 데이터와 모델 구조를 연결하는 과정을 학습했다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>데이터 시각화가 학습 과정의 필수적인 부분이라는 것을 제대로 이해하지 못했고, <code>squeeze()</code> 함수를 사용할 때 배치 차원 제거가 잘못될 수 있다는 점이 헷갈렸습니다. 또한 NN-SVG를 단순히 신경망 구조를 보여주는 도구로만 생각하고, 코드 구조를 분석하고 검토하는 데 활용하는 데에는 미흡했습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>데이터 시각화는 모델 학습 전에 데이터의 형태와 일관성을 확인하는 필수적인 과정이며, <code>squeeze()</code> 함수는 불필요한 차원을 제거하는 데 사용되지만 잘못 사용하면 데이터를 손상시킬 수 있습니다. NN-SVG는 단순히 신경망 구조를 보여주는 도구가 아니라, 코드의 구조를 파악하고 개선점을 찾는 데 중요한 역할을 한다는 것을 알게 되었습니다. 이제는 데이터 점검 순서와 CNN, MLP의 기본적인 구조를 이해하고 이미지 데이터를 신경망에 적용하는 과정을 좀 더 명확하게 수행할 수 있을 것 같습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 데이터 시각화 예시</span>
+</span></span><span style="display:flex;"><span>data_iter <span style="color:#f92672">=</span> iter(train_loader)
+</span></span><span style="display:flex;"><span>images, labels <span style="color:#f92672">=</span> next(data_iter)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 정규화 역변환</span>
+</span></span><span style="display:flex;"><span>images <span style="color:#f92672">=</span> images <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.5</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">0.5</span>  <span style="color:#75715e"># 정규화 역변환</span>
+</span></span><span style="display:flex;"><span>images <span style="color:#f92672">=</span> images<span style="color:#f92672">.</span>squeeze()<span style="color:#f92672">.</span>numpy()  <span style="color:#75715e"># 크기 조정 및 NumPy 배열 변환</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 이미지 시각화</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">8</span>))
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> idx <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">16</span>):  <span style="color:#75715e"># 16개 이미지 시각화</span>
+</span></span><span style="display:flex;"><span>    plt
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>오늘 오전 시간에는 PyTorch 생태계와 데이터 로딩 및 전처리, 그리고 기본적인 신경망 구조에 대한 이해를 높였습니다. 특히 PyTorch 모듈의 역할 구분과 GPU 설정, FashionMNIST 데이터 전처리 과정, 데이터 로더의 역할 등을 명확히 이해하게 되어 앞으로 딥러닝 모델 학습에 필요한 기반을 다질 수 있게 되었습니다. 또한 데이터 시각화와 신경망 구조 시각화의 중요성을 깨닫고, 모델과 데이터를 연결하는 과정을 학습했습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p><code>squeeze()</code> 함수 사용법을 좀 더 숙달해서 데이터 형태를 정확하게 파악할 필요가 있을 것 같고, NN-SVG를 적극 활용하여 모델 구조를 시각적으로 검토하는 습관을 들여야겠다. 특히 데이터 로더를 사용할 때 데이터 형태를 꼼꼼하게 확인하는 것을 잊지 않도록 주의해야 할 것 같다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p><code>squeeze()</code> 함수를 좀 더 자세히 학습하고, NN-SVG를 활용하여 모델 구조를 시각적으로 검토하는 연습을 꾸준히 해야겠다. 또한, 데이터 시각화 과정을 통해 데이터의 형태와 일관성을 더욱 꼼꼼하게 점검하는 습관을 들여야 할 것 같다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://Han-think.github.io/learning/2026-07-16-am-daily/">
+    <span class="title">Next »</span>
+    <span>머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

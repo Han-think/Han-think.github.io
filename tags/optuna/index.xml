@@ -1,1 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Optuna on Han-think Blog</title><link>https://Han-think.github.io/tags/optuna/</link><description>Recent content in Optuna on Han-think Blog</description><generator>Hugo</generator><language>ko-KR</language><lastBuildDate>Sun, 12 Jul 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://Han-think.github.io/tags/optuna/index.xml" rel="self" type="application/rss+xml"/><item><title>Kaggle Playground S6E7 개인 도전 회고 - 4. 튜닝 시간 추정 실패와 EDA 재검토가 만든 전환점</title><link>https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-04-tuning-and-eda/</link><pubDate>Sun, 12 Jul 2026 00:00:00 +0000</pubDate><guid>https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-04-tuning-and-eda/</guid><description>Optuna 튜닝에서 겪은 시간 추정 실패, 그리고 다시 돌린 EDA에서 발견한 거의 결정론적인 신호.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Optuna on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/optuna/</link>
+    <description>Recent content in Optuna on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Sun, 12 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/optuna/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kaggle Playground S6E7 개인 도전 회고 - 4. 튜닝 시간 추정 실패와 EDA 재검토가 만든 전환점</title>
+      <link>https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-04-tuning-and-eda/</link>
+      <pubDate>Sun, 12 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/2026-07-12-kaggle-playground-s6e7-solo-04-tuning-and-eda/</guid>
+      <description>Optuna 튜닝에서 겪은 시간 추정 실패, 그리고 다시 돌린 EDA에서 발견한 거의 결정론적인 신호.</description>
+    </item>
+  </channel>
+</rss>
