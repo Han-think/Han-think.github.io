@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>딥러닝 기초 다지기: 텐서, 모델, 학습, 그리고 PyTorch 적용 전략 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-07-20 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-07-20-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-07-20-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-20-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="딥러닝 기초 다지기: 텐서, 모델, 학습, 그리고 PyTorch 적용 전략">
+  <meta property="og:description" content="2026-07-20 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-07-20T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-20T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="딥러닝 기초 다지기: 텐서, 모델, 학습, 그리고 PyTorch 적용 전략">
+  <meta name="twitter:description" content="2026-07-20 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "딥러닝 기초 다지기: 텐서, 모델, 학습, 그리고 PyTorch 적용 전략",
+      "item": "https://Han-think.github.io/learning/2026-07-20-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "딥러닝 기초 다지기: 텐서, 모델, 학습, 그리고 PyTorch 적용 전략",
+  "name": "딥러닝 기초 다지기: 텐서, 모델, 학습, 그리고 PyTorch 적용 전략",
+  "description": "2026-07-20 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 단층 퍼셉트론과 XOR 문제: 선형 분리의 한계 TensorFlow 텐서 기초: 상수, 변수, 연산 이해 순전파와 Dense 층 완벽 이해: 입력 차원 설정의 비밀 다층 퍼셉트론의 은닉층과 활성화 함수 이해하기 Keras 모델 학습, 초보자를 위한 핵심 가이드 손실 지형과 초기값: 신경망 학습의 이해와 전략 역전파와 자동 미분: 계산 그래프를 활용한 손실 기반 가중치 조정 에포크, 배치, GPU 환경 이해 및 학습 자원 결정 파이프라인 OS: Python 이전과 PyTorch 적용 전략 PyTorch MLP로 XOR 문제 해결하기: 초보자 가이드 모델 훈련 및 실험 관리 기초 총평 1. 단층 퍼셉트론과 XOR 문제: 선형 분리의 한계 무엇을 배웠나 단층 퍼셉트론으로는 XOR 문제를 학습 횟수를 늘려도 해결할 수 없다는 점을 깨달았다. 이는 모델의 구조적 한계, 즉 선형 결정 경계만 생성할 수 있다는 점 때문이며, 단순히 학습 부족이 아닌 표현력 부족 문제가 핵심임을 알게 되었다. 앞으로는 모델의 구조를 변경하여 비선형 문제를 해결할 수 있음을 인지하고 학습해야겠다.\n헷갈렸던 점 XOR 문제를 해결하려고 학습 횟수를 계속 늘려야 한다는 생각에 갇혀서 모델의 구조적인 한계를 제대로 생각하지 못했어요. 손실이 줄어들지 않는 이유를 단순히 학습 관련 문제로만 생각하고, 모델 자체가 해결할 수 없는 문제인지 파악하지 못했습니다. 처음에는 단순히 데이터가 부족해서 그런가 싶어서 계속 노력했지만, 결국 모델의 한계를 깨닫게 됐습니다.\n정리된 이해 단층 퍼셉트론은 선형적인 분리 경계만 생성할 수 있어서 XOR과 같은 비선형 문제를 해결할 수 없다는 것을 깨달았습니다. 학습 횟수를 아무리 늘려도, 모델의 구조적인 한계 때문에 문제를 해결할 수 없고, 이를 위해 모델의 구조를 바꿔야 한다는 점을 이해했습니다. XOR 문제는 단층 퍼셉트론의 표현력 부족을 보여주는 대표적인 예시입니다.\nimport numpy as np from sklearn.linear_model import LogisticRegression # XOR 데이터셋 X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]]) y = np.array([0, 1, 1, 0]) # 단층 모델 시도 (로지스틱 회귀로 대체) model = LogisticRegression() model.fit(X, y) predictions = model.predict(X) print(\"Predictions:\", predictions) 2. TensorFlow 텐서 기초: 상수, 변수, 연산 이해 무엇을 배웠나 TensorFlow에서 텐서를 다루는 기본적인 개념을 익혔고, 특히 tf.constant와 tf.Variable의 차이점을 명확히 이해하게 되었다. 또한 요소별 곱셈과 행렬곱의 구분을 확실히 할 수 있게 되었으며, TensorFlow의 텐서 연산이 일반적인 Python 변수나 NumPy 배열과 어떻게 다른지 감을 잡을 수 있게 되었다. 이제 TensorFlow를 사용하여 모델을 구축하고 훈련하는 데 필요한 기본적인 지식을 갖추게 되었다.\n헷갈렸던 점 tf.constant와 tf.Variable의 차이, 그리고 요소별 곱셈과 행렬곱을 구분하는 것이 처음에는 매우 헷갈렸습니다. 텐서 연산이 TensorFlow 내부에서 어떻게 처리되는지, 특히 Python 변수나 NumPy 배열과의 차이가 명확하게 와닿지 않았습니다.\n정리된 이해 TensorFlow에서 텐서는 다차원 배열을 의미하며, tf.constant는 불변하는 값을, tf.Variable은 학습 과정에서 변하는 값을 저장합니다. 요소별 곱셈은 배열의 같은 위치에 있는 값들을 곱하는 반면, 행렬곱은 행렬의 차원을 고려하여 곱셈을 수행합니다. 이러한 차이점을 명확히 이해하는 것이 TensorFlow를 효과적으로 활용하는 데 중요합니다.\na = tf.constant([[1.0, 2.0], [3.0, 4.0]]) tensor_f = tf.Variable(initial_value=[0.1, -0.2, 0.3], dtype=tf.float32, name=\"weights\") tensor_f.assign([1.0, 2.0, 3.0]) c = a + b 3. 순전파와 Dense 층 완벽 이해: 입력 차원 설정의 비밀 무엇을 배웠나 Dense 층의 input_dim 옵션은 입력 특성의 개수를 지정하는 것이며, 입력층이라고 부르는 것은 첫 번째 Dense 층일 때 사용될 수 있다는 것을 알게 되었다. 순전파 과정에서 Wx + b는 아핀 변환을 나타내는 핵심적인 계산임을 명확히 이해하게 되었고, 예시 코드를 통해 실제 계산 과정을 확인할 수 있었다. 이제 Dense 층의 역할과 구조에 대한 혼란이 줄어들었고, 텐서플로우 코드를 작성할 때 input_dim 옵션을 올바르게 사용할 수 있을 것 같다.\n헷갈렸던 점 처음에는 input_dim 옵션이 입력층을 정의하는 것인지, 아니면 첫 번째 은닉층의 초기 설정을 의미하는 것인지 명확하게 이해하지 못했다. Dense 층의 역할과 구조, 특히 input_dim 옵션의 정확한 의미를 제대로 파악하고 싶었는데, 자료마다 설명이 달라서 혼란스러웠다.\n정리된 이해 Dense 층에서 input_dim은 입력 데이터의 특성 개수를 나타내는 값이며, 입력층이 아닌 첫 번째 은닉층의 초기 설정을 의미한다. input_dim을 통해 Dense 층은 입력 데이터의 형태를 파악하고, 가중치 행렬 W와 편향 b를 초기화하는 데 필요한 정보를 얻는다. 순전파 과정에서는 입력 데이터와 가중치 행렬의 곱에 편향을 더하는 아핀 변환을 수행하여 다음 층으로 데이터를 전달한다.\nimport tensorflow as tf # 가중치와 편향 초기화 W = tf.Variable([[1.0, -1.0]], dtype=tf.float32) # 가중치 행렬 b = tf.Variable([0.5], dtype=tf.float32) # 편향 벡터 x = tf.constant([[1.0], [0.0]], dtype=tf.float32) # 입력 데이터 # 순전파 계산 y = tf.matmul(W, x) + b # 선형변환 + 편향 덧셈 print(y.numpy()) 4. 다층 퍼셉트론의 은닉층과 활성화 함수 이해하기 무엇을 배웠나 처음에는 레이어를 단순히 연결선으로 생각하고, 은닉층의 개수로 딥러닝을 판단했지만, 레이어는 동일 계산 단계를 나타내는 면이고, 딥러닝은 네트워크의 깊이를 의미한다는 것을 깨달았습니다. nn.Linear 함수의 역할과 레이어의 폭(width) 개념도 명확하게 이해하게 되었습니다. 간단한 MLP 모델을 코드로 직접 작성하며 레이어와 노드 개념을 더 깊이 이해할 수 있었습니다.\n헷갈렸던 점 처음에는 레이어를 추가할 때 단순히 연결선을 더 그리는 것으로 생각했고, 은닉층이 몇 개 이상이면 딥러닝이라고 고정된 기준이 있다고 오해했습니다. 레이어와 노드의 개념이 명확하지 않아, 가중치 설정 부분도 제대로 이해하지 못했습니다.\n정리된 이해 레이어는 뉴런들의 계산 단계를 나타내는 면으로 이해하고, 딥러닝은 은닉층의 개수보다는 네트워크의 깊이가 중요하다는 것을 알게 되었다. nn.Linear 함수는 입력 노드와 출력 노드 사이의 가중치를 설정하는 역할을 하며, 레이어와 노드의 개념을 명확히 이해해야 네트워크 구조를 설계할 수 있다는 점을 깨달았다. 이제는 은닉층을 단순히 연결선을 더하는 것이 아니라, 면을 쌓아 올리는 개념으로 파악할 수 있게 되었다.\nimport torch import torch.nn as nn # 간단한 MLP 모델 정의 class SimpleMLP(nn.Module): def __init__(self): super(SimpleMLP, self).__init__() self.fc1 = nn.Linear(2, 4) # 입력 노드 2개 → 은닉 노드 4개 self.fc2 = nn.Linear(4, 1) # 은닉 노드 4개 → 출력 노드 1개 self.activation = nn.ReLU() # 활성화 함수 적용 def forward(self, x): x = self.activation(self.fc1(x)) # 은닉층 1 x = self 5. Keras 모델 학습, 초보자를 위한 핵심 가이드 무엇을 배웠나 Keras 모델 학습 시 TensorFlow와 PyTorch의 문법 차이 때문에 어려움을 겪었는데, Sequential 모델을 사용한 모델 정의 방식과 각 층의 파라미터 계산 방법을 명확히 이해하게 되었다. 특히 model.summary()를 통해 모델 구조를 확인하고, 각 Dense 층의 파라미터 수를 직접 계산하는 연습을 통해 모델 구성에 대한 이해도를 높일 수 있었다. 이제는 Keras 모델 학습 파이프라인을 좀 더 자신 있게 다룰 수 있게 되었다.\n헷갈렸던 점 모델을 만들 때 Sequential 모델을 사용하는 방법과 add() 메서드를 사용하는 방법이 어떻게 다른지 명확히 이해하지 못했다. 각 층의 파라미터 계산 방식도 처음에는 어떻게 계산해야 하는지 헷갈렸고, model.summary()가 어떤 정보를 제공하는지 파악하는 데 시간이 걸렸다.\n정리된 이해 Keras 모델을 만들 때 Sequential 모델을 사용하고 층을 쌓는 방식으로 구조를 정의할 수 있다는 것을 알게 되었다. model.summary()를 통해 모델의 구조와 각 층의 파라미터 수를 확인할 수 있으며, 각 Dense 층의 파라미터 수는 입력과 출력 노드 수를 기반으로 계산된다는 점을 명확히 이해했다. 이제 Keras 모델 학습 과정에 대한 기본적인 이해가 확립되었다고 생각한다.\nmodel = tf.keras.models.Sequential([ tf.keras.layers.Dense(10, activation=\"sigmoid\", input_shape=(2,)), tf.keras.layers.Dense(10, activation=\"sigmoid\"), tf.keras.layers.Dense(1, activation=\"sigmoid\") ]) model = tf.keras.models.Sequential() model.add(tf.keras.layers.Dense(10, activation=\"sigmoid\", input_shape=(2,))) model.add(tf.keras.layers.Dense(10, activation=\"sigmoid\")) model.add(tf.keras.layers.Dense(1, activation=\"sigmoid\")) model.summary() 6. 손실 지형과 초기값: 신경망 학습의 이해와 전략 무엇을 배웠나 신경망 학습이 단순히 전역 최솟값에 도달하는 것이 아니라, 기울기가 작아져 멈추는 상태일 수 있다는 것을 알게 되었습니다. 손실 지형의 복잡성, 초기값의 중요성, 그리고 초기화 방법이 학습 결과에 큰 영향을 미친다는 점도 이해하게 되었습니다. 앞으로는 손실 지형을 고려하여 학습 전략을 세우고, 초기값을 신중하게 설정해야겠다는 생각이 듭니다.\n헷갈렸던 점 처음에는 신경망 학습이 멈추면 전역 최솟값에 도달한 거라고 생각했는데, 기울기가 작아져서 멈춘 것일 수도 있다는 점을 몰랐어요. 조기 종료가 모델 파라미터 최적화를 의미한다고 생각했지만, 실제로는 검증 데이터셋 성능 개선이 멈추는 시점을 기준으로 학습을 중단하는 전략이라는 것을 제대로 이해하지 못했습니다. 손실 지형이 복잡해서 전역 최솟값을 찾는 것보다 지역 최솟값이나 안장점에 빠질 수도 있다는 점을 인지하지 못했습니다.\n정리된 이해 신경망 학습은 손실 함수를 최소화하는 과정을 거치지만, 손실 공간의 복잡성 때문에 항상 전역 최솟값에 도달하는 것은 아니며, 학습이 멈추는 것은 기울기가 작아진 결과일 수 있습니다. 학습 시작 시 초기 가중치 설정과 활성화 함수에 적합한 초기화 방법 선택이 학습 결과에 큰 영향을 미치며, 조기 종료는 검증 데이터셋 성능 개선이 멈추었을 때 사용하는 전략입니다. 손실 지형의 다양한 특징을 이해하는 것이 효과적인 학습을 위한 첫걸음입니다.\nimport torch torch.manual_seed(42) # 재현성을 위한 시드 설정 7. 역전파와 자동 미분: 계산 그래프를 활용한 손실 기반 가중치 조정 무엇을 배웠나 처음에는 계산 그래프를 단순한 로그로 생각하고 역전파를 오류 검출 과정으로 오해했지만, 이번에 계산 그래프는 연산 의존성을 나타내고 역전파는 손실에 대한 가중치 기여도를 분석하는 과정임을 이해하게 되었다. 특히 역전파는 모델의 오류 위치를 찾는 것이 아니라, 가중치 조정을 위한 방향을 제시하는 중요한 과정이라는 것을 명확히 알게 되었다. 이 내용을 바탕으로 프로젝트 내 실행 의존성을 계산 그래프와 연결하여 이해해 볼 수 있을 것 같다.\n헷갈렸던 점 처음에는 계산 그래프를 단순히 프로그램 실행 과정의 로그로 생각했고, 역전파를 모델 내 오류를 찾아주는 검출 메커니즘이라고 잘못 이해했습니다. 이러한 오해 때문에 역전파의 핵심 역할과 자동 미분과의 연관성이 잘 파악되지 않았습니다.\n정리된 이해 계산 그래프는 신경망 연산의 의존성을 나타내는 구조이며, 역전파는 이 그래프를 이용하여 각 가중치에 대한 손실의 기울기를 계산하는 과정입니다. 역전파는 오류를 찾는 것이 아니라, 손실을 줄이기 위한 가중치 조정 방향을 알려주는 중요한 단계입니다. 이 과정을 통해 모델은 데이터에 더 잘 적합하도록 학습할 수 있습니다.\n# 예시: PyTorch 자동 미분 import torch # 간단한 신경망 정의 x = torch.tensor(2.0, requires_grad=True) y = x * x * 3 z = y + 2 loss = z.mean() # 손실에 대한 그래디언트 계산 loss.backward() # x에 대한 그래디언트 확인 print(x.grad) # 출력: tensor(12.) 8. 에포크, 배치, GPU 환경 이해 및 학습 자원 결정 무엇을 배웠나 에포크, 배치, 반복의 관계를 명확히 이해하게 되었고, 배치 크기가 학습 과정에 미치는 영향과 유효 배치 크기 개념을 파악했습니다. 또한 GPU 환경에서 TensorFlow나 PyTorch를 사용할 때, CUDA 외의 다른 플랫폼의 활용 가능성과 하드웨어-소프트웨어 상호작용에 대한 기본적인 이해를 갖추게 되었습니다. 학습 자원 결정 요인들을 고려하여 효율적인 학습 환경을 구축하는 데 도움이 될 것입니다.\n헷갈렸던 점 처음에는 에포크, 배치, 반복이 서로 어떻게 연결되는지 감이 잘 안 잡혔습니다. 특히, 배치 크기가 바뀌면 에포크 내의 반복 횟수가 어떻게 달라지는지 이해하기 어려웠고, GPU 환경에서는 어떤 점을 고려해야 하는지 막막했습니다. 실습을 통해 조금 더 명확하게 이해하게 되었습니다.\n정리된 이해 에포크는 전체 데이터셋을 한 번 학습하는 과정이고, 배치는 이를 작은 묶음으로 나누어 처리하는 단위이며, 반복은 하나의 배치에 따른 가중치 업데이트를 의미합니다. 모델 크기, 데이터 양, 배치 크기, 에포크 수 등이 학습 자원 결정에 중요한 영향을 미치며, 이러한 요소들을 고려하여 학습 효율을 높일 수 있습니다. 실제로 코드를 통해 이러한 개념들이 어떻게 적용되는지 확인하는 것이 중요합니다.\n# 데이터셋 준비 (가정) dataset = tf.data.Dataset.from_tensor_slices(range(1000)) dataset = dataset.batch(32) # 배치 크기 설정 # 모델 정의 (가정) model = tf.keras.models.Sequential([ tf.keras.layers.Dense(10, activation='relu'), tf.keras.layers.Dense(1) ]) # 옵티마이저 정의 optimizer = tf.keras.optimizers.Adam(learning_rate=0.001) # 에포크 수 설정 epochs = 5 # 모델 학습 model.fit(dataset, epochs=epochs) 9. 파이프라인 OS: Python 이전과 PyTorch 적용 전략 무엇을 배웠나 Pipeline OS를 특정 프레임워크로 완전히 전환하는 대신, 핵심 계약을 중심으로 설계하여 프레임워크 독립성을 확보해야 한다는 점을 배웠다. 기존 Python 기반 구조를 유지하면서 필요한 부분에 PyTorch를 적용하는 방식으로 유연성을 확보할 수 있다는 것을 깨달았다. 핵심 계약 중심 설계는 장기적인 유지보수성과 확장성을 높이는 중요한 전략임을 알게 되었다.\n헷갈렸던 점 처음에는 TensorFlow와 PyTorch 간의 문법 차이 때문에 Pipeline OS 전체를 특정 프레임워크로 바꿔야 할 것 같아 어려움을 느꼈습니다. 하지만 핵심 계약을 중심으로 설계하면 프레임워크를 유연하게 변경할 수 있다는 것을 깨달았습니다. MemoryScorer 클래스처럼 프레임워크에 독립적인 인터페이스를 제공하는 것이 중요합니다.\n정리된 이해 Pipeline OS는 특정 프레임워크에 종속되지 않도록 핵심 계약을 중심으로 설계되어야 하며, PyTorch는 장면 품질 분류, 캐릭터 일관성 점수 등 특정 기능에 선택적으로 적용할 수 있도록 구조화해야 합니다. 프레임워크 전환의 부담을 줄이기 위해, 각 모듈의 내부 구현은 계약에 따라 달라지지 않도록 유지하는 것이 중요합니다. 이렇게 하면 필요에 따라 PyTorch 외 다른 프레임워크를 쉽게 통합할 수 있습니다.\nclass MemoryScorer: def score(self, items: list[dict]) -\u003e list[dict]: ... # 내부 구현은 PyTorch든 다른 프레임워크든 관계 없이 동일 10. PyTorch MLP로 XOR 문제 해결하기: 초보자 가이드 무엇을 배웠나 PyTorch를 사용하여 XOR 문제를 해결하는 과정에서 순전파와 역전파가 동시에 진행되지 않고 순차적으로 진행된다는 점을 명확히 알게 되었다. 또한, 학습 과정에서 사용되는 learning rate, step, epoch, batch와 같은 용어들의 의미를 제대로 이해하게 되었고, 이를 바탕으로 XOR 문제를 해결하는 MLP 모델을 구현할 수 있게 되었다. 이 노트를 통해 PyTorch를 이용한 딥러닝 학습의 기본적인 흐름을 파악할 수 있었다.\n헷갈렸던 점 순전파와 역전파가 동시에 일어나는 줄 알았는데, 순차적으로 진행된다는 점이 헷갈렸습니다. 또한 학습 과정에서 사용되는 learning rate, step, epoch 등의 용어들이 각각 어떤 의미를 가지는지 명확하게 이해하지 못했습니다. 이 개념들을 정확히 알아야 학습 과정을 제대로 이해하고 디버깅할 수 있을 것 같습니다.\n정리된 이해 순전파와 역전파는 동시에 진행되는 것이 아니라 순서대로 진행되며, 순전파를 통해 예측값을 얻고 손실을 계산한 뒤 역전파를 통해 가중치를 업데이트하는 과정을 거칩니다. 학습 과정에서 learning rate는 업데이트 크기를, step은 가중치 업데이트 횟수를, epoch는 전체 데이터셋을 반복하는 단위를 나타냅니다. 이제 XOR 문제를 해결하는 데 필요한 기본적인 개념들을 명확하게 이해하게 되었습니다.\nimport torch import torch.nn as nn import torch.optim as optim # XOR 데이터셋 정의 inputs = torch.tensor([[0, 0], [0, 1], [1, 0], [1, 1]], dtype=torch.float32) targets = torch.tensor([[0], [1], [1], [0]], dtype=torch.float32) # MLP 모델 정의 class MLP(nn.Module): def __init__(self): super(MLP, self).__init__() 11. 모델 훈련 및 실험 관리 기초 무엇을 배웠나 처음에는 역전파를 학습 과정 전체를 관장하는 것처럼 생각했지만, 실제로는 가중치 업데이트를 담당하는 한 단계라는 것을 알게 되었다. 또한, 훈련 손실 감소 외에도 검증 손실을 통해 모델의 일반화 성능을 평가하고, 이를 바탕으로 최적의 하이퍼파라미터를 탐색해야 한다는 점을 깨달았다. 이제는 학습 엔진과 제어 타워를 구분하여 모델 관리를 더욱 체계적으로 할 수 있게 되었다.\n헷갈렸던 점 역전파를 처음 배울 때는 단순히 손실 함수를 줄이는 전체 과정을 담당하는 함수라고 생각했고, 검수 로그만으로 좋은 모델을 판단할 수 있다고 믿었습니다. 훈련 손실만 감소하면 모델이 좋아지는 거라고 생각했던 저의 착각을 바로잡을 수 있었습니다.\n정리된 이해 역전파는 한 번의 학습 단계에서 가중치를 업데이트하는 역할을 하며, 전체적인 학습 과정은 엔진과 실험 관리를 담당하는 제어 타워로 구분해서 이해해야 합니다. 훈련 손실 감소 외에도 검증 손실을 통해 모델의 일반화 성능을 평가하고, 하이퍼파라미터 탐색을 통해 최적의 설정을 찾아야 좋은 모델을 선택할 수 있습니다. 이를 통해 과적합을 방지하고 모델의 성능을 향상시킬 수 있습니다.\noptimizer.zero_grad() # 그래디언트 초기화 outputs = model(inputs) # 순전파 loss = criterion(outputs, targets) # 손실 계산 loss.backward() # 역전파 optimizer.step() # 가중치 업데이트 best_val_loss = float('inf') for epoch in range(num_epochs): train_loss = train_model() val_loss = validate_model() if val_loss \u003c best_val_loss: best_val_loss = val_loss torch.save(model.state_dict(), \"best_model.pt\") 총평 오늘 오후 전체에서 배운 것 단층 퍼셉트론의 한계를 넘어 딥러닝의 기본 개념과 TensorFlow, PyTorch를 활용한 모델 구축 방법을 익혔습니다. 특히 순전파, 역전파, 손실 지형 등 핵심적인 이해를 통해 모델 학습 과정을 체계적으로 다룰 수 있게 되었으며, 프로젝트에 적용 가능한 핵심 계약 중심 설계 전략을 배웠습니다. 앞으로는 학습한 내용을 바탕으로 실제 문제 해결에 적용하고, 지속적인 실험과 분석을 통해 모델 성능을 개선해 나가도록 하겠습니다.\n다음에 조심할 것 이제는 복잡한 손실 지형과 초기값 설정이 학습 결과에 미치는 영향을 간과하지 않도록 주의해야겠다. 또한, 모델을 훈련하고 실험할 때 훈련 손실뿐만 아니라 검증 손실을 꾸준히 확인하며 일반화 성능을 면밀히 평가하는 습관을 들여야겠다. 마지막으로, 실제 프로젝트에서는 PyTorch를 도입할 때 핵심 계약을 중심으로 유연성을 확보하며, 장기적인 유지보수를 고려한 설계를 해야겠다.\n다음 복습 주제 손실 지형의 복잡성과 초기값 설정의 중요성에 대한 내용이 앞으로 학습 전략에 직접적인 영향을 줄 것 같아서 더 깊이 공부해야겠다. 특히 다양한 초기화 방법이 학습 결과에 미치는 영향을 실험적으로 확인하고, 손실 지형을 시각화하는 방법을 익히고 싶다. 또한, 역전파 과정에서 계산 그래프가 실제로 어떻게 활용되는지 좀 더 구체적인 예시를 통해 이해하고 싶다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "2355",
+  "inLanguage": "en",
+  "datePublished": "2026-07-20T00:00:00Z",
+  "dateModified": "2026-07-20T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-07-20-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      딥러닝 기초 다지기: 텐서, 모델, 학습, 그리고 PyTorch 적용 전략
+    </h1>
+    <div class="post-description">
+      2026-07-20 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-20 00:00:00 +0000 UTC'>2026년 7월 20일</span>&nbsp;·&nbsp;<span>12 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EB%8B%A8%EC%B8%B5-%ED%8D%BC%EC%85%89%ED%8A%B8%EB%A1%A0%EA%B3%BC-xor-%EB%AC%B8%EC%A0%9C-%EC%84%A0%ED%98%95-%EB%B6%84%EB%A6%AC%EC%9D%98-%ED%95%9C%EA%B3%84">단층 퍼셉트론과 XOR 문제: 선형 분리의 한계</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-tensorflow-%ED%85%90%EC%84%9C-%EA%B8%B0%EC%B4%88-%EC%83%81%EC%88%98-%EB%B3%80%EC%88%98-%EC%97%B0%EC%82%B0-%EC%9D%B4%ED%95%B4">TensorFlow 텐서 기초: 상수, 변수, 연산 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%88%9C%EC%A0%84%ED%8C%8C%EC%99%80-dense-%EC%B8%B5-%EC%99%84%EB%B2%BD-%EC%9D%B4%ED%95%B4-%EC%9E%85%EB%A0%A5-%EC%B0%A8%EC%9B%90-%EC%84%A4%EC%A0%95%EC%9D%98-%EB%B9%84%EB%B0%80">순전파와 Dense 층 완벽 이해: 입력 차원 설정의 비밀</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EB%8B%A4%EC%B8%B5-%ED%8D%BC%EC%85%89%ED%8A%B8%EB%A1%A0%EC%9D%98-%EC%9D%80%EB%8B%89%EC%B8%B5%EA%B3%BC-%ED%99%9C%EC%84%B1%ED%99%94-%ED%95%A8%EC%88%98-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">다층 퍼셉트론의 은닉층과 활성화 함수 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-keras-%EB%AA%A8%EB%8D%B8-%ED%95%99%EC%8A%B5-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%ED%95%B5%EC%8B%AC-%EA%B0%80%EC%9D%B4%EB%93%9C">Keras 모델 학습, 초보자를 위한 핵심 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="6">
+<li><a href="#6-%EC%86%90%EC%8B%A4-%EC%A7%80%ED%98%95%EA%B3%BC-%EC%B4%88%EA%B8%B0%EA%B0%92-%EC%8B%A0%EA%B2%BD%EB%A7%9D-%ED%95%99%EC%8A%B5%EC%9D%98-%EC%9D%B4%ED%95%B4%EC%99%80-%EC%A0%84%EB%9E%B5">손실 지형과 초기값: 신경망 학습의 이해와 전략</a></li>
+</ol>
+</li>
+<li>
+<ol start="7">
+<li><a href="#7-%EC%97%AD%EC%A0%84%ED%8C%8C%EC%99%80-%EC%9E%90%EB%8F%99-%EB%AF%B8%EB%B6%84-%EA%B3%84%EC%82%B0-%EA%B7%B8%EB%9E%98%ED%94%84%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%EC%86%90%EC%8B%A4-%EA%B8%B0%EB%B0%98-%EA%B0%80%EC%A4%91%EC%B9%98-%EC%A1%B0%EC%A0%95">역전파와 자동 미분: 계산 그래프를 활용한 손실 기반 가중치 조정</a></li>
+</ol>
+</li>
+<li>
+<ol start="8">
+<li><a href="#8-%EC%97%90%ED%8F%AC%ED%81%AC-%EB%B0%B0%EC%B9%98-gpu-%ED%99%98%EA%B2%BD-%EC%9D%B4%ED%95%B4-%EB%B0%8F-%ED%95%99%EC%8A%B5-%EC%9E%90%EC%9B%90-%EA%B2%B0%EC%A0%95">에포크, 배치, GPU 환경 이해 및 학습 자원 결정</a></li>
+</ol>
+</li>
+<li>
+<ol start="9">
+<li><a href="#9-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-os-python-%EC%9D%B4%EC%A0%84%EA%B3%BC-pytorch-%EC%A0%81%EC%9A%A9-%EC%A0%84%EB%9E%B5">파이프라인 OS: Python 이전과 PyTorch 적용 전략</a></li>
+</ol>
+</li>
+<li>
+<ol start="10">
+<li><a href="#10-pytorch-mlp%EB%A1%9C-xor-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0-%EC%B4%88%EB%B3%B4%EC%9E%90-%EA%B0%80%EC%9D%B4%EB%93%9C">PyTorch MLP로 XOR 문제 해결하기: 초보자 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="11">
+<li><a href="#11-%EB%AA%A8%EB%8D%B8-%ED%9B%88%EB%A0%A8-%EB%B0%8F-%EC%8B%A4%ED%97%98-%EA%B4%80%EB%A6%AC-%EA%B8%B0%EC%B4%88">모델 훈련 및 실험 관리 기초</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-단층-퍼셉트론과-xor-문제-선형-분리의-한계">1. 단층 퍼셉트론과 XOR 문제: 선형 분리의 한계<a hidden class="anchor" aria-hidden="true" href="#1-단층-퍼셉트론과-xor-문제-선형-분리의-한계">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>단층 퍼셉트론으로는 XOR 문제를 학습 횟수를 늘려도 해결할 수 없다는 점을 깨달았다. 이는 모델의 구조적 한계, 즉 선형 결정 경계만 생성할 수 있다는 점 때문이며, 단순히 학습 부족이 아닌 표현력 부족 문제가 핵심임을 알게 되었다. 앞으로는 모델의 구조를 변경하여 비선형 문제를 해결할 수 있음을 인지하고 학습해야겠다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>XOR 문제를 해결하려고 학습 횟수를 계속 늘려야 한다는 생각에 갇혀서 모델의 구조적인 한계를 제대로 생각하지 못했어요. 손실이 줄어들지 않는 이유를 단순히 학습 관련 문제로만 생각하고, 모델 자체가 해결할 수 없는 문제인지 파악하지 못했습니다. 처음에는 단순히 데이터가 부족해서 그런가 싶어서 계속 노력했지만, 결국 모델의 한계를 깨닫게 됐습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>단층 퍼셉트론은 선형적인 분리 경계만 생성할 수 있어서 XOR과 같은 비선형 문제를 해결할 수 없다는 것을 깨달았습니다. 학습 횟수를 아무리 늘려도, 모델의 구조적인 한계 때문에 문제를 해결할 수 없고, 이를 위해 모델의 구조를 바꿔야 한다는 점을 이해했습니다. XOR 문제는 단층 퍼셉트론의 표현력 부족을 보여주는 대표적인 예시입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.linear_model <span style="color:#f92672">import</span> LogisticRegression
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># XOR 데이터셋</span>
+</span></span><span style="display:flex;"><span>X <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([[<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>], [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>]])
+</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 단층 모델 시도 (로지스틱 회귀로 대체)</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> LogisticRegression()
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>fit(X, y)
+</span></span><span style="display:flex;"><span>predictions <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict(X)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Predictions:&#34;</span>, predictions)
+</span></span></code></pre></div><h2 id="2-tensorflow-텐서-기초-상수-변수-연산-이해">2. TensorFlow 텐서 기초: 상수, 변수, 연산 이해<a hidden class="anchor" aria-hidden="true" href="#2-tensorflow-텐서-기초-상수-변수-연산-이해">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>TensorFlow에서 텐서를 다루는 기본적인 개념을 익혔고, 특히 <code>tf.constant</code>와 <code>tf.Variable</code>의 차이점을 명확히 이해하게 되었다. 또한 요소별 곱셈과 행렬곱의 구분을 확실히 할 수 있게 되었으며, TensorFlow의 텐서 연산이 일반적인 Python 변수나 NumPy 배열과 어떻게 다른지 감을 잡을 수 있게 되었다. 이제 TensorFlow를 사용하여 모델을 구축하고 훈련하는 데 필요한 기본적인 지식을 갖추게 되었다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p><code>tf.constant</code>와 <code>tf.Variable</code>의 차이, 그리고 요소별 곱셈과 행렬곱을 구분하는 것이 처음에는 매우 헷갈렸습니다. 텐서 연산이 TensorFlow 내부에서 어떻게 처리되는지, 특히 Python 변수나 NumPy 배열과의 차이가 명확하게 와닿지 않았습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>TensorFlow에서 텐서는 다차원 배열을 의미하며, <code>tf.constant</code>는 불변하는 값을, <code>tf.Variable</code>은 학습 과정에서 변하는 값을 저장합니다.  요소별 곱셈은 배열의 같은 위치에 있는 값들을 곱하는 반면, 행렬곱은 행렬의 차원을 고려하여 곱셈을 수행합니다. 이러한 차이점을 명확히 이해하는 것이 TensorFlow를 효과적으로 활용하는 데 중요합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>a <span style="color:#f92672">=</span> tf<span style="color:#f92672">.</span>constant([[<span style="color:#ae81ff">1.0</span>, <span style="color:#ae81ff">2.0</span>], [<span style="color:#ae81ff">3.0</span>, <span style="color:#ae81ff">4.0</span>]])
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>tensor_f <span style="color:#f92672">=</span> tf<span style="color:#f92672">.</span>Variable(initial_value<span style="color:#f92672">=</span>[<span style="color:#ae81ff">0.1</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.2</span>, <span style="color:#ae81ff">0.3</span>], dtype<span style="color:#f92672">=</span>tf<span style="color:#f92672">.</span>float32, name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;weights&#34;</span>)
+</span></span><span style="display:flex;"><span>tensor_f<span style="color:#f92672">.</span>assign([<span style="color:#ae81ff">1.0</span>, <span style="color:#ae81ff">2.0</span>, <span style="color:#ae81ff">3.0</span>])
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>c <span style="color:#f92672">=</span> a <span style="color:#f92672">+</span> b
+</span></span></code></pre></div><h2 id="3-순전파와-dense-층-완벽-이해-입력-차원-설정의-비밀">3. 순전파와 Dense 층 완벽 이해: 입력 차원 설정의 비밀<a hidden class="anchor" aria-hidden="true" href="#3-순전파와-dense-층-완벽-이해-입력-차원-설정의-비밀">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>Dense 층의 <code>input_dim</code> 옵션은 입력 특성의 개수를 지정하는 것이며, 입력층이라고 부르는 것은 첫 번째 Dense 층일 때 사용될 수 있다는 것을 알게 되었다. 순전파 과정에서 <code>Wx + b</code>는 아핀 변환을 나타내는 핵심적인 계산임을 명확히 이해하게 되었고, 예시 코드를 통해 실제 계산 과정을 확인할 수 있었다. 이제 Dense 층의 역할과 구조에 대한 혼란이 줄어들었고, 텐서플로우 코드를 작성할 때 <code>input_dim</code> 옵션을 올바르게 사용할 수 있을 것 같다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>처음에는 <code>input_dim</code> 옵션이 입력층을 정의하는 것인지, 아니면 첫 번째 은닉층의 초기 설정을 의미하는 것인지 명확하게 이해하지 못했다. Dense 층의 역할과 구조, 특히 <code>input_dim</code> 옵션의 정확한 의미를 제대로 파악하고 싶었는데, 자료마다 설명이 달라서 혼란스러웠다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p><code>Dense</code> 층에서 <code>input_dim</code>은 입력 데이터의 특성 개수를 나타내는 값이며, 입력층이 아닌 첫 번째 은닉층의 초기 설정을 의미한다. <code>input_dim</code>을 통해 <code>Dense</code> 층은 입력 데이터의 형태를 파악하고, 가중치 행렬 <code>W</code>와 편향 <code>b</code>를 초기화하는 데 필요한 정보를 얻는다. 순전파 과정에서는 입력 데이터와 가중치 행렬의 곱에 편향을 더하는 아핀 변환을 수행하여 다음 층으로 데이터를 전달한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>import tensorflow as tf
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># 가중치와 편향 초기화
+</span></span><span style="display:flex;"><span>W = tf.Variable([[1.0, -1.0]], dtype=tf.float32)  # 가중치 행렬
+</span></span><span style="display:flex;"><span>b = tf.Variable([0.5], dtype=tf.float32)          # 편향 벡터
+</span></span><span style="display:flex;"><span>x = tf.constant([[1.0], [0.0]], dtype=tf.float32)  # 입력 데이터
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># 순전파 계산
+</span></span><span style="display:flex;"><span>y = tf.matmul(W, x) + b  # 선형변환 + 편향 덧셈
+</span></span><span style="display:flex;"><span>print(y.numpy())
+</span></span></code></pre></div><h2 id="4-다층-퍼셉트론의-은닉층과-활성화-함수-이해하기">4. 다층 퍼셉트론의 은닉층과 활성화 함수 이해하기<a hidden class="anchor" aria-hidden="true" href="#4-다층-퍼셉트론의-은닉층과-활성화-함수-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>처음에는 레이어를 단순히 연결선으로 생각하고, 은닉층의 개수로 딥러닝을 판단했지만, 레이어는 동일 계산 단계를 나타내는 면이고, 딥러닝은 네트워크의 깊이를 의미한다는 것을 깨달았습니다. <code>nn.Linear</code> 함수의 역할과 레이어의 폭(width) 개념도 명확하게 이해하게 되었습니다. 간단한 MLP 모델을 코드로 직접 작성하며 레이어와 노드 개념을 더 깊이 이해할 수 있었습니다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>처음에는 레이어를 추가할 때 단순히 연결선을 더 그리는 것으로 생각했고, 은닉층이 몇 개 이상이면 딥러닝이라고 고정된 기준이 있다고 오해했습니다. 레이어와 노드의 개념이 명확하지 않아, 가중치 설정 부분도 제대로 이해하지 못했습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>레이어는 뉴런들의 계산 단계를 나타내는 면으로 이해하고, 딥러닝은 은닉층의 개수보다는 네트워크의 깊이가 중요하다는 것을 알게 되었다. <code>nn.Linear</code> 함수는 입력 노드와 출력 노드 사이의 가중치를 설정하는 역할을 하며, 레이어와 노드의 개념을 명확히 이해해야 네트워크 구조를 설계할 수 있다는 점을 깨달았다. 이제는 은닉층을 단순히 연결선을 더하는 것이 아니라, 면을 쌓아 올리는 개념으로 파악할 수 있게 되었다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch.nn <span style="color:#66d9ef">as</span> nn
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 간단한 MLP 모델 정의</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleMLP</span>(nn<span style="color:#f92672">.</span>Module):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self):
+</span></span><span style="display:flex;"><span>        super(SimpleMLP, self)<span style="color:#f92672">.</span><span style="color:#a6e22e">__init__</span>()
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>fc1 <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4</span>)  <span style="color:#75715e"># 입력 노드 2개 → 은닉 노드 4개</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>fc2 <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">1</span>)  <span style="color:#75715e"># 은닉 노드 4개 → 출력 노드 1개</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>activation <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>ReLU()  <span style="color:#75715e"># 활성화 함수 적용</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">forward</span>(self, x):
+</span></span><span style="display:flex;"><span>        x <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>activation(self<span style="color:#f92672">.</span>fc1(x))  <span style="color:#75715e"># 은닉층 1</span>
+</span></span><span style="display:flex;"><span>        x <span style="color:#f92672">=</span> self
+</span></span></code></pre></div><h2 id="5-keras-모델-학습-초보자를-위한-핵심-가이드">5. Keras 모델 학습, 초보자를 위한 핵심 가이드<a hidden class="anchor" aria-hidden="true" href="#5-keras-모델-학습-초보자를-위한-핵심-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>Keras 모델 학습 시 TensorFlow와 PyTorch의 문법 차이 때문에 어려움을 겪었는데, Sequential 모델을 사용한 모델 정의 방식과 각 층의 파라미터 계산 방법을 명확히 이해하게 되었다. 특히 <code>model.summary()</code>를 통해 모델 구조를 확인하고, 각 Dense 층의 파라미터 수를 직접 계산하는 연습을 통해 모델 구성에 대한 이해도를 높일 수 있었다. 이제는 Keras 모델 학습 파이프라인을 좀 더 자신 있게 다룰 수 있게 되었다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>모델을 만들 때 <code>Sequential</code> 모델을 사용하는 방법과 <code>add()</code> 메서드를 사용하는 방법이 어떻게 다른지 명확히 이해하지 못했다. 각 층의 파라미터 계산 방식도 처음에는 어떻게 계산해야 하는지 헷갈렸고, <code>model.summary()</code>가 어떤 정보를 제공하는지 파악하는 데 시간이 걸렸다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>Keras 모델을 만들 때 <code>Sequential</code> 모델을 사용하고 층을 쌓는 방식으로 구조를 정의할 수 있다는 것을 알게 되었다. <code>model.summary()</code>를 통해 모델의 구조와 각 층의 파라미터 수를 확인할 수 있으며, 각 Dense 층의 파라미터 수는 입력과 출력 노드 수를 기반으로 계산된다는 점을 명확히 이해했다. 이제 Keras 모델 학습 과정에 대한 기본적인 이해가 확립되었다고 생각한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>model <span style="color:#f92672">=</span> tf<span style="color:#f92672">.</span>keras<span style="color:#f92672">.</span>models<span style="color:#f92672">.</span>Sequential([
+</span></span><span style="display:flex;"><span>    tf<span style="color:#f92672">.</span>keras<span style="color:#f92672">.</span>layers<span style="color:#f92672">.</span>Dense(<span style="color:#ae81ff">10</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sigmoid&#34;</span>, input_shape<span style="color:#f92672">=</span>(<span style="color:#ae81ff">2</span>,)),
+</span></span><span style="display:flex;"><span>    tf<span style="color:#f92672">.</span>keras<span style="color:#f92672">.</span>layers<span style="color:#f92672">.</span>Dense(<span style="color:#ae81ff">10</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sigmoid&#34;</span>),
+</span></span><span style="display:flex;"><span>    tf<span style="color:#f92672">.</span>keras<span style="color:#f92672">.</span>layers<span style="color:#f92672">.</span>Dense(<span style="color:#ae81ff">1</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sigmoid&#34;</span>)
+</span></span><span style="display:flex;"><span>])
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>model <span style="color:#f92672">=</span> tf<span style="color:#f92672">.</span>keras<span style="color:#f92672">.</span>models<span style="color:#f92672">.</span>Sequential()
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>add(tf<span style="color:#f92672">.</span>keras<span style="color:#f92672">.</span>layers<span style="color:#f92672">.</span>Dense(<span style="color:#ae81ff">10</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sigmoid&#34;</span>, input_shape<span style="color:#f92672">=</span>(<span style="color:#ae81ff">2</span>,)))
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>add(tf<span style="color:#f92672">.</span>keras<span style="color:#f92672">.</span>layers<span style="color:#f92672">.</span>Dense(<span style="color:#ae81ff">10</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sigmoid&#34;</span>))
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>add(tf<span style="color:#f92672">.</span>keras<span style="color:#f92672">.</span>layers<span style="color:#f92672">.</span>Dense(<span style="color:#ae81ff">1</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sigmoid&#34;</span>))
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>model<span style="color:#f92672">.</span>summary()
+</span></span></code></pre></div><h2 id="6-손실-지형과-초기값-신경망-학습의-이해와-전략">6. 손실 지형과 초기값: 신경망 학습의 이해와 전략<a hidden class="anchor" aria-hidden="true" href="#6-손실-지형과-초기값-신경망-학습의-이해와-전략">#</a></h2>
+<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
+<p>신경망 학습이 단순히 전역 최솟값에 도달하는 것이 아니라, 기울기가 작아져 멈추는 상태일 수 있다는 것을 알게 되었습니다. 손실 지형의 복잡성, 초기값의 중요성, 그리고 초기화 방법이 학습 결과에 큰 영향을 미친다는 점도 이해하게 되었습니다. 앞으로는 손실 지형을 고려하여 학습 전략을 세우고, 초기값을 신중하게 설정해야겠다는 생각이 듭니다.</p>
+<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
+<p>처음에는 신경망 학습이 멈추면 전역 최솟값에 도달한 거라고 생각했는데, 기울기가 작아져서 멈춘 것일 수도 있다는 점을 몰랐어요. 조기 종료가 모델 파라미터 최적화를 의미한다고 생각했지만, 실제로는 검증 데이터셋 성능 개선이 멈추는 시점을 기준으로 학습을 중단하는 전략이라는 것을 제대로 이해하지 못했습니다. 손실 지형이 복잡해서 전역 최솟값을 찾는 것보다 지역 최솟값이나 안장점에 빠질 수도 있다는 점을 인지하지 못했습니다.</p>
+<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
+<p>신경망 학습은 손실 함수를 최소화하는 과정을 거치지만, 손실 공간의 복잡성 때문에 항상 전역 최솟값에 도달하는 것은 아니며, 학습이 멈추는 것은 기울기가 작아진 결과일 수 있습니다. 학습 시작 시 초기 가중치 설정과 활성화 함수에 적합한 초기화 방법 선택이 학습 결과에 큰 영향을 미치며, 조기 종료는 검증 데이터셋 성능 개선이 멈추었을 때 사용하는 전략입니다. 손실 지형의 다양한 특징을 이해하는 것이 효과적인 학습을 위한 첫걸음입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span>torch<span style="color:#f92672">.</span>manual_seed(<span style="color:#ae81ff">42</span>)  <span style="color:#75715e"># 재현성을 위한 시드 설정</span>
+</span></span></code></pre></div><h2 id="7-역전파와-자동-미분-계산-그래프를-활용한-손실-기반-가중치-조정">7. 역전파와 자동 미분: 계산 그래프를 활용한 손실 기반 가중치 조정<a hidden class="anchor" aria-hidden="true" href="#7-역전파와-자동-미분-계산-그래프를-활용한-손실-기반-가중치-조정">#</a></h2>
+<h3 id="무엇을-배웠나-6">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-6">#</a></h3>
+<p>처음에는 계산 그래프를 단순한 로그로 생각하고 역전파를 오류 검출 과정으로 오해했지만, 이번에 계산 그래프는 연산 의존성을 나타내고 역전파는 손실에 대한 가중치 기여도를 분석하는 과정임을 이해하게 되었다. 특히 역전파는 모델의 오류 위치를 찾는 것이 아니라, 가중치 조정을 위한 방향을 제시하는 중요한 과정이라는 것을 명확히 알게 되었다. 이 내용을 바탕으로 프로젝트 내 실행 의존성을 계산 그래프와 연결하여 이해해 볼 수 있을 것 같다.</p>
+<h3 id="헷갈렸던-점-6">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-6">#</a></h3>
+<p>처음에는 계산 그래프를 단순히 프로그램 실행 과정의 로그로 생각했고, 역전파를 모델 내 오류를 찾아주는 검출 메커니즘이라고 잘못 이해했습니다. 이러한 오해 때문에 역전파의 핵심 역할과 자동 미분과의 연관성이 잘 파악되지 않았습니다.</p>
+<h3 id="정리된-이해-6">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-6">#</a></h3>
+<p>계산 그래프는 신경망 연산의 의존성을 나타내는 구조이며, 역전파는 이 그래프를 이용하여 각 가중치에 대한 손실의 기울기를 계산하는 과정입니다. 역전파는 오류를 찾는 것이 아니라, 손실을 줄이기 위한 가중치 조정 방향을 알려주는 중요한 단계입니다. 이 과정을 통해 모델은 데이터에 더 잘 적합하도록 학습할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 예시: PyTorch 자동 미분</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 간단한 신경망 정의</span>
+</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor(<span style="color:#ae81ff">2.0</span>, requires_grad<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> x <span style="color:#f92672">*</span> x <span style="color:#f92672">*</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>z <span style="color:#f92672">=</span> y <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> z<span style="color:#f92672">.</span>mean()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 손실에 대한 그래디언트 계산</span>
+</span></span><span style="display:flex;"><span>loss<span style="color:#f92672">.</span>backward()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># x에 대한 그래디언트 확인</span>
+</span></span><span style="display:flex;"><span>print(x<span style="color:#f92672">.</span>grad)  <span style="color:#75715e"># 출력: tensor(12.)</span>
+</span></span></code></pre></div><h2 id="8-에포크-배치-gpu-환경-이해-및-학습-자원-결정">8. 에포크, 배치, GPU 환경 이해 및 학습 자원 결정<a hidden class="anchor" aria-hidden="true" href="#8-에포크-배치-gpu-환경-이해-및-학습-자원-결정">#</a></h2>
+<h3 id="무엇을-배웠나-7">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-7">#</a></h3>
+<p>에포크, 배치, 반복의 관계를 명확히 이해하게 되었고, 배치 크기가 학습 과정에 미치는 영향과 유효 배치 크기 개념을 파악했습니다. 또한 GPU 환경에서 TensorFlow나 PyTorch를 사용할 때, CUDA 외의 다른 플랫폼의 활용 가능성과 하드웨어-소프트웨어 상호작용에 대한 기본적인 이해를 갖추게 되었습니다. 학습 자원 결정 요인들을 고려하여 효율적인 학습 환경을 구축하는 데 도움이 될 것입니다.</p>
+<h3 id="헷갈렸던-점-7">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-7">#</a></h3>
+<p>처음에는 에포크, 배치, 반복이 서로 어떻게 연결되는지 감이 잘 안 잡혔습니다. 특히, 배치 크기가 바뀌면 에포크 내의 반복 횟수가 어떻게 달라지는지 이해하기 어려웠고, GPU 환경에서는 어떤 점을 고려해야 하는지 막막했습니다. 실습을 통해 조금 더 명확하게 이해하게 되었습니다.</p>
+<h3 id="정리된-이해-7">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-7">#</a></h3>
+<p>에포크는 전체 데이터셋을 한 번 학습하는 과정이고, 배치는 이를 작은 묶음으로 나누어 처리하는 단위이며, 반복은 하나의 배치에 따른 가중치 업데이트를 의미합니다. 모델 크기, 데이터 양, 배치 크기, 에포크 수 등이 학습 자원 결정에 중요한 영향을 미치며, 이러한 요소들을 고려하여 학습 효율을 높일 수 있습니다. 실제로 코드를 통해 이러한 개념들이 어떻게 적용되는지 확인하는 것이 중요합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 데이터셋 준비 (가정)</span>
+</span></span><span style="display:flex;"><span>dataset <span style="color:#f92672">=</span> tf<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>Dataset<span style="color:#f92672">.</span>from_tensor_slices(range(<span style="color:#ae81ff">1000</span>))
+</span></span><span style="display:flex;"><span>dataset <span style="color:#f92672">=</span> dataset<span style="color:#f92672">.</span>batch(<span style="color:#ae81ff">32</span>) <span style="color:#75715e"># 배치 크기 설정</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 모델 정의 (가정)</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> tf<span style="color:#f92672">.</span>keras<span style="color:#f92672">.</span>models<span style="color:#f92672">.</span>Sequential([
+</span></span><span style="display:flex;"><span>  tf<span style="color:#f92672">.</span>keras<span style="color:#f92672">.</span>layers<span style="color:#f92672">.</span>Dense(<span style="color:#ae81ff">10</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>),
+</span></span><span style="display:flex;"><span>  tf<span style="color:#f92672">.</span>keras<span style="color:#f92672">.</span>layers<span style="color:#f92672">.</span>Dense(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 옵티마이저 정의</span>
+</span></span><span style="display:flex;"><span>optimizer <span style="color:#f92672">=</span> tf<span style="color:#f92672">.</span>keras<span style="color:#f92672">.</span>optimizers<span style="color:#f92672">.</span>Adam(learning_rate<span style="color:#f92672">=</span><span style="color:#ae81ff">0.001</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 에포크 수 설정</span>
+</span></span><span style="display:flex;"><span>epochs <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 모델 학습</span>
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>fit(dataset, epochs<span style="color:#f92672">=</span>epochs)
+</span></span></code></pre></div><h2 id="9-파이프라인-os-python-이전과-pytorch-적용-전략">9. 파이프라인 OS: Python 이전과 PyTorch 적용 전략<a hidden class="anchor" aria-hidden="true" href="#9-파이프라인-os-python-이전과-pytorch-적용-전략">#</a></h2>
+<h3 id="무엇을-배웠나-8">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-8">#</a></h3>
+<p>Pipeline OS를 특정 프레임워크로 완전히 전환하는 대신, 핵심 계약을 중심으로 설계하여 프레임워크 독립성을 확보해야 한다는 점을 배웠다. 기존 Python 기반 구조를 유지하면서 필요한 부분에 PyTorch를 적용하는 방식으로 유연성을 확보할 수 있다는 것을 깨달았다. 핵심 계약 중심 설계는 장기적인 유지보수성과 확장성을 높이는 중요한 전략임을 알게 되었다.</p>
+<h3 id="헷갈렸던-점-8">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-8">#</a></h3>
+<p>처음에는 TensorFlow와 PyTorch 간의 문법 차이 때문에 Pipeline OS 전체를 특정 프레임워크로 바꿔야 할 것 같아 어려움을 느꼈습니다. 하지만 핵심 계약을 중심으로 설계하면 프레임워크를 유연하게 변경할 수 있다는 것을 깨달았습니다. <code>MemoryScorer</code> 클래스처럼 프레임워크에 독립적인 인터페이스를 제공하는 것이 중요합니다.</p>
+<h3 id="정리된-이해-8">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-8">#</a></h3>
+<p>Pipeline OS는 특정 프레임워크에 종속되지 않도록 핵심 계약을 중심으로 설계되어야 하며, PyTorch는 장면 품질 분류, 캐릭터 일관성 점수 등 특정 기능에 선택적으로 적용할 수 있도록 구조화해야 합니다. 프레임워크 전환의 부담을 줄이기 위해, 각 모듈의 내부 구현은 계약에 따라 달라지지 않도록 유지하는 것이 중요합니다. 이렇게 하면 필요에 따라 PyTorch 외 다른 프레임워크를 쉽게 통합할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MemoryScorer</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">score</span>(self, items: list[dict]) <span style="color:#f92672">-&gt;</span> list[dict]:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">...</span>  <span style="color:#75715e"># 내부 구현은 PyTorch든 다른 프레임워크든 관계 없이 동일</span>
+</span></span></code></pre></div><h2 id="10-pytorch-mlp로-xor-문제-해결하기-초보자-가이드">10. PyTorch MLP로 XOR 문제 해결하기: 초보자 가이드<a hidden class="anchor" aria-hidden="true" href="#10-pytorch-mlp로-xor-문제-해결하기-초보자-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-9">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-9">#</a></h3>
+<p>PyTorch를 사용하여 XOR 문제를 해결하는 과정에서 순전파와 역전파가 동시에 진행되지 않고 순차적으로 진행된다는 점을 명확히 알게 되었다. 또한, 학습 과정에서 사용되는 <code>learning rate</code>, <code>step</code>, <code>epoch</code>, <code>batch</code>와 같은 용어들의 의미를 제대로 이해하게 되었고, 이를 바탕으로 XOR 문제를 해결하는 MLP 모델을 구현할 수 있게 되었다. 이 노트를 통해 PyTorch를 이용한 딥러닝 학습의 기본적인 흐름을 파악할 수 있었다.</p>
+<h3 id="헷갈렸던-점-9">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-9">#</a></h3>
+<p>순전파와 역전파가 동시에 일어나는 줄 알았는데, 순차적으로 진행된다는 점이 헷갈렸습니다. 또한 학습 과정에서 사용되는 <code>learning rate</code>, <code>step</code>, <code>epoch</code> 등의 용어들이 각각 어떤 의미를 가지는지 명확하게 이해하지 못했습니다. 이 개념들을 정확히 알아야 학습 과정을 제대로 이해하고 디버깅할 수 있을 것 같습니다.</p>
+<h3 id="정리된-이해-9">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-9">#</a></h3>
+<p>순전파와 역전파는 동시에 진행되는 것이 아니라 순서대로 진행되며, 순전파를 통해 예측값을 얻고 손실을 계산한 뒤 역전파를 통해 가중치를 업데이트하는 과정을 거칩니다. 학습 과정에서 <code>learning rate</code>는 업데이트 크기를, <code>step</code>은 가중치 업데이트 횟수를, <code>epoch</code>는 전체 데이터셋을 반복하는 단위를 나타냅니다. 이제 XOR 문제를 해결하는 데 필요한 기본적인 개념들을 명확하게 이해하게 되었습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch.nn <span style="color:#66d9ef">as</span> nn
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch.optim <span style="color:#66d9ef">as</span> optim
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># XOR 데이터셋 정의</span>
+</span></span><span style="display:flex;"><span>inputs <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor([[<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>], [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>]], dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>float32)
+</span></span><span style="display:flex;"><span>targets <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor([[<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>], [<span style="color:#ae81ff">1</span>], [<span style="color:#ae81ff">0</span>]], dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>float32)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># MLP 모델 정의</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MLP</span>(nn<span style="color:#f92672">.</span>Module):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self):
+</span></span><span style="display:flex;"><span>        super(MLP, self)<span style="color:#f92672">.</span><span style="color:#a6e22e">__init__</span>()
+</span></span></code></pre></div><h2 id="11-모델-훈련-및-실험-관리-기초">11. 모델 훈련 및 실험 관리 기초<a hidden class="anchor" aria-hidden="true" href="#11-모델-훈련-및-실험-관리-기초">#</a></h2>
+<h3 id="무엇을-배웠나-10">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-10">#</a></h3>
+<p>처음에는 역전파를 학습 과정 전체를 관장하는 것처럼 생각했지만, 실제로는 가중치 업데이트를 담당하는 한 단계라는 것을 알게 되었다. 또한, 훈련 손실 감소 외에도 검증 손실을 통해 모델의 일반화 성능을 평가하고, 이를 바탕으로 최적의 하이퍼파라미터를 탐색해야 한다는 점을 깨달았다. 이제는 학습 엔진과 제어 타워를 구분하여 모델 관리를 더욱 체계적으로 할 수 있게 되었다.</p>
+<h3 id="헷갈렸던-점-10">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-10">#</a></h3>
+<p>역전파를 처음 배울 때는 단순히 손실 함수를 줄이는 전체 과정을 담당하는 함수라고 생각했고, 검수 로그만으로 좋은 모델을 판단할 수 있다고 믿었습니다. 훈련 손실만 감소하면 모델이 좋아지는 거라고 생각했던 저의 착각을 바로잡을 수 있었습니다.</p>
+<h3 id="정리된-이해-10">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-10">#</a></h3>
+<p>역전파는 한 번의 학습 단계에서 가중치를 업데이트하는 역할을 하며, 전체적인 학습 과정은 엔진과 실험 관리를 담당하는 제어 타워로 구분해서 이해해야 합니다. 훈련 손실 감소 외에도 검증 손실을 통해 모델의 일반화 성능을 평가하고, 하이퍼파라미터 탐색을 통해 최적의 설정을 찾아야 좋은 모델을 선택할 수 있습니다. 이를 통해 과적합을 방지하고 모델의 성능을 향상시킬 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>optimizer<span style="color:#f92672">.</span>zero_grad()  <span style="color:#75715e"># 그래디언트 초기화</span>
+</span></span><span style="display:flex;"><span>outputs <span style="color:#f92672">=</span> model(inputs)  <span style="color:#75715e"># 순전파</span>
+</span></span><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> criterion(outputs, targets)  <span style="color:#75715e"># 손실 계산</span>
+</span></span><span style="display:flex;"><span>loss<span style="color:#f92672">.</span>backward()  <span style="color:#75715e"># 역전파</span>
+</span></span><span style="display:flex;"><span>optimizer<span style="color:#f92672">.</span>step()  <span style="color:#75715e"># 가중치 업데이트</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>best_val_loss <span style="color:#f92672">=</span> float(<span style="color:#e6db74">&#39;inf&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> epoch <span style="color:#f92672">in</span> range(num_epochs):
+</span></span><span style="display:flex;"><span>    train_loss <span style="color:#f92672">=</span> train_model()
+</span></span><span style="display:flex;"><span>    val_loss <span style="color:#f92672">=</span> validate_model()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> val_loss <span style="color:#f92672">&lt;</span> best_val_loss:
+</span></span><span style="display:flex;"><span>        best_val_loss <span style="color:#f92672">=</span> val_loss
+</span></span><span style="display:flex;"><span>        torch<span style="color:#f92672">.</span>save(model<span style="color:#f92672">.</span>state_dict(), <span style="color:#e6db74">&#34;best_model.pt&#34;</span>)
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>단층 퍼셉트론의 한계를 넘어 딥러닝의 기본 개념과 TensorFlow, PyTorch를 활용한 모델 구축 방법을 익혔습니다. 특히 순전파, 역전파, 손실 지형 등 핵심적인 이해를 통해 모델 학습 과정을 체계적으로 다룰 수 있게 되었으며, 프로젝트에 적용 가능한 핵심 계약 중심 설계 전략을 배웠습니다. 앞으로는 학습한 내용을 바탕으로 실제 문제 해결에 적용하고, 지속적인 실험과 분석을 통해 모델 성능을 개선해 나가도록 하겠습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>이제는 복잡한 손실 지형과 초기값 설정이 학습 결과에 미치는 영향을 간과하지 않도록 주의해야겠다. 또한, 모델을 훈련하고 실험할 때 훈련 손실뿐만 아니라 검증 손실을 꾸준히 확인하며 일반화 성능을 면밀히 평가하는 습관을 들여야겠다. 마지막으로, 실제 프로젝트에서는 PyTorch를 도입할 때 핵심 계약을 중심으로 유연성을 확보하며, 장기적인 유지보수를 고려한 설계를 해야겠다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>손실 지형의 복잡성과 초기값 설정의 중요성에 대한 내용이 앞으로 학습 전략에 직접적인 영향을 줄 것 같아서 더 깊이 공부해야겠다. 특히 다양한 초기화 방법이 학습 결과에 미치는 영향을 실험적으로 확인하고, 손실 지형을 시각화하는 방법을 익히고 싶다. 또한, 역전파 과정에서 계산 그래프가 실제로 어떻게 활용되는지 좀 더 구체적인 예시를 통해 이해하고 싶다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-07-20-am-daily/">
+    <span class="title">« Prev</span>
+    <span>PyTorch 기초 다지기: 데이터 전처리부터 신경망 시각화까지</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-07-16-pm-daily/">
+    <span class="title">Next »</span>
+    <span>Kaggle 프로젝트 보완, 압도감 극복과 체계적인 접근법</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
