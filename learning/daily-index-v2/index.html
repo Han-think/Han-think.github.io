@@ -1,436 +1,54 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto" data-theme="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>daily-index-v2 | Han-think Blog</title>
-<meta name="keywords" content="">
-<meta name="description" content="daily-index-v2 학습 정리">
-<meta name="author" content="">
-<link rel="canonical" href="https://Han-think.github.io/learning/daily-index-v2/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://Han-think.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/daily-index-v2/">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --code-block-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-                color-scheme: dark;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .toc {
-                background: var(--entry);
-            }
-        }
-
-    </style>
-</noscript>
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else if (localStorage.getItem("pref-theme") === "light") {
-       document.querySelector("html").dataset.theme = 'light';
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else {
-        document.querySelector("html").dataset.theme = 'light';
-    }
-
-</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
-
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
-      <script>
-        var doNotTrack = false;
-        if ( true ) {
-          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
-          var doNotTrack = (dnt == "1" || dnt == "yes");
-        }
-        if (!doNotTrack) {
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-9YN1SZZ1G8');
-        }
-      </script><meta property="og:url" content="https://Han-think.github.io/learning/daily-index-v2/">
-  <meta property="og:site_name" content="Han-think Blog">
-  <meta property="og:title" content="daily-index-v2">
-  <meta property="og:description" content="daily-index-v2 학습 정리">
-  <meta property="og:locale" content="ko_KR">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="learning">
-    <meta property="article:published_time" content="2026-06-11T00:00:00+00:00">
-    <meta property="article:modified_time" content="2026-06-11T00:00:00+00:00">
-
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="daily-index-v2">
-  <meta name="twitter:description" content="daily-index-v2 학습 정리">
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "학습 기록",
-      "item": "https://Han-think.github.io/learning/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "daily-index-v2",
-      "item": "https://Han-think.github.io/learning/daily-index-v2/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "daily-index-v2",
-  "name": "daily-index-v2",
-  "description": "daily-index-v2 학습 정리",
-  "keywords": [
-    
-  ],
-  "articleBody": "목차 GROUP BY와 HAVING JOIN과 서브쿼리 집합 연산자 데이터 병합 총평 1. GROUP BY와 HAVING 왜 이걸 보게 됐나 데이터 분석 프로젝트를 진행하다 보면, 특정 기준에 따라 데이터를 묶어서 통계를 내고, 그 결과에 대한 추가적인 필터링이 필요할 때가 많았어. 예를 들어, 지역별 매출액을 분석하거나, 특정 조건을 만족하는 그룹만 추출해야 하는 상황이었지. 그래서 GROUP BY와 HAVING 구문을 통해 데이터 그룹화 및 조건 필터링 방법을 배우게 되었어.\n내가 헷갈린 지점 처음에는 GROUP BY 뒤에 바로 집계 함수를 사용하는 것이 가능한가에 대한 명확한 그림이 잡히지 않았고, HAVING절이 어떤 기준으로 집계된 결과에 조건을 걸어주는 것인지 감이 잘 안왔다. HAVING 절이 WHERE 절과 어떻게 다른지, 언제 어떤 상황에서 사용해야 하는지 혼동스러웠다. 그룹화된 데이터에 대한 필터링이 HAVING 절에서 이루어지는구나를 깨달으면서 좀 더 이해가 되기 시작했다.\n시도한 코드 / 예시 SELECT 상품 카테고리, SUM(매출) as total_sales FROM 판매테이블 GROUP BY 상품 카테고리 HAVING SUM(매출) \u003e 1000; 결과와 해석 GROUP BY를 사용해서 상품 카테고리별 총 매출을 계산하고, HAVING 절을 이용해서 총 매출이 1000을 넘는 카테고리만 필터링하는 예제를 실행했습니다. 이렇게 하면 특정 기준 이상의 성과를 보이는 카테고리를 빠르게 파악할 수 있고, 매출 부진 카테고리에 대한 추가 분석을 위한 힌트를 얻을 수 있습니다. 결과적으로 그룹화된 데이터에 대한 조건을 설정하는 HAVING 절의 역할이 명확해졌습니다.\n정리된 이해 GROUP BY는 데이터를 묶어 집계 함수를 적용할 때 사용하고, HAVING은 이처럼 묶인 그룹에 대한 조건을 걸 때 활용해. 즉, HAVING은 집계된 결과값에 대해 필터링하는 역할을 수행하며, SELECT 절에 포함될 수 없는 집계 함수 결과에 대한 조건을 정의하는 데 유용해.\n2. JOIN과 서브쿼리 왜 이걸 보게 됐나 여러 테이블에 흩어져 있는 데이터를 한눈에 보고 싶을 때 JOIN을 사용해야 했는데, 특정 조건을 만족하는 데이터만 가져오려면 서브쿼리를 활용해야 했습니다. 이를 통해 복잡한 비즈니스 요구사항에 맞는 맞춤형 리포트를 작성할 수 있게 되었습니다. 단순히 데이터를 보는 것을 넘어, 데이터 분석의 깊이를 더하기 위해 이 개념들을 공부하게 됐습니다.\n내가 헷갈린 지점 처음에 JOIN과 서브쿼리를 함께 사용할 때, 어떤 테이블이 먼저 조인되어야 하고 서브쿼리가 정확히 어떤 역할을 하는지 파악하는 게 어려웠다. 서브쿼리가 주 쿼리의 어디에 위치해야 하는지, 그리고 어떤 상황에서 스칼라 서브쿼리와 FROM 절 서브쿼리를 선택해야 할지 판단하기 힘들었음. JOIN이 먼저 실행되는 건지, 서브쿼리가 먼저 실행되는 건지 혼동되기도 했음.\n시도한 코드 / 예시 -- 예제: 고객 정보 테이블(Customers)와 주문 정보 테이블(Orders)을 JOIN하고, 주문 금액이 100달러 이상인 고객의 정보를 조회합니다. SELECT C.CustomerID, C.CustomerName, O.OrderID, O.OrderDate FROM Customers C JOIN Orders O ON C.CustomerID = O.CustomerID WHERE O.OrderAmount \u003e 100; 결과와 해석 테이블 A의 고객 ID와 테이블 B의 주문 정보를 JOIN하여 특정 고객이 주문한 총 금액을 계산하는 코드를 작성해봤습니다. 스칼라 서브쿼리를 사용해서 각 고객별 주문 금액의 합을 미리 계산하고, 이를 바탕으로 특정 금액 이상 주문한 고객을 필터링 할 수 있었습니다. FROM 절 서브쿼리는 가상 테이블을 만들어 쿼리를 더 간결하게 만들 수 있음을 확인했습니다.\n정리된 이해 JOIN은 여러 테이블의 데이터를 연결해서 필요한 정보를 얻을 수 있게 해주고, 서브쿼리는 쿼리 내부에 또 다른 쿼리를 넣어 더 복잡한 조건을 설정하거나 중간 결과를 활용할 때 유용하다. 스칼라 서브쿼리는 각 행에 대한 계산 결과를 반환하고, FROM 절 서브쿼리는 테이블처럼 사용할 수 있다는 점이 중요하게 다르게 작용한다.\n3. 집합 연산자 왜 이걸 보게 됐나 데이터 분석 보고서를 작성하다 보면 여러 테이블의 데이터를 결합하거나, 특정 조건을 만족하는 데이터 집합을 비교해야 하는 경우가 많았어요. 그래서 단순히 테이블에서 데이터를 가져오는 것 이상으로, 데이터를 조합하고 분석하는 능력이 필요하다고 생각해서 집합 연산자를 배우게 됐습니다. 복잡한 데이터 세트를 다루는 데 필수적인 도구라고 들었기 때문입니다.\n내가 헷갈린 지점 처음에는 UNION과 UNION ALL이 단순히 중복을 제거하는 정도의 차이만 있을 거라고 생각했는데, UNION은 중복을 제거하고 UNION ALL은 모든 결과를 그대로 합친다는 것을 알게 되었습니다. 또한 INTERSECT는 두 쿼리의 교집합을 찾는 연산이고, EXCEPT는 차집합을 구하는 연산이라는 것을 명확히 이해하지 못해서 어떤 상황에 어떤 연산자를 사용해야 할지 막막했습니다. 결국 다양한 예제를 통해 각 연산자가 어떻게 작동하는지 직접 확인하면서 이해하게 되었습니다.\n시도한 코드 / 예시 -- UNION ALL: 두 테이블의 모든 데이터를 합집합합니다. 중복 데이터도 포함됩니다. SELECT 상품명 FROM 베스트셀러테이블 UNION ALL SELECT 상품명 FROM 인기상품테이블; -- 결과: '우유', '빵', '커피', '과자' 와 같은 상품명 목록이 출력됩니다. 중복 상품명이 있다면, 각 테이블에서 중복된 상품명만큼 나타납니다. -- INTERSECT: 두 테이블에서 공통으로 존재하는 데이터를 추출합니다. SELECT 고객ID FROM 주문테이블 INTERSECT SELECT 고객ID FROM 멤버십테이블; -- 결과: 주문테이블과 멤버십테이블 모두에 존재하는 고객ID 목록이 출력됩니다. -- EXCEPT (MINUS): 한 테이블에는 있지만 다른 테이블에는 없는 데이터를 추출합니다. SELECT 고객ID FROM 주문테이블 EXCEPT SELECT 고객ID FROM 환불테이블; -- 결과: 주문테이블에는 있지만 환불테이블에는 없는 고객ID 목록이 출력됩니다. 결과와 해석 UNION은 두 쿼리의 결과를 합치는 연산자로, 중복된 행을 제거하여 결과 집합을 만듭니다. UNION ALL은 중복 제거 없이 단순히 두 쿼리의 결과를 이어붙이기 때문에 UNION보다 성능이 좋습니다. INTERSECT는 두 쿼리의 결과에서 공통된 행만 추출하는 역할을 하며, EXCEPT는 첫 번째 쿼리에는 있지만 두 번째 쿼리에는 없는 행을 보여줍니다.\n정리된 이해 집합 연산자는 여러 쿼리의 결과를 하나로 합치거나 교집합/차집합을 구할 때 사용하는데, UNION ALL은 중복을 허용하고 UNION은 중복을 제거한다는 점이 핵심이야. 실제로는 여러 테이블에서 필요한 정보를 모아 리포트를 작성할 때 매우 유용하게 활용할 수 있어. 예를 들어 특정 조건을 만족하는 고객 정보를 두 테이블에서 가져와 합치는 데 사용할 수 있지.\n4. 데이터 병합 왜 이걸 보게 됐나 데이터가 여러 테이블에 분산되어 있을 때, 필요한 정보를 얻기 위해서는 여러 테이블에 있는 데이터를 하나로 합쳐서 분석해야 했어. 단순히 한 테이블만으로는 답변을 얻을 수 없는 복잡한 질문에 답하려면 테이블 간의 관계를 활용해서 데이터를 결합하는 방법이 필요했지. 결국 더 유용한 인사이트를 얻기 위해서는 다양한 테이블을 연결하고 활용하는 능력이 필수적이라는 것을 깨달았어.\n내가 헷갈린 지점 처음에는 JOIN이 단순히 두 테이블의 내용을 나열하는 것처럼 생각했어요. 하지만 실제로는 특정 조건을 기반으로 행을 연결해야 한다는 점이 어렵게 느껴졌고, 서브쿼리와 함께 사용될 때는 더욱 복잡해 보여서 어떻게 동작하는지 파악하기 힘들었습니다. 여러 테이블을 연결할 때 어떤 기준으로 조인해야 하는지, 그리고 서브쿼리가 어떻게 활용되는지 한 번에 이해하기 어려웠어요.\n시도한 코드 / 예시 SELECT t1.order_id, t1.customer_id, t2.product_name FROM orders AS t1 JOIN products AS t2 ON t1.product_id = t2.product_id; 결과와 해석 두 테이블을 JOIN하면 관련 있는 행들을 하나의 결과 집합으로 합칠 수 있어, 예를 들어 고객 정보 테이블과 주문 정보 테이블을 연결해서 각 주문에 대한 고객 정보를 함께 볼 수 있습니다. 예를 들어, 고객 ID를 기준으로 두 테이블을 조인하면 각 주문에 누가 주문했는지 쉽게 파악할 수 있습니다. 이렇게 병합된 데이터는 더 복잡한 분석이나 보고서 작성을 용이하게 해줍니다.\n정리된 이해 JOIN은 관련 데이터를 가진 여러 테이블을 하나로 묶어 필요한 정보를 추출할 수 있게 해주는 방법입니다. 서브쿼리는 복잡한 조건이나 계산 결과를 활용하여 주 쿼리의 결과를 더욱 구체화하는 데 활용될 수 있으며, FROM절 서브쿼리를 사용하면 마치 테이블인 것처럼 활용할 수도 있습니다.\n총평 오늘 전체에서 배운 것 오늘은 GROUP BY와 HAVING 구문으로 그룹화된 데이터에 조건을 걸고, JOIN과 서브쿼리를 활용하여 여러 테이블의 데이터를 효과적으로 결합하는 방법을 익혔습니다. 또한, UNION, INTERSECT, EXCEPT 등 집합 연산자의 활용법을 배우면서 데이터 분석의 폭을 넓힐 수 있었습니다.\n다음에 조심할 것 HAVING절을 GROUP BY 뒤에 바로 적용하는 습관을 들여서, 집계된 결과에 대한 조건을 명확히 해야겠다. FROM절 서브쿼리의 활용은 아직 미흡하니, 다양한 예제를 통해 활용도를 높여야겠다. UNION ALL과 INTERSECT의 차이를 더 깊이 이해하고, 실제 상황에 맞게 사용할 수 있도록 연습해야겠다.\n다음 복습 주제 FROM 절 서브쿼리의 활용법을 더 깊이 파악하고, 다양한 JOIN 유형(LEFT, RIGHT, FULL)을 활용한 복잡한 쿼리 작성 연습이 필요해. 또한, 윈도우 함수(Window Functions)를 학습하여 GROUP BY를 대체할 수 있는 방법도 알아봐야겠다.\n",
-  "wordCount" : "1126",
-  "inLanguage": "en",
-  "datePublished": "2026-06-11T00:00:00Z",
-  "dateModified": "2026-06-11T00:00:00Z",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://Han-think.github.io/learning/daily-index-v2/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Han-think Blog",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://Han-think.github.io/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-<body id="top">
-    <header class="header">
-    <nav class="header-nav">
-        <div class="logo">
-            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
-                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu" class="menu">
-            <li>
-                <a href="https://Han-think.github.io/learning/" title="학습 로그">
-                    <span>학습 로그</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://Han-think.github.io/projects/" title="프로젝트">
-                    <span>프로젝트</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://Han-think.github.io/dev/" title="개인 개발">
-                    <span>개인 개발</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://Han-think.github.io/search/" title="검색">
-                    <span>검색</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    
-    <h1 class="post-title entry-hint-parent">
-      daily-index-v2
-    </h1>
-    <div class="post-description">
-      daily-index-v2 학습 정리
-    </div>
-    <div class="post-meta">
-
-<span title='2026-06-11 00:00:00 +0000 UTC'>2026년 6월 11일</span>&nbsp;·&nbsp;<span>6 min</span>
-
-</div>
-  </header> 
-  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
-<ul>
-<li>
-<ol>
-<li><a href="#1-group-by%EC%99%80-having">GROUP BY와 HAVING</a></li>
-</ol>
-</li>
-<li>
-<ol start="2">
-<li><a href="#2-join%EA%B3%BC-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC">JOIN과 서브쿼리</a></li>
-</ol>
-</li>
-<li>
-<ol start="3">
-<li><a href="#3-%EC%A7%91%ED%95%A9-%EC%97%B0%EC%82%B0%EC%9E%90">집합 연산자</a></li>
-</ol>
-</li>
-<li>
-<ol start="4">
-<li><a href="#4-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B3%91%ED%95%A9">데이터 병합</a></li>
-</ol>
-</li>
-<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
-</ul>
-<h2 id="1-group-by와-having">1. GROUP BY와 HAVING<a hidden class="anchor" aria-hidden="true" href="#1-group-by와-having">#</a></h2>
-<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
-<p>데이터 분석 프로젝트를 진행하다 보면, 특정 기준에 따라 데이터를 묶어서 통계를 내고, 그 결과에 대한 추가적인 필터링이 필요할 때가 많았어. 예를 들어, 지역별 매출액을 분석하거나, 특정 조건을 만족하는 그룹만 추출해야 하는 상황이었지. 그래서 GROUP BY와 HAVING 구문을 통해 데이터 그룹화 및 조건 필터링 방법을 배우게 되었어.</p>
-<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
-<p>처음에는 GROUP BY 뒤에 바로 집계 함수를 사용하는 것이 가능한가에 대한 명확한 그림이 잡히지 않았고, HAVING절이 어떤 기준으로 집계된 결과에 조건을 걸어주는 것인지 감이 잘 안왔다. HAVING 절이 WHERE 절과 어떻게 다른지, 언제 어떤 상황에서 사용해야 하는지 혼동스러웠다. 그룹화된 데이터에 대한 필터링이 HAVING 절에서 이루어지는구나를 깨달으면서 좀 더 이해가 되기 시작했다.</p>
-<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#960050;background-color:#1e0010">상품</span> <span style="color:#960050;background-color:#1e0010">카테고리</span>, <span style="color:#66d9ef">SUM</span>(<span style="color:#960050;background-color:#1e0010">매출</span>) <span style="color:#66d9ef">as</span> total_sales
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> <span style="color:#960050;background-color:#1e0010">판매테이블</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> <span style="color:#960050;background-color:#1e0010">상품</span> <span style="color:#960050;background-color:#1e0010">카테고리</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">HAVING</span> <span style="color:#66d9ef">SUM</span>(<span style="color:#960050;background-color:#1e0010">매출</span>) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1000</span>;
-</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
-<p><code>GROUP BY</code>를 사용해서 상품 카테고리별 총 매출을 계산하고, <code>HAVING</code> 절을 이용해서 총 매출이 1000을 넘는 카테고리만 필터링하는 예제를 실행했습니다.  이렇게 하면 특정 기준 이상의 성과를 보이는 카테고리를 빠르게 파악할 수 있고, 매출 부진 카테고리에 대한 추가 분석을 위한 힌트를 얻을 수 있습니다.  결과적으로 그룹화된 데이터에 대한 조건을 설정하는 <code>HAVING</code> 절의 역할이 명확해졌습니다.</p>
-<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
-<p>GROUP BY는 데이터를 묶어 집계 함수를 적용할 때 사용하고, HAVING은 이처럼 묶인 그룹에 대한 조건을 걸 때 활용해. 즉, HAVING은 집계된 결과값에 대해 필터링하는 역할을 수행하며, SELECT 절에 포함될 수 없는 집계 함수 결과에 대한 조건을 정의하는 데 유용해.</p>
-<h2 id="2-join과-서브쿼리">2. JOIN과 서브쿼리<a hidden class="anchor" aria-hidden="true" href="#2-join과-서브쿼리">#</a></h2>
-<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
-<p>여러 테이블에 흩어져 있는 데이터를 한눈에 보고 싶을 때 JOIN을 사용해야 했는데, 특정 조건을 만족하는 데이터만 가져오려면 서브쿼리를 활용해야 했습니다. 이를 통해 복잡한 비즈니스 요구사항에 맞는 맞춤형 리포트를 작성할 수 있게 되었습니다. 단순히 데이터를 보는 것을 넘어, 데이터 분석의 깊이를 더하기 위해 이 개념들을 공부하게 됐습니다.</p>
-<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
-<p>처음에 JOIN과 서브쿼리를 함께 사용할 때, 어떤 테이블이 먼저 조인되어야 하고 서브쿼리가 정확히 어떤 역할을 하는지 파악하는 게 어려웠다. 서브쿼리가 주 쿼리의 어디에 위치해야 하는지, 그리고 어떤 상황에서 스칼라 서브쿼리와 FROM 절 서브쿼리를 선택해야 할지 판단하기 힘들었음. JOIN이 먼저 실행되는 건지, 서브쿼리가 먼저 실행되는 건지 혼동되기도 했음.</p>
-<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 예제: 고객 정보 테이블(Customers)와 주문 정보 테이블(Orders)을 JOIN하고, 주문 금액이 100달러 이상인 고객의 정보를 조회합니다.
-</span></span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">C</span>.CustomerID,
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">C</span>.CustomerName,
-</span></span><span style="display:flex;"><span>    O.OrderID,
-</span></span><span style="display:flex;"><span>    O.OrderDate
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span>
-</span></span><span style="display:flex;"><span>    Customers <span style="color:#66d9ef">C</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">JOIN</span>
-</span></span><span style="display:flex;"><span>    Orders O <span style="color:#66d9ef">ON</span> <span style="color:#66d9ef">C</span>.CustomerID <span style="color:#f92672">=</span> O.CustomerID
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span>
-</span></span><span style="display:flex;"><span>    O.OrderAmount <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">100</span>;
-</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
-<p>테이블 A의 고객 ID와 테이블 B의 주문 정보를 JOIN하여 특정 고객이 주문한 총 금액을 계산하는 코드를 작성해봤습니다. 스칼라 서브쿼리를 사용해서 각 고객별 주문 금액의 합을 미리 계산하고, 이를 바탕으로 특정 금액 이상 주문한 고객을 필터링 할 수 있었습니다. FROM 절 서브쿼리는 가상 테이블을 만들어 쿼리를 더 간결하게 만들 수 있음을 확인했습니다.</p>
-<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
-<p>JOIN은 여러 테이블의 데이터를 연결해서 필요한 정보를 얻을 수 있게 해주고, 서브쿼리는 쿼리 내부에 또 다른 쿼리를 넣어 더 복잡한 조건을 설정하거나 중간 결과를 활용할 때 유용하다. 스칼라 서브쿼리는 각 행에 대한 계산 결과를 반환하고, FROM 절 서브쿼리는 테이블처럼 사용할 수 있다는 점이 중요하게 다르게 작용한다.</p>
-<h2 id="3-집합-연산자">3. 집합 연산자<a hidden class="anchor" aria-hidden="true" href="#3-집합-연산자">#</a></h2>
-<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
-<p>데이터 분석 보고서를 작성하다 보면 여러 테이블의 데이터를 결합하거나, 특정 조건을 만족하는 데이터 집합을 비교해야 하는 경우가 많았어요. 그래서 단순히 테이블에서 데이터를 가져오는 것 이상으로, 데이터를 조합하고 분석하는 능력이 필요하다고 생각해서 집합 연산자를 배우게 됐습니다. 복잡한 데이터 세트를 다루는 데 필수적인 도구라고 들었기 때문입니다.</p>
-<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
-<p>처음에는 UNION과 UNION ALL이 단순히 중복을 제거하는 정도의 차이만 있을 거라고 생각했는데, UNION은 중복을 제거하고 UNION ALL은 모든 결과를 그대로 합친다는 것을 알게 되었습니다. 또한 INTERSECT는 두 쿼리의 교집합을 찾는 연산이고, EXCEPT는 차집합을 구하는 연산이라는 것을 명확히 이해하지 못해서 어떤 상황에 어떤 연산자를 사용해야 할지 막막했습니다. 결국 다양한 예제를 통해 각 연산자가 어떻게 작동하는지 직접 확인하면서 이해하게 되었습니다.</p>
-<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- UNION ALL: 두 테이블의 모든 데이터를 합집합합니다. 중복 데이터도 포함됩니다.
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#960050;background-color:#1e0010">상품명</span> <span style="color:#66d9ef">FROM</span> <span style="color:#960050;background-color:#1e0010">베스트셀러테이블</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">ALL</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#960050;background-color:#1e0010">상품명</span> <span style="color:#66d9ef">FROM</span> <span style="color:#960050;background-color:#1e0010">인기상품테이블</span>;
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 결과: &#39;우유&#39;, &#39;빵&#39;, &#39;커피&#39;, &#39;과자&#39; 와 같은 상품명 목록이 출력됩니다. 중복 상품명이 있다면, 각 테이블에서 중복된 상품명만큼 나타납니다.
-</span></span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- INTERSECT: 두 테이블에서 공통으로 존재하는 데이터를 추출합니다.
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#960050;background-color:#1e0010">고객</span>ID <span style="color:#66d9ef">FROM</span> <span style="color:#960050;background-color:#1e0010">주문테이블</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INTERSECT</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#960050;background-color:#1e0010">고객</span>ID <span style="color:#66d9ef">FROM</span> <span style="color:#960050;background-color:#1e0010">멤버십테이블</span>;
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 결과: 주문테이블과 멤버십테이블 모두에 존재하는 고객ID 목록이 출력됩니다.
-</span></span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- EXCEPT (MINUS): 한 테이블에는 있지만 다른 테이블에는 없는 데이터를 추출합니다.
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#960050;background-color:#1e0010">고객</span>ID <span style="color:#66d9ef">FROM</span> <span style="color:#960050;background-color:#1e0010">주문테이블</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">EXCEPT</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#960050;background-color:#1e0010">고객</span>ID <span style="color:#66d9ef">FROM</span> <span style="color:#960050;background-color:#1e0010">환불테이블</span>;
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 결과: 주문테이블에는 있지만 환불테이블에는 없는 고객ID 목록이 출력됩니다.
-</span></span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
-<p>UNION은 두 쿼리의 결과를 합치는 연산자로, 중복된 행을 제거하여 결과 집합을 만듭니다. UNION ALL은 중복 제거 없이 단순히 두 쿼리의 결과를 이어붙이기 때문에 UNION보다 성능이 좋습니다. INTERSECT는 두 쿼리의 결과에서 공통된 행만 추출하는 역할을 하며, EXCEPT는 첫 번째 쿼리에는 있지만 두 번째 쿼리에는 없는 행을 보여줍니다.</p>
-<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
-<p>집합 연산자는 여러 쿼리의 결과를 하나로 합치거나 교집합/차집합을 구할 때 사용하는데, <code>UNION ALL</code>은 중복을 허용하고 <code>UNION</code>은 중복을 제거한다는 점이 핵심이야. 실제로는 여러 테이블에서 필요한 정보를 모아 리포트를 작성할 때 매우 유용하게 활용할 수 있어. 예를 들어 특정 조건을 만족하는 고객 정보를 두 테이블에서 가져와 합치는 데 사용할 수 있지.</p>
-<h2 id="4-데이터-병합">4. 데이터 병합<a hidden class="anchor" aria-hidden="true" href="#4-데이터-병합">#</a></h2>
-<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
-<p>데이터가 여러 테이블에 분산되어 있을 때, 필요한 정보를 얻기 위해서는 여러 테이블에 있는 데이터를 하나로 합쳐서 분석해야 했어. 단순히 한 테이블만으로는 답변을 얻을 수 없는 복잡한 질문에 답하려면 테이블 간의 관계를 활용해서 데이터를 결합하는 방법이 필요했지. 결국 더 유용한 인사이트를 얻기 위해서는 다양한 테이블을 연결하고 활용하는 능력이 필수적이라는 것을 깨달았어.</p>
-<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
-<p>처음에는 JOIN이 단순히 두 테이블의 내용을 나열하는 것처럼 생각했어요. 하지만 실제로는 특정 조건을 기반으로 행을 연결해야 한다는 점이 어렵게 느껴졌고, 서브쿼리와 함께 사용될 때는 더욱 복잡해 보여서 어떻게 동작하는지 파악하기 힘들었습니다. 여러 테이블을 연결할 때 어떤 기준으로 조인해야 하는지, 그리고 서브쿼리가 어떻게 활용되는지 한 번에 이해하기 어려웠어요.</p>
-<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
-</span></span><span style="display:flex;"><span>    t1.order_id,
-</span></span><span style="display:flex;"><span>    t1.customer_id,
-</span></span><span style="display:flex;"><span>    t2.product_name
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span>
-</span></span><span style="display:flex;"><span>    orders <span style="color:#66d9ef">AS</span> t1
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">JOIN</span>
-</span></span><span style="display:flex;"><span>    products <span style="color:#66d9ef">AS</span> t2
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ON</span>
-</span></span><span style="display:flex;"><span>    t1.product_id <span style="color:#f92672">=</span> t2.product_id;
-</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
-<p>두 테이블을 JOIN하면 관련 있는 행들을 하나의 결과 집합으로 합칠 수 있어, 예를 들어 고객 정보 테이블과 주문 정보 테이블을 연결해서 각 주문에 대한 고객 정보를 함께 볼 수 있습니다. 예를 들어, 고객 ID를 기준으로 두 테이블을 조인하면 각 주문에 누가 주문했는지 쉽게 파악할 수 있습니다. 이렇게 병합된 데이터는 더 복잡한 분석이나 보고서 작성을 용이하게 해줍니다.</p>
-<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
-<p>JOIN은 관련 데이터를 가진 여러 테이블을 하나로 묶어 필요한 정보를 추출할 수 있게 해주는 방법입니다. 서브쿼리는 복잡한 조건이나 계산 결과를 활용하여 주 쿼리의 결과를 더욱 구체화하는 데 활용될 수 있으며, FROM절 서브쿼리를 사용하면 마치 테이블인 것처럼 활용할 수도 있습니다.</p>
-<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
-<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
-<p>오늘은 GROUP BY와 HAVING 구문으로 그룹화된 데이터에 조건을 걸고, JOIN과 서브쿼리를 활용하여 여러 테이블의 데이터를 효과적으로 결합하는 방법을 익혔습니다. 또한, UNION, INTERSECT, EXCEPT 등 집합 연산자의 활용법을 배우면서 데이터 분석의 폭을 넓힐 수 있었습니다.</p>
-<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
-<p>HAVING절을 GROUP BY 뒤에 바로 적용하는 습관을 들여서, 집계된 결과에 대한 조건을 명확히 해야겠다. FROM절 서브쿼리의 활용은 아직 미흡하니, 다양한 예제를 통해 활용도를 높여야겠다. UNION ALL과 INTERSECT의 차이를 더 깊이 이해하고, 실제 상황에 맞게 사용할 수 있도록 연습해야겠다.</p>
-<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
-<p>FROM 절 서브쿼리의 활용법을 더 깊이 파악하고, 다양한 JOIN 유형(LEFT, RIGHT, FULL)을 활용한 복잡한 쿼리 작성 연습이 필요해. 또한, 윈도우 함수(Window Functions)를 학습하여 GROUP BY를 대체할 수 있는 방법도 알아봐야겠다.</p>
-
-
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-    </ul>
-<nav class="paginav">
-  <a class="prev" href="https://Han-think.github.io/learning/2026-06-12-pm-daily/">
-    <span class="title">« Prev</span>
-    <span>SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지</span>
-  </a>
-  <a class="next" href="https://Han-think.github.io/learning/2026-06-11-pm-daily/">
-    <span class="title">Next »</span>
-    <span>SQL JOIN, 서브쿼리, 뷰, PL/SQL, 윈도우 함수 학습 정리</span>
-  </a>
-</nav>
-
-  </footer>
-</article>
-    </main>
-    
-<footer class="footer">
-        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
-
-    
-    
-    <span>
-        Powered by
-        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
-        <polyline points="17 11 12 6 7 11"></polyline>
-        <polyline points="17 18 12 13 7 18"></polyline>
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu');
-    if (menu) {
-        
-        const scrollPosition = localStorage.getItem("menu-scroll-position");
-        if (scrollPosition) {
-            menu.scrollLeft = parseInt(scrollPosition, 10);
-        }
-        
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var toplink = document.getElementById("top-link");
-    window.onscroll = function () {
-        const scrollThreshold = window.innerHeight;
-        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
-            toplink.classList.remove("hidden");
-        } else {
-            toplink.classList.add("hidden");
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        const html = document.querySelector("html");
-        if (html.dataset.theme === "dark") {
-            html.dataset.theme = 'light';
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            html.dataset.theme = 'dark';
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-</body>
-
-</html>
+<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>daily-index-v2 | Han-think Blog</title><meta name=keywords content><meta name=description content="daily-index-v2 학습 정리"><meta name=author content><link rel=canonical href=https://Han-think.github.io/learning/daily-index-v2/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/learning/daily-index-v2/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/learning/daily-index-v2/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="daily-index-v2"><meta property="og:description" content="daily-index-v2 학습 정리"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="learning"><meta property="article:published_time" content="2026-06-11T00:00:00+00:00"><meta property="article:modified_time" content="2026-06-11T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="daily-index-v2"><meta name=twitter:description content="daily-index-v2 학습 정리"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"학습 기록","item":"https://Han-think.github.io/learning/"},{"@type":"ListItem","position":2,"name":"daily-index-v2","item":"https://Han-think.github.io/learning/daily-index-v2/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"daily-index-v2","name":"daily-index-v2","description":"daily-index-v2 학습 정리","keywords":[],"articleBody":"목차 GROUP BY와 HAVING JOIN과 서브쿼리 집합 연산자 데이터 병합 총평 1. GROUP BY와 HAVING 왜 이걸 보게 됐나 데이터 분석 프로젝트를 진행하다 보면, 특정 기준에 따라 데이터를 묶어서 통계를 내고, 그 결과에 대한 추가적인 필터링이 필요할 때가 많았어. 예를 들어, 지역별 매출액을 분석하거나, 특정 조건을 만족하는 그룹만 추출해야 하는 상황이었지. 그래서 GROUP BY와 HAVING 구문을 통해 데이터 그룹화 및 조건 필터링 방법을 배우게 되었어.\n내가 헷갈린 지점 처음에는 GROUP BY 뒤에 바로 집계 함수를 사용하는 것이 가능한가에 대한 명확한 그림이 잡히지 않았고, HAVING절이 어떤 기준으로 집계된 결과에 조건을 걸어주는 것인지 감이 잘 안왔다. HAVING 절이 WHERE 절과 어떻게 다른지, 언제 어떤 상황에서 사용해야 하는지 혼동스러웠다. 그룹화된 데이터에 대한 필터링이 HAVING 절에서 이루어지는구나를 깨달으면서 좀 더 이해가 되기 시작했다.\n시도한 코드 / 예시 SELECT 상품 카테고리, SUM(매출) as total_sales FROM 판매테이블 GROUP BY 상품 카테고리 HAVING SUM(매출) \u003e 1000; 결과와 해석 GROUP BY를 사용해서 상품 카테고리별 총 매출을 계산하고, HAVING 절을 이용해서 총 매출이 1000을 넘는 카테고리만 필터링하는 예제를 실행했습니다. 이렇게 하면 특정 기준 이상의 성과를 보이는 카테고리를 빠르게 파악할 수 있고, 매출 부진 카테고리에 대한 추가 분석을 위한 힌트를 얻을 수 있습니다. 결과적으로 그룹화된 데이터에 대한 조건을 설정하는 HAVING 절의 역할이 명확해졌습니다.\n정리된 이해 GROUP BY는 데이터를 묶어 집계 함수를 적용할 때 사용하고, HAVING은 이처럼 묶인 그룹에 대한 조건을 걸 때 활용해. 즉, HAVING은 집계된 결과값에 대해 필터링하는 역할을 수행하며, SELECT 절에 포함될 수 없는 집계 함수 결과에 대한 조건을 정의하는 데 유용해.\n2. JOIN과 서브쿼리 왜 이걸 보게 됐나 여러 테이블에 흩어져 있는 데이터를 한눈에 보고 싶을 때 JOIN을 사용해야 했는데, 특정 조건을 만족하는 데이터만 가져오려면 서브쿼리를 활용해야 했습니다. 이를 통해 복잡한 비즈니스 요구사항에 맞는 맞춤형 리포트를 작성할 수 있게 되었습니다. 단순히 데이터를 보는 것을 넘어, 데이터 분석의 깊이를 더하기 위해 이 개념들을 공부하게 됐습니다.\n내가 헷갈린 지점 처음에 JOIN과 서브쿼리를 함께 사용할 때, 어떤 테이블이 먼저 조인되어야 하고 서브쿼리가 정확히 어떤 역할을 하는지 파악하는 게 어려웠다. 서브쿼리가 주 쿼리의 어디에 위치해야 하는지, 그리고 어떤 상황에서 스칼라 서브쿼리와 FROM 절 서브쿼리를 선택해야 할지 판단하기 힘들었음. JOIN이 먼저 실행되는 건지, 서브쿼리가 먼저 실행되는 건지 혼동되기도 했음.\n시도한 코드 / 예시 -- 예제: 고객 정보 테이블(Customers)와 주문 정보 테이블(Orders)을 JOIN하고, 주문 금액이 100달러 이상인 고객의 정보를 조회합니다. SELECT C.CustomerID, C.CustomerName, O.OrderID, O.OrderDate FROM Customers C JOIN Orders O ON C.CustomerID = O.CustomerID WHERE O.OrderAmount \u003e 100; 결과와 해석 테이블 A의 고객 ID와 테이블 B의 주문 정보를 JOIN하여 특정 고객이 주문한 총 금액을 계산하는 코드를 작성해봤습니다. 스칼라 서브쿼리를 사용해서 각 고객별 주문 금액의 합을 미리 계산하고, 이를 바탕으로 특정 금액 이상 주문한 고객을 필터링 할 수 있었습니다. FROM 절 서브쿼리는 가상 테이블을 만들어 쿼리를 더 간결하게 만들 수 있음을 확인했습니다.\n정리된 이해 JOIN은 여러 테이블의 데이터를 연결해서 필요한 정보를 얻을 수 있게 해주고, 서브쿼리는 쿼리 내부에 또 다른 쿼리를 넣어 더 복잡한 조건을 설정하거나 중간 결과를 활용할 때 유용하다. 스칼라 서브쿼리는 각 행에 대한 계산 결과를 반환하고, FROM 절 서브쿼리는 테이블처럼 사용할 수 있다는 점이 중요하게 다르게 작용한다.\n3. 집합 연산자 왜 이걸 보게 됐나 데이터 분석 보고서를 작성하다 보면 여러 테이블의 데이터를 결합하거나, 특정 조건을 만족하는 데이터 집합을 비교해야 하는 경우가 많았어요. 그래서 단순히 테이블에서 데이터를 가져오는 것 이상으로, 데이터를 조합하고 분석하는 능력이 필요하다고 생각해서 집합 연산자를 배우게 됐습니다. 복잡한 데이터 세트를 다루는 데 필수적인 도구라고 들었기 때문입니다.\n내가 헷갈린 지점 처음에는 UNION과 UNION ALL이 단순히 중복을 제거하는 정도의 차이만 있을 거라고 생각했는데, UNION은 중복을 제거하고 UNION ALL은 모든 결과를 그대로 합친다는 것을 알게 되었습니다. 또한 INTERSECT는 두 쿼리의 교집합을 찾는 연산이고, EXCEPT는 차집합을 구하는 연산이라는 것을 명확히 이해하지 못해서 어떤 상황에 어떤 연산자를 사용해야 할지 막막했습니다. 결국 다양한 예제를 통해 각 연산자가 어떻게 작동하는지 직접 확인하면서 이해하게 되었습니다.\n시도한 코드 / 예시 -- UNION ALL: 두 테이블의 모든 데이터를 합집합합니다. 중복 데이터도 포함됩니다. SELECT 상품명 FROM 베스트셀러테이블 UNION ALL SELECT 상품명 FROM 인기상품테이블; -- 결과: '우유', '빵', '커피', '과자' 와 같은 상품명 목록이 출력됩니다. 중복 상품명이 있다면, 각 테이블에서 중복된 상품명만큼 나타납니다. -- INTERSECT: 두 테이블에서 공통으로 존재하는 데이터를 추출합니다. SELECT 고객ID FROM 주문테이블 INTERSECT SELECT 고객ID FROM 멤버십테이블; -- 결과: 주문테이블과 멤버십테이블 모두에 존재하는 고객ID 목록이 출력됩니다. -- EXCEPT (MINUS): 한 테이블에는 있지만 다른 테이블에는 없는 데이터를 추출합니다. SELECT 고객ID FROM 주문테이블 EXCEPT SELECT 고객ID FROM 환불테이블; -- 결과: 주문테이블에는 있지만 환불테이블에는 없는 고객ID 목록이 출력됩니다. 결과와 해석 UNION은 두 쿼리의 결과를 합치는 연산자로, 중복된 행을 제거하여 결과 집합을 만듭니다. UNION ALL은 중복 제거 없이 단순히 두 쿼리의 결과를 이어붙이기 때문에 UNION보다 성능이 좋습니다. INTERSECT는 두 쿼리의 결과에서 공통된 행만 추출하는 역할을 하며, EXCEPT는 첫 번째 쿼리에는 있지만 두 번째 쿼리에는 없는 행을 보여줍니다.\n정리된 이해 집합 연산자는 여러 쿼리의 결과를 하나로 합치거나 교집합/차집합을 구할 때 사용하는데, UNION ALL은 중복을 허용하고 UNION은 중복을 제거한다는 점이 핵심이야. 실제로는 여러 테이블에서 필요한 정보를 모아 리포트를 작성할 때 매우 유용하게 활용할 수 있어. 예를 들어 특정 조건을 만족하는 고객 정보를 두 테이블에서 가져와 합치는 데 사용할 수 있지.\n4. 데이터 병합 왜 이걸 보게 됐나 데이터가 여러 테이블에 분산되어 있을 때, 필요한 정보를 얻기 위해서는 여러 테이블에 있는 데이터를 하나로 합쳐서 분석해야 했어. 단순히 한 테이블만으로는 답변을 얻을 수 없는 복잡한 질문에 답하려면 테이블 간의 관계를 활용해서 데이터를 결합하는 방법이 필요했지. 결국 더 유용한 인사이트를 얻기 위해서는 다양한 테이블을 연결하고 활용하는 능력이 필수적이라는 것을 깨달았어.\n내가 헷갈린 지점 처음에는 JOIN이 단순히 두 테이블의 내용을 나열하는 것처럼 생각했어요. 하지만 실제로는 특정 조건을 기반으로 행을 연결해야 한다는 점이 어렵게 느껴졌고, 서브쿼리와 함께 사용될 때는 더욱 복잡해 보여서 어떻게 동작하는지 파악하기 힘들었습니다. 여러 테이블을 연결할 때 어떤 기준으로 조인해야 하는지, 그리고 서브쿼리가 어떻게 활용되는지 한 번에 이해하기 어려웠어요.\n시도한 코드 / 예시 SELECT t1.order_id, t1.customer_id, t2.product_name FROM orders AS t1 JOIN products AS t2 ON t1.product_id = t2.product_id; 결과와 해석 두 테이블을 JOIN하면 관련 있는 행들을 하나의 결과 집합으로 합칠 수 있어, 예를 들어 고객 정보 테이블과 주문 정보 테이블을 연결해서 각 주문에 대한 고객 정보를 함께 볼 수 있습니다. 예를 들어, 고객 ID를 기준으로 두 테이블을 조인하면 각 주문에 누가 주문했는지 쉽게 파악할 수 있습니다. 이렇게 병합된 데이터는 더 복잡한 분석이나 보고서 작성을 용이하게 해줍니다.\n정리된 이해 JOIN은 관련 데이터를 가진 여러 테이블을 하나로 묶어 필요한 정보를 추출할 수 있게 해주는 방법입니다. 서브쿼리는 복잡한 조건이나 계산 결과를 활용하여 주 쿼리의 결과를 더욱 구체화하는 데 활용될 수 있으며, FROM절 서브쿼리를 사용하면 마치 테이블인 것처럼 활용할 수도 있습니다.\n총평 오늘 전체에서 배운 것 오늘은 GROUP BY와 HAVING 구문으로 그룹화된 데이터에 조건을 걸고, JOIN과 서브쿼리를 활용하여 여러 테이블의 데이터를 효과적으로 결합하는 방법을 익혔습니다. 또한, UNION, INTERSECT, EXCEPT 등 집합 연산자의 활용법을 배우면서 데이터 분석의 폭을 넓힐 수 있었습니다.\n다음에 조심할 것 HAVING절을 GROUP BY 뒤에 바로 적용하는 습관을 들여서, 집계된 결과에 대한 조건을 명확히 해야겠다. FROM절 서브쿼리의 활용은 아직 미흡하니, 다양한 예제를 통해 활용도를 높여야겠다. UNION ALL과 INTERSECT의 차이를 더 깊이 이해하고, 실제 상황에 맞게 사용할 수 있도록 연습해야겠다.\n다음 복습 주제 FROM 절 서브쿼리의 활용법을 더 깊이 파악하고, 다양한 JOIN 유형(LEFT, RIGHT, FULL)을 활용한 복잡한 쿼리 작성 연습이 필요해. 또한, 윈도우 함수(Window Functions)를 학습하여 GROUP BY를 대체할 수 있는 방법도 알아봐야겠다.\n","wordCount":"1126","inLanguage":"en","datePublished":"2026-06-11T00:00:00Z","dateModified":"2026-06-11T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/learning/daily-index-v2/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
+<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">daily-index-v2</h1><div class=post-description>daily-index-v2 학습 정리</div><div class=post-meta><span title='2026-06-11 00:00:00 +0000 UTC'>2026년 6월 11일</span>&nbsp;·&nbsp;<span>6 min</span></div></header><div class="post-content md-content"><h2 id=목차>목차<a hidden class=anchor aria-hidden=true href=#목차>#</a></h2><ul><li><ol><li><a href=#1-group-by%EC%99%80-having>GROUP BY와 HAVING</a></li></ol></li><li><ol start=2><li><a href=#2-join%EA%B3%BC-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC>JOIN과 서브쿼리</a></li></ol></li><li><ol start=3><li><a href=#3-%EC%A7%91%ED%95%A9-%EC%97%B0%EC%82%B0%EC%9E%90>집합 연산자</a></li></ol></li><li><ol start=4><li><a href=#4-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B3%91%ED%95%A9>데이터 병합</a></li></ol></li><li><a href=#%EC%B4%9D%ED%8F%89>총평</a></li></ul><h2 id=1-group-by와-having>1. GROUP BY와 HAVING<a hidden class=anchor aria-hidden=true href=#1-group-by와-having>#</a></h2><h3 id=왜-이걸-보게-됐나>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나>#</a></h3><p>데이터 분석 프로젝트를 진행하다 보면, 특정 기준에 따라 데이터를 묶어서 통계를 내고, 그 결과에 대한 추가적인 필터링이 필요할 때가 많았어. 예를 들어, 지역별 매출액을 분석하거나, 특정 조건을 만족하는 그룹만 추출해야 하는 상황이었지. 그래서 GROUP BY와 HAVING 구문을 통해 데이터 그룹화 및 조건 필터링 방법을 배우게 되었어.</p><h3 id=내가-헷갈린-지점>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점>#</a></h3><p>처음에는 GROUP BY 뒤에 바로 집계 함수를 사용하는 것이 가능한가에 대한 명확한 그림이 잡히지 않았고, HAVING절이 어떤 기준으로 집계된 결과에 조건을 걸어주는 것인지 감이 잘 안왔다. HAVING 절이 WHERE 절과 어떻게 다른지, 언제 어떤 상황에서 사용해야 하는지 혼동스러웠다. 그룹화된 데이터에 대한 필터링이 HAVING 절에서 이루어지는구나를 깨달으면서 좀 더 이해가 되기 시작했다.</p><h3 id=시도한-코드--예시>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#960050;background-color:#1e0010>상품</span> <span style=color:#960050;background-color:#1e0010>카테고리</span>, <span style=color:#66d9ef>SUM</span>(<span style=color:#960050;background-color:#1e0010>매출</span>) <span style=color:#66d9ef>as</span> total_sales
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> <span style=color:#960050;background-color:#1e0010>판매테이블</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>GROUP</span> <span style=color:#66d9ef>BY</span> <span style=color:#960050;background-color:#1e0010>상품</span> <span style=color:#960050;background-color:#1e0010>카테고리</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>HAVING</span> <span style=color:#66d9ef>SUM</span>(<span style=color:#960050;background-color:#1e0010>매출</span>) <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>1000</span>;
+</span></span></code></pre></div><h3 id=결과와-해석>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석>#</a></h3><p><code>GROUP BY</code>를 사용해서 상품 카테고리별 총 매출을 계산하고, <code>HAVING</code> 절을 이용해서 총 매출이 1000을 넘는 카테고리만 필터링하는 예제를 실행했습니다. 이렇게 하면 특정 기준 이상의 성과를 보이는 카테고리를 빠르게 파악할 수 있고, 매출 부진 카테고리에 대한 추가 분석을 위한 힌트를 얻을 수 있습니다. 결과적으로 그룹화된 데이터에 대한 조건을 설정하는 <code>HAVING</code> 절의 역할이 명확해졌습니다.</p><h3 id=정리된-이해>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해>#</a></h3><p>GROUP BY는 데이터를 묶어 집계 함수를 적용할 때 사용하고, HAVING은 이처럼 묶인 그룹에 대한 조건을 걸 때 활용해. 즉, HAVING은 집계된 결과값에 대해 필터링하는 역할을 수행하며, SELECT 절에 포함될 수 없는 집계 함수 결과에 대한 조건을 정의하는 데 유용해.</p><h2 id=2-join과-서브쿼리>2. JOIN과 서브쿼리<a hidden class=anchor aria-hidden=true href=#2-join과-서브쿼리>#</a></h2><h3 id=왜-이걸-보게-됐나-1>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-1>#</a></h3><p>여러 테이블에 흩어져 있는 데이터를 한눈에 보고 싶을 때 JOIN을 사용해야 했는데, 특정 조건을 만족하는 데이터만 가져오려면 서브쿼리를 활용해야 했습니다. 이를 통해 복잡한 비즈니스 요구사항에 맞는 맞춤형 리포트를 작성할 수 있게 되었습니다. 단순히 데이터를 보는 것을 넘어, 데이터 분석의 깊이를 더하기 위해 이 개념들을 공부하게 됐습니다.</p><h3 id=내가-헷갈린-지점-1>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-1>#</a></h3><p>처음에 JOIN과 서브쿼리를 함께 사용할 때, 어떤 테이블이 먼저 조인되어야 하고 서브쿼리가 정확히 어떤 역할을 하는지 파악하는 게 어려웠다. 서브쿼리가 주 쿼리의 어디에 위치해야 하는지, 그리고 어떤 상황에서 스칼라 서브쿼리와 FROM 절 서브쿼리를 선택해야 할지 판단하기 힘들었음. JOIN이 먼저 실행되는 건지, 서브쿼리가 먼저 실행되는 건지 혼동되기도 했음.</p><h3 id=시도한-코드--예시-1>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-1>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#75715e>-- 예제: 고객 정보 테이블(Customers)와 주문 정보 테이블(Orders)을 JOIN하고, 주문 금액이 100달러 이상인 고객의 정보를 조회합니다.
+</span></span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>C</span>.CustomerID,
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>C</span>.CustomerName,
+</span></span><span style=display:flex><span>    O.OrderID,
+</span></span><span style=display:flex><span>    O.OrderDate
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span>
+</span></span><span style=display:flex><span>    Customers <span style=color:#66d9ef>C</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>JOIN</span>
+</span></span><span style=display:flex><span>    Orders O <span style=color:#66d9ef>ON</span> <span style=color:#66d9ef>C</span>.CustomerID <span style=color:#f92672>=</span> O.CustomerID
+</span></span><span style=display:flex><span><span style=color:#66d9ef>WHERE</span>
+</span></span><span style=display:flex><span>    O.OrderAmount <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>100</span>;
+</span></span></code></pre></div><h3 id=결과와-해석-1>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-1>#</a></h3><p>테이블 A의 고객 ID와 테이블 B의 주문 정보를 JOIN하여 특정 고객이 주문한 총 금액을 계산하는 코드를 작성해봤습니다. 스칼라 서브쿼리를 사용해서 각 고객별 주문 금액의 합을 미리 계산하고, 이를 바탕으로 특정 금액 이상 주문한 고객을 필터링 할 수 있었습니다. FROM 절 서브쿼리는 가상 테이블을 만들어 쿼리를 더 간결하게 만들 수 있음을 확인했습니다.</p><h3 id=정리된-이해-1>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-1>#</a></h3><p>JOIN은 여러 테이블의 데이터를 연결해서 필요한 정보를 얻을 수 있게 해주고, 서브쿼리는 쿼리 내부에 또 다른 쿼리를 넣어 더 복잡한 조건을 설정하거나 중간 결과를 활용할 때 유용하다. 스칼라 서브쿼리는 각 행에 대한 계산 결과를 반환하고, FROM 절 서브쿼리는 테이블처럼 사용할 수 있다는 점이 중요하게 다르게 작용한다.</p><h2 id=3-집합-연산자>3. 집합 연산자<a hidden class=anchor aria-hidden=true href=#3-집합-연산자>#</a></h2><h3 id=왜-이걸-보게-됐나-2>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-2>#</a></h3><p>데이터 분석 보고서를 작성하다 보면 여러 테이블의 데이터를 결합하거나, 특정 조건을 만족하는 데이터 집합을 비교해야 하는 경우가 많았어요. 그래서 단순히 테이블에서 데이터를 가져오는 것 이상으로, 데이터를 조합하고 분석하는 능력이 필요하다고 생각해서 집합 연산자를 배우게 됐습니다. 복잡한 데이터 세트를 다루는 데 필수적인 도구라고 들었기 때문입니다.</p><h3 id=내가-헷갈린-지점-2>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-2>#</a></h3><p>처음에는 UNION과 UNION ALL이 단순히 중복을 제거하는 정도의 차이만 있을 거라고 생각했는데, UNION은 중복을 제거하고 UNION ALL은 모든 결과를 그대로 합친다는 것을 알게 되었습니다. 또한 INTERSECT는 두 쿼리의 교집합을 찾는 연산이고, EXCEPT는 차집합을 구하는 연산이라는 것을 명확히 이해하지 못해서 어떤 상황에 어떤 연산자를 사용해야 할지 막막했습니다. 결국 다양한 예제를 통해 각 연산자가 어떻게 작동하는지 직접 확인하면서 이해하게 되었습니다.</p><h3 id=시도한-코드--예시-2>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-2>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#75715e>-- UNION ALL: 두 테이블의 모든 데이터를 합집합합니다. 중복 데이터도 포함됩니다.
+</span></span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#960050;background-color:#1e0010>상품명</span> <span style=color:#66d9ef>FROM</span> <span style=color:#960050;background-color:#1e0010>베스트셀러테이블</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>UNION</span> <span style=color:#66d9ef>ALL</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#960050;background-color:#1e0010>상품명</span> <span style=color:#66d9ef>FROM</span> <span style=color:#960050;background-color:#1e0010>인기상품테이블</span>;
+</span></span><span style=display:flex><span><span style=color:#75715e>-- 결과: &#39;우유&#39;, &#39;빵&#39;, &#39;커피&#39;, &#39;과자&#39; 와 같은 상품명 목록이 출력됩니다. 중복 상품명이 있다면, 각 테이블에서 중복된 상품명만큼 나타납니다.
+</span></span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>-- INTERSECT: 두 테이블에서 공통으로 존재하는 데이터를 추출합니다.
+</span></span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#960050;background-color:#1e0010>고객</span>ID <span style=color:#66d9ef>FROM</span> <span style=color:#960050;background-color:#1e0010>주문테이블</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>INTERSECT</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#960050;background-color:#1e0010>고객</span>ID <span style=color:#66d9ef>FROM</span> <span style=color:#960050;background-color:#1e0010>멤버십테이블</span>;
+</span></span><span style=display:flex><span><span style=color:#75715e>-- 결과: 주문테이블과 멤버십테이블 모두에 존재하는 고객ID 목록이 출력됩니다.
+</span></span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>-- EXCEPT (MINUS): 한 테이블에는 있지만 다른 테이블에는 없는 데이터를 추출합니다.
+</span></span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#960050;background-color:#1e0010>고객</span>ID <span style=color:#66d9ef>FROM</span> <span style=color:#960050;background-color:#1e0010>주문테이블</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>EXCEPT</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#960050;background-color:#1e0010>고객</span>ID <span style=color:#66d9ef>FROM</span> <span style=color:#960050;background-color:#1e0010>환불테이블</span>;
+</span></span><span style=display:flex><span><span style=color:#75715e>-- 결과: 주문테이블에는 있지만 환불테이블에는 없는 고객ID 목록이 출력됩니다.
+</span></span></span></code></pre></div><h3 id=결과와-해석-2>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-2>#</a></h3><p>UNION은 두 쿼리의 결과를 합치는 연산자로, 중복된 행을 제거하여 결과 집합을 만듭니다. UNION ALL은 중복 제거 없이 단순히 두 쿼리의 결과를 이어붙이기 때문에 UNION보다 성능이 좋습니다. INTERSECT는 두 쿼리의 결과에서 공통된 행만 추출하는 역할을 하며, EXCEPT는 첫 번째 쿼리에는 있지만 두 번째 쿼리에는 없는 행을 보여줍니다.</p><h3 id=정리된-이해-2>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-2>#</a></h3><p>집합 연산자는 여러 쿼리의 결과를 하나로 합치거나 교집합/차집합을 구할 때 사용하는데, <code>UNION ALL</code>은 중복을 허용하고 <code>UNION</code>은 중복을 제거한다는 점이 핵심이야. 실제로는 여러 테이블에서 필요한 정보를 모아 리포트를 작성할 때 매우 유용하게 활용할 수 있어. 예를 들어 특정 조건을 만족하는 고객 정보를 두 테이블에서 가져와 합치는 데 사용할 수 있지.</p><h2 id=4-데이터-병합>4. 데이터 병합<a hidden class=anchor aria-hidden=true href=#4-데이터-병합>#</a></h2><h3 id=왜-이걸-보게-됐나-3>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-3>#</a></h3><p>데이터가 여러 테이블에 분산되어 있을 때, 필요한 정보를 얻기 위해서는 여러 테이블에 있는 데이터를 하나로 합쳐서 분석해야 했어. 단순히 한 테이블만으로는 답변을 얻을 수 없는 복잡한 질문에 답하려면 테이블 간의 관계를 활용해서 데이터를 결합하는 방법이 필요했지. 결국 더 유용한 인사이트를 얻기 위해서는 다양한 테이블을 연결하고 활용하는 능력이 필수적이라는 것을 깨달았어.</p><h3 id=내가-헷갈린-지점-3>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-3>#</a></h3><p>처음에는 JOIN이 단순히 두 테이블의 내용을 나열하는 것처럼 생각했어요. 하지만 실제로는 특정 조건을 기반으로 행을 연결해야 한다는 점이 어렵게 느껴졌고, 서브쿼리와 함께 사용될 때는 더욱 복잡해 보여서 어떻게 동작하는지 파악하기 힘들었습니다. 여러 테이블을 연결할 때 어떤 기준으로 조인해야 하는지, 그리고 서브쿼리가 어떻게 활용되는지 한 번에 이해하기 어려웠어요.</p><h3 id=시도한-코드--예시-3>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-3>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
+</span></span><span style=display:flex><span>    t1.order_id,
+</span></span><span style=display:flex><span>    t1.customer_id,
+</span></span><span style=display:flex><span>    t2.product_name
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span>
+</span></span><span style=display:flex><span>    orders <span style=color:#66d9ef>AS</span> t1
+</span></span><span style=display:flex><span><span style=color:#66d9ef>JOIN</span>
+</span></span><span style=display:flex><span>    products <span style=color:#66d9ef>AS</span> t2
+</span></span><span style=display:flex><span><span style=color:#66d9ef>ON</span>
+</span></span><span style=display:flex><span>    t1.product_id <span style=color:#f92672>=</span> t2.product_id;
+</span></span></code></pre></div><h3 id=결과와-해석-3>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-3>#</a></h3><p>두 테이블을 JOIN하면 관련 있는 행들을 하나의 결과 집합으로 합칠 수 있어, 예를 들어 고객 정보 테이블과 주문 정보 테이블을 연결해서 각 주문에 대한 고객 정보를 함께 볼 수 있습니다. 예를 들어, 고객 ID를 기준으로 두 테이블을 조인하면 각 주문에 누가 주문했는지 쉽게 파악할 수 있습니다. 이렇게 병합된 데이터는 더 복잡한 분석이나 보고서 작성을 용이하게 해줍니다.</p><h3 id=정리된-이해-3>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-3>#</a></h3><p>JOIN은 관련 데이터를 가진 여러 테이블을 하나로 묶어 필요한 정보를 추출할 수 있게 해주는 방법입니다. 서브쿼리는 복잡한 조건이나 계산 결과를 활용하여 주 쿼리의 결과를 더욱 구체화하는 데 활용될 수 있으며, FROM절 서브쿼리를 사용하면 마치 테이블인 것처럼 활용할 수도 있습니다.</p><h2 id=총평>총평<a hidden class=anchor aria-hidden=true href=#총평>#</a></h2><h3 id=오늘-전체에서-배운-것>오늘 전체에서 배운 것<a hidden class=anchor aria-hidden=true href=#오늘-전체에서-배운-것>#</a></h3><p>오늘은 GROUP BY와 HAVING 구문으로 그룹화된 데이터에 조건을 걸고, JOIN과 서브쿼리를 활용하여 여러 테이블의 데이터를 효과적으로 결합하는 방법을 익혔습니다. 또한, UNION, INTERSECT, EXCEPT 등 집합 연산자의 활용법을 배우면서 데이터 분석의 폭을 넓힐 수 있었습니다.</p><h3 id=다음에-조심할-것>다음에 조심할 것<a hidden class=anchor aria-hidden=true href=#다음에-조심할-것>#</a></h3><p>HAVING절을 GROUP BY 뒤에 바로 적용하는 습관을 들여서, 집계된 결과에 대한 조건을 명확히 해야겠다. FROM절 서브쿼리의 활용은 아직 미흡하니, 다양한 예제를 통해 활용도를 높여야겠다. UNION ALL과 INTERSECT의 차이를 더 깊이 이해하고, 실제 상황에 맞게 사용할 수 있도록 연습해야겠다.</p><h3 id=다음-복습-주제>다음 복습 주제<a hidden class=anchor aria-hidden=true href=#다음-복습-주제>#</a></h3><p>FROM 절 서브쿼리의 활용법을 더 깊이 파악하고, 다양한 JOIN 유형(LEFT, RIGHT, FULL)을 활용한 복잡한 쿼리 작성 연습이 필요해. 또한, 윈도우 함수(Window Functions)를 학습하여 GROUP BY를 대체할 수 있는 방법도 알아봐야겠다.</p></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://Han-think.github.io/learning/2026-06-12-pm-daily/><span class=title>« Prev</span>
+<span>SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지</span>
+</a><a class=next href=https://Han-think.github.io/learning/2026-06-11-pm-daily/><span class=title>Next »</span>
+<span>SQL JOIN, 서브쿼리, 뷰, PL/SQL, 윈도우 함수 학습 정리</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
+<span>Powered by
+<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
+<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>

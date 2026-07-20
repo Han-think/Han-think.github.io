@@ -1,627 +1,158 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto" data-theme="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지 | Han-think Blog</title>
-<meta name="keywords" content="">
-<meta name="description" content="2026-06-12 오후 학습 정리">
-<meta name="author" content="">
-<link rel="canonical" href="https://Han-think.github.io/learning/2026-06-12-pm-daily/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://Han-think.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-06-12-pm-daily/">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --code-block-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-                color-scheme: dark;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .toc {
-                background: var(--entry);
-            }
-        }
-
-    </style>
-</noscript>
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else if (localStorage.getItem("pref-theme") === "light") {
-       document.querySelector("html").dataset.theme = 'light';
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else {
-        document.querySelector("html").dataset.theme = 'light';
-    }
-
-</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
-
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
-      <script>
-        var doNotTrack = false;
-        if ( true ) {
-          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
-          var doNotTrack = (dnt == "1" || dnt == "yes");
-        }
-        if (!doNotTrack) {
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-9YN1SZZ1G8');
-        }
-      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-06-12-pm-daily/">
-  <meta property="og:site_name" content="Han-think Blog">
-  <meta property="og:title" content="SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지">
-  <meta property="og:description" content="2026-06-12 오후 학습 정리">
-  <meta property="og:locale" content="ko_KR">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="learning">
-    <meta property="article:published_time" content="2026-06-12T00:00:00+00:00">
-    <meta property="article:modified_time" content="2026-06-12T00:00:00+00:00">
-
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지">
-  <meta name="twitter:description" content="2026-06-12 오후 학습 정리">
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "학습 기록",
-      "item": "https://Han-think.github.io/learning/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지",
-      "item": "https://Han-think.github.io/learning/2026-06-12-pm-daily/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지",
-  "name": "SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지",
-  "description": "2026-06-12 오후 학습 정리",
-  "keywords": [
-    
-  ],
-  "articleBody": "목차 윈도우 함수로 비율과 구간 나누기 ROLLUP, CUBE, GROUPING SETS 차이 이해하기 SQLite에서 UNION ALL로 집계 함수 흉내내기 ClassicModels ERD로 매출 순위 쿼리 읽기 CURRENT ROW로 월별 누적 매출 계산하기 LAG와 LEAD로 전월 대비 변화 읽기 SQL 학습 범위와 프롬프트 정리하기 고급 서브쿼리 유형 분류하기 서브쿼리 반환 형태와 연산자 이해하기 스칼라 서브쿼리와 DUAL 개념 이해하기 VIEW 개념과 실습 흐름 정리하기 JOIN, 서브쿼리, VIEW 퀴즈 통합 복습하기 총평 1. 윈도우 함수로 비율과 구간 나누기 무엇을 배웠나 오늘 학습을 통해 윈도우 함수 내에서 비율 계산, 누적 분포, 구간 나누기와 관련된 키워드들의 역할을 명확히 이해하게 되었다. 특히 NTILE 함수를 통해 데이터를 구간으로 나누는 개념을 익혔고, ROUND 함수가 단순히 반올림하는 것이 아니라 결과를 원하는 자릿수까지 조정하는 역할을 한다는 것을 알게 되었다. GROUP BY, SUM, AVG, COUNT, OVER, AS 등 다양한 키워드들의 활용법도 함께 학습했다.\n헷갈렸던 점 윈도우 함수에서 ROUND는 단순히 반올림인 줄 알았는데, 원하는 소수점 자리까지 조정하는 역할인 것을 몰랐습니다. 특히 NTILE은 구간 나누기라는 개념이 익숙하지 않아, 어떤 기준으로 데이터가 나뉘는지 명확하게 이해하지 못했습니다. GROUP BY, SUM, AVG, COUNT와 같은 기본 함수들은 이해하고 있었지만, 윈도우 함수 내에서 이들이 어떻게 활용되는지 파악하는 데 어려움을 겪었습니다.\n정리된 이해 윈도우 함수를 사용한 비율, 분포, 구간 나누기는 데이터 분석에서 중요한 도구이며, 특히 매출 비율 계산, 누적 분포 확인, 그리고 데이터를 특정 개수의 구간으로 분할할 때 유용합니다. ROUND는 숫자를 원하는 소수점 자리까지 반올림하고, NTILE은 데이터를 지정된 개수의 구간으로 나누어 데이터의 분포를 파악하는 데 도움을 줍니다. 이러한 함수들을 활용하면 데이터의 패턴을 더 명확하게 이해하고 분석할 수 있습니다.\nCREATE TABLE Sales ( Country TEXT, Revenue INTEGER ); INSERT INTO Sales VALUES ('KR', 100), ('US', 300), ('JP', 200); 2. ROLLUP, CUBE, GROUPING SETS 차이 이해하기 무엇을 배웠나 그룹 함수 ROLLUP, CUBE, GROUPING SETS의 차이점을 명확하게 이해하게 되었고, 이들이 어떤 집계 레벨을 생성하는지에 대한 직관적인 암기 문장을 통해 기억하기 쉬워졌습니다. 특히 SQLite에서 이 함수들을 사용할 수 없어 직접 구현해야 한다는 점을 인지하고, 이를 위한 수작업 방식을 고려해야 한다는 것을 알게 되었습니다. 이 지식을 바탕으로 더 복잡한 데이터 분석 쿼리를 작성할 수 있을 것 같습니다.\n헷갈렸던 점 처음에는 ROLLUP, CUBE, GROUPING SETS가 비슷해 보여서 어떤 차이인지 파악하는 데 어려움을 겪었습니다. 특히 SQLite에서 이 함수들을 사용할 수 없어 직접 구현해야 한다는 점이 코드를 복잡하게 만들었습니다. 암기 문장을 활용하여 각 함수의 특징을 구분하고 이해하는 데 도움이 되었습니다.\n정리된 이해 그룹 함수 ROLLUP, CUBE, GROUPING SETS는 각기 다른 방식으로 데이터의 집계 레벨을 만들어주는데, ROLLUP은 계층적인 합계를, CUBE는 가능한 모든 조합을, GROUPING SETS는 사용자가 지정한 레벨만 제공합니다. 특히 SQLite에서는 이 기능들을 직접 사용할 수 없으므로, UNION을 통해 수동으로 구현해야 복잡도가 높아집니다. 앞으로는 각 함수의 특징을 잘 이해하고, SQLite 환경에서는 UNION을 활용하여 원하는 결과를 얻도록 노력해야겠다.\n-- ROLLUP 예시 SELECT Genre, MediaType, SUM(Sales) as TotalSales FROM SalesData GROUP BY ROLLUP(Genre, MediaType); 3. SQLite에서 UNION ALL로 집계 함수 흉내내기 무엇을 배웠나 SQLite에서 ROLLUP과 같은 고급 집계 기능을 직접 지원하지 않지만, UNION ALL을 활용하여 유사한 결과를 얻을 수 있다는 것을 알게 되었다. 특히 NULL 값을 활용하여 특정 기준을 무시하고 집계하는 방법을 이해하고, 이를 통해 상세 통계, 소계, 전체 합계를 효율적으로 조합할 수 있게 되었다. 이제는 UNION을 통해 SQLite에서도 복잡한 집계 쿼리를 구현할 수 있다는 자신감이 생겼다.\n헷갈렸던 점 ROLLUP을 직접 구현하려고 할 때 쿼리가 너무 길어져서 각 부분의 역할이 무엇인지 파악하기 힘들었습니다. NULL 값을 활용하는 부분이 처음에는 데이터 누락으로 생각했지만, 집계 기준을 무시하는 역할이라는 것을 이해하는 데 시간이 걸렸습니다. UNION ALL을 이용해서 ROLLUP과 유사한 기능을 만들어내는 방식이 다소 복잡하게 느껴졌습니다.\n정리된 이해 SQLite에서 ROLLUP과 같은 기능을 직접 지원하지 않지만, UNION ALL을 활용하여 유사한 집계 결과를 만들 수 있다는 것을 알게 되었다. UNION ALL을 사용하고 NULL 값을 전략적으로 활용하면, 상세 정보, 소계, 전체 합계를 포함하는 복잡한 집계 쿼리를 만들 수 있으며, NULL 값은 특정 기준을 제외하고 결과를 집계하는 역할을 한다.\nSELECT Genre, NULL AS MediaType, SUM(COUNT(*)) AS GenreSum FROM movies GROUP BY Genre 4. ClassicModels ERD로 매출 순위 쿼리 읽기 무엇을 배웠나 ERD를 활용하여 테이블 간의 관계를 시각적으로 파악하는 것이 데이터 분석의 핵심임을 깨달았다. 특히 외래키 컬럼 이름이 달라도 테이블을 JOIN 할 수 있고, DISTINCT를 사용하여 중복된 데이터를 제거하는 방법을 익혔다. 마지막으로, RANK() 함수를 사용하여 지역별 매출 순위를 계산하는 방법을 알게 되었다.\n헷갈렸던 점 테이블 연결 시 컬럼 이름이 달라서 어떤 기준으로 JOIN 해야 할지 처음에는 혼란스러웠고, COUNT(DISTINCT)가 왜 필요한지 정확히 이해하지 못해서 고객 중복 처리 방법에 대해 막막했었다. ERD를 활용하여 데이터 흐름을 파악하고 각 테이블 간의 관계를 명확히 한 후에야 JOIN 조건을 설정하고 고객 중복을 해결할 수 있었다.\n정리된 이해 ERD를 활용하여 테이블 간의 연결을 파악하는 것이 중요하며, 특히 외래키 컬럼의 이름이 다를 경우 테이블 조인 조건을 신중하게 설정해야 한다. COUNT(DISTINCT) 함수를 사용하여 고객 데이터를 정확하게 집계하고, RANK() OVER() 함수를 통해 지역별 매출 순위를 효과적으로 분석할 수 있다. 이 과정에서 데이터 흐름을 ERD로 시각화하면 문제 해결에 도움이 된다.\nCOUNT(DISTINCT c.customerNumber) AS CustomerCount ROUND(SUM(od.quantityOrdered * od.priceEach), 2) AS TotalSales RANK() OVER (PARTITION BY off.territory ORDER BY SUM(od.quantityOrdered * od.priceEach) DESC) AS TerritoryRank 5. CURRENT ROW로 월별 누적 매출 계산하기 무엇을 배웠나 복잡해 보였던 월별 매출 누적합 쿼리를 이해하기 위해 ROUND, SUM OVER, CURRENT ROW 등의 키워드를 공부했습니다. 특히 ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW 구문은 현재 계산 중인 행까지의 누적합을 구하는 범위 지정 구문이라는 것을 알게 되었고, CURRENT ROW가 계산 과정에서 변하는 행을 기준으로 한다는 것을 이해했습니다. 이 내용을 통해 SQL 윈도우 함수를 활용한 누적합 계산 방법을 익힐 수 있었습니다.\n헷갈렸던 점 쿼리가 복잡해서 각 키워드가 어떻게 연결되는지 파악하기 어려웠고, 특히 ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW 구문이 어떤 의미인지 명확하게 이해하지 못했습니다. CURRENT ROW가 현재 행을 가리키는 것인지, 아니면 계산 과정의 위치를 나타내는 것인지 혼란스러웠습니다.\n정리된 이해 SUM OVER 구문과 함께 사용되는 ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW는 현재 행까지의 모든 이전 행을 포함하여 누적 합계를 계산하는 방법을 나타냅니다. CURRENT ROW는 계산이 진행되는 동안 현재 처리 중인 행을 가리키며, 이 기준점을 기준으로 누적 값이 업데이트됩니다. 이 구문은 시간 순서대로 데이터를 분석하거나 누적 트렌드를 파악할 때 유용합니다.\nSELECT ..., SUM(MonthlyRevenue) OVER ( ORDER BY YearMonth ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW ) AS RunningTotal 6. LAG와 LEAD로 전월 대비 변화 읽기 무엇을 배웠나 시계열 분석의 기본 원리와 핵심 용어인 MoM, LAG, LEAD를 이해하게 되었다. MoM은 전월 대비 변화를 계산하는 데 사용되고, LAG와 LEAD는 이전/이후 행의 값을 가져오는 데 활용된다는 점을 명확히 알게 되었다. SQL을 활용한 예시를 통해 이러한 개념들을 실제 데이터 분석에 적용하는 방법을 익혔다.\n헷갈렸던 점 처음 시계열 분석을 배우면서 MoM 같은 약어 때문에 어떤 의미인지 파악하는 데 시간이 걸렸고, SQL에서 비율을 읽는 방식이 헷갈렸어요. 특히 LAG와 LEAD 함수의 차이점을 명확히 이해하지 못해서 활용 방법을 익히는 데 어려움이 있었습니다.\n정리된 이해 시계열 분석은 시간에 따라 변하는 데이터를 분석하는 것이고, MoM은 전월 대비 변화를 계산하는 방식입니다. LAG는 이전 행의 데이터를 가져오고, LEAD는 다음 행의 데이터를 가져오는 함수이며, 이를 활용하여 과거와 미래의 데이터를 비교 분석할 수 있습니다. 이러한 개념들을 이해하면 매출, 주문 간격, 결제 패턴 등 다양한 시계열 데이터를 분석하는 데 도움이 됩니다.\nCASE WHEN MONTH(현재_날짜) = 1 THEN NULL ELSE (월별_매출 - 이전_월별_매출) / 이전_월별_매출 END AS MoM_Pct SELECT 주문일, LAG(주문일, 1) OVER (ORDER BY 주문일) AS 이전_주문일 FROM 주문데이터; SELECT 주문일, LEAD(주문일, 1) OVER (ORDER BY 주문일) AS 다음_주문일 FROM 주문데이터; 7. SQL 학습 범위와 프롬프트 정리하기 무엇을 배웠나 SQL 학습 과정에서 분석가 입문 단계에 필요한 핵심 개념을 명확히 하고, AI에게 SQL 쿼리를 효과적으로 지시하기 위한 필수 정보를 제공하는 방법을 알게 되었다. 특히, 목표 분석 내용, 테이블 정보, 필터 조건 등을 구체적으로 제시해야 AI가 정확한 쿼리를 생성할 수 있다는 점을 깨달았다. 실습 예시를 통해 실제 분석 상황에 적용하는 방법을 익혔다.\n헷갈렸던 점 SQL의 역할별 설명이 너무 넓어서 어디서부터 시작해야 할지 몰랐고, 전문 용어들이 많아서 부담스러웠다. AI에게 정확한 SQL 쿼리를 생성하도록 지시하는 것이 생각보다 어렵다는 점이 처음에는 꽤 당황스러웠다.\n정리된 이해 SQL 학습 시 분석가 입문 단계를 목표로, 핵심 개념 위주로 접근하고 있다. AI를 활용하여 SQL 쿼리를 생성할 때, DBMS 종류, 목표 분석 내용 등 구체적인 정보를 제공하는 것이 중요하다는 점을 깨달았다. 실습을 통해 필요한 정보 제공과 함께 단계적으로 SQL 쿼리 작성 능력을 향상시키고자 한다.\nROUND(((SUM(Sales) 이번 달) - SUM(Sales) 지난 달) / SUM(Sales) 지난 달) * 100) 8. 고급 서브쿼리 유형 분류하기 무엇을 배웠나 서브쿼리의 연관 서브쿼리와 비연관 서브쿼리의 차이점을 명확하게 이해하게 되었다. 특히 연관 서브쿼리는 메인 쿼리의 각 행에 따라 결과가 달라지는 점을, 비연관 서브쿼리는 독립적으로 실행되어 기준값을 미리 찾는다는 점을 기억해야 한다. 실습 예시를 통해 두 유형의 서브쿼리가 어떻게 활용되는지 이해하는 데 도움이 되었다.\n헷갈렸던 점 서브쿼리가 괄호 안에 있는 쿼리라는 것만으로는 연관 서브쿼리와 비연관 서브쿼리의 차이를 명확하게 이해하기 어려웠습니다. 특히 연관 서브쿼리가 어떻게 메인 쿼리의 각 행에 따라 달라지는지, 그리고 그 의미가 무엇인지 파악하는 데 어려움을 겪었습니다. 이름만으로는 그 작동 방식과 활용 사례를 쉽게 떠올릴 수 없었습니다.\n정리된 이해 서브쿼리는 메인 쿼리 안에서 필요한 데이터를 가져오는 작은 쿼리인데, 연관 서브쿼리는 메인 쿼리의 각 행에 따라 결과가 달라지는 ‘맞춤 비교’를 하는 방식이고, 비연관 서브쿼리는 독립적으로 실행되어 기준값을 먼저 찾는 방식입니다. 즉, 연관 서브쿼리는 바깥 쿼리의 컬럼을 참조하고, 비연관 서브쿼리는 독립적으로 실행된다는 점이 핵심 차이입니다.\n-- 직원 중 평균 급여보다 높은 급여를 받는 직원을 찾기 SELECT ID, NAME, SALARY FROM EMPLOYEE A WHERE SALARY \u003e ( SELECT AVG(SALARY) FROM EMPLOYEE B WHERE B.DEPARTMENT_ID = A.DEPARTMENT_ID -- 바깥 쿼리의 DEPARTMENT_ID 참조 ); 9. 서브쿼리 반환 형태와 연산자 이해하기 무엇을 배웠나 서브쿼리의 ANY와 ALL 연산자 사용법을 명확히 이해하게 되었고, 특히 ANY는 하나라도 만족하면 되는 조건, ALL은 모든 조건을 만족해야 한다는 점을 기억해야 함을 깨달았습니다. 또한 다중 컬럼 서브쿼리가 컬럼들을 함께 묶어 비교한다는 것을 이해하여 활용 방법을 익혔습니다. 다양한 데이터 형태에 따른 서브쿼리 분류 방법과 각 연산자의 사용법도 정리했습니다.\n헷갈렸던 점 ANY와 ALL 연산자를 사용할 때, 어떤 상황에 어떤 연산자를 써야 할지 감이 잘 안 잡혔어요. 특히, 여러 컬럼을 비교하는 서브쿼리에서 괄호 안의 컬럼들이 어떻게 묶여서 비교되는지 이해하는 데 어려움을 겪었습니다. 여러 행을 반환하는 서브쿼리에서 IN과 EXISTS의 차이점을 명확히 구분하는 데도 시간이 걸렸습니다.\n정리된 이해 서브쿼리는 쿼리 내부에 또 다른 쿼리를 넣어 데이터를 비교하거나 필터링하는 데 사용되며, 반환하는 데이터의 형태에 따라 단일 행 또는 다중 행 서브쿼리로 나눌 수 있습니다. ANY와 ALL 연산자는 다중 행 서브쿼리에서 중요한 역할을 하며, ANY는 하나 이상의 조건 만족, ALL은 모든 조건을 만족해야 하는 경우에 사용합니다. 다중 컬럼 서브쿼리는 괄호 안에 여러 컬럼을 넣어 함께 비교하며, 비교 대상 컬럼의 개수가 일치해야 합니다.\nSELECT ID, NAME, SALARY FROM EMPLOYEE WHERE DEPARTMENT_ID = ( SELECT DEPARTMENT_ID FROM EMPLOYEES WHERE NAME = 'ELICE' ); 10. 스칼라 서브쿼리와 DUAL 개념 이해하기 무엇을 배웠나 스칼라 서브쿼리는 단일 값만 반환하며 SELECT 절에서도 활용될 수 있다는 점을 알게 되었고, 각 행에 대한 보조 계산을 수행하는 데 유용하다는 것을 이해했습니다. 또한 DUAL 테이블은 특정 테이블 없이 계산 결과를 반환할 때 사용하며, 데이터베이스 종류에 따라 사용법이 다르다는 점을 확인했습니다. 이 내용을 바탕으로 좀 더 복잡한 쿼리를 작성할 수 있을 것 같습니다.\n헷갈렸던 점 스칼라 서브쿼리가 WHERE 절 외에 SELECT 절에서도 사용될 수 있다는 점이 처음에는 이해가 안 갔고, DUAL 테이블이 왜 필요한지, 그리고 각 데이터베이스 시스템마다 어떻게 다른지 몰랐습니다. 특히 DUAL이 Oracle에서 필수적인 이유가 명확하게 와닿지 않았습니다.\n정리된 이해 스칼라 서브쿼리는 단일 값만 반환하는 서브쿼리인데, SELECT 절을 포함한 다양한 위치에서 활용하여 각 행에 대한 보조 계산 결과를 보여줄 수 있습니다. DUAL 테이블은 특정 테이블 없이 계산 결과를 반환하기 위해 사용되며, 데이터베이스 종류에 따라 DUAL을 사용하거나 SELECT 1과 같은 다른 방식으로 대체될 수 있습니다. 이제 스칼라 서브쿼리와 DUAL의 역할을 조금 더 명확하게 이해하게 되었습니다.\nSELECT DEPARTMENT_NAME, ( SELECT COUNT(*) FROM EMPLOYEE E WHERE E.DEPARTMENT_ID = D.DEPARTMENT_ID ) AS EMPLOYEE_COUNT FROM DEPARTMENT D; SELECT ( SELECT COUNT(*) FROM EMPLOYEE WHERE DEPARTMENT_ID = 1 ) / (SELECT COUNT(*) FROM EMPLOYEE) AS DEVELOPER_RATIO FROM DUAL; 11. VIEW 개념과 실습 흐름 정리하기 무엇을 배웠나 뷰는 실제 데이터를 저장하는 테이블이 아니라, 복잡한 SELECT 문을 이름 붙여서 사용하는 가상 테이블이라는 것을 알게 되었다. 뷰는 쿼리를 실행할 때마다 동적으로 데이터를 생성하며, 복잡한 쿼리를 단순화하고 데이터 보안을 강화하는 데 사용할 수 있다. 개인 프로젝트에 뷰를 적용하는 실습을 통해 뷰의 활용 가능성을 확인했다.\n헷갈렸던 점 뷰가 실제 테이블처럼 데이터를 저장하는 것인지, 아니면 단순히 복잡한 쿼리를 저장하는 것인지 구분하는 데 어려움이 있었습니다. VIEW가 데이터를 어떻게 처리하는지, 그리고 실제 테이블과의 관계가 어떻게 되는지 명확하게 이해하지 못했습니다. 뷰가 정말 유용한 도구인지, 그리고 어떻게 활용할 수 있는지 궁금했습니다.\n정리된 이해 뷰는 실제 데이터를 저장하는 테이블이 아니라, 복잡한 SELECT 문을 이름 붙여서 만든 가상의 테이블입니다. 뷰는 쿼리를 실행할 때마다 정의된 SELECT 문에 따라 데이터를 동적으로 생성하며, 복잡한 쿼리를 단순화하거나 데이터 보안을 강화하는 데 활용할 수 있습니다. 즉, 뷰는 데이터를 저장하는 것이 아니라, 데이터를 조회하는 방식을 정의하는 개념입니다.\nCREATE VIEW EMPLOYEE_SUMMARY AS SELECT E.ID AS EMPLOYEE_ID, E.NAME AS EMPLOYE_NAME, E.SALARY, D.NAME AS DEPARTMENT_NAME FROM EMPLOYEE E LEFT JOIN DEPARTMENT D ON E.DEPARTMENT_ID = D.ID; CREATE VIEW view_public_notes AS SELECT note_id, title, date, target_section, public_policy FROM personal_notes WHERE public_policy IN ('public', 'partial-public'); 12. JOIN, 서브쿼리, VIEW 퀴즈 통합 복습하기 무엇을 배웠나 오늘 학습을 통해 JOIN과 WHERE의 역할 차이, 그리고 LEFT/RIGHT JOIN의 기준 테이블을 정확히 이해하게 되었어요. 서브쿼리 연산자들의 의미를 명확히 구분하고, VIEW가 데이터 접근을 어떻게 단순화하는지 알게 되어 SQL 쿼리 작성에 대한 자신감이 붙었습니다. 이제 실제 상황에서 다양한 JOIN과 서브쿼리를 활용하여 복잡한 데이터 분석을 수행할 수 있을 것 같아요.\n헷갈렸던 점 JOIN과 WHERE가 어떻게 다른지, 그리고 언제 어떤 JOIN을 써야 하는지 감이 잘 안 잡혔어요. 서브쿼리에서 =와 IN 같은 연산자들의 차이점도 명확하게 이해하지 못했고, VIEW가 실제로 어떤 존재인지 혼란스러웠습니다.\n정리된 이해 데이터를 연결하는 JOIN은 여러 테이블의 정보를 합쳐 보여주는 도구이고, WHERE은 연결된 결과에서 원하는 조건에 맞는 데이터만 걸러내는 역할을 합니다. 서브쿼리는 복잡한 조건을 먼저 계산해서 기준값으로 활용하며, VIEW는 실제 데이터가 저장되지 않는 가상 테이블처럼 작동하여 데이터 접근을 단순화합니다.\n-- INNER JOIN 예시: 고객과 주문 정보 결합 SELECT Customers.customer_id, Customers.customer_name, Orders.order_id, Orders.order_date FROM Customers INNER JOIN Orders ON Customers.customer_id = Orders.customer_id; -- LEFT JOIN 예시: 모든 고객과 주문 정보 결합 (주문이 없는 고객도 포함) SELECT Customers.customer_id, Customers.customer_name, Orders.order_id, Orders.order_date FROM Customers LEFT JOIN Orders ON Customers.customer_id = Orders.customer_id; -- RIGHT JOIN 예시: 모든 주문과 관련된 고객 정보 결합 (주문만 있는 경우도 포함) SELECT Customers.customer_id, Customers.customer_name, Orders.order_id, Orders.order_date FROM Customers RIGHT JOIN Orders ON Customers.customer_id = Orders.customer_id; -- SELF JOIN 예시: 직원과 그들의 매니저 정보 결합 SELECT e.employee_name AS employee, m.employee_name AS manager FROM Employees e JOIN Employees m ON e.manager_id = m.employee_id; -- 서브쿼리 IN 연산자 예시: 특정 제품을 주문한 고객 찾기 SELECT customer_id FROM Orders WHERE product_id IN (SELECT product_id FROM Products WHERE price \u003e 100); -- 서브쿼리 ANY 연산자 예시: 가격이 100보다 큰 제품 중 하나라도 포함하는 주문 찾기 SELECT order_id FROM Orders WHERE product_id ANY (SELECT product_id FROM Products WHERE price \u003e 100); -- 서브쿼리 ALL 연산자 예시: 모든 제품 가격이 50보다 큰 제품을 주문한 주문 찾기 SELECT order_id FROM Orders WHERE product_id ALL (SELECT product_id FROM Products WHERE price \u003e 50); -- 서브쿼리 EXISTS 연산자 예시: 주문이 있는 고객 찾기 SELECT customer_id FROM Customers WHERE EXISTS (SELECT 1 FROM Orders WHERE Orders.customer_id = Customers.customer_id); -- VIEW 정의 예시: 고객 주문 내역 VIEW 생성 CREATE VIEW CustomerOrders AS SELECT Customers.customer_id, Customers.customer_name, Orders.order_id, Orders.order_date FROM Customers INNER JOIN Orders ON Customers.customer_id = Orders.customer_id; -- VIEW 사용 예시 SELECT * FROM CustomerOrders; 총평 오늘 오후 전체에서 배운 것 오늘 학습을 통해 윈도우 함수, 그룹 함수, 서브쿼리, 뷰 등 SQL의 핵심 기능을 깊이 이해하게 되었고, SQLite의 제약 사항을 고려하여 쿼리를 구현하는 방법도 익혔습니다. 다양한 예제를 통해 실제 데이터 분석 상황에 적용하는 방법을 연습하며 SQL 쿼리 작성에 대한 자신감을 얻었습니다. 앞으로 복잡한 데이터 분석 쿼리를 작성하고 효율적으로 문제를 해결할 수 있을 것으로 기대됩니다.\n다음에 조심할 것 SQLite에서 ROLLUP, CUBE, GROUPING SETS와 같은 고급 집계 기능을 직접 구현하는 수작업 방식을 숙달해야 할 것 같아요. 뷰를 만들고 활용하는 과정에서 데이터베이스 종류에 따른 차이점을 고려하여 오류 없이 적용하는 연습을 꾸준히 해야겠습니다.\n다음 복습 주제 SQLite에서 ROLLUP, CUBE, GROUPING SETS와 같은 고급 집계 기능을 직접 구현하는 수작업 방식과 UNION ALL 활용법을 좀 더 깊이 숙달해서 실제 데이터 분석에 적용해보고 싶어요. 또한, 서브쿼리, 뷰, JOIN을 조합하여 더욱 복잡하고 효율적인 쿼리를 작성하는 연습을 꾸준히 할 필요가 있을 것 같습니다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
-  "wordCount" : "2531",
-  "inLanguage": "en",
-  "datePublished": "2026-06-12T00:00:00Z",
-  "dateModified": "2026-06-12T00:00:00Z",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://Han-think.github.io/learning/2026-06-12-pm-daily/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Han-think Blog",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://Han-think.github.io/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-<body id="top">
-    <header class="header">
-    <nav class="header-nav">
-        <div class="logo">
-            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
-                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu" class="menu">
-            <li>
-                <a href="https://Han-think.github.io/learning/" title="학습 로그">
-                    <span>학습 로그</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://Han-think.github.io/projects/" title="프로젝트">
-                    <span>프로젝트</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://Han-think.github.io/dev/" title="개인 개발">
-                    <span>개인 개발</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://Han-think.github.io/search/" title="검색">
-                    <span>검색</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    
-    <h1 class="post-title entry-hint-parent">
-      SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지
-    </h1>
-    <div class="post-description">
-      2026-06-12 오후 학습 정리
-    </div>
-    <div class="post-meta">
-
-<span title='2026-06-12 00:00:00 +0000 UTC'>2026년 6월 12일</span>&nbsp;·&nbsp;<span>12 min</span>
-
-</div>
-  </header> 
-  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
-<ul>
-<li>
-<ol>
-<li><a href="#1-%EC%9C%88%EB%8F%84%EC%9A%B0-%ED%95%A8%EC%88%98%EB%A1%9C-%EB%B9%84%EC%9C%A8%EA%B3%BC-%EA%B5%AC%EA%B0%84-%EB%82%98%EB%88%84%EA%B8%B0">윈도우 함수로 비율과 구간 나누기</a></li>
-</ol>
-</li>
-<li>
-<ol start="2">
-<li><a href="#2-rollup-cube-grouping-sets-%EC%B0%A8%EC%9D%B4-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">ROLLUP, CUBE, GROUPING SETS 차이 이해하기</a></li>
-</ol>
-</li>
-<li>
-<ol start="3">
-<li><a href="#3-sqlite%EC%97%90%EC%84%9C-union-all%EB%A1%9C-%EC%A7%91%EA%B3%84-%ED%95%A8%EC%88%98-%ED%9D%89%EB%82%B4%EB%82%B4%EA%B8%B0">SQLite에서 UNION ALL로 집계 함수 흉내내기</a></li>
-</ol>
-</li>
-<li>
-<ol start="4">
-<li><a href="#4-classicmodels-erd%EB%A1%9C-%EB%A7%A4%EC%B6%9C-%EC%88%9C%EC%9C%84-%EC%BF%BC%EB%A6%AC-%EC%9D%BD%EA%B8%B0">ClassicModels ERD로 매출 순위 쿼리 읽기</a></li>
-</ol>
-</li>
-<li>
-<ol start="5">
-<li><a href="#5-current-row%EB%A1%9C-%EC%9B%94%EB%B3%84-%EB%88%84%EC%A0%81-%EB%A7%A4%EC%B6%9C-%EA%B3%84%EC%82%B0%ED%95%98%EA%B8%B0">CURRENT ROW로 월별 누적 매출 계산하기</a></li>
-</ol>
-</li>
-<li>
-<ol start="6">
-<li><a href="#6-lag%EC%99%80-lead%EB%A1%9C-%EC%A0%84%EC%9B%94-%EB%8C%80%EB%B9%84-%EB%B3%80%ED%99%94-%EC%9D%BD%EA%B8%B0">LAG와 LEAD로 전월 대비 변화 읽기</a></li>
-</ol>
-</li>
-<li>
-<ol start="7">
-<li><a href="#7-sql-%ED%95%99%EC%8A%B5-%EB%B2%94%EC%9C%84%EC%99%80-%ED%94%84%EB%A1%AC%ED%94%84%ED%8A%B8-%EC%A0%95%EB%A6%AC%ED%95%98%EA%B8%B0">SQL 학습 범위와 프롬프트 정리하기</a></li>
-</ol>
-</li>
-<li>
-<ol start="8">
-<li><a href="#8-%EA%B3%A0%EA%B8%89-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC-%EC%9C%A0%ED%98%95-%EB%B6%84%EB%A5%98%ED%95%98%EA%B8%B0">고급 서브쿼리 유형 분류하기</a></li>
-</ol>
-</li>
-<li>
-<ol start="9">
-<li><a href="#9-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC-%EB%B0%98%ED%99%98-%ED%98%95%ED%83%9C%EC%99%80-%EC%97%B0%EC%82%B0%EC%9E%90-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">서브쿼리 반환 형태와 연산자 이해하기</a></li>
-</ol>
-</li>
-<li>
-<ol start="10">
-<li><a href="#10-%EC%8A%A4%EC%B9%BC%EB%9D%BC-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC%EC%99%80-dual-%EA%B0%9C%EB%85%90-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">스칼라 서브쿼리와 DUAL 개념 이해하기</a></li>
-</ol>
-</li>
-<li>
-<ol start="11">
-<li><a href="#11-view-%EA%B0%9C%EB%85%90%EA%B3%BC-%EC%8B%A4%EC%8A%B5-%ED%9D%90%EB%A6%84-%EC%A0%95%EB%A6%AC%ED%95%98%EA%B8%B0">VIEW 개념과 실습 흐름 정리하기</a></li>
-</ol>
-</li>
-<li>
-<ol start="12">
-<li><a href="#12-join-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC-view-%ED%80%B4%EC%A6%88-%ED%86%B5%ED%95%A9-%EB%B3%B5%EC%8A%B5%ED%95%98%EA%B8%B0">JOIN, 서브쿼리, VIEW 퀴즈 통합 복습하기</a></li>
-</ol>
-</li>
-<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
-</ul>
-<h2 id="1-윈도우-함수로-비율과-구간-나누기">1. 윈도우 함수로 비율과 구간 나누기<a hidden class="anchor" aria-hidden="true" href="#1-윈도우-함수로-비율과-구간-나누기">#</a></h2>
-<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
-<p>오늘 학습을 통해 윈도우 함수 내에서 비율 계산, 누적 분포, 구간 나누기와 관련된 키워드들의 역할을 명확히 이해하게 되었다. 특히 NTILE 함수를 통해 데이터를 구간으로 나누는 개념을 익혔고, ROUND 함수가 단순히 반올림하는 것이 아니라 결과를 원하는 자릿수까지 조정하는 역할을 한다는 것을 알게 되었다. GROUP BY, SUM, AVG, COUNT, OVER, AS 등 다양한 키워드들의 활용법도 함께 학습했다.</p>
-<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
-<p>윈도우 함수에서 ROUND는 단순히 반올림인 줄 알았는데, 원하는 소수점 자리까지 조정하는 역할인 것을 몰랐습니다. 특히 NTILE은 구간 나누기라는 개념이 익숙하지 않아, 어떤 기준으로 데이터가 나뉘는지 명확하게 이해하지 못했습니다. GROUP BY, SUM, AVG, COUNT와 같은 기본 함수들은 이해하고 있었지만, 윈도우 함수 내에서 이들이 어떻게 활용되는지 파악하는 데 어려움을 겪었습니다.</p>
-<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
-<p>윈도우 함수를 사용한 비율, 분포, 구간 나누기는 데이터 분석에서 중요한 도구이며, 특히 매출 비율 계산, 누적 분포 확인, 그리고 데이터를 특정 개수의 구간으로 분할할 때 유용합니다. ROUND는 숫자를 원하는 소수점 자리까지 반올림하고, NTILE은 데이터를 지정된 개수의 구간으로 나누어 데이터의 분포를 파악하는 데 도움을 줍니다. 이러한 함수들을 활용하면 데이터의 패턴을 더 명확하게 이해하고 분석할 수 있습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> Sales (
-</span></span><span style="display:flex;"><span>    Country TEXT,
-</span></span><span style="display:flex;"><span>    Revenue INTEGER
-</span></span><span style="display:flex;"><span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> Sales <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;KR&#39;</span>, <span style="color:#ae81ff">100</span>), (<span style="color:#e6db74">&#39;US&#39;</span>, <span style="color:#ae81ff">300</span>), (<span style="color:#e6db74">&#39;JP&#39;</span>, <span style="color:#ae81ff">200</span>);
-</span></span></code></pre></div><h2 id="2-rollup-cube-grouping-sets-차이-이해하기">2. ROLLUP, CUBE, GROUPING SETS 차이 이해하기<a hidden class="anchor" aria-hidden="true" href="#2-rollup-cube-grouping-sets-차이-이해하기">#</a></h2>
-<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
-<p>그룹 함수 ROLLUP, CUBE, GROUPING SETS의 차이점을 명확하게 이해하게 되었고, 이들이 어떤 집계 레벨을 생성하는지에 대한 직관적인 암기 문장을 통해 기억하기 쉬워졌습니다. 특히 SQLite에서 이 함수들을 사용할 수 없어 직접 구현해야 한다는 점을 인지하고, 이를 위한 수작업 방식을 고려해야 한다는 것을 알게 되었습니다. 이 지식을 바탕으로 더 복잡한 데이터 분석 쿼리를 작성할 수 있을 것 같습니다.</p>
-<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
-<p>처음에는 ROLLUP, CUBE, GROUPING SETS가 비슷해 보여서 어떤 차이인지 파악하는 데 어려움을 겪었습니다. 특히 SQLite에서 이 함수들을 사용할 수 없어 직접 구현해야 한다는 점이 코드를 복잡하게 만들었습니다. 암기 문장을 활용하여 각 함수의 특징을 구분하고 이해하는 데 도움이 되었습니다.</p>
-<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
-<p>그룹 함수 ROLLUP, CUBE, GROUPING SETS는 각기 다른 방식으로 데이터의 집계 레벨을 만들어주는데, ROLLUP은 계층적인 합계를, CUBE는 가능한 모든 조합을, GROUPING SETS는 사용자가 지정한 레벨만 제공합니다. 특히 SQLite에서는 이 기능들을 직접 사용할 수 없으므로, UNION을 통해 수동으로 구현해야 복잡도가 높아집니다. 앞으로는 각 함수의 특징을 잘 이해하고, SQLite 환경에서는 UNION을 활용하여 원하는 결과를 얻도록 노력해야겠다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- ROLLUP 예시
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> Genre, MediaType, <span style="color:#66d9ef">SUM</span>(Sales) <span style="color:#66d9ef">as</span> TotalSales
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> SalesData
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> <span style="color:#66d9ef">ROLLUP</span>(Genre, MediaType);
-</span></span></code></pre></div><h2 id="3-sqlite에서-union-all로-집계-함수-흉내내기">3. SQLite에서 UNION ALL로 집계 함수 흉내내기<a hidden class="anchor" aria-hidden="true" href="#3-sqlite에서-union-all로-집계-함수-흉내내기">#</a></h2>
-<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
-<p>SQLite에서 ROLLUP과 같은 고급 집계 기능을 직접 지원하지 않지만, UNION ALL을 활용하여 유사한 결과를 얻을 수 있다는 것을 알게 되었다. 특히 NULL 값을 활용하여 특정 기준을 무시하고 집계하는 방법을 이해하고, 이를 통해 상세 통계, 소계, 전체 합계를 효율적으로 조합할 수 있게 되었다. 이제는 UNION을 통해 SQLite에서도 복잡한 집계 쿼리를 구현할 수 있다는 자신감이 생겼다.</p>
-<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
-<p><code>ROLLUP</code>을 직접 구현하려고 할 때 쿼리가 너무 길어져서 각 부분의 역할이 무엇인지 파악하기 힘들었습니다. <code>NULL</code> 값을 활용하는 부분이 처음에는 데이터 누락으로 생각했지만, 집계 기준을 무시하는 역할이라는 것을 이해하는 데 시간이 걸렸습니다. <code>UNION ALL</code>을 이용해서 <code>ROLLUP</code>과 유사한 기능을 만들어내는 방식이 다소 복잡하게 느껴졌습니다.</p>
-<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
-<p>SQLite에서 ROLLUP과 같은 기능을 직접 지원하지 않지만, UNION ALL을 활용하여 유사한 집계 결과를 만들 수 있다는 것을 알게 되었다. UNION ALL을 사용하고 NULL 값을 전략적으로 활용하면, 상세 정보, 소계, 전체 합계를 포함하는 복잡한 집계 쿼리를 만들 수 있으며, NULL 값은 특정 기준을 제외하고 결과를 집계하는 역할을 한다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> Genre, <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">AS</span> MediaType, <span style="color:#66d9ef">SUM</span>(<span style="color:#66d9ef">COUNT</span>(<span style="color:#f92672">*</span>)) <span style="color:#66d9ef">AS</span> GenreSum <span style="color:#66d9ef">FROM</span> movies <span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> Genre
-</span></span></code></pre></div><h2 id="4-classicmodels-erd로-매출-순위-쿼리-읽기">4. ClassicModels ERD로 매출 순위 쿼리 읽기<a hidden class="anchor" aria-hidden="true" href="#4-classicmodels-erd로-매출-순위-쿼리-읽기">#</a></h2>
-<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
-<p>ERD를 활용하여 테이블 간의 관계를 시각적으로 파악하는 것이 데이터 분석의 핵심임을 깨달았다. 특히 외래키 컬럼 이름이 달라도 테이블을 JOIN 할 수 있고, <code>DISTINCT</code>를 사용하여 중복된 데이터를 제거하는 방법을 익혔다. 마지막으로, <code>RANK()</code> 함수를 사용하여 지역별 매출 순위를 계산하는 방법을 알게 되었다.</p>
-<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
-<p>테이블 연결 시 컬럼 이름이 달라서 어떤 기준으로 JOIN 해야 할지 처음에는 혼란스러웠고, <code>COUNT(DISTINCT)</code>가 왜 필요한지 정확히 이해하지 못해서 고객 중복 처리 방법에 대해 막막했었다. ERD를 활용하여 데이터 흐름을 파악하고 각 테이블 간의 관계를 명확히 한 후에야 JOIN 조건을 설정하고 고객 중복을 해결할 수 있었다.</p>
-<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
-<p>ERD를 활용하여 테이블 간의 연결을 파악하는 것이 중요하며, 특히 외래키 컬럼의 이름이 다를 경우 테이블 조인 조건을 신중하게 설정해야 한다. <code>COUNT(DISTINCT)</code> 함수를 사용하여 고객 데이터를 정확하게 집계하고, <code>RANK() OVER()</code> 함수를 통해 지역별 매출 순위를 효과적으로 분석할 수 있다. 이 과정에서 데이터 흐름을 ERD로 시각화하면 문제 해결에 도움이 된다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">COUNT</span>(<span style="color:#66d9ef">DISTINCT</span> <span style="color:#66d9ef">c</span>.customerNumber) <span style="color:#66d9ef">AS</span> CustomerCount
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>ROUND(<span style="color:#66d9ef">SUM</span>(od.quantityOrdered <span style="color:#f92672">*</span> od.priceEach), <span style="color:#ae81ff">2</span>) <span style="color:#66d9ef">AS</span> TotalSales
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>RANK() OVER (PARTITION <span style="color:#66d9ef">BY</span> <span style="color:#66d9ef">off</span>.territory <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#66d9ef">SUM</span>(od.quantityOrdered <span style="color:#f92672">*</span> od.priceEach) <span style="color:#66d9ef">DESC</span>) <span style="color:#66d9ef">AS</span> TerritoryRank
-</span></span></code></pre></div><h2 id="5-current-row로-월별-누적-매출-계산하기">5. CURRENT ROW로 월별 누적 매출 계산하기<a hidden class="anchor" aria-hidden="true" href="#5-current-row로-월별-누적-매출-계산하기">#</a></h2>
-<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
-<p>복잡해 보였던 월별 매출 누적합 쿼리를 이해하기 위해 <code>ROUND</code>, <code>SUM OVER</code>, <code>CURRENT ROW</code> 등의 키워드를 공부했습니다. 특히 <code>ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</code> 구문은 현재 계산 중인 행까지의 누적합을 구하는 범위 지정 구문이라는 것을 알게 되었고, <code>CURRENT ROW</code>가 계산 과정에서 변하는 행을 기준으로 한다는 것을 이해했습니다. 이 내용을 통해 SQL 윈도우 함수를 활용한 누적합 계산 방법을 익힐 수 있었습니다.</p>
-<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
-<p>쿼리가 복잡해서 각 키워드가 어떻게 연결되는지 파악하기 어려웠고, 특히 <code>ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</code> 구문이 어떤 의미인지 명확하게 이해하지 못했습니다. <code>CURRENT ROW</code>가 현재 행을 가리키는 것인지, 아니면 계산 과정의 위치를 나타내는 것인지 혼란스러웠습니다.</p>
-<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
-<p><code>SUM OVER</code> 구문과 함께 사용되는 <code>ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</code>는 현재 행까지의 모든 이전 행을 포함하여 누적 합계를 계산하는 방법을 나타냅니다. <code>CURRENT ROW</code>는 계산이 진행되는 동안 현재 처리 중인 행을 가리키며, 이 기준점을 기준으로 누적 값이 업데이트됩니다. 이 구문은 시간 순서대로 데이터를 분석하거나 누적 트렌드를 파악할 때 유용합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> ...,
-</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">SUM</span>(MonthlyRevenue) OVER (
-</span></span><span style="display:flex;"><span>           <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> YearMonth
-</span></span><span style="display:flex;"><span>           <span style="color:#66d9ef">ROWS</span> <span style="color:#66d9ef">BETWEEN</span> UNBOUNDED PRECEDING <span style="color:#66d9ef">AND</span> <span style="color:#66d9ef">CURRENT</span> <span style="color:#66d9ef">ROW</span>
-</span></span><span style="display:flex;"><span>       ) <span style="color:#66d9ef">AS</span> RunningTotal
-</span></span></code></pre></div><h2 id="6-lag와-lead로-전월-대비-변화-읽기">6. LAG와 LEAD로 전월 대비 변화 읽기<a hidden class="anchor" aria-hidden="true" href="#6-lag와-lead로-전월-대비-변화-읽기">#</a></h2>
-<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
-<p>시계열 분석의 기본 원리와 핵심 용어인 MoM, LAG, LEAD를 이해하게 되었다. MoM은 전월 대비 변화를 계산하는 데 사용되고, LAG와 LEAD는 이전/이후 행의 값을 가져오는 데 활용된다는 점을 명확히 알게 되었다. SQL을 활용한 예시를 통해 이러한 개념들을 실제 데이터 분석에 적용하는 방법을 익혔다.</p>
-<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
-<p>처음 시계열 분석을 배우면서 MoM 같은 약어 때문에 어떤 의미인지 파악하는 데 시간이 걸렸고, SQL에서 비율을 읽는 방식이 헷갈렸어요. 특히 LAG와 LEAD 함수의 차이점을 명확히 이해하지 못해서 활용 방법을 익히는 데 어려움이 있었습니다.</p>
-<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
-<p>시계열 분석은 시간에 따라 변하는 데이터를 분석하는 것이고, <code>MoM</code>은 전월 대비 변화를 계산하는 방식입니다. <code>LAG</code>는 이전 행의 데이터를 가져오고, <code>LEAD</code>는 다음 행의 데이터를 가져오는 함수이며, 이를 활용하여 과거와 미래의 데이터를 비교 분석할 수 있습니다. 이러한 개념들을 이해하면 매출, 주문 간격, 결제 패턴 등 다양한 시계열 데이터를 분석하는 데 도움이 됩니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CASE</span> <span style="color:#66d9ef">WHEN</span> <span style="color:#66d9ef">MONTH</span>(<span style="color:#960050;background-color:#1e0010">현재</span>_날짜) <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">THEN</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">ELSE</span> (<span style="color:#960050;background-color:#1e0010">월별</span>_매출 <span style="color:#f92672">-</span> <span style="color:#960050;background-color:#1e0010">이전</span>_월별_매출) <span style="color:#f92672">/</span> <span style="color:#960050;background-color:#1e0010">이전</span>_월별_매출 <span style="color:#66d9ef">END</span> <span style="color:#66d9ef">AS</span> MoM_Pct
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#960050;background-color:#1e0010">주문일</span>, LAG(<span style="color:#960050;background-color:#1e0010">주문일</span>, <span style="color:#ae81ff">1</span>) OVER (<span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#960050;background-color:#1e0010">주문일</span>) <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">이전</span>_주문일
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> <span style="color:#960050;background-color:#1e0010">주문데이터</span>;
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#960050;background-color:#1e0010">주문일</span>, LEAD(<span style="color:#960050;background-color:#1e0010">주문일</span>, <span style="color:#ae81ff">1</span>) OVER (<span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#960050;background-color:#1e0010">주문일</span>) <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">다음</span>_주문일
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> <span style="color:#960050;background-color:#1e0010">주문데이터</span>;
-</span></span></code></pre></div><h2 id="7-sql-학습-범위와-프롬프트-정리하기">7. SQL 학습 범위와 프롬프트 정리하기<a hidden class="anchor" aria-hidden="true" href="#7-sql-학습-범위와-프롬프트-정리하기">#</a></h2>
-<h3 id="무엇을-배웠나-6">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-6">#</a></h3>
-<p>SQL 학습 과정에서 분석가 입문 단계에 필요한 핵심 개념을 명확히 하고, AI에게 SQL 쿼리를 효과적으로 지시하기 위한 필수 정보를 제공하는 방법을 알게 되었다. 특히, 목표 분석 내용, 테이블 정보, 필터 조건 등을 구체적으로 제시해야 AI가 정확한 쿼리를 생성할 수 있다는 점을 깨달았다. 실습 예시를 통해 실제 분석 상황에 적용하는 방법을 익혔다.</p>
-<h3 id="헷갈렸던-점-6">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-6">#</a></h3>
-<p>SQL의 역할별 설명이 너무 넓어서 어디서부터 시작해야 할지 몰랐고, 전문 용어들이 많아서 부담스러웠다. AI에게 정확한 SQL 쿼리를 생성하도록 지시하는 것이 생각보다 어렵다는 점이 처음에는 꽤 당황스러웠다.</p>
-<h3 id="정리된-이해-6">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-6">#</a></h3>
-<p>SQL 학습 시 분석가 입문 단계를 목표로, 핵심 개념 위주로 접근하고 있다. AI를 활용하여 SQL 쿼리를 생성할 때, DBMS 종류, 목표 분석 내용 등 구체적인 정보를 제공하는 것이 중요하다는 점을 깨달았다. 실습을 통해 필요한 정보 제공과 함께 단계적으로 SQL 쿼리 작성 능력을 향상시키고자 한다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>ROUND(((<span style="color:#66d9ef">SUM</span>(Sales) <span style="color:#960050;background-color:#1e0010">이번</span> <span style="color:#960050;background-color:#1e0010">달</span>) <span style="color:#f92672">-</span> <span style="color:#66d9ef">SUM</span>(Sales) <span style="color:#960050;background-color:#1e0010">지난</span> <span style="color:#960050;background-color:#1e0010">달</span>) <span style="color:#f92672">/</span> <span style="color:#66d9ef">SUM</span>(Sales) <span style="color:#960050;background-color:#1e0010">지난</span> <span style="color:#960050;background-color:#1e0010">달</span>) <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span>)
-</span></span></code></pre></div><h2 id="8-고급-서브쿼리-유형-분류하기">8. 고급 서브쿼리 유형 분류하기<a hidden class="anchor" aria-hidden="true" href="#8-고급-서브쿼리-유형-분류하기">#</a></h2>
-<h3 id="무엇을-배웠나-7">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-7">#</a></h3>
-<p>서브쿼리의 연관 서브쿼리와 비연관 서브쿼리의 차이점을 명확하게 이해하게 되었다. 특히 연관 서브쿼리는 메인 쿼리의 각 행에 따라 결과가 달라지는 점을, 비연관 서브쿼리는 독립적으로 실행되어 기준값을 미리 찾는다는 점을 기억해야 한다. 실습 예시를 통해 두 유형의 서브쿼리가 어떻게 활용되는지 이해하는 데 도움이 되었다.</p>
-<h3 id="헷갈렸던-점-7">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-7">#</a></h3>
-<p>서브쿼리가 괄호 안에 있는 쿼리라는 것만으로는 연관 서브쿼리와 비연관 서브쿼리의 차이를 명확하게 이해하기 어려웠습니다. 특히 연관 서브쿼리가 어떻게 메인 쿼리의 각 행에 따라 달라지는지, 그리고 그 의미가 무엇인지 파악하는 데 어려움을 겪었습니다. 이름만으로는 그 작동 방식과 활용 사례를 쉽게 떠올릴 수 없었습니다.</p>
-<h3 id="정리된-이해-7">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-7">#</a></h3>
-<p>서브쿼리는 메인 쿼리 안에서 필요한 데이터를 가져오는 작은 쿼리인데, 연관 서브쿼리는 메인 쿼리의 각 행에 따라 결과가 달라지는 &lsquo;맞춤 비교&rsquo;를 하는 방식이고, 비연관 서브쿼리는 독립적으로 실행되어 기준값을 먼저 찾는 방식입니다. 즉, 연관 서브쿼리는 바깥 쿼리의 컬럼을 참조하고, 비연관 서브쿼리는 독립적으로 실행된다는 점이 핵심 차이입니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 직원 중 평균 급여보다 높은 급여를 받는 직원을 찾기
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> ID, NAME, SALARY
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> EMPLOYEE A
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> SALARY <span style="color:#f92672">&gt;</span> (
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">AVG</span>(SALARY)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">FROM</span> EMPLOYEE B
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">WHERE</span> B.DEPARTMENT_ID <span style="color:#f92672">=</span> A.DEPARTMENT_ID  <span style="color:#75715e">-- 바깥 쿼리의 DEPARTMENT_ID 참조
-</span></span></span><span style="display:flex;"><span>);
-</span></span></code></pre></div><h2 id="9-서브쿼리-반환-형태와-연산자-이해하기">9. 서브쿼리 반환 형태와 연산자 이해하기<a hidden class="anchor" aria-hidden="true" href="#9-서브쿼리-반환-형태와-연산자-이해하기">#</a></h2>
-<h3 id="무엇을-배웠나-8">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-8">#</a></h3>
-<p>서브쿼리의 <code>ANY</code>와 <code>ALL</code> 연산자 사용법을 명확히 이해하게 되었고, 특히 <code>ANY</code>는 하나라도 만족하면 되는 조건, <code>ALL</code>은 모든 조건을 만족해야 한다는 점을 기억해야 함을 깨달았습니다. 또한 다중 컬럼 서브쿼리가 컬럼들을 함께 묶어 비교한다는 것을 이해하여 활용 방법을 익혔습니다. 다양한 데이터 형태에 따른 서브쿼리 분류 방법과 각 연산자의 사용법도 정리했습니다.</p>
-<h3 id="헷갈렸던-점-8">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-8">#</a></h3>
-<p><code>ANY</code>와 <code>ALL</code> 연산자를 사용할 때, 어떤 상황에 어떤 연산자를 써야 할지 감이 잘 안 잡혔어요. 특히, 여러 컬럼을 비교하는 서브쿼리에서 괄호 안의 컬럼들이 어떻게 묶여서 비교되는지 이해하는 데 어려움을 겪었습니다. 여러 행을 반환하는 서브쿼리에서 <code>IN</code>과 <code>EXISTS</code>의 차이점을 명확히 구분하는 데도 시간이 걸렸습니다.</p>
-<h3 id="정리된-이해-8">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-8">#</a></h3>
-<p>서브쿼리는 쿼리 내부에 또 다른 쿼리를 넣어 데이터를 비교하거나 필터링하는 데 사용되며, 반환하는 데이터의 형태에 따라 단일 행 또는 다중 행 서브쿼리로 나눌 수 있습니다. <code>ANY</code>와 <code>ALL</code> 연산자는 다중 행 서브쿼리에서 중요한 역할을 하며, <code>ANY</code>는 하나 이상의 조건 만족, <code>ALL</code>은 모든 조건을 만족해야 하는 경우에 사용합니다. 다중 컬럼 서브쿼리는 괄호 안에 여러 컬럼을 넣어 함께 비교하며, 비교 대상 컬럼의 개수가 일치해야 합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> ID, NAME, SALARY
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> EMPLOYEE
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> DEPARTMENT_ID <span style="color:#f92672">=</span> (
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span> DEPARTMENT_ID
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">FROM</span> EMPLOYEES
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">WHERE</span> NAME <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;ELICE&#39;</span>
-</span></span><span style="display:flex;"><span>);
-</span></span></code></pre></div><h2 id="10-스칼라-서브쿼리와-dual-개념-이해하기">10. 스칼라 서브쿼리와 DUAL 개념 이해하기<a hidden class="anchor" aria-hidden="true" href="#10-스칼라-서브쿼리와-dual-개념-이해하기">#</a></h2>
-<h3 id="무엇을-배웠나-9">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-9">#</a></h3>
-<p>스칼라 서브쿼리는 단일 값만 반환하며 <code>SELECT</code> 절에서도 활용될 수 있다는 점을 알게 되었고, 각 행에 대한 보조 계산을 수행하는 데 유용하다는 것을 이해했습니다. 또한 <code>DUAL</code> 테이블은 특정 테이블 없이 계산 결과를 반환할 때 사용하며, 데이터베이스 종류에 따라 사용법이 다르다는 점을 확인했습니다. 이 내용을 바탕으로 좀 더 복잡한 쿼리를 작성할 수 있을 것 같습니다.</p>
-<h3 id="헷갈렸던-점-9">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-9">#</a></h3>
-<p>스칼라 서브쿼리가 WHERE 절 외에 SELECT 절에서도 사용될 수 있다는 점이 처음에는 이해가 안 갔고, DUAL 테이블이 왜 필요한지, 그리고 각 데이터베이스 시스템마다 어떻게 다른지 몰랐습니다. 특히 DUAL이 Oracle에서 필수적인 이유가 명확하게 와닿지 않았습니다.</p>
-<h3 id="정리된-이해-9">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-9">#</a></h3>
-<p>스칼라 서브쿼리는 단일 값만 반환하는 서브쿼리인데, SELECT 절을 포함한 다양한 위치에서 활용하여 각 행에 대한 보조 계산 결과를 보여줄 수 있습니다. DUAL 테이블은 특정 테이블 없이 계산 결과를 반환하기 위해 사용되며, 데이터베이스 종류에 따라 <code>DUAL</code>을 사용하거나 <code>SELECT 1</code>과 같은 다른 방식으로 대체될 수 있습니다. 이제 스칼라 서브쿼리와 DUAL의 역할을 조금 더 명확하게 이해하게 되었습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> DEPARTMENT_NAME, (
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">COUNT</span>(<span style="color:#f92672">*</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">FROM</span> EMPLOYEE E
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">WHERE</span> E.DEPARTMENT_ID <span style="color:#f92672">=</span> D.DEPARTMENT_ID
-</span></span><span style="display:flex;"><span>) <span style="color:#66d9ef">AS</span> EMPLOYEE_COUNT
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> DEPARTMENT D;
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> (
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">COUNT</span>(<span style="color:#f92672">*</span>) <span style="color:#66d9ef">FROM</span> EMPLOYEE <span style="color:#66d9ef">WHERE</span> DEPARTMENT_ID <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span>) <span style="color:#f92672">/</span> (<span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">COUNT</span>(<span style="color:#f92672">*</span>) <span style="color:#66d9ef">FROM</span> EMPLOYEE) <span style="color:#66d9ef">AS</span> DEVELOPER_RATIO
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> DUAL;
-</span></span></code></pre></div><h2 id="11-view-개념과-실습-흐름-정리하기">11. VIEW 개념과 실습 흐름 정리하기<a hidden class="anchor" aria-hidden="true" href="#11-view-개념과-실습-흐름-정리하기">#</a></h2>
-<h3 id="무엇을-배웠나-10">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-10">#</a></h3>
-<p>뷰는 실제 데이터를 저장하는 테이블이 아니라, 복잡한 SELECT 문을 이름 붙여서 사용하는 가상 테이블이라는 것을 알게 되었다. 뷰는 쿼리를 실행할 때마다 동적으로 데이터를 생성하며, 복잡한 쿼리를 단순화하고 데이터 보안을 강화하는 데 사용할 수 있다. 개인 프로젝트에 뷰를 적용하는 실습을 통해 뷰의 활용 가능성을 확인했다.</p>
-<h3 id="헷갈렸던-점-10">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-10">#</a></h3>
-<p>뷰가 실제 테이블처럼 데이터를 저장하는 것인지, 아니면 단순히 복잡한 쿼리를 저장하는 것인지 구분하는 데 어려움이 있었습니다. VIEW가 데이터를 어떻게 처리하는지, 그리고 실제 테이블과의 관계가 어떻게 되는지 명확하게 이해하지 못했습니다. 뷰가 정말 유용한 도구인지, 그리고 어떻게 활용할 수 있는지 궁금했습니다.</p>
-<h3 id="정리된-이해-10">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-10">#</a></h3>
-<p>뷰는 실제 데이터를 저장하는 테이블이 아니라, 복잡한 SELECT 문을 이름 붙여서 만든 가상의 테이블입니다. 뷰는 쿼리를 실행할 때마다 정의된 SELECT 문에 따라 데이터를 동적으로 생성하며, 복잡한 쿼리를 단순화하거나 데이터 보안을 강화하는 데 활용할 수 있습니다. 즉, 뷰는 데이터를 저장하는 것이 아니라, 데이터를 조회하는 방식을 정의하는 개념입니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">VIEW</span> EMPLOYEE_SUMMARY <span style="color:#66d9ef">AS</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
-</span></span><span style="display:flex;"><span>       E.ID <span style="color:#66d9ef">AS</span> EMPLOYEE_ID,
-</span></span><span style="display:flex;"><span>       E.NAME <span style="color:#66d9ef">AS</span> EMPLOYE_NAME,
-</span></span><span style="display:flex;"><span>       E.SALARY,
-</span></span><span style="display:flex;"><span>       D.NAME <span style="color:#66d9ef">AS</span> DEPARTMENT_NAME
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">FROM</span> EMPLOYEE E
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">LEFT</span> <span style="color:#66d9ef">JOIN</span> DEPARTMENT D <span style="color:#66d9ef">ON</span> E.DEPARTMENT_ID <span style="color:#f92672">=</span> D.ID;
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">VIEW</span> view_public_notes <span style="color:#66d9ef">AS</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
-</span></span><span style="display:flex;"><span>         note_id,
-</span></span><span style="display:flex;"><span>         title,
-</span></span><span style="display:flex;"><span>         date,
-</span></span><span style="display:flex;"><span>         target_section,
-</span></span><span style="display:flex;"><span>         public_policy
-</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">FROM</span> personal_notes
-</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">WHERE</span> public_policy <span style="color:#66d9ef">IN</span> (<span style="color:#e6db74">&#39;public&#39;</span>, <span style="color:#e6db74">&#39;partial-public&#39;</span>);
-</span></span></code></pre></div><h2 id="12-join-서브쿼리-view-퀴즈-통합-복습하기">12. JOIN, 서브쿼리, VIEW 퀴즈 통합 복습하기<a hidden class="anchor" aria-hidden="true" href="#12-join-서브쿼리-view-퀴즈-통합-복습하기">#</a></h2>
-<h3 id="무엇을-배웠나-11">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-11">#</a></h3>
-<p>오늘 학습을 통해 JOIN과 WHERE의 역할 차이, 그리고 LEFT/RIGHT JOIN의 기준 테이블을 정확히 이해하게 되었어요. 서브쿼리 연산자들의 의미를 명확히 구분하고, VIEW가 데이터 접근을 어떻게 단순화하는지 알게 되어 SQL 쿼리 작성에 대한 자신감이 붙었습니다. 이제 실제 상황에서 다양한 JOIN과 서브쿼리를 활용하여 복잡한 데이터 분석을 수행할 수 있을 것 같아요.</p>
-<h3 id="헷갈렸던-점-11">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-11">#</a></h3>
-<p>JOIN과 WHERE가 어떻게 다른지, 그리고 언제 어떤 JOIN을 써야 하는지 감이 잘 안 잡혔어요. 서브쿼리에서 <code>=</code>와 <code>IN</code> 같은 연산자들의 차이점도 명확하게 이해하지 못했고, VIEW가 실제로 어떤 존재인지 혼란스러웠습니다.</p>
-<h3 id="정리된-이해-11">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-11">#</a></h3>
-<p>데이터를 연결하는 JOIN은 여러 테이블의 정보를 합쳐 보여주는 도구이고, WHERE은 연결된 결과에서 원하는 조건에 맞는 데이터만 걸러내는 역할을 합니다. 서브쿼리는 복잡한 조건을 먼저 계산해서 기준값으로 활용하며, VIEW는 실제 데이터가 저장되지 않는 가상 테이블처럼 작동하여 데이터 접근을 단순화합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- INNER JOIN 예시: 고객과 주문 정보 결합
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
-</span></span><span style="display:flex;"><span>    Customers.customer_id,
-</span></span><span style="display:flex;"><span>    Customers.customer_name,
-</span></span><span style="display:flex;"><span>    Orders.order_id,
-</span></span><span style="display:flex;"><span>    Orders.order_date
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span>
-</span></span><span style="display:flex;"><span>    Customers
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span>
-</span></span><span style="display:flex;"><span>    Orders <span style="color:#66d9ef">ON</span> Customers.customer_id <span style="color:#f92672">=</span> Orders.customer_id;
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- LEFT JOIN 예시: 모든 고객과 주문 정보 결합 (주문이 없는 고객도 포함)
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
-</span></span><span style="display:flex;"><span>    Customers.customer_id,
-</span></span><span style="display:flex;"><span>    Customers.customer_name,
-</span></span><span style="display:flex;"><span>    Orders.order_id,
-</span></span><span style="display:flex;"><span>    Orders.order_date
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span>
-</span></span><span style="display:flex;"><span>    Customers
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">LEFT</span> <span style="color:#66d9ef">JOIN</span>
-</span></span><span style="display:flex;"><span>    Orders <span style="color:#66d9ef">ON</span> Customers.customer_id <span style="color:#f92672">=</span> Orders.customer_id;
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- RIGHT JOIN 예시: 모든 주문과 관련된 고객 정보 결합 (주문만 있는 경우도 포함)
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
-</span></span><span style="display:flex;"><span>    Customers.customer_id,
-</span></span><span style="display:flex;"><span>    Customers.customer_name,
-</span></span><span style="display:flex;"><span>    Orders.order_id,
-</span></span><span style="display:flex;"><span>    Orders.order_date
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span>
-</span></span><span style="display:flex;"><span>    Customers
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">RIGHT</span> <span style="color:#66d9ef">JOIN</span>
-</span></span><span style="display:flex;"><span>    Orders <span style="color:#66d9ef">ON</span> Customers.customer_id <span style="color:#f92672">=</span> Orders.customer_id;
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- SELF JOIN 예시: 직원과 그들의 매니저 정보 결합
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
-</span></span><span style="display:flex;"><span>    e.employee_name <span style="color:#66d9ef">AS</span> employee,
-</span></span><span style="display:flex;"><span>    m.employee_name <span style="color:#66d9ef">AS</span> manager
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span>
-</span></span><span style="display:flex;"><span>    Employees e
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">JOIN</span>
-</span></span><span style="display:flex;"><span>    Employees m <span style="color:#66d9ef">ON</span> e.manager_id <span style="color:#f92672">=</span> m.employee_id;
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 서브쿼리 IN 연산자 예시: 특정 제품을 주문한 고객 찾기
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
-</span></span><span style="display:flex;"><span>    customer_id
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span>
-</span></span><span style="display:flex;"><span>    Orders
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span>
-</span></span><span style="display:flex;"><span>    product_id <span style="color:#66d9ef">IN</span> (<span style="color:#66d9ef">SELECT</span> product_id <span style="color:#66d9ef">FROM</span> Products <span style="color:#66d9ef">WHERE</span> price <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">100</span>);
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 서브쿼리 ANY 연산자 예시: 가격이 100보다 큰 제품 중 하나라도 포함하는 주문 찾기
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
-</span></span><span style="display:flex;"><span>    order_id
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span>
-</span></span><span style="display:flex;"><span>    Orders
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span>
-</span></span><span style="display:flex;"><span>    product_id <span style="color:#66d9ef">ANY</span> (<span style="color:#66d9ef">SELECT</span> product_id <span style="color:#66d9ef">FROM</span> Products <span style="color:#66d9ef">WHERE</span> price <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">100</span>);
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 서브쿼리 ALL 연산자 예시: 모든 제품 가격이 50보다 큰 제품을 주문한 주문 찾기
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
-</span></span><span style="display:flex;"><span>    order_id
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span>
-</span></span><span style="display:flex;"><span>    Orders
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span>
-</span></span><span style="display:flex;"><span>    product_id <span style="color:#66d9ef">ALL</span> (<span style="color:#66d9ef">SELECT</span> product_id <span style="color:#66d9ef">FROM</span> Products <span style="color:#66d9ef">WHERE</span> price <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">50</span>);
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 서브쿼리 EXISTS 연산자 예시: 주문이 있는 고객 찾기
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
-</span></span><span style="display:flex;"><span>    customer_id
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span>
-</span></span><span style="display:flex;"><span>    Customers
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">EXISTS</span> (<span style="color:#66d9ef">SELECT</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">FROM</span> Orders <span style="color:#66d9ef">WHERE</span> Orders.customer_id <span style="color:#f92672">=</span> Customers.customer_id);
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- VIEW 정의 예시: 고객 주문 내역 VIEW 생성
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">VIEW</span> CustomerOrders <span style="color:#66d9ef">AS</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
-</span></span><span style="display:flex;"><span>    Customers.customer_id,
-</span></span><span style="display:flex;"><span>    Customers.customer_name,
-</span></span><span style="display:flex;"><span>    Orders.order_id,
-</span></span><span style="display:flex;"><span>    Orders.order_date
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span>
-</span></span><span style="display:flex;"><span>    Customers
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span>
-</span></span><span style="display:flex;"><span>    Orders <span style="color:#66d9ef">ON</span> Customers.customer_id <span style="color:#f92672">=</span> Orders.customer_id;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- VIEW 사용 예시
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> CustomerOrders;
-</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
-<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
-<p>오늘 학습을 통해 윈도우 함수, 그룹 함수, 서브쿼리, 뷰 등 SQL의 핵심 기능을 깊이 이해하게 되었고, SQLite의 제약 사항을 고려하여 쿼리를 구현하는 방법도 익혔습니다. 다양한 예제를 통해 실제 데이터 분석 상황에 적용하는 방법을 연습하며 SQL 쿼리 작성에 대한 자신감을 얻었습니다. 앞으로 복잡한 데이터 분석 쿼리를 작성하고 효율적으로 문제를 해결할 수 있을 것으로 기대됩니다.</p>
-<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
-<p>SQLite에서 ROLLUP, CUBE, GROUPING SETS와 같은 고급 집계 기능을 직접 구현하는 수작업 방식을 숙달해야 할 것 같아요. 뷰를 만들고 활용하는 과정에서 데이터베이스 종류에 따른 차이점을 고려하여 오류 없이 적용하는 연습을 꾸준히 해야겠습니다.</p>
-<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
-<p>SQLite에서 ROLLUP, CUBE, GROUPING SETS와 같은 고급 집계 기능을 직접 구현하는 수작업 방식과 UNION ALL 활용법을 좀 더 깊이 숙달해서 실제 데이터 분석에 적용해보고 싶어요. 또한, 서브쿼리, 뷰, JOIN을 조합하여 더욱 복잡하고 효율적인 쿼리를 작성하는 연습을 꾸준히 할 필요가 있을 것 같습니다.</p>
-<blockquote>
-<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
-This post was written with the help of a local LLM (AI).</p>
-</blockquote>
-
-
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-    </ul>
-<nav class="paginav">
-  <a class="prev" href="https://Han-think.github.io/learning/2026-06-12-am-daily/">
-    <span class="title">« Prev</span>
-    <span>SQL 윈도우 함수와 날짜 다루기, 그리고 실전 분석 능력 향상</span>
-  </a>
-  <a class="next" href="https://Han-think.github.io/learning/daily-index-v2/">
-    <span class="title">Next »</span>
-    <span>daily-index-v2</span>
-  </a>
-</nav>
-
-  </footer>
-</article>
-    </main>
-    
-<footer class="footer">
-        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
-
-    
-    
-    <span>
-        Powered by
-        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
-        <polyline points="17 11 12 6 7 11"></polyline>
-        <polyline points="17 18 12 13 7 18"></polyline>
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu');
-    if (menu) {
-        
-        const scrollPosition = localStorage.getItem("menu-scroll-position");
-        if (scrollPosition) {
-            menu.scrollLeft = parseInt(scrollPosition, 10);
-        }
-        
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var toplink = document.getElementById("top-link");
-    window.onscroll = function () {
-        const scrollThreshold = window.innerHeight;
-        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
-            toplink.classList.remove("hidden");
-        } else {
-            toplink.classList.add("hidden");
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        const html = document.querySelector("html");
-        if (html.dataset.theme === "dark") {
-            html.dataset.theme = 'light';
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            html.dataset.theme = 'dark';
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-</body>
-
-</html>
+<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지 | Han-think Blog</title><meta name=keywords content><meta name=description content="2026-06-12 오후 학습 정리"><meta name=author content><link rel=canonical href=https://Han-think.github.io/learning/2026-06-12-pm-daily/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/learning/2026-06-12-pm-daily/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/learning/2026-06-12-pm-daily/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지"><meta property="og:description" content="2026-06-12 오후 학습 정리"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="learning"><meta property="article:published_time" content="2026-06-12T00:00:00+00:00"><meta property="article:modified_time" content="2026-06-12T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지"><meta name=twitter:description content="2026-06-12 오후 학습 정리"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"학습 기록","item":"https://Han-think.github.io/learning/"},{"@type":"ListItem","position":2,"name":"SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지","item":"https://Han-think.github.io/learning/2026-06-12-pm-daily/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지","name":"SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지","description":"2026-06-12 오후 학습 정리","keywords":[],"articleBody":"목차 윈도우 함수로 비율과 구간 나누기 ROLLUP, CUBE, GROUPING SETS 차이 이해하기 SQLite에서 UNION ALL로 집계 함수 흉내내기 ClassicModels ERD로 매출 순위 쿼리 읽기 CURRENT ROW로 월별 누적 매출 계산하기 LAG와 LEAD로 전월 대비 변화 읽기 SQL 학습 범위와 프롬프트 정리하기 고급 서브쿼리 유형 분류하기 서브쿼리 반환 형태와 연산자 이해하기 스칼라 서브쿼리와 DUAL 개념 이해하기 VIEW 개념과 실습 흐름 정리하기 JOIN, 서브쿼리, VIEW 퀴즈 통합 복습하기 총평 1. 윈도우 함수로 비율과 구간 나누기 무엇을 배웠나 오늘 학습을 통해 윈도우 함수 내에서 비율 계산, 누적 분포, 구간 나누기와 관련된 키워드들의 역할을 명확히 이해하게 되었다. 특히 NTILE 함수를 통해 데이터를 구간으로 나누는 개념을 익혔고, ROUND 함수가 단순히 반올림하는 것이 아니라 결과를 원하는 자릿수까지 조정하는 역할을 한다는 것을 알게 되었다. GROUP BY, SUM, AVG, COUNT, OVER, AS 등 다양한 키워드들의 활용법도 함께 학습했다.\n헷갈렸던 점 윈도우 함수에서 ROUND는 단순히 반올림인 줄 알았는데, 원하는 소수점 자리까지 조정하는 역할인 것을 몰랐습니다. 특히 NTILE은 구간 나누기라는 개념이 익숙하지 않아, 어떤 기준으로 데이터가 나뉘는지 명확하게 이해하지 못했습니다. GROUP BY, SUM, AVG, COUNT와 같은 기본 함수들은 이해하고 있었지만, 윈도우 함수 내에서 이들이 어떻게 활용되는지 파악하는 데 어려움을 겪었습니다.\n정리된 이해 윈도우 함수를 사용한 비율, 분포, 구간 나누기는 데이터 분석에서 중요한 도구이며, 특히 매출 비율 계산, 누적 분포 확인, 그리고 데이터를 특정 개수의 구간으로 분할할 때 유용합니다. ROUND는 숫자를 원하는 소수점 자리까지 반올림하고, NTILE은 데이터를 지정된 개수의 구간으로 나누어 데이터의 분포를 파악하는 데 도움을 줍니다. 이러한 함수들을 활용하면 데이터의 패턴을 더 명확하게 이해하고 분석할 수 있습니다.\nCREATE TABLE Sales ( Country TEXT, Revenue INTEGER ); INSERT INTO Sales VALUES ('KR', 100), ('US', 300), ('JP', 200); 2. ROLLUP, CUBE, GROUPING SETS 차이 이해하기 무엇을 배웠나 그룹 함수 ROLLUP, CUBE, GROUPING SETS의 차이점을 명확하게 이해하게 되었고, 이들이 어떤 집계 레벨을 생성하는지에 대한 직관적인 암기 문장을 통해 기억하기 쉬워졌습니다. 특히 SQLite에서 이 함수들을 사용할 수 없어 직접 구현해야 한다는 점을 인지하고, 이를 위한 수작업 방식을 고려해야 한다는 것을 알게 되었습니다. 이 지식을 바탕으로 더 복잡한 데이터 분석 쿼리를 작성할 수 있을 것 같습니다.\n헷갈렸던 점 처음에는 ROLLUP, CUBE, GROUPING SETS가 비슷해 보여서 어떤 차이인지 파악하는 데 어려움을 겪었습니다. 특히 SQLite에서 이 함수들을 사용할 수 없어 직접 구현해야 한다는 점이 코드를 복잡하게 만들었습니다. 암기 문장을 활용하여 각 함수의 특징을 구분하고 이해하는 데 도움이 되었습니다.\n정리된 이해 그룹 함수 ROLLUP, CUBE, GROUPING SETS는 각기 다른 방식으로 데이터의 집계 레벨을 만들어주는데, ROLLUP은 계층적인 합계를, CUBE는 가능한 모든 조합을, GROUPING SETS는 사용자가 지정한 레벨만 제공합니다. 특히 SQLite에서는 이 기능들을 직접 사용할 수 없으므로, UNION을 통해 수동으로 구현해야 복잡도가 높아집니다. 앞으로는 각 함수의 특징을 잘 이해하고, SQLite 환경에서는 UNION을 활용하여 원하는 결과를 얻도록 노력해야겠다.\n-- ROLLUP 예시 SELECT Genre, MediaType, SUM(Sales) as TotalSales FROM SalesData GROUP BY ROLLUP(Genre, MediaType); 3. SQLite에서 UNION ALL로 집계 함수 흉내내기 무엇을 배웠나 SQLite에서 ROLLUP과 같은 고급 집계 기능을 직접 지원하지 않지만, UNION ALL을 활용하여 유사한 결과를 얻을 수 있다는 것을 알게 되었다. 특히 NULL 값을 활용하여 특정 기준을 무시하고 집계하는 방법을 이해하고, 이를 통해 상세 통계, 소계, 전체 합계를 효율적으로 조합할 수 있게 되었다. 이제는 UNION을 통해 SQLite에서도 복잡한 집계 쿼리를 구현할 수 있다는 자신감이 생겼다.\n헷갈렸던 점 ROLLUP을 직접 구현하려고 할 때 쿼리가 너무 길어져서 각 부분의 역할이 무엇인지 파악하기 힘들었습니다. NULL 값을 활용하는 부분이 처음에는 데이터 누락으로 생각했지만, 집계 기준을 무시하는 역할이라는 것을 이해하는 데 시간이 걸렸습니다. UNION ALL을 이용해서 ROLLUP과 유사한 기능을 만들어내는 방식이 다소 복잡하게 느껴졌습니다.\n정리된 이해 SQLite에서 ROLLUP과 같은 기능을 직접 지원하지 않지만, UNION ALL을 활용하여 유사한 집계 결과를 만들 수 있다는 것을 알게 되었다. UNION ALL을 사용하고 NULL 값을 전략적으로 활용하면, 상세 정보, 소계, 전체 합계를 포함하는 복잡한 집계 쿼리를 만들 수 있으며, NULL 값은 특정 기준을 제외하고 결과를 집계하는 역할을 한다.\nSELECT Genre, NULL AS MediaType, SUM(COUNT(*)) AS GenreSum FROM movies GROUP BY Genre 4. ClassicModels ERD로 매출 순위 쿼리 읽기 무엇을 배웠나 ERD를 활용하여 테이블 간의 관계를 시각적으로 파악하는 것이 데이터 분석의 핵심임을 깨달았다. 특히 외래키 컬럼 이름이 달라도 테이블을 JOIN 할 수 있고, DISTINCT를 사용하여 중복된 데이터를 제거하는 방법을 익혔다. 마지막으로, RANK() 함수를 사용하여 지역별 매출 순위를 계산하는 방법을 알게 되었다.\n헷갈렸던 점 테이블 연결 시 컬럼 이름이 달라서 어떤 기준으로 JOIN 해야 할지 처음에는 혼란스러웠고, COUNT(DISTINCT)가 왜 필요한지 정확히 이해하지 못해서 고객 중복 처리 방법에 대해 막막했었다. ERD를 활용하여 데이터 흐름을 파악하고 각 테이블 간의 관계를 명확히 한 후에야 JOIN 조건을 설정하고 고객 중복을 해결할 수 있었다.\n정리된 이해 ERD를 활용하여 테이블 간의 연결을 파악하는 것이 중요하며, 특히 외래키 컬럼의 이름이 다를 경우 테이블 조인 조건을 신중하게 설정해야 한다. COUNT(DISTINCT) 함수를 사용하여 고객 데이터를 정확하게 집계하고, RANK() OVER() 함수를 통해 지역별 매출 순위를 효과적으로 분석할 수 있다. 이 과정에서 데이터 흐름을 ERD로 시각화하면 문제 해결에 도움이 된다.\nCOUNT(DISTINCT c.customerNumber) AS CustomerCount ROUND(SUM(od.quantityOrdered * od.priceEach), 2) AS TotalSales RANK() OVER (PARTITION BY off.territory ORDER BY SUM(od.quantityOrdered * od.priceEach) DESC) AS TerritoryRank 5. CURRENT ROW로 월별 누적 매출 계산하기 무엇을 배웠나 복잡해 보였던 월별 매출 누적합 쿼리를 이해하기 위해 ROUND, SUM OVER, CURRENT ROW 등의 키워드를 공부했습니다. 특히 ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW 구문은 현재 계산 중인 행까지의 누적합을 구하는 범위 지정 구문이라는 것을 알게 되었고, CURRENT ROW가 계산 과정에서 변하는 행을 기준으로 한다는 것을 이해했습니다. 이 내용을 통해 SQL 윈도우 함수를 활용한 누적합 계산 방법을 익힐 수 있었습니다.\n헷갈렸던 점 쿼리가 복잡해서 각 키워드가 어떻게 연결되는지 파악하기 어려웠고, 특히 ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW 구문이 어떤 의미인지 명확하게 이해하지 못했습니다. CURRENT ROW가 현재 행을 가리키는 것인지, 아니면 계산 과정의 위치를 나타내는 것인지 혼란스러웠습니다.\n정리된 이해 SUM OVER 구문과 함께 사용되는 ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW는 현재 행까지의 모든 이전 행을 포함하여 누적 합계를 계산하는 방법을 나타냅니다. CURRENT ROW는 계산이 진행되는 동안 현재 처리 중인 행을 가리키며, 이 기준점을 기준으로 누적 값이 업데이트됩니다. 이 구문은 시간 순서대로 데이터를 분석하거나 누적 트렌드를 파악할 때 유용합니다.\nSELECT ..., SUM(MonthlyRevenue) OVER ( ORDER BY YearMonth ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW ) AS RunningTotal 6. LAG와 LEAD로 전월 대비 변화 읽기 무엇을 배웠나 시계열 분석의 기본 원리와 핵심 용어인 MoM, LAG, LEAD를 이해하게 되었다. MoM은 전월 대비 변화를 계산하는 데 사용되고, LAG와 LEAD는 이전/이후 행의 값을 가져오는 데 활용된다는 점을 명확히 알게 되었다. SQL을 활용한 예시를 통해 이러한 개념들을 실제 데이터 분석에 적용하는 방법을 익혔다.\n헷갈렸던 점 처음 시계열 분석을 배우면서 MoM 같은 약어 때문에 어떤 의미인지 파악하는 데 시간이 걸렸고, SQL에서 비율을 읽는 방식이 헷갈렸어요. 특히 LAG와 LEAD 함수의 차이점을 명확히 이해하지 못해서 활용 방법을 익히는 데 어려움이 있었습니다.\n정리된 이해 시계열 분석은 시간에 따라 변하는 데이터를 분석하는 것이고, MoM은 전월 대비 변화를 계산하는 방식입니다. LAG는 이전 행의 데이터를 가져오고, LEAD는 다음 행의 데이터를 가져오는 함수이며, 이를 활용하여 과거와 미래의 데이터를 비교 분석할 수 있습니다. 이러한 개념들을 이해하면 매출, 주문 간격, 결제 패턴 등 다양한 시계열 데이터를 분석하는 데 도움이 됩니다.\nCASE WHEN MONTH(현재_날짜) = 1 THEN NULL ELSE (월별_매출 - 이전_월별_매출) / 이전_월별_매출 END AS MoM_Pct SELECT 주문일, LAG(주문일, 1) OVER (ORDER BY 주문일) AS 이전_주문일 FROM 주문데이터; SELECT 주문일, LEAD(주문일, 1) OVER (ORDER BY 주문일) AS 다음_주문일 FROM 주문데이터; 7. SQL 학습 범위와 프롬프트 정리하기 무엇을 배웠나 SQL 학습 과정에서 분석가 입문 단계에 필요한 핵심 개념을 명확히 하고, AI에게 SQL 쿼리를 효과적으로 지시하기 위한 필수 정보를 제공하는 방법을 알게 되었다. 특히, 목표 분석 내용, 테이블 정보, 필터 조건 등을 구체적으로 제시해야 AI가 정확한 쿼리를 생성할 수 있다는 점을 깨달았다. 실습 예시를 통해 실제 분석 상황에 적용하는 방법을 익혔다.\n헷갈렸던 점 SQL의 역할별 설명이 너무 넓어서 어디서부터 시작해야 할지 몰랐고, 전문 용어들이 많아서 부담스러웠다. AI에게 정확한 SQL 쿼리를 생성하도록 지시하는 것이 생각보다 어렵다는 점이 처음에는 꽤 당황스러웠다.\n정리된 이해 SQL 학습 시 분석가 입문 단계를 목표로, 핵심 개념 위주로 접근하고 있다. AI를 활용하여 SQL 쿼리를 생성할 때, DBMS 종류, 목표 분석 내용 등 구체적인 정보를 제공하는 것이 중요하다는 점을 깨달았다. 실습을 통해 필요한 정보 제공과 함께 단계적으로 SQL 쿼리 작성 능력을 향상시키고자 한다.\nROUND(((SUM(Sales) 이번 달) - SUM(Sales) 지난 달) / SUM(Sales) 지난 달) * 100) 8. 고급 서브쿼리 유형 분류하기 무엇을 배웠나 서브쿼리의 연관 서브쿼리와 비연관 서브쿼리의 차이점을 명확하게 이해하게 되었다. 특히 연관 서브쿼리는 메인 쿼리의 각 행에 따라 결과가 달라지는 점을, 비연관 서브쿼리는 독립적으로 실행되어 기준값을 미리 찾는다는 점을 기억해야 한다. 실습 예시를 통해 두 유형의 서브쿼리가 어떻게 활용되는지 이해하는 데 도움이 되었다.\n헷갈렸던 점 서브쿼리가 괄호 안에 있는 쿼리라는 것만으로는 연관 서브쿼리와 비연관 서브쿼리의 차이를 명확하게 이해하기 어려웠습니다. 특히 연관 서브쿼리가 어떻게 메인 쿼리의 각 행에 따라 달라지는지, 그리고 그 의미가 무엇인지 파악하는 데 어려움을 겪었습니다. 이름만으로는 그 작동 방식과 활용 사례를 쉽게 떠올릴 수 없었습니다.\n정리된 이해 서브쿼리는 메인 쿼리 안에서 필요한 데이터를 가져오는 작은 쿼리인데, 연관 서브쿼리는 메인 쿼리의 각 행에 따라 결과가 달라지는 ‘맞춤 비교’를 하는 방식이고, 비연관 서브쿼리는 독립적으로 실행되어 기준값을 먼저 찾는 방식입니다. 즉, 연관 서브쿼리는 바깥 쿼리의 컬럼을 참조하고, 비연관 서브쿼리는 독립적으로 실행된다는 점이 핵심 차이입니다.\n-- 직원 중 평균 급여보다 높은 급여를 받는 직원을 찾기 SELECT ID, NAME, SALARY FROM EMPLOYEE A WHERE SALARY \u003e ( SELECT AVG(SALARY) FROM EMPLOYEE B WHERE B.DEPARTMENT_ID = A.DEPARTMENT_ID -- 바깥 쿼리의 DEPARTMENT_ID 참조 ); 9. 서브쿼리 반환 형태와 연산자 이해하기 무엇을 배웠나 서브쿼리의 ANY와 ALL 연산자 사용법을 명확히 이해하게 되었고, 특히 ANY는 하나라도 만족하면 되는 조건, ALL은 모든 조건을 만족해야 한다는 점을 기억해야 함을 깨달았습니다. 또한 다중 컬럼 서브쿼리가 컬럼들을 함께 묶어 비교한다는 것을 이해하여 활용 방법을 익혔습니다. 다양한 데이터 형태에 따른 서브쿼리 분류 방법과 각 연산자의 사용법도 정리했습니다.\n헷갈렸던 점 ANY와 ALL 연산자를 사용할 때, 어떤 상황에 어떤 연산자를 써야 할지 감이 잘 안 잡혔어요. 특히, 여러 컬럼을 비교하는 서브쿼리에서 괄호 안의 컬럼들이 어떻게 묶여서 비교되는지 이해하는 데 어려움을 겪었습니다. 여러 행을 반환하는 서브쿼리에서 IN과 EXISTS의 차이점을 명확히 구분하는 데도 시간이 걸렸습니다.\n정리된 이해 서브쿼리는 쿼리 내부에 또 다른 쿼리를 넣어 데이터를 비교하거나 필터링하는 데 사용되며, 반환하는 데이터의 형태에 따라 단일 행 또는 다중 행 서브쿼리로 나눌 수 있습니다. ANY와 ALL 연산자는 다중 행 서브쿼리에서 중요한 역할을 하며, ANY는 하나 이상의 조건 만족, ALL은 모든 조건을 만족해야 하는 경우에 사용합니다. 다중 컬럼 서브쿼리는 괄호 안에 여러 컬럼을 넣어 함께 비교하며, 비교 대상 컬럼의 개수가 일치해야 합니다.\nSELECT ID, NAME, SALARY FROM EMPLOYEE WHERE DEPARTMENT_ID = ( SELECT DEPARTMENT_ID FROM EMPLOYEES WHERE NAME = 'ELICE' ); 10. 스칼라 서브쿼리와 DUAL 개념 이해하기 무엇을 배웠나 스칼라 서브쿼리는 단일 값만 반환하며 SELECT 절에서도 활용될 수 있다는 점을 알게 되었고, 각 행에 대한 보조 계산을 수행하는 데 유용하다는 것을 이해했습니다. 또한 DUAL 테이블은 특정 테이블 없이 계산 결과를 반환할 때 사용하며, 데이터베이스 종류에 따라 사용법이 다르다는 점을 확인했습니다. 이 내용을 바탕으로 좀 더 복잡한 쿼리를 작성할 수 있을 것 같습니다.\n헷갈렸던 점 스칼라 서브쿼리가 WHERE 절 외에 SELECT 절에서도 사용될 수 있다는 점이 처음에는 이해가 안 갔고, DUAL 테이블이 왜 필요한지, 그리고 각 데이터베이스 시스템마다 어떻게 다른지 몰랐습니다. 특히 DUAL이 Oracle에서 필수적인 이유가 명확하게 와닿지 않았습니다.\n정리된 이해 스칼라 서브쿼리는 단일 값만 반환하는 서브쿼리인데, SELECT 절을 포함한 다양한 위치에서 활용하여 각 행에 대한 보조 계산 결과를 보여줄 수 있습니다. DUAL 테이블은 특정 테이블 없이 계산 결과를 반환하기 위해 사용되며, 데이터베이스 종류에 따라 DUAL을 사용하거나 SELECT 1과 같은 다른 방식으로 대체될 수 있습니다. 이제 스칼라 서브쿼리와 DUAL의 역할을 조금 더 명확하게 이해하게 되었습니다.\nSELECT DEPARTMENT_NAME, ( SELECT COUNT(*) FROM EMPLOYEE E WHERE E.DEPARTMENT_ID = D.DEPARTMENT_ID ) AS EMPLOYEE_COUNT FROM DEPARTMENT D; SELECT ( SELECT COUNT(*) FROM EMPLOYEE WHERE DEPARTMENT_ID = 1 ) / (SELECT COUNT(*) FROM EMPLOYEE) AS DEVELOPER_RATIO FROM DUAL; 11. VIEW 개념과 실습 흐름 정리하기 무엇을 배웠나 뷰는 실제 데이터를 저장하는 테이블이 아니라, 복잡한 SELECT 문을 이름 붙여서 사용하는 가상 테이블이라는 것을 알게 되었다. 뷰는 쿼리를 실행할 때마다 동적으로 데이터를 생성하며, 복잡한 쿼리를 단순화하고 데이터 보안을 강화하는 데 사용할 수 있다. 개인 프로젝트에 뷰를 적용하는 실습을 통해 뷰의 활용 가능성을 확인했다.\n헷갈렸던 점 뷰가 실제 테이블처럼 데이터를 저장하는 것인지, 아니면 단순히 복잡한 쿼리를 저장하는 것인지 구분하는 데 어려움이 있었습니다. VIEW가 데이터를 어떻게 처리하는지, 그리고 실제 테이블과의 관계가 어떻게 되는지 명확하게 이해하지 못했습니다. 뷰가 정말 유용한 도구인지, 그리고 어떻게 활용할 수 있는지 궁금했습니다.\n정리된 이해 뷰는 실제 데이터를 저장하는 테이블이 아니라, 복잡한 SELECT 문을 이름 붙여서 만든 가상의 테이블입니다. 뷰는 쿼리를 실행할 때마다 정의된 SELECT 문에 따라 데이터를 동적으로 생성하며, 복잡한 쿼리를 단순화하거나 데이터 보안을 강화하는 데 활용할 수 있습니다. 즉, 뷰는 데이터를 저장하는 것이 아니라, 데이터를 조회하는 방식을 정의하는 개념입니다.\nCREATE VIEW EMPLOYEE_SUMMARY AS SELECT E.ID AS EMPLOYEE_ID, E.NAME AS EMPLOYE_NAME, E.SALARY, D.NAME AS DEPARTMENT_NAME FROM EMPLOYEE E LEFT JOIN DEPARTMENT D ON E.DEPARTMENT_ID = D.ID; CREATE VIEW view_public_notes AS SELECT note_id, title, date, target_section, public_policy FROM personal_notes WHERE public_policy IN ('public', 'partial-public'); 12. JOIN, 서브쿼리, VIEW 퀴즈 통합 복습하기 무엇을 배웠나 오늘 학습을 통해 JOIN과 WHERE의 역할 차이, 그리고 LEFT/RIGHT JOIN의 기준 테이블을 정확히 이해하게 되었어요. 서브쿼리 연산자들의 의미를 명확히 구분하고, VIEW가 데이터 접근을 어떻게 단순화하는지 알게 되어 SQL 쿼리 작성에 대한 자신감이 붙었습니다. 이제 실제 상황에서 다양한 JOIN과 서브쿼리를 활용하여 복잡한 데이터 분석을 수행할 수 있을 것 같아요.\n헷갈렸던 점 JOIN과 WHERE가 어떻게 다른지, 그리고 언제 어떤 JOIN을 써야 하는지 감이 잘 안 잡혔어요. 서브쿼리에서 =와 IN 같은 연산자들의 차이점도 명확하게 이해하지 못했고, VIEW가 실제로 어떤 존재인지 혼란스러웠습니다.\n정리된 이해 데이터를 연결하는 JOIN은 여러 테이블의 정보를 합쳐 보여주는 도구이고, WHERE은 연결된 결과에서 원하는 조건에 맞는 데이터만 걸러내는 역할을 합니다. 서브쿼리는 복잡한 조건을 먼저 계산해서 기준값으로 활용하며, VIEW는 실제 데이터가 저장되지 않는 가상 테이블처럼 작동하여 데이터 접근을 단순화합니다.\n-- INNER JOIN 예시: 고객과 주문 정보 결합 SELECT Customers.customer_id, Customers.customer_name, Orders.order_id, Orders.order_date FROM Customers INNER JOIN Orders ON Customers.customer_id = Orders.customer_id; -- LEFT JOIN 예시: 모든 고객과 주문 정보 결합 (주문이 없는 고객도 포함) SELECT Customers.customer_id, Customers.customer_name, Orders.order_id, Orders.order_date FROM Customers LEFT JOIN Orders ON Customers.customer_id = Orders.customer_id; -- RIGHT JOIN 예시: 모든 주문과 관련된 고객 정보 결합 (주문만 있는 경우도 포함) SELECT Customers.customer_id, Customers.customer_name, Orders.order_id, Orders.order_date FROM Customers RIGHT JOIN Orders ON Customers.customer_id = Orders.customer_id; -- SELF JOIN 예시: 직원과 그들의 매니저 정보 결합 SELECT e.employee_name AS employee, m.employee_name AS manager FROM Employees e JOIN Employees m ON e.manager_id = m.employee_id; -- 서브쿼리 IN 연산자 예시: 특정 제품을 주문한 고객 찾기 SELECT customer_id FROM Orders WHERE product_id IN (SELECT product_id FROM Products WHERE price \u003e 100); -- 서브쿼리 ANY 연산자 예시: 가격이 100보다 큰 제품 중 하나라도 포함하는 주문 찾기 SELECT order_id FROM Orders WHERE product_id ANY (SELECT product_id FROM Products WHERE price \u003e 100); -- 서브쿼리 ALL 연산자 예시: 모든 제품 가격이 50보다 큰 제품을 주문한 주문 찾기 SELECT order_id FROM Orders WHERE product_id ALL (SELECT product_id FROM Products WHERE price \u003e 50); -- 서브쿼리 EXISTS 연산자 예시: 주문이 있는 고객 찾기 SELECT customer_id FROM Customers WHERE EXISTS (SELECT 1 FROM Orders WHERE Orders.customer_id = Customers.customer_id); -- VIEW 정의 예시: 고객 주문 내역 VIEW 생성 CREATE VIEW CustomerOrders AS SELECT Customers.customer_id, Customers.customer_name, Orders.order_id, Orders.order_date FROM Customers INNER JOIN Orders ON Customers.customer_id = Orders.customer_id; -- VIEW 사용 예시 SELECT * FROM CustomerOrders; 총평 오늘 오후 전체에서 배운 것 오늘 학습을 통해 윈도우 함수, 그룹 함수, 서브쿼리, 뷰 등 SQL의 핵심 기능을 깊이 이해하게 되었고, SQLite의 제약 사항을 고려하여 쿼리를 구현하는 방법도 익혔습니다. 다양한 예제를 통해 실제 데이터 분석 상황에 적용하는 방법을 연습하며 SQL 쿼리 작성에 대한 자신감을 얻었습니다. 앞으로 복잡한 데이터 분석 쿼리를 작성하고 효율적으로 문제를 해결할 수 있을 것으로 기대됩니다.\n다음에 조심할 것 SQLite에서 ROLLUP, CUBE, GROUPING SETS와 같은 고급 집계 기능을 직접 구현하는 수작업 방식을 숙달해야 할 것 같아요. 뷰를 만들고 활용하는 과정에서 데이터베이스 종류에 따른 차이점을 고려하여 오류 없이 적용하는 연습을 꾸준히 해야겠습니다.\n다음 복습 주제 SQLite에서 ROLLUP, CUBE, GROUPING SETS와 같은 고급 집계 기능을 직접 구현하는 수작업 방식과 UNION ALL 활용법을 좀 더 깊이 숙달해서 실제 데이터 분석에 적용해보고 싶어요. 또한, 서브쿼리, 뷰, JOIN을 조합하여 더욱 복잡하고 효율적인 쿼리를 작성하는 연습을 꾸준히 할 필요가 있을 것 같습니다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n","wordCount":"2531","inLanguage":"en","datePublished":"2026-06-12T00:00:00Z","dateModified":"2026-06-12T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/learning/2026-06-12-pm-daily/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
+<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지</h1><div class=post-description>2026-06-12 오후 학습 정리</div><div class=post-meta><span title='2026-06-12 00:00:00 +0000 UTC'>2026년 6월 12일</span>&nbsp;·&nbsp;<span>12 min</span></div></header><div class="post-content md-content"><h2 id=목차>목차<a hidden class=anchor aria-hidden=true href=#목차>#</a></h2><ul><li><ol><li><a href=#1-%EC%9C%88%EB%8F%84%EC%9A%B0-%ED%95%A8%EC%88%98%EB%A1%9C-%EB%B9%84%EC%9C%A8%EA%B3%BC-%EA%B5%AC%EA%B0%84-%EB%82%98%EB%88%84%EA%B8%B0>윈도우 함수로 비율과 구간 나누기</a></li></ol></li><li><ol start=2><li><a href=#2-rollup-cube-grouping-sets-%EC%B0%A8%EC%9D%B4-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0>ROLLUP, CUBE, GROUPING SETS 차이 이해하기</a></li></ol></li><li><ol start=3><li><a href=#3-sqlite%EC%97%90%EC%84%9C-union-all%EB%A1%9C-%EC%A7%91%EA%B3%84-%ED%95%A8%EC%88%98-%ED%9D%89%EB%82%B4%EB%82%B4%EA%B8%B0>SQLite에서 UNION ALL로 집계 함수 흉내내기</a></li></ol></li><li><ol start=4><li><a href=#4-classicmodels-erd%EB%A1%9C-%EB%A7%A4%EC%B6%9C-%EC%88%9C%EC%9C%84-%EC%BF%BC%EB%A6%AC-%EC%9D%BD%EA%B8%B0>ClassicModels ERD로 매출 순위 쿼리 읽기</a></li></ol></li><li><ol start=5><li><a href=#5-current-row%EB%A1%9C-%EC%9B%94%EB%B3%84-%EB%88%84%EC%A0%81-%EB%A7%A4%EC%B6%9C-%EA%B3%84%EC%82%B0%ED%95%98%EA%B8%B0>CURRENT ROW로 월별 누적 매출 계산하기</a></li></ol></li><li><ol start=6><li><a href=#6-lag%EC%99%80-lead%EB%A1%9C-%EC%A0%84%EC%9B%94-%EB%8C%80%EB%B9%84-%EB%B3%80%ED%99%94-%EC%9D%BD%EA%B8%B0>LAG와 LEAD로 전월 대비 변화 읽기</a></li></ol></li><li><ol start=7><li><a href=#7-sql-%ED%95%99%EC%8A%B5-%EB%B2%94%EC%9C%84%EC%99%80-%ED%94%84%EB%A1%AC%ED%94%84%ED%8A%B8-%EC%A0%95%EB%A6%AC%ED%95%98%EA%B8%B0>SQL 학습 범위와 프롬프트 정리하기</a></li></ol></li><li><ol start=8><li><a href=#8-%EA%B3%A0%EA%B8%89-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC-%EC%9C%A0%ED%98%95-%EB%B6%84%EB%A5%98%ED%95%98%EA%B8%B0>고급 서브쿼리 유형 분류하기</a></li></ol></li><li><ol start=9><li><a href=#9-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC-%EB%B0%98%ED%99%98-%ED%98%95%ED%83%9C%EC%99%80-%EC%97%B0%EC%82%B0%EC%9E%90-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0>서브쿼리 반환 형태와 연산자 이해하기</a></li></ol></li><li><ol start=10><li><a href=#10-%EC%8A%A4%EC%B9%BC%EB%9D%BC-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC%EC%99%80-dual-%EA%B0%9C%EB%85%90-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0>스칼라 서브쿼리와 DUAL 개념 이해하기</a></li></ol></li><li><ol start=11><li><a href=#11-view-%EA%B0%9C%EB%85%90%EA%B3%BC-%EC%8B%A4%EC%8A%B5-%ED%9D%90%EB%A6%84-%EC%A0%95%EB%A6%AC%ED%95%98%EA%B8%B0>VIEW 개념과 실습 흐름 정리하기</a></li></ol></li><li><ol start=12><li><a href=#12-join-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC-view-%ED%80%B4%EC%A6%88-%ED%86%B5%ED%95%A9-%EB%B3%B5%EC%8A%B5%ED%95%98%EA%B8%B0>JOIN, 서브쿼리, VIEW 퀴즈 통합 복습하기</a></li></ol></li><li><a href=#%EC%B4%9D%ED%8F%89>총평</a></li></ul><h2 id=1-윈도우-함수로-비율과-구간-나누기>1. 윈도우 함수로 비율과 구간 나누기<a hidden class=anchor aria-hidden=true href=#1-윈도우-함수로-비율과-구간-나누기>#</a></h2><h3 id=무엇을-배웠나>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나>#</a></h3><p>오늘 학습을 통해 윈도우 함수 내에서 비율 계산, 누적 분포, 구간 나누기와 관련된 키워드들의 역할을 명확히 이해하게 되었다. 특히 NTILE 함수를 통해 데이터를 구간으로 나누는 개념을 익혔고, ROUND 함수가 단순히 반올림하는 것이 아니라 결과를 원하는 자릿수까지 조정하는 역할을 한다는 것을 알게 되었다. GROUP BY, SUM, AVG, COUNT, OVER, AS 등 다양한 키워드들의 활용법도 함께 학습했다.</p><h3 id=헷갈렸던-점>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점>#</a></h3><p>윈도우 함수에서 ROUND는 단순히 반올림인 줄 알았는데, 원하는 소수점 자리까지 조정하는 역할인 것을 몰랐습니다. 특히 NTILE은 구간 나누기라는 개념이 익숙하지 않아, 어떤 기준으로 데이터가 나뉘는지 명확하게 이해하지 못했습니다. GROUP BY, SUM, AVG, COUNT와 같은 기본 함수들은 이해하고 있었지만, 윈도우 함수 내에서 이들이 어떻게 활용되는지 파악하는 데 어려움을 겪었습니다.</p><h3 id=정리된-이해>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해>#</a></h3><p>윈도우 함수를 사용한 비율, 분포, 구간 나누기는 데이터 분석에서 중요한 도구이며, 특히 매출 비율 계산, 누적 분포 확인, 그리고 데이터를 특정 개수의 구간으로 분할할 때 유용합니다. ROUND는 숫자를 원하는 소수점 자리까지 반올림하고, NTILE은 데이터를 지정된 개수의 구간으로 나누어 데이터의 분포를 파악하는 데 도움을 줍니다. 이러한 함수들을 활용하면 데이터의 패턴을 더 명확하게 이해하고 분석할 수 있습니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>CREATE</span> <span style=color:#66d9ef>TABLE</span> Sales (
+</span></span><span style=display:flex><span>    Country TEXT,
+</span></span><span style=display:flex><span>    Revenue INTEGER
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>INSERT</span> <span style=color:#66d9ef>INTO</span> Sales <span style=color:#66d9ef>VALUES</span> (<span style=color:#e6db74>&#39;KR&#39;</span>, <span style=color:#ae81ff>100</span>), (<span style=color:#e6db74>&#39;US&#39;</span>, <span style=color:#ae81ff>300</span>), (<span style=color:#e6db74>&#39;JP&#39;</span>, <span style=color:#ae81ff>200</span>);
+</span></span></code></pre></div><h2 id=2-rollup-cube-grouping-sets-차이-이해하기>2. ROLLUP, CUBE, GROUPING SETS 차이 이해하기<a hidden class=anchor aria-hidden=true href=#2-rollup-cube-grouping-sets-차이-이해하기>#</a></h2><h3 id=무엇을-배웠나-1>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-1>#</a></h3><p>그룹 함수 ROLLUP, CUBE, GROUPING SETS의 차이점을 명확하게 이해하게 되었고, 이들이 어떤 집계 레벨을 생성하는지에 대한 직관적인 암기 문장을 통해 기억하기 쉬워졌습니다. 특히 SQLite에서 이 함수들을 사용할 수 없어 직접 구현해야 한다는 점을 인지하고, 이를 위한 수작업 방식을 고려해야 한다는 것을 알게 되었습니다. 이 지식을 바탕으로 더 복잡한 데이터 분석 쿼리를 작성할 수 있을 것 같습니다.</p><h3 id=헷갈렸던-점-1>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-1>#</a></h3><p>처음에는 ROLLUP, CUBE, GROUPING SETS가 비슷해 보여서 어떤 차이인지 파악하는 데 어려움을 겪었습니다. 특히 SQLite에서 이 함수들을 사용할 수 없어 직접 구현해야 한다는 점이 코드를 복잡하게 만들었습니다. 암기 문장을 활용하여 각 함수의 특징을 구분하고 이해하는 데 도움이 되었습니다.</p><h3 id=정리된-이해-1>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-1>#</a></h3><p>그룹 함수 ROLLUP, CUBE, GROUPING SETS는 각기 다른 방식으로 데이터의 집계 레벨을 만들어주는데, ROLLUP은 계층적인 합계를, CUBE는 가능한 모든 조합을, GROUPING SETS는 사용자가 지정한 레벨만 제공합니다. 특히 SQLite에서는 이 기능들을 직접 사용할 수 없으므로, UNION을 통해 수동으로 구현해야 복잡도가 높아집니다. 앞으로는 각 함수의 특징을 잘 이해하고, SQLite 환경에서는 UNION을 활용하여 원하는 결과를 얻도록 노력해야겠다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#75715e>-- ROLLUP 예시
+</span></span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> Genre, MediaType, <span style=color:#66d9ef>SUM</span>(Sales) <span style=color:#66d9ef>as</span> TotalSales
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> SalesData
+</span></span><span style=display:flex><span><span style=color:#66d9ef>GROUP</span> <span style=color:#66d9ef>BY</span> <span style=color:#66d9ef>ROLLUP</span>(Genre, MediaType);
+</span></span></code></pre></div><h2 id=3-sqlite에서-union-all로-집계-함수-흉내내기>3. SQLite에서 UNION ALL로 집계 함수 흉내내기<a hidden class=anchor aria-hidden=true href=#3-sqlite에서-union-all로-집계-함수-흉내내기>#</a></h2><h3 id=무엇을-배웠나-2>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-2>#</a></h3><p>SQLite에서 ROLLUP과 같은 고급 집계 기능을 직접 지원하지 않지만, UNION ALL을 활용하여 유사한 결과를 얻을 수 있다는 것을 알게 되었다. 특히 NULL 값을 활용하여 특정 기준을 무시하고 집계하는 방법을 이해하고, 이를 통해 상세 통계, 소계, 전체 합계를 효율적으로 조합할 수 있게 되었다. 이제는 UNION을 통해 SQLite에서도 복잡한 집계 쿼리를 구현할 수 있다는 자신감이 생겼다.</p><h3 id=헷갈렸던-점-2>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-2>#</a></h3><p><code>ROLLUP</code>을 직접 구현하려고 할 때 쿼리가 너무 길어져서 각 부분의 역할이 무엇인지 파악하기 힘들었습니다. <code>NULL</code> 값을 활용하는 부분이 처음에는 데이터 누락으로 생각했지만, 집계 기준을 무시하는 역할이라는 것을 이해하는 데 시간이 걸렸습니다. <code>UNION ALL</code>을 이용해서 <code>ROLLUP</code>과 유사한 기능을 만들어내는 방식이 다소 복잡하게 느껴졌습니다.</p><h3 id=정리된-이해-2>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-2>#</a></h3><p>SQLite에서 ROLLUP과 같은 기능을 직접 지원하지 않지만, UNION ALL을 활용하여 유사한 집계 결과를 만들 수 있다는 것을 알게 되었다. UNION ALL을 사용하고 NULL 값을 전략적으로 활용하면, 상세 정보, 소계, 전체 합계를 포함하는 복잡한 집계 쿼리를 만들 수 있으며, NULL 값은 특정 기준을 제외하고 결과를 집계하는 역할을 한다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> Genre, <span style=color:#66d9ef>NULL</span> <span style=color:#66d9ef>AS</span> MediaType, <span style=color:#66d9ef>SUM</span>(<span style=color:#66d9ef>COUNT</span>(<span style=color:#f92672>*</span>)) <span style=color:#66d9ef>AS</span> GenreSum <span style=color:#66d9ef>FROM</span> movies <span style=color:#66d9ef>GROUP</span> <span style=color:#66d9ef>BY</span> Genre
+</span></span></code></pre></div><h2 id=4-classicmodels-erd로-매출-순위-쿼리-읽기>4. ClassicModels ERD로 매출 순위 쿼리 읽기<a hidden class=anchor aria-hidden=true href=#4-classicmodels-erd로-매출-순위-쿼리-읽기>#</a></h2><h3 id=무엇을-배웠나-3>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-3>#</a></h3><p>ERD를 활용하여 테이블 간의 관계를 시각적으로 파악하는 것이 데이터 분석의 핵심임을 깨달았다. 특히 외래키 컬럼 이름이 달라도 테이블을 JOIN 할 수 있고, <code>DISTINCT</code>를 사용하여 중복된 데이터를 제거하는 방법을 익혔다. 마지막으로, <code>RANK()</code> 함수를 사용하여 지역별 매출 순위를 계산하는 방법을 알게 되었다.</p><h3 id=헷갈렸던-점-3>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-3>#</a></h3><p>테이블 연결 시 컬럼 이름이 달라서 어떤 기준으로 JOIN 해야 할지 처음에는 혼란스러웠고, <code>COUNT(DISTINCT)</code>가 왜 필요한지 정확히 이해하지 못해서 고객 중복 처리 방법에 대해 막막했었다. ERD를 활용하여 데이터 흐름을 파악하고 각 테이블 간의 관계를 명확히 한 후에야 JOIN 조건을 설정하고 고객 중복을 해결할 수 있었다.</p><h3 id=정리된-이해-3>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-3>#</a></h3><p>ERD를 활용하여 테이블 간의 연결을 파악하는 것이 중요하며, 특히 외래키 컬럼의 이름이 다를 경우 테이블 조인 조건을 신중하게 설정해야 한다. <code>COUNT(DISTINCT)</code> 함수를 사용하여 고객 데이터를 정확하게 집계하고, <code>RANK() OVER()</code> 함수를 통해 지역별 매출 순위를 효과적으로 분석할 수 있다. 이 과정에서 데이터 흐름을 ERD로 시각화하면 문제 해결에 도움이 된다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>COUNT</span>(<span style=color:#66d9ef>DISTINCT</span> <span style=color:#66d9ef>c</span>.customerNumber) <span style=color:#66d9ef>AS</span> CustomerCount
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span>ROUND(<span style=color:#66d9ef>SUM</span>(od.quantityOrdered <span style=color:#f92672>*</span> od.priceEach), <span style=color:#ae81ff>2</span>) <span style=color:#66d9ef>AS</span> TotalSales
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span>RANK() OVER (PARTITION <span style=color:#66d9ef>BY</span> <span style=color:#66d9ef>off</span>.territory <span style=color:#66d9ef>ORDER</span> <span style=color:#66d9ef>BY</span> <span style=color:#66d9ef>SUM</span>(od.quantityOrdered <span style=color:#f92672>*</span> od.priceEach) <span style=color:#66d9ef>DESC</span>) <span style=color:#66d9ef>AS</span> TerritoryRank
+</span></span></code></pre></div><h2 id=5-current-row로-월별-누적-매출-계산하기>5. CURRENT ROW로 월별 누적 매출 계산하기<a hidden class=anchor aria-hidden=true href=#5-current-row로-월별-누적-매출-계산하기>#</a></h2><h3 id=무엇을-배웠나-4>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-4>#</a></h3><p>복잡해 보였던 월별 매출 누적합 쿼리를 이해하기 위해 <code>ROUND</code>, <code>SUM OVER</code>, <code>CURRENT ROW</code> 등의 키워드를 공부했습니다. 특히 <code>ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</code> 구문은 현재 계산 중인 행까지의 누적합을 구하는 범위 지정 구문이라는 것을 알게 되었고, <code>CURRENT ROW</code>가 계산 과정에서 변하는 행을 기준으로 한다는 것을 이해했습니다. 이 내용을 통해 SQL 윈도우 함수를 활용한 누적합 계산 방법을 익힐 수 있었습니다.</p><h3 id=헷갈렸던-점-4>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-4>#</a></h3><p>쿼리가 복잡해서 각 키워드가 어떻게 연결되는지 파악하기 어려웠고, 특히 <code>ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</code> 구문이 어떤 의미인지 명확하게 이해하지 못했습니다. <code>CURRENT ROW</code>가 현재 행을 가리키는 것인지, 아니면 계산 과정의 위치를 나타내는 것인지 혼란스러웠습니다.</p><h3 id=정리된-이해-4>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-4>#</a></h3><p><code>SUM OVER</code> 구문과 함께 사용되는 <code>ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</code>는 현재 행까지의 모든 이전 행을 포함하여 누적 합계를 계산하는 방법을 나타냅니다. <code>CURRENT ROW</code>는 계산이 진행되는 동안 현재 처리 중인 행을 가리키며, 이 기준점을 기준으로 누적 값이 업데이트됩니다. 이 구문은 시간 순서대로 데이터를 분석하거나 누적 트렌드를 파악할 때 유용합니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> ...,
+</span></span><span style=display:flex><span>       <span style=color:#66d9ef>SUM</span>(MonthlyRevenue) OVER (
+</span></span><span style=display:flex><span>           <span style=color:#66d9ef>ORDER</span> <span style=color:#66d9ef>BY</span> YearMonth
+</span></span><span style=display:flex><span>           <span style=color:#66d9ef>ROWS</span> <span style=color:#66d9ef>BETWEEN</span> UNBOUNDED PRECEDING <span style=color:#66d9ef>AND</span> <span style=color:#66d9ef>CURRENT</span> <span style=color:#66d9ef>ROW</span>
+</span></span><span style=display:flex><span>       ) <span style=color:#66d9ef>AS</span> RunningTotal
+</span></span></code></pre></div><h2 id=6-lag와-lead로-전월-대비-변화-읽기>6. LAG와 LEAD로 전월 대비 변화 읽기<a hidden class=anchor aria-hidden=true href=#6-lag와-lead로-전월-대비-변화-읽기>#</a></h2><h3 id=무엇을-배웠나-5>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-5>#</a></h3><p>시계열 분석의 기본 원리와 핵심 용어인 MoM, LAG, LEAD를 이해하게 되었다. MoM은 전월 대비 변화를 계산하는 데 사용되고, LAG와 LEAD는 이전/이후 행의 값을 가져오는 데 활용된다는 점을 명확히 알게 되었다. SQL을 활용한 예시를 통해 이러한 개념들을 실제 데이터 분석에 적용하는 방법을 익혔다.</p><h3 id=헷갈렸던-점-5>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-5>#</a></h3><p>처음 시계열 분석을 배우면서 MoM 같은 약어 때문에 어떤 의미인지 파악하는 데 시간이 걸렸고, SQL에서 비율을 읽는 방식이 헷갈렸어요. 특히 LAG와 LEAD 함수의 차이점을 명확히 이해하지 못해서 활용 방법을 익히는 데 어려움이 있었습니다.</p><h3 id=정리된-이해-5>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-5>#</a></h3><p>시계열 분석은 시간에 따라 변하는 데이터를 분석하는 것이고, <code>MoM</code>은 전월 대비 변화를 계산하는 방식입니다. <code>LAG</code>는 이전 행의 데이터를 가져오고, <code>LEAD</code>는 다음 행의 데이터를 가져오는 함수이며, 이를 활용하여 과거와 미래의 데이터를 비교 분석할 수 있습니다. 이러한 개념들을 이해하면 매출, 주문 간격, 결제 패턴 등 다양한 시계열 데이터를 분석하는 데 도움이 됩니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>CASE</span> <span style=color:#66d9ef>WHEN</span> <span style=color:#66d9ef>MONTH</span>(<span style=color:#960050;background-color:#1e0010>현재</span>_날짜) <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span> <span style=color:#66d9ef>THEN</span> <span style=color:#66d9ef>NULL</span> <span style=color:#66d9ef>ELSE</span> (<span style=color:#960050;background-color:#1e0010>월별</span>_매출 <span style=color:#f92672>-</span> <span style=color:#960050;background-color:#1e0010>이전</span>_월별_매출) <span style=color:#f92672>/</span> <span style=color:#960050;background-color:#1e0010>이전</span>_월별_매출 <span style=color:#66d9ef>END</span> <span style=color:#66d9ef>AS</span> MoM_Pct
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#960050;background-color:#1e0010>주문일</span>, LAG(<span style=color:#960050;background-color:#1e0010>주문일</span>, <span style=color:#ae81ff>1</span>) OVER (<span style=color:#66d9ef>ORDER</span> <span style=color:#66d9ef>BY</span> <span style=color:#960050;background-color:#1e0010>주문일</span>) <span style=color:#66d9ef>AS</span> <span style=color:#960050;background-color:#1e0010>이전</span>_주문일
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> <span style=color:#960050;background-color:#1e0010>주문데이터</span>;
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#960050;background-color:#1e0010>주문일</span>, LEAD(<span style=color:#960050;background-color:#1e0010>주문일</span>, <span style=color:#ae81ff>1</span>) OVER (<span style=color:#66d9ef>ORDER</span> <span style=color:#66d9ef>BY</span> <span style=color:#960050;background-color:#1e0010>주문일</span>) <span style=color:#66d9ef>AS</span> <span style=color:#960050;background-color:#1e0010>다음</span>_주문일
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> <span style=color:#960050;background-color:#1e0010>주문데이터</span>;
+</span></span></code></pre></div><h2 id=7-sql-학습-범위와-프롬프트-정리하기>7. SQL 학습 범위와 프롬프트 정리하기<a hidden class=anchor aria-hidden=true href=#7-sql-학습-범위와-프롬프트-정리하기>#</a></h2><h3 id=무엇을-배웠나-6>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-6>#</a></h3><p>SQL 학습 과정에서 분석가 입문 단계에 필요한 핵심 개념을 명확히 하고, AI에게 SQL 쿼리를 효과적으로 지시하기 위한 필수 정보를 제공하는 방법을 알게 되었다. 특히, 목표 분석 내용, 테이블 정보, 필터 조건 등을 구체적으로 제시해야 AI가 정확한 쿼리를 생성할 수 있다는 점을 깨달았다. 실습 예시를 통해 실제 분석 상황에 적용하는 방법을 익혔다.</p><h3 id=헷갈렸던-점-6>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-6>#</a></h3><p>SQL의 역할별 설명이 너무 넓어서 어디서부터 시작해야 할지 몰랐고, 전문 용어들이 많아서 부담스러웠다. AI에게 정확한 SQL 쿼리를 생성하도록 지시하는 것이 생각보다 어렵다는 점이 처음에는 꽤 당황스러웠다.</p><h3 id=정리된-이해-6>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-6>#</a></h3><p>SQL 학습 시 분석가 입문 단계를 목표로, 핵심 개념 위주로 접근하고 있다. AI를 활용하여 SQL 쿼리를 생성할 때, DBMS 종류, 목표 분석 내용 등 구체적인 정보를 제공하는 것이 중요하다는 점을 깨달았다. 실습을 통해 필요한 정보 제공과 함께 단계적으로 SQL 쿼리 작성 능력을 향상시키고자 한다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span>ROUND(((<span style=color:#66d9ef>SUM</span>(Sales) <span style=color:#960050;background-color:#1e0010>이번</span> <span style=color:#960050;background-color:#1e0010>달</span>) <span style=color:#f92672>-</span> <span style=color:#66d9ef>SUM</span>(Sales) <span style=color:#960050;background-color:#1e0010>지난</span> <span style=color:#960050;background-color:#1e0010>달</span>) <span style=color:#f92672>/</span> <span style=color:#66d9ef>SUM</span>(Sales) <span style=color:#960050;background-color:#1e0010>지난</span> <span style=color:#960050;background-color:#1e0010>달</span>) <span style=color:#f92672>*</span> <span style=color:#ae81ff>100</span>)
+</span></span></code></pre></div><h2 id=8-고급-서브쿼리-유형-분류하기>8. 고급 서브쿼리 유형 분류하기<a hidden class=anchor aria-hidden=true href=#8-고급-서브쿼리-유형-분류하기>#</a></h2><h3 id=무엇을-배웠나-7>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-7>#</a></h3><p>서브쿼리의 연관 서브쿼리와 비연관 서브쿼리의 차이점을 명확하게 이해하게 되었다. 특히 연관 서브쿼리는 메인 쿼리의 각 행에 따라 결과가 달라지는 점을, 비연관 서브쿼리는 독립적으로 실행되어 기준값을 미리 찾는다는 점을 기억해야 한다. 실습 예시를 통해 두 유형의 서브쿼리가 어떻게 활용되는지 이해하는 데 도움이 되었다.</p><h3 id=헷갈렸던-점-7>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-7>#</a></h3><p>서브쿼리가 괄호 안에 있는 쿼리라는 것만으로는 연관 서브쿼리와 비연관 서브쿼리의 차이를 명확하게 이해하기 어려웠습니다. 특히 연관 서브쿼리가 어떻게 메인 쿼리의 각 행에 따라 달라지는지, 그리고 그 의미가 무엇인지 파악하는 데 어려움을 겪었습니다. 이름만으로는 그 작동 방식과 활용 사례를 쉽게 떠올릴 수 없었습니다.</p><h3 id=정리된-이해-7>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-7>#</a></h3><p>서브쿼리는 메인 쿼리 안에서 필요한 데이터를 가져오는 작은 쿼리인데, 연관 서브쿼리는 메인 쿼리의 각 행에 따라 결과가 달라지는 &lsquo;맞춤 비교&rsquo;를 하는 방식이고, 비연관 서브쿼리는 독립적으로 실행되어 기준값을 먼저 찾는 방식입니다. 즉, 연관 서브쿼리는 바깥 쿼리의 컬럼을 참조하고, 비연관 서브쿼리는 독립적으로 실행된다는 점이 핵심 차이입니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#75715e>-- 직원 중 평균 급여보다 높은 급여를 받는 직원을 찾기
+</span></span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> ID, NAME, SALARY
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> EMPLOYEE A
+</span></span><span style=display:flex><span><span style=color:#66d9ef>WHERE</span> SALARY <span style=color:#f92672>&gt;</span> (
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>SELECT</span> <span style=color:#66d9ef>AVG</span>(SALARY)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>FROM</span> EMPLOYEE B
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>WHERE</span> B.DEPARTMENT_ID <span style=color:#f92672>=</span> A.DEPARTMENT_ID  <span style=color:#75715e>-- 바깥 쿼리의 DEPARTMENT_ID 참조
+</span></span></span><span style=display:flex><span>);
+</span></span></code></pre></div><h2 id=9-서브쿼리-반환-형태와-연산자-이해하기>9. 서브쿼리 반환 형태와 연산자 이해하기<a hidden class=anchor aria-hidden=true href=#9-서브쿼리-반환-형태와-연산자-이해하기>#</a></h2><h3 id=무엇을-배웠나-8>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-8>#</a></h3><p>서브쿼리의 <code>ANY</code>와 <code>ALL</code> 연산자 사용법을 명확히 이해하게 되었고, 특히 <code>ANY</code>는 하나라도 만족하면 되는 조건, <code>ALL</code>은 모든 조건을 만족해야 한다는 점을 기억해야 함을 깨달았습니다. 또한 다중 컬럼 서브쿼리가 컬럼들을 함께 묶어 비교한다는 것을 이해하여 활용 방법을 익혔습니다. 다양한 데이터 형태에 따른 서브쿼리 분류 방법과 각 연산자의 사용법도 정리했습니다.</p><h3 id=헷갈렸던-점-8>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-8>#</a></h3><p><code>ANY</code>와 <code>ALL</code> 연산자를 사용할 때, 어떤 상황에 어떤 연산자를 써야 할지 감이 잘 안 잡혔어요. 특히, 여러 컬럼을 비교하는 서브쿼리에서 괄호 안의 컬럼들이 어떻게 묶여서 비교되는지 이해하는 데 어려움을 겪었습니다. 여러 행을 반환하는 서브쿼리에서 <code>IN</code>과 <code>EXISTS</code>의 차이점을 명확히 구분하는 데도 시간이 걸렸습니다.</p><h3 id=정리된-이해-8>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-8>#</a></h3><p>서브쿼리는 쿼리 내부에 또 다른 쿼리를 넣어 데이터를 비교하거나 필터링하는 데 사용되며, 반환하는 데이터의 형태에 따라 단일 행 또는 다중 행 서브쿼리로 나눌 수 있습니다. <code>ANY</code>와 <code>ALL</code> 연산자는 다중 행 서브쿼리에서 중요한 역할을 하며, <code>ANY</code>는 하나 이상의 조건 만족, <code>ALL</code>은 모든 조건을 만족해야 하는 경우에 사용합니다. 다중 컬럼 서브쿼리는 괄호 안에 여러 컬럼을 넣어 함께 비교하며, 비교 대상 컬럼의 개수가 일치해야 합니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> ID, NAME, SALARY
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> EMPLOYEE
+</span></span><span style=display:flex><span><span style=color:#66d9ef>WHERE</span> DEPARTMENT_ID <span style=color:#f92672>=</span> (
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>SELECT</span> DEPARTMENT_ID
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>FROM</span> EMPLOYEES
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>WHERE</span> NAME <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;ELICE&#39;</span>
+</span></span><span style=display:flex><span>);
+</span></span></code></pre></div><h2 id=10-스칼라-서브쿼리와-dual-개념-이해하기>10. 스칼라 서브쿼리와 DUAL 개념 이해하기<a hidden class=anchor aria-hidden=true href=#10-스칼라-서브쿼리와-dual-개념-이해하기>#</a></h2><h3 id=무엇을-배웠나-9>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-9>#</a></h3><p>스칼라 서브쿼리는 단일 값만 반환하며 <code>SELECT</code> 절에서도 활용될 수 있다는 점을 알게 되었고, 각 행에 대한 보조 계산을 수행하는 데 유용하다는 것을 이해했습니다. 또한 <code>DUAL</code> 테이블은 특정 테이블 없이 계산 결과를 반환할 때 사용하며, 데이터베이스 종류에 따라 사용법이 다르다는 점을 확인했습니다. 이 내용을 바탕으로 좀 더 복잡한 쿼리를 작성할 수 있을 것 같습니다.</p><h3 id=헷갈렸던-점-9>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-9>#</a></h3><p>스칼라 서브쿼리가 WHERE 절 외에 SELECT 절에서도 사용될 수 있다는 점이 처음에는 이해가 안 갔고, DUAL 테이블이 왜 필요한지, 그리고 각 데이터베이스 시스템마다 어떻게 다른지 몰랐습니다. 특히 DUAL이 Oracle에서 필수적인 이유가 명확하게 와닿지 않았습니다.</p><h3 id=정리된-이해-9>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-9>#</a></h3><p>스칼라 서브쿼리는 단일 값만 반환하는 서브쿼리인데, SELECT 절을 포함한 다양한 위치에서 활용하여 각 행에 대한 보조 계산 결과를 보여줄 수 있습니다. DUAL 테이블은 특정 테이블 없이 계산 결과를 반환하기 위해 사용되며, 데이터베이스 종류에 따라 <code>DUAL</code>을 사용하거나 <code>SELECT 1</code>과 같은 다른 방식으로 대체될 수 있습니다. 이제 스칼라 서브쿼리와 DUAL의 역할을 조금 더 명확하게 이해하게 되었습니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> DEPARTMENT_NAME, (
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>SELECT</span> <span style=color:#66d9ef>COUNT</span>(<span style=color:#f92672>*</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>FROM</span> EMPLOYEE E
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>WHERE</span> E.DEPARTMENT_ID <span style=color:#f92672>=</span> D.DEPARTMENT_ID
+</span></span><span style=display:flex><span>) <span style=color:#66d9ef>AS</span> EMPLOYEE_COUNT
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> DEPARTMENT D;
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> (
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>SELECT</span> <span style=color:#66d9ef>COUNT</span>(<span style=color:#f92672>*</span>) <span style=color:#66d9ef>FROM</span> EMPLOYEE <span style=color:#66d9ef>WHERE</span> DEPARTMENT_ID <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>) <span style=color:#f92672>/</span> (<span style=color:#66d9ef>SELECT</span> <span style=color:#66d9ef>COUNT</span>(<span style=color:#f92672>*</span>) <span style=color:#66d9ef>FROM</span> EMPLOYEE) <span style=color:#66d9ef>AS</span> DEVELOPER_RATIO
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> DUAL;
+</span></span></code></pre></div><h2 id=11-view-개념과-실습-흐름-정리하기>11. VIEW 개념과 실습 흐름 정리하기<a hidden class=anchor aria-hidden=true href=#11-view-개념과-실습-흐름-정리하기>#</a></h2><h3 id=무엇을-배웠나-10>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-10>#</a></h3><p>뷰는 실제 데이터를 저장하는 테이블이 아니라, 복잡한 SELECT 문을 이름 붙여서 사용하는 가상 테이블이라는 것을 알게 되었다. 뷰는 쿼리를 실행할 때마다 동적으로 데이터를 생성하며, 복잡한 쿼리를 단순화하고 데이터 보안을 강화하는 데 사용할 수 있다. 개인 프로젝트에 뷰를 적용하는 실습을 통해 뷰의 활용 가능성을 확인했다.</p><h3 id=헷갈렸던-점-10>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-10>#</a></h3><p>뷰가 실제 테이블처럼 데이터를 저장하는 것인지, 아니면 단순히 복잡한 쿼리를 저장하는 것인지 구분하는 데 어려움이 있었습니다. VIEW가 데이터를 어떻게 처리하는지, 그리고 실제 테이블과의 관계가 어떻게 되는지 명확하게 이해하지 못했습니다. 뷰가 정말 유용한 도구인지, 그리고 어떻게 활용할 수 있는지 궁금했습니다.</p><h3 id=정리된-이해-10>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-10>#</a></h3><p>뷰는 실제 데이터를 저장하는 테이블이 아니라, 복잡한 SELECT 문을 이름 붙여서 만든 가상의 테이블입니다. 뷰는 쿼리를 실행할 때마다 정의된 SELECT 문에 따라 데이터를 동적으로 생성하며, 복잡한 쿼리를 단순화하거나 데이터 보안을 강화하는 데 활용할 수 있습니다. 즉, 뷰는 데이터를 저장하는 것이 아니라, 데이터를 조회하는 방식을 정의하는 개념입니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>CREATE</span> <span style=color:#66d9ef>VIEW</span> EMPLOYEE_SUMMARY <span style=color:#66d9ef>AS</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
+</span></span><span style=display:flex><span>       E.ID <span style=color:#66d9ef>AS</span> EMPLOYEE_ID,
+</span></span><span style=display:flex><span>       E.NAME <span style=color:#66d9ef>AS</span> EMPLOYE_NAME,
+</span></span><span style=display:flex><span>       E.SALARY,
+</span></span><span style=display:flex><span>       D.NAME <span style=color:#66d9ef>AS</span> DEPARTMENT_NAME
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>FROM</span> EMPLOYEE E
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>LEFT</span> <span style=color:#66d9ef>JOIN</span> DEPARTMENT D <span style=color:#66d9ef>ON</span> E.DEPARTMENT_ID <span style=color:#f92672>=</span> D.ID;
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>CREATE</span> <span style=color:#66d9ef>VIEW</span> view_public_notes <span style=color:#66d9ef>AS</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
+</span></span><span style=display:flex><span>         note_id,
+</span></span><span style=display:flex><span>         title,
+</span></span><span style=display:flex><span>         date,
+</span></span><span style=display:flex><span>         target_section,
+</span></span><span style=display:flex><span>         public_policy
+</span></span><span style=display:flex><span>     <span style=color:#66d9ef>FROM</span> personal_notes
+</span></span><span style=display:flex><span>     <span style=color:#66d9ef>WHERE</span> public_policy <span style=color:#66d9ef>IN</span> (<span style=color:#e6db74>&#39;public&#39;</span>, <span style=color:#e6db74>&#39;partial-public&#39;</span>);
+</span></span></code></pre></div><h2 id=12-join-서브쿼리-view-퀴즈-통합-복습하기>12. JOIN, 서브쿼리, VIEW 퀴즈 통합 복습하기<a hidden class=anchor aria-hidden=true href=#12-join-서브쿼리-view-퀴즈-통합-복습하기>#</a></h2><h3 id=무엇을-배웠나-11>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-11>#</a></h3><p>오늘 학습을 통해 JOIN과 WHERE의 역할 차이, 그리고 LEFT/RIGHT JOIN의 기준 테이블을 정확히 이해하게 되었어요. 서브쿼리 연산자들의 의미를 명확히 구분하고, VIEW가 데이터 접근을 어떻게 단순화하는지 알게 되어 SQL 쿼리 작성에 대한 자신감이 붙었습니다. 이제 실제 상황에서 다양한 JOIN과 서브쿼리를 활용하여 복잡한 데이터 분석을 수행할 수 있을 것 같아요.</p><h3 id=헷갈렸던-점-11>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-11>#</a></h3><p>JOIN과 WHERE가 어떻게 다른지, 그리고 언제 어떤 JOIN을 써야 하는지 감이 잘 안 잡혔어요. 서브쿼리에서 <code>=</code>와 <code>IN</code> 같은 연산자들의 차이점도 명확하게 이해하지 못했고, VIEW가 실제로 어떤 존재인지 혼란스러웠습니다.</p><h3 id=정리된-이해-11>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-11>#</a></h3><p>데이터를 연결하는 JOIN은 여러 테이블의 정보를 합쳐 보여주는 도구이고, WHERE은 연결된 결과에서 원하는 조건에 맞는 데이터만 걸러내는 역할을 합니다. 서브쿼리는 복잡한 조건을 먼저 계산해서 기준값으로 활용하며, VIEW는 실제 데이터가 저장되지 않는 가상 테이블처럼 작동하여 데이터 접근을 단순화합니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#75715e>-- INNER JOIN 예시: 고객과 주문 정보 결합
+</span></span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
+</span></span><span style=display:flex><span>    Customers.customer_id,
+</span></span><span style=display:flex><span>    Customers.customer_name,
+</span></span><span style=display:flex><span>    Orders.order_id,
+</span></span><span style=display:flex><span>    Orders.order_date
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span>
+</span></span><span style=display:flex><span>    Customers
+</span></span><span style=display:flex><span><span style=color:#66d9ef>INNER</span> <span style=color:#66d9ef>JOIN</span>
+</span></span><span style=display:flex><span>    Orders <span style=color:#66d9ef>ON</span> Customers.customer_id <span style=color:#f92672>=</span> Orders.customer_id;
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#75715e>-- LEFT JOIN 예시: 모든 고객과 주문 정보 결합 (주문이 없는 고객도 포함)
+</span></span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
+</span></span><span style=display:flex><span>    Customers.customer_id,
+</span></span><span style=display:flex><span>    Customers.customer_name,
+</span></span><span style=display:flex><span>    Orders.order_id,
+</span></span><span style=display:flex><span>    Orders.order_date
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span>
+</span></span><span style=display:flex><span>    Customers
+</span></span><span style=display:flex><span><span style=color:#66d9ef>LEFT</span> <span style=color:#66d9ef>JOIN</span>
+</span></span><span style=display:flex><span>    Orders <span style=color:#66d9ef>ON</span> Customers.customer_id <span style=color:#f92672>=</span> Orders.customer_id;
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#75715e>-- RIGHT JOIN 예시: 모든 주문과 관련된 고객 정보 결합 (주문만 있는 경우도 포함)
+</span></span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
+</span></span><span style=display:flex><span>    Customers.customer_id,
+</span></span><span style=display:flex><span>    Customers.customer_name,
+</span></span><span style=display:flex><span>    Orders.order_id,
+</span></span><span style=display:flex><span>    Orders.order_date
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span>
+</span></span><span style=display:flex><span>    Customers
+</span></span><span style=display:flex><span><span style=color:#66d9ef>RIGHT</span> <span style=color:#66d9ef>JOIN</span>
+</span></span><span style=display:flex><span>    Orders <span style=color:#66d9ef>ON</span> Customers.customer_id <span style=color:#f92672>=</span> Orders.customer_id;
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#75715e>-- SELF JOIN 예시: 직원과 그들의 매니저 정보 결합
+</span></span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
+</span></span><span style=display:flex><span>    e.employee_name <span style=color:#66d9ef>AS</span> employee,
+</span></span><span style=display:flex><span>    m.employee_name <span style=color:#66d9ef>AS</span> manager
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span>
+</span></span><span style=display:flex><span>    Employees e
+</span></span><span style=display:flex><span><span style=color:#66d9ef>JOIN</span>
+</span></span><span style=display:flex><span>    Employees m <span style=color:#66d9ef>ON</span> e.manager_id <span style=color:#f92672>=</span> m.employee_id;
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#75715e>-- 서브쿼리 IN 연산자 예시: 특정 제품을 주문한 고객 찾기
+</span></span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
+</span></span><span style=display:flex><span>    customer_id
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span>
+</span></span><span style=display:flex><span>    Orders
+</span></span><span style=display:flex><span><span style=color:#66d9ef>WHERE</span>
+</span></span><span style=display:flex><span>    product_id <span style=color:#66d9ef>IN</span> (<span style=color:#66d9ef>SELECT</span> product_id <span style=color:#66d9ef>FROM</span> Products <span style=color:#66d9ef>WHERE</span> price <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>100</span>);
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#75715e>-- 서브쿼리 ANY 연산자 예시: 가격이 100보다 큰 제품 중 하나라도 포함하는 주문 찾기
+</span></span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
+</span></span><span style=display:flex><span>    order_id
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span>
+</span></span><span style=display:flex><span>    Orders
+</span></span><span style=display:flex><span><span style=color:#66d9ef>WHERE</span>
+</span></span><span style=display:flex><span>    product_id <span style=color:#66d9ef>ANY</span> (<span style=color:#66d9ef>SELECT</span> product_id <span style=color:#66d9ef>FROM</span> Products <span style=color:#66d9ef>WHERE</span> price <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>100</span>);
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#75715e>-- 서브쿼리 ALL 연산자 예시: 모든 제품 가격이 50보다 큰 제품을 주문한 주문 찾기
+</span></span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
+</span></span><span style=display:flex><span>    order_id
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span>
+</span></span><span style=display:flex><span>    Orders
+</span></span><span style=display:flex><span><span style=color:#66d9ef>WHERE</span>
+</span></span><span style=display:flex><span>    product_id <span style=color:#66d9ef>ALL</span> (<span style=color:#66d9ef>SELECT</span> product_id <span style=color:#66d9ef>FROM</span> Products <span style=color:#66d9ef>WHERE</span> price <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>50</span>);
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#75715e>-- 서브쿼리 EXISTS 연산자 예시: 주문이 있는 고객 찾기
+</span></span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
+</span></span><span style=display:flex><span>    customer_id
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span>
+</span></span><span style=display:flex><span>    Customers
+</span></span><span style=display:flex><span><span style=color:#66d9ef>WHERE</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>EXISTS</span> (<span style=color:#66d9ef>SELECT</span> <span style=color:#ae81ff>1</span> <span style=color:#66d9ef>FROM</span> Orders <span style=color:#66d9ef>WHERE</span> Orders.customer_id <span style=color:#f92672>=</span> Customers.customer_id);
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#75715e>-- VIEW 정의 예시: 고객 주문 내역 VIEW 생성
+</span></span></span><span style=display:flex><span><span style=color:#66d9ef>CREATE</span> <span style=color:#66d9ef>VIEW</span> CustomerOrders <span style=color:#66d9ef>AS</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
+</span></span><span style=display:flex><span>    Customers.customer_id,
+</span></span><span style=display:flex><span>    Customers.customer_name,
+</span></span><span style=display:flex><span>    Orders.order_id,
+</span></span><span style=display:flex><span>    Orders.order_date
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span>
+</span></span><span style=display:flex><span>    Customers
+</span></span><span style=display:flex><span><span style=color:#66d9ef>INNER</span> <span style=color:#66d9ef>JOIN</span>
+</span></span><span style=display:flex><span>    Orders <span style=color:#66d9ef>ON</span> Customers.customer_id <span style=color:#f92672>=</span> Orders.customer_id;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>-- VIEW 사용 예시
+</span></span></span><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#f92672>*</span> <span style=color:#66d9ef>FROM</span> CustomerOrders;
+</span></span></code></pre></div><h2 id=총평>총평<a hidden class=anchor aria-hidden=true href=#총평>#</a></h2><h3 id=오늘-오후-전체에서-배운-것>오늘 오후 전체에서 배운 것<a hidden class=anchor aria-hidden=true href=#오늘-오후-전체에서-배운-것>#</a></h3><p>오늘 학습을 통해 윈도우 함수, 그룹 함수, 서브쿼리, 뷰 등 SQL의 핵심 기능을 깊이 이해하게 되었고, SQLite의 제약 사항을 고려하여 쿼리를 구현하는 방법도 익혔습니다. 다양한 예제를 통해 실제 데이터 분석 상황에 적용하는 방법을 연습하며 SQL 쿼리 작성에 대한 자신감을 얻었습니다. 앞으로 복잡한 데이터 분석 쿼리를 작성하고 효율적으로 문제를 해결할 수 있을 것으로 기대됩니다.</p><h3 id=다음에-조심할-것>다음에 조심할 것<a hidden class=anchor aria-hidden=true href=#다음에-조심할-것>#</a></h3><p>SQLite에서 ROLLUP, CUBE, GROUPING SETS와 같은 고급 집계 기능을 직접 구현하는 수작업 방식을 숙달해야 할 것 같아요. 뷰를 만들고 활용하는 과정에서 데이터베이스 종류에 따른 차이점을 고려하여 오류 없이 적용하는 연습을 꾸준히 해야겠습니다.</p><h3 id=다음-복습-주제>다음 복습 주제<a hidden class=anchor aria-hidden=true href=#다음-복습-주제>#</a></h3><p>SQLite에서 ROLLUP, CUBE, GROUPING SETS와 같은 고급 집계 기능을 직접 구현하는 수작업 방식과 UNION ALL 활용법을 좀 더 깊이 숙달해서 실제 데이터 분석에 적용해보고 싶어요. 또한, 서브쿼리, 뷰, JOIN을 조합하여 더욱 복잡하고 효율적인 쿼리를 작성하는 연습을 꾸준히 할 필요가 있을 것 같습니다.</p><blockquote><p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p></blockquote></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://Han-think.github.io/learning/2026-06-12-am-daily/><span class=title>« Prev</span>
+<span>SQL 윈도우 함수와 날짜 다루기, 그리고 실전 분석 능력 향상</span>
+</a><a class=next href=https://Han-think.github.io/learning/daily-index-v2/><span class=title>Next »</span>
+<span>daily-index-v2</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
+<span>Powered by
+<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
+<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>

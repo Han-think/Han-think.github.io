@@ -1,431 +1,49 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto" data-theme="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>am-03-sql-join-problem-solving | Han-think Blog</title>
-<meta name="keywords" content="">
-<meta name="description" content="am-03-sql-join-problem-solving 학습 정리">
-<meta name="author" content="">
-<link rel="canonical" href="https://Han-think.github.io/learning/am-03-sql-join-problem-solving/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://Han-think.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/am-03-sql-join-problem-solving/">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --code-block-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-                color-scheme: dark;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .toc {
-                background: var(--entry);
-            }
-        }
-
-    </style>
-</noscript>
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else if (localStorage.getItem("pref-theme") === "light") {
-       document.querySelector("html").dataset.theme = 'light';
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else {
-        document.querySelector("html").dataset.theme = 'light';
-    }
-
-</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
-
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
-      <script>
-        var doNotTrack = false;
-        if ( true ) {
-          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
-          var doNotTrack = (dnt == "1" || dnt == "yes");
-        }
-        if (!doNotTrack) {
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-9YN1SZZ1G8');
-        }
-      </script><meta property="og:url" content="https://Han-think.github.io/learning/am-03-sql-join-problem-solving/">
-  <meta property="og:site_name" content="Han-think Blog">
-  <meta property="og:title" content="am-03-sql-join-problem-solving">
-  <meta property="og:description" content="am-03-sql-join-problem-solving 학습 정리">
-  <meta property="og:locale" content="ko_KR">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="learning">
-    <meta property="article:published_time" content="2026-06-09T00:00:00+00:00">
-    <meta property="article:modified_time" content="2026-06-09T00:00:00+00:00">
-
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="am-03-sql-join-problem-solving">
-  <meta name="twitter:description" content="am-03-sql-join-problem-solving 학습 정리">
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "학습 기록",
-      "item": "https://Han-think.github.io/learning/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "am-03-sql-join-problem-solving",
-      "item": "https://Han-think.github.io/learning/am-03-sql-join-problem-solving/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "am-03-sql-join-problem-solving",
-  "name": "am-03-sql-join-problem-solving",
-  "description": "am-03-sql-join-problem-solving 학습 정리",
-  "keywords": [
-    
-  ],
-  "articleBody": "목차 ERD 이해 데이터 구조 테이블 연결 SQL JOIN 총평 1. ERD 이해 왜 이걸 보게 됐나 SQL JOIN 문제를 풀 때 ERD만으로는 테이블 간의 관계를 명확하게 파악하기 어려웠어서, 데이터베이스의 구조를 더 깊이 이해해야겠다고 생각하게 됐어. 특히 테이블이 분리되어 저장되고, 연결 기준이 되는 컬럼을 정확히 알아야 하는 상황에서 어려움을 느껴서 ERD를 제대로 활용하는 방법을 익히기로 했어. 이 개념을 통해 JOIN 문제를 풀 때 데이터 구조에 대한 이해를 바탕으로 보다 효율적으로 접근할 수 있게 될 거야.\n내가 헷갈린 지점 처음에는 ERD만 보고 테이블 간의 관계가 명확하게 파악될 줄 알았는데, 실제 문제에서 테이블이 예상과 다르게 연결되어 있어서 당황스러웠다. 특히 고객 테이블에 직원 이름 대신 직원 번호만 저장되어 있다는 점이 ERD만으로는 알 수 없어서, 어떤 기준으로 연결해야 할지 혼란스러웠다. ERD는 참고 자료일 뿐, 실제 데이터베이스 구조는 ERD와 완전히 일치하지 않을 수 있다는 점을 인지해야겠다.\n시도한 코드 / 예시 -- 문제 15. 고객과 담당 직원 연결하기 -- 고객 이름과 담당 직원 이름을 보여주는 쿼리 작성 -- 1. 기준 테이블: 고객 정보 -- - FirstName, LastName -- 테이블 별칭: cu -- ```sql -- customers -\u003e cu -- ``` -- 2. 연결할 테이블: 직원 정보 -- - FirstName, LastName -- 테이블 별칭: emp -- ```sql -- employees -\u003e emp -- ``` -- 3. 연결 기준: -- - 고객 테이블의 `SupportRepId`와 직원 테이블의 `EmployeeId`를 연결 -- ```sql -- cu.SupportRepId = emp.EmployeeId -- ``` 결과와 해석 ERD를 제대로 이해하지 못해 고객과 직원의 이름 연결이 어려웠는데, SupportRepId와 EmployeeId라는 공통 컬럼을 통해 두 테이블을 JOIN하는 방법을 실습으로 익혔다. 이 과정을 통해 데이터베이스는 직관적인 연결보다는 명확한 식별자를 기반으로 관계를 정의한다는 점을 깨달았고, ERD와 실제 쿼리 간의 연결고리를 이해하는 데 도움이 되었다. 테이블 별칭을 활용하여 쿼리를 간결하게 작성하는 방법도 습득했다.\n정리된 이해 ERD는 데이터베이스의 구조를 시각적으로 보여주지만, 실제 데이터는 테이블 간의 분리된 저장 방식을 따르기 때문에 ERD만으로는 연결 기준을 명확히 파악하기 어려울 수 있다. 테이블 간의 관계는 공통 컬럼을 통해 연결되며, ERD를 이해하는 것만큼 중요한 것은 각 테이블이 어떤 방식으로 분리되어 저장되는지 파악하는 것이다.\n2. 데이터 구조 왜 이걸 보게 됐나 SQL JOIN 문제를 풀 때 ERD만으로는 테이블 간의 관계를 제대로 파악하지 못해서 어려움을 겪었고, 이 때문에 데이터가 어떻게 구조화되어 저장되는지 이해하는 것이 얼마나 중요한지 깨달았어. 데이터베이스는 인간이 생각하는 직관적인 방식과 다르기 때문에, 데이터를 효율적으로 관리하고 쿼리하려면 데이터 구조에 대한 이해가 필수적이라는 것을 알게 됐어.\n내가 헷갈린 지점 처음에는 테이블 간의 관계가 ERD에 명확하게 드러날 거라고 생각했는데, 실제로는 테이블이 분리되어 저장되고 공통 컬럼을 통해서 연결된다는 점이 헷갈렸다. ERD는 큰 그림을 보여주지만, 데이터가 어떻게 연결되는지 세부적인 부분을 완벽하게 보여주지는 않는 것 같다. 테이블 관계를 이해하는 데는 ERD 외에 실제 데이터와 컬럼을 파악하는 과정이 필요하다는 것을 깨달았다.\n시도한 코드 / 예시 -- 4. 보여줄 컬럼: -- - 고객 이름과 직원 이름 -- ```sql -- cu.FirstName AS customer_first_name, -- cu.LastName AS customer_last_name, -- emp.FirstName AS employee_first_name, -- emp.LastName AS employee_last_name 결과와 해석 데이터 구조는 테이블을 분리해서 관리하는 방식으로, customers 테이블의 SupportRepId와 employees 테이블의 EmployeeId가 같은 직원과 고객을 연결해주는 중요한 역할을 한다는 것을 알게 되었다. 이 예시 코드를 통해 JOIN 구문이 어떻게 테이블 간의 연결 고리를 만들어 원하는 데이터를 조합하는지 명확히 이해할 수 있었다. 특히 테이블 별칭을 활용하여 쿼리를 간결하게 만드는 방법도 익혔다.\n정리된 이해 데이터베이스는 우리의 직관과는 달리, 데이터가 분리되어 저장되고 공통 컬럼을 통해 연결되는 구조적인 방식으로 관리된다는 점을 이해하게 되었다. 각 테이블 간의 관계를 명확히 파악하고, 어떤 컬럼을 기준으로 연결해야 하는지를 파악하는 것이 중요하다는 것을 알게 되었다.\n3. 테이블 연결 왜 이걸 보게 됐나 데이터가 분리되어 저장되는 경우가 많고, 여러 테이블 간의 관계를 파악해서 필요한 정보를 조합해야 하기 때문이에요. 단순히 한 테이블의 정보를 보는 것만으로는 충분하지 않고, 데이터베이스를 효율적으로 활용하려면 테이블을 연결하는 방법을 알아야 해요. 이걸 배우면 더 복잡한 데이터 분석이나 보고서 작성도 가능해질 것 같아요.\n내가 헷갈린 지점 처음에는 ERD만 보고 테이블 간의 관계가 명확하게 보이는 게 어려웠어. 특히 어떤 컬럼을 기준으로 연결해야 하는지, 그리고 테이블 이름만 보고 어떤 정보가 저장되어 있는지 파악하는 데 시간이 오래 걸렸어. 테이블 간의 연결 기준을 찾고, 어떤 정보를 보여줘야 하는지 이해하는 과정에서 혼란스러웠던 것 같아.\n시도한 코드 / 예시 SELECT cu.FirstName AS customer_first_name, cu.LastName AS customer_last_name, emp.FirstName AS employee_first_name, emp.LastName AS employee_last_name 결과와 해석 두 테이블을 연결하는 핵심은 공통으로 사용되는 컬럼(SupportRepId와 EmployeeId)을 활용하는 거구나. 이 컬럼들을 기반으로 JOIN 구문을 작성하면, 고객 정보와 담당 직원의 정보를 함께 볼 수 있어서 ERD만으로는 파악하기 어려웠던 연결 관계를 명확하게 이해할 수 있었다. 실습을 통해 데이터베이스 구조가 직관적인 언어와 다를 수 있지만, 관계를 명확히 연결하는 방법을 익힐 수 있었다.\n정리된 이해 데이터베이스에서 테이블은 종종 분리되어 저장되며, 서로 관련 있는 정보는 공통 컬럼을 통해 연결됩니다. 즉, 직관적으로 생각하는 것과는 달리, 테이블 간의 관계는 ERD만으로는 명확하게 보이지 않고, 연결을 위한 공통 컬럼을 이해하는 것이 중요합니다. 이 공통 컬럼을 바탕으로 JOIN 구문을 사용하여 필요한 정보를 조합할 수 있습니다.\n4. SQL JOIN 왜 이걸 보게 됐나 데이터를 효과적으로 활용하려면 여러 테이블에 흩어져 있는 정보를 연결해서 분석해야 하는데, SQL JOIN은 바로 이 연결을 해주는 핵심적인 기능이거든요. 특히 실제 데이터베이스는 정보가 테이블로 분리되어 저장되는 경우가 많아서 JOIN을 제대로 이해하지 못하면 원하는 정보를 얻어낼 수 없어요. 그래서 JOIN을 배우게 되었습니다.\n내가 헷갈린 지점 처음에는 ERD만 보고 테이블 간의 관계를 명확하게 파악하는 게 어려웠어. 특히 고객 테이블과 직원 테이블의 연결 고리가 직접적인 이름이 아니라 번호로 되어 있다는 점이 혼란스러웠지. 테이블 간의 관계가 ERD에서 보이는 것만큼 직관적이지 않고, 데이터베이스는 분리된 테이블과 연결 컬럼을 통해 관계를 정의한다는 점을 이해하는 데 시간이 걸렸어.\n시도한 코드 / 예시 SELECT cu.FirstName AS customer_first_name, cu.LastName AS customer_last_name, emp.FirstName AS employee_first_name, emp.LastName AS employee_last_name 결과와 해석 SQL JOIN은 서로 다른 테이블의 데이터를 연결하여 보여주는 중요한 기능인데, 문제에서 ERD만으로는 연결 기준을 파악하기 어려워 데이터 구조에 대한 이해가 부족했음을 알게 되었다. 문제 15번 실습을 통해 고객 테이블의 SupportRepId와 직원 테이블의 EmployeeId를 JOIN하여 고객과 담당 직원의 이름을 함께 출력하는 방법을 익혔다. JOIN 연산 시 테이블 별칭을 사용하고, 연결 기준을 명확히 작성하는 것이 중요하다는 점을 체감했다.\n정리된 이해 SQL JOIN은 데이터베이스의 여러 테이블에서 필요한 정보를 가져와 연결하는 방법인데, 테이블 간의 연결 기준이 되는 컬럼을 정확히 파악하는 것이 중요하다. ERD만으로는 연결 기준을 알기 어려울 수 있으므로, 각 테이블의 역할과 어떤 컬럼이 연결되는지 주의 깊게 살펴봐야 한다.\n총평 오늘 전체에서 배운 것 ERD만 보고 테이블 관계를 명확히 파악하는 게 어려웠는데, 데이터가 분리되어 저장되고 공통 컬럼을 통해 연결된다는 점을 이해하게 됐어. 문제를 풀 때 테이블 별칭을 활용하고, 연결 기준을 명확히 하는 연습이 필요하다는 걸 깨달았어.\n다음에 조심할 것 ERD만 보고 바로 테이블 관계를 파악하는 연습을 꾸준히 해야겠다. 테이블 별칭을 명확하게 쓰고, JOIN 조건이 왜 필요한지 다시 한번 생각하며 코드를 작성해야 실수를 줄일 수 있겠다.\n다음 복습 주제 ERD를 빠르게 파악할 수 있는 노하우가 필요하고, 실제 데이터베이스 설계 원칙과 분리 저장의 이유를 더 자세히 알아봐야겠다. 다양한 예제를 통해 테이블 관계를 손에 익히는 연습을 꾸준히 해야겠다.\n",
-  "wordCount" : "1050",
-  "inLanguage": "en",
-  "datePublished": "2026-06-09T00:00:00Z",
-  "dateModified": "2026-06-09T00:00:00Z",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://Han-think.github.io/learning/am-03-sql-join-problem-solving/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Han-think Blog",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://Han-think.github.io/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-<body id="top">
-    <header class="header">
-    <nav class="header-nav">
-        <div class="logo">
-            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
-                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu" class="menu">
-            <li>
-                <a href="https://Han-think.github.io/learning/" title="학습 로그">
-                    <span>학습 로그</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://Han-think.github.io/projects/" title="프로젝트">
-                    <span>프로젝트</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://Han-think.github.io/dev/" title="개인 개발">
-                    <span>개인 개발</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://Han-think.github.io/search/" title="검색">
-                    <span>검색</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    
-    <h1 class="post-title entry-hint-parent">
-      am-03-sql-join-problem-solving
-    </h1>
-    <div class="post-description">
-      am-03-sql-join-problem-solving 학습 정리
-    </div>
-    <div class="post-meta">
-
-<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span>
-
-</div>
-  </header> 
-  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
-<ul>
-<li>
-<ol>
-<li><a href="#1-erd-%EC%9D%B4%ED%95%B4">ERD 이해</a></li>
-</ol>
-</li>
-<li>
-<ol start="2">
-<li><a href="#2-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B5%AC%EC%A1%B0">데이터 구조</a></li>
-</ol>
-</li>
-<li>
-<ol start="3">
-<li><a href="#3-%ED%85%8C%EC%9D%B4%EB%B8%94-%EC%97%B0%EA%B2%B0">테이블 연결</a></li>
-</ol>
-</li>
-<li>
-<ol start="4">
-<li><a href="#4-sql-join">SQL JOIN</a></li>
-</ol>
-</li>
-<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
-</ul>
-<h2 id="1-erd-이해">1. ERD 이해<a hidden class="anchor" aria-hidden="true" href="#1-erd-이해">#</a></h2>
-<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
-<p>SQL JOIN 문제를 풀 때 ERD만으로는 테이블 간의 관계를 명확하게 파악하기 어려웠어서, 데이터베이스의 구조를 더 깊이 이해해야겠다고 생각하게 됐어. 특히 테이블이 분리되어 저장되고, 연결 기준이 되는 컬럼을 정확히 알아야 하는 상황에서 어려움을 느껴서 ERD를 제대로 활용하는 방법을 익히기로 했어. 이 개념을 통해 JOIN 문제를 풀 때 데이터 구조에 대한 이해를 바탕으로 보다 효율적으로 접근할 수 있게 될 거야.</p>
-<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
-<p>처음에는 ERD만 보고 테이블 간의 관계가 명확하게 파악될 줄 알았는데, 실제 문제에서 테이블이 예상과 다르게 연결되어 있어서 당황스러웠다. 특히 고객 테이블에 직원 이름 대신 직원 번호만 저장되어 있다는 점이 ERD만으로는 알 수 없어서, 어떤 기준으로 연결해야 할지 혼란스러웠다. ERD는 참고 자료일 뿐, 실제 데이터베이스 구조는 ERD와 완전히 일치하지 않을 수 있다는 점을 인지해야겠다.</p>
-<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 문제 15. 고객과 담당 직원 연결하기
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">-- 고객 이름과 담당 직원 이름을 보여주는 쿼리 작성
-</span></span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 1. 기준 테이블: 고객 정보
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--    - FirstName, LastName
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--    테이블 별칭: cu
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--    ```sql
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--    customers -&gt; cu
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--    ```
-</span></span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 2. 연결할 테이블: 직원 정보
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--    - FirstName, LastName
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--    테이블 별칭: emp
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--    ```sql
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--    employees -&gt; emp
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--    ```
-</span></span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 3. 연결 기준:
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--    - 고객 테이블의 `SupportRepId`와 직원 테이블의 `EmployeeId`를 연결
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--    ```sql
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--    cu.SupportRepId = emp.EmployeeId
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--    ```
-</span></span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
-<p>ERD를 제대로 이해하지 못해 고객과 직원의 이름 연결이 어려웠는데, <code>SupportRepId</code>와 <code>EmployeeId</code>라는 공통 컬럼을 통해 두 테이블을 JOIN하는 방법을 실습으로 익혔다. 이 과정을 통해 데이터베이스는 직관적인 연결보다는 명확한 식별자를 기반으로 관계를 정의한다는 점을 깨달았고, ERD와 실제 쿼리 간의 연결고리를 이해하는 데 도움이 되었다. 테이블 별칭을 활용하여 쿼리를 간결하게 작성하는 방법도 습득했다.</p>
-<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
-<p>ERD는 데이터베이스의 구조를 시각적으로 보여주지만, 실제 데이터는 테이블 간의 분리된 저장 방식을 따르기 때문에 ERD만으로는 연결 기준을 명확히 파악하기 어려울 수 있다. 테이블 간의 관계는 공통 컬럼을 통해 연결되며, ERD를 이해하는 것만큼 중요한 것은 각 테이블이 어떤 방식으로 분리되어 저장되는지 파악하는 것이다.</p>
-<h2 id="2-데이터-구조">2. 데이터 구조<a hidden class="anchor" aria-hidden="true" href="#2-데이터-구조">#</a></h2>
-<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
-<p>SQL JOIN 문제를 풀 때 ERD만으로는 테이블 간의 관계를 제대로 파악하지 못해서 어려움을 겪었고, 이 때문에 데이터가 어떻게 구조화되어 저장되는지 이해하는 것이 얼마나 중요한지 깨달았어. 데이터베이스는 인간이 생각하는 직관적인 방식과 다르기 때문에, 데이터를 효율적으로 관리하고 쿼리하려면 데이터 구조에 대한 이해가 필수적이라는 것을 알게 됐어.</p>
-<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
-<p>처음에는 테이블 간의 관계가 ERD에 명확하게 드러날 거라고 생각했는데, 실제로는 테이블이 분리되어 저장되고 공통 컬럼을 통해서 연결된다는 점이 헷갈렸다. ERD는 큰 그림을 보여주지만, 데이터가 어떻게 연결되는지 세부적인 부분을 완벽하게 보여주지는 않는 것 같다. 테이블 관계를 이해하는 데는 ERD 외에 실제 데이터와 컬럼을 파악하는 과정이 필요하다는 것을 깨달았다.</p>
-<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 4. 보여줄 컬럼:
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--    - 고객 이름과 직원 이름
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--    ```sql
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--    cu.FirstName AS customer_first_name,
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--    cu.LastName AS customer_last_name,
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--    emp.FirstName AS employee_first_name,
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--    emp.LastName AS employee_last_name
-</span></span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
-<p>데이터 구조는 테이블을 분리해서 관리하는 방식으로, <code>customers</code> 테이블의 <code>SupportRepId</code>와 <code>employees</code> 테이블의 <code>EmployeeId</code>가 같은 직원과 고객을 연결해주는 중요한 역할을 한다는 것을 알게 되었다. 이 예시 코드를 통해 JOIN 구문이 어떻게 테이블 간의 연결 고리를 만들어 원하는 데이터를 조합하는지 명확히 이해할 수 있었다. 특히 테이블 별칭을 활용하여 쿼리를 간결하게 만드는 방법도 익혔다.</p>
-<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
-<p>데이터베이스는 우리의 직관과는 달리, 데이터가 분리되어 저장되고 공통 컬럼을 통해 연결되는 구조적인 방식으로 관리된다는 점을 이해하게 되었다. 각 테이블 간의 관계를 명확히 파악하고, 어떤 컬럼을 기준으로 연결해야 하는지를 파악하는 것이 중요하다는 것을 알게 되었다.</p>
-<h2 id="3-테이블-연결">3. 테이블 연결<a hidden class="anchor" aria-hidden="true" href="#3-테이블-연결">#</a></h2>
-<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
-<p>데이터가 분리되어 저장되는 경우가 많고, 여러 테이블 간의 관계를 파악해서 필요한 정보를 조합해야 하기 때문이에요. 단순히 한 테이블의 정보를 보는 것만으로는 충분하지 않고, 데이터베이스를 효율적으로 활용하려면 테이블을 연결하는 방법을 알아야 해요. 이걸 배우면 더 복잡한 데이터 분석이나 보고서 작성도 가능해질 것 같아요.</p>
-<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
-<p>처음에는 ERD만 보고 테이블 간의 관계가 명확하게 보이는 게 어려웠어. 특히 어떤 컬럼을 기준으로 연결해야 하는지, 그리고 테이블 이름만 보고 어떤 정보가 저장되어 있는지 파악하는 데 시간이 오래 걸렸어. 테이블 간의 연결 기준을 찾고, 어떤 정보를 보여줘야 하는지 이해하는 과정에서 혼란스러웠던 것 같아.</p>
-<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
-</span></span><span style="display:flex;"><span>    cu.FirstName <span style="color:#66d9ef">AS</span> customer_first_name,
-</span></span><span style="display:flex;"><span>    cu.LastName <span style="color:#66d9ef">AS</span> customer_last_name,
-</span></span><span style="display:flex;"><span>    emp.FirstName <span style="color:#66d9ef">AS</span> employee_first_name,
-</span></span><span style="display:flex;"><span>    emp.LastName <span style="color:#66d9ef">AS</span> employee_last_name
-</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
-<p>두 테이블을 연결하는 핵심은 공통으로 사용되는 컬럼(<code>SupportRepId</code>와 <code>EmployeeId</code>)을 활용하는 거구나. 이 컬럼들을 기반으로 JOIN 구문을 작성하면, 고객 정보와 담당 직원의 정보를 함께 볼 수 있어서 ERD만으로는 파악하기 어려웠던 연결 관계를 명확하게 이해할 수 있었다.  실습을 통해 데이터베이스 구조가 직관적인 언어와 다를 수 있지만, 관계를 명확히 연결하는 방법을 익힐 수 있었다.</p>
-<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
-<p>데이터베이스에서 테이블은 종종 분리되어 저장되며, 서로 관련 있는 정보는 공통 컬럼을 통해 연결됩니다. 즉, 직관적으로 생각하는 것과는 달리, 테이블 간의 관계는 ERD만으로는 명확하게 보이지 않고, 연결을 위한 공통 컬럼을 이해하는 것이 중요합니다. 이 공통 컬럼을 바탕으로 JOIN 구문을 사용하여 필요한 정보를 조합할 수 있습니다.</p>
-<h2 id="4-sql-join">4. SQL JOIN<a hidden class="anchor" aria-hidden="true" href="#4-sql-join">#</a></h2>
-<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
-<p>데이터를 효과적으로 활용하려면 여러 테이블에 흩어져 있는 정보를 연결해서 분석해야 하는데, SQL JOIN은 바로 이 연결을 해주는 핵심적인 기능이거든요. 특히 실제 데이터베이스는 정보가 테이블로 분리되어 저장되는 경우가 많아서 JOIN을 제대로 이해하지 못하면 원하는 정보를 얻어낼 수 없어요. 그래서 JOIN을 배우게 되었습니다.</p>
-<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
-<p>처음에는 ERD만 보고 테이블 간의 관계를 명확하게 파악하는 게 어려웠어. 특히 고객 테이블과 직원 테이블의 연결 고리가 직접적인 이름이 아니라 번호로 되어 있다는 점이 혼란스러웠지. 테이블 간의 관계가 ERD에서 보이는 것만큼 직관적이지 않고, 데이터베이스는 분리된 테이블과 연결 컬럼을 통해 관계를 정의한다는 점을 이해하는 데 시간이 걸렸어.</p>
-<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
-</span></span><span style="display:flex;"><span>    cu.FirstName <span style="color:#66d9ef">AS</span> customer_first_name,
-</span></span><span style="display:flex;"><span>    cu.LastName <span style="color:#66d9ef">AS</span> customer_last_name,
-</span></span><span style="display:flex;"><span>    emp.FirstName <span style="color:#66d9ef">AS</span> employee_first_name,
-</span></span><span style="display:flex;"><span>    emp.LastName <span style="color:#66d9ef">AS</span> employee_last_name
-</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
-<p>SQL JOIN은 서로 다른 테이블의 데이터를 연결하여 보여주는 중요한 기능인데, 문제에서 ERD만으로는 연결 기준을 파악하기 어려워 데이터 구조에 대한 이해가 부족했음을 알게 되었다. 문제 15번 실습을 통해 고객 테이블의 <code>SupportRepId</code>와 직원 테이블의 <code>EmployeeId</code>를 JOIN하여 고객과 담당 직원의 이름을 함께 출력하는 방법을 익혔다. JOIN 연산 시 테이블 별칭을 사용하고, 연결 기준을 명확히 작성하는 것이 중요하다는 점을 체감했다.</p>
-<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
-<p>SQL JOIN은 데이터베이스의 여러 테이블에서 필요한 정보를 가져와 연결하는 방법인데, 테이블 간의 연결 기준이 되는 컬럼을 정확히 파악하는 것이 중요하다. ERD만으로는 연결 기준을 알기 어려울 수 있으므로, 각 테이블의 역할과 어떤 컬럼이 연결되는지 주의 깊게 살펴봐야 한다.</p>
-<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
-<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
-<p>ERD만 보고 테이블 관계를 명확히 파악하는 게 어려웠는데, 데이터가 분리되어 저장되고 공통 컬럼을 통해 연결된다는 점을 이해하게 됐어. 문제를 풀 때 테이블 별칭을 활용하고, 연결 기준을 명확히 하는 연습이 필요하다는 걸 깨달았어.</p>
-<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
-<p>ERD만 보고 바로 테이블 관계를 파악하는 연습을 꾸준히 해야겠다. 테이블 별칭을 명확하게 쓰고, JOIN 조건이 왜 필요한지 다시 한번 생각하며 코드를 작성해야 실수를 줄일 수 있겠다.</p>
-<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
-<p>ERD를 빠르게 파악할 수 있는 노하우가 필요하고, 실제 데이터베이스 설계 원칙과 분리 저장의 이유를 더 자세히 알아봐야겠다. 다양한 예제를 통해 테이블 관계를 손에 익히는 연습을 꾸준히 해야겠다.</p>
-
-
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-    </ul>
-<nav class="paginav">
-  <a class="prev" href="https://Han-think.github.io/learning/am-02-sql-join-alias-erd/">
-    <span class="title">« Prev</span>
-    <span>am-02-sql-join-alias-erd</span>
-  </a>
-  <a class="next" href="https://Han-think.github.io/learning/erd-crows-foot-chinook/">
-    <span class="title">Next »</span>
-    <span>erd-crows-foot-chinook</span>
-  </a>
-</nav>
-
-  </footer>
-</article>
-    </main>
-    
-<footer class="footer">
-        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
-
-    
-    
-    <span>
-        Powered by
-        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
-        <polyline points="17 11 12 6 7 11"></polyline>
-        <polyline points="17 18 12 13 7 18"></polyline>
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu');
-    if (menu) {
-        
-        const scrollPosition = localStorage.getItem("menu-scroll-position");
-        if (scrollPosition) {
-            menu.scrollLeft = parseInt(scrollPosition, 10);
-        }
-        
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var toplink = document.getElementById("top-link");
-    window.onscroll = function () {
-        const scrollThreshold = window.innerHeight;
-        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
-            toplink.classList.remove("hidden");
-        } else {
-            toplink.classList.add("hidden");
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        const html = document.querySelector("html");
-        if (html.dataset.theme === "dark") {
-            html.dataset.theme = 'light';
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            html.dataset.theme = 'dark';
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-</body>
-
-</html>
+<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>am-03-sql-join-problem-solving | Han-think Blog</title><meta name=keywords content><meta name=description content="am-03-sql-join-problem-solving 학습 정리"><meta name=author content><link rel=canonical href=https://Han-think.github.io/learning/am-03-sql-join-problem-solving/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/learning/am-03-sql-join-problem-solving/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/learning/am-03-sql-join-problem-solving/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="am-03-sql-join-problem-solving"><meta property="og:description" content="am-03-sql-join-problem-solving 학습 정리"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="learning"><meta property="article:published_time" content="2026-06-09T00:00:00+00:00"><meta property="article:modified_time" content="2026-06-09T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="am-03-sql-join-problem-solving"><meta name=twitter:description content="am-03-sql-join-problem-solving 학습 정리"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"학습 기록","item":"https://Han-think.github.io/learning/"},{"@type":"ListItem","position":2,"name":"am-03-sql-join-problem-solving","item":"https://Han-think.github.io/learning/am-03-sql-join-problem-solving/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"am-03-sql-join-problem-solving","name":"am-03-sql-join-problem-solving","description":"am-03-sql-join-problem-solving 학습 정리","keywords":[],"articleBody":"목차 ERD 이해 데이터 구조 테이블 연결 SQL JOIN 총평 1. ERD 이해 왜 이걸 보게 됐나 SQL JOIN 문제를 풀 때 ERD만으로는 테이블 간의 관계를 명확하게 파악하기 어려웠어서, 데이터베이스의 구조를 더 깊이 이해해야겠다고 생각하게 됐어. 특히 테이블이 분리되어 저장되고, 연결 기준이 되는 컬럼을 정확히 알아야 하는 상황에서 어려움을 느껴서 ERD를 제대로 활용하는 방법을 익히기로 했어. 이 개념을 통해 JOIN 문제를 풀 때 데이터 구조에 대한 이해를 바탕으로 보다 효율적으로 접근할 수 있게 될 거야.\n내가 헷갈린 지점 처음에는 ERD만 보고 테이블 간의 관계가 명확하게 파악될 줄 알았는데, 실제 문제에서 테이블이 예상과 다르게 연결되어 있어서 당황스러웠다. 특히 고객 테이블에 직원 이름 대신 직원 번호만 저장되어 있다는 점이 ERD만으로는 알 수 없어서, 어떤 기준으로 연결해야 할지 혼란스러웠다. ERD는 참고 자료일 뿐, 실제 데이터베이스 구조는 ERD와 완전히 일치하지 않을 수 있다는 점을 인지해야겠다.\n시도한 코드 / 예시 -- 문제 15. 고객과 담당 직원 연결하기 -- 고객 이름과 담당 직원 이름을 보여주는 쿼리 작성 -- 1. 기준 테이블: 고객 정보 -- - FirstName, LastName -- 테이블 별칭: cu -- ```sql -- customers -\u003e cu -- ``` -- 2. 연결할 테이블: 직원 정보 -- - FirstName, LastName -- 테이블 별칭: emp -- ```sql -- employees -\u003e emp -- ``` -- 3. 연결 기준: -- - 고객 테이블의 `SupportRepId`와 직원 테이블의 `EmployeeId`를 연결 -- ```sql -- cu.SupportRepId = emp.EmployeeId -- ``` 결과와 해석 ERD를 제대로 이해하지 못해 고객과 직원의 이름 연결이 어려웠는데, SupportRepId와 EmployeeId라는 공통 컬럼을 통해 두 테이블을 JOIN하는 방법을 실습으로 익혔다. 이 과정을 통해 데이터베이스는 직관적인 연결보다는 명확한 식별자를 기반으로 관계를 정의한다는 점을 깨달았고, ERD와 실제 쿼리 간의 연결고리를 이해하는 데 도움이 되었다. 테이블 별칭을 활용하여 쿼리를 간결하게 작성하는 방법도 습득했다.\n정리된 이해 ERD는 데이터베이스의 구조를 시각적으로 보여주지만, 실제 데이터는 테이블 간의 분리된 저장 방식을 따르기 때문에 ERD만으로는 연결 기준을 명확히 파악하기 어려울 수 있다. 테이블 간의 관계는 공통 컬럼을 통해 연결되며, ERD를 이해하는 것만큼 중요한 것은 각 테이블이 어떤 방식으로 분리되어 저장되는지 파악하는 것이다.\n2. 데이터 구조 왜 이걸 보게 됐나 SQL JOIN 문제를 풀 때 ERD만으로는 테이블 간의 관계를 제대로 파악하지 못해서 어려움을 겪었고, 이 때문에 데이터가 어떻게 구조화되어 저장되는지 이해하는 것이 얼마나 중요한지 깨달았어. 데이터베이스는 인간이 생각하는 직관적인 방식과 다르기 때문에, 데이터를 효율적으로 관리하고 쿼리하려면 데이터 구조에 대한 이해가 필수적이라는 것을 알게 됐어.\n내가 헷갈린 지점 처음에는 테이블 간의 관계가 ERD에 명확하게 드러날 거라고 생각했는데, 실제로는 테이블이 분리되어 저장되고 공통 컬럼을 통해서 연결된다는 점이 헷갈렸다. ERD는 큰 그림을 보여주지만, 데이터가 어떻게 연결되는지 세부적인 부분을 완벽하게 보여주지는 않는 것 같다. 테이블 관계를 이해하는 데는 ERD 외에 실제 데이터와 컬럼을 파악하는 과정이 필요하다는 것을 깨달았다.\n시도한 코드 / 예시 -- 4. 보여줄 컬럼: -- - 고객 이름과 직원 이름 -- ```sql -- cu.FirstName AS customer_first_name, -- cu.LastName AS customer_last_name, -- emp.FirstName AS employee_first_name, -- emp.LastName AS employee_last_name 결과와 해석 데이터 구조는 테이블을 분리해서 관리하는 방식으로, customers 테이블의 SupportRepId와 employees 테이블의 EmployeeId가 같은 직원과 고객을 연결해주는 중요한 역할을 한다는 것을 알게 되었다. 이 예시 코드를 통해 JOIN 구문이 어떻게 테이블 간의 연결 고리를 만들어 원하는 데이터를 조합하는지 명확히 이해할 수 있었다. 특히 테이블 별칭을 활용하여 쿼리를 간결하게 만드는 방법도 익혔다.\n정리된 이해 데이터베이스는 우리의 직관과는 달리, 데이터가 분리되어 저장되고 공통 컬럼을 통해 연결되는 구조적인 방식으로 관리된다는 점을 이해하게 되었다. 각 테이블 간의 관계를 명확히 파악하고, 어떤 컬럼을 기준으로 연결해야 하는지를 파악하는 것이 중요하다는 것을 알게 되었다.\n3. 테이블 연결 왜 이걸 보게 됐나 데이터가 분리되어 저장되는 경우가 많고, 여러 테이블 간의 관계를 파악해서 필요한 정보를 조합해야 하기 때문이에요. 단순히 한 테이블의 정보를 보는 것만으로는 충분하지 않고, 데이터베이스를 효율적으로 활용하려면 테이블을 연결하는 방법을 알아야 해요. 이걸 배우면 더 복잡한 데이터 분석이나 보고서 작성도 가능해질 것 같아요.\n내가 헷갈린 지점 처음에는 ERD만 보고 테이블 간의 관계가 명확하게 보이는 게 어려웠어. 특히 어떤 컬럼을 기준으로 연결해야 하는지, 그리고 테이블 이름만 보고 어떤 정보가 저장되어 있는지 파악하는 데 시간이 오래 걸렸어. 테이블 간의 연결 기준을 찾고, 어떤 정보를 보여줘야 하는지 이해하는 과정에서 혼란스러웠던 것 같아.\n시도한 코드 / 예시 SELECT cu.FirstName AS customer_first_name, cu.LastName AS customer_last_name, emp.FirstName AS employee_first_name, emp.LastName AS employee_last_name 결과와 해석 두 테이블을 연결하는 핵심은 공통으로 사용되는 컬럼(SupportRepId와 EmployeeId)을 활용하는 거구나. 이 컬럼들을 기반으로 JOIN 구문을 작성하면, 고객 정보와 담당 직원의 정보를 함께 볼 수 있어서 ERD만으로는 파악하기 어려웠던 연결 관계를 명확하게 이해할 수 있었다. 실습을 통해 데이터베이스 구조가 직관적인 언어와 다를 수 있지만, 관계를 명확히 연결하는 방법을 익힐 수 있었다.\n정리된 이해 데이터베이스에서 테이블은 종종 분리되어 저장되며, 서로 관련 있는 정보는 공통 컬럼을 통해 연결됩니다. 즉, 직관적으로 생각하는 것과는 달리, 테이블 간의 관계는 ERD만으로는 명확하게 보이지 않고, 연결을 위한 공통 컬럼을 이해하는 것이 중요합니다. 이 공통 컬럼을 바탕으로 JOIN 구문을 사용하여 필요한 정보를 조합할 수 있습니다.\n4. SQL JOIN 왜 이걸 보게 됐나 데이터를 효과적으로 활용하려면 여러 테이블에 흩어져 있는 정보를 연결해서 분석해야 하는데, SQL JOIN은 바로 이 연결을 해주는 핵심적인 기능이거든요. 특히 실제 데이터베이스는 정보가 테이블로 분리되어 저장되는 경우가 많아서 JOIN을 제대로 이해하지 못하면 원하는 정보를 얻어낼 수 없어요. 그래서 JOIN을 배우게 되었습니다.\n내가 헷갈린 지점 처음에는 ERD만 보고 테이블 간의 관계를 명확하게 파악하는 게 어려웠어. 특히 고객 테이블과 직원 테이블의 연결 고리가 직접적인 이름이 아니라 번호로 되어 있다는 점이 혼란스러웠지. 테이블 간의 관계가 ERD에서 보이는 것만큼 직관적이지 않고, 데이터베이스는 분리된 테이블과 연결 컬럼을 통해 관계를 정의한다는 점을 이해하는 데 시간이 걸렸어.\n시도한 코드 / 예시 SELECT cu.FirstName AS customer_first_name, cu.LastName AS customer_last_name, emp.FirstName AS employee_first_name, emp.LastName AS employee_last_name 결과와 해석 SQL JOIN은 서로 다른 테이블의 데이터를 연결하여 보여주는 중요한 기능인데, 문제에서 ERD만으로는 연결 기준을 파악하기 어려워 데이터 구조에 대한 이해가 부족했음을 알게 되었다. 문제 15번 실습을 통해 고객 테이블의 SupportRepId와 직원 테이블의 EmployeeId를 JOIN하여 고객과 담당 직원의 이름을 함께 출력하는 방법을 익혔다. JOIN 연산 시 테이블 별칭을 사용하고, 연결 기준을 명확히 작성하는 것이 중요하다는 점을 체감했다.\n정리된 이해 SQL JOIN은 데이터베이스의 여러 테이블에서 필요한 정보를 가져와 연결하는 방법인데, 테이블 간의 연결 기준이 되는 컬럼을 정확히 파악하는 것이 중요하다. ERD만으로는 연결 기준을 알기 어려울 수 있으므로, 각 테이블의 역할과 어떤 컬럼이 연결되는지 주의 깊게 살펴봐야 한다.\n총평 오늘 전체에서 배운 것 ERD만 보고 테이블 관계를 명확히 파악하는 게 어려웠는데, 데이터가 분리되어 저장되고 공통 컬럼을 통해 연결된다는 점을 이해하게 됐어. 문제를 풀 때 테이블 별칭을 활용하고, 연결 기준을 명확히 하는 연습이 필요하다는 걸 깨달았어.\n다음에 조심할 것 ERD만 보고 바로 테이블 관계를 파악하는 연습을 꾸준히 해야겠다. 테이블 별칭을 명확하게 쓰고, JOIN 조건이 왜 필요한지 다시 한번 생각하며 코드를 작성해야 실수를 줄일 수 있겠다.\n다음 복습 주제 ERD를 빠르게 파악할 수 있는 노하우가 필요하고, 실제 데이터베이스 설계 원칙과 분리 저장의 이유를 더 자세히 알아봐야겠다. 다양한 예제를 통해 테이블 관계를 손에 익히는 연습을 꾸준히 해야겠다.\n","wordCount":"1050","inLanguage":"en","datePublished":"2026-06-09T00:00:00Z","dateModified":"2026-06-09T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/learning/am-03-sql-join-problem-solving/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
+<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">am-03-sql-join-problem-solving</h1><div class=post-description>am-03-sql-join-problem-solving 학습 정리</div><div class=post-meta><span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></div></header><div class="post-content md-content"><h2 id=목차>목차<a hidden class=anchor aria-hidden=true href=#목차>#</a></h2><ul><li><ol><li><a href=#1-erd-%EC%9D%B4%ED%95%B4>ERD 이해</a></li></ol></li><li><ol start=2><li><a href=#2-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B5%AC%EC%A1%B0>데이터 구조</a></li></ol></li><li><ol start=3><li><a href=#3-%ED%85%8C%EC%9D%B4%EB%B8%94-%EC%97%B0%EA%B2%B0>테이블 연결</a></li></ol></li><li><ol start=4><li><a href=#4-sql-join>SQL JOIN</a></li></ol></li><li><a href=#%EC%B4%9D%ED%8F%89>총평</a></li></ul><h2 id=1-erd-이해>1. ERD 이해<a hidden class=anchor aria-hidden=true href=#1-erd-이해>#</a></h2><h3 id=왜-이걸-보게-됐나>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나>#</a></h3><p>SQL JOIN 문제를 풀 때 ERD만으로는 테이블 간의 관계를 명확하게 파악하기 어려웠어서, 데이터베이스의 구조를 더 깊이 이해해야겠다고 생각하게 됐어. 특히 테이블이 분리되어 저장되고, 연결 기준이 되는 컬럼을 정확히 알아야 하는 상황에서 어려움을 느껴서 ERD를 제대로 활용하는 방법을 익히기로 했어. 이 개념을 통해 JOIN 문제를 풀 때 데이터 구조에 대한 이해를 바탕으로 보다 효율적으로 접근할 수 있게 될 거야.</p><h3 id=내가-헷갈린-지점>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점>#</a></h3><p>처음에는 ERD만 보고 테이블 간의 관계가 명확하게 파악될 줄 알았는데, 실제 문제에서 테이블이 예상과 다르게 연결되어 있어서 당황스러웠다. 특히 고객 테이블에 직원 이름 대신 직원 번호만 저장되어 있다는 점이 ERD만으로는 알 수 없어서, 어떤 기준으로 연결해야 할지 혼란스러웠다. ERD는 참고 자료일 뿐, 실제 데이터베이스 구조는 ERD와 완전히 일치하지 않을 수 있다는 점을 인지해야겠다.</p><h3 id=시도한-코드--예시>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#75715e>-- 문제 15. 고객과 담당 직원 연결하기
+</span></span></span><span style=display:flex><span><span style=color:#75715e>-- 고객 이름과 담당 직원 이름을 보여주는 쿼리 작성
+</span></span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>-- 1. 기준 테이블: 고객 정보
+</span></span></span><span style=display:flex><span><span style=color:#75715e>--    - FirstName, LastName
+</span></span></span><span style=display:flex><span><span style=color:#75715e>--    테이블 별칭: cu
+</span></span></span><span style=display:flex><span><span style=color:#75715e>--    ```sql
+</span></span></span><span style=display:flex><span><span style=color:#75715e>--    customers -&gt; cu
+</span></span></span><span style=display:flex><span><span style=color:#75715e>--    ```
+</span></span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>-- 2. 연결할 테이블: 직원 정보
+</span></span></span><span style=display:flex><span><span style=color:#75715e>--    - FirstName, LastName
+</span></span></span><span style=display:flex><span><span style=color:#75715e>--    테이블 별칭: emp
+</span></span></span><span style=display:flex><span><span style=color:#75715e>--    ```sql
+</span></span></span><span style=display:flex><span><span style=color:#75715e>--    employees -&gt; emp
+</span></span></span><span style=display:flex><span><span style=color:#75715e>--    ```
+</span></span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>-- 3. 연결 기준:
+</span></span></span><span style=display:flex><span><span style=color:#75715e>--    - 고객 테이블의 `SupportRepId`와 직원 테이블의 `EmployeeId`를 연결
+</span></span></span><span style=display:flex><span><span style=color:#75715e>--    ```sql
+</span></span></span><span style=display:flex><span><span style=color:#75715e>--    cu.SupportRepId = emp.EmployeeId
+</span></span></span><span style=display:flex><span><span style=color:#75715e>--    ```
+</span></span></span></code></pre></div><h3 id=결과와-해석>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석>#</a></h3><p>ERD를 제대로 이해하지 못해 고객과 직원의 이름 연결이 어려웠는데, <code>SupportRepId</code>와 <code>EmployeeId</code>라는 공통 컬럼을 통해 두 테이블을 JOIN하는 방법을 실습으로 익혔다. 이 과정을 통해 데이터베이스는 직관적인 연결보다는 명확한 식별자를 기반으로 관계를 정의한다는 점을 깨달았고, ERD와 실제 쿼리 간의 연결고리를 이해하는 데 도움이 되었다. 테이블 별칭을 활용하여 쿼리를 간결하게 작성하는 방법도 습득했다.</p><h3 id=정리된-이해>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해>#</a></h3><p>ERD는 데이터베이스의 구조를 시각적으로 보여주지만, 실제 데이터는 테이블 간의 분리된 저장 방식을 따르기 때문에 ERD만으로는 연결 기준을 명확히 파악하기 어려울 수 있다. 테이블 간의 관계는 공통 컬럼을 통해 연결되며, ERD를 이해하는 것만큼 중요한 것은 각 테이블이 어떤 방식으로 분리되어 저장되는지 파악하는 것이다.</p><h2 id=2-데이터-구조>2. 데이터 구조<a hidden class=anchor aria-hidden=true href=#2-데이터-구조>#</a></h2><h3 id=왜-이걸-보게-됐나-1>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-1>#</a></h3><p>SQL JOIN 문제를 풀 때 ERD만으로는 테이블 간의 관계를 제대로 파악하지 못해서 어려움을 겪었고, 이 때문에 데이터가 어떻게 구조화되어 저장되는지 이해하는 것이 얼마나 중요한지 깨달았어. 데이터베이스는 인간이 생각하는 직관적인 방식과 다르기 때문에, 데이터를 효율적으로 관리하고 쿼리하려면 데이터 구조에 대한 이해가 필수적이라는 것을 알게 됐어.</p><h3 id=내가-헷갈린-지점-1>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-1>#</a></h3><p>처음에는 테이블 간의 관계가 ERD에 명확하게 드러날 거라고 생각했는데, 실제로는 테이블이 분리되어 저장되고 공통 컬럼을 통해서 연결된다는 점이 헷갈렸다. ERD는 큰 그림을 보여주지만, 데이터가 어떻게 연결되는지 세부적인 부분을 완벽하게 보여주지는 않는 것 같다. 테이블 관계를 이해하는 데는 ERD 외에 실제 데이터와 컬럼을 파악하는 과정이 필요하다는 것을 깨달았다.</p><h3 id=시도한-코드--예시-1>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-1>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#75715e>-- 4. 보여줄 컬럼:
+</span></span></span><span style=display:flex><span><span style=color:#75715e>--    - 고객 이름과 직원 이름
+</span></span></span><span style=display:flex><span><span style=color:#75715e>--    ```sql
+</span></span></span><span style=display:flex><span><span style=color:#75715e>--    cu.FirstName AS customer_first_name,
+</span></span></span><span style=display:flex><span><span style=color:#75715e>--    cu.LastName AS customer_last_name,
+</span></span></span><span style=display:flex><span><span style=color:#75715e>--    emp.FirstName AS employee_first_name,
+</span></span></span><span style=display:flex><span><span style=color:#75715e>--    emp.LastName AS employee_last_name
+</span></span></span></code></pre></div><h3 id=결과와-해석-1>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-1>#</a></h3><p>데이터 구조는 테이블을 분리해서 관리하는 방식으로, <code>customers</code> 테이블의 <code>SupportRepId</code>와 <code>employees</code> 테이블의 <code>EmployeeId</code>가 같은 직원과 고객을 연결해주는 중요한 역할을 한다는 것을 알게 되었다. 이 예시 코드를 통해 JOIN 구문이 어떻게 테이블 간의 연결 고리를 만들어 원하는 데이터를 조합하는지 명확히 이해할 수 있었다. 특히 테이블 별칭을 활용하여 쿼리를 간결하게 만드는 방법도 익혔다.</p><h3 id=정리된-이해-1>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-1>#</a></h3><p>데이터베이스는 우리의 직관과는 달리, 데이터가 분리되어 저장되고 공통 컬럼을 통해 연결되는 구조적인 방식으로 관리된다는 점을 이해하게 되었다. 각 테이블 간의 관계를 명확히 파악하고, 어떤 컬럼을 기준으로 연결해야 하는지를 파악하는 것이 중요하다는 것을 알게 되었다.</p><h2 id=3-테이블-연결>3. 테이블 연결<a hidden class=anchor aria-hidden=true href=#3-테이블-연결>#</a></h2><h3 id=왜-이걸-보게-됐나-2>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-2>#</a></h3><p>데이터가 분리되어 저장되는 경우가 많고, 여러 테이블 간의 관계를 파악해서 필요한 정보를 조합해야 하기 때문이에요. 단순히 한 테이블의 정보를 보는 것만으로는 충분하지 않고, 데이터베이스를 효율적으로 활용하려면 테이블을 연결하는 방법을 알아야 해요. 이걸 배우면 더 복잡한 데이터 분석이나 보고서 작성도 가능해질 것 같아요.</p><h3 id=내가-헷갈린-지점-2>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-2>#</a></h3><p>처음에는 ERD만 보고 테이블 간의 관계가 명확하게 보이는 게 어려웠어. 특히 어떤 컬럼을 기준으로 연결해야 하는지, 그리고 테이블 이름만 보고 어떤 정보가 저장되어 있는지 파악하는 데 시간이 오래 걸렸어. 테이블 간의 연결 기준을 찾고, 어떤 정보를 보여줘야 하는지 이해하는 과정에서 혼란스러웠던 것 같아.</p><h3 id=시도한-코드--예시-2>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-2>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
+</span></span><span style=display:flex><span>    cu.FirstName <span style=color:#66d9ef>AS</span> customer_first_name,
+</span></span><span style=display:flex><span>    cu.LastName <span style=color:#66d9ef>AS</span> customer_last_name,
+</span></span><span style=display:flex><span>    emp.FirstName <span style=color:#66d9ef>AS</span> employee_first_name,
+</span></span><span style=display:flex><span>    emp.LastName <span style=color:#66d9ef>AS</span> employee_last_name
+</span></span></code></pre></div><h3 id=결과와-해석-2>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-2>#</a></h3><p>두 테이블을 연결하는 핵심은 공통으로 사용되는 컬럼(<code>SupportRepId</code>와 <code>EmployeeId</code>)을 활용하는 거구나. 이 컬럼들을 기반으로 JOIN 구문을 작성하면, 고객 정보와 담당 직원의 정보를 함께 볼 수 있어서 ERD만으로는 파악하기 어려웠던 연결 관계를 명확하게 이해할 수 있었다. 실습을 통해 데이터베이스 구조가 직관적인 언어와 다를 수 있지만, 관계를 명확히 연결하는 방법을 익힐 수 있었다.</p><h3 id=정리된-이해-2>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-2>#</a></h3><p>데이터베이스에서 테이블은 종종 분리되어 저장되며, 서로 관련 있는 정보는 공통 컬럼을 통해 연결됩니다. 즉, 직관적으로 생각하는 것과는 달리, 테이블 간의 관계는 ERD만으로는 명확하게 보이지 않고, 연결을 위한 공통 컬럼을 이해하는 것이 중요합니다. 이 공통 컬럼을 바탕으로 JOIN 구문을 사용하여 필요한 정보를 조합할 수 있습니다.</p><h2 id=4-sql-join>4. SQL JOIN<a hidden class=anchor aria-hidden=true href=#4-sql-join>#</a></h2><h3 id=왜-이걸-보게-됐나-3>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-3>#</a></h3><p>데이터를 효과적으로 활용하려면 여러 테이블에 흩어져 있는 정보를 연결해서 분석해야 하는데, SQL JOIN은 바로 이 연결을 해주는 핵심적인 기능이거든요. 특히 실제 데이터베이스는 정보가 테이블로 분리되어 저장되는 경우가 많아서 JOIN을 제대로 이해하지 못하면 원하는 정보를 얻어낼 수 없어요. 그래서 JOIN을 배우게 되었습니다.</p><h3 id=내가-헷갈린-지점-3>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-3>#</a></h3><p>처음에는 ERD만 보고 테이블 간의 관계를 명확하게 파악하는 게 어려웠어. 특히 고객 테이블과 직원 테이블의 연결 고리가 직접적인 이름이 아니라 번호로 되어 있다는 점이 혼란스러웠지. 테이블 간의 관계가 ERD에서 보이는 것만큼 직관적이지 않고, 데이터베이스는 분리된 테이블과 연결 컬럼을 통해 관계를 정의한다는 점을 이해하는 데 시간이 걸렸어.</p><h3 id=시도한-코드--예시-3>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-3>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
+</span></span><span style=display:flex><span>    cu.FirstName <span style=color:#66d9ef>AS</span> customer_first_name,
+</span></span><span style=display:flex><span>    cu.LastName <span style=color:#66d9ef>AS</span> customer_last_name,
+</span></span><span style=display:flex><span>    emp.FirstName <span style=color:#66d9ef>AS</span> employee_first_name,
+</span></span><span style=display:flex><span>    emp.LastName <span style=color:#66d9ef>AS</span> employee_last_name
+</span></span></code></pre></div><h3 id=결과와-해석-3>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-3>#</a></h3><p>SQL JOIN은 서로 다른 테이블의 데이터를 연결하여 보여주는 중요한 기능인데, 문제에서 ERD만으로는 연결 기준을 파악하기 어려워 데이터 구조에 대한 이해가 부족했음을 알게 되었다. 문제 15번 실습을 통해 고객 테이블의 <code>SupportRepId</code>와 직원 테이블의 <code>EmployeeId</code>를 JOIN하여 고객과 담당 직원의 이름을 함께 출력하는 방법을 익혔다. JOIN 연산 시 테이블 별칭을 사용하고, 연결 기준을 명확히 작성하는 것이 중요하다는 점을 체감했다.</p><h3 id=정리된-이해-3>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-3>#</a></h3><p>SQL JOIN은 데이터베이스의 여러 테이블에서 필요한 정보를 가져와 연결하는 방법인데, 테이블 간의 연결 기준이 되는 컬럼을 정확히 파악하는 것이 중요하다. ERD만으로는 연결 기준을 알기 어려울 수 있으므로, 각 테이블의 역할과 어떤 컬럼이 연결되는지 주의 깊게 살펴봐야 한다.</p><h2 id=총평>총평<a hidden class=anchor aria-hidden=true href=#총평>#</a></h2><h3 id=오늘-전체에서-배운-것>오늘 전체에서 배운 것<a hidden class=anchor aria-hidden=true href=#오늘-전체에서-배운-것>#</a></h3><p>ERD만 보고 테이블 관계를 명확히 파악하는 게 어려웠는데, 데이터가 분리되어 저장되고 공통 컬럼을 통해 연결된다는 점을 이해하게 됐어. 문제를 풀 때 테이블 별칭을 활용하고, 연결 기준을 명확히 하는 연습이 필요하다는 걸 깨달았어.</p><h3 id=다음에-조심할-것>다음에 조심할 것<a hidden class=anchor aria-hidden=true href=#다음에-조심할-것>#</a></h3><p>ERD만 보고 바로 테이블 관계를 파악하는 연습을 꾸준히 해야겠다. 테이블 별칭을 명확하게 쓰고, JOIN 조건이 왜 필요한지 다시 한번 생각하며 코드를 작성해야 실수를 줄일 수 있겠다.</p><h3 id=다음-복습-주제>다음 복습 주제<a hidden class=anchor aria-hidden=true href=#다음-복습-주제>#</a></h3><p>ERD를 빠르게 파악할 수 있는 노하우가 필요하고, 실제 데이터베이스 설계 원칙과 분리 저장의 이유를 더 자세히 알아봐야겠다. 다양한 예제를 통해 테이블 관계를 손에 익히는 연습을 꾸준히 해야겠다.</p></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://Han-think.github.io/learning/am-02-sql-join-alias-erd/><span class=title>« Prev</span>
+<span>am-02-sql-join-alias-erd</span>
+</a><a class=next href=https://Han-think.github.io/learning/erd-crows-foot-chinook/><span class=title>Next »</span>
+<span>erd-crows-foot-chinook</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
+<span>Powered by
+<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
+<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>

@@ -1,436 +1,63 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto" data-theme="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>Kaggle House Prices 1: Pipeline 문법이 왜 중요했는가 | Han-think Blog</title>
-<meta name="keywords" content="Kaggle, House Prices, Pipeline, ColumnTransformer, scikit-learn, 전처리">
-<meta name="description" content="강사님이 강조한 Pipeline 문법을 House Prices 프로젝트에서 왜 써야 했는지 정리">
-<meta name="author" content="">
-<link rel="canonical" href="https://Han-think.github.io/projects/kaggle-house-prices-pipeline-syntax/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://Han-think.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://Han-think.github.io/projects/kaggle-house-prices-pipeline-syntax/">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --code-block-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-                color-scheme: dark;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .toc {
-                background: var(--entry);
-            }
-        }
-
-    </style>
-</noscript>
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else if (localStorage.getItem("pref-theme") === "light") {
-       document.querySelector("html").dataset.theme = 'light';
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else {
-        document.querySelector("html").dataset.theme = 'light';
-    }
-
-</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
-
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
-      <script>
-        var doNotTrack = false;
-        if ( true ) {
-          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
-          var doNotTrack = (dnt == "1" || dnt == "yes");
-        }
-        if (!doNotTrack) {
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-9YN1SZZ1G8');
-        }
-      </script><meta property="og:url" content="https://Han-think.github.io/projects/kaggle-house-prices-pipeline-syntax/">
-  <meta property="og:site_name" content="Han-think Blog">
-  <meta property="og:title" content="Kaggle House Prices 1: Pipeline 문법이 왜 중요했는가">
-  <meta property="og:description" content="강사님이 강조한 Pipeline 문법을 House Prices 프로젝트에서 왜 써야 했는지 정리">
-  <meta property="og:locale" content="ko_KR">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="projects">
-    <meta property="article:published_time" content="2026-07-06T01:00:00+09:00">
-    <meta property="article:modified_time" content="2026-07-06T01:00:00+09:00">
-    <meta property="article:tag" content="Kaggle">
-    <meta property="article:tag" content="House Prices">
-    <meta property="article:tag" content="Pipeline">
-    <meta property="article:tag" content="ColumnTransformer">
-    <meta property="article:tag" content="Scikit-Learn">
-    <meta property="article:tag" content="전처리">
-
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Kaggle House Prices 1: Pipeline 문법이 왜 중요했는가">
-  <meta name="twitter:description" content="강사님이 강조한 Pipeline 문법을 House Prices 프로젝트에서 왜 써야 했는지 정리">
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "프로젝트",
-      "item": "https://Han-think.github.io/projects/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Kaggle House Prices 1: Pipeline 문법이 왜 중요했는가",
-      "item": "https://Han-think.github.io/projects/kaggle-house-prices-pipeline-syntax/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Kaggle House Prices 1: Pipeline 문법이 왜 중요했는가",
-  "name": "Kaggle House Prices 1: Pipeline 문법이 왜 중요했는가",
-  "description": "강사님이 강조한 Pipeline 문법을 House Prices 프로젝트에서 왜 써야 했는지 정리",
-  "keywords": [
-    "Kaggle", "House Prices", "Pipeline", "ColumnTransformer", "scikit-learn", "전처리"
-  ],
-  "articleBody": "핵심 질문 강사님이 pipeline 문법을 강조한 이유는 단순히 코드를 예쁘게 쓰기 위해서가 아니었다. Kaggle House Prices처럼 전처리, 결측치 처리, 인코딩, 스케일링, 모델 학습이 길게 이어지는 문제에서는 각 단계를 따로 실행하면 실수할 지점이 너무 많아진다.\n이 프로젝트에서 pipeline은 세 가지 문제를 막아줬다.\ntrain/test 전처리 불일치 fold 안팎의 데이터 누수 실험마다 달라지는 비교 조건 데이터 로딩과 경로 통일 처음에는 Kaggle, Colab, 로컬 환경마다 경로가 달라서 코드가 흔들릴 수 있었다. 그래서 pathlib로 경로를 고정했다.\nfrom pathlib import Path import pandas as pd DATA_DIR = Path('/mnt/data') if Path('/mnt/data/train.csv').exists() else Path('.') train = pd.read_csv(DATA_DIR / 'train.csv') test = pd.read_csv(DATA_DIR / 'test.csv') sample_submission = pd.read_csv(DATA_DIR / 'sample_submission.csv') 경로를 먼저 통일하면 이후 pipeline은 입력 데이터만 바뀌고 구조는 유지된다.\n의미 기반 결측치 처리 House Prices의 결측치는 전부 같은 의미가 아니다. PoolQC, GarageType, BsmtQual 같은 값의 NaN은 누락이라기보다 시설 없음일 수 있다.\nNONE_COLS = [ 'PoolQC', 'MiscFeature', 'Alley', 'Fence', 'FireplaceQu', 'GarageType', 'GarageFinish', 'BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2' ] ZERO_COLS = [ 'GarageArea', 'GarageCars', 'BsmtFinSF1', 'BsmtFinSF2', 'BsmtUnfSF', 'TotalBsmtSF', 'BsmtFullBath', 'MasVnrArea' ] 범주형 시설이 없으면 None, 면적이나 개수가 없으면 0, 실제 미기록 가능성이 높은 LotFrontage는 Neighborhood별 중앙값으로 대체했다. 이 정책을 함수나 transformer로 묶어야 train과 test에 같은 규칙을 적용할 수 있다.\nEDA를 feature로 옮기기 EDA에서 강하게 보인 변수는 OverallQual, GrLivArea, GarageCars, GarageArea, TotalBsmtSF, YearBuilt, Neighborhood였다. 그래프를 보고 끝내지 않고 파생변수로 옮겼다.\ndf['TotalSF'] = df['TotalBsmtSF'] + df['1stFlrSF'] + df['2ndFlrSF'] df['TotalBath'] = df['FullBath'] + 0.5 * df['HalfBath'] \\ + df['BsmtFullBath'] + 0.5 * df['BsmtHalfBath'] df['HouseAge'] = df['YrSold'] - df['YearBuilt'] df['IsRemodeled'] = (df['YearBuilt'] != df['YearRemodAdd']).astype(int) df['HasGarage'] = (df['GarageArea'] \u003e 0).astype(int) df['HasBsmt'] = (df['TotalBsmtSF'] \u003e 0).astype(int) df['OverallQual_TotalSF'] = df['OverallQual'] * df['TotalSF'] 파생변수는 많이 만드는 것이 목적이 아니다. EDA에서 발견한 관계를 재현 가능한 코드 가설로 옮기는 것이 목적이다.\nColumnTransformer의 역할 수치형과 범주형은 처리 방식이 다르다. 수치형은 결측치 대체와 scaling, 범주형은 결측치 대체와 one-hot encoding이 필요했다.\nfrom sklearn.compose import ColumnTransformer from sklearn.impute import SimpleImputer from sklearn.preprocessing import OneHotEncoder, RobustScaler from sklearn.pipeline import Pipeline numeric_pipe = Pipeline([ ('imputer', SimpleImputer(strategy='median')), ('scaler', RobustScaler()) ]) categorical_pipe = Pipeline([ ('imputer', SimpleImputer(strategy='most_frequent')), ('onehot', OneHotEncoder(handle_unknown='ignore')) ]) preprocess = ColumnTransformer([ ('num', numeric_pipe, numeric_features), ('cat', categorical_pipe, categorical_features) ]) handle_unknown='ignore'도 중요했다. test에 train에서 보지 못한 범주가 나와도 pipeline이 멈추지 않게 해준다.\nPipeline으로 모델까지 묶기 최종적으로 전처리와 모델을 하나로 묶었다.\nfrom sklearn.linear_model import LassoCV model = Pipeline([ ('preprocess', preprocess), ('model', LassoCV( alphas=np.logspace(-5, -2, 40), cv=5, max_iter=20000, random_state=42 )) ]) 이 구조의 장점은 cross-validation을 할 때 fold마다 전처리가 다시 fit된다는 점이다. 즉 검증 fold의 정보를 미리 본 상태로 imputer, scaler, encoder가 학습되는 위험을 줄인다.\n이번 프로젝트에서 배운 pipeline의 의미 Pipeline은 초보자에게 문법이 복잡해 보인다. 하지만 프로젝트가 커질수록 오히려 안전장치가 된다.\n위험 pipeline 없이 생기는 문제 pipeline으로 얻은 효과 train/test 불일치 test에 다른 전처리 적용 같은 transformer 재사용 데이터 누수 전체 데이터로 scaler fit fold 안에서만 fit 실험 비교 혼란 모델마다 전처리 조건 다름 같은 조건에서 모델 교체 재현성 부족 셀 실행 순서에 의존 하나의 객체로 재실행 강사님이 pipeline 문법을 중요하게 본 이유는 결국 이것이었다. 실험을 많이 하는 사람일수록, 코드를 짧게 쓰는 것보다 실험 조건을 고정하는 문법이 더 중요하다.\n",
-  "wordCount" : "478",
-  "inLanguage": "en",
-  "datePublished": "2026-07-06T01:00:00+09:00",
-  "dateModified": "2026-07-06T01:00:00+09:00",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://Han-think.github.io/projects/kaggle-house-prices-pipeline-syntax/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Han-think Blog",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://Han-think.github.io/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-<body id="top">
-    <header class="header">
-    <nav class="header-nav">
-        <div class="logo">
-            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
-                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu" class="menu">
-            <li>
-                <a href="https://Han-think.github.io/learning/" title="학습 로그">
-                    <span>학습 로그</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://Han-think.github.io/projects/" title="프로젝트">
-                    <span>프로젝트</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://Han-think.github.io/dev/" title="개인 개발">
-                    <span>개인 개발</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://Han-think.github.io/search/" title="검색">
-                    <span>검색</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    
-    <h1 class="post-title entry-hint-parent">
-      Kaggle House Prices 1: Pipeline 문법이 왜 중요했는가
-    </h1>
-    <div class="post-description">
-      강사님이 강조한 Pipeline 문법을 House Prices 프로젝트에서 왜 써야 했는지 정리
-    </div>
-    <div class="post-meta">
-
-<span title='2026-07-06 01:00:00 +0900 KST'>2026년 7월 6일</span>&nbsp;·&nbsp;<span>3 min</span>
-
-</div>
-  </header> 
-  <div class="post-content md-content"><h2 id="핵심-질문">핵심 질문<a hidden class="anchor" aria-hidden="true" href="#핵심-질문">#</a></h2>
-<p>강사님이 pipeline 문법을 강조한 이유는 단순히 코드를 예쁘게 쓰기 위해서가 아니었다. Kaggle House Prices처럼 전처리, 결측치 처리, 인코딩, 스케일링, 모델 학습이 길게 이어지는 문제에서는 각 단계를 따로 실행하면 실수할 지점이 너무 많아진다.</p>
-<p>이 프로젝트에서 pipeline은 세 가지 문제를 막아줬다.</p>
-<ol>
-<li>train/test 전처리 불일치</li>
-<li>fold 안팎의 데이터 누수</li>
-<li>실험마다 달라지는 비교 조건</li>
-</ol>
-<h2 id="데이터-로딩과-경로-통일">데이터 로딩과 경로 통일<a hidden class="anchor" aria-hidden="true" href="#데이터-로딩과-경로-통일">#</a></h2>
-<p>처음에는 Kaggle, Colab, 로컬 환경마다 경로가 달라서 코드가 흔들릴 수 있었다. 그래서 <code>pathlib</code>로 경로를 고정했다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pathlib <span style="color:#f92672">import</span> Path
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>DATA_DIR <span style="color:#f92672">=</span> Path(<span style="color:#e6db74">&#39;/mnt/data&#39;</span>) <span style="color:#66d9ef">if</span> Path(<span style="color:#e6db74">&#39;/mnt/data/train.csv&#39;</span>)<span style="color:#f92672">.</span>exists() <span style="color:#66d9ef">else</span> Path(<span style="color:#e6db74">&#39;.&#39;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>train <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(DATA_DIR <span style="color:#f92672">/</span> <span style="color:#e6db74">&#39;train.csv&#39;</span>)
-</span></span><span style="display:flex;"><span>test <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(DATA_DIR <span style="color:#f92672">/</span> <span style="color:#e6db74">&#39;test.csv&#39;</span>)
-</span></span><span style="display:flex;"><span>sample_submission <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(DATA_DIR <span style="color:#f92672">/</span> <span style="color:#e6db74">&#39;sample_submission.csv&#39;</span>)
-</span></span></code></pre></div><p>경로를 먼저 통일하면 이후 pipeline은 입력 데이터만 바뀌고 구조는 유지된다.</p>
-<h2 id="의미-기반-결측치-처리">의미 기반 결측치 처리<a hidden class="anchor" aria-hidden="true" href="#의미-기반-결측치-처리">#</a></h2>
-<p>House Prices의 결측치는 전부 같은 의미가 아니다. <code>PoolQC</code>, <code>GarageType</code>, <code>BsmtQual</code> 같은 값의 <code>NaN</code>은 누락이라기보다 시설 없음일 수 있다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>NONE_COLS <span style="color:#f92672">=</span> [
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;PoolQC&#39;</span>, <span style="color:#e6db74">&#39;MiscFeature&#39;</span>, <span style="color:#e6db74">&#39;Alley&#39;</span>, <span style="color:#e6db74">&#39;Fence&#39;</span>, <span style="color:#e6db74">&#39;FireplaceQu&#39;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;GarageType&#39;</span>, <span style="color:#e6db74">&#39;GarageFinish&#39;</span>, <span style="color:#e6db74">&#39;BsmtQual&#39;</span>, <span style="color:#e6db74">&#39;BsmtCond&#39;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;BsmtExposure&#39;</span>, <span style="color:#e6db74">&#39;BsmtFinType1&#39;</span>, <span style="color:#e6db74">&#39;BsmtFinType2&#39;</span>
-</span></span><span style="display:flex;"><span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>ZERO_COLS <span style="color:#f92672">=</span> [
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;GarageArea&#39;</span>, <span style="color:#e6db74">&#39;GarageCars&#39;</span>, <span style="color:#e6db74">&#39;BsmtFinSF1&#39;</span>, <span style="color:#e6db74">&#39;BsmtFinSF2&#39;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;BsmtUnfSF&#39;</span>, <span style="color:#e6db74">&#39;TotalBsmtSF&#39;</span>, <span style="color:#e6db74">&#39;BsmtFullBath&#39;</span>, <span style="color:#e6db74">&#39;MasVnrArea&#39;</span>
-</span></span><span style="display:flex;"><span>]
-</span></span></code></pre></div><p>범주형 시설이 없으면 <code>None</code>, 면적이나 개수가 없으면 <code>0</code>, 실제 미기록 가능성이 높은 <code>LotFrontage</code>는 <code>Neighborhood</code>별 중앙값으로 대체했다. 이 정책을 함수나 transformer로 묶어야 train과 test에 같은 규칙을 적용할 수 있다.</p>
-<h2 id="eda를-feature로-옮기기">EDA를 feature로 옮기기<a hidden class="anchor" aria-hidden="true" href="#eda를-feature로-옮기기">#</a></h2>
-<p>EDA에서 강하게 보인 변수는 <code>OverallQual</code>, <code>GrLivArea</code>, <code>GarageCars</code>, <code>GarageArea</code>, <code>TotalBsmtSF</code>, <code>YearBuilt</code>, <code>Neighborhood</code>였다. 그래프를 보고 끝내지 않고 파생변수로 옮겼다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>df[<span style="color:#e6db74">&#39;TotalSF&#39;</span>] <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;TotalBsmtSF&#39;</span>] <span style="color:#f92672">+</span> df[<span style="color:#e6db74">&#39;1stFlrSF&#39;</span>] <span style="color:#f92672">+</span> df[<span style="color:#e6db74">&#39;2ndFlrSF&#39;</span>]
-</span></span><span style="display:flex;"><span>df[<span style="color:#e6db74">&#39;TotalBath&#39;</span>] <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;FullBath&#39;</span>] <span style="color:#f92672">+</span> <span style="color:#ae81ff">0.5</span> <span style="color:#f92672">*</span> df[<span style="color:#e6db74">&#39;HalfBath&#39;</span>] \
-</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">+</span> df[<span style="color:#e6db74">&#39;BsmtFullBath&#39;</span>] <span style="color:#f92672">+</span> <span style="color:#ae81ff">0.5</span> <span style="color:#f92672">*</span> df[<span style="color:#e6db74">&#39;BsmtHalfBath&#39;</span>]
-</span></span><span style="display:flex;"><span>df[<span style="color:#e6db74">&#39;HouseAge&#39;</span>] <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;YrSold&#39;</span>] <span style="color:#f92672">-</span> df[<span style="color:#e6db74">&#39;YearBuilt&#39;</span>]
-</span></span><span style="display:flex;"><span>df[<span style="color:#e6db74">&#39;IsRemodeled&#39;</span>] <span style="color:#f92672">=</span> (df[<span style="color:#e6db74">&#39;YearBuilt&#39;</span>] <span style="color:#f92672">!=</span> df[<span style="color:#e6db74">&#39;YearRemodAdd&#39;</span>])<span style="color:#f92672">.</span>astype(int)
-</span></span><span style="display:flex;"><span>df[<span style="color:#e6db74">&#39;HasGarage&#39;</span>] <span style="color:#f92672">=</span> (df[<span style="color:#e6db74">&#39;GarageArea&#39;</span>] <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>astype(int)
-</span></span><span style="display:flex;"><span>df[<span style="color:#e6db74">&#39;HasBsmt&#39;</span>] <span style="color:#f92672">=</span> (df[<span style="color:#e6db74">&#39;TotalBsmtSF&#39;</span>] <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>astype(int)
-</span></span><span style="display:flex;"><span>df[<span style="color:#e6db74">&#39;OverallQual_TotalSF&#39;</span>] <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;OverallQual&#39;</span>] <span style="color:#f92672">*</span> df[<span style="color:#e6db74">&#39;TotalSF&#39;</span>]
-</span></span></code></pre></div><p>파생변수는 많이 만드는 것이 목적이 아니다. EDA에서 발견한 관계를 재현 가능한 코드 가설로 옮기는 것이 목적이다.</p>
-<h2 id="columntransformer의-역할">ColumnTransformer의 역할<a hidden class="anchor" aria-hidden="true" href="#columntransformer의-역할">#</a></h2>
-<p>수치형과 범주형은 처리 방식이 다르다. 수치형은 결측치 대체와 scaling, 범주형은 결측치 대체와 one-hot encoding이 필요했다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.compose <span style="color:#f92672">import</span> ColumnTransformer
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.impute <span style="color:#f92672">import</span> SimpleImputer
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.preprocessing <span style="color:#f92672">import</span> OneHotEncoder, RobustScaler
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.pipeline <span style="color:#f92672">import</span> Pipeline
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>numeric_pipe <span style="color:#f92672">=</span> Pipeline([
-</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;imputer&#39;</span>, SimpleImputer(strategy<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;median&#39;</span>)),
-</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;scaler&#39;</span>, RobustScaler())
-</span></span><span style="display:flex;"><span>])
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>categorical_pipe <span style="color:#f92672">=</span> Pipeline([
-</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;imputer&#39;</span>, SimpleImputer(strategy<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;most_frequent&#39;</span>)),
-</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;onehot&#39;</span>, OneHotEncoder(handle_unknown<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;ignore&#39;</span>))
-</span></span><span style="display:flex;"><span>])
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>preprocess <span style="color:#f92672">=</span> ColumnTransformer([
-</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;num&#39;</span>, numeric_pipe, numeric_features),
-</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;cat&#39;</span>, categorical_pipe, categorical_features)
-</span></span><span style="display:flex;"><span>])
-</span></span></code></pre></div><p><code>handle_unknown='ignore'</code>도 중요했다. test에 train에서 보지 못한 범주가 나와도 pipeline이 멈추지 않게 해준다.</p>
-<h2 id="pipeline으로-모델까지-묶기">Pipeline으로 모델까지 묶기<a hidden class="anchor" aria-hidden="true" href="#pipeline으로-모델까지-묶기">#</a></h2>
-<p>최종적으로 전처리와 모델을 하나로 묶었다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.linear_model <span style="color:#f92672">import</span> LassoCV
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> Pipeline([
-</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;preprocess&#39;</span>, preprocess),
-</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#39;model&#39;</span>, LassoCV(
-</span></span><span style="display:flex;"><span>        alphas<span style="color:#f92672">=</span>np<span style="color:#f92672">.</span>logspace(<span style="color:#f92672">-</span><span style="color:#ae81ff">5</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">40</span>),
-</span></span><span style="display:flex;"><span>        cv<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>,
-</span></span><span style="display:flex;"><span>        max_iter<span style="color:#f92672">=</span><span style="color:#ae81ff">20000</span>,
-</span></span><span style="display:flex;"><span>        random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>
-</span></span><span style="display:flex;"><span>    ))
-</span></span><span style="display:flex;"><span>])
-</span></span></code></pre></div><p>이 구조의 장점은 cross-validation을 할 때 fold마다 전처리가 다시 fit된다는 점이다. 즉 검증 fold의 정보를 미리 본 상태로 imputer, scaler, encoder가 학습되는 위험을 줄인다.</p>
-<h2 id="이번-프로젝트에서-배운-pipeline의-의미">이번 프로젝트에서 배운 pipeline의 의미<a hidden class="anchor" aria-hidden="true" href="#이번-프로젝트에서-배운-pipeline의-의미">#</a></h2>
-<p>Pipeline은 초보자에게 문법이 복잡해 보인다. 하지만 프로젝트가 커질수록 오히려 안전장치가 된다.</p>
-<table>
-	<thead>
-			<tr>
-					<th>위험</th>
-					<th>pipeline 없이 생기는 문제</th>
-					<th>pipeline으로 얻은 효과</th>
-			</tr>
-	</thead>
-	<tbody>
-			<tr>
-					<td>train/test 불일치</td>
-					<td>test에 다른 전처리 적용</td>
-					<td>같은 transformer 재사용</td>
-			</tr>
-			<tr>
-					<td>데이터 누수</td>
-					<td>전체 데이터로 scaler fit</td>
-					<td>fold 안에서만 fit</td>
-			</tr>
-			<tr>
-					<td>실험 비교 혼란</td>
-					<td>모델마다 전처리 조건 다름</td>
-					<td>같은 조건에서 모델 교체</td>
-			</tr>
-			<tr>
-					<td>재현성 부족</td>
-					<td>셀 실행 순서에 의존</td>
-					<td>하나의 객체로 재실행</td>
-			</tr>
-	</tbody>
-</table>
-<p>강사님이 pipeline 문법을 중요하게 본 이유는 결국 이것이었다. 실험을 많이 하는 사람일수록, 코드를 짧게 쓰는 것보다 실험 조건을 고정하는 문법이 더 중요하다.</p>
-
-
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="https://Han-think.github.io/tags/kaggle/">Kaggle</a></li>
-      <li><a href="https://Han-think.github.io/tags/house-prices/">House Prices</a></li>
-      <li><a href="https://Han-think.github.io/tags/pipeline/">Pipeline</a></li>
-      <li><a href="https://Han-think.github.io/tags/columntransformer/">ColumnTransformer</a></li>
-      <li><a href="https://Han-think.github.io/tags/scikit-learn/">Scikit-Learn</a></li>
-      <li><a href="https://Han-think.github.io/tags/%EC%A0%84%EC%B2%98%EB%A6%AC/">전처리</a></li>
-    </ul>
-
-  </footer>
-</article>
-    </main>
-    
-<footer class="footer">
-        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
-
-    
-    
-    <span>
-        Powered by
-        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
-        <polyline points="17 11 12 6 7 11"></polyline>
-        <polyline points="17 18 12 13 7 18"></polyline>
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu');
-    if (menu) {
-        
-        const scrollPosition = localStorage.getItem("menu-scroll-position");
-        if (scrollPosition) {
-            menu.scrollLeft = parseInt(scrollPosition, 10);
-        }
-        
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var toplink = document.getElementById("top-link");
-    window.onscroll = function () {
-        const scrollThreshold = window.innerHeight;
-        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
-            toplink.classList.remove("hidden");
-        } else {
-            toplink.classList.add("hidden");
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        const html = document.querySelector("html");
-        if (html.dataset.theme === "dark") {
-            html.dataset.theme = 'light';
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            html.dataset.theme = 'dark';
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-</body>
-
-</html>
+<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Kaggle House Prices 1: Pipeline 문법이 왜 중요했는가 | Han-think Blog</title><meta name=keywords content="Kaggle,House Prices,Pipeline,ColumnTransformer,scikit-learn,전처리"><meta name=description content="강사님이 강조한 Pipeline 문법을 House Prices 프로젝트에서 왜 써야 했는지 정리"><meta name=author content><link rel=canonical href=https://Han-think.github.io/projects/kaggle-house-prices-pipeline-syntax/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/projects/kaggle-house-prices-pipeline-syntax/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/projects/kaggle-house-prices-pipeline-syntax/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="Kaggle House Prices 1: Pipeline 문법이 왜 중요했는가"><meta property="og:description" content="강사님이 강조한 Pipeline 문법을 House Prices 프로젝트에서 왜 써야 했는지 정리"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="projects"><meta property="article:published_time" content="2026-07-06T01:00:00+09:00"><meta property="article:modified_time" content="2026-07-06T01:00:00+09:00"><meta property="article:tag" content="Kaggle"><meta property="article:tag" content="House Prices"><meta property="article:tag" content="Pipeline"><meta property="article:tag" content="ColumnTransformer"><meta property="article:tag" content="Scikit-Learn"><meta property="article:tag" content="전처리"><meta name=twitter:card content="summary"><meta name=twitter:title content="Kaggle House Prices 1: Pipeline 문법이 왜 중요했는가"><meta name=twitter:description content="강사님이 강조한 Pipeline 문법을 House Prices 프로젝트에서 왜 써야 했는지 정리"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"프로젝트","item":"https://Han-think.github.io/projects/"},{"@type":"ListItem","position":2,"name":"Kaggle House Prices 1: Pipeline 문법이 왜 중요했는가","item":"https://Han-think.github.io/projects/kaggle-house-prices-pipeline-syntax/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kaggle House Prices 1: Pipeline 문법이 왜 중요했는가","name":"Kaggle House Prices 1: Pipeline 문법이 왜 중요했는가","description":"강사님이 강조한 Pipeline 문법을 House Prices 프로젝트에서 왜 써야 했는지 정리","keywords":["Kaggle","House Prices","Pipeline","ColumnTransformer","scikit-learn","전처리"],"articleBody":"핵심 질문 강사님이 pipeline 문법을 강조한 이유는 단순히 코드를 예쁘게 쓰기 위해서가 아니었다. Kaggle House Prices처럼 전처리, 결측치 처리, 인코딩, 스케일링, 모델 학습이 길게 이어지는 문제에서는 각 단계를 따로 실행하면 실수할 지점이 너무 많아진다.\n이 프로젝트에서 pipeline은 세 가지 문제를 막아줬다.\ntrain/test 전처리 불일치 fold 안팎의 데이터 누수 실험마다 달라지는 비교 조건 데이터 로딩과 경로 통일 처음에는 Kaggle, Colab, 로컬 환경마다 경로가 달라서 코드가 흔들릴 수 있었다. 그래서 pathlib로 경로를 고정했다.\nfrom pathlib import Path import pandas as pd DATA_DIR = Path('/mnt/data') if Path('/mnt/data/train.csv').exists() else Path('.') train = pd.read_csv(DATA_DIR / 'train.csv') test = pd.read_csv(DATA_DIR / 'test.csv') sample_submission = pd.read_csv(DATA_DIR / 'sample_submission.csv') 경로를 먼저 통일하면 이후 pipeline은 입력 데이터만 바뀌고 구조는 유지된다.\n의미 기반 결측치 처리 House Prices의 결측치는 전부 같은 의미가 아니다. PoolQC, GarageType, BsmtQual 같은 값의 NaN은 누락이라기보다 시설 없음일 수 있다.\nNONE_COLS = [ 'PoolQC', 'MiscFeature', 'Alley', 'Fence', 'FireplaceQu', 'GarageType', 'GarageFinish', 'BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2' ] ZERO_COLS = [ 'GarageArea', 'GarageCars', 'BsmtFinSF1', 'BsmtFinSF2', 'BsmtUnfSF', 'TotalBsmtSF', 'BsmtFullBath', 'MasVnrArea' ] 범주형 시설이 없으면 None, 면적이나 개수가 없으면 0, 실제 미기록 가능성이 높은 LotFrontage는 Neighborhood별 중앙값으로 대체했다. 이 정책을 함수나 transformer로 묶어야 train과 test에 같은 규칙을 적용할 수 있다.\nEDA를 feature로 옮기기 EDA에서 강하게 보인 변수는 OverallQual, GrLivArea, GarageCars, GarageArea, TotalBsmtSF, YearBuilt, Neighborhood였다. 그래프를 보고 끝내지 않고 파생변수로 옮겼다.\ndf['TotalSF'] = df['TotalBsmtSF'] + df['1stFlrSF'] + df['2ndFlrSF'] df['TotalBath'] = df['FullBath'] + 0.5 * df['HalfBath'] \\ + df['BsmtFullBath'] + 0.5 * df['BsmtHalfBath'] df['HouseAge'] = df['YrSold'] - df['YearBuilt'] df['IsRemodeled'] = (df['YearBuilt'] != df['YearRemodAdd']).astype(int) df['HasGarage'] = (df['GarageArea'] \u003e 0).astype(int) df['HasBsmt'] = (df['TotalBsmtSF'] \u003e 0).astype(int) df['OverallQual_TotalSF'] = df['OverallQual'] * df['TotalSF'] 파생변수는 많이 만드는 것이 목적이 아니다. EDA에서 발견한 관계를 재현 가능한 코드 가설로 옮기는 것이 목적이다.\nColumnTransformer의 역할 수치형과 범주형은 처리 방식이 다르다. 수치형은 결측치 대체와 scaling, 범주형은 결측치 대체와 one-hot encoding이 필요했다.\nfrom sklearn.compose import ColumnTransformer from sklearn.impute import SimpleImputer from sklearn.preprocessing import OneHotEncoder, RobustScaler from sklearn.pipeline import Pipeline numeric_pipe = Pipeline([ ('imputer', SimpleImputer(strategy='median')), ('scaler', RobustScaler()) ]) categorical_pipe = Pipeline([ ('imputer', SimpleImputer(strategy='most_frequent')), ('onehot', OneHotEncoder(handle_unknown='ignore')) ]) preprocess = ColumnTransformer([ ('num', numeric_pipe, numeric_features), ('cat', categorical_pipe, categorical_features) ]) handle_unknown='ignore'도 중요했다. test에 train에서 보지 못한 범주가 나와도 pipeline이 멈추지 않게 해준다.\nPipeline으로 모델까지 묶기 최종적으로 전처리와 모델을 하나로 묶었다.\nfrom sklearn.linear_model import LassoCV model = Pipeline([ ('preprocess', preprocess), ('model', LassoCV( alphas=np.logspace(-5, -2, 40), cv=5, max_iter=20000, random_state=42 )) ]) 이 구조의 장점은 cross-validation을 할 때 fold마다 전처리가 다시 fit된다는 점이다. 즉 검증 fold의 정보를 미리 본 상태로 imputer, scaler, encoder가 학습되는 위험을 줄인다.\n이번 프로젝트에서 배운 pipeline의 의미 Pipeline은 초보자에게 문법이 복잡해 보인다. 하지만 프로젝트가 커질수록 오히려 안전장치가 된다.\n위험 pipeline 없이 생기는 문제 pipeline으로 얻은 효과 train/test 불일치 test에 다른 전처리 적용 같은 transformer 재사용 데이터 누수 전체 데이터로 scaler fit fold 안에서만 fit 실험 비교 혼란 모델마다 전처리 조건 다름 같은 조건에서 모델 교체 재현성 부족 셀 실행 순서에 의존 하나의 객체로 재실행 강사님이 pipeline 문법을 중요하게 본 이유는 결국 이것이었다. 실험을 많이 하는 사람일수록, 코드를 짧게 쓰는 것보다 실험 조건을 고정하는 문법이 더 중요하다.\n","wordCount":"478","inLanguage":"en","datePublished":"2026-07-06T01:00:00+09:00","dateModified":"2026-07-06T01:00:00+09:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/projects/kaggle-house-prices-pipeline-syntax/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
+<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">Kaggle House Prices 1: Pipeline 문법이 왜 중요했는가</h1><div class=post-description>강사님이 강조한 Pipeline 문법을 House Prices 프로젝트에서 왜 써야 했는지 정리</div><div class=post-meta><span title='2026-07-06 01:00:00 +0900 KST'>2026년 7월 6일</span>&nbsp;·&nbsp;<span>3 min</span></div></header><div class="post-content md-content"><h2 id=핵심-질문>핵심 질문<a hidden class=anchor aria-hidden=true href=#핵심-질문>#</a></h2><p>강사님이 pipeline 문법을 강조한 이유는 단순히 코드를 예쁘게 쓰기 위해서가 아니었다. Kaggle House Prices처럼 전처리, 결측치 처리, 인코딩, 스케일링, 모델 학습이 길게 이어지는 문제에서는 각 단계를 따로 실행하면 실수할 지점이 너무 많아진다.</p><p>이 프로젝트에서 pipeline은 세 가지 문제를 막아줬다.</p><ol><li>train/test 전처리 불일치</li><li>fold 안팎의 데이터 누수</li><li>실험마다 달라지는 비교 조건</li></ol><h2 id=데이터-로딩과-경로-통일>데이터 로딩과 경로 통일<a hidden class=anchor aria-hidden=true href=#데이터-로딩과-경로-통일>#</a></h2><p>처음에는 Kaggle, Colab, 로컬 환경마다 경로가 달라서 코드가 흔들릴 수 있었다. 그래서 <code>pathlib</code>로 경로를 고정했다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>from</span> pathlib <span style=color:#f92672>import</span> Path
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> pandas <span style=color:#66d9ef>as</span> pd
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>DATA_DIR <span style=color:#f92672>=</span> Path(<span style=color:#e6db74>&#39;/mnt/data&#39;</span>) <span style=color:#66d9ef>if</span> Path(<span style=color:#e6db74>&#39;/mnt/data/train.csv&#39;</span>)<span style=color:#f92672>.</span>exists() <span style=color:#66d9ef>else</span> Path(<span style=color:#e6db74>&#39;.&#39;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>train <span style=color:#f92672>=</span> pd<span style=color:#f92672>.</span>read_csv(DATA_DIR <span style=color:#f92672>/</span> <span style=color:#e6db74>&#39;train.csv&#39;</span>)
+</span></span><span style=display:flex><span>test <span style=color:#f92672>=</span> pd<span style=color:#f92672>.</span>read_csv(DATA_DIR <span style=color:#f92672>/</span> <span style=color:#e6db74>&#39;test.csv&#39;</span>)
+</span></span><span style=display:flex><span>sample_submission <span style=color:#f92672>=</span> pd<span style=color:#f92672>.</span>read_csv(DATA_DIR <span style=color:#f92672>/</span> <span style=color:#e6db74>&#39;sample_submission.csv&#39;</span>)
+</span></span></code></pre></div><p>경로를 먼저 통일하면 이후 pipeline은 입력 데이터만 바뀌고 구조는 유지된다.</p><h2 id=의미-기반-결측치-처리>의미 기반 결측치 처리<a hidden class=anchor aria-hidden=true href=#의미-기반-결측치-처리>#</a></h2><p>House Prices의 결측치는 전부 같은 의미가 아니다. <code>PoolQC</code>, <code>GarageType</code>, <code>BsmtQual</code> 같은 값의 <code>NaN</code>은 누락이라기보다 시설 없음일 수 있다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>NONE_COLS <span style=color:#f92672>=</span> [
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;PoolQC&#39;</span>, <span style=color:#e6db74>&#39;MiscFeature&#39;</span>, <span style=color:#e6db74>&#39;Alley&#39;</span>, <span style=color:#e6db74>&#39;Fence&#39;</span>, <span style=color:#e6db74>&#39;FireplaceQu&#39;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;GarageType&#39;</span>, <span style=color:#e6db74>&#39;GarageFinish&#39;</span>, <span style=color:#e6db74>&#39;BsmtQual&#39;</span>, <span style=color:#e6db74>&#39;BsmtCond&#39;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;BsmtExposure&#39;</span>, <span style=color:#e6db74>&#39;BsmtFinType1&#39;</span>, <span style=color:#e6db74>&#39;BsmtFinType2&#39;</span>
+</span></span><span style=display:flex><span>]
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>ZERO_COLS <span style=color:#f92672>=</span> [
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;GarageArea&#39;</span>, <span style=color:#e6db74>&#39;GarageCars&#39;</span>, <span style=color:#e6db74>&#39;BsmtFinSF1&#39;</span>, <span style=color:#e6db74>&#39;BsmtFinSF2&#39;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;BsmtUnfSF&#39;</span>, <span style=color:#e6db74>&#39;TotalBsmtSF&#39;</span>, <span style=color:#e6db74>&#39;BsmtFullBath&#39;</span>, <span style=color:#e6db74>&#39;MasVnrArea&#39;</span>
+</span></span><span style=display:flex><span>]
+</span></span></code></pre></div><p>범주형 시설이 없으면 <code>None</code>, 면적이나 개수가 없으면 <code>0</code>, 실제 미기록 가능성이 높은 <code>LotFrontage</code>는 <code>Neighborhood</code>별 중앙값으로 대체했다. 이 정책을 함수나 transformer로 묶어야 train과 test에 같은 규칙을 적용할 수 있다.</p><h2 id=eda를-feature로-옮기기>EDA를 feature로 옮기기<a hidden class=anchor aria-hidden=true href=#eda를-feature로-옮기기>#</a></h2><p>EDA에서 강하게 보인 변수는 <code>OverallQual</code>, <code>GrLivArea</code>, <code>GarageCars</code>, <code>GarageArea</code>, <code>TotalBsmtSF</code>, <code>YearBuilt</code>, <code>Neighborhood</code>였다. 그래프를 보고 끝내지 않고 파생변수로 옮겼다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>df[<span style=color:#e6db74>&#39;TotalSF&#39;</span>] <span style=color:#f92672>=</span> df[<span style=color:#e6db74>&#39;TotalBsmtSF&#39;</span>] <span style=color:#f92672>+</span> df[<span style=color:#e6db74>&#39;1stFlrSF&#39;</span>] <span style=color:#f92672>+</span> df[<span style=color:#e6db74>&#39;2ndFlrSF&#39;</span>]
+</span></span><span style=display:flex><span>df[<span style=color:#e6db74>&#39;TotalBath&#39;</span>] <span style=color:#f92672>=</span> df[<span style=color:#e6db74>&#39;FullBath&#39;</span>] <span style=color:#f92672>+</span> <span style=color:#ae81ff>0.5</span> <span style=color:#f92672>*</span> df[<span style=color:#e6db74>&#39;HalfBath&#39;</span>] \
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>+</span> df[<span style=color:#e6db74>&#39;BsmtFullBath&#39;</span>] <span style=color:#f92672>+</span> <span style=color:#ae81ff>0.5</span> <span style=color:#f92672>*</span> df[<span style=color:#e6db74>&#39;BsmtHalfBath&#39;</span>]
+</span></span><span style=display:flex><span>df[<span style=color:#e6db74>&#39;HouseAge&#39;</span>] <span style=color:#f92672>=</span> df[<span style=color:#e6db74>&#39;YrSold&#39;</span>] <span style=color:#f92672>-</span> df[<span style=color:#e6db74>&#39;YearBuilt&#39;</span>]
+</span></span><span style=display:flex><span>df[<span style=color:#e6db74>&#39;IsRemodeled&#39;</span>] <span style=color:#f92672>=</span> (df[<span style=color:#e6db74>&#39;YearBuilt&#39;</span>] <span style=color:#f92672>!=</span> df[<span style=color:#e6db74>&#39;YearRemodAdd&#39;</span>])<span style=color:#f92672>.</span>astype(int)
+</span></span><span style=display:flex><span>df[<span style=color:#e6db74>&#39;HasGarage&#39;</span>] <span style=color:#f92672>=</span> (df[<span style=color:#e6db74>&#39;GarageArea&#39;</span>] <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0</span>)<span style=color:#f92672>.</span>astype(int)
+</span></span><span style=display:flex><span>df[<span style=color:#e6db74>&#39;HasBsmt&#39;</span>] <span style=color:#f92672>=</span> (df[<span style=color:#e6db74>&#39;TotalBsmtSF&#39;</span>] <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0</span>)<span style=color:#f92672>.</span>astype(int)
+</span></span><span style=display:flex><span>df[<span style=color:#e6db74>&#39;OverallQual_TotalSF&#39;</span>] <span style=color:#f92672>=</span> df[<span style=color:#e6db74>&#39;OverallQual&#39;</span>] <span style=color:#f92672>*</span> df[<span style=color:#e6db74>&#39;TotalSF&#39;</span>]
+</span></span></code></pre></div><p>파생변수는 많이 만드는 것이 목적이 아니다. EDA에서 발견한 관계를 재현 가능한 코드 가설로 옮기는 것이 목적이다.</p><h2 id=columntransformer의-역할>ColumnTransformer의 역할<a hidden class=anchor aria-hidden=true href=#columntransformer의-역할>#</a></h2><p>수치형과 범주형은 처리 방식이 다르다. 수치형은 결측치 대체와 scaling, 범주형은 결측치 대체와 one-hot encoding이 필요했다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.compose <span style=color:#f92672>import</span> ColumnTransformer
+</span></span><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.impute <span style=color:#f92672>import</span> SimpleImputer
+</span></span><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.preprocessing <span style=color:#f92672>import</span> OneHotEncoder, RobustScaler
+</span></span><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.pipeline <span style=color:#f92672>import</span> Pipeline
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>numeric_pipe <span style=color:#f92672>=</span> Pipeline([
+</span></span><span style=display:flex><span>    (<span style=color:#e6db74>&#39;imputer&#39;</span>, SimpleImputer(strategy<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;median&#39;</span>)),
+</span></span><span style=display:flex><span>    (<span style=color:#e6db74>&#39;scaler&#39;</span>, RobustScaler())
+</span></span><span style=display:flex><span>])
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>categorical_pipe <span style=color:#f92672>=</span> Pipeline([
+</span></span><span style=display:flex><span>    (<span style=color:#e6db74>&#39;imputer&#39;</span>, SimpleImputer(strategy<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;most_frequent&#39;</span>)),
+</span></span><span style=display:flex><span>    (<span style=color:#e6db74>&#39;onehot&#39;</span>, OneHotEncoder(handle_unknown<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;ignore&#39;</span>))
+</span></span><span style=display:flex><span>])
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>preprocess <span style=color:#f92672>=</span> ColumnTransformer([
+</span></span><span style=display:flex><span>    (<span style=color:#e6db74>&#39;num&#39;</span>, numeric_pipe, numeric_features),
+</span></span><span style=display:flex><span>    (<span style=color:#e6db74>&#39;cat&#39;</span>, categorical_pipe, categorical_features)
+</span></span><span style=display:flex><span>])
+</span></span></code></pre></div><p><code>handle_unknown='ignore'</code>도 중요했다. test에 train에서 보지 못한 범주가 나와도 pipeline이 멈추지 않게 해준다.</p><h2 id=pipeline으로-모델까지-묶기>Pipeline으로 모델까지 묶기<a hidden class=anchor aria-hidden=true href=#pipeline으로-모델까지-묶기>#</a></h2><p>최종적으로 전처리와 모델을 하나로 묶었다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>from</span> sklearn.linear_model <span style=color:#f92672>import</span> LassoCV
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>model <span style=color:#f92672>=</span> Pipeline([
+</span></span><span style=display:flex><span>    (<span style=color:#e6db74>&#39;preprocess&#39;</span>, preprocess),
+</span></span><span style=display:flex><span>    (<span style=color:#e6db74>&#39;model&#39;</span>, LassoCV(
+</span></span><span style=display:flex><span>        alphas<span style=color:#f92672>=</span>np<span style=color:#f92672>.</span>logspace(<span style=color:#f92672>-</span><span style=color:#ae81ff>5</span>, <span style=color:#f92672>-</span><span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>40</span>),
+</span></span><span style=display:flex><span>        cv<span style=color:#f92672>=</span><span style=color:#ae81ff>5</span>,
+</span></span><span style=display:flex><span>        max_iter<span style=color:#f92672>=</span><span style=color:#ae81ff>20000</span>,
+</span></span><span style=display:flex><span>        random_state<span style=color:#f92672>=</span><span style=color:#ae81ff>42</span>
+</span></span><span style=display:flex><span>    ))
+</span></span><span style=display:flex><span>])
+</span></span></code></pre></div><p>이 구조의 장점은 cross-validation을 할 때 fold마다 전처리가 다시 fit된다는 점이다. 즉 검증 fold의 정보를 미리 본 상태로 imputer, scaler, encoder가 학습되는 위험을 줄인다.</p><h2 id=이번-프로젝트에서-배운-pipeline의-의미>이번 프로젝트에서 배운 pipeline의 의미<a hidden class=anchor aria-hidden=true href=#이번-프로젝트에서-배운-pipeline의-의미>#</a></h2><p>Pipeline은 초보자에게 문법이 복잡해 보인다. 하지만 프로젝트가 커질수록 오히려 안전장치가 된다.</p><table><thead><tr><th>위험</th><th>pipeline 없이 생기는 문제</th><th>pipeline으로 얻은 효과</th></tr></thead><tbody><tr><td>train/test 불일치</td><td>test에 다른 전처리 적용</td><td>같은 transformer 재사용</td></tr><tr><td>데이터 누수</td><td>전체 데이터로 scaler fit</td><td>fold 안에서만 fit</td></tr><tr><td>실험 비교 혼란</td><td>모델마다 전처리 조건 다름</td><td>같은 조건에서 모델 교체</td></tr><tr><td>재현성 부족</td><td>셀 실행 순서에 의존</td><td>하나의 객체로 재실행</td></tr></tbody></table><p>강사님이 pipeline 문법을 중요하게 본 이유는 결국 이것이었다. 실험을 많이 하는 사람일수록, 코드를 짧게 쓰는 것보다 실험 조건을 고정하는 문법이 더 중요하다.</p></div><footer class=post-footer><ul class=post-tags><li><a href=https://Han-think.github.io/tags/kaggle/>Kaggle</a></li><li><a href=https://Han-think.github.io/tags/house-prices/>House Prices</a></li><li><a href=https://Han-think.github.io/tags/pipeline/>Pipeline</a></li><li><a href=https://Han-think.github.io/tags/columntransformer/>ColumnTransformer</a></li><li><a href=https://Han-think.github.io/tags/scikit-learn/>Scikit-Learn</a></li><li><a href=https://Han-think.github.io/tags/%EC%A0%84%EC%B2%98%EB%A6%AC/>전처리</a></li></ul></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
+<span>Powered by
+<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
+<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>

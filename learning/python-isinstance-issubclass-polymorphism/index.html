@@ -1,465 +1,82 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto" data-theme="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>python-isinstance-issubclass-polymorphism | Han-think Blog</title>
-<meta name="keywords" content="">
-<meta name="description" content="python-isinstance-issubclass-polymorphism 학습 정리">
-<meta name="author" content="">
-<link rel="canonical" href="https://Han-think.github.io/learning/python-isinstance-issubclass-polymorphism/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://Han-think.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/python-isinstance-issubclass-polymorphism/">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --code-block-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-                color-scheme: dark;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .toc {
-                background: var(--entry);
-            }
-        }
-
-    </style>
-</noscript>
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else if (localStorage.getItem("pref-theme") === "light") {
-       document.querySelector("html").dataset.theme = 'light';
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else {
-        document.querySelector("html").dataset.theme = 'light';
-    }
-
-</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
-
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
-      <script>
-        var doNotTrack = false;
-        if ( true ) {
-          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
-          var doNotTrack = (dnt == "1" || dnt == "yes");
-        }
-        if (!doNotTrack) {
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-9YN1SZZ1G8');
-        }
-      </script><meta property="og:url" content="https://Han-think.github.io/learning/python-isinstance-issubclass-polymorphism/">
-  <meta property="og:site_name" content="Han-think Blog">
-  <meta property="og:title" content="python-isinstance-issubclass-polymorphism">
-  <meta property="og:description" content="python-isinstance-issubclass-polymorphism 학습 정리">
-  <meta property="og:locale" content="ko_KR">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="learning">
-    <meta property="article:published_time" content="2026-06-02T00:00:00+00:00">
-    <meta property="article:modified_time" content="2026-06-02T00:00:00+00:00">
-
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="python-isinstance-issubclass-polymorphism">
-  <meta name="twitter:description" content="python-isinstance-issubclass-polymorphism 학습 정리">
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "학습 기록",
-      "item": "https://Han-think.github.io/learning/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "python-isinstance-issubclass-polymorphism",
-      "item": "https://Han-think.github.io/learning/python-isinstance-issubclass-polymorphism/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "python-isinstance-issubclass-polymorphism",
-  "name": "python-isinstance-issubclass-polymorphism",
-  "description": "python-isinstance-issubclass-polymorphism 학습 정리",
-  "keywords": [
-    
-  ],
-  "articleBody": "목차 클래스 상속 type() 확인 isinstance() 확인 issubclass() 확인 총평 1. 클래스 상속 왜 이걸 보게 됐나 클래스 상속을 통해 자식 클래스가 부모 클래스의 메서드를 물려받고 오버라이드할 수 있다는 점을 이해하는 것이 중요합니다. 이를 통해 코드의 재사용성과 유연성을 높일 수 있습니다. 특히 type(), isinstance(), issubclass() 함수를 통해 클래스 관계를 명확히 파악할 수 있습니다.\n내가 헷갈린 지점 상속 관계에서 자식 클래스가 부모 클래스의 메서드를 어떻게 확장하거나 덮어쓰는지, 그리고 이러한 관계가 객체의 타입 확인에 어떻게 영향을 미치는지 이해하는 데 어려움이 있었습니다. 특히 DevTeam이 Department의 하위 클래스임에도 불구하고 특정 메서드 동작이 어떻게 달라지는지 명확히 파악하는 것이 헷갈렸습니다.\n시도한 코드 / 예시 # 부모 클래스 정의 class Department: def meeting_summary(self): return '일반 회의 요약' # 자식 클래스 정의 class DevTeam(Department): def meeting_summary(self): return '개발팀 회의 요약' class PlanningTeam(Department): def meeting_summary(self): return '기획팀 회의 요약' # 객체 생성 dev_team = DevTeam() planning_team = PlanningTeam() # 메서드 호출 확인 print(dev_team.meeting_summary()) # 출력: 개발팀 회의 요약 print(planning_team.meeting_summary()) # 출력: 기획팀 회의 요약 # 타입 확인 print(type(dev_team)) # ",
-  "wordCount" : "758",
-  "inLanguage": "en",
-  "datePublished": "2026-06-02T00:00:00Z",
-  "dateModified": "2026-06-02T00:00:00Z",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://Han-think.github.io/learning/python-isinstance-issubclass-polymorphism/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Han-think Blog",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://Han-think.github.io/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-<body id="top">
-    <header class="header">
-    <nav class="header-nav">
-        <div class="logo">
-            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
-                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu" class="menu">
-            <li>
-                <a href="https://Han-think.github.io/learning/" title="학습 로그">
-                    <span>학습 로그</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://Han-think.github.io/projects/" title="프로젝트">
-                    <span>프로젝트</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://Han-think.github.io/dev/" title="개인 개발">
-                    <span>개인 개발</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://Han-think.github.io/search/" title="검색">
-                    <span>검색</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    
-    <h1 class="post-title entry-hint-parent">
-      python-isinstance-issubclass-polymorphism
-    </h1>
-    <div class="post-description">
-      python-isinstance-issubclass-polymorphism 학습 정리
-    </div>
-    <div class="post-meta">
-
-<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span>
-
-</div>
-  </header> 
-  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
-<ul>
-<li>
-<ol>
-<li><a href="#1-%ED%81%B4%EB%9E%98%EC%8A%A4-%EC%83%81%EC%86%8D">클래스 상속</a></li>
-</ol>
-</li>
-<li>
-<ol start="2">
-<li><a href="#2-type-%ED%99%95%EC%9D%B8">type() 확인</a></li>
-</ol>
-</li>
-<li>
-<ol start="3">
-<li><a href="#3-isinstance-%ED%99%95%EC%9D%B8">isinstance() 확인</a></li>
-</ol>
-</li>
-<li>
-<ol start="4">
-<li><a href="#4-issubclass-%ED%99%95%EC%9D%B8">issubclass() 확인</a></li>
-</ol>
-</li>
-<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
-</ul>
-<h2 id="1-클래스-상속">1. 클래스 상속<a hidden class="anchor" aria-hidden="true" href="#1-클래스-상속">#</a></h2>
-<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
-<p>클래스 상속을 통해 자식 클래스가 부모 클래스의 메서드를 물려받고 오버라이드할 수 있다는 점을 이해하는 것이 중요합니다. 이를 통해 코드의 재사용성과 유연성을 높일 수 있습니다. 특히 <code>type()</code>, <code>isinstance()</code>, <code>issubclass()</code> 함수를 통해 클래스 관계를 명확히 파악할 수 있습니다.</p>
-<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
-<p>상속 관계에서 자식 클래스가 부모 클래스의 메서드를 어떻게 확장하거나 덮어쓰는지, 그리고 이러한 관계가 객체의 타입 확인에 어떻게 영향을 미치는지 이해하는 데 어려움이 있었습니다. 특히 <code>DevTeam</code>이 <code>Department</code>의 하위 클래스임에도 불구하고 특정 메서드 동작이 어떻게 달라지는지 명확히 파악하는 것이 헷갈렸습니다.</p>
-<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 부모 클래스 정의</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Department</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">meeting_summary</span>(self):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;일반 회의 요약&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 자식 클래스 정의</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DevTeam</span>(Department):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">meeting_summary</span>(self):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;개발팀 회의 요약&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PlanningTeam</span>(Department):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">meeting_summary</span>(self):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;기획팀 회의 요약&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 객체 생성</span>
-</span></span><span style="display:flex;"><span>dev_team <span style="color:#f92672">=</span> DevTeam()
-</span></span><span style="display:flex;"><span>planning_team <span style="color:#f92672">=</span> PlanningTeam()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 메서드 호출 확인</span>
-</span></span><span style="display:flex;"><span>print(dev_team<span style="color:#f92672">.</span>meeting_summary())  <span style="color:#75715e"># 출력: 개발팀 회의 요약</span>
-</span></span><span style="display:flex;"><span>print(planning_team<span style="color:#f92672">.</span>meeting_summary())  <span style="color:#75715e"># 출력: 기획팀 회의 요약</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 타입 확인</span>
-</span></span><span style="display:flex;"><span>print(type(dev_team))  <span style="color:#75715e"># &lt;class &#39;__main__.DevTeam&#39;&gt;</span>
-</span></span><span style="display:flex;"><span>print(isinstance(dev_team, Department))  <span style="color:#75715e"># True</span>
-</span></span><span style="display:flex;"><span>print(issubclass(DevTeam, Department))  <span style="color:#75715e"># True</span>
-</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
-<p>출력 예시:</p>
-<pre tabindex="0"><code>개발팀 회의 요약
+<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>python-isinstance-issubclass-polymorphism | Han-think Blog</title><meta name=keywords content><meta name=description content="python-isinstance-issubclass-polymorphism 학습 정리"><meta name=author content><link rel=canonical href=https://Han-think.github.io/learning/python-isinstance-issubclass-polymorphism/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/learning/python-isinstance-issubclass-polymorphism/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/learning/python-isinstance-issubclass-polymorphism/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="python-isinstance-issubclass-polymorphism"><meta property="og:description" content="python-isinstance-issubclass-polymorphism 학습 정리"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="learning"><meta property="article:published_time" content="2026-06-02T00:00:00+00:00"><meta property="article:modified_time" content="2026-06-02T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="python-isinstance-issubclass-polymorphism"><meta name=twitter:description content="python-isinstance-issubclass-polymorphism 학습 정리"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"학습 기록","item":"https://Han-think.github.io/learning/"},{"@type":"ListItem","position":2,"name":"python-isinstance-issubclass-polymorphism","item":"https://Han-think.github.io/learning/python-isinstance-issubclass-polymorphism/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"python-isinstance-issubclass-polymorphism","name":"python-isinstance-issubclass-polymorphism","description":"python-isinstance-issubclass-polymorphism 학습 정리","keywords":[],"articleBody":"목차 클래스 상속 type() 확인 isinstance() 확인 issubclass() 확인 총평 1. 클래스 상속 왜 이걸 보게 됐나 클래스 상속을 통해 자식 클래스가 부모 클래스의 메서드를 물려받고 오버라이드할 수 있다는 점을 이해하는 것이 중요합니다. 이를 통해 코드의 재사용성과 유연성을 높일 수 있습니다. 특히 type(), isinstance(), issubclass() 함수를 통해 클래스 관계를 명확히 파악할 수 있습니다.\n내가 헷갈린 지점 상속 관계에서 자식 클래스가 부모 클래스의 메서드를 어떻게 확장하거나 덮어쓰는지, 그리고 이러한 관계가 객체의 타입 확인에 어떻게 영향을 미치는지 이해하는 데 어려움이 있었습니다. 특히 DevTeam이 Department의 하위 클래스임에도 불구하고 특정 메서드 동작이 어떻게 달라지는지 명확히 파악하는 것이 헷갈렸습니다.\n시도한 코드 / 예시 # 부모 클래스 정의 class Department: def meeting_summary(self): return '일반 회의 요약' # 자식 클래스 정의 class DevTeam(Department): def meeting_summary(self): return '개발팀 회의 요약' class PlanningTeam(Department): def meeting_summary(self): return '기획팀 회의 요약' # 객체 생성 dev_team = DevTeam() planning_team = PlanningTeam() # 메서드 호출 확인 print(dev_team.meeting_summary()) # 출력: 개발팀 회의 요약 print(planning_team.meeting_summary()) # 출력: 기획팀 회의 요약 # 타입 확인 print(type(dev_team)) # ","wordCount":"758","inLanguage":"en","datePublished":"2026-06-02T00:00:00Z","dateModified":"2026-06-02T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/learning/python-isinstance-issubclass-polymorphism/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
+<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">python-isinstance-issubclass-polymorphism</h1><div class=post-description>python-isinstance-issubclass-polymorphism 학습 정리</div><div class=post-meta><span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span></div></header><div class="post-content md-content"><h2 id=목차>목차<a hidden class=anchor aria-hidden=true href=#목차>#</a></h2><ul><li><ol><li><a href=#1-%ED%81%B4%EB%9E%98%EC%8A%A4-%EC%83%81%EC%86%8D>클래스 상속</a></li></ol></li><li><ol start=2><li><a href=#2-type-%ED%99%95%EC%9D%B8>type() 확인</a></li></ol></li><li><ol start=3><li><a href=#3-isinstance-%ED%99%95%EC%9D%B8>isinstance() 확인</a></li></ol></li><li><ol start=4><li><a href=#4-issubclass-%ED%99%95%EC%9D%B8>issubclass() 확인</a></li></ol></li><li><a href=#%EC%B4%9D%ED%8F%89>총평</a></li></ul><h2 id=1-클래스-상속>1. 클래스 상속<a hidden class=anchor aria-hidden=true href=#1-클래스-상속>#</a></h2><h3 id=왜-이걸-보게-됐나>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나>#</a></h3><p>클래스 상속을 통해 자식 클래스가 부모 클래스의 메서드를 물려받고 오버라이드할 수 있다는 점을 이해하는 것이 중요합니다. 이를 통해 코드의 재사용성과 유연성을 높일 수 있습니다. 특히 <code>type()</code>, <code>isinstance()</code>, <code>issubclass()</code> 함수를 통해 클래스 관계를 명확히 파악할 수 있습니다.</p><h3 id=내가-헷갈린-지점>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점>#</a></h3><p>상속 관계에서 자식 클래스가 부모 클래스의 메서드를 어떻게 확장하거나 덮어쓰는지, 그리고 이러한 관계가 객체의 타입 확인에 어떻게 영향을 미치는지 이해하는 데 어려움이 있었습니다. 특히 <code>DevTeam</code>이 <code>Department</code>의 하위 클래스임에도 불구하고 특정 메서드 동작이 어떻게 달라지는지 명확히 파악하는 것이 헷갈렸습니다.</p><h3 id=시도한-코드--예시>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># 부모 클래스 정의</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Department</span>:
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>meeting_summary</span>(self):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#39;일반 회의 요약&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 자식 클래스 정의</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>DevTeam</span>(Department):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>meeting_summary</span>(self):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#39;개발팀 회의 요약&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>PlanningTeam</span>(Department):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>meeting_summary</span>(self):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#39;기획팀 회의 요약&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 객체 생성</span>
+</span></span><span style=display:flex><span>dev_team <span style=color:#f92672>=</span> DevTeam()
+</span></span><span style=display:flex><span>planning_team <span style=color:#f92672>=</span> PlanningTeam()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 메서드 호출 확인</span>
+</span></span><span style=display:flex><span>print(dev_team<span style=color:#f92672>.</span>meeting_summary())  <span style=color:#75715e># 출력: 개발팀 회의 요약</span>
+</span></span><span style=display:flex><span>print(planning_team<span style=color:#f92672>.</span>meeting_summary())  <span style=color:#75715e># 출력: 기획팀 회의 요약</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 타입 확인</span>
+</span></span><span style=display:flex><span>print(type(dev_team))  <span style=color:#75715e># &lt;class &#39;__main__.DevTeam&#39;&gt;</span>
+</span></span><span style=display:flex><span>print(isinstance(dev_team, Department))  <span style=color:#75715e># True</span>
+</span></span><span style=display:flex><span>print(issubclass(DevTeam, Department))  <span style=color:#75715e># True</span>
+</span></span></code></pre></div><h3 id=결과와-해석>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석>#</a></h3><p>출력 예시:</p><pre tabindex=0><code>개발팀 회의 요약
 기획팀 회의 요약
 &lt;class &#39;__main__.DevTeam&#39;&gt;
 True
 True
-</code></pre><h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
-<p>클래스 상속을 통해 <code>DevTeam</code>과 <code>PlanningTeam</code>은 <code>Department</code> 클래스의 기능을 물려받으면서도 각자의 특성을 반영한 메서드 오버라이드를 수행할 수 있습니다. <code>type()</code>, <code>isinstance()</code>, <code>issubclass()</code> 함수를 사용하면 이러한 상속 관계를 확인하고, 객체의 실제 타입과 클래스 계층 구조를 명확히 이해할 수 있습니다.</p>
-<h2 id="2-type-확인">2. type() 확인<a hidden class="anchor" aria-hidden="true" href="#2-type-확인">#</a></h2>
-<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
-<p>이해를 돕기 위해 <code>type()</code>, <code>isinstance()</code>, <code>issubclass()</code> 함수들이 어떻게 객체의 타입과 상속 관계를 확인하는지 구체적인 예시를 통해 설명하고자 합니다. 특히 상속 관계에서 자식 클래스가 부모 클래스의 인스턴스로 어떻게 간주되는지 명확히 파악하고자 합니다.</p>
-<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
-<p>상속 관계에서 자식 클래스 객체가 부모 클래스의 인스턴스로도 인식되는 이유를 이해하는 데 어려움이 있었습니다. 특히 <code>DevTeam</code> 객체가 <code>Department</code> 클래스의 인스턴스로도 <code>isinstance()</code> 함수를 통해 True를 반환하는 이유를 명확히 파악하지 못했습니다.</p>
-<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 부모 클래스 정의</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Department</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">meeting_summary</span>(self):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;일반 회의 요약&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 자식 클래스 정의</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DevTeam</span>(Department):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">meeting_summary</span>(self):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;개발팀 회의 요약&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 객체 생성</span>
-</span></span><span style="display:flex;"><span>dev_team <span style="color:#f92672">=</span> DevTeam()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 타입 확인</span>
-</span></span><span style="display:flex;"><span>print(type(dev_team))  <span style="color:#75715e"># &lt;class &#39;__main__.DevTeam&#39;&gt;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 부모 클래스 타입 확인</span>
-</span></span><span style="display:flex;"><span>print(isinstance(dev_team, Department))  <span style="color:#75715e"># True</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 하위 클래스 확인</span>
-</span></span><span style="display:flex;"><span>print(issubclass(DevTeam, Department))  <span style="color:#75715e"># True</span>
-</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
-<p>&lt;class &lsquo;<strong>main</strong>.DevTeam&rsquo;&gt;
+</code></pre><h3 id=정리된-이해>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해>#</a></h3><p>클래스 상속을 통해 <code>DevTeam</code>과 <code>PlanningTeam</code>은 <code>Department</code> 클래스의 기능을 물려받으면서도 각자의 특성을 반영한 메서드 오버라이드를 수행할 수 있습니다. <code>type()</code>, <code>isinstance()</code>, <code>issubclass()</code> 함수를 사용하면 이러한 상속 관계를 확인하고, 객체의 실제 타입과 클래스 계층 구조를 명확히 이해할 수 있습니다.</p><h2 id=2-type-확인>2. type() 확인<a hidden class=anchor aria-hidden=true href=#2-type-확인>#</a></h2><h3 id=왜-이걸-보게-됐나-1>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-1>#</a></h3><p>이해를 돕기 위해 <code>type()</code>, <code>isinstance()</code>, <code>issubclass()</code> 함수들이 어떻게 객체의 타입과 상속 관계를 확인하는지 구체적인 예시를 통해 설명하고자 합니다. 특히 상속 관계에서 자식 클래스가 부모 클래스의 인스턴스로 어떻게 간주되는지 명확히 파악하고자 합니다.</p><h3 id=내가-헷갈린-지점-1>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-1>#</a></h3><p>상속 관계에서 자식 클래스 객체가 부모 클래스의 인스턴스로도 인식되는 이유를 이해하는 데 어려움이 있었습니다. 특히 <code>DevTeam</code> 객체가 <code>Department</code> 클래스의 인스턴스로도 <code>isinstance()</code> 함수를 통해 True를 반환하는 이유를 명확히 파악하지 못했습니다.</p><h3 id=시도한-코드--예시-1>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-1>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># 부모 클래스 정의</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Department</span>:
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>meeting_summary</span>(self):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#39;일반 회의 요약&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 자식 클래스 정의</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>DevTeam</span>(Department):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>meeting_summary</span>(self):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#39;개발팀 회의 요약&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 객체 생성</span>
+</span></span><span style=display:flex><span>dev_team <span style=color:#f92672>=</span> DevTeam()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 타입 확인</span>
+</span></span><span style=display:flex><span>print(type(dev_team))  <span style=color:#75715e># &lt;class &#39;__main__.DevTeam&#39;&gt;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 부모 클래스 타입 확인</span>
+</span></span><span style=display:flex><span>print(isinstance(dev_team, Department))  <span style=color:#75715e># True</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 하위 클래스 확인</span>
+</span></span><span style=display:flex><span>print(issubclass(DevTeam, Department))  <span style=color:#75715e># True</span>
+</span></span></code></pre></div><h3 id=결과와-해석-1>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-1>#</a></h3><p>&lt;class &lsquo;<strong>main</strong>.DevTeam&rsquo;>
 True
-True</p>
-<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
-<p>이 코드를 통해 <code>DevTeam</code> 객체가 <code>Department</code> 클래스의 인스턴스로도 인식되는 원리를 확인할 수 있습니다. <code>type()</code> 함수는 <code>DevTeam</code> 클래스의 타입을 명확히 보여주며, <code>isinstance()</code> 함수는 상속 관계 덕분에 <code>DevTeam</code> 객체가 <code>Department</code> 클래스의 인스턴스로도 간주됨을 보여줍니다. 마지막으로 <code>issubclass()</code>는 <code>DevTeam</code>이 <code>Department</code>의 하위 클래스임을 확인합니다.</p>
-<h2 id="3-isinstance-확인">3. isinstance() 확인<a hidden class="anchor" aria-hidden="true" href="#3-isinstance-확인">#</a></h2>
-<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
-<p>상속 관계에서 특정 객체가 상위 클래스와 하위 클래스 모두에 어떻게 속하는지 이해하기 위해 <code>isinstance()</code> 함수의 역할을 명확히 파악하고자 합니다. 특히, 하위 클래스가 상위 클래스의 인스턴스로도 올바르게 인식되는지 확인하는 방법을 배우고자 합니다.</p>
-<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
-<p>상속 구조에서 하위 클래스 객체가 상위 클래스의 인스턴스로도 확인되는 이유를 완전히 이해하는 데 어려움이 있었습니다. 특히 <code>DevTeam</code>이 <code>Department</code> 클래스의 인스턴스로도 인식되는 이유를 명확히 파악하지 못했습니다.</p>
-<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>dev_team <span style="color:#f92672">=</span> DevTeam()  <span style="color:#75715e"># 하위 클래스 객체 생성</span>
-</span></span><span style="display:flex;"><span>print(isinstance(dev_team, Department))  <span style="color:#75715e"># True - 상속 관계로 인해</span>
-</span></span><span style="display:flex;"><span>print(isinstance(dev_team, DevTeam))  <span style="color:#75715e"># True - 직접적인 클래스 타입 확인</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 추가 예시</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HR</span>(Department):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">team_report</span>(self):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;인사팀 보고서&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>hr_team <span style="color:#f92672">=</span> HR()
-</span></span><span style="display:flex;"><span>print(isinstance(hr_team, Department))  <span style="color:#75715e"># True</span>
-</span></span><span style="display:flex;"><span>print(isinstance(hr_team, DevTeam))  <span style="color:#75715e"># False</span>
-</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
-<p>출력 예시:</p>
-<pre tabindex="0"><code>True
+True</p><h3 id=정리된-이해-1>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-1>#</a></h3><p>이 코드를 통해 <code>DevTeam</code> 객체가 <code>Department</code> 클래스의 인스턴스로도 인식되는 원리를 확인할 수 있습니다. <code>type()</code> 함수는 <code>DevTeam</code> 클래스의 타입을 명확히 보여주며, <code>isinstance()</code> 함수는 상속 관계 덕분에 <code>DevTeam</code> 객체가 <code>Department</code> 클래스의 인스턴스로도 간주됨을 보여줍니다. 마지막으로 <code>issubclass()</code>는 <code>DevTeam</code>이 <code>Department</code>의 하위 클래스임을 확인합니다.</p><h2 id=3-isinstance-확인>3. isinstance() 확인<a hidden class=anchor aria-hidden=true href=#3-isinstance-확인>#</a></h2><h3 id=왜-이걸-보게-됐나-2>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-2>#</a></h3><p>상속 관계에서 특정 객체가 상위 클래스와 하위 클래스 모두에 어떻게 속하는지 이해하기 위해 <code>isinstance()</code> 함수의 역할을 명확히 파악하고자 합니다. 특히, 하위 클래스가 상위 클래스의 인스턴스로도 올바르게 인식되는지 확인하는 방법을 배우고자 합니다.</p><h3 id=내가-헷갈린-지점-2>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-2>#</a></h3><p>상속 구조에서 하위 클래스 객체가 상위 클래스의 인스턴스로도 확인되는 이유를 완전히 이해하는 데 어려움이 있었습니다. 특히 <code>DevTeam</code>이 <code>Department</code> 클래스의 인스턴스로도 인식되는 이유를 명확히 파악하지 못했습니다.</p><h3 id=시도한-코드--예시-2>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-2>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>dev_team <span style=color:#f92672>=</span> DevTeam()  <span style=color:#75715e># 하위 클래스 객체 생성</span>
+</span></span><span style=display:flex><span>print(isinstance(dev_team, Department))  <span style=color:#75715e># True - 상속 관계로 인해</span>
+</span></span><span style=display:flex><span>print(isinstance(dev_team, DevTeam))  <span style=color:#75715e># True - 직접적인 클래스 타입 확인</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 추가 예시</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>HR</span>(Department):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>team_report</span>(self):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#39;인사팀 보고서&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>hr_team <span style=color:#f92672>=</span> HR()
+</span></span><span style=display:flex><span>print(isinstance(hr_team, Department))  <span style=color:#75715e># True</span>
+</span></span><span style=display:flex><span>print(isinstance(hr_team, DevTeam))  <span style=color:#75715e># False</span>
+</span></span></code></pre></div><h3 id=결과와-해석-2>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-2>#</a></h3><p>출력 예시:</p><pre tabindex=0><code>True
 True
 True
 False
-</code></pre><h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
-<p>이 섹션을 통해 <code>isinstance()</code> 함수가 객체의 타입을 확인할 때 상속 관계를 고려한다는 것을 이해했습니다. <code>DevTeam</code> 객체는 <code>Department</code> 클래스의 하위 클래스이므로 <code>isinstance()</code>를 사용해 <code>Department</code> 타입으로도 확인 가능하다는 점을 확인했습니다. 반면, 다른 하위 클래스인 <code>HR</code>은 <code>DevTeam</code> 타입으로는 확인되지 않는다는 점도 명확히 알게 되었습니다.</p>
-<h2 id="4-issubclass-확인">4. issubclass() 확인<a hidden class="anchor" aria-hidden="true" href="#4-issubclass-확인">#</a></h2>
-<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
-<p>상속 구조에서 특정 클래스가 다른 클래스의 하위 클래스인지 명확히 파악하고 싶었습니다. 특히, <code>DevTeam</code>이 <code>Department</code> 클래스의 하위 클래스임을 <code>issubclass()</code>를 통해 확인하는 방법을 이해하고 싶었습니다.</p>
-<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
-<p><code>DevTeam</code>이 <code>Department</code> 클래스의 하위 클래스임에도 불구하고, 그 관계를 코드로 정확히 어떻게 표현하고 확인하는지 혼란스러웠습니다.</p>
-<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>print(issubclass(DevTeam, Department))  <span style="color:#75715e"># True</span>
-</span></span><span style="display:flex;"><span>print(issubclass(TeamMember, Department))  <span style="color:#75715e"># TeamMember 클래스가 정의되지 않았으므로 결과는 None 또는 오류를 줄 수 있습니다.</span>
-</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
-<p>True</p>
-<h1 id="teammember-클래스가-정의되지-않았으므로-실제-실행-시-오류-또는-none이-출력될-수-있습니다">TeamMember 클래스가 정의되지 않았으므로 실제 실행 시 오류 또는 None이 출력될 수 있습니다.<a hidden class="anchor" aria-hidden="true" href="#teammember-클래스가-정의되지-않았으므로-실제-실행-시-오류-또는-none이-출력될-수-있습니다">#</a></h1>
-<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
-<p>이 섹션에서는 <code>issubclass()</code> 함수를 통해 <code>DevTeam</code> 클래스가 <code>Department</code> 클래스의 하위 클래스임을 확인하는 방법을 학습했습니다. 이를 통해 상속 관계를 코드로 어떻게 표현하고 확인할 수 있는지 이해할 수 있었습니다.</p>
-<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
-<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
-<p>클래스 상속 구조 이해와 <code>type()</code>, <code>isinstance()</code>, <code>issubclass()</code> 함수의 구체적 활용법을 익혔다. 특히 상속 관계에서 하위 클래스의 인스턴스 확인 방법이 명확해졌다.</p>
-<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
-<p>상속 관계에서 하위 클래스의 인스턴스 확인 시 <code>isinstance()</code> 함수의 활용 범위를 정확히 이해하는 것이 중요하다. 특히 상위 클래스와 하위 클래스 간의 관계를 명확히 파악해야 한다.</p>
-<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
-<p>다형성을 통해 부모 클래스의 메소드를 자식 클래스에서 오버라이드하여 특화된 동작을 구현하는 방법을 실습을 통해 확인했다. 이를 통해 코드의 유연성과 재사용성을 높일 수 있음을 체감했다.</p>
-
-
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-    </ul>
-<nav class="paginav">
-  <a class="prev" href="https://Han-think.github.io/learning/python-classmethod-staticmethod-from-string/">
-    <span class="title">« Prev</span>
-    <span>python-classmethod-staticmethod-from-string</span>
-  </a>
-  <a class="next" href="https://Han-think.github.io/learning/python-modules-entrypoint-docstring/">
-    <span class="title">Next »</span>
-    <span>python-modules-entrypoint-docstring</span>
-  </a>
-</nav>
-
-  </footer>
-</article>
-    </main>
-    
-<footer class="footer">
-        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
-
-    
-    
-    <span>
-        Powered by
-        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
-        <polyline points="17 11 12 6 7 11"></polyline>
-        <polyline points="17 18 12 13 7 18"></polyline>
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu');
-    if (menu) {
-        
-        const scrollPosition = localStorage.getItem("menu-scroll-position");
-        if (scrollPosition) {
-            menu.scrollLeft = parseInt(scrollPosition, 10);
-        }
-        
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var toplink = document.getElementById("top-link");
-    window.onscroll = function () {
-        const scrollThreshold = window.innerHeight;
-        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
-            toplink.classList.remove("hidden");
-        } else {
-            toplink.classList.add("hidden");
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        const html = document.querySelector("html");
-        if (html.dataset.theme === "dark") {
-            html.dataset.theme = 'light';
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            html.dataset.theme = 'dark';
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-</body>
-
-</html>
+</code></pre><h3 id=정리된-이해-2>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-2>#</a></h3><p>이 섹션을 통해 <code>isinstance()</code> 함수가 객체의 타입을 확인할 때 상속 관계를 고려한다는 것을 이해했습니다. <code>DevTeam</code> 객체는 <code>Department</code> 클래스의 하위 클래스이므로 <code>isinstance()</code>를 사용해 <code>Department</code> 타입으로도 확인 가능하다는 점을 확인했습니다. 반면, 다른 하위 클래스인 <code>HR</code>은 <code>DevTeam</code> 타입으로는 확인되지 않는다는 점도 명확히 알게 되었습니다.</p><h2 id=4-issubclass-확인>4. issubclass() 확인<a hidden class=anchor aria-hidden=true href=#4-issubclass-확인>#</a></h2><h3 id=왜-이걸-보게-됐나-3>왜 이걸 보게 됐나<a hidden class=anchor aria-hidden=true href=#왜-이걸-보게-됐나-3>#</a></h3><p>상속 구조에서 특정 클래스가 다른 클래스의 하위 클래스인지 명확히 파악하고 싶었습니다. 특히, <code>DevTeam</code>이 <code>Department</code> 클래스의 하위 클래스임을 <code>issubclass()</code>를 통해 확인하는 방법을 이해하고 싶었습니다.</p><h3 id=내가-헷갈린-지점-3>내가 헷갈린 지점<a hidden class=anchor aria-hidden=true href=#내가-헷갈린-지점-3>#</a></h3><p><code>DevTeam</code>이 <code>Department</code> 클래스의 하위 클래스임에도 불구하고, 그 관계를 코드로 정확히 어떻게 표현하고 확인하는지 혼란스러웠습니다.</p><h3 id=시도한-코드--예시-3>시도한 코드 / 예시<a hidden class=anchor aria-hidden=true href=#시도한-코드--예시-3>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>print(issubclass(DevTeam, Department))  <span style=color:#75715e># True</span>
+</span></span><span style=display:flex><span>print(issubclass(TeamMember, Department))  <span style=color:#75715e># TeamMember 클래스가 정의되지 않았으므로 결과는 None 또는 오류를 줄 수 있습니다.</span>
+</span></span></code></pre></div><h3 id=결과와-해석-3>결과와 해석<a hidden class=anchor aria-hidden=true href=#결과와-해석-3>#</a></h3><p>True</p><h1 id=teammember-클래스가-정의되지-않았으므로-실제-실행-시-오류-또는-none이-출력될-수-있습니다>TeamMember 클래스가 정의되지 않았으므로 실제 실행 시 오류 또는 None이 출력될 수 있습니다.<a hidden class=anchor aria-hidden=true href=#teammember-클래스가-정의되지-않았으므로-실제-실행-시-오류-또는-none이-출력될-수-있습니다>#</a></h1><h3 id=정리된-이해-3>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-3>#</a></h3><p>이 섹션에서는 <code>issubclass()</code> 함수를 통해 <code>DevTeam</code> 클래스가 <code>Department</code> 클래스의 하위 클래스임을 확인하는 방법을 학습했습니다. 이를 통해 상속 관계를 코드로 어떻게 표현하고 확인할 수 있는지 이해할 수 있었습니다.</p><h2 id=총평>총평<a hidden class=anchor aria-hidden=true href=#총평>#</a></h2><h3 id=오늘-전체에서-배운-것>오늘 전체에서 배운 것<a hidden class=anchor aria-hidden=true href=#오늘-전체에서-배운-것>#</a></h3><p>클래스 상속 구조 이해와 <code>type()</code>, <code>isinstance()</code>, <code>issubclass()</code> 함수의 구체적 활용법을 익혔다. 특히 상속 관계에서 하위 클래스의 인스턴스 확인 방법이 명확해졌다.</p><h3 id=다음에-조심할-것>다음에 조심할 것<a hidden class=anchor aria-hidden=true href=#다음에-조심할-것>#</a></h3><p>상속 관계에서 하위 클래스의 인스턴스 확인 시 <code>isinstance()</code> 함수의 활용 범위를 정확히 이해하는 것이 중요하다. 특히 상위 클래스와 하위 클래스 간의 관계를 명확히 파악해야 한다.</p><h3 id=다음-복습-주제>다음 복습 주제<a hidden class=anchor aria-hidden=true href=#다음-복습-주제>#</a></h3><p>다형성을 통해 부모 클래스의 메소드를 자식 클래스에서 오버라이드하여 특화된 동작을 구현하는 방법을 실습을 통해 확인했다. 이를 통해 코드의 유연성과 재사용성을 높일 수 있음을 체감했다.</p></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://Han-think.github.io/learning/python-classmethod-staticmethod-from-string/><span class=title>« Prev</span>
+<span>python-classmethod-staticmethod-from-string</span>
+</a><a class=next href=https://Han-think.github.io/learning/python-modules-entrypoint-docstring/><span class=title>Next »</span>
+<span>python-modules-entrypoint-docstring</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
+<span>Powered by
+<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
+<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>

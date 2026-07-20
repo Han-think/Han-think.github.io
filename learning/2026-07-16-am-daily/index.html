@@ -1,288 +1,24 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto" data-theme="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해 | Han-think Blog</title>
-<meta name="keywords" content="">
-<meta name="description" content="2026-07-16 오전 학습 정리">
-<meta name="author" content="">
-<link rel="canonical" href="https://Han-think.github.io/learning/2026-07-16-am-daily/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://Han-think.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-07-16-am-daily/">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --code-block-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-                color-scheme: dark;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .toc {
-                background: var(--entry);
-            }
-        }
-
-    </style>
-</noscript>
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else if (localStorage.getItem("pref-theme") === "light") {
-       document.querySelector("html").dataset.theme = 'light';
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else {
-        document.querySelector("html").dataset.theme = 'light';
-    }
-
-</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
-
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
-      <script>
-        var doNotTrack = false;
-        if ( true ) {
-          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
-          var doNotTrack = (dnt == "1" || dnt == "yes");
-        }
-        if (!doNotTrack) {
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-9YN1SZZ1G8');
-        }
-      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-16-am-daily/">
-  <meta property="og:site_name" content="Han-think Blog">
-  <meta property="og:title" content="머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해">
-  <meta property="og:description" content="2026-07-16 오전 학습 정리">
-  <meta property="og:locale" content="ko_KR">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="learning">
-    <meta property="article:published_time" content="2026-07-16T00:00:00+00:00">
-    <meta property="article:modified_time" content="2026-07-16T00:00:00+00:00">
-
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해">
-  <meta name="twitter:description" content="2026-07-16 오전 학습 정리">
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "학습 기록",
-      "item": "https://Han-think.github.io/learning/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해",
-      "item": "https://Han-think.github.io/learning/2026-07-16-am-daily/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해",
-  "name": "머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해",
-  "description": "2026-07-16 오전 학습 정리",
-  "keywords": [
-    
-  ],
-  "articleBody": "목차 머신러닝과 딥러닝 개념 정리 및 Pipeline OS 적용 이해 퍼셉트론의 구조와 활성화 함수 이해 도함수와 경사하강법: 손실 함수 최소화 원리 벡터, 행렬, 텐서와 은닉층 기초 다지기 PyTorch 모델 구조: 상속과 forward 메서드 이해 단층 퍼셉트론 구현과 Step 활성화 함수 이해 총평 1. 머신러닝과 딥러닝 개념 정리 및 Pipeline OS 적용 이해 무엇을 배웠나 머신러닝과 딥러닝의 차이를 명확히 이해하게 되었는데, 머신러닝은 사람이 직접 피처를 선택하고 가공하는 반면 딥러닝은 모델이 데이터로부터 패턴을 스스로 학습한다는 점이 핵심이다. 특히 Pipeline OS에서 LLM을 활용하는 방식을 통해 인간의 의도와 AI의 능력을 융합하는 시스템 구축이 가능하다는 점을 깨달았다. 앞으로는 피처 엔지니어링 기법과 딥러닝 기반 문장 생성 알고리즘을 활용하여 프로젝트에 적용해 보려 한다.\n헷갈렸던 점 머신러닝과 딥러닝이 명확히 구분되는 것처럼 느껴지지 않았고, 특히 프로젝트에서 인간의 개입 정도와 모델의 역할이 모호하게 느껴졌다. Pipeline OS에서 딥러닝 기술이 어떻게 활용되는지, 그리고 LLM과 규칙 기반 시스템이 어떻게 협력하는지 이해가 부족했다. 이 두 가지 기술을 어떻게 구체적으로 결합하는지 파악하는 데 어려움을 겪었다.\n정리된 이해 머신러닝은 사람이 직접 특징을 선택하고 가공하는 반면, 딥러닝은 신경망 구조와 데이터만으로 모델이 스스로 패턴을 학습합니다. Pipeline OS는 인간의 의도와 AI 생성 능력을 융합하는 운영체계로, LLM을 활용하여 소설 생성 과정을 지원하며 규칙 기반 시스템과 함께 작동합니다. 앞으로는 피처 엔지니어링 실습을 통해 머신러닝과 딥러닝의 차이를 직접 경험하고 싶습니다.\n# 예시: 소설 데이터셋에서 장르별 키워드 추출 및 전처리 (가정) from collections import Counter import re def extract_keywords(text, stop_words): \"\"\"텍스트에서 키워드 추출\"\"\" text = re.sub(r'[^\\w\\s]', '', text).lower() # 특수문자 제거 및 소문자 변환 words = text.split() filtered_words = [word for word in words if word not in stop_words] word_counts = Counter(filtered_words) return word_counts.most_common(10) # 예시 데이터 (실제 데이터셋으로 대체) text = \"로맨스 소설은 아름다운 사랑 이야기와 감동적인 결말을 제공합니다.\" stop_words = ['은', '는', '과', '의', '를', '가', '이'] keywords = extract_keywords(text, stop_words) print(keywords) 2. 퍼셉트론의 구조와 활성화 함수 이해 무엇을 배웠나 퍼셉트론의 각 뉴런이 여러 입력 신호를 받아 가중합과 편향을 계산하고, 활성화 함수를 통해 최종 출력값을 생성한다는 것을 이해하게 되었다. 활성화 함수는 단순한 스위치 역할뿐만 아니라 다양한 값을 만들어내는 중요한 역할을 한다는 점도 명확해졌다. 뉴런들이 모여 층을 이루고, 각 층의 출력이 다음 층의 입력으로 전달되는 구조도 파악했다.\n헷갈렸던 점 활성화 함수가 그냥 0 또는 1을 내놓는 단순한 스위치인 줄 알았고, 뉴런이 여러 입력을 동시에 처리하는 계산 단위인지, 아니면 각 뉴런이 개별적으로 동작하는지 명확하지 않았다. 특히 각 뉴런이 어떻게 여러 입력 신호를 결합하여 하나의 출력을 내는지가 이해가 안 갔다.\n정리된 이해 퍼셉트론의 뉴런은 여러 입력 신호들을 가중치와 편향을 통해 조합하고, 활성화 함수를 거쳐 최종적으로 하나의 값을 출력하는 계산 단위입니다. 활성화 함수는 입력 값을 비선형적으로 변환하여 복잡한 패턴을 학습할 수 있도록 돕고, 여러 뉴런들이 층을 이루어 출력을 결합하여 전체적인 판단을 내립니다. 예를 들어 계단 함수는 간단한 스위치 역할을 하지만, 다양한 활성화 함수는 더 풍부한 값들을 생성할 수 있습니다.\n# Python으로 뉴런 동작 시뮬레이션 (계단 활성화 함수 사용) def neuron_step(inputs, weights, bias): \"\"\" 뉴런의 동작을 시뮬레이션합니다. Args: inputs: 입력 값 리스트 weights: 가중치 리스트 bias: 편향 값 Returns: 활성화 함수 적용 후 출력 값 \"\"\" z = sum(w * x for w, x in zip(weights, inputs)) + bias return 1 if z \u003e= 0 else 0 # 예시 inputs = [2, -1] weights = [0.5, -0.3] bias = 0.1 output = neuron_step(inputs, weights, bias) print(f\"출력 값: {output}\") 3. 도함수와 경사하강법: 손실 함수 최소화 원리 무엇을 배웠나 도함수의 의미를 정확히 이해하고, 경사하강법이 단순히 포물선을 따라 내려가는 것이 아니라 복잡한 손실 지형 속에서 파라미터를 조정하는 과정임을 알게 되었다. 특히 최솟값 이후 손실 함수 변화에 대한 오해를 풀고, 학습률이 경사하강법의 경로에 미치는 영향을 고려해야 한다는 점을 명확히 했다. 앞으로는 이러한 이해를 바탕으로 실제 신경망 학습에 적용해 볼 계획이다.\n헷갈렸던 점 최솟값을 지나면 손실 함수가 역전되는 것처럼 느껴졌는데, 사실 경사하강법은 최솟값 근처에서도 계속 최소값 방향으로 움직이는구나. 경사하강법이 항상 단순한 포물선을 따라 직행한다고 생각했는데, 실제로는 손실 지형이 훨씬 복잡해서 다양한 경로를 만들 수 있구나.\n정리된 이해 도함수는 현재 지점에서의 기울기를 알려주고, 경사하강법은 이 기울기를 따라 파라미터를 조절하여 손실 함수를 줄이는 방식이야. 손실 지형이 복잡하더라도 경사하강법은 계속해서 현재 위치에서의 기울기를 따라 움직이며 최소값을 찾아가려고 노력하는 거지.\nimport numpy as np import matplotlib.pyplot as plt 4. 벡터, 행렬, 텐서와 은닉층 기초 다지기 무엇을 배웠나 벡터, 행렬, 텐서의 기본적인 개념과 그 구조를 명확히 이해하게 되었다. 특히 행렬의 컬럼과 행 구분, 그리고 은닉층 내 노드와 층의 관계를 제대로 파악하게 되어서 신경망 구조에 대한 이해도가 높아졌다. 앞으로는 이 지식을 바탕으로 더 복잡한 개념들을 학습하는 데 도움이 될 것 같다.\n헷갈렸던 점 벡터와 행렬의 컬럼과 행을 구분하는 게 잘 안 됐고, 그림에서 원 하나가 어떤 의미를 가지는지 파악하는 데 어려움이 있었어. 특히 신경망에서 노드와 층, 은닉층과 노드의 관계가 얽혀서 전체 구조를 이해하는 데 꽤 애를 먹었어.\n정리된 이해 벡터는 1차원 배열, 행렬은 2차원 배열이고, 텐서는 이보다 더 높은 차원의 배열을 나타낸다는 것을 알게 되었다. 신경망에서는 노드들이 모여 층을 이루고, 여러 층들이 쌓여 은닉층을 구성하며, 입력층과 출력층 사이에서 복잡한 연산을 수행한다는 것을 이해하게 되었다. 앞으로는 이러한 개념들을 바탕으로 신경망 구조를 더 명확하게 파악하고, 실제 모델 구현에 적용해나가야겠다.\nimport numpy as np x = np.array([1, 2]) # 입력 벡터 W = np.array([[3], [4]]) 5. PyTorch 모델 구조: 상속과 forward 메서드 이해 무엇을 배웠나 PyTorch 모델을 만들 때 nn.Module을 상속받아야 하는 이유와 forward() 메서드의 역할을 명확히 이해하게 되었어. nn.Module을 상속받으면 PyTorch가 레이어 관리, 파라미터 추적, GPU 지원 등 다양한 기능을 쉽게 활용할 수 있고, forward() 메서드는 모델의 데이터 처리 흐름을 정의해줘. 모델 인스턴스를 직접 호출하면 forward() 메서드가 자동으로 실행된다는 점도 알게 되었어.\n헷갈렸던 점 모델을 만들 때 왜 nn.Module을 상속받아야 하는지, 그리고 forward 메서드를 직접 호출하지 않고도 모델이 어떻게 작동하는지 처음에 잘 몰랐습니다. 모델 인스턴스를 직접 호출했을 때 어떤 함수가 실행되는지 이해하는 데 시간이 걸렸고, 상속의 필요성에 대한 명확한 이유를 파악하기 어려웠습니다.\n정리된 이해 PyTorch 모델은 nn.Module을 상속받아 레이어 관리, 파라미터 추적, GPU 지원 등 다양한 기능을 활용하고, forward() 메서드를 통해 입력 데이터가 모델을 거치는 과정을 정의합니다. 모델 인스턴스에 직접 입력값을 넘기는 방식으로 forward() 메서드가 자동으로 호출되어 코드를 간결하게 만들 수 있습니다.\nclass MyModel(nn.Module): def __init__(self): super().__init__() # 부모 클래스 초기화 호출 # 추가적인 초기화 코드 def forward(self, x): # 입력 데이터의 처리 순서 정의 return x # 예시로 단순히 입력을 반환 output = model(x) # 내부적으로 forward() 호출 6. 단층 퍼셉트론 구현과 Step 활성화 함수 이해 무엇을 배웠나 퍼셉트론의 기본 구조와 Step 활성화 함수를 직접 구현하면서 코드 작성 순서에 대한 혼란을 겪었지만, 실습을 통해 목표가 복잡한 신경망 학습이 아닌 퍼셉트론의 기본 계산 과정을 이해하는 데 있음을 알게 되었습니다. Step 함수는 초기 퍼셉트론에서는 유용하지만, 현대 신경망의 기울기 기반 학습에는 한계가 있다는 것을 이해했습니다. 코드를 단계별로 나누어 작성하는 것이 중요하며, 퍼셉트론의 작동 원리를 명확히 이해하는 데 중점을 두어야 한다는 점을 배웠습니다.\n헷갈렸던 점 코드 구조를 어떻게 시작해야 할지 몰라서 import 부터 클래스 정의 순서까지 감이 잘 안 잡혔어. Step 함수가 학습 과정에서 제대로 작동할 수 있을까, 특히 역전파 과정에서 문제가 생기진 않을까 걱정했었어. 전체적인 그림을 어떻게 그려야 할지, 그리고 각 요소들이 어떻게 연결되는지 명확하지 않았어.\n정리된 이해 퍼셉트론의 기본 구조를 이해하고 직접 구현해보는 과정에서 전체적인 코드 구조를 잡는 데 어려움을 겪었지만, 실습 목표가 복잡한 학습보다는 기본적인 계산 과정을 파악하는 것이라는 점을 명확히 했습니다. Step 함수는 초기 퍼셉트론에서는 유용하지만, 현대 신경망에서의 복잡한 학습에는 미분 불가능한 특성으로 인해 제한적으로 사용될 수 있다는 것을 알게 되었습니다.\nimport torch import torch.nn as nn import matplotlib.pyplot as plt class StepActivation(nn.Module): def forward(self, x): return torch.where(x \u003e= 0, torch.ones_like(x), torch.zeros_like(x)) 총평 오늘 오전 전체에서 배운 것 오늘 오전에는 머신러닝과 딥러닝의 핵심 차이점, 퍼셉트론과 활성화 함수, 그리고 경사하강법의 원리를 깊이 있게 학습했습니다. 특히 PyTorch 모델 구조와 단층 퍼셉트론 구현 실습을 통해 신경망의 기본 작동 방식과 코드 작성의 중요성을 이해하게 되었습니다. 앞으로 이 지식들을 바탕으로 실제 프로젝트에 적용해 나가려 합니다.\n다음에 조심할 것 앞으로 경사하강법 학습률 조절에 더 신경 써야 할 것 같아. 손실 함수 변화에 대한 직관을 키우고, 실제 신경망 학습 과정에서 학습률이 미치는 영향을 꾸준히 관찰하면서 최적의 값을 찾아야겠어. 또한, 코딩 실습 시 단순 구현에 집중하는 것보다 각 단계의 의미를 제대로 이해하며 진행하는 것이 중요하다고 생각하니, 앞으로는 더욱 신중하게 접근해야겠다.\n다음 복습 주제 경사하강법 학습률 조절 및 손실 함수 변화에 따른 최적화 과정 이해를 좀 더 깊게 다지고, 다양한 활성화 함수를 활용하여 퍼셉트론의 성능을 개선하는 부분을 다시 살펴볼 계획이야. 또한, PyTorch 모델 구조를 활용하여 좀 더 복잡한 신경망을 직접 구현해 보면서 실전 적용 능력을 키우는 것이 목표야.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
-  "wordCount" : "1321",
-  "inLanguage": "en",
-  "datePublished": "2026-07-16T00:00:00Z",
-  "dateModified": "2026-07-16T00:00:00Z",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://Han-think.github.io/learning/2026-07-16-am-daily/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Han-think Blog",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://Han-think.github.io/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-<body id="top">
-    <header class="header">
-    <nav class="header-nav">
-        <div class="logo">
-            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
-                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu" class="menu">
-            <li>
-                <a href="https://Han-think.github.io/learning/" title="학습 로그">
-                    <span>학습 로그</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://Han-think.github.io/projects/" title="프로젝트">
-                    <span>프로젝트</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://Han-think.github.io/dev/" title="개인 개발">
-                    <span>개인 개발</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://Han-think.github.io/search/" title="검색">
-                    <span>검색</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    
-    <h1 class="post-title entry-hint-parent">
-      머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해
-    </h1>
-    <div class="post-description">
-      2026-07-16 오전 학습 정리
-    </div>
-    <div class="post-meta">
-
-<span title='2026-07-16 00:00:00 +0000 UTC'>2026년 7월 16일</span>&nbsp;·&nbsp;<span>7 min</span>
-
-</div>
-  </header> 
-  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
-<ul>
-<li>
-<ol>
-<li><a href="#1-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D%EA%B3%BC-%EB%94%A5%EB%9F%AC%EB%8B%9D-%EA%B0%9C%EB%85%90-%EC%A0%95%EB%A6%AC-%EB%B0%8F-pipeline-os-%EC%A0%81%EC%9A%A9-%EC%9D%B4%ED%95%B4">머신러닝과 딥러닝 개념 정리 및 Pipeline OS 적용 이해</a></li>
-</ol>
-</li>
-<li>
-<ol start="2">
-<li><a href="#2-%ED%8D%BC%EC%85%89%ED%8A%B8%EB%A1%A0%EC%9D%98-%EA%B5%AC%EC%A1%B0%EC%99%80-%ED%99%9C%EC%84%B1%ED%99%94-%ED%95%A8%EC%88%98-%EC%9D%B4%ED%95%B4">퍼셉트론의 구조와 활성화 함수 이해</a></li>
-</ol>
-</li>
-<li>
-<ol start="3">
-<li><a href="#3-%EB%8F%84%ED%95%A8%EC%88%98%EC%99%80-%EA%B2%BD%EC%82%AC%ED%95%98%EA%B0%95%EB%B2%95-%EC%86%90%EC%8B%A4-%ED%95%A8%EC%88%98-%EC%B5%9C%EC%86%8C%ED%99%94-%EC%9B%90%EB%A6%AC">도함수와 경사하강법: 손실 함수 최소화 원리</a></li>
-</ol>
-</li>
-<li>
-<ol start="4">
-<li><a href="#4-%EB%B2%A1%ED%84%B0-%ED%96%89%EB%A0%AC-%ED%85%90%EC%84%9C%EC%99%80-%EC%9D%80%EB%8B%89%EC%B8%B5-%EA%B8%B0%EC%B4%88-%EB%8B%A4%EC%A7%80%EA%B8%B0">벡터, 행렬, 텐서와 은닉층 기초 다지기</a></li>
-</ol>
-</li>
-<li>
-<ol start="5">
-<li><a href="#5-pytorch-%EB%AA%A8%EB%8D%B8-%EA%B5%AC%EC%A1%B0-%EC%83%81%EC%86%8D%EA%B3%BC-forward-%EB%A9%94%EC%84%9C%EB%93%9C-%EC%9D%B4%ED%95%B4">PyTorch 모델 구조: 상속과 <code>forward</code> 메서드 이해</a></li>
-</ol>
-</li>
-<li>
-<ol start="6">
-<li><a href="#6-%EB%8B%A8%EC%B8%B5-%ED%8D%BC%EC%85%89%ED%8A%B8%EB%A1%A0-%EA%B5%AC%ED%98%84%EA%B3%BC-step-%ED%99%9C%EC%84%B1%ED%99%94-%ED%95%A8%EC%88%98-%EC%9D%B4%ED%95%B4">단층 퍼셉트론 구현과 Step 활성화 함수 이해</a></li>
-</ol>
-</li>
-<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
-</ul>
-<h2 id="1-머신러닝과-딥러닝-개념-정리-및-pipeline-os-적용-이해">1. 머신러닝과 딥러닝 개념 정리 및 Pipeline OS 적용 이해<a hidden class="anchor" aria-hidden="true" href="#1-머신러닝과-딥러닝-개념-정리-및-pipeline-os-적용-이해">#</a></h2>
-<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
-<p>머신러닝과 딥러닝의 차이를 명확히 이해하게 되었는데, 머신러닝은 사람이 직접 피처를 선택하고 가공하는 반면 딥러닝은 모델이 데이터로부터 패턴을 스스로 학습한다는 점이 핵심이다. 특히 Pipeline OS에서 LLM을 활용하는 방식을 통해 인간의 의도와 AI의 능력을 융합하는 시스템 구축이 가능하다는 점을 깨달았다. 앞으로는 피처 엔지니어링 기법과 딥러닝 기반 문장 생성 알고리즘을 활용하여 프로젝트에 적용해 보려 한다.</p>
-<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
-<p>머신러닝과 딥러닝이 명확히 구분되는 것처럼 느껴지지 않았고, 특히 프로젝트에서 인간의 개입 정도와 모델의 역할이 모호하게 느껴졌다. Pipeline OS에서 딥러닝 기술이 어떻게 활용되는지, 그리고 LLM과 규칙 기반 시스템이 어떻게 협력하는지 이해가 부족했다. 이 두 가지 기술을 어떻게 구체적으로 결합하는지 파악하는 데 어려움을 겪었다.</p>
-<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
-<p>머신러닝은 사람이 직접 특징을 선택하고 가공하는 반면, 딥러닝은 신경망 구조와 데이터만으로 모델이 스스로 패턴을 학습합니다. Pipeline OS는 인간의 의도와 AI 생성 능력을 융합하는 운영체계로, LLM을 활용하여 소설 생성 과정을 지원하며 규칙 기반 시스템과 함께 작동합니다. 앞으로는 피처 엔지니어링 실습을 통해 머신러닝과 딥러닝의 차이를 직접 경험하고 싶습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 예시: 소설 데이터셋에서 장르별 키워드 추출 및 전처리 (가정)</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> collections <span style="color:#f92672">import</span> Counter
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> re
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">extract_keywords</span>(text, stop_words):
-</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;&#34;&#34;텍스트에서 키워드 추출&#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>  text <span style="color:#f92672">=</span> re<span style="color:#f92672">.</span>sub(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;[^\w\s]&#39;</span>, <span style="color:#e6db74">&#39;&#39;</span>, text)<span style="color:#f92672">.</span>lower()  <span style="color:#75715e"># 특수문자 제거 및 소문자 변환</span>
-</span></span><span style="display:flex;"><span>  words <span style="color:#f92672">=</span> text<span style="color:#f92672">.</span>split()
-</span></span><span style="display:flex;"><span>  filtered_words <span style="color:#f92672">=</span> [word <span style="color:#66d9ef">for</span> word <span style="color:#f92672">in</span> words <span style="color:#66d9ef">if</span> word <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> stop_words]
-</span></span><span style="display:flex;"><span>  word_counts <span style="color:#f92672">=</span> Counter(filtered_words)
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> word_counts<span style="color:#f92672">.</span>most_common(<span style="color:#ae81ff">10</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 예시 데이터 (실제 데이터셋으로 대체)</span>
-</span></span><span style="display:flex;"><span>text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;로맨스 소설은 아름다운 사랑 이야기와 감동적인 결말을 제공합니다.&#34;</span>
-</span></span><span style="display:flex;"><span>stop_words <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;은&#39;</span>, <span style="color:#e6db74">&#39;는&#39;</span>, <span style="color:#e6db74">&#39;과&#39;</span>, <span style="color:#e6db74">&#39;의&#39;</span>, <span style="color:#e6db74">&#39;를&#39;</span>, <span style="color:#e6db74">&#39;가&#39;</span>, <span style="color:#e6db74">&#39;이&#39;</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>keywords <span style="color:#f92672">=</span> extract_keywords(text, stop_words)
-</span></span><span style="display:flex;"><span>print(keywords)
-</span></span></code></pre></div><h2 id="2-퍼셉트론의-구조와-활성화-함수-이해">2. 퍼셉트론의 구조와 활성화 함수 이해<a hidden class="anchor" aria-hidden="true" href="#2-퍼셉트론의-구조와-활성화-함수-이해">#</a></h2>
-<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
-<p>퍼셉트론의 각 뉴런이 여러 입력 신호를 받아 가중합과 편향을 계산하고, 활성화 함수를 통해 최종 출력값을 생성한다는 것을 이해하게 되었다. 활성화 함수는 단순한 스위치 역할뿐만 아니라 다양한 값을 만들어내는 중요한 역할을 한다는 점도 명확해졌다. 뉴런들이 모여 층을 이루고, 각 층의 출력이 다음 층의 입력으로 전달되는 구조도 파악했다.</p>
-<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
-<p>활성화 함수가 그냥 0 또는 1을 내놓는 단순한 스위치인 줄 알았고, 뉴런이 여러 입력을 동시에 처리하는 계산 단위인지, 아니면 각 뉴런이 개별적으로 동작하는지 명확하지 않았다. 특히 각 뉴런이 어떻게 여러 입력 신호를 결합하여 하나의 출력을 내는지가 이해가 안 갔다.</p>
-<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
-<p>퍼셉트론의 뉴런은 여러 입력 신호들을 가중치와 편향을 통해 조합하고, 활성화 함수를 거쳐 최종적으로 하나의 값을 출력하는 계산 단위입니다. 활성화 함수는 입력 값을 비선형적으로 변환하여 복잡한 패턴을 학습할 수 있도록 돕고, 여러 뉴런들이 층을 이루어 출력을 결합하여 전체적인 판단을 내립니다. 예를 들어 계단 함수는 간단한 스위치 역할을 하지만, 다양한 활성화 함수는 더 풍부한 값들을 생성할 수 있습니다.</p>
-<pre tabindex="0"><code># Python으로 뉴런 동작 시뮬레이션 (계단 활성화 함수 사용)
+<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해 | Han-think Blog</title><meta name=keywords content><meta name=description content="2026-07-16 오전 학습 정리"><meta name=author content><link rel=canonical href=https://Han-think.github.io/learning/2026-07-16-am-daily/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://Han-think.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://Han-think.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://Han-think.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://Han-think.github.io/apple-touch-icon.png><link rel=mask-icon href=https://Han-think.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://Han-think.github.io/learning/2026-07-16-am-daily/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-9YN1SZZ1G8")}</script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-16-am-daily/"><meta property="og:site_name" content="Han-think Blog"><meta property="og:title" content="머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해"><meta property="og:description" content="2026-07-16 오전 학습 정리"><meta property="og:locale" content="ko_KR"><meta property="og:type" content="article"><meta property="article:section" content="learning"><meta property="article:published_time" content="2026-07-16T00:00:00+00:00"><meta property="article:modified_time" content="2026-07-16T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해"><meta name=twitter:description content="2026-07-16 오전 학습 정리"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"학습 기록","item":"https://Han-think.github.io/learning/"},{"@type":"ListItem","position":2,"name":"머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해","item":"https://Han-think.github.io/learning/2026-07-16-am-daily/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해","name":"머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해","description":"2026-07-16 오전 학습 정리","keywords":[],"articleBody":"목차 머신러닝과 딥러닝 개념 정리 및 Pipeline OS 적용 이해 퍼셉트론의 구조와 활성화 함수 이해 도함수와 경사하강법: 손실 함수 최소화 원리 벡터, 행렬, 텐서와 은닉층 기초 다지기 PyTorch 모델 구조: 상속과 forward 메서드 이해 단층 퍼셉트론 구현과 Step 활성화 함수 이해 총평 1. 머신러닝과 딥러닝 개념 정리 및 Pipeline OS 적용 이해 무엇을 배웠나 머신러닝과 딥러닝의 차이를 명확히 이해하게 되었는데, 머신러닝은 사람이 직접 피처를 선택하고 가공하는 반면 딥러닝은 모델이 데이터로부터 패턴을 스스로 학습한다는 점이 핵심이다. 특히 Pipeline OS에서 LLM을 활용하는 방식을 통해 인간의 의도와 AI의 능력을 융합하는 시스템 구축이 가능하다는 점을 깨달았다. 앞으로는 피처 엔지니어링 기법과 딥러닝 기반 문장 생성 알고리즘을 활용하여 프로젝트에 적용해 보려 한다.\n헷갈렸던 점 머신러닝과 딥러닝이 명확히 구분되는 것처럼 느껴지지 않았고, 특히 프로젝트에서 인간의 개입 정도와 모델의 역할이 모호하게 느껴졌다. Pipeline OS에서 딥러닝 기술이 어떻게 활용되는지, 그리고 LLM과 규칙 기반 시스템이 어떻게 협력하는지 이해가 부족했다. 이 두 가지 기술을 어떻게 구체적으로 결합하는지 파악하는 데 어려움을 겪었다.\n정리된 이해 머신러닝은 사람이 직접 특징을 선택하고 가공하는 반면, 딥러닝은 신경망 구조와 데이터만으로 모델이 스스로 패턴을 학습합니다. Pipeline OS는 인간의 의도와 AI 생성 능력을 융합하는 운영체계로, LLM을 활용하여 소설 생성 과정을 지원하며 규칙 기반 시스템과 함께 작동합니다. 앞으로는 피처 엔지니어링 실습을 통해 머신러닝과 딥러닝의 차이를 직접 경험하고 싶습니다.\n# 예시: 소설 데이터셋에서 장르별 키워드 추출 및 전처리 (가정) from collections import Counter import re def extract_keywords(text, stop_words): \"\"\"텍스트에서 키워드 추출\"\"\" text = re.sub(r'[^\\w\\s]', '', text).lower() # 특수문자 제거 및 소문자 변환 words = text.split() filtered_words = [word for word in words if word not in stop_words] word_counts = Counter(filtered_words) return word_counts.most_common(10) # 예시 데이터 (실제 데이터셋으로 대체) text = \"로맨스 소설은 아름다운 사랑 이야기와 감동적인 결말을 제공합니다.\" stop_words = ['은', '는', '과', '의', '를', '가', '이'] keywords = extract_keywords(text, stop_words) print(keywords) 2. 퍼셉트론의 구조와 활성화 함수 이해 무엇을 배웠나 퍼셉트론의 각 뉴런이 여러 입력 신호를 받아 가중합과 편향을 계산하고, 활성화 함수를 통해 최종 출력값을 생성한다는 것을 이해하게 되었다. 활성화 함수는 단순한 스위치 역할뿐만 아니라 다양한 값을 만들어내는 중요한 역할을 한다는 점도 명확해졌다. 뉴런들이 모여 층을 이루고, 각 층의 출력이 다음 층의 입력으로 전달되는 구조도 파악했다.\n헷갈렸던 점 활성화 함수가 그냥 0 또는 1을 내놓는 단순한 스위치인 줄 알았고, 뉴런이 여러 입력을 동시에 처리하는 계산 단위인지, 아니면 각 뉴런이 개별적으로 동작하는지 명확하지 않았다. 특히 각 뉴런이 어떻게 여러 입력 신호를 결합하여 하나의 출력을 내는지가 이해가 안 갔다.\n정리된 이해 퍼셉트론의 뉴런은 여러 입력 신호들을 가중치와 편향을 통해 조합하고, 활성화 함수를 거쳐 최종적으로 하나의 값을 출력하는 계산 단위입니다. 활성화 함수는 입력 값을 비선형적으로 변환하여 복잡한 패턴을 학습할 수 있도록 돕고, 여러 뉴런들이 층을 이루어 출력을 결합하여 전체적인 판단을 내립니다. 예를 들어 계단 함수는 간단한 스위치 역할을 하지만, 다양한 활성화 함수는 더 풍부한 값들을 생성할 수 있습니다.\n# Python으로 뉴런 동작 시뮬레이션 (계단 활성화 함수 사용) def neuron_step(inputs, weights, bias): \"\"\" 뉴런의 동작을 시뮬레이션합니다. Args: inputs: 입력 값 리스트 weights: 가중치 리스트 bias: 편향 값 Returns: 활성화 함수 적용 후 출력 값 \"\"\" z = sum(w * x for w, x in zip(weights, inputs)) + bias return 1 if z \u003e= 0 else 0 # 예시 inputs = [2, -1] weights = [0.5, -0.3] bias = 0.1 output = neuron_step(inputs, weights, bias) print(f\"출력 값: {output}\") 3. 도함수와 경사하강법: 손실 함수 최소화 원리 무엇을 배웠나 도함수의 의미를 정확히 이해하고, 경사하강법이 단순히 포물선을 따라 내려가는 것이 아니라 복잡한 손실 지형 속에서 파라미터를 조정하는 과정임을 알게 되었다. 특히 최솟값 이후 손실 함수 변화에 대한 오해를 풀고, 학습률이 경사하강법의 경로에 미치는 영향을 고려해야 한다는 점을 명확히 했다. 앞으로는 이러한 이해를 바탕으로 실제 신경망 학습에 적용해 볼 계획이다.\n헷갈렸던 점 최솟값을 지나면 손실 함수가 역전되는 것처럼 느껴졌는데, 사실 경사하강법은 최솟값 근처에서도 계속 최소값 방향으로 움직이는구나. 경사하강법이 항상 단순한 포물선을 따라 직행한다고 생각했는데, 실제로는 손실 지형이 훨씬 복잡해서 다양한 경로를 만들 수 있구나.\n정리된 이해 도함수는 현재 지점에서의 기울기를 알려주고, 경사하강법은 이 기울기를 따라 파라미터를 조절하여 손실 함수를 줄이는 방식이야. 손실 지형이 복잡하더라도 경사하강법은 계속해서 현재 위치에서의 기울기를 따라 움직이며 최소값을 찾아가려고 노력하는 거지.\nimport numpy as np import matplotlib.pyplot as plt 4. 벡터, 행렬, 텐서와 은닉층 기초 다지기 무엇을 배웠나 벡터, 행렬, 텐서의 기본적인 개념과 그 구조를 명확히 이해하게 되었다. 특히 행렬의 컬럼과 행 구분, 그리고 은닉층 내 노드와 층의 관계를 제대로 파악하게 되어서 신경망 구조에 대한 이해도가 높아졌다. 앞으로는 이 지식을 바탕으로 더 복잡한 개념들을 학습하는 데 도움이 될 것 같다.\n헷갈렸던 점 벡터와 행렬의 컬럼과 행을 구분하는 게 잘 안 됐고, 그림에서 원 하나가 어떤 의미를 가지는지 파악하는 데 어려움이 있었어. 특히 신경망에서 노드와 층, 은닉층과 노드의 관계가 얽혀서 전체 구조를 이해하는 데 꽤 애를 먹었어.\n정리된 이해 벡터는 1차원 배열, 행렬은 2차원 배열이고, 텐서는 이보다 더 높은 차원의 배열을 나타낸다는 것을 알게 되었다. 신경망에서는 노드들이 모여 층을 이루고, 여러 층들이 쌓여 은닉층을 구성하며, 입력층과 출력층 사이에서 복잡한 연산을 수행한다는 것을 이해하게 되었다. 앞으로는 이러한 개념들을 바탕으로 신경망 구조를 더 명확하게 파악하고, 실제 모델 구현에 적용해나가야겠다.\nimport numpy as np x = np.array([1, 2]) # 입력 벡터 W = np.array([[3], [4]]) 5. PyTorch 모델 구조: 상속과 forward 메서드 이해 무엇을 배웠나 PyTorch 모델을 만들 때 nn.Module을 상속받아야 하는 이유와 forward() 메서드의 역할을 명확히 이해하게 되었어. nn.Module을 상속받으면 PyTorch가 레이어 관리, 파라미터 추적, GPU 지원 등 다양한 기능을 쉽게 활용할 수 있고, forward() 메서드는 모델의 데이터 처리 흐름을 정의해줘. 모델 인스턴스를 직접 호출하면 forward() 메서드가 자동으로 실행된다는 점도 알게 되었어.\n헷갈렸던 점 모델을 만들 때 왜 nn.Module을 상속받아야 하는지, 그리고 forward 메서드를 직접 호출하지 않고도 모델이 어떻게 작동하는지 처음에 잘 몰랐습니다. 모델 인스턴스를 직접 호출했을 때 어떤 함수가 실행되는지 이해하는 데 시간이 걸렸고, 상속의 필요성에 대한 명확한 이유를 파악하기 어려웠습니다.\n정리된 이해 PyTorch 모델은 nn.Module을 상속받아 레이어 관리, 파라미터 추적, GPU 지원 등 다양한 기능을 활용하고, forward() 메서드를 통해 입력 데이터가 모델을 거치는 과정을 정의합니다. 모델 인스턴스에 직접 입력값을 넘기는 방식으로 forward() 메서드가 자동으로 호출되어 코드를 간결하게 만들 수 있습니다.\nclass MyModel(nn.Module): def __init__(self): super().__init__() # 부모 클래스 초기화 호출 # 추가적인 초기화 코드 def forward(self, x): # 입력 데이터의 처리 순서 정의 return x # 예시로 단순히 입력을 반환 output = model(x) # 내부적으로 forward() 호출 6. 단층 퍼셉트론 구현과 Step 활성화 함수 이해 무엇을 배웠나 퍼셉트론의 기본 구조와 Step 활성화 함수를 직접 구현하면서 코드 작성 순서에 대한 혼란을 겪었지만, 실습을 통해 목표가 복잡한 신경망 학습이 아닌 퍼셉트론의 기본 계산 과정을 이해하는 데 있음을 알게 되었습니다. Step 함수는 초기 퍼셉트론에서는 유용하지만, 현대 신경망의 기울기 기반 학습에는 한계가 있다는 것을 이해했습니다. 코드를 단계별로 나누어 작성하는 것이 중요하며, 퍼셉트론의 작동 원리를 명확히 이해하는 데 중점을 두어야 한다는 점을 배웠습니다.\n헷갈렸던 점 코드 구조를 어떻게 시작해야 할지 몰라서 import 부터 클래스 정의 순서까지 감이 잘 안 잡혔어. Step 함수가 학습 과정에서 제대로 작동할 수 있을까, 특히 역전파 과정에서 문제가 생기진 않을까 걱정했었어. 전체적인 그림을 어떻게 그려야 할지, 그리고 각 요소들이 어떻게 연결되는지 명확하지 않았어.\n정리된 이해 퍼셉트론의 기본 구조를 이해하고 직접 구현해보는 과정에서 전체적인 코드 구조를 잡는 데 어려움을 겪었지만, 실습 목표가 복잡한 학습보다는 기본적인 계산 과정을 파악하는 것이라는 점을 명확히 했습니다. Step 함수는 초기 퍼셉트론에서는 유용하지만, 현대 신경망에서의 복잡한 학습에는 미분 불가능한 특성으로 인해 제한적으로 사용될 수 있다는 것을 알게 되었습니다.\nimport torch import torch.nn as nn import matplotlib.pyplot as plt class StepActivation(nn.Module): def forward(self, x): return torch.where(x \u003e= 0, torch.ones_like(x), torch.zeros_like(x)) 총평 오늘 오전 전체에서 배운 것 오늘 오전에는 머신러닝과 딥러닝의 핵심 차이점, 퍼셉트론과 활성화 함수, 그리고 경사하강법의 원리를 깊이 있게 학습했습니다. 특히 PyTorch 모델 구조와 단층 퍼셉트론 구현 실습을 통해 신경망의 기본 작동 방식과 코드 작성의 중요성을 이해하게 되었습니다. 앞으로 이 지식들을 바탕으로 실제 프로젝트에 적용해 나가려 합니다.\n다음에 조심할 것 앞으로 경사하강법 학습률 조절에 더 신경 써야 할 것 같아. 손실 함수 변화에 대한 직관을 키우고, 실제 신경망 학습 과정에서 학습률이 미치는 영향을 꾸준히 관찰하면서 최적의 값을 찾아야겠어. 또한, 코딩 실습 시 단순 구현에 집중하는 것보다 각 단계의 의미를 제대로 이해하며 진행하는 것이 중요하다고 생각하니, 앞으로는 더욱 신중하게 접근해야겠다.\n다음 복습 주제 경사하강법 학습률 조절 및 손실 함수 변화에 따른 최적화 과정 이해를 좀 더 깊게 다지고, 다양한 활성화 함수를 활용하여 퍼셉트론의 성능을 개선하는 부분을 다시 살펴볼 계획이야. 또한, PyTorch 모델 구조를 활용하여 좀 더 복잡한 신경망을 직접 구현해 보면서 실전 적용 능력을 키우는 것이 목표야.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n","wordCount":"1321","inLanguage":"en","datePublished":"2026-07-16T00:00:00Z","dateModified":"2026-07-16T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://Han-think.github.io/learning/2026-07-16-am-daily/"},"publisher":{"@type":"Organization","name":"Han-think Blog","logo":{"@type":"ImageObject","url":"https://Han-think.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://Han-think.github.io/ accesskey=h title="Han-think Blog (Alt + H)">Han-think Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
+<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://Han-think.github.io/learning/ title="학습 로그"><span>학습 로그</span></a></li><li><a href=https://Han-think.github.io/projects/ title=프로젝트><span>프로젝트</span></a></li><li><a href=https://Han-think.github.io/dev/ title="개인 개발"><span>개인 개발</span></a></li><li><a href=https://Han-think.github.io/search/ title=검색><span>검색</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해</h1><div class=post-description>2026-07-16 오전 학습 정리</div><div class=post-meta><span title='2026-07-16 00:00:00 +0000 UTC'>2026년 7월 16일</span>&nbsp;·&nbsp;<span>7 min</span></div></header><div class="post-content md-content"><h2 id=목차>목차<a hidden class=anchor aria-hidden=true href=#목차>#</a></h2><ul><li><ol><li><a href=#1-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D%EA%B3%BC-%EB%94%A5%EB%9F%AC%EB%8B%9D-%EA%B0%9C%EB%85%90-%EC%A0%95%EB%A6%AC-%EB%B0%8F-pipeline-os-%EC%A0%81%EC%9A%A9-%EC%9D%B4%ED%95%B4>머신러닝과 딥러닝 개념 정리 및 Pipeline OS 적용 이해</a></li></ol></li><li><ol start=2><li><a href=#2-%ED%8D%BC%EC%85%89%ED%8A%B8%EB%A1%A0%EC%9D%98-%EA%B5%AC%EC%A1%B0%EC%99%80-%ED%99%9C%EC%84%B1%ED%99%94-%ED%95%A8%EC%88%98-%EC%9D%B4%ED%95%B4>퍼셉트론의 구조와 활성화 함수 이해</a></li></ol></li><li><ol start=3><li><a href=#3-%EB%8F%84%ED%95%A8%EC%88%98%EC%99%80-%EA%B2%BD%EC%82%AC%ED%95%98%EA%B0%95%EB%B2%95-%EC%86%90%EC%8B%A4-%ED%95%A8%EC%88%98-%EC%B5%9C%EC%86%8C%ED%99%94-%EC%9B%90%EB%A6%AC>도함수와 경사하강법: 손실 함수 최소화 원리</a></li></ol></li><li><ol start=4><li><a href=#4-%EB%B2%A1%ED%84%B0-%ED%96%89%EB%A0%AC-%ED%85%90%EC%84%9C%EC%99%80-%EC%9D%80%EB%8B%89%EC%B8%B5-%EA%B8%B0%EC%B4%88-%EB%8B%A4%EC%A7%80%EA%B8%B0>벡터, 행렬, 텐서와 은닉층 기초 다지기</a></li></ol></li><li><ol start=5><li><a href=#5-pytorch-%EB%AA%A8%EB%8D%B8-%EA%B5%AC%EC%A1%B0-%EC%83%81%EC%86%8D%EA%B3%BC-forward-%EB%A9%94%EC%84%9C%EB%93%9C-%EC%9D%B4%ED%95%B4>PyTorch 모델 구조: 상속과 <code>forward</code> 메서드 이해</a></li></ol></li><li><ol start=6><li><a href=#6-%EB%8B%A8%EC%B8%B5-%ED%8D%BC%EC%85%89%ED%8A%B8%EB%A1%A0-%EA%B5%AC%ED%98%84%EA%B3%BC-step-%ED%99%9C%EC%84%B1%ED%99%94-%ED%95%A8%EC%88%98-%EC%9D%B4%ED%95%B4>단층 퍼셉트론 구현과 Step 활성화 함수 이해</a></li></ol></li><li><a href=#%EC%B4%9D%ED%8F%89>총평</a></li></ul><h2 id=1-머신러닝과-딥러닝-개념-정리-및-pipeline-os-적용-이해>1. 머신러닝과 딥러닝 개념 정리 및 Pipeline OS 적용 이해<a hidden class=anchor aria-hidden=true href=#1-머신러닝과-딥러닝-개념-정리-및-pipeline-os-적용-이해>#</a></h2><h3 id=무엇을-배웠나>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나>#</a></h3><p>머신러닝과 딥러닝의 차이를 명확히 이해하게 되었는데, 머신러닝은 사람이 직접 피처를 선택하고 가공하는 반면 딥러닝은 모델이 데이터로부터 패턴을 스스로 학습한다는 점이 핵심이다. 특히 Pipeline OS에서 LLM을 활용하는 방식을 통해 인간의 의도와 AI의 능력을 융합하는 시스템 구축이 가능하다는 점을 깨달았다. 앞으로는 피처 엔지니어링 기법과 딥러닝 기반 문장 생성 알고리즘을 활용하여 프로젝트에 적용해 보려 한다.</p><h3 id=헷갈렸던-점>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점>#</a></h3><p>머신러닝과 딥러닝이 명확히 구분되는 것처럼 느껴지지 않았고, 특히 프로젝트에서 인간의 개입 정도와 모델의 역할이 모호하게 느껴졌다. Pipeline OS에서 딥러닝 기술이 어떻게 활용되는지, 그리고 LLM과 규칙 기반 시스템이 어떻게 협력하는지 이해가 부족했다. 이 두 가지 기술을 어떻게 구체적으로 결합하는지 파악하는 데 어려움을 겪었다.</p><h3 id=정리된-이해>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해>#</a></h3><p>머신러닝은 사람이 직접 특징을 선택하고 가공하는 반면, 딥러닝은 신경망 구조와 데이터만으로 모델이 스스로 패턴을 학습합니다. Pipeline OS는 인간의 의도와 AI 생성 능력을 융합하는 운영체계로, LLM을 활용하여 소설 생성 과정을 지원하며 규칙 기반 시스템과 함께 작동합니다. 앞으로는 피처 엔지니어링 실습을 통해 머신러닝과 딥러닝의 차이를 직접 경험하고 싶습니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># 예시: 소설 데이터셋에서 장르별 키워드 추출 및 전처리 (가정)</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>from</span> collections <span style=color:#f92672>import</span> Counter
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> re
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>extract_keywords</span>(text, stop_words):
+</span></span><span style=display:flex><span>  <span style=color:#e6db74>&#34;&#34;&#34;텍스트에서 키워드 추출&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>  text <span style=color:#f92672>=</span> re<span style=color:#f92672>.</span>sub(<span style=color:#e6db74>r</span><span style=color:#e6db74>&#39;[^\w\s]&#39;</span>, <span style=color:#e6db74>&#39;&#39;</span>, text)<span style=color:#f92672>.</span>lower()  <span style=color:#75715e># 특수문자 제거 및 소문자 변환</span>
+</span></span><span style=display:flex><span>  words <span style=color:#f92672>=</span> text<span style=color:#f92672>.</span>split()
+</span></span><span style=display:flex><span>  filtered_words <span style=color:#f92672>=</span> [word <span style=color:#66d9ef>for</span> word <span style=color:#f92672>in</span> words <span style=color:#66d9ef>if</span> word <span style=color:#f92672>not</span> <span style=color:#f92672>in</span> stop_words]
+</span></span><span style=display:flex><span>  word_counts <span style=color:#f92672>=</span> Counter(filtered_words)
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> word_counts<span style=color:#f92672>.</span>most_common(<span style=color:#ae81ff>10</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 예시 데이터 (실제 데이터셋으로 대체)</span>
+</span></span><span style=display:flex><span>text <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;로맨스 소설은 아름다운 사랑 이야기와 감동적인 결말을 제공합니다.&#34;</span>
+</span></span><span style=display:flex><span>stop_words <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#39;은&#39;</span>, <span style=color:#e6db74>&#39;는&#39;</span>, <span style=color:#e6db74>&#39;과&#39;</span>, <span style=color:#e6db74>&#39;의&#39;</span>, <span style=color:#e6db74>&#39;를&#39;</span>, <span style=color:#e6db74>&#39;가&#39;</span>, <span style=color:#e6db74>&#39;이&#39;</span>]
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>keywords <span style=color:#f92672>=</span> extract_keywords(text, stop_words)
+</span></span><span style=display:flex><span>print(keywords)
+</span></span></code></pre></div><h2 id=2-퍼셉트론의-구조와-활성화-함수-이해>2. 퍼셉트론의 구조와 활성화 함수 이해<a hidden class=anchor aria-hidden=true href=#2-퍼셉트론의-구조와-활성화-함수-이해>#</a></h2><h3 id=무엇을-배웠나-1>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-1>#</a></h3><p>퍼셉트론의 각 뉴런이 여러 입력 신호를 받아 가중합과 편향을 계산하고, 활성화 함수를 통해 최종 출력값을 생성한다는 것을 이해하게 되었다. 활성화 함수는 단순한 스위치 역할뿐만 아니라 다양한 값을 만들어내는 중요한 역할을 한다는 점도 명확해졌다. 뉴런들이 모여 층을 이루고, 각 층의 출력이 다음 층의 입력으로 전달되는 구조도 파악했다.</p><h3 id=헷갈렸던-점-1>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-1>#</a></h3><p>활성화 함수가 그냥 0 또는 1을 내놓는 단순한 스위치인 줄 알았고, 뉴런이 여러 입력을 동시에 처리하는 계산 단위인지, 아니면 각 뉴런이 개별적으로 동작하는지 명확하지 않았다. 특히 각 뉴런이 어떻게 여러 입력 신호를 결합하여 하나의 출력을 내는지가 이해가 안 갔다.</p><h3 id=정리된-이해-1>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-1>#</a></h3><p>퍼셉트론의 뉴런은 여러 입력 신호들을 가중치와 편향을 통해 조합하고, 활성화 함수를 거쳐 최종적으로 하나의 값을 출력하는 계산 단위입니다. 활성화 함수는 입력 값을 비선형적으로 변환하여 복잡한 패턴을 학습할 수 있도록 돕고, 여러 뉴런들이 층을 이루어 출력을 결합하여 전체적인 판단을 내립니다. 예를 들어 계단 함수는 간단한 스위치 역할을 하지만, 다양한 활성화 함수는 더 풍부한 값들을 생성할 수 있습니다.</p><pre tabindex=0><code># Python으로 뉴런 동작 시뮬레이션 (계단 활성화 함수 사용)
 
 def neuron_step(inputs, weights, bias):
     &#34;&#34;&#34;
@@ -306,163 +42,34 @@ bias = 0.1
 
 output = neuron_step(inputs, weights, bias)
 print(f&#34;출력 값: {output}&#34;)
-</code></pre><h2 id="3-도함수와-경사하강법-손실-함수-최소화-원리">3. 도함수와 경사하강법: 손실 함수 최소화 원리<a hidden class="anchor" aria-hidden="true" href="#3-도함수와-경사하강법-손실-함수-최소화-원리">#</a></h2>
-<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
-<p>도함수의 의미를 정확히 이해하고, 경사하강법이 단순히 포물선을 따라 내려가는 것이 아니라 복잡한 손실 지형 속에서 파라미터를 조정하는 과정임을 알게 되었다. 특히 최솟값 이후 손실 함수 변화에 대한 오해를 풀고, 학습률이 경사하강법의 경로에 미치는 영향을 고려해야 한다는 점을 명확히 했다. 앞으로는 이러한 이해를 바탕으로 실제 신경망 학습에 적용해 볼 계획이다.</p>
-<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
-<p>최솟값을 지나면 손실 함수가 역전되는 것처럼 느껴졌는데, 사실 경사하강법은 최솟값 근처에서도 계속 최소값 방향으로 움직이는구나. 경사하강법이 항상 단순한 포물선을 따라 직행한다고 생각했는데, 실제로는 손실 지형이 훨씬 복잡해서 다양한 경로를 만들 수 있구나.</p>
-<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
-<p>도함수는 현재 지점에서의 기울기를 알려주고, 경사하강법은 이 기울기를 따라 파라미터를 조절하여 손실 함수를 줄이는 방식이야. 손실 지형이 복잡하더라도 경사하강법은 계속해서 현재 위치에서의 기울기를 따라 움직이며 최소값을 찾아가려고 노력하는 거지.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>  <span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
-</span></span></code></pre></div><h2 id="4-벡터-행렬-텐서와-은닉층-기초-다지기">4. 벡터, 행렬, 텐서와 은닉층 기초 다지기<a hidden class="anchor" aria-hidden="true" href="#4-벡터-행렬-텐서와-은닉층-기초-다지기">#</a></h2>
-<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
-<p>벡터, 행렬, 텐서의 기본적인 개념과 그 구조를 명확히 이해하게 되었다. 특히 행렬의 컬럼과 행 구분, 그리고 은닉층 내 노드와 층의 관계를 제대로 파악하게 되어서 신경망 구조에 대한 이해도가 높아졌다. 앞으로는 이 지식을 바탕으로 더 복잡한 개념들을 학습하는 데 도움이 될 것 같다.</p>
-<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
-<p>벡터와 행렬의 컬럼과 행을 구분하는 게 잘 안 됐고, 그림에서 원 하나가 어떤 의미를 가지는지 파악하는 데 어려움이 있었어. 특히 신경망에서 노드와 층, 은닉층과 노드의 관계가 얽혀서 전체 구조를 이해하는 데 꽤 애를 먹었어.</p>
-<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
-<p>벡터는 1차원 배열, 행렬은 2차원 배열이고, 텐서는 이보다 더 높은 차원의 배열을 나타낸다는 것을 알게 되었다. 신경망에서는 노드들이 모여 층을 이루고, 여러 층들이 쌓여 은닉층을 구성하며, 입력층과 출력층 사이에서 복잡한 연산을 수행한다는 것을 이해하게 되었다. 앞으로는 이러한 개념들을 바탕으로 신경망 구조를 더 명확하게 파악하고, 실제 모델 구현에 적용해나가야겠다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>])  <span style="color:#75715e"># 입력 벡터</span>
-</span></span><span style="display:flex;"><span>W <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([[<span style="color:#ae81ff">3</span>], [<span style="color:#ae81ff">4</span>]])
-</span></span></code></pre></div><h2 id="5-pytorch-모델-구조-상속과-forward-메서드-이해">5. PyTorch 모델 구조: 상속과 <code>forward</code> 메서드 이해<a hidden class="anchor" aria-hidden="true" href="#5-pytorch-모델-구조-상속과-forward-메서드-이해">#</a></h2>
-<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
-<p>PyTorch 모델을 만들 때 <code>nn.Module</code>을 상속받아야 하는 이유와 <code>forward()</code> 메서드의 역할을 명확히 이해하게 되었어. <code>nn.Module</code>을 상속받으면 PyTorch가 레이어 관리, 파라미터 추적, GPU 지원 등 다양한 기능을 쉽게 활용할 수 있고, <code>forward()</code> 메서드는 모델의 데이터 처리 흐름을 정의해줘. 모델 인스턴스를 직접 호출하면 <code>forward()</code> 메서드가 자동으로 실행된다는 점도 알게 되었어.</p>
-<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
-<p>모델을 만들 때 왜 <code>nn.Module</code>을 상속받아야 하는지, 그리고 <code>forward</code> 메서드를 직접 호출하지 않고도 모델이 어떻게 작동하는지 처음에 잘 몰랐습니다. 모델 인스턴스를 직접 호출했을 때 어떤 함수가 실행되는지 이해하는 데 시간이 걸렸고, 상속의 필요성에 대한 명확한 이유를 파악하기 어려웠습니다.</p>
-<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
-<p>PyTorch 모델은 <code>nn.Module</code>을 상속받아 레이어 관리, 파라미터 추적, GPU 지원 등 다양한 기능을 활용하고, <code>forward()</code> 메서드를 통해 입력 데이터가 모델을 거치는 과정을 정의합니다. 모델 인스턴스에 직접 입력값을 넘기는 방식으로 <code>forward()</code> 메서드가 자동으로 호출되어 코드를 간결하게 만들 수 있습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyModel</span>(nn<span style="color:#f92672">.</span>Module):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self):
-</span></span><span style="display:flex;"><span>        super()<span style="color:#f92672">.</span><span style="color:#a6e22e">__init__</span>()  <span style="color:#75715e"># 부모 클래스 초기화 호출</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 추가적인 초기화 코드</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">forward</span>(self, x):
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 입력 데이터의 처리 순서 정의</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> x  <span style="color:#75715e"># 예시로 단순히 입력을 반환</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>output <span style="color:#f92672">=</span> model(x)  <span style="color:#75715e"># 내부적으로 forward() 호출</span>
-</span></span></code></pre></div><h2 id="6-단층-퍼셉트론-구현과-step-활성화-함수-이해">6. 단층 퍼셉트론 구현과 Step 활성화 함수 이해<a hidden class="anchor" aria-hidden="true" href="#6-단층-퍼셉트론-구현과-step-활성화-함수-이해">#</a></h2>
-<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
-<p>퍼셉트론의 기본 구조와 Step 활성화 함수를 직접 구현하면서 코드 작성 순서에 대한 혼란을 겪었지만, 실습을 통해 목표가 복잡한 신경망 학습이 아닌 퍼셉트론의 기본 계산 과정을 이해하는 데 있음을 알게 되었습니다. Step 함수는 초기 퍼셉트론에서는 유용하지만, 현대 신경망의 기울기 기반 학습에는 한계가 있다는 것을 이해했습니다. 코드를 단계별로 나누어 작성하는 것이 중요하며, 퍼셉트론의 작동 원리를 명확히 이해하는 데 중점을 두어야 한다는 점을 배웠습니다.</p>
-<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
-<p>코드 구조를 어떻게 시작해야 할지 몰라서 <code>import</code> 부터 클래스 정의 순서까지 감이 잘 안 잡혔어. Step 함수가 학습 과정에서 제대로 작동할 수 있을까, 특히 역전파 과정에서 문제가 생기진 않을까 걱정했었어. 전체적인 그림을 어떻게 그려야 할지, 그리고 각 요소들이 어떻게 연결되는지 명확하지 않았어.</p>
-<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
-<p>퍼셉트론의 기본 구조를 이해하고 직접 구현해보는 과정에서 전체적인 코드 구조를 잡는 데 어려움을 겪었지만, 실습 목표가 복잡한 학습보다는 기본적인 계산 과정을 파악하는 것이라는 점을 명확히 했습니다. Step 함수는 초기 퍼셉트론에서는 유용하지만, 현대 신경망에서의 복잡한 학습에는 미분 불가능한 특성으로 인해 제한적으로 사용될 수 있다는 것을 알게 되었습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch.nn <span style="color:#66d9ef">as</span> nn
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StepActivation</span>(nn<span style="color:#f92672">.</span>Module):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">forward</span>(self, x):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> torch<span style="color:#f92672">.</span>where(x <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>, torch<span style="color:#f92672">.</span>ones_like(x), torch<span style="color:#f92672">.</span>zeros_like(x))
-</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
-<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
-<p>오늘 오전에는 머신러닝과 딥러닝의 핵심 차이점, 퍼셉트론과 활성화 함수, 그리고 경사하강법의 원리를 깊이 있게 학습했습니다. 특히 PyTorch 모델 구조와 단층 퍼셉트론 구현 실습을 통해 신경망의 기본 작동 방식과 코드 작성의 중요성을 이해하게 되었습니다. 앞으로 이 지식들을 바탕으로 실제 프로젝트에 적용해 나가려 합니다.</p>
-<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
-<p>앞으로 경사하강법 학습률 조절에 더 신경 써야 할 것 같아. 손실 함수 변화에 대한 직관을 키우고, 실제 신경망 학습 과정에서 학습률이 미치는 영향을 꾸준히 관찰하면서 최적의 값을 찾아야겠어. 또한, 코딩 실습 시 단순 구현에 집중하는 것보다 각 단계의 의미를 제대로 이해하며 진행하는 것이 중요하다고 생각하니, 앞으로는 더욱 신중하게 접근해야겠다.</p>
-<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
-<p>경사하강법 학습률 조절 및 손실 함수 변화에 따른 최적화 과정 이해를 좀 더 깊게 다지고, 다양한 활성화 함수를 활용하여 퍼셉트론의 성능을 개선하는 부분을 다시 살펴볼 계획이야. 또한, PyTorch 모델 구조를 활용하여 좀 더 복잡한 신경망을 직접 구현해 보면서 실전 적용 능력을 키우는 것이 목표야.</p>
-<blockquote>
-<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
-This post was written with the help of a local LLM (AI).</p>
-</blockquote>
-
-
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-    </ul>
-<nav class="paginav">
-  <a class="next" href="https://Han-think.github.io/learning/2026-07-13-am-daily/">
-    <span class="title">Next »</span>
-    <span>Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지</span>
-  </a>
-</nav>
-
-  </footer>
-</article>
-    </main>
-    
-<footer class="footer">
-        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
-
-    
-    
-    <span>
-        Powered by
-        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
-        <polyline points="17 11 12 6 7 11"></polyline>
-        <polyline points="17 18 12 13 7 18"></polyline>
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu');
-    if (menu) {
-        
-        const scrollPosition = localStorage.getItem("menu-scroll-position");
-        if (scrollPosition) {
-            menu.scrollLeft = parseInt(scrollPosition, 10);
-        }
-        
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var toplink = document.getElementById("top-link");
-    window.onscroll = function () {
-        const scrollThreshold = window.innerHeight;
-        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
-            toplink.classList.remove("hidden");
-        } else {
-            toplink.classList.add("hidden");
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        const html = document.querySelector("html");
-        if (html.dataset.theme === "dark") {
-            html.dataset.theme = 'light';
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            html.dataset.theme = 'dark';
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-</body>
-
-</html>
+</code></pre><h2 id=3-도함수와-경사하강법-손실-함수-최소화-원리>3. 도함수와 경사하강법: 손실 함수 최소화 원리<a hidden class=anchor aria-hidden=true href=#3-도함수와-경사하강법-손실-함수-최소화-원리>#</a></h2><h3 id=무엇을-배웠나-2>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-2>#</a></h3><p>도함수의 의미를 정확히 이해하고, 경사하강법이 단순히 포물선을 따라 내려가는 것이 아니라 복잡한 손실 지형 속에서 파라미터를 조정하는 과정임을 알게 되었다. 특히 최솟값 이후 손실 함수 변화에 대한 오해를 풀고, 학습률이 경사하강법의 경로에 미치는 영향을 고려해야 한다는 점을 명확히 했다. 앞으로는 이러한 이해를 바탕으로 실제 신경망 학습에 적용해 볼 계획이다.</p><h3 id=헷갈렸던-점-2>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-2>#</a></h3><p>최솟값을 지나면 손실 함수가 역전되는 것처럼 느껴졌는데, 사실 경사하강법은 최솟값 근처에서도 계속 최소값 방향으로 움직이는구나. 경사하강법이 항상 단순한 포물선을 따라 직행한다고 생각했는데, 실제로는 손실 지형이 훨씬 복잡해서 다양한 경로를 만들 수 있구나.</p><h3 id=정리된-이해-2>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-2>#</a></h3><p>도함수는 현재 지점에서의 기울기를 알려주고, 경사하강법은 이 기울기를 따라 파라미터를 조절하여 손실 함수를 줄이는 방식이야. 손실 지형이 복잡하더라도 경사하강법은 계속해서 현재 위치에서의 기울기를 따라 움직이며 최소값을 찾아가려고 노력하는 거지.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>  <span style=color:#f92672>import</span> numpy <span style=color:#66d9ef>as</span> np
+</span></span><span style=display:flex><span>  <span style=color:#f92672>import</span> matplotlib.pyplot <span style=color:#66d9ef>as</span> plt
+</span></span></code></pre></div><h2 id=4-벡터-행렬-텐서와-은닉층-기초-다지기>4. 벡터, 행렬, 텐서와 은닉층 기초 다지기<a hidden class=anchor aria-hidden=true href=#4-벡터-행렬-텐서와-은닉층-기초-다지기>#</a></h2><h3 id=무엇을-배웠나-3>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-3>#</a></h3><p>벡터, 행렬, 텐서의 기본적인 개념과 그 구조를 명확히 이해하게 되었다. 특히 행렬의 컬럼과 행 구분, 그리고 은닉층 내 노드와 층의 관계를 제대로 파악하게 되어서 신경망 구조에 대한 이해도가 높아졌다. 앞으로는 이 지식을 바탕으로 더 복잡한 개념들을 학습하는 데 도움이 될 것 같다.</p><h3 id=헷갈렸던-점-3>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-3>#</a></h3><p>벡터와 행렬의 컬럼과 행을 구분하는 게 잘 안 됐고, 그림에서 원 하나가 어떤 의미를 가지는지 파악하는 데 어려움이 있었어. 특히 신경망에서 노드와 층, 은닉층과 노드의 관계가 얽혀서 전체 구조를 이해하는 데 꽤 애를 먹었어.</p><h3 id=정리된-이해-3>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-3>#</a></h3><p>벡터는 1차원 배열, 행렬은 2차원 배열이고, 텐서는 이보다 더 높은 차원의 배열을 나타낸다는 것을 알게 되었다. 신경망에서는 노드들이 모여 층을 이루고, 여러 층들이 쌓여 은닉층을 구성하며, 입력층과 출력층 사이에서 복잡한 연산을 수행한다는 것을 이해하게 되었다. 앞으로는 이러한 개념들을 바탕으로 신경망 구조를 더 명확하게 파악하고, 실제 모델 구현에 적용해나가야겠다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> numpy <span style=color:#66d9ef>as</span> np
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>x <span style=color:#f92672>=</span> np<span style=color:#f92672>.</span>array([<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>2</span>])  <span style=color:#75715e># 입력 벡터</span>
+</span></span><span style=display:flex><span>W <span style=color:#f92672>=</span> np<span style=color:#f92672>.</span>array([[<span style=color:#ae81ff>3</span>], [<span style=color:#ae81ff>4</span>]])
+</span></span></code></pre></div><h2 id=5-pytorch-모델-구조-상속과-forward-메서드-이해>5. PyTorch 모델 구조: 상속과 <code>forward</code> 메서드 이해<a hidden class=anchor aria-hidden=true href=#5-pytorch-모델-구조-상속과-forward-메서드-이해>#</a></h2><h3 id=무엇을-배웠나-4>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-4>#</a></h3><p>PyTorch 모델을 만들 때 <code>nn.Module</code>을 상속받아야 하는 이유와 <code>forward()</code> 메서드의 역할을 명확히 이해하게 되었어. <code>nn.Module</code>을 상속받으면 PyTorch가 레이어 관리, 파라미터 추적, GPU 지원 등 다양한 기능을 쉽게 활용할 수 있고, <code>forward()</code> 메서드는 모델의 데이터 처리 흐름을 정의해줘. 모델 인스턴스를 직접 호출하면 <code>forward()</code> 메서드가 자동으로 실행된다는 점도 알게 되었어.</p><h3 id=헷갈렸던-점-4>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-4>#</a></h3><p>모델을 만들 때 왜 <code>nn.Module</code>을 상속받아야 하는지, 그리고 <code>forward</code> 메서드를 직접 호출하지 않고도 모델이 어떻게 작동하는지 처음에 잘 몰랐습니다. 모델 인스턴스를 직접 호출했을 때 어떤 함수가 실행되는지 이해하는 데 시간이 걸렸고, 상속의 필요성에 대한 명확한 이유를 파악하기 어려웠습니다.</p><h3 id=정리된-이해-4>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-4>#</a></h3><p>PyTorch 모델은 <code>nn.Module</code>을 상속받아 레이어 관리, 파라미터 추적, GPU 지원 등 다양한 기능을 활용하고, <code>forward()</code> 메서드를 통해 입력 데이터가 모델을 거치는 과정을 정의합니다. 모델 인스턴스에 직접 입력값을 넘기는 방식으로 <code>forward()</code> 메서드가 자동으로 호출되어 코드를 간결하게 만들 수 있습니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MyModel</span>(nn<span style=color:#f92672>.</span>Module):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>__init__</span>(self):
+</span></span><span style=display:flex><span>        super()<span style=color:#f92672>.</span><span style=color:#a6e22e>__init__</span>()  <span style=color:#75715e># 부모 클래스 초기화 호출</span>
+</span></span><span style=display:flex><span>        <span style=color:#75715e># 추가적인 초기화 코드</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>forward</span>(self, x):
+</span></span><span style=display:flex><span>        <span style=color:#75715e># 입력 데이터의 처리 순서 정의</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> x  <span style=color:#75715e># 예시로 단순히 입력을 반환</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span>output <span style=color:#f92672>=</span> model(x)  <span style=color:#75715e># 내부적으로 forward() 호출</span>
+</span></span></code></pre></div><h2 id=6-단층-퍼셉트론-구현과-step-활성화-함수-이해>6. 단층 퍼셉트론 구현과 Step 활성화 함수 이해<a hidden class=anchor aria-hidden=true href=#6-단층-퍼셉트론-구현과-step-활성화-함수-이해>#</a></h2><h3 id=무엇을-배웠나-5>무엇을 배웠나<a hidden class=anchor aria-hidden=true href=#무엇을-배웠나-5>#</a></h3><p>퍼셉트론의 기본 구조와 Step 활성화 함수를 직접 구현하면서 코드 작성 순서에 대한 혼란을 겪었지만, 실습을 통해 목표가 복잡한 신경망 학습이 아닌 퍼셉트론의 기본 계산 과정을 이해하는 데 있음을 알게 되었습니다. Step 함수는 초기 퍼셉트론에서는 유용하지만, 현대 신경망의 기울기 기반 학습에는 한계가 있다는 것을 이해했습니다. 코드를 단계별로 나누어 작성하는 것이 중요하며, 퍼셉트론의 작동 원리를 명확히 이해하는 데 중점을 두어야 한다는 점을 배웠습니다.</p><h3 id=헷갈렸던-점-5>헷갈렸던 점<a hidden class=anchor aria-hidden=true href=#헷갈렸던-점-5>#</a></h3><p>코드 구조를 어떻게 시작해야 할지 몰라서 <code>import</code> 부터 클래스 정의 순서까지 감이 잘 안 잡혔어. Step 함수가 학습 과정에서 제대로 작동할 수 있을까, 특히 역전파 과정에서 문제가 생기진 않을까 걱정했었어. 전체적인 그림을 어떻게 그려야 할지, 그리고 각 요소들이 어떻게 연결되는지 명확하지 않았어.</p><h3 id=정리된-이해-5>정리된 이해<a hidden class=anchor aria-hidden=true href=#정리된-이해-5>#</a></h3><p>퍼셉트론의 기본 구조를 이해하고 직접 구현해보는 과정에서 전체적인 코드 구조를 잡는 데 어려움을 겪었지만, 실습 목표가 복잡한 학습보다는 기본적인 계산 과정을 파악하는 것이라는 점을 명확히 했습니다. Step 함수는 초기 퍼셉트론에서는 유용하지만, 현대 신경망에서의 복잡한 학습에는 미분 불가능한 특성으로 인해 제한적으로 사용될 수 있다는 것을 알게 되었습니다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> torch
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> torch.nn <span style=color:#66d9ef>as</span> nn
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> matplotlib.pyplot <span style=color:#66d9ef>as</span> plt
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>StepActivation</span>(nn<span style=color:#f92672>.</span>Module):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>forward</span>(self, x):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> torch<span style=color:#f92672>.</span>where(x <span style=color:#f92672>&gt;=</span> <span style=color:#ae81ff>0</span>, torch<span style=color:#f92672>.</span>ones_like(x), torch<span style=color:#f92672>.</span>zeros_like(x))
+</span></span></code></pre></div><h2 id=총평>총평<a hidden class=anchor aria-hidden=true href=#총평>#</a></h2><h3 id=오늘-오전-전체에서-배운-것>오늘 오전 전체에서 배운 것<a hidden class=anchor aria-hidden=true href=#오늘-오전-전체에서-배운-것>#</a></h3><p>오늘 오전에는 머신러닝과 딥러닝의 핵심 차이점, 퍼셉트론과 활성화 함수, 그리고 경사하강법의 원리를 깊이 있게 학습했습니다. 특히 PyTorch 모델 구조와 단층 퍼셉트론 구현 실습을 통해 신경망의 기본 작동 방식과 코드 작성의 중요성을 이해하게 되었습니다. 앞으로 이 지식들을 바탕으로 실제 프로젝트에 적용해 나가려 합니다.</p><h3 id=다음에-조심할-것>다음에 조심할 것<a hidden class=anchor aria-hidden=true href=#다음에-조심할-것>#</a></h3><p>앞으로 경사하강법 학습률 조절에 더 신경 써야 할 것 같아. 손실 함수 변화에 대한 직관을 키우고, 실제 신경망 학습 과정에서 학습률이 미치는 영향을 꾸준히 관찰하면서 최적의 값을 찾아야겠어. 또한, 코딩 실습 시 단순 구현에 집중하는 것보다 각 단계의 의미를 제대로 이해하며 진행하는 것이 중요하다고 생각하니, 앞으로는 더욱 신중하게 접근해야겠다.</p><h3 id=다음-복습-주제>다음 복습 주제<a hidden class=anchor aria-hidden=true href=#다음-복습-주제>#</a></h3><p>경사하강법 학습률 조절 및 손실 함수 변화에 따른 최적화 과정 이해를 좀 더 깊게 다지고, 다양한 활성화 함수를 활용하여 퍼셉트론의 성능을 개선하는 부분을 다시 살펴볼 계획이야. 또한, PyTorch 모델 구조를 활용하여 좀 더 복잡한 신경망을 직접 구현해 보면서 실전 적용 능력을 키우는 것이 목표야.</p><blockquote><p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p></blockquote></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://Han-think.github.io/learning/2026-07-20-pm-kaggle-s6e7-rhythmon-project-retrospective/><span class=title>« Prev</span>
+<span>0.88188에서 0.95005까지, Kaggle 예측 모델을 리듬ON 서비스 제안으로 연결한 기록</span>
+</a><a class=next href=https://Han-think.github.io/learning/2026-07-13-am-daily/><span class=title>Next »</span>
+<span>Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://Han-think.github.io/>Han-think Blog</a></span> ·
+<span>Powered by
+<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
+<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
