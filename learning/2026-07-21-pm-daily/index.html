@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>클라우드, 파이썬, 머신러닝 데이터 전처리 핵심 개념 정리 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-07-21 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-07-21-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-07-21-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-21-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="클라우드, 파이썬, 머신러닝 데이터 전처리 핵심 개념 정리">
+  <meta property="og:description" content="2026-07-21 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-07-21T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-21T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="클라우드, 파이썬, 머신러닝 데이터 전처리 핵심 개념 정리">
+  <meta name="twitter:description" content="2026-07-21 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "클라우드, 파이썬, 머신러닝 데이터 전처리 핵심 개념 정리",
+      "item": "https://Han-think.github.io/learning/2026-07-21-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "클라우드, 파이썬, 머신러닝 데이터 전처리 핵심 개념 정리",
+  "name": "클라우드, 파이썬, 머신러닝 데이터 전처리 핵심 개념 정리",
+  "description": "2026-07-21 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 개발자와 클라우드, 초보자를 위한 진로 이해 파이썬 함수와 메인 구조: 초보자를 위한 핵심 이해 머신러닝 데이터 전처리, 초보자를 위한 핵심 이해 데이터 전처리 및 EDA 학습 가이드 총평 1. 개발자와 클라우드, 초보자를 위한 진로 이해 무엇을 배웠나 강의에서 AWS 시가총액은 단순한 기업 규모가 아니라 클라우드 시장에서의 영향력을 보여주는 지표라는 것을 알게 되었다. Cloudflare와 같은 엣지 네트워크 전문 기업도 있지만, 서버, 데이터베이스, 네트워크 관리 등 종합적인 클라우드 개발 직무에서는 AWS, Azure, GCP가 더 중요하게 활용된다는 것을 이해했다. 또한, 자격증은 기본 학습의 증거일 뿐이며, 실제 프로젝트 경험과 경력이 중요함을 깨달았다.\n헷갈렸던 점 AWS 시가총액이 클라우드 자격증과 어떤 관련이 있는지, 그리고 왜 Cloudflare가 클라우드 기업임에도 불구하고 취업이나 자격증에서 AWS, Azure, GCP가 더 중요한지 이해가 안 갔습니다. 자격증이 실제 실무 능력과 얼마나 연결되는지도 처음에는 명확하게 와닿지 않았습니다.\n정리된 이해 클라우드 자격증은 기본 개념을 익혔음을 보여주는 지표일 뿐, 실제 개발 능력은 프로젝트 경험과 문제 해결 능력에서 나오는 것을 알게 되었다. Cloudflare처럼 특정 분야에 특화된 기업도 있지만, 클라우드 개발 및 운영 직무에서는 AWS, Azure, GCP가 더 중요하게 다뤄지는 이유를 이해하게 되었다. 기존 로컬 환경에서 쌓은 경험을 바탕으로 Pipeline OS를 클라우드 환경에 배포하는 프로젝트를 통해 실질적인 역량을 키워나가야겠다.\n- **데이터 2. 파이썬 함수와 메인 구조: 초보자를 위한 핵심 이해 무엇을 배웠나 파이썬 함수를 정의할 때 def 키워드를 사용하는 것과 변수에 값을 할당하는 것을 구분해야 한다는 것을 배웠습니다. 또한, 데이터 전처리와 모델 학습을 하나의 함수에 넣는 것보다 각 단계를 독립적인 함수로 분리하는 것이 코드의 가독성과 유지보수성을 높이는 방법임을 알게 되었습니다. main() 함수를 사용하여 프로그램의 흐름을 제어하고, if __name__ == \"__main__\": 블록을 활용하여 코드의 실행 방식을 명확히 하는 것이 중요합니다.\n헷갈렸던 점 함수 정의와 변수 할당을 헷갈려서 def 키워드를 잘못 사용했고, 데이터 전처리와 모델 학습 분리를 하나의 함수에 넣으려는 시도를 해서 기능 분리의 중요성을 간과했습니다. main() 함수의 역할과 if __name__ == \"__main__\": 블록의 의미를 명확히 이해하지 못했습니다.\n정리된 이해 함수는 입력, 처리, 반환 값으로 구성되어 특정 작업을 수행하며, main() 함수는 코드 실행의 흐름을 제어하는 중심 역할을 합니다. 함수 정의와 변수 할당을 명확히 구분하고, 각 함수의 역할을 분리하여 독립적으로 구성하는 것이 중요합니다. if __name__ == \"__main__\": 블록은 프로그램 시작 시 main() 함수만 실행하도록 보장합니다.\n# 메인 함수 def main(): \"\"\"데이터 처리 파이프라인의 시작점입니다.\"\"\" filename = \"your_data.csv\" # 실제 파일 이름으로 변경 data = load_data(filename) cleaned_data = clean_data(data) display_results(cleaned_data) if __name__ == \"__main__\": main() 3. 머신러닝 데이터 전처리, 초보자를 위한 핵심 이해 무엇을 배웠나 머신러닝 데이터 전처리는 데이터 로드, 특성과 타겟 분리, 결측치 처리 등 여러 단계로 이루어진다는 것을 깨달았습니다. 특히 Jupyter Notebook 사용 시 라이브러리 import 순서와 코드 실행 여부에 따라 결과가 달라지는 점을 주의해야 하며, pd.get_dummies()와 OneHotEncoder의 차이점을 이해하는 것이 중요했습니다. 앞으로는 이러한 실수를 방지하고 데이터 전처리 과정을 더욱 효과적으로 수행할 수 있도록 노력해야겠습니다.\n헷갈렸던 점 라이브러리 함수를 바로 사용하려고 할 때 import를 잊고 있었고, pd.get_dummies()와 OneHotEncoder의 차이 때문에 어떤 방법을 사용해야 할지 헷갈렸습니다. 특히 Jupyter Notebook에서 코드가 보이는 것과 실제로 실행되는 것의 차이를 명확히 이해하지 못해 변수 인식이 안 되는 문제가 자주 발생했습니다.\n정리된 이해 데이터 전처리는 머신러닝 모델 성능에 큰 영향을 미치는 중요한 과정이며, 데이터 로드부터 결측치 처리, 범주형 변수 인코딩 등 여러 단계를 거칩니다. 특히, 코드 실행 순서와 라이브러리 의존성을 제대로 파악하고, pd.get_dummies()와 같은 함수를 활용하여 데이터 변환을 효율적으로 수행하는 것이 중요합니다. Jupyter Notebook 사용 시 실행 습관을 들이고, 각 코드 셀의 실행 결과가 어떻게 연결되는지 이해하는 것이 필요합니다.\ntitanic[\"age\"] = titanic[\"age\"].fillna(titanic[\"age\"].mean()) 4. 데이터 전처리 및 EDA 학습 가이드 무엇을 배웠나 데이터 전처리 및 EDA를 학습하면서 핵심 함수들의 사용법과 구조 설계를 동시에 이해하는 데 어려움을 겪었지만, 문제-핵심 함수-정답 채우기 방식으로 접근하고 코드 사고 훈련을 통해 해결책을 찾을 수 있었다. 함수화를 통해 코드를 체계적으로 구성하고 재사용성을 높이는 방법도 익혔으며, 문제 문장을 입력 데이터, 처리 단계, 출력 결과로 나누어 함수 이름과 main 함수의 순서를 파악하는 훈련이 도움이 되었다. 앞으로는 이 학습 방법을 통해 데이터 분석 문제에 더욱 효과적으로 대처할 수 있을 것이다.\n헷갈렸던 점 처음에는 각 함수를 따로 사용하는 건 이해했지만, 이들을 연결해서 하나의 파이프라인을 만드는 과정이 막막했어요. 특히 함수의 입력, 출력, 그리고 main 함수 안에서 어떻게 활용해야 하는지에 대한 그림이 잘 잡히지 않았습니다. 함수를 만들 때 어떤 인자를 받아야 하고, 어떤 값을 반환해야 하는지, 그리고 이 반환값을 어떻게 활용해야 할지가 어려웠어요.\n정리된 이해 데이터 전처리 및 EDA를 학습하면서, 단순히 함수 사용법을 익히는 것보다 문제 상황을 이해하고 함수를 적용하는 사고 훈련이 중요하다는 것을 깨달았습니다. 문제를 해결하는 과정을 입력, 처리, 출력, 함수 이름, main 함수 순서로 나누어 생각하니 함수 구조 설계에 대한 부담이 줄어들었고, 문제 해결 능력이 향상되는 것 같습니다.\ndef one_hot_encode(df, column_name): \"\"\" 주어진 컬럼을 원-핫 인코딩으로 변환합니다. \"\"\" return pd.get_dummies(df, columns=[column_name], drop_first=True) def handle_missing_values(df, columns): \"\"\" 지정된 컬럼의 결측치를 평균값으로 대체합니다. \"\"\" 총평 오늘 오후 전체에서 배운 것 클라우드 개발 분야의 중요성과 자격증보다 실무 경험이 중요하다는 점을 알게 되었고, 파이썬 함수 구조와 main() 함수 활용법을 익히며 코드의 가독성과 유지보수성을 높이는 방법을 배웠습니다. 또한, 머신러닝 데이터 전처리 과정의 복잡성과 Jupyter Notebook 사용 시 주의사항을 인지하고, 문제 해결을 위한 체계적인 접근 방식과 함수화를 통해 데이터 분석 역량을 키웠습니다.\n다음에 조심할 것 Jupyter Notebook 사용 시 라이브러리 import 순서와 코드 실행 여부에 따른 결과 변화를 더욱 주의해야겠다. 데이터 전처리 과정에서 각 단계를 독립적인 함수로 분리하는 것을 잊지 않고, 체계적인 함수화를 통해 코드의 재사용성과 가독성을 높이는 데 집중해야겠다.\n다음 복습 주제 AWS, Azure, GCP의 클라우드 개발 직무에서 각 플랫폼의 차이점과 활용 범위를 좀 더 자세히 파악하고 싶습니다. 특히, 자격증 외에 실제 프로젝트 경험을 쌓기 위한 구체적인 방법과 로드맵을 찾아봐야겠습니다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "869",
+  "inLanguage": "en",
+  "datePublished": "2026-07-21T00:00:00Z",
+  "dateModified": "2026-07-21T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-07-21-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      클라우드, 파이썬, 머신러닝 데이터 전처리 핵심 개념 정리
+    </h1>
+    <div class="post-description">
+      2026-07-21 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-21 00:00:00 +0000 UTC'>2026년 7월 21일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%99%80-%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%A7%84%EB%A1%9C-%EC%9D%B4%ED%95%B4">개발자와 클라우드, 초보자를 위한 진로 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%ED%8C%8C%EC%9D%B4%EC%8D%AC-%ED%95%A8%EC%88%98%EC%99%80-%EB%A9%94%EC%9D%B8-%EA%B5%AC%EC%A1%B0-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%ED%95%B5%EC%8B%AC-%EC%9D%B4%ED%95%B4">파이썬 함수와 메인 구조: 초보자를 위한 핵심 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%84%EC%B2%98%EB%A6%AC-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%ED%95%B5%EC%8B%AC-%EC%9D%B4%ED%95%B4">머신러닝 데이터 전처리, 초보자를 위한 핵심 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%84%EC%B2%98%EB%A6%AC-%EB%B0%8F-eda-%ED%95%99%EC%8A%B5-%EA%B0%80%EC%9D%B4%EB%93%9C">데이터 전처리 및 EDA 학습 가이드</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-개발자와-클라우드-초보자를-위한-진로-이해">1. 개발자와 클라우드, 초보자를 위한 진로 이해<a hidden class="anchor" aria-hidden="true" href="#1-개발자와-클라우드-초보자를-위한-진로-이해">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>강의에서 AWS 시가총액은 단순한 기업 규모가 아니라 클라우드 시장에서의 영향력을 보여주는 지표라는 것을 알게 되었다. Cloudflare와 같은 엣지 네트워크 전문 기업도 있지만, 서버, 데이터베이스, 네트워크 관리 등 종합적인 클라우드 개발 직무에서는 AWS, Azure, GCP가 더 중요하게 활용된다는 것을 이해했다. 또한, 자격증은 기본 학습의 증거일 뿐이며, 실제 프로젝트 경험과 경력이 중요함을 깨달았다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>AWS 시가총액이 클라우드 자격증과 어떤 관련이 있는지, 그리고 왜 Cloudflare가 클라우드 기업임에도 불구하고 취업이나 자격증에서 AWS, Azure, GCP가 더 중요한지 이해가 안 갔습니다. 자격증이 실제 실무 능력과 얼마나 연결되는지도 처음에는 명확하게 와닿지 않았습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>클라우드 자격증은 기본 개념을 익혔음을 보여주는 지표일 뿐, 실제 개발 능력은 프로젝트 경험과 문제 해결 능력에서 나오는 것을 알게 되었다. Cloudflare처럼 특정 분야에 특화된 기업도 있지만, 클라우드 개발 및 운영 직무에서는 AWS, Azure, GCP가 더 중요하게 다뤄지는 이유를 이해하게 되었다. 기존 로컬 환경에서 쌓은 경험을 바탕으로 <code>Pipeline OS</code>를 클라우드 환경에 배포하는 프로젝트를 통해 실질적인 역량을 키워나가야겠다.</p>
+<pre tabindex="0"><code>  - **데이터
+</code></pre><h2 id="2-파이썬-함수와-메인-구조-초보자를-위한-핵심-이해">2. 파이썬 함수와 메인 구조: 초보자를 위한 핵심 이해<a hidden class="anchor" aria-hidden="true" href="#2-파이썬-함수와-메인-구조-초보자를-위한-핵심-이해">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>파이썬 함수를 정의할 때 <code>def</code> 키워드를 사용하는 것과 변수에 값을 할당하는 것을 구분해야 한다는 것을 배웠습니다. 또한, 데이터 전처리와 모델 학습을 하나의 함수에 넣는 것보다 각 단계를 독립적인 함수로 분리하는 것이 코드의 가독성과 유지보수성을 높이는 방법임을 알게 되었습니다. <code>main()</code> 함수를 사용하여 프로그램의 흐름을 제어하고, <code>if __name__ == &quot;__main__&quot;:</code> 블록을 활용하여 코드의 실행 방식을 명확히 하는 것이 중요합니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>함수 정의와 변수 할당을 헷갈려서 <code>def</code> 키워드를 잘못 사용했고, 데이터 전처리와 모델 학습 분리를 하나의 함수에 넣으려는 시도를 해서 기능 분리의 중요성을 간과했습니다. <code>main()</code> 함수의 역할과 <code>if __name__ == &quot;__main__&quot;:</code> 블록의 의미를 명확히 이해하지 못했습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>함수는 입력, 처리, 반환 값으로 구성되어 특정 작업을 수행하며, <code>main()</code> 함수는 코드 실행의 흐름을 제어하는 중심 역할을 합니다. 함수 정의와 변수 할당을 명확히 구분하고, 각 함수의 역할을 분리하여 독립적으로 구성하는 것이 중요합니다. <code>if __name__ == &quot;__main__&quot;:</code> 블록은 프로그램 시작 시 <code>main()</code> 함수만 실행하도록 보장합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 메인 함수</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;데이터 처리 파이프라인의 시작점입니다.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    filename <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;your_data.csv&#34;</span>  <span style="color:#75715e"># 실제 파일 이름으로 변경</span>
+</span></span><span style="display:flex;"><span>    data <span style="color:#f92672">=</span> load_data(filename)
+</span></span><span style="display:flex;"><span>    cleaned_data <span style="color:#f92672">=</span> clean_data(data)
+</span></span><span style="display:flex;"><span>    display_results(cleaned_data)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    main()
+</span></span></code></pre></div><h2 id="3-머신러닝-데이터-전처리-초보자를-위한-핵심-이해">3. 머신러닝 데이터 전처리, 초보자를 위한 핵심 이해<a hidden class="anchor" aria-hidden="true" href="#3-머신러닝-데이터-전처리-초보자를-위한-핵심-이해">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>머신러닝 데이터 전처리는 데이터 로드, 특성과 타겟 분리, 결측치 처리 등 여러 단계로 이루어진다는 것을 깨달았습니다. 특히 Jupyter Notebook 사용 시 라이브러리 import 순서와 코드 실행 여부에 따라 결과가 달라지는 점을 주의해야 하며, <code>pd.get_dummies()</code>와 <code>OneHotEncoder</code>의 차이점을 이해하는 것이 중요했습니다. 앞으로는 이러한 실수를 방지하고 데이터 전처리 과정을 더욱 효과적으로 수행할 수 있도록 노력해야겠습니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>라이브러리 함수를 바로 사용하려고 할 때 import를 잊고 있었고, <code>pd.get_dummies()</code>와 <code>OneHotEncoder</code>의 차이 때문에 어떤 방법을 사용해야 할지 헷갈렸습니다. 특히 Jupyter Notebook에서 코드가 보이는 것과 실제로 실행되는 것의 차이를 명확히 이해하지 못해 변수 인식이 안 되는 문제가 자주 발생했습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>데이터 전처리는 머신러닝 모델 성능에 큰 영향을 미치는 중요한 과정이며, 데이터 로드부터 결측치 처리, 범주형 변수 인코딩 등 여러 단계를 거칩니다. 특히, 코드 실행 순서와 라이브러리 의존성을 제대로 파악하고, <code>pd.get_dummies()</code>와 같은 함수를 활용하여 데이터 변환을 효율적으로 수행하는 것이 중요합니다. Jupyter Notebook 사용 시 실행 습관을 들이고, 각 코드 셀의 실행 결과가 어떻게 연결되는지 이해하는 것이 필요합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>titanic[<span style="color:#e6db74">&#34;age&#34;</span>] <span style="color:#f92672">=</span> titanic[<span style="color:#e6db74">&#34;age&#34;</span>]<span style="color:#f92672">.</span>fillna(titanic[<span style="color:#e6db74">&#34;age&#34;</span>]<span style="color:#f92672">.</span>mean())
+</span></span></code></pre></div><h2 id="4-데이터-전처리-및-eda-학습-가이드">4. 데이터 전처리 및 EDA 학습 가이드<a hidden class="anchor" aria-hidden="true" href="#4-데이터-전처리-및-eda-학습-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>데이터 전처리 및 EDA를 학습하면서 핵심 함수들의 사용법과 구조 설계를 동시에 이해하는 데 어려움을 겪었지만, 문제-핵심 함수-정답 채우기 방식으로 접근하고 코드 사고 훈련을 통해 해결책을 찾을 수 있었다. 함수화를 통해 코드를 체계적으로 구성하고 재사용성을 높이는 방법도 익혔으며, 문제 문장을 입력 데이터, 처리 단계, 출력 결과로 나누어 함수 이름과 main 함수의 순서를 파악하는 훈련이 도움이 되었다. 앞으로는 이 학습 방법을 통해 데이터 분석 문제에 더욱 효과적으로 대처할 수 있을 것이다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>처음에는 각 함수를 따로 사용하는 건 이해했지만, 이들을 연결해서 하나의 파이프라인을 만드는 과정이 막막했어요. 특히 함수의 입력, 출력, 그리고 main 함수 안에서 어떻게 활용해야 하는지에 대한 그림이 잘 잡히지 않았습니다. 함수를 만들 때 어떤 인자를 받아야 하고, 어떤 값을 반환해야 하는지, 그리고 이 반환값을 어떻게 활용해야 할지가 어려웠어요.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>데이터 전처리 및 EDA를 학습하면서, 단순히 함수 사용법을 익히는 것보다 문제 상황을 이해하고 함수를 적용하는 사고 훈련이 중요하다는 것을 깨달았습니다. 문제를 해결하는 과정을 입력, 처리, 출력, 함수 이름, main 함수 순서로 나누어 생각하니 함수 구조 설계에 대한 부담이 줄어들었고, 문제 해결 능력이 향상되는 것 같습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">one_hot_encode</span>(df, column_name):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    주어진 컬럼을 원-핫 인코딩으로 변환합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> pd<span style="color:#f92672">.</span>get_dummies(df, columns<span style="color:#f92672">=</span>[column_name], drop_first<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">handle_missing_values</span>(df, columns):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    지정된 컬럼의 결측치를 평균값으로 대체합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>클라우드 개발 분야의 중요성과 자격증보다 실무 경험이 중요하다는 점을 알게 되었고, 파이썬 함수 구조와 <code>main()</code> 함수 활용법을 익히며 코드의 가독성과 유지보수성을 높이는 방법을 배웠습니다. 또한, 머신러닝 데이터 전처리 과정의 복잡성과 Jupyter Notebook 사용 시 주의사항을 인지하고, 문제 해결을 위한 체계적인 접근 방식과 함수화를 통해 데이터 분석 역량을 키웠습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>Jupyter Notebook 사용 시 라이브러리 import 순서와 코드 실행 여부에 따른 결과 변화를 더욱 주의해야겠다. 데이터 전처리 과정에서 각 단계를 독립적인 함수로 분리하는 것을 잊지 않고, 체계적인 함수화를 통해 코드의 재사용성과 가독성을 높이는 데 집중해야겠다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>AWS, Azure, GCP의 클라우드 개발 직무에서 각 플랫폼의 차이점과 활용 범위를 좀 더 자세히 파악하고 싶습니다. 특히, 자격증 외에 실제 프로젝트 경험을 쌓기 위한 구체적인 방법과 로드맵을 찾아봐야겠습니다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-07-21-am-daily/">
+    <span class="title">« Prev</span>
+    <span>딥러닝 기초 다지기: 옵티마이저부터 CNN 실습까지</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-07-20-am-daily/">
+    <span class="title">Next »</span>
+    <span>PyTorch 기초 다지기: 데이터 전처리부터 신경망 시각화까지</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

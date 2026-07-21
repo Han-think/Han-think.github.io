@@ -6,8 +6,22 @@
     <description>Recent content on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Mon, 20 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 21 Jul 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>딥러닝 기초 다지기: 옵티마이저부터 CNN 실습까지</title>
+      <link>https://Han-think.github.io/learning/2026-07-21-am-daily/</link>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-21-am-daily/</guid>
+      <description>2026-07-21 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>클라우드, 파이썬, 머신러닝 데이터 전처리 핵심 개념 정리</title>
+      <link>https://Han-think.github.io/learning/2026-07-21-pm-daily/</link>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-21-pm-daily/</guid>
+      <description>2026-07-21 오후 학습 정리</description>
+    </item>
     <item>
       <title>0.88188에서 0.95005까지, Kaggle 예측 모델을 리듬ON 서비스 제안으로 연결한 기록</title>
       <link>https://Han-think.github.io/projects/2026-07-20-kaggle-s6e7-rhythmon-project-retrospective/</link>

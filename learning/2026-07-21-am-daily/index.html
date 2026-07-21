@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>딥러닝 기초 다지기: 옵티마이저부터 CNN 실습까지 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-07-21 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-07-21-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-07-21-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-21-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="딥러닝 기초 다지기: 옵티마이저부터 CNN 실습까지">
+  <meta property="og:description" content="2026-07-21 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-07-21T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-21T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="딥러닝 기초 다지기: 옵티마이저부터 CNN 실습까지">
+  <meta name="twitter:description" content="2026-07-21 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "딥러닝 기초 다지기: 옵티마이저부터 CNN 실습까지",
+      "item": "https://Han-think.github.io/learning/2026-07-21-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "딥러닝 기초 다지기: 옵티마이저부터 CNN 실습까지",
+  "name": "딥러닝 기초 다지기: 옵티마이저부터 CNN 실습까지",
+  "description": "2026-07-21 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 옵티마이저와 기울기 흐름: 기본 개념 및 주요 비교 활성화 함수, 초기화, 기울기 소실 완벽 이해하기 과적합 방지 및 값 정규화 기법: 정규화 vs. 정규화 실험과 프로젝트 적용을 위한 초보 가이드 PyTorch 학습 파이프라인 핵심 구성 요소 MNIST 실습으로 배우는 MLP, Softmax, CNN 이해 총평 1. 옵티마이저와 기울기 흐름: 기본 개념 및 주요 비교 무엇을 배웠나 옵티마이저와 손실 함수의 역할을 명확히 구분하고, 주요 옵티마이저들의 특징을 비교하며 이해하게 되었다. Adam 옵티마이저가 항상 최선은 아니라는 점을 깨닫고, 문제와 모델 구조에 따라 다른 옵티마이저를 선택해야 함을 알게 되었다. PyTorch 코드를 통해 옵티마이저 적용 과정을 간략하게나마 경험해 볼 수 있었다.\n헷갈렸던 점 가중치 변화가 실제 코드로 어떻게 구현되는지 감이 잘 안 잡혔고, Adam 옵티마이저가 만능이라고 생각했지만 상황에 따라 다른 옵티마이저가 더 좋을 수 있다는 점이 헷갈렸다. 손실 함수와 옵티마이저의 역할이 명확하게 구분되지 않아 학습 과정 전체를 이해하는 데 어려움을 겪었다.\n정리된 이해 손실 함수는 예측과 실제 값의 오차를 측정하고, 옵티마이저는 이 오차를 줄이기 위해 가중치를 어떻게 조정할지 결정하는 역할을 한다는 것을 명확히 이해하게 되었다. Adam 옵티마이저가 항상 최고는 아니며, 문제와 모델 구조에 따라 SGD 계열 옵티마이저가 더 적합할 수 있다는 점도 알게 되었다. 이제는 다양한 옵티마이저의 특징을 비교하고 상황에 맞는 최적의 옵티마이저를 선택할 수 있을 것 같다.\nimport torch import torch.nn as nn import torch.optim as optim # 모델 정의 model = nn.Linear(10, 1) # 예시 모델 criterion = nn.MSELoss() # 손실 함수 # 데이터 생성 (예시) inputs = torch.randn(5, 10) # 입력 데이터 targets = torch.randn(5, 1) 2. 활성화 함수, 초기화, 기울기 소실 완벽 이해하기 무엇을 배웠나 시그모이드 함수의 기울기 소실 문제를 제대로 이해하게 되었고, 입력 값에 따라 기울기가 변한다는 것을 알게 되었다. 또한 활성화 함수와 가중치 초기화 방법의 역할을 명확히 구분하게 되었으며, ReLU의 Dying ReLU 문제와 시그모이드의 기울기 소실 문제를 해결하기 위한 가중치 초기화 방법(Xavier, He)의 필요성을 깨달았다. 이제 이러한 지식을 바탕으로 신경망 학습 시 더 효과적인 설정을 할 수 있을 것 같다.\n헷갈렸던 점 Sigmoid 함수의 기울기가 항상 0이라고 생각했고, 다양한 활성화 함수와 초기화 방법들이 비슷하게 작동한다고 생각했습니다. 특히 ReLU와 Xavier, He 초기화의 차이점을 명확하게 이해하지 못하고 있었습니다.\n정리된 이해 활성화 함수, 특히 Sigmoid는 입력 값에 따라 기울기가 변하고, 극단적인 입력 값에서는 기울기가 작아져 기울기 소실을 일으킬 수 있다는 것을 알게 되었습니다. 또한, 활성화 함수 종류에 따라 적절한 가중치 초기화 방법(Xavier, He)을 선택해야 역전파 과정에서 발생하는 문제를 완화할 수 있다는 것을 이해했습니다. 이제는 활성화 함수와 가중치 초기화의 역할을 명확히 구분하여 신경망 학습에 적용할 수 있을 것 같습니다.\nimport numpy as np import matplotlib.pyplot as plt x = np.linspace(-5, 5, 100) y_sigmoid = 1 / (1 + np.exp(-x)) plt.plot(x, y_sigmoid, label='Sigmoid') plt.title('Sigmoid Function') 3. 과적합 방지 및 값 정규화 기법: 정규화 vs. 정규화 무엇을 배웠나 과적합 방지를 위한 정규화 기법(Regularization)과 값의 분포를 안정화시키는 정규화 기법(Normalization)을 명확히 구분하는 방법을 알게 되었습니다. 특히 Batch Normalization은 학습 안정화와 속도 향상을 위한 도구이며, 정규화 기법들을 완전히 대체하지는 않는다는 것을 깨달았습니다. L2 정규화 예시 코드를 통해 실제 구현 방식도 이해하게 되었습니다.\n헷갈렸던 점 정규화(Regularization)와 값의 분포를 안정화하는 정규화(Normalization)를 명확히 구분하지 못했고, Batch Normalization이 과적합 방지를 위한 핵심 기법이라고 잘못 생각했습니다. 또한, 정규화 기법들이 서로 완전히 대체 가능한 관계라고 생각했습니다.\n정리된 이해 정규화는 과적합 방지를 위한 기법(Regularization)과 학습 안정화 및 속도 향상을 위한 기법(Normalization)으로 나뉘어, 용어는 같지만 목적과 방식이 다릅니다. Batch Normalization은 학습 과정에서 활성화 값의 분포를 안정화시키는 역할을 하며, 과적합 방지를 위한 핵심 기법이라기보다는 부가적인 효과를 제공합니다. L1, L2 정규화, Dropout과 같은 기법들은 모델 자체의 복잡도를 줄이는 데 초점을 맞추는 반면, Batch Normalization은 신경망 내부의 데이터 분포를 조정합니다.\nimport torch.nn as nn model = nn.Sequential( nn.Linear(10, 50), nn.ReLU(), nn.Linear(50, 1), ) 4. 실험과 프로젝트 적용을 위한 초보 가이드 무엇을 배웠나 머신러닝과 딥러닝에서는 모델 이름을 암기하는 것보다 다양한 시도를 통해 문제 해결 능력을 키우는 것이 중요하다는 것을 깨달았습니다. 특히 프로젝트를 진행할 때, 데이터 유형에 따른 전처리 방식과 배치 크기 설정 등 기본적인 과정을 명확히 이해하고 적용하는 것이 필요합니다. 앞으로는 제시된 실험 절차를 바탕으로 프로젝트에 적용하며 실력 향상을 위해 노력해야겠습니다.\n헷갈렸던 점 프로젝트를 시작할 때 막연하게 모델 구조나 알고리즘을 이해하는 것만으로 결과가 나올 거라고 생각했는데, 실제로는 데이터 전처리부터 하이퍼파라미터 튜닝까지 다양한 실험이 필요하다는 것을 깨달았습니다. 특히 데이터 유형에 따른 전처리 방법이 다양해서, 어떤 방법을 선택해야 할지 처음에는 감이 잘 안 잡혔습니다.\n정리된 이해 머신러닝 프로젝트를 시작할 때, 모델 이름이나 이론을 암기하는 것보다 다양한 가설을 세우고 실험하며 결과를 분석하는 능력이 더 중요하다는 것을 깨달았다. 데이터 유형에 따라 적절한 전처리 방식을 적용하고, 배치 크기, 손실 함수, 옵티마이저 등을 설정하는 과정을 체계적으로 따라가는 것이 프로젝트 성공의 핵심이다.\n이 노트에는 코드 예시가 포함되어 있지 않습니다. 따라서 코드를 출력할 수 없습니다.\n5. PyTorch 학습 파이프라인 핵심 구성 요소 무엇을 배웠나 PyTorch 학습 파이프라인의 핵심 구성 요소인 Dataset, DataLoader, torch.nn 모듈, 손실 함수, 그리고 모델 학습 과정을 이해하게 되었어요. 특히 데이터 처리 라이브러리들을 이미지, 음성, 추천 시스템으로 구분하여 사용하는 방법을 알게 되었습니다. Tensor의 기본 속성(shape, dtype, device)도 간단하게나마 숙지했습니다.\n헷갈렸던 점 처음에는 Dataset과 DataLoader의 역할을 명확히 구분하지 못해서 Dataset이 단순히 데이터를 저장하는 역할만 한다고 생각했다. 또한, 손실 함수의 종류와 그 선택 기준을 제대로 이해하지 못해서, 어떤 손실 함수를 사용해야 하는지 막연하게 느껴졌다. PyTorch Tensor의 device 속성을 간과하고 CPU에서만 작업하다가 GPU 사용의 중요성을 뒤늦게 알게 되었다.\n정리된 이해 PyTorch 학습 파이프라인은 Dataset으로 데이터를 준비하고, DataLoader로 미니 배치 단위로 로딩하며, torch.nn으로 신경망 레이어를 층층이 쌓아 모델을 구축하는 과정을 포함합니다. 모델은 손실 함수를 통해 예측 값과 실제 값의 차이를 최소화하도록 학습되고, 이 과정에서 역전파와 Optimizer를 활용하여 모델 가중치를 업데이트합니다. 또한 이미지, 음성, 텍스트 데이터 처리를 위한 별도 라이브러리들이 존재하여 각 데이터 유형에 맞춰 학습 파이프라인을 구성할 수 있습니다.\n# 예시: 간단한 데이터 로딩 및 확인 import torch from torch.utils.data import Dataset, DataLoader class MyDataset(Dataset): def __init__(self, data, labels): self.data = torch.tensor(data) self.labels = torch.tensor(labels) def __len__(self): return len(self.data) def __getitem__(self, idx): return self.data[idx], self.labels[idx] data = [[1, 2], [3, 1]] labels = [0, 2] my_dataset = MyDataset(data, labels) dataloader = DataLoader(my_dataset, batch_size=1) for batch_idx, (data, label) in enumerate(dataloader): print(f\"Batch {batch_idx}:\") print(f\" Data shape: {data.shape}\") print(f\" Label: {label}\") 6. MNIST 실습으로 배우는 MLP, Softmax, CNN 이해 무엇을 배웠나 MNIST 데이터셋을 이용한 MLP 실습 과정에서 흔히 발생하는 코드 오류들을 겪으며, 데이터 전처리, 레이어 구성, 활성화 함수, 손실 함수 등의 개념을 정리했습니다. 특히 오류 메시지를 통해 구체적인 문제점을 파악하고 해결하는 경험을 통해 딥러닝 코드 디버깅 능력을 향상시켰으며, MLP와 CNN의 구조적 차이와 각 모델이 적합한 상황을 이해하게 되었습니다. 또한, 흔히 발생하는 오류에 대한 키워드 및 검색어를 기록하여 앞으로 유사한 문제 발생 시 빠르게 해결할 수 있도록 했습니다.\n헷갈렸던 점 처음에는 딥러닝 코드를 실행하면서 오류의 원인을 딥러닝 개념 문제인지 문법 오류인지 구분하기 어려웠습니다. 특히, 오류 메시지가 직관적이지 않아 디버깅 과정이 꽤 힘들었습니다. 라이브러리 누락이나 오타로 인해 발생하는 오류도 예상치 못하게 발생해서 주의가 필요했습니다.\n정리된 이해 MNIST 이미지 데이터를 활용한 MLP 실습 과정에서 데이터 정규화, 레이어 구성(Flatten, 은닉층, Softmax 출력), 손실 함수 선택 등의 기본 사항을 익혔습니다. 특히 딥러닝 코드 오류 발생 시, 문법 오류인지 개념 오류인지 구분하고, AttributeError, TypeError, NameError 등의 오류 메시지를 통해 문제 해결 방법을 학습했습니다. MLP는 단순 데이터에 적합하지만, CNN은 복잡한 이미지와 특징 추출에 더 효과적이라는 것을 알게 되었습니다.\nlayers.Input(shape=(28, 28)), activation=\"relu\" batch_size=32 총평 오늘 오전 전체에서 배운 것 오늘 오전 시간에는 옵티마이저 선택, 활성화 함수 및 가중치 초기화, 정규화 기법 등 신경망 학습의 핵심 개념들을 깊이 있게 다루었으며, PyTorch를 활용한 실습을 통해 이론적 이해를 코드로 연결하는 경험을 했습니다. 특히 다양한 문제 해결을 위한 실험 정신의 중요성을 깨닫고, PyTorch 학습 파이프라인의 구성 요소와 MNIST 실습을 통해 딥러닝 코드 디버깅 능력을 향상시킬 수 있었습니다.\n다음에 조심할 것 다음 학습에서는 옵티마이저 선택 기준을 좀 더 명확히 하고, 다양한 옵티마이저의 실제 성능 비교를 통해 문제에 맞는 최적의 옵티마이저를 찾는 연습을 해야겠다. 또한, 활성화 함수와 가중치 초기화 방법의 조합이 모델 성능에 미치는 영향을 심도 있게 분석해보고, 이를 바탕으로 실험적인 접근 방식을 통해 더욱 효과적인 모델을 구축하도록 노력해야겠다.\n다음 복습 주제 옵티마이저 선택 기준과 각 옵티마이저의 장단점을 좀 더 심층적으로 복습하고 싶습니다. 특히 다양한 모델 구조 및 데이터셋에 따른 최적의 옵티마이저 선택 방법을 찾아봐야 할 것 같습니다. 또한, Xavier, He 초기화 방법이 왜 필요한지, 그리고 다른 초기화 방법과의 차이를 더 자세히 알아보고 싶습니다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "1288",
+  "inLanguage": "en",
+  "datePublished": "2026-07-21T00:00:00Z",
+  "dateModified": "2026-07-21T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-07-21-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      딥러닝 기초 다지기: 옵티마이저부터 CNN 실습까지
+    </h1>
+    <div class="post-description">
+      2026-07-21 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-21 00:00:00 +0000 UTC'>2026년 7월 21일</span>&nbsp;·&nbsp;<span>7 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EC%98%B5%ED%8B%B0%EB%A7%88%EC%9D%B4%EC%A0%80%EC%99%80-%EA%B8%B0%EC%9A%B8%EA%B8%B0-%ED%9D%90%EB%A6%84-%EA%B8%B0%EB%B3%B8-%EA%B0%9C%EB%85%90-%EB%B0%8F-%EC%A3%BC%EC%9A%94-%EB%B9%84%EA%B5%90">옵티마이저와 기울기 흐름: 기본 개념 및 주요 비교</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%ED%99%9C%EC%84%B1%ED%99%94-%ED%95%A8%EC%88%98-%EC%B4%88%EA%B8%B0%ED%99%94-%EA%B8%B0%EC%9A%B8%EA%B8%B0-%EC%86%8C%EC%8B%A4-%EC%99%84%EB%B2%BD-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">활성화 함수, 초기화, 기울기 소실 완벽 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EA%B3%BC%EC%A0%81%ED%95%A9-%EB%B0%A9%EC%A7%80-%EB%B0%8F-%EA%B0%92-%EC%A0%95%EA%B7%9C%ED%99%94-%EA%B8%B0%EB%B2%95-%EC%A0%95%EA%B7%9C%ED%99%94-vs-%EC%A0%95%EA%B7%9C%ED%99%94">과적합 방지 및 값 정규화 기법: 정규화 vs. 정규화</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EC%8B%A4%ED%97%98%EA%B3%BC-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%A0%81%EC%9A%A9%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%B4%88%EB%B3%B4-%EA%B0%80%EC%9D%B4%EB%93%9C">실험과 프로젝트 적용을 위한 초보 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-pytorch-%ED%95%99%EC%8A%B5-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%ED%95%B5%EC%8B%AC-%EA%B5%AC%EC%84%B1-%EC%9A%94%EC%86%8C">PyTorch 학습 파이프라인 핵심 구성 요소</a></li>
+</ol>
+</li>
+<li>
+<ol start="6">
+<li><a href="#6-mnist-%EC%8B%A4%EC%8A%B5%EC%9C%BC%EB%A1%9C-%EB%B0%B0%EC%9A%B0%EB%8A%94-mlp-softmax-cnn-%EC%9D%B4%ED%95%B4">MNIST 실습으로 배우는 MLP, Softmax, CNN 이해</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-옵티마이저와-기울기-흐름-기본-개념-및-주요-비교">1. 옵티마이저와 기울기 흐름: 기본 개념 및 주요 비교<a hidden class="anchor" aria-hidden="true" href="#1-옵티마이저와-기울기-흐름-기본-개념-및-주요-비교">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>옵티마이저와 손실 함수의 역할을 명확히 구분하고, 주요 옵티마이저들의 특징을 비교하며 이해하게 되었다. Adam 옵티마이저가 항상 최선은 아니라는 점을 깨닫고, 문제와 모델 구조에 따라 다른 옵티마이저를 선택해야 함을 알게 되었다. PyTorch 코드를 통해 옵티마이저 적용 과정을 간략하게나마 경험해 볼 수 있었다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>가중치 변화가 실제 코드로 어떻게 구현되는지 감이 잘 안 잡혔고, Adam 옵티마이저가 만능이라고 생각했지만 상황에 따라 다른 옵티마이저가 더 좋을 수 있다는 점이 헷갈렸다. 손실 함수와 옵티마이저의 역할이 명확하게 구분되지 않아 학습 과정 전체를 이해하는 데 어려움을 겪었다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>손실 함수는 예측과 실제 값의 오차를 측정하고, 옵티마이저는 이 오차를 줄이기 위해 가중치를 어떻게 조정할지 결정하는 역할을 한다는 것을 명확히 이해하게 되었다. Adam 옵티마이저가 항상 최고는 아니며, 문제와 모델 구조에 따라 SGD 계열 옵티마이저가 더 적합할 수 있다는 점도 알게 되었다. 이제는 다양한 옵티마이저의 특징을 비교하고 상황에 맞는 최적의 옵티마이저를 선택할 수 있을 것 같다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch.nn <span style="color:#66d9ef">as</span> nn
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch.optim <span style="color:#66d9ef">as</span> optim
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 모델 정의</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">1</span>)  <span style="color:#75715e"># 예시 모델</span>
+</span></span><span style="display:flex;"><span>criterion <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>MSELoss()  <span style="color:#75715e"># 손실 함수</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 데이터 생성 (예시)</span>
+</span></span><span style="display:flex;"><span>inputs <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>randn(<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">10</span>)  <span style="color:#75715e"># 입력 데이터</span>
+</span></span><span style="display:flex;"><span>targets <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>randn(<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">1</span>)
+</span></span></code></pre></div><h2 id="2-활성화-함수-초기화-기울기-소실-완벽-이해하기">2. 활성화 함수, 초기화, 기울기 소실 완벽 이해하기<a hidden class="anchor" aria-hidden="true" href="#2-활성화-함수-초기화-기울기-소실-완벽-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>시그모이드 함수의 기울기 소실 문제를 제대로 이해하게 되었고, 입력 값에 따라 기울기가 변한다는 것을 알게 되었다. 또한 활성화 함수와 가중치 초기화 방법의 역할을 명확히 구분하게 되었으며, ReLU의 Dying ReLU 문제와 시그모이드의 기울기 소실 문제를 해결하기 위한 가중치 초기화 방법(Xavier, He)의 필요성을 깨달았다. 이제 이러한 지식을 바탕으로 신경망 학습 시 더 효과적인 설정을 할 수 있을 것 같다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>Sigmoid 함수의 기울기가 항상 0이라고 생각했고, 다양한 활성화 함수와 초기화 방법들이 비슷하게 작동한다고 생각했습니다. 특히 ReLU와 Xavier, He 초기화의 차이점을 명확하게 이해하지 못하고 있었습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>활성화 함수, 특히 Sigmoid는 입력 값에 따라 기울기가 변하고, 극단적인 입력 값에서는 기울기가 작아져 기울기 소실을 일으킬 수 있다는 것을 알게 되었습니다. 또한, 활성화 함수 종류에 따라 적절한 가중치 초기화 방법(Xavier, He)을 선택해야 역전파 과정에서 발생하는 문제를 완화할 수 있다는 것을 이해했습니다. 이제는 활성화 함수와 가중치 초기화의 역할을 명확히 구분하여 신경망 학습에 적용할 수 있을 것 같습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linspace(<span style="color:#f92672">-</span><span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>y_sigmoid <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">/</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> np<span style="color:#f92672">.</span>exp(<span style="color:#f92672">-</span>x))
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>plot(x, y_sigmoid, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Sigmoid&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Sigmoid Function&#39;</span>)
+</span></span></code></pre></div><h2 id="3-과적합-방지-및-값-정규화-기법-정규화-vs-정규화">3. 과적합 방지 및 값 정규화 기법: 정규화 vs. 정규화<a hidden class="anchor" aria-hidden="true" href="#3-과적합-방지-및-값-정규화-기법-정규화-vs-정규화">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>과적합 방지를 위한 정규화 기법(Regularization)과 값의 분포를 안정화시키는 정규화 기법(Normalization)을 명확히 구분하는 방법을 알게 되었습니다. 특히 Batch Normalization은 학습 안정화와 속도 향상을 위한 도구이며, 정규화 기법들을 완전히 대체하지는 않는다는 것을 깨달았습니다. L2 정규화 예시 코드를 통해 실제 구현 방식도 이해하게 되었습니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>정규화(Regularization)와 값의 분포를 안정화하는 정규화(Normalization)를 명확히 구분하지 못했고, Batch Normalization이 과적합 방지를 위한 핵심 기법이라고 잘못 생각했습니다. 또한, 정규화 기법들이 서로 완전히 대체 가능한 관계라고 생각했습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>정규화는 과적합 방지를 위한 기법(Regularization)과 학습 안정화 및 속도 향상을 위한 기법(Normalization)으로 나뉘어, 용어는 같지만 목적과 방식이 다릅니다. Batch Normalization은 학습 과정에서 활성화 값의 분포를 안정화시키는 역할을 하며, 과적합 방지를 위한 핵심 기법이라기보다는 부가적인 효과를 제공합니다. L1, L2 정규화, Dropout과 같은 기법들은 모델 자체의 복잡도를 줄이는 데 초점을 맞추는 반면, Batch Normalization은 신경망 내부의 데이터 분포를 조정합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch.nn <span style="color:#66d9ef">as</span> nn
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Sequential(
+</span></span><span style="display:flex;"><span>    nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">50</span>),
+</span></span><span style="display:flex;"><span>    nn<span style="color:#f92672">.</span>ReLU(),
+</span></span><span style="display:flex;"><span>    nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">50</span>, <span style="color:#ae81ff">1</span>),
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><h2 id="4-실험과-프로젝트-적용을-위한-초보-가이드">4. 실험과 프로젝트 적용을 위한 초보 가이드<a hidden class="anchor" aria-hidden="true" href="#4-실험과-프로젝트-적용을-위한-초보-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>머신러닝과 딥러닝에서는 모델 이름을 암기하는 것보다 다양한 시도를 통해 문제 해결 능력을 키우는 것이 중요하다는 것을 깨달았습니다. 특히 프로젝트를 진행할 때, 데이터 유형에 따른 전처리 방식과 배치 크기 설정 등 기본적인 과정을 명확히 이해하고 적용하는 것이 필요합니다. 앞으로는 제시된 실험 절차를 바탕으로 프로젝트에 적용하며 실력 향상을 위해 노력해야겠습니다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>프로젝트를 시작할 때 막연하게 모델 구조나 알고리즘을 이해하는 것만으로 결과가 나올 거라고 생각했는데, 실제로는 데이터 전처리부터 하이퍼파라미터 튜닝까지 다양한 실험이 필요하다는 것을 깨달았습니다. 특히 데이터 유형에 따른 전처리 방법이 다양해서, 어떤 방법을 선택해야 할지 처음에는 감이 잘 안 잡혔습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>머신러닝 프로젝트를 시작할 때, 모델 이름이나 이론을 암기하는 것보다 다양한 가설을 세우고 실험하며 결과를 분석하는 능력이 더 중요하다는 것을 깨달았다. 데이터 유형에 따라 적절한 전처리 방식을 적용하고, 배치 크기, 손실 함수, 옵티마이저 등을 설정하는 과정을 체계적으로 따라가는 것이 프로젝트 성공의 핵심이다.</p>
+<p>이 노트에는 코드 예시가 포함되어 있지 않습니다. 따라서 코드를 출력할 수 없습니다.</p>
+<h2 id="5-pytorch-학습-파이프라인-핵심-구성-요소">5. PyTorch 학습 파이프라인 핵심 구성 요소<a hidden class="anchor" aria-hidden="true" href="#5-pytorch-학습-파이프라인-핵심-구성-요소">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>PyTorch 학습 파이프라인의 핵심 구성 요소인 Dataset, DataLoader, torch.nn 모듈, 손실 함수, 그리고 모델 학습 과정을 이해하게 되었어요. 특히 데이터 처리 라이브러리들을 이미지, 음성, 추천 시스템으로 구분하여 사용하는 방법을 알게 되었습니다. Tensor의 기본 속성(shape, dtype, device)도 간단하게나마 숙지했습니다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>처음에는 Dataset과 DataLoader의 역할을 명확히 구분하지 못해서 Dataset이 단순히 데이터를 저장하는 역할만 한다고 생각했다. 또한, 손실 함수의 종류와 그 선택 기준을 제대로 이해하지 못해서, 어떤 손실 함수를 사용해야 하는지 막연하게 느껴졌다. PyTorch Tensor의 <code>device</code> 속성을 간과하고 CPU에서만 작업하다가 GPU 사용의 중요성을 뒤늦게 알게 되었다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>PyTorch 학습 파이프라인은 Dataset으로 데이터를 준비하고, DataLoader로 미니 배치 단위로 로딩하며, torch.nn으로 신경망 레이어를 층층이 쌓아 모델을 구축하는 과정을 포함합니다. 모델은 손실 함수를 통해 예측 값과 실제 값의 차이를 최소화하도록 학습되고, 이 과정에서 역전파와 Optimizer를 활용하여 모델 가중치를 업데이트합니다. 또한 이미지, 음성, 텍스트 데이터 처리를 위한 별도 라이브러리들이 존재하여 각 데이터 유형에 맞춰 학습 파이프라인을 구성할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 예시: 간단한 데이터 로딩 및 확인</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch.utils.data <span style="color:#f92672">import</span> Dataset, DataLoader
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyDataset</span>(Dataset):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, data, labels):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>data <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor(data)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>labels <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor(labels)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__len__</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> len(self<span style="color:#f92672">.</span>data)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__getitem__</span>(self, idx):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>data[idx], self<span style="color:#f92672">.</span>labels[idx]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> [[<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>], [<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">1</span>]]
+</span></span><span style="display:flex;"><span>labels <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">2</span>]
+</span></span><span style="display:flex;"><span>my_dataset <span style="color:#f92672">=</span> MyDataset(data, labels)
+</span></span><span style="display:flex;"><span>dataloader <span style="color:#f92672">=</span> DataLoader(my_dataset, batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> batch_idx, (data, label) <span style="color:#f92672">in</span> enumerate(dataloader):
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Batch </span><span style="color:#e6db74">{</span>batch_idx<span style="color:#e6db74">}</span><span style="color:#e6db74">:&#34;</span>)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;  Data shape: </span><span style="color:#e6db74">{</span>data<span style="color:#f92672">.</span>shape<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;  Label: </span><span style="color:#e6db74">{</span>label<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><h2 id="6-mnist-실습으로-배우는-mlp-softmax-cnn-이해">6. MNIST 실습으로 배우는 MLP, Softmax, CNN 이해<a hidden class="anchor" aria-hidden="true" href="#6-mnist-실습으로-배우는-mlp-softmax-cnn-이해">#</a></h2>
+<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
+<p>MNIST 데이터셋을 이용한 MLP 실습 과정에서 흔히 발생하는 코드 오류들을 겪으며, 데이터 전처리, 레이어 구성, 활성화 함수, 손실 함수 등의 개념을 정리했습니다. 특히 오류 메시지를 통해 구체적인 문제점을 파악하고 해결하는 경험을 통해 딥러닝 코드 디버깅 능력을 향상시켰으며, MLP와 CNN의 구조적 차이와 각 모델이 적합한 상황을 이해하게 되었습니다. 또한, 흔히 발생하는 오류에 대한 키워드 및 검색어를 기록하여 앞으로 유사한 문제 발생 시 빠르게 해결할 수 있도록 했습니다.</p>
+<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
+<p>처음에는 딥러닝 코드를 실행하면서 오류의 원인을 딥러닝 개념 문제인지 문법 오류인지 구분하기 어려웠습니다. 특히, 오류 메시지가 직관적이지 않아 디버깅 과정이 꽤 힘들었습니다. 라이브러리 누락이나 오타로 인해 발생하는 오류도 예상치 못하게 발생해서 주의가 필요했습니다.</p>
+<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
+<p>MNIST 이미지 데이터를 활용한 MLP 실습 과정에서 데이터 정규화, 레이어 구성(Flatten, 은닉층, Softmax 출력), 손실 함수 선택 등의 기본 사항을 익혔습니다. 특히 딥러닝 코드 오류 발생 시, 문법 오류인지 개념 오류인지 구분하고, AttributeError, TypeError, NameError 등의 오류 메시지를 통해 문제 해결 방법을 학습했습니다. MLP는 단순 데이터에 적합하지만, CNN은 복잡한 이미지와 특징 추출에 더 효과적이라는 것을 알게 되었습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>layers<span style="color:#f92672">.</span>Input(shape<span style="color:#f92672">=</span>(<span style="color:#ae81ff">28</span>, <span style="color:#ae81ff">28</span>)),
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;relu&#34;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">32</span>
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>오늘 오전 시간에는 옵티마이저 선택, 활성화 함수 및 가중치 초기화, 정규화 기법 등 신경망 학습의 핵심 개념들을 깊이 있게 다루었으며, PyTorch를 활용한 실습을 통해 이론적 이해를 코드로 연결하는 경험을 했습니다. 특히 다양한 문제 해결을 위한 실험 정신의 중요성을 깨닫고, PyTorch 학습 파이프라인의 구성 요소와 MNIST 실습을 통해 딥러닝 코드 디버깅 능력을 향상시킬 수 있었습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>다음 학습에서는 옵티마이저 선택 기준을 좀 더 명확히 하고, 다양한 옵티마이저의 실제 성능 비교를 통해 문제에 맞는 최적의 옵티마이저를 찾는 연습을 해야겠다. 또한, 활성화 함수와 가중치 초기화 방법의 조합이 모델 성능에 미치는 영향을 심도 있게 분석해보고, 이를 바탕으로 실험적인 접근 방식을 통해 더욱 효과적인 모델을 구축하도록 노력해야겠다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>옵티마이저 선택 기준과 각 옵티마이저의 장단점을 좀 더 심층적으로 복습하고 싶습니다. 특히 다양한 모델 구조 및 데이터셋에 따른 최적의 옵티마이저 선택 방법을 찾아봐야 할 것 같습니다. 또한, Xavier, He 초기화 방법이 왜 필요한지, 그리고 다른 초기화 방법과의 차이를 더 자세히 알아보고 싶습니다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://Han-think.github.io/learning/2026-07-21-pm-daily/">
+    <span class="title">Next »</span>
+    <span>클라우드, 파이썬, 머신러닝 데이터 전처리 핵심 개념 정리</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
