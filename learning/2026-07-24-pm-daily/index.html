@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>웹 기초와 HTML 심화 학습으로 프로젝트 관리 역량 강화 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-07-24 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-07-24-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-07-24-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-24-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="웹 기초와 HTML 심화 학습으로 프로젝트 관리 역량 강화">
+  <meta property="og:description" content="2026-07-24 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-07-24T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-24T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="웹 기초와 HTML 심화 학습으로 프로젝트 관리 역량 강화">
+  <meta name="twitter:description" content="2026-07-24 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "웹 기초와 HTML 심화 학습으로 프로젝트 관리 역량 강화",
+      "item": "https://Han-think.github.io/learning/2026-07-24-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "웹 기초와 HTML 심화 학습으로 프로젝트 관리 역량 강화",
+  "name": "웹 기초와 HTML 심화 학습으로 프로젝트 관리 역량 강화",
+  "description": "2026-07-24 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 uv 프로젝트 초기화 및 의존성 관리 가이드 웹 기초: 웹 표준, 접근성, 크로스 브라우징 이해 HTML 문서 구조와 메타데이터 완벽 이해하기 HTML 태그 진화와 속성 이해하기 HTML 기본 태그 실습: 제목 태그와 하이퍼링크 완벽 이해 HTML 편집기 포맷팅, 빠른 학습 속도, 그리고 효과적인 이해 전략 1. uv 프로젝트 초기화 및 의존성 관리 가이드 무엇을 배웠나 uv 프로젝트를 초기화하고 의존성을 관리할 때 pip install와 uv add의 차이점을 명확히 이해하게 되었다. pyproject.toml은 프로젝트의 의존성 정보를 정의하고, uv.lock은 실제 설치된 패키지 버전과 해시값을 기록하여 재현성을 보장한다는 것도 알게 되었다. 이제 uv를 사용한 프로젝트를 더 효과적으로 관리할 수 있을 것 같다.\n헷갈렸던 점 처음에는 pip install과 uv add 명령의 차이를 명확하게 이해하지 못했습니다. 패키지를 설치하는 과정이 비슷해 보여서 어떤 명령을 언제 사용해야 하는지 헷갈렸습니다. 또한, pyproject.toml과 uv.lock 파일이 비슷해 보여서 각각의 역할이 무엇인지 파악하는 데 어려움을 겪었습니다.\n정리된 이해 pip install은 전역 환경에 패키지를 설치하는 반면, uv add는 프로젝트의 의존성을 관리하고 추적하는 데 사용된다. pyproject.toml 파일은 프로젝트가 필요로 하는 패키지와 버전을 명시하고, uv.lock 파일은 프로젝트의 의존성 트리를 기록하여 재현 가능한 환경을 구축하도록 돕는다. 즉, uv는 프로젝트 기반 의존성 관리 도구이다.\n# pyproject.toml 예시 [project] name = \"uv-project\" version = \"0.1.0\" requires-python = \"\u003e=3.14\" dependencies = [ \"pandas\u003e=3.0.5\", ] # uv.lock 예시 (간략화) { \"dependencies\": { \"pandas\": { \"version\": \"==3.0.5\", \"hashes\": [...] } } } 2. 웹 기초: 웹 표준, 접근성, 크로스 브라우징 이해 무엇을 배웠나 웹사이트 제작은 단순히 HTML, CSS, JavaScript를 사용하는 것 외에도 웹 표준, 웹 접근성, 크로스 브라우징을 고려해야 한다는 것을 알게 되었습니다. 특히 웹 접근성 확보를 위해 이미지에 대체 텍스트를 제공하는 등 사용자를 위한 배려가 중요하다는 점을 인지하게 되었습니다. 앞으로 웹 개발을 할 때 이러한 서비스 품질 조건을 항상 염두에 두어야겠습니다.\n헷갈렸던 점 웹사이트를 만들 때는 단순히 예쁜 디자인을 만드는 것만으로는 안 된다는 점이 처음에는 와닿지 않았습니다. 웹 접근성이나 크로스 브라우징과 같은 개념들이 생각보다 복잡하게 느껴졌고, ‘내 눈에 보이는 것’과 ‘모든 사용자에게 사용 가능한 것’ 사이의 차이를 명확히 이해하지 못했습니다.\n정리된 이해 웹사이트는 HTML로 구조를 만들고, CSS로 디자인을 적용하고, JavaScript로 기능을 추가하여 완성됩니다. 웹 표준을 지키고 웹 접근성을 고려하여 모든 사용자가 불편함 없이 사용할 수 있도록 만들고, 다양한 브라우저와 기기에서 정상적으로 작동하도록 하는 것이 중요합니다. 이 모든 과정을 통해 사용자에게 최적의 경험을 제공하는 웹사이트를 만들 수 있습니다.\n\u003c!DOCTYPE html\u003e \u003chtml lang=\"ko\"\u003e \u003chead\u003e \u003cmeta charset=\"UTF-8\"\u003e \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"\u003e \u003ctitle\u003e초보 웹사이트\u003c/title\u003e \u003c/head\u003e \u003cbody 3. HTML 문서 구조와 메타데이터 완벽 이해하기 무엇을 배웠나 HTML 문서 구조에서 영역이 웹 페이지의 실제 보이는 영역이 아닌 메타데이터를 담는 곳이라는 것을 제대로 이해하게 되었습니다. favicon 연결 시 rel 속성을 정확하게 사용하는 방법과 \u003c/code\u003e 태그에 텍스트만 삽입할 수 있다는 것도 알게 되었습니다. 앞으로는 \u003ccode\u003e\u003chead\u003e\u003c/code\u003e 영역을 정확하게 활용하여 웹 페이지의 정보와 설정을 관리해야겠습니다.\n\u003ch3 id=\"헷갈렸던-점-2\"\u003e헷갈렸던 점\u003c/h3\u003e \u003cp\u003e\u003ccode\u003e\u003chead\u003e\u003c/code\u003e 영역이 웹 페이지의 보이는 영역이라고 착각했고, favicon을 연결할 때 \u003ccode\u003erel\u003c/code\u003e 속성에 파일 형식을 직접 지정하는 실수를 했습니다. 또한 \u003ccode\u003e\u003ctitle\u003e\u003c/code\u003e 태그 안에 이미지를 넣어 브라우저 탭에 표시할 수 있다고 생각했습니다.\n\u003ch3 id=\"정리된-이해-2\"\u003e정리된 이해\u003c/h3\u003e \u003cp\u003eHTML 문서 구조에서 \u003ccode\u003e\u003chead\u003e\u003c/code\u003e는 화면에 직접 보이는 부분(\u003ccode\u003e\u003cbody\u003c/code\u003e)이 아닌, 문서의 메타데이터와 설정을 담는 중요한 영역이다. \u003ccode\u003e\u003ctitle\u003e\u003c/code\u003e 태그는 텍스트만 표시하며, favicon 연결 시 \u003ccode\u003erel\u003c/code\u003e 속성은 \u003ccode\u003erel=\"icon\"\u003c/code\u003e으로 지정해야 한다. 이처럼 \u003ccode\u003e\u003chead\u003e\u003c/code\u003e 영역을 정확히 이해하고 활용하는 것이 웹 페이지의 완성도를 높이는 데 필수적이다.\n\u003cdiv class=\"highlight\"\u003e\u003cpre tabindex=\"0\" style=\"color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;\"\u003e\u003ccode class=\"language-html\" data-lang=\"html\"\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003e\u003c\u003cspan style=\"color:#f92672\"\u003elink\u003c/span\u003e \u003cspan style=\"color:#a6e22e\"\u003erel\u003c/span\u003e\u003cspan style=\"color:#f92672\"\u003e=\u003c/span\u003e\u003cspan style=\"color:#e6db74\"\u003e\"icon\"\u003c/span\u003e \u003cspan style=\"color:#a6e22e\"\u003etype\u003c/span\u003e\u003cspan style=\"color:#f92672\"\u003e=\u003c/span\u003e\u003cspan style=\"color:#e6db74\"\u003e\"image/png\"\u003c/span\u003e \u003cspan style=\"color:#a6e22e\"\u003ehref\u003c/span\u003e\u003cspan style=\"color:#f92672\"\u003e=\u003c/span\u003e\u003cspan style=\"color:#e6db74\"\u003e\"myIcon.png\"\u003c/span\u003e\u003e \u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\u003cdiv class=\"highlight\"\u003e\u003cpre tabindex=\"0\" style=\"color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;\"\u003e\u003ccode class=\"language-html\" data-lang=\"html\"\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003e\u003c\u003cspan style=\"color:#f92672\"\u003elink\u003c/span\u003e \u003cspan style=\"color:#a6e22e\"\u003erel\u003c/span\u003e\u003cspan style=\"color:#f92672\"\u003e=\u003c/span\u003e\u003cspan style=\"color:#e6db74\"\u003e\"icon\"\u003c/span\u003e \u003cspan style=\"color:#a6e22e\"\u003etype\u003c/span\u003e\u003cspan style=\"color:#f92672\"\u003e=\u003c/span\u003e\u003cspan style=\"color:#e6db74\"\u003e\"image/png\"\u003c/span\u003e \u003cspan style=\"color:#a6e22e\"\u003ehref\u003c/span\u003e\u003cspan style=\"color:#f92672\"\u003e=\u003c/span\u003e\u003cspan style=\"color:#e6db74\"\u003e\"myIcon.png\"\u003c/span\u003e\u003e \u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\u003ch2 id=\"4-html-태그-진화와-속성-이해하기\"\u003e4. HTML 태그 진화와 속성 이해하기\u003c/h2\u003e \u003ch3 id=\"무엇을-배웠나-3\"\u003e무엇을 배웠나\u003c/h3\u003e \u003cp\u003eHTML의 역할 분담이 과거에는 구조와 시각적 표현을 동시에 담당했지만, 현재는 HTML은 구조, CSS는 스타일, JavaScript는 동작을 담당하게 되었음을 명확히 알게 되었다. 또한 HTML 요소의 구성 요소(태그명, 속성, 콘텐츠 등)를 이해하고, 예시 코드를 통해 실제 적용하는 연습을 함으로써 HTML의 기본적인 작동 방식을 익혔다. 이제는 과거 HTML 태그와 현재 지원되는 태그의 차이점을 구분하고, 속성들이 어떻게 기능을 담당하는지 파악하는 데 더 자신감을 갖게 되었다.\n\u003ch3 id=\"헷갈렸던-점-3\"\u003e헷갈렸던 점\u003c/h3\u003e \u003cp\u003e과거에는 HTML 태그 하나로 내용의 의미와 디자인까지 모두 결정했지만, 지금은 역할이 분리되어 HTML은 내용의 구조를 담당하게 되었다는 점이 처음에는 이해가 잘 안 갔었다. \u003ccode\u003e\u003cfont\u003e\u003c/code\u003e나 \u003ccode\u003e\u003ccenter\u003e\u003c/code\u003e 같은 태그가 더 이상 사용되지 않는다는 사실도, 왜 그런 변화가 있었는지 궁금했다. 속성들이 각각 무슨 역할을 하는지, 그리고 여러 속성이 함께 사용될 때 어떤 영향을 주는지 파악하는 데 시간이 좀 걸렸다.\n\u003ch3 id=\"정리된-이해-3\"\u003e정리된 이해\u003c/h3\u003e \u003cp\u003eHTML은 웹 페이지의 구조와 의미를 정의하는 역할만 담당하고, CSS로 디자인을, JavaScript로 동적인 기능을 구현하는 방식으로 분리되어 발전했습니다. HTML 요소는 태그, 속성, 콘텐츠로 구성되며, 속성은 요소에 추가적인 정보를 제공하여 기능과 의미를 확장합니다. 이러한 분리를 통해 웹 개발의 효율성과 유지보수성을 높일 수 있습니다.\n\u003cdiv class=\"highlight\"\u003e\u003cpre tabindex=\"0\" style=\"color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;\"\u003e\u003ccode class=\"language-html\" data-lang=\"html\"\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003e\u003c\u003cspan style=\"color:#f92672\"\u003eh1\u003c/span\u003e \u003cspan style=\"color:#a6e22e\"\u003estyle\u003c/span\u003e\u003cspan style=\"color:#f92672\"\u003e=\u003c/span\u003e\u003cspan style=\"color:#e6db74\"\u003e\"color: blue;\"\u003c/span\u003e\u003eHTML 태그 실습\u003c/\u003cspan style=\"color:#f92672\"\u003eh1\u003c/span\u003e\u003e \u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003e \u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003e\u003c\u003cspan style=\"color:#f92672\"\u003ep\u003c/span\u003e\u003e이 단락은 \u003c\u003cspan style=\"color:#f92672\"\u003estrong\u003c/span\u003e\u003e중요한\u003c/\u003cspan style=\"color:#f92672\"\u003estrong\u003c/span\u003e\u003e 정보를 담고 있습니다.\u003c/\u003cspan style=\"color:#f92672\"\u003ep\u003c/span\u003e\u003e \u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003e \u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003e\u003c\u003cspan style=\"color:#f92672\"\u003ea\u003c/span\u003e \u003cspan style=\"color:#a6e22e\"\u003ehref\u003c/span\u003e\u003cspan style=\"color:#f92672\"\u003e=\u003c/span\u003e\u003cspan style=\"color:#e6db74\"\u003e\"https://example.com\"\u003c/span\u003e \u003cspan style=\"color:#a6e22e\"\u003etarget\u003c/span\u003e\u003cspan style=\"color:#f92672\"\u003e=\u003c/span\u003e\u003cspan style=\"color:#e6db74\"\u003e\"_blank\"\u003c/span\u003e\u003eExample 링크\u003c/\u003cspan style=\"color:#f92672\"\u003ea\u003c/span\u003e\u003e \u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003e \u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003e\u003c\u003cspan style=\"color:#f92672\"\u003eimg\u003c/span\u003e \u003cspan style=\"color:#a6e22e\"\u003esrc\u003c/span\u003e\u003cspan style=\"color:#f92672\"\u003e=\u003c/span\u003e\u003cspan style=\"color:#e6db74\"\u003e\"image.jpg\"\u003c/span\u003e \u003cspan style=\"color:#a6e22e\"\u003ealt\u003c/span\u003e\u003cspan style=\"color:#f92672\"\u003e=\u003c/span\u003e\u003cspan style=\"color:#e6db74\"\u003e\"이미지 설명\"\u003c/span\u003e\u003e \u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\u003ch2 id=\"5-html-기본-태그-실습-제목-태그와-하이퍼링크-완벽-이해\"\u003e5. HTML 기본 태그 실습: 제목 태그와 하이퍼링크 완벽 이해\u003c/h2\u003e \u003ch3 id=\"무엇을-배웠나-4\"\u003e무엇을 배웠나\u003c/h3\u003e \u003cp\u003eHTML 기본 태그 실습을 통해 제목 태그는 단순히 텍스트 크기를 조절하는 것이 아니라 정보 구조를 나타내는 중요한 역할을 한다는 것을 깨달았습니다. 또한 하이퍼링크 태그의 기본 구조와 속성을 이해하고, CSS를 사용하여 링크의 스타일을 변경할 수 있다는 것을 알게 되었습니다. 앞으로는 HTML 코드를 작성할 때 정보의 계층 구조를 고려하고, CSS를 활용하여 디자인을 개선하는 데 더욱 집중해야겠습니다.\n\u003ch3 id=\"헷갈렸던-점-4\"\u003e헷갈렸던 점\u003c/h3\u003e \u003cp\u003e링크 태그의 기본 구조가 예전 웹사이트 경험과 달라서 혼란스러웠고, 제목 태그가 단순히 텍스트 크기를 조절하는 것 이상이라는 점을 이해하는 데 어려움이 있었습니다. 링크 스타일링과 제목 태그의 구조적인 의미를 명확히 파악하는 과정에서 검색과 실습을 반복해야 했습니다.\n\u003ch3 id=\"정리된-이해-4\"\u003e정리된 이해\u003c/h3\u003e \u003cp\u003eHTML 제목 태그는 단순히 텍스트 크기를 결정하는 것이 아니라 웹 페이지 정보의 계층 구조를 나타내는 중요한 역할을 합니다. 하이퍼링크 태그는 \u003ccode\u003ehref\u003c/code\u003e 속성을 통해 연결되는 URL을 지정하며, \u003ccode\u003etarget\u003c/code\u003e 속성을 사용해 새 탭에서 링크를 열 수 있고, CSS를 통해 다양한 스타일을 적용할 수 있습니다. 이러한 기본 태그들을 이해하고 활용하면 웹 페이지의 구조를 명확하게 만들고 사용자의 편의성을 높일 수 있습니다.\n\u003cdiv class=\"highlight\"\u003e\u003cpre tabindex=\"0\" style=\"color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;\"\u003e\u003ccode class=\"language-html\" data-lang=\"html\"\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003ea { \u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003e color: inherit; /* 기본 텍스트 색상 상속 */ \u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003e text-decoration: none; /* 밑줄 제거 */ \u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003e} \u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\u003ch2 id=\"6-html-편집기-포맷팅-빠른-학습-속도-그리고-효과적인-이해-전략\"\u003e6. HTML 편집기 포맷팅, 빠른 학습 속도, 그리고 효과적인 이해 전략\u003c/h2\u003e \u003ch3 id=\"무엇을-배웠나-5\"\u003e무엇을 배웠나\u003c/h3\u003e \u003cp\u003e다양한 편집기 사용법 혼란을 겪었는데, IDE는 단순히 코드 작성 도구일 뿐이고 HTML 문법 자체를 바꾸지 않는다는 점을 깨달았다. 기능 이름을 중심으로 학습하고 편집기 설정의 영향을 고려하면 좀 더 효율적으로 학습할 수 있을 것 같다. 앞으로는 코드 작성 도구에만 집중하기보다는 HTML의 기본 구조와 문법을 함께 익히는 것이 중요하다고 생각한다.\n\u003ch3 id=\"헷갈렸던-점-5\"\u003e헷갈렸던 점\u003c/h3\u003e \u003cp\u003e처음에는 각 IDE마다 다른 단축키 때문에 코드를 깔끔하게 정리하는 포맷팅 작업을 할 때마다 당황스러웠다. 빠르게 진행되는 강의 내용 때문에 웹 표준이나 크로스 브라우징 같은 중요한 개념들을 제대로 이해하지 못할까 봐 걱정되기도 했다. 편집기 사용법에만 집중하느라 HTML 구조 자체에 대한 이해가 부족했다는 걸 깨달았다.\n\u003ch3 id=\"정리된-이해-5\"\u003e정리된 이해\u003c/h3\u003e \u003cp\u003eIDE는 코드 작성을 돕는 도구일 뿐, HTML 문법 자체를 바꾸지 않는다는 것을 깨달았고, 특정 단축키보다는 기능 이름을 익혀서 다양한 환경에서도 적용할 수 있도록 해야겠다. 편집기 설정에 따라 포맷팅 스타일이 달라질 수 있다는 점을 기억하고, HTML 문법과 기본 구조에 집중하며 학습 속도를 조절해야겠다.\n\u003cdiv class=\"highlight\"\u003e\u003cpre tabindex=\"0\" style=\"color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;\"\u003e\u003ccode class=\"language-html\" data-lang=\"html\"\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003e\u003c\u003cspan style=\"color:#f92672\"\u003ebody\u003c/span\u003e\u003e \u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003e \u003c\u003cspan style=\"color:#f92672\"\u003eh1\u003c/span\u003e\u003cspan style=\"color:#960050;background-color:#1e0010\"\u003e\"\u003c/span\u003e\u003eHello World\u003c/\u003cspan style=\"color:#f92672\"\u003eh1\u003c/span\u003e\u003e \u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003e \u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003e \u003c\u003cspan style=\"color:#f92672\"\u003eul\u003c/span\u003e\u003e \u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003e \u003c\u003cspan style=\"color:#f92672\"\u003eli\u003c/span\u003e\u003cspan style=\"color:#960050;background-color:#1e0010\"\u003e\"\u003c/span\u003e\u003e메뉴1\u003c/\u003cspan style=\"color:#f92672\"\u003eli\u003c/span\u003e\u003e \u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003e \u003c/\u003cspan style=\"color:#f92672\"\u003eul\u003c/span\u003e\u003e \u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\u003ch2 id=\"총평\"\u003e총평\u003c/h2\u003e \u003ch3 id=\"오늘-오후-전체에서-배운-것\"\u003e오늘 오후 전체에서 배운 것\u003c/h3\u003e \u003cp\u003euv 프로젝트 초기화 및 의존성 관리, 웹 표준 및 접근성, HTML 문서 구조 및 태그 활용 등 웹 개발 기초를 다지는 시간을 보냈다. 특히 HTML 구조와 역할 분담에 대한 이해를 높이고, 웹 접근성을 고려한 개발의 중요성을 인지하게 되었으며, 앞으로 프로젝트를 진행하면서 학습한 내용을 적용해 나갈 계획이다. 다양한 편집기 사용법에 대한 혼란도 줄이고, HTML 기본 구조와 문법을 함께 익히는 방향으로 학습 접근 방식을 개선할 것이다.\n\u003ch3 id=\"다음에-조심할-것\"\u003e다음에 조심할 것\u003c/h3\u003e \u003cp\u003e앞으로는 웹 표준, 접근성, 크로스 브라우징을 잊지 않고 웹 개발에 적용해야겠다. 특히 이미지 대체 텍스트 제공 등 사용자 배려를 위한 요소들을 항상 염두에 두어야 프로젝트의 완성도를 높일 수 있을 것이다. 편집기 설정에 너무 의존하지 않고, HTML의 기본적인 구조와 문법을 먼저 익히는 것이 학습 속도를 높이는 데 도움이 될 것 같다.\n\u003ch3 id=\"다음-복습-주제\"\u003e다음 복습 주제\u003c/h3\u003e \u003cp\u003e웹 접근성에 대한 이해를 바탕으로 실제 프로젝트에 적용하는 연습을 더 해야 할 것 같습니다. 특히 다양한 사용자 환경을 고려하여 웹 표준을 준수하고, 이미지 대체 텍스트 제공 등 사용자를 위한 배려를 구체적으로 적용하는 방법을 숙지해야겠습니다. 또 HTML 태그 진화 과정에서 변화된 역할 분담과 속성들을 다시 한번 복습하여 실제 코딩에 자연스럽게 적용되도록 노력해야겠습니다.\n\u003cblockquote\u003e \u003cp\u003e🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n\u003c/blockquote\u003e ",
+  "wordCount" : "1231",
+  "inLanguage": "en",
+  "datePublished": "2026-07-24T00:00:00Z",
+  "dateModified": "2026-07-24T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-07-24-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      웹 기초와 HTML 심화 학습으로 프로젝트 관리 역량 강화
+    </h1>
+    <div class="post-description">
+      2026-07-24 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-24 00:00:00 +0000 UTC'>2026년 7월 24일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-uv-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%B4%88%EA%B8%B0%ED%99%94-%EB%B0%8F-%EC%9D%98%EC%A1%B4%EC%84%B1-%EA%B4%80%EB%A6%AC-%EA%B0%80%EC%9D%B4%EB%93%9C">uv 프로젝트 초기화 및 의존성 관리 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%9B%B9-%EA%B8%B0%EC%B4%88-%EC%9B%B9-%ED%91%9C%EC%A4%80-%EC%A0%91%EA%B7%BC%EC%84%B1-%ED%81%AC%EB%A1%9C%EC%8A%A4-%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A7%95-%EC%9D%B4%ED%95%B4">웹 기초: 웹 표준, 접근성, 크로스 브라우징 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-html-%EB%AC%B8%EC%84%9C-%EA%B5%AC%EC%A1%B0%EC%99%80-head-%EB%A9%94%ED%83%80%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%99%84%EB%B2%BD-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">HTML 문서 구조와 <code>&lt;head&gt;</code> 메타데이터 완벽 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-html-%ED%83%9C%EA%B7%B8-%EC%A7%84%ED%99%94%EC%99%80-%EC%86%8D%EC%84%B1-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">HTML 태그 진화와 속성 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-html-%EA%B8%B0%EB%B3%B8-%ED%83%9C%EA%B7%B8-%EC%8B%A4%EC%8A%B5-%EC%A0%9C%EB%AA%A9-%ED%83%9C%EA%B7%B8%EC%99%80-%ED%95%98%EC%9D%B4%ED%8D%BC%EB%A7%81%ED%81%AC-%EC%99%84%EB%B2%BD-%EC%9D%B4%ED%95%B4">HTML 기본 태그 실습: 제목 태그와 하이퍼링크 완벽 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="6">
+<li><a href="#6-html-%ED%8E%B8%EC%A7%91%EA%B8%B0-%ED%8F%AC%EB%A7%B7%ED%8C%85-%EB%B9%A0%EB%A5%B8-%ED%95%99%EC%8A%B5-%EC%86%8D%EB%8F%84-%EA%B7%B8%EB%A6%AC%EA%B3%A0-%ED%9A%A8%EA%B3%BC%EC%A0%81%EC%9D%B8-%EC%9D%B4%ED%95%B4-%EC%A0%84%EB%9E%B5">HTML 편집기 포맷팅, 빠른 학습 속도, 그리고 효과적인 이해 전략</a></li>
+</ol>
+</li>
+</ul>
+<h2 id="1-uv-프로젝트-초기화-및-의존성-관리-가이드">1. uv 프로젝트 초기화 및 의존성 관리 가이드<a hidden class="anchor" aria-hidden="true" href="#1-uv-프로젝트-초기화-및-의존성-관리-가이드">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>uv 프로젝트를 초기화하고 의존성을 관리할 때 <code>pip install</code>와 <code>uv add</code>의 차이점을 명확히 이해하게 되었다. <code>pyproject.toml</code>은 프로젝트의 의존성 정보를 정의하고, <code>uv.lock</code>은 실제 설치된 패키지 버전과 해시값을 기록하여 재현성을 보장한다는 것도 알게 되었다. 이제 uv를 사용한 프로젝트를 더 효과적으로 관리할 수 있을 것 같다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>처음에는 <code>pip install</code>과 <code>uv add</code> 명령의 차이를 명확하게 이해하지 못했습니다. 패키지를 설치하는 과정이 비슷해 보여서 어떤 명령을 언제 사용해야 하는지 헷갈렸습니다. 또한, <code>pyproject.toml</code>과 <code>uv.lock</code> 파일이 비슷해 보여서 각각의 역할이 무엇인지 파악하는 데 어려움을 겪었습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p><code>pip install</code>은 전역 환경에 패키지를 설치하는 반면, <code>uv add</code>는 프로젝트의 의존성을 관리하고 추적하는 데 사용된다. <code>pyproject.toml</code> 파일은 프로젝트가 필요로 하는 패키지와 버전을 명시하고, <code>uv.lock</code> 파일은 프로젝트의 의존성 트리를 기록하여 재현 가능한 환경을 구축하도록 돕는다. 즉, <code>uv</code>는 프로젝트 기반 의존성 관리 도구이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#75715e"># pyproject.toml 예시</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">project</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">name</span> = <span style="color:#e6db74">&#34;uv-project&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">version</span> = <span style="color:#e6db74">&#34;0.1.0&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">requires-python</span> = <span style="color:#e6db74">&#34;&gt;=3.14&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">dependencies</span> = [
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;pandas&gt;=3.0.5&#34;</span>,
+</span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span># uv.lock 예시 (간략화)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    &#34;dependencies&#34;: {
+</span></span><span style="display:flex;"><span>      &#34;pandas&#34;: {
+</span></span><span style="display:flex;"><span>        &#34;version&#34;: &#34;==3.0.5&#34;,
+</span></span><span style="display:flex;"><span>        &#34;hashes&#34;: [...]
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><h2 id="2-웹-기초-웹-표준-접근성-크로스-브라우징-이해">2. 웹 기초: 웹 표준, 접근성, 크로스 브라우징 이해<a hidden class="anchor" aria-hidden="true" href="#2-웹-기초-웹-표준-접근성-크로스-브라우징-이해">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>웹사이트 제작은 단순히 HTML, CSS, JavaScript를 사용하는 것 외에도 웹 표준, 웹 접근성, 크로스 브라우징을 고려해야 한다는 것을 알게 되었습니다. 특히 웹 접근성 확보를 위해 이미지에 대체 텍스트를 제공하는 등 사용자를 위한 배려가 중요하다는 점을 인지하게 되었습니다. 앞으로 웹 개발을 할 때 이러한 서비스 품질 조건을 항상 염두에 두어야겠습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>웹사이트를 만들 때는 단순히 예쁜 디자인을 만드는 것만으로는 안 된다는 점이 처음에는 와닿지 않았습니다. 웹 접근성이나 크로스 브라우징과 같은 개념들이 생각보다 복잡하게 느껴졌고, &lsquo;내 눈에 보이는 것&rsquo;과 &lsquo;모든 사용자에게 사용 가능한 것&rsquo; 사이의 차이를 명확히 이해하지 못했습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>웹사이트는 HTML로 구조를 만들고, CSS로 디자인을 적용하고, JavaScript로 기능을 추가하여 완성됩니다. 웹 표준을 지키고 웹 접근성을 고려하여 모든 사용자가 불편함 없이 사용할 수 있도록 만들고, 다양한 브라우저와 기기에서 정상적으로 작동하도록 하는 것이 중요합니다. 이 모든 과정을 통해 사용자에게 최적의 경험을 제공하는 웹사이트를 만들 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ko&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;viewport&#34;</span> <span style="color:#a6e22e">content</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;width=device-width, initial-scale=1.0&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">title</span>&gt;초보 웹사이트&lt;/<span style="color:#f92672">title</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">body</span>
+</span></span></code></pre></div><h2 id="3-html-문서-구조와-head-메타데이터-완벽-이해하기">3. HTML 문서 구조와 <code>&lt;head&gt;</code> 메타데이터 완벽 이해하기<a hidden class="anchor" aria-hidden="true" href="#3-html-문서-구조와-head-메타데이터-완벽-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>HTML 문서 구조에서 <code>&lt;head&gt;</code> 영역이 웹 페이지의 실제 보이는 영역이 아닌 메타데이터를 담는 곳이라는 것을 제대로 이해하게 되었습니다. favicon 연결 시 <code>rel</code> 속성을 정확하게 사용하는 방법과 <code>&lt;title&gt;</code> 태그에 텍스트만 삽입할 수 있다는 것도 알게 되었습니다. 앞으로는 <code>&lt;head&gt;</code> 영역을 정확하게 활용하여 웹 페이지의 정보와 설정을 관리해야겠습니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p><code>&lt;head&gt;</code> 영역이 웹 페이지의 보이는 영역이라고 착각했고, favicon을 연결할 때 <code>rel</code> 속성에 파일 형식을 직접 지정하는 실수를 했습니다. 또한 <code>&lt;title&gt;</code> 태그 안에 이미지를 넣어 브라우저 탭에 표시할 수 있다고 생각했습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>HTML 문서 구조에서 <code>&lt;head&gt;</code>는 화면에 직접 보이는 부분(<code>&lt;body</code>)이 아닌, 문서의 메타데이터와 설정을 담는 중요한 영역이다. <code>&lt;title&gt;</code> 태그는 텍스트만 표시하며, favicon 연결 시 <code>rel</code> 속성은 <code>rel=&quot;icon&quot;</code>으로 지정해야 한다. 이처럼 <code>&lt;head&gt;</code> 영역을 정확히 이해하고 활용하는 것이 웹 페이지의 완성도를 높이는 데 필수적이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">link</span> <span style="color:#a6e22e">rel</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;icon&#34;</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;image/png&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;myIcon.png&#34;</span>&gt;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">link</span> <span style="color:#a6e22e">rel</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;icon&#34;</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;image/png&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;myIcon.png&#34;</span>&gt;
+</span></span></code></pre></div><h2 id="4-html-태그-진화와-속성-이해하기">4. HTML 태그 진화와 속성 이해하기<a hidden class="anchor" aria-hidden="true" href="#4-html-태그-진화와-속성-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>HTML의 역할 분담이 과거에는 구조와 시각적 표현을 동시에 담당했지만, 현재는 HTML은 구조, CSS는 스타일, JavaScript는 동작을 담당하게 되었음을 명확히 알게 되었다. 또한 HTML 요소의 구성 요소(태그명, 속성, 콘텐츠 등)를 이해하고, 예시 코드를 통해 실제 적용하는 연습을 함으로써 HTML의 기본적인 작동 방식을 익혔다. 이제는 과거 HTML 태그와 현재 지원되는 태그의 차이점을 구분하고, 속성들이 어떻게 기능을 담당하는지 파악하는 데 더 자신감을 갖게 되었다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>과거에는 HTML 태그 하나로 내용의 의미와 디자인까지 모두 결정했지만, 지금은 역할이 분리되어 HTML은 내용의 구조를 담당하게 되었다는 점이 처음에는 이해가 잘 안 갔었다. <code>&lt;font&gt;</code>나 <code>&lt;center&gt;</code> 같은 태그가 더 이상 사용되지 않는다는 사실도, 왜 그런 변화가 있었는지 궁금했다. 속성들이 각각 무슨 역할을 하는지, 그리고 여러 속성이 함께 사용될 때 어떤 영향을 주는지 파악하는 데 시간이 좀 걸렸다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>HTML은 웹 페이지의 구조와 의미를 정의하는 역할만 담당하고, CSS로 디자인을, JavaScript로 동적인 기능을 구현하는 방식으로 분리되어 발전했습니다. HTML 요소는 태그, 속성, 콘텐츠로 구성되며, 속성은 요소에 추가적인 정보를 제공하여 기능과 의미를 확장합니다. 이러한 분리를 통해 웹 개발의 효율성과 유지보수성을 높일 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">h1</span> <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;color: blue;&#34;</span>&gt;HTML 태그 실습&lt;/<span style="color:#f92672">h1</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">p</span>&gt;이 단락은 &lt;<span style="color:#f92672">strong</span>&gt;중요한&lt;/<span style="color:#f92672">strong</span>&gt; 정보를 담고 있습니다.&lt;/<span style="color:#f92672">p</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://example.com&#34;</span> <span style="color:#a6e22e">target</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;_blank&#34;</span>&gt;Example 링크&lt;/<span style="color:#f92672">a</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;image.jpg&#34;</span> <span style="color:#a6e22e">alt</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;이미지 설명&#34;</span>&gt;
+</span></span></code></pre></div><h2 id="5-html-기본-태그-실습-제목-태그와-하이퍼링크-완벽-이해">5. HTML 기본 태그 실습: 제목 태그와 하이퍼링크 완벽 이해<a hidden class="anchor" aria-hidden="true" href="#5-html-기본-태그-실습-제목-태그와-하이퍼링크-완벽-이해">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>HTML 기본 태그 실습을 통해 제목 태그는 단순히 텍스트 크기를 조절하는 것이 아니라 정보 구조를 나타내는 중요한 역할을 한다는 것을 깨달았습니다. 또한 하이퍼링크 태그의 기본 구조와 속성을 이해하고, CSS를 사용하여 링크의 스타일을 변경할 수 있다는 것을 알게 되었습니다. 앞으로는 HTML 코드를 작성할 때 정보의 계층 구조를 고려하고, CSS를 활용하여 디자인을 개선하는 데 더욱 집중해야겠습니다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>링크 태그의 기본 구조가 예전 웹사이트 경험과 달라서 혼란스러웠고, 제목 태그가 단순히 텍스트 크기를 조절하는 것 이상이라는 점을 이해하는 데 어려움이 있었습니다. 링크 스타일링과 제목 태그의 구조적인 의미를 명확히 파악하는 과정에서 검색과 실습을 반복해야 했습니다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>HTML 제목 태그는 단순히 텍스트 크기를 결정하는 것이 아니라 웹 페이지 정보의 계층 구조를 나타내는 중요한 역할을 합니다. 하이퍼링크 태그는 <code>href</code> 속성을 통해 연결되는 URL을 지정하며, <code>target</code> 속성을 사용해 새 탭에서 링크를 열 수 있고, CSS를 통해 다양한 스타일을 적용할 수 있습니다. 이러한 기본 태그들을 이해하고 활용하면 웹 페이지의 구조를 명확하게 만들고 사용자의 편의성을 높일 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>a {
+</span></span><span style="display:flex;"><span>    color: inherit; /* 기본 텍스트 색상 상속 */
+</span></span><span style="display:flex;"><span>    text-decoration: none; /* 밑줄 제거 */
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="6-html-편집기-포맷팅-빠른-학습-속도-그리고-효과적인-이해-전략">6. HTML 편집기 포맷팅, 빠른 학습 속도, 그리고 효과적인 이해 전략<a hidden class="anchor" aria-hidden="true" href="#6-html-편집기-포맷팅-빠른-학습-속도-그리고-효과적인-이해-전략">#</a></h2>
+<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
+<p>다양한 편집기 사용법 혼란을 겪었는데, IDE는 단순히 코드 작성 도구일 뿐이고 HTML 문법 자체를 바꾸지 않는다는 점을 깨달았다. 기능 이름을 중심으로 학습하고 편집기 설정의 영향을 고려하면 좀 더 효율적으로 학습할 수 있을 것 같다. 앞으로는 코드 작성 도구에만 집중하기보다는 HTML의 기본 구조와 문법을 함께 익히는 것이 중요하다고 생각한다.</p>
+<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
+<p>처음에는 각 IDE마다 다른 단축키 때문에 코드를 깔끔하게 정리하는 포맷팅 작업을 할 때마다 당황스러웠다. 빠르게 진행되는 강의 내용 때문에 웹 표준이나 크로스 브라우징 같은 중요한 개념들을 제대로 이해하지 못할까 봐 걱정되기도 했다. 편집기 사용법에만 집중하느라 HTML 구조 자체에 대한 이해가 부족했다는 걸 깨달았다.</p>
+<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
+<p>IDE는 코드 작성을 돕는 도구일 뿐, HTML 문법 자체를 바꾸지 않는다는 것을 깨달았고, 특정 단축키보다는 기능 이름을 익혀서 다양한 환경에서도 적용할 수 있도록 해야겠다. 편집기 설정에 따라 포맷팅 스타일이 달라질 수 있다는 점을 기억하고, HTML 문법과 기본 구조에 집중하며 학습 속도를 조절해야겠다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">h1</span><span style="color:#960050;background-color:#1e0010">&#34;</span>&gt;Hello World&lt;/<span style="color:#f92672">h1</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">ul</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">li</span><span style="color:#960050;background-color:#1e0010">&#34;</span>&gt;메뉴1&lt;/<span style="color:#f92672">li</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">ul</span>&gt;
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>uv 프로젝트 초기화 및 의존성 관리, 웹 표준 및 접근성, HTML 문서 구조 및 태그 활용 등 웹 개발 기초를 다지는 시간을 보냈다. 특히 HTML 구조와 역할 분담에 대한 이해를 높이고, 웹 접근성을 고려한 개발의 중요성을 인지하게 되었으며, 앞으로 프로젝트를 진행하면서 학습한 내용을 적용해 나갈 계획이다. 다양한 편집기 사용법에 대한 혼란도 줄이고, HTML 기본 구조와 문법을 함께 익히는 방향으로 학습 접근 방식을 개선할 것이다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>앞으로는 웹 표준, 접근성, 크로스 브라우징을 잊지 않고 웹 개발에 적용해야겠다. 특히 이미지 대체 텍스트 제공 등 사용자 배려를 위한 요소들을 항상 염두에 두어야 프로젝트의 완성도를 높일 수 있을 것이다. 편집기 설정에 너무 의존하지 않고, HTML의 기본적인 구조와 문법을 먼저 익히는 것이 학습 속도를 높이는 데 도움이 될 것 같다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>웹 접근성에 대한 이해를 바탕으로 실제 프로젝트에 적용하는 연습을 더 해야 할 것 같습니다. 특히 다양한 사용자 환경을 고려하여 웹 표준을 준수하고, 이미지 대체 텍스트 제공 등 사용자를 위한 배려를 구체적으로 적용하는 방법을 숙지해야겠습니다. 또 HTML 태그 진화 과정에서 변화된 역할 분담과 속성들을 다시 한번 복습하여 실제 코딩에 자연스럽게 적용되도록 노력해야겠습니다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://Han-think.github.io/learning/2026-07-24-am-daily/">
+    <span class="title">Next »</span>
+    <span>파이썬 스타일 가이드부터 패키지 관리까지, 코드 품질 향상을 위한 핵심 내용 정리</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

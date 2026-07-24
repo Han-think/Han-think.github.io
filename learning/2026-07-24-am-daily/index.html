@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>파이썬 스타일 가이드부터 패키지 관리까지, 코드 품질 향상을 위한 핵심 내용 정리 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-07-24 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-07-24-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-07-24-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-24-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="파이썬 스타일 가이드부터 패키지 관리까지, 코드 품질 향상을 위한 핵심 내용 정리">
+  <meta property="og:description" content="2026-07-24 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-07-24T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-24T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="파이썬 스타일 가이드부터 패키지 관리까지, 코드 품질 향상을 위한 핵심 내용 정리">
+  <meta name="twitter:description" content="2026-07-24 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "파이썬 스타일 가이드부터 패키지 관리까지, 코드 품질 향상을 위한 핵심 내용 정리",
+      "item": "https://Han-think.github.io/learning/2026-07-24-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "파이썬 스타일 가이드부터 패키지 관리까지, 코드 품질 향상을 위한 핵심 내용 정리",
+  "name": "파이썬 스타일 가이드부터 패키지 관리까지, 코드 품질 향상을 위한 핵심 내용 정리",
+  "description": "2026-07-24 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 파이썬 코드 스타일 가이드: 컨벤션과 네이밍 규칙 함수 컨벤션과 테스트 가능성 이해 코드 이해를 돕는 주석, 독스트링, 타입 힌트 활용법 프로젝트 구조와 모듈 분리, 효율적인 코드 관리를 위한 고민 Python 패키지 관리: PyPI, pip, requirements.txt 활용법 수업 보조 자료 링크 관리 및 접근 가이드 총평 1. 파이썬 코드 스타일 가이드: 컨벤션과 네이밍 규칙 무엇을 배웠나 로컬 임포트는 직접 작성한 코드뿐 아니라 조직 내에서 공유되는 패키지도 포함하는 개념이라는 것을 알게 되었고, 케이스 표기법은 코드 실행에 영향을 미치는 것이 아니라 코딩 스타일 가이드라인이라는 것을 명확히 이해했습니다. 특히 파이썬에서도 대소문자 구분이 중요하며, snake_case는 대소문자를 구분하여 사용해야 한다는 점을 다시 한번 확인했습니다. 이러한 규칙들을 통해 코드의 가독성과 유지보수성을 높일 수 있다는 것을 깨달았습니다.\n헷갈렸던 점 처음에는 local import가 무엇을 의미하는지 명확하게 이해하지 못했고, 케이스 표기법이 코드 실행에 영향을 미치는 줄 알았습니다. 또한 SQL 경험 때문에 snake_case는 대소문자 구분이 없는 방식이라고 잘못 생각했습니다.\n정리된 이해 로컬 임포트는 프로젝트 내에서 관리하는 코드, 즉 직접 작성한 코드와 조직 내에서 공유되는 패키지를 모두 포함하는 개념이다. 케이스 표기법은 코드 스타일을 나타낼 뿐 실행 결과에 영향을 주지 않으며, snake_case는 파이썬에서 대소문자 구분을 명확하게 해야 하는 규칙을 따르는 방식이다. dunder 메소드는 파이썬에서 특별한 역할을 수행하는 메소드를 지칭하는 용어이다.\nclass TextClassifier: pass def calculateTotal(data): pass def load_data(): pass 2. 함수 컨벤션과 테스트 가능성 이해 무엇을 배웠나 함수 인자 관리에서 *와 ** 문법의 역할을 명확히 이해하게 되었고, 여러 인자를 다룰 때 튜플과 딕셔너리를 활용하는 방법을 알게 되었다. 테스트 가능성이 단순히 테스트 코드 작성을 넘어 전체 시스템의 효율성과 오류 추적 능력을 향상시키는 중요한 요소임을 깨달았다. 이제는 코드를 작은 단위로 나누어 테스트 가능한 함수를 설계하는 것이 필요하다는 점을 알게 되었다.\n헷갈렸던 점 함수 인자 관리에서 *와 **의 차이와 활용법을 명확히 이해하지 못했고, 특히 가변 인자를 사용하는 상황에서 혼란이 컸습니다. 테스트 가능성이라는 개념을 단순히 테스트 코드 작성을 의미하는 것으로만 생각하여, 실제 코드의 유지보수성과 디버깅 효율성에 미치는 영향에 대해 충분히 인지하지 못했습니다.\n정리된 이해 *는 여러 개의 위치 인자를 튜플로 묶어 함수에 전달하고, **는 키워드 인자를 딕셔너리로 묶어 전달하는 방법이 명확해졌습니다. 테스트 가능성을 높이기 위해서는 함수를 작게 나누어 각자의 역할을 분리하고, 독립적으로 테스트할 수 있도록 설계하는 것이 중요하며, 이를 통해 코드의 안정성과 유지보수성을 높일 수 있습니다. 앞으로는 테스트 가능성을 고려하여 함수를 설계하는 습관을 들여야겠습니다.\ndef add_all(*values): return sum(values) def show_config(**options): return options 3. 코드 이해를 돕는 주석, 독스트링, 타입 힌트 활용법 무엇을 배웠나 주석, 독스트링, 핸드북의 역할을 명확히 구분하게 되었고, 특히 독스트링이 코드 인터페이스 문서화의 역할을 한다는 것을 알게 되었다. 타입 힌트는 변수 타입을 명시하는 문법이지만 런타임 타입 검사를 강제하지 않는다는 점도 이해했다. 또한 dict와 같은 자료형 표기 오류도 인지하여 앞으로는 정확한 표기를 사용하도록 노력해야겠다.\n헷갈렸던 점 주석, 독스트링, 핸드북의 역할이 겹치는 부분 때문에 어떤 내용을 어디에 적어야 할지 혼동되었고, 타입 힌트 문법이 생소해서 코드를 작성하는 데 어려움을 느꼈습니다. 특히 타입 힌트가 런타임에 반드시 적용되는지 확신이 없어서 코딩 스타일을 결정하는 데 망설였습니다. dict를 dic라고 잘못 표기했던 부분도 꼼꼼히 확인해야 한다는 것을 깨달았습니다.\n정리된 이해 주석은 코드 이해를 돕는 짧은 설명을, 독스트링은 함수나 클래스 같은 코드 단위의 사용법을 문서화하는 역할을 합니다. 타입 힌트는 코드의 가독성을 높이고 오류를 사전에 방지하지만, 런타임에 엄격하게 적용되지는 않습니다. dict는 dic가 아닌 올바른 자료형 표기임을 기억해야 합니다.\n# 사용자 입력을 검증합니다. if user_input.isdigit(): # 숫자 입력 처리 process_number(user_input) else: # 문자열 처리 process_string(user 4. 프로젝트 구조와 모듈 분리, 효율적인 코드 관리를 위한 고민 무엇을 배웠나 프로젝트 규모가 커질수록 파일 분리가 항상 좋은 것은 아니며, 파일 수보다는 각 파일의 역할과 책임 경계가 명확한 모듈화가 중요하다는 점을 깨달았습니다. 파일의 역할 설명 가능성, 입력/출력 명확성, 독립적인 검증 가능성 등의 질문을 통해 모듈화 수준을 판단할 수 있음을 알게 되었습니다. 현재 진행 중인 프로젝트에 적용 가능한 코드 전수조사, 결손/충돌 탐지, 변경 영향 분석 등의 체계를 구축하여 프로젝트 구조를 개선해야겠다는 방향을 잡았습니다.\n헷갈렸던 점 프로젝트 파일이 너무 많아서 과도하게 분리하는 것이 오히려 비효율적일까 봐 걱정이었고, 프로젝트 규모가 커질수록 관리하기가 더 어려워지는 것 같아서 혼란스러웠다. 코드와 데이터의 복잡한 관계 때문에 전체적인 그림을 파악하기 힘들고, 통제 불능 상태로 이어질까 봐 불안했다.\n정리된 이해 프로젝트 규모가 커질수록 파일 분리가 무조건 좋을 수 없으며, 각 파일의 역할과 책임을 명확히 하는 모듈화 수준이 중요함을 깨달았습니다. 각 파일이 독립적으로 검증 가능하고 수정 시 영향 범위를 예측할 수 있도록 설계해야 효율적인 코드 관리가 가능하며, 현재 진행 중인 체계적인 분석을 통해 이를 달성할 수 있습니다.\n# 파일: data_loader.py def load_data(): # 데이터 로드 로직 pass # 파일: data_processor.py def process_data(data): # 데이터 처리 로직 pass # 파일: data_saver.py def save_result(result): # 결과 저장 로직 pass 5. Python 패키지 관리: PyPI, pip, requirements.txt 활용법 무엇을 배웠나 PyPI는 패키지 저장소이고, pip는 그 패키지를 설치하고 관리하는 도구라는 것을 명확히 이해하게 되었어. requirements.txt는 Python 패키지 의존성을 기록하는 파일이며, IDE와 상관없이 터미널에서 pip를 통해 관리할 수 있다는 것도 알게 되었어. 또한, 프로젝트에서 필요한 모든 것을 다 포함하는 파일은 아니라는 점도 인지하게 됐어.\n헷갈렸던 점 강사님이 PyCharm을 쓰시는 모습만 보니까 pip와 requirements.txt가 PyCharm에서만 작동하는 게 아닌가 싶었고, 프로젝트 의존성을 requirements.txt가 전부 포함하는지 확신이 없었습니다. 실제로 터미널에서 pip 명령어를 사용해보고, requirements.txt가 Python 패키지 버전 정보만 담는다는 것을 알게 되었습니다.\n정리된 이해 PyPI는 파이썬 패키지 저장소이고, pip는 이 패키지를 설치하고 관리하는 도구인데, 이 둘은 IDE와 상관없이 터미널에서 사용할 수 있습니다. requirements.txt는 주로 파이썬 패키지와 버전을 기록하며, 프로젝트의 스크립트나 데이터 파일 등은 포함하지 않습니다.\n# pandas 패키지 설치 pip install pandas # 특정 버전 설치 pip install pandas==1.4.1 # 현재 환경의 패키지 목록을 requirements.txt로 내보내기 pip freeze \u003e requirements.txt 6. 수업 보조 자료 링크 관리 및 접근 가이드 무엇을 배웠나 수업 보조 자료 링크는 일반 공개가 아닌 수강생 전용 자료이므로 접근 시 권한을 확인해야 한다는 점을 알게 되었다. 링크 입력 오류 가능성을 염두에 두고, 접근이 안 될 경우 수업 게시판에서 직접 링크를 재확인하는 것이 중요하며, 자료의 공개 가능 여부와 출처를 기록하는 습관을 들여야겠다. 이 내용을 바탕으로 자료 관리를 더욱 체계적으로 할 수 있을 것 같다.\n헷갈렸던 점 화면 캡처해서 링크를 입력하는 과정에서 글자가 제대로 인식되지 않을까 봐 걱정되었고, 혹시 링크가 개인 계정에 연결되어 있어서 다른 사람들이 접근하지 못할까 봐 불안했어요. 수업 자료인지, 아니면 일반 공개된 자료인지도 헷갈렸습니다.\n정리된 이해 제공된 링크들은 일반적인 공개 자료가 아니므로, 수업 내부 보조 자료로만 활용해야 합니다. 링크 접근에 문제가 발생하면 수업 게시판에서 다시 확인하는 것이 가장 확실한 방법이며, 자료의 공개 가능 여부와 출처를 명확히 기록하는 것이 중요합니다.\n- **링크**: - Google Drive: [링크 주소] - Notion: [링크 주소] 총평 오늘 오전 전체에서 배운 것 오늘 파이썬 코드 스타일 가이드, 함수 설계, 주석 활용법, 프로젝트 구조, 패키지 관리 등 전반적인 내용을 학습했습니다. 특히 코드의 가독성과 유지보수성을 높이는 스타일 가이드 준수, 테스트 가능한 함수 설계, 그리고 모듈화를 통한 효율적인 코드 관리의 중요성을 강조하는 내용이 인상 깊었습니다. 앞으로 학습한 내용을 실제 프로젝트에 적용하여 코드 품질을 향상시키도록 노력해야겠습니다.\n다음에 조심할 것 앞으로는 코드 작성 시 snake_case 표기법을 철저히 지켜 가독성을 높이고, 함수를 작은 단위로 나누어 테스트 가능성을 확보해야겠다. 또한, 프로젝트 규모가 커질수록 모듈 간 역할과 책임 경계를 명확히 하는 데 집중하여 효율적인 코드 관리 체계를 구축하는 것이 중요하단 점을 기억해야겠다.\n다음 복습 주제 함수 컨벤션과 테스트 가능성 부분에서, 테스트 가능한 함수 설계를 위한 구체적인 방법론과 작은 단위로 나누는 기준에 대한 추가 학습이 필요할 것 같습니다. 프로젝트 구조 개선을 위해 코드 전수조사, 결손/충돌 탐지, 변경 영향 분석 등의 체계를 실제 적용하는 연습을 해봐야 할 것 같습니다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "1150",
+  "inLanguage": "en",
+  "datePublished": "2026-07-24T00:00:00Z",
+  "dateModified": "2026-07-24T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-07-24-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      파이썬 스타일 가이드부터 패키지 관리까지, 코드 품질 향상을 위한 핵심 내용 정리
+    </h1>
+    <div class="post-description">
+      2026-07-24 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-24 00:00:00 +0000 UTC'>2026년 7월 24일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%ED%8C%8C%EC%9D%B4%EC%8D%AC-%EC%BD%94%EB%93%9C-%EC%8A%A4%ED%83%80%EC%9D%BC-%EA%B0%80%EC%9D%B4%EB%93%9C-%EC%BB%A8%EB%B2%A4%EC%85%98%EA%B3%BC-%EB%84%A4%EC%9D%B4%EB%B0%8D-%EA%B7%9C%EC%B9%99">파이썬 코드 스타일 가이드: 컨벤션과 네이밍 규칙</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%ED%95%A8%EC%88%98-%EC%BB%A8%EB%B2%A4%EC%85%98%EA%B3%BC-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EA%B0%80%EB%8A%A5%EC%84%B1-%EC%9D%B4%ED%95%B4">함수 컨벤션과 테스트 가능성 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%BD%94%EB%93%9C-%EC%9D%B4%ED%95%B4%EB%A5%BC-%EB%8F%95%EB%8A%94-%EC%A3%BC%EC%84%9D-%EB%8F%85%EC%8A%A4%ED%8A%B8%EB%A7%81-%ED%83%80%EC%9E%85-%ED%9E%8C%ED%8A%B8-%ED%99%9C%EC%9A%A9%EB%B2%95">코드 이해를 돕는 주석, 독스트링, 타입 힌트 활용법</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B5%AC%EC%A1%B0%EC%99%80-%EB%AA%A8%EB%93%88-%EB%B6%84%EB%A6%AC-%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9D%B8-%EC%BD%94%EB%93%9C-%EA%B4%80%EB%A6%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-%EA%B3%A0%EB%AF%BC">프로젝트 구조와 모듈 분리, 효율적인 코드 관리를 위한 고민</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-python-%ED%8C%A8%ED%82%A4%EC%A7%80-%EA%B4%80%EB%A6%AC-pypi-pip-requirementstxt-%ED%99%9C%EC%9A%A9%EB%B2%95">Python 패키지 관리: PyPI, pip, requirements.txt 활용법</a></li>
+</ol>
+</li>
+<li>
+<ol start="6">
+<li><a href="#6-%EC%88%98%EC%97%85-%EB%B3%B4%EC%A1%B0-%EC%9E%90%EB%A3%8C-%EB%A7%81%ED%81%AC-%EA%B4%80%EB%A6%AC-%EB%B0%8F-%EC%A0%91%EA%B7%BC-%EA%B0%80%EC%9D%B4%EB%93%9C">수업 보조 자료 링크 관리 및 접근 가이드</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-파이썬-코드-스타일-가이드-컨벤션과-네이밍-규칙">1. 파이썬 코드 스타일 가이드: 컨벤션과 네이밍 규칙<a hidden class="anchor" aria-hidden="true" href="#1-파이썬-코드-스타일-가이드-컨벤션과-네이밍-규칙">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>로컬 임포트는 직접 작성한 코드뿐 아니라 조직 내에서 공유되는 패키지도 포함하는 개념이라는 것을 알게 되었고, 케이스 표기법은 코드 실행에 영향을 미치는 것이 아니라 코딩 스타일 가이드라인이라는 것을 명확히 이해했습니다. 특히 파이썬에서도 대소문자 구분이 중요하며, <code>snake_case</code>는 대소문자를 구분하여 사용해야 한다는 점을 다시 한번 확인했습니다. 이러한 규칙들을 통해 코드의 가독성과 유지보수성을 높일 수 있다는 것을 깨달았습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>처음에는 <code>local import</code>가 무엇을 의미하는지 명확하게 이해하지 못했고, 케이스 표기법이 코드 실행에 영향을 미치는 줄 알았습니다. 또한 SQL 경험 때문에 <code>snake_case</code>는 대소문자 구분이 없는 방식이라고 잘못 생각했습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>로컬 임포트는 프로젝트 내에서 관리하는 코드, 즉 직접 작성한 코드와 조직 내에서 공유되는 패키지를 모두 포함하는 개념이다. 케이스 표기법은 코드 스타일을 나타낼 뿐 실행 결과에 영향을 주지 않으며, <code>snake_case</code>는 파이썬에서 대소문자 구분을 명확하게 해야 하는 규칙을 따르는 방식이다. <code>dunder</code> 메소드는 파이썬에서 특별한 역할을 수행하는 메소드를 지칭하는 용어이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TextClassifier</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">calculateTotal</span>(data):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_data</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span>
+</span></span></code></pre></div><h2 id="2-함수-컨벤션과-테스트-가능성-이해">2. 함수 컨벤션과 테스트 가능성 이해<a hidden class="anchor" aria-hidden="true" href="#2-함수-컨벤션과-테스트-가능성-이해">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>함수 인자 관리에서 <code>*</code>와 <code>**</code> 문법의 역할을 명확히 이해하게 되었고, 여러 인자를 다룰 때 튜플과 딕셔너리를 활용하는 방법을 알게 되었다. 테스트 가능성이 단순히 테스트 코드 작성을 넘어 전체 시스템의 효율성과 오류 추적 능력을 향상시키는 중요한 요소임을 깨달았다. 이제는 코드를 작은 단위로 나누어 테스트 가능한 함수를 설계하는 것이 필요하다는 점을 알게 되었다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>함수 인자 관리에서 <code>*</code>와 <code>**</code>의 차이와 활용법을 명확히 이해하지 못했고, 특히 가변 인자를 사용하는 상황에서 혼란이 컸습니다. 테스트 가능성이라는 개념을 단순히 테스트 코드 작성을 의미하는 것으로만 생각하여, 실제 코드의 유지보수성과 디버깅 효율성에 미치는 영향에 대해 충분히 인지하지 못했습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p><code>*</code>는 여러 개의 위치 인자를 튜플로 묶어 함수에 전달하고, <code>**</code>는 키워드 인자를 딕셔너리로 묶어 전달하는 방법이 명확해졌습니다. 테스트 가능성을 높이기 위해서는 함수를 작게 나누어 각자의 역할을 분리하고, 독립적으로 테스트할 수 있도록 설계하는 것이 중요하며, 이를 통해 코드의 안정성과 유지보수성을 높일 수 있습니다. 앞으로는 테스트 가능성을 고려하여 함수를 설계하는 습관을 들여야겠습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add_all</span>(<span style="color:#f92672">*</span>values):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> sum(values)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">show_config</span>(<span style="color:#f92672">**</span>options):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> options
+</span></span></code></pre></div><h2 id="3-코드-이해를-돕는-주석-독스트링-타입-힌트-활용법">3. 코드 이해를 돕는 주석, 독스트링, 타입 힌트 활용법<a hidden class="anchor" aria-hidden="true" href="#3-코드-이해를-돕는-주석-독스트링-타입-힌트-활용법">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>주석, 독스트링, 핸드북의 역할을 명확히 구분하게 되었고, 특히 독스트링이 코드 인터페이스 문서화의 역할을 한다는 것을 알게 되었다. 타입 힌트는 변수 타입을 명시하는 문법이지만 런타임 타입 검사를 강제하지 않는다는 점도 이해했다. 또한 <code>dict</code>와 같은 자료형 표기 오류도 인지하여 앞으로는 정확한 표기를 사용하도록 노력해야겠다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>주석, 독스트링, 핸드북의 역할이 겹치는 부분 때문에 어떤 내용을 어디에 적어야 할지 혼동되었고, 타입 힌트 문법이 생소해서 코드를 작성하는 데 어려움을 느꼈습니다. 특히 타입 힌트가 런타임에 반드시 적용되는지 확신이 없어서 코딩 스타일을 결정하는 데 망설였습니다. <code>dict</code>를 <code>dic</code>라고 잘못 표기했던 부분도 꼼꼼히 확인해야 한다는 것을 깨달았습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>주석은 코드 이해를 돕는 짧은 설명을, 독스트링은 함수나 클래스 같은 코드 단위의 사용법을 문서화하는 역할을 합니다. 타입 힌트는 코드의 가독성을 높이고 오류를 사전에 방지하지만, 런타임에 엄격하게 적용되지는 않습니다. <code>dict</code>는 <code>dic</code>가 아닌 올바른 자료형 표기임을 기억해야 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 사용자 입력을 검증합니다.</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> user_input<span style="color:#f92672">.</span>isdigit():
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 숫자 입력 처리</span>
+</span></span><span style="display:flex;"><span>    process_number(user_input)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 문자열 처리</span>
+</span></span><span style="display:flex;"><span>    process_string(user
+</span></span></code></pre></div><h2 id="4-프로젝트-구조와-모듈-분리-효율적인-코드-관리를-위한-고민">4. 프로젝트 구조와 모듈 분리, 효율적인 코드 관리를 위한 고민<a hidden class="anchor" aria-hidden="true" href="#4-프로젝트-구조와-모듈-분리-효율적인-코드-관리를-위한-고민">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>프로젝트 규모가 커질수록 파일 분리가 항상 좋은 것은 아니며, 파일 수보다는 각 파일의 역할과 책임 경계가 명확한 모듈화가 중요하다는 점을 깨달았습니다. 파일의 역할 설명 가능성, 입력/출력 명확성, 독립적인 검증 가능성 등의 질문을 통해 모듈화 수준을 판단할 수 있음을 알게 되었습니다. 현재 진행 중인 프로젝트에 적용 가능한 코드 전수조사, 결손/충돌 탐지, 변경 영향 분석 등의 체계를 구축하여 프로젝트 구조를 개선해야겠다는 방향을 잡았습니다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>프로젝트 파일이 너무 많아서 과도하게 분리하는 것이 오히려 비효율적일까 봐 걱정이었고, 프로젝트 규모가 커질수록 관리하기가 더 어려워지는 것 같아서 혼란스러웠다. 코드와 데이터의 복잡한 관계 때문에 전체적인 그림을 파악하기 힘들고, 통제 불능 상태로 이어질까 봐 불안했다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>프로젝트 규모가 커질수록 파일 분리가 무조건 좋을 수 없으며, 각 파일의 역할과 책임을 명확히 하는 모듈화 수준이 중요함을 깨달았습니다. 각 파일이 독립적으로 검증 가능하고 수정 시 영향 범위를 예측할 수 있도록 설계해야 효율적인 코드 관리가 가능하며, 현재 진행 중인 체계적인 분석을 통해 이를 달성할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>  <span style="color:#75715e"># 파일: data_loader.py</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_data</span>():
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># 데이터 로드 로직</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># 파일: data_processor.py</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">process_data</span>(data):
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># 데이터 처리 로직</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># 파일: data_saver.py</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">save_result</span>(result):
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># 결과 저장 로직</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">pass</span>
+</span></span></code></pre></div><h2 id="5-python-패키지-관리-pypi-pip-requirementstxt-활용법">5. Python 패키지 관리: PyPI, pip, requirements.txt 활용법<a hidden class="anchor" aria-hidden="true" href="#5-python-패키지-관리-pypi-pip-requirementstxt-활용법">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>PyPI는 패키지 저장소이고, pip는 그 패키지를 설치하고 관리하는 도구라는 것을 명확히 이해하게 되었어. requirements.txt는 Python 패키지 의존성을 기록하는 파일이며, IDE와 상관없이 터미널에서 pip를 통해 관리할 수 있다는 것도 알게 되었어. 또한, 프로젝트에서 필요한 모든 것을 다 포함하는 파일은 아니라는 점도 인지하게 됐어.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>강사님이 PyCharm을 쓰시는 모습만 보니까 <code>pip</code>와 <code>requirements.txt</code>가 PyCharm에서만 작동하는 게 아닌가 싶었고, 프로젝트 의존성을 <code>requirements.txt</code>가 전부 포함하는지 확신이 없었습니다. 실제로 터미널에서 <code>pip</code> 명령어를 사용해보고, <code>requirements.txt</code>가 Python 패키지 버전 정보만 담는다는 것을 알게 되었습니다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>PyPI는 파이썬 패키지 저장소이고, pip는 이 패키지를 설치하고 관리하는 도구인데, 이 둘은 IDE와 상관없이 터미널에서 사용할 수 있습니다. requirements.txt는 주로 파이썬 패키지와 버전을 기록하며, 프로젝트의 스크립트나 데이터 파일 등은 포함하지 않습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># pandas 패키지 설치</span>
+</span></span><span style="display:flex;"><span>pip install pandas
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 특정 버전 설치</span>
+</span></span><span style="display:flex;"><span>pip install pandas<span style="color:#f92672">==</span><span style="color:#ae81ff">1.4.1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 현재 환경의 패키지 목록을 requirements.txt로 내보내기</span>
+</span></span><span style="display:flex;"><span>pip freeze <span style="color:#f92672">&gt;</span> requirements<span style="color:#f92672">.</span>txt
+</span></span></code></pre></div><h2 id="6-수업-보조-자료-링크-관리-및-접근-가이드">6. 수업 보조 자료 링크 관리 및 접근 가이드<a hidden class="anchor" aria-hidden="true" href="#6-수업-보조-자료-링크-관리-및-접근-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
+<p>수업 보조 자료 링크는 일반 공개가 아닌 수강생 전용 자료이므로 접근 시 권한을 확인해야 한다는 점을 알게 되었다. 링크 입력 오류 가능성을 염두에 두고, 접근이 안 될 경우 수업 게시판에서 직접 링크를 재확인하는 것이 중요하며, 자료의 공개 가능 여부와 출처를 기록하는 습관을 들여야겠다. 이 내용을 바탕으로 자료 관리를 더욱 체계적으로 할 수 있을 것 같다.</p>
+<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
+<p>화면 캡처해서 링크를 입력하는 과정에서 글자가 제대로 인식되지 않을까 봐 걱정되었고, 혹시 링크가 개인 계정에 연결되어 있어서 다른 사람들이 접근하지 못할까 봐 불안했어요. 수업 자료인지, 아니면 일반 공개된 자료인지도 헷갈렸습니다.</p>
+<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
+<p>제공된 링크들은 일반적인 공개 자료가 아니므로, 수업 내부 보조 자료로만 활용해야 합니다. 링크 접근에 문제가 발생하면 수업 게시판에서 다시 확인하는 것이 가장 확실한 방법이며, 자료의 공개 가능 여부와 출처를 명확히 기록하는 것이 중요합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="color:#66d9ef">-</span> **링크**:
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> Google Drive: [링크 주소]
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> Notion: [링크 주소]
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>오늘 파이썬 코드 스타일 가이드, 함수 설계, 주석 활용법, 프로젝트 구조, 패키지 관리 등 전반적인 내용을 학습했습니다. 특히 코드의 가독성과 유지보수성을 높이는 스타일 가이드 준수, 테스트 가능한 함수 설계, 그리고 모듈화를 통한 효율적인 코드 관리의 중요성을 강조하는 내용이 인상 깊었습니다. 앞으로 학습한 내용을 실제 프로젝트에 적용하여 코드 품질을 향상시키도록 노력해야겠습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>앞으로는 코드 작성 시 <code>snake_case</code> 표기법을 철저히 지켜 가독성을 높이고, 함수를 작은 단위로 나누어 테스트 가능성을 확보해야겠다. 또한, 프로젝트 규모가 커질수록 모듈 간 역할과 책임 경계를 명확히 하는 데 집중하여 효율적인 코드 관리 체계를 구축하는 것이 중요하단 점을 기억해야겠다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>함수 컨벤션과 테스트 가능성 부분에서, 테스트 가능한 함수 설계를 위한 구체적인 방법론과 작은 단위로 나누는 기준에 대한 추가 학습이 필요할 것 같습니다. 프로젝트 구조 개선을 위해 코드 전수조사, 결손/충돌 탐지, 변경 영향 분석 등의 체계를 실제 적용하는 연습을 해봐야 할 것 같습니다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-07-24-pm-daily/">
+    <span class="title">« Prev</span>
+    <span>웹 기초와 HTML 심화 학습으로 프로젝트 관리 역량 강화</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-07-21-am-daily/">
+    <span class="title">Next »</span>
+    <span>딥러닝 기초 다지기: 옵티마이저부터 CNN 실습까지</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
