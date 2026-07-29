@@ -164,6 +164,38 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">pm-02-subquery-basic-single-multi
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 서브쿼리 작성 방식 메인쿼리와 서브쿼리 역할 기준값 제공 정보 계산 총평 1. 서브쿼리 작성 방식 왜 이걸 보게 됐나 평소 문제 해결을 단계별로 생각하는 내 사고방식과 SQL 서브쿼리 작성 방식이 충돌해서 어려움을 겪었거든. 특히 앨범 ID를 먼저 찾는 게 자연스러웠는데, SQL에서는 결과값을 기준으로 메인쿼리를 먼저 작성해야 해서 계속 헷갈렸어. 그래서 서브쿼리의 역할 분담을 명확히 이해하고, 메인쿼리와 서브쿼리를 역순으로 생각하는 방식을 익히게 됐어.
+내가 헷갈린 지점 평소 문제 해결 방식이 알던 단서부터 시작해서 점진적으로 답을 찾아가는 흐름인데, 서브쿼리는 그 반대로 최종 결과부터 생각하고 메인쿼리를 먼저 작성해야 해서 처음에는 역순으로 생각해야 한다는 점이 헷갈렸어요. 특히 앨범 이름을 기준으로 AlbumId를 찾는 문제가 직관적이지 않아서 SQL 작성 방식이 어색하게 느껴졌습니다. 이러한 사고방식의 차이 때문에 서브쿼리 작성에 어려움을 겪었습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to pm-02-subquery-basic-single-multi" href="https://Han-think.github.io/learning/pm-02-subquery-basic-single-multi/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">pm-03-dml-insert-update-delete
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 INSERT 문법 UPDATE 연산 DELETE 구문 WHERE 절 총평 1. INSERT 문법 왜 이걸 보게 됐나 SQLite 실습을 시작하면서 데이터 테이블에 새로운 정보를 추가하는 가장 기본적인 방법인 INSERT 문법을 익히게 되었어. 처음에 컬럼 순서나 작은따옴표 처리 때문에 어려움을 겪었지만, 기본적인 문법을 이해하고 연습하면서 데이터 추가 작업을 효과적으로 수행할 수 있게 되었어. INSERT 문법은 데이터베이스를 관리하고 활용하는 데 필수적인 요소라는 것을 깨달았어.
+내가 헷갈린 지점 INSERT 문을 쓸 때 컬럼과 값의 순서가 헷갈리는 경우가 많았고, 특히 문자열 안에 작은따옴표를 넣는 방식이 어떻게 해야 하는지 고민했습니다. ‘It’s’처럼 작은따옴표가 포함된 문자열을 입력할 때 작은따옴표를 두 번 사용해야 한다는 점을 깨닫지 못해 삽질했습니다. 컬럼 순서, 값 순서, 그리고 작은따옴표 처리 모두 숙지해야 하는 부분이라는 것을 알게 되었습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to pm-03-dml-insert-update-delete" href="https://Han-think.github.io/learning/pm-03-dml-insert-update-delete/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">pm-03-join-vs-subquery-choice
     </h2>
   </header>
@@ -284,37 +316,6 @@
 
 <span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
   <a class="entry-link" aria-label="post link to sqlite-learning-resources-and-notion-export" href="https://Han-think.github.io/learning/sqlite-learning-resources-and-notion-export/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">sqlite-select-crud-basics
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 SQL 질문 이해 CRUD와 SQL 대응 테이블 생성 데이터 삽입 총평 1. SQL 질문 이해 왜 이걸 보게 됐나 처음에는 SQL을 단순히 데이터 가져오는 명령어로 생각해서, 원하는 데이터를 효율적으로 추출하는 질문을 구성하는 데 어려움을 겪었습니다. SQL의 질문 구조를 제대로 이해하지 못해 데이터베이스의 잠재력을 최대한 활용하지 못한다는 느낌을 받았고, 그래서 SQL의 본질적인 개념인 ‘질문’에 집중하게 되었습니다.
-내가 헷갈린 지점 처음에는 SQL을 단순히 데이터를 조회하는 명령어로만 생각해서, 어떤 질문을 던져야 원하는 답을 얻을 수 있을지 막막했다. SQL 명령어가 데이터베이스에 던지는 질문이라는 개념이 부족해서, 데이터베이스를 쿼리하는 유연성을 제대로 활용하지 못하고 있었다. 마치 정해진 답만 알고 있는 시험 문제를 푸는 듯한 느낌이었달까.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
-  <a class="entry-link" aria-label="post link to sqlite-select-crud-basics" href="https://Han-think.github.io/learning/sqlite-select-crud-basics/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">sqlite-sqltools-nextweek
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 VS Code 작업 공간 SQLite 데이터베이스 SQLTools 확장팩 SQLite 드라이버 총평 1. VS Code 작업 공간 왜 이걸 보게 됐나 처음에는 제가 익숙한 다른 편집기를 주로 사용해 왔기 때문에, 교육 환경에서 VS Code를 사용해야 한다는 점이 낯설었습니다. 하지만 모든 학생이 동일한 환경에서 작업하도록 강제하기 위해 VS Code가 표준 작업 공간으로 지정되었고, 이를 통해 강의 내용 이해와 문제 해결 과정에서 혼란을 줄이고자 합니다. VS Code를 활용하면 선생님과 제가 동일한 환경에서 동일한 도구를 사용하며 학습할 수 있게 됩니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
-  <a class="entry-link" aria-label="post link to sqlite-sqltools-nextweek" href="https://Han-think.github.io/learning/sqlite-sqltools-nextweek/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

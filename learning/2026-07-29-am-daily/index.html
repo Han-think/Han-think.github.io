@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>JavaScript 기초 다지기: 실행, 변수, 함수 완벽 이해 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-07-29 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-07-29-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-07-29-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-29-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="JavaScript 기초 다지기: 실행, 변수, 함수 완벽 이해">
+  <meta property="og:description" content="2026-07-29 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-07-29T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-29T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="JavaScript 기초 다지기: 실행, 변수, 함수 완벽 이해">
+  <meta name="twitter:description" content="2026-07-29 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "JavaScript 기초 다지기: 실행, 변수, 함수 완벽 이해",
+      "item": "https://Han-think.github.io/learning/2026-07-29-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "JavaScript 기초 다지기: 실행, 변수, 함수 완벽 이해",
+  "name": "JavaScript 기초 다지기: 실행, 변수, 함수 완벽 이해",
+  "description": "2026-07-29 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 JavaScript 코드 실행과 디버깅 기초 JavaScript 변수, 타입, 그리고 데이터 변환 이해하기 함수 활용법: 매개변수, 인자, 반환값 완벽하게 이해하기 JavaScript 실습: 흔한 오류와 핵심 개념 정리 총평 1. JavaScript 코드 실행과 디버깅 기초 무엇을 배웠나 JavaScript 코드가 웹 페이지에 바로 반영되지 않는 이유를 이해하고, ",
+  "wordCount" : "871",
+  "inLanguage": "en",
+  "datePublished": "2026-07-29T00:00:00Z",
+  "dateModified": "2026-07-29T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-07-29-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      JavaScript 기초 다지기: 실행, 변수, 함수 완벽 이해
+    </h1>
+    <div class="post-description">
+      2026-07-29 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-29 00:00:00 +0000 UTC'>2026년 7월 29일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-javascript-%EC%BD%94%EB%93%9C-%EC%8B%A4%ED%96%89%EA%B3%BC-%EB%94%94%EB%B2%84%EA%B9%85-%EA%B8%B0%EC%B4%88">JavaScript 코드 실행과 디버깅 기초</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-javascript-%EB%B3%80%EC%88%98-%ED%83%80%EC%9E%85-%EA%B7%B8%EB%A6%AC%EA%B3%A0-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B3%80%ED%99%98-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">JavaScript 변수, 타입, 그리고 데이터 변환 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%ED%95%A8%EC%88%98-%ED%99%9C%EC%9A%A9%EB%B2%95-%EB%A7%A4%EA%B0%9C%EB%B3%80%EC%88%98-%EC%9D%B8%EC%9E%90-%EB%B0%98%ED%99%98%EA%B0%92-%EC%99%84%EB%B2%BD%ED%95%98%EA%B2%8C-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">함수 활용법: 매개변수, 인자, 반환값 완벽하게 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-javascript-%EC%8B%A4%EC%8A%B5-%ED%9D%94%ED%95%9C-%EC%98%A4%EB%A5%98%EC%99%80-%ED%95%B5%EC%8B%AC-%EA%B0%9C%EB%85%90-%EC%A0%95%EB%A6%AC">JavaScript 실습: 흔한 오류와 핵심 개념 정리</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-javascript-코드-실행과-디버깅-기초">1. JavaScript 코드 실행과 디버깅 기초<a hidden class="anchor" aria-hidden="true" href="#1-javascript-코드-실행과-디버깅-기초">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>JavaScript 코드가 웹 페이지에 바로 반영되지 않는 이유를 이해하고, <code>&lt;script&gt;</code> 태그와 외부 파일 연결을 통해 코드 실행 위치를 명확히 알게 되었다. 브라우저 개발자 도구의 각 탭(Console, Sources, Elements)의 역할을 구분하고, console 출력 확인과 breakpoint 설정 등 기본적인 디버깅 방법을 익혔다. 이제 HTML 파일을 직접 열고 개발자 도구를 활용하여 코드를 실행하고 오류를 해결할 수 있게 되었다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>처음에는 JavaScript 코드를 작성했는데 웹 페이지에 아무런 변화가 없어 제대로 실행되지 않는 것 같아 답답했습니다. 브라우저 개발자 도구의 각 탭이 무엇을 하는 곳인지 헷갈리고, 어떤 탭에서 어떤 정보를 확인해야 하는지 몰라 어려움을 겪었습니다. Live Server를 사용하는 방법과 단순히 HTML 파일을 여는 것의 차이도 명확하게 이해하지 못했습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>JavaScript 코드는 HTML 파일 내 <code>&lt;script&gt;</code> 태그나 별도의 <code>.js</code> 파일로 연결하여 실행되며, 웹 페이지에 즉시 반영되지 않을 수 있습니다. 브라우저 개발자 도구의 <code>Console</code>은 코드 출력을 확인하고, <code>Sources</code>는 코드 실행 흐름을 따라가며, <code>Elements</code>는 HTML 구조를 보여줍니다. 이러한 이해를 바탕으로 HTML 파일을 직접 열거나 Live Server를 활용하여 코드를 실행하고, 개발자 도구를 통해 문제 해결 및 디버깅을 진행할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">str1</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Hello world!&#34;</span>;
+</span></span><span style="display:flex;"><span>   <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">str1</span>); <span style="color:#75715e">// 콘솔에 출력
+</span></span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">debugger</span>; <span style="color:#75715e">// 디버깅 지점 표시
+</span></span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;path/to/your/script.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span></code></pre></div><h2 id="2-javascript-변수-타입-그리고-데이터-변환-이해하기">2. JavaScript 변수, 타입, 그리고 데이터 변환 이해하기<a hidden class="anchor" aria-hidden="true" href="#2-javascript-변수-타입-그리고-데이터-변환-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>JavaScript에서 문자열과 숫자 타입의 구분이 중요하다는 것을 알게 되었다. 특히, <code>+</code> 연산자가 상황에 따라 덧셈과 문자열 연결을 수행하기 때문에 타입에 주의해야 한다는 점을 깨달았다. 또한 JavaScript에는 <code>char</code> 타입이 없으며, 문자열을 숫자로 변환하려면 명시적인 타입 변환 함수를 사용해야 한다는 점을 이해했다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>숫자와 문자열을 구분하는 게 어려웠고, <code>+</code> 연산자가 덧셈과 연결 둘 다 하는지 몰라 코드가 예측 불가능하게 느껴졌다. &ldquo;문자&quot;랑 &ldquo;문자열&rdquo; 차이도 헷갈려서 JavaScript에 <code>char</code> 타입이 있는 줄 알았다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>JavaScript에서 문자열과 숫자는 명확히 구분되어야 하며, <code>+</code> 연산자는 피연산자의 타입에 따라 덧셈 또는 문자열 연결을 수행한다. 문자열을 숫자로 활용하려면 <code>Number()</code>, <code>parseInt()</code>, <code>parseFloat()</code> 등의 함수를 사용하여 명시적으로 타입 변환을 해주어야 한다. <code>char</code> 타입은 JavaScript에 존재하지 않으며, 문자(character)는 문자열의 일부로 취급된다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">str</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;20&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#66d9ef">typeof</span> <span style="color:#a6e22e">str</span>);
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#66d9ef">typeof</span> <span style="color:#ae81ff">20</span>);
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">textNumber</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;20&#34;</span>;
+</span></span></code></pre></div><h2 id="3-함수-활용법-매개변수-인자-반환값-완벽하게-이해하기">3. 함수 활용법: 매개변수, 인자, 반환값 완벽하게 이해하기<a hidden class="anchor" aria-hidden="true" href="#3-함수-활용법-매개변수-인자-반환값-완벽하게-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>함수의 매개변수는 함수 정의 시 입력 값의 위치를 나타내는 이름이고, 인자는 실제 함수 호출 시 전달하는 값이라는 것을 명확히 이해하게 되었다. 또한, 반환값이 없는 함수는 결과가 <code>undefined</code>가 될 수 있다는 점과, JavaScript에서 함수를 변수에 담아 사용하는 방식도 파악했다. 번호표 기계와 저금통 예시를 통해 반환값의 필요성을 더욱 깊이 이해할 수 있었다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>함수 매개변수와 실제 인자를 구분하는 게 어려웠고, 반환값이 없는 함수가 어떻게 작동하는지 이해하는 데 꽤 애먹었습니다. 특히 반환값이 없는 저금통 예시에서 결과가 어떻게 보이는지 명확하게 이해되지 않았습니다. JavaScript에서 함수를 변수에 할당하는 방식도 Python 함수 정의 방식과 달라서 약간 혼란스러웠습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>함수는 특정 작업을 수행하는 코드 묶음이고, 매개변수는 함수를 정의할 때 입력받는 값을 위한 이름이며 인자는 실제 함수 호출 시 전달하는 값이야. 함수는 작업을 완료 후 결과를 반환할 수도 있고, 반환하지 않을 수도 있으며, 반환하지 않으면 <code>undefined</code>가 반환되는 것으로 이해하면 돼. JavaScript에서 함수를 변수에 담아 사용하는 방식과 Python의 <code>def</code> 함수는 다르지만, 기본적인 개념은 동일하다는 것을 알게 되었어.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">토스트기</span>(<span style="color:#a6e22e">빵</span>) {  <span style="color:#75715e">// &#39;빵&#39;은 매개변수
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;구워진 &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">빵</span>;  <span style="color:#75715e">// 실제 인자 &#39;호밀빵&#39;이 전달됨
+</span></span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">토스트기</span>(<span style="color:#e6db74">&#34;호밀빵&#34;</span>);  <span style="color:#75715e">// 인자 전달
+</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">접시</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">토스트기</span>(<span style="color:#e6db74">&#34;호밀빵&#34;</span>);  <span style="color:#75715e">// 인자 &#39;호밀빵&#39; 전달
+</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">번호표기기</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">번호</span><span style="color:#f92672">++</span>;  <span style="color:#75715e">// 내부 상태 변경
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">번호</span>;  <span style="color:#75715e">// 반환값 지정
+</span></span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">결과</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">저금통</span>(<span style="color:#ae81ff">500</span>);  <span style="color:#75715e">// 명시적 반환값 없음 → undefined
+</span></span></span></code></pre></div><h2 id="4-javascript-실습-흔한-오류와-핵심-개념-정리">4. JavaScript 실습: 흔한 오류와 핵심 개념 정리<a hidden class="anchor" aria-hidden="true" href="#4-javascript-실습-흔한-오류와-핵심-개념-정리">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>JavaScript 실습 초반에 HTML 구조, 브라우저 설정, 출력 위치, 함수 호출 방식에 대한 기본적인 이해가 부족하여 어려움을 겪었습니다. 코드가 제대로 작동하는지 확인하는 방법을 잘못 알고 있었고, 오타로 인해 오류를 인지하지 못하는 경우도 있었습니다. 하지만 HTML 구조의 역할, <code>console.log()</code>의 활용, 함수 정의와 호출의 중요성 등을 명확히 이해하게 되었습니다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>HTML 파일을 직접 열었을 때 빈 화면이 나와 코드가 작동하지 않는 줄 알았고, <code>console.log()</code>가 브라우저 화면에 출력되는 줄 착각해서 어디가 문제인지 파악하기 어려웠습니다. 또한 함수를 정의만 하고 실행하지 않아서 코드의 정상 작동 여부를 제대로 확인하지 못했습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>HTML 파일을 열었을 때 화면이 비어있는 것이 코드가 작동하지 않는다는 의미는 아니었고, <code>console.log()</code>는 브라우저 콘솔에 결과를 보여주는 것을 확인했습니다. 함수를 정의하고 호출하는 과정과 오타 발생 시 오류 메시지 인식이 중요하다는 점도 깨달았습니다. 이러한 점들을 통해 JavaScript 코드의 실행 과정을 명확히 이해하고 디버깅 능력을 향상시킬 수 있을 것 같습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">저금통</span>(<span style="color:#a6e22e">금액</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">`</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">금액</span><span style="color:#e6db74">}</span><span style="color:#e6db74">원 저금 완료!`</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">저금통</span>(<span style="color:#ae81ff">500</span>);
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>JavaScript 코드 실행 위치, 변수 타입, 그리고 함수의 매개변수와 반환값 개념을 익혔습니다. 특히, 디버깅 도구를 활용하여 코드 오류를 해결하고, 변수 타입에 주의하며 함수를 정확하게 활용하는 방법을 알게 되었습니다. 실습을 통해 기본적인 JavaScript 실행 과정에서 발생할 수 있는 문제들을 인지하고 해결하는 능력을 키웠습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>이제 코드를 실행하고 오류를 해결할 수 있게 되었지만, 실습 과정에서 HTML 구조, 브라우저 설정, 출력 위치에 대한 이해가 부족했기에 앞으로는 이 부분들을 더욱 꼼꼼하게 확인해야겠다. 또한 오타로 인한 오류를 놓치지 않도록 코드를 주의 깊게 살펴보고, <code>console.log()</code>를 적극적으로 활용해서 디버깅하는 습관을 들여야겠다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>JavaScript 타입 변환에 대한 좀 더 다양한 예제를 풀어보고, 함수를 변수에 담아 사용하는 방식이 어떻게 활용될 수 있는지 다른 실습 문제를 통해 복습해볼 필요가 있을 것 같습니다. 그리고 <code>console.log()</code>를 사용하는 것 외에 좀 더 다양한 디버깅 기법을 익혀서 실제 개발 상황에 적용해보고 싶습니다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-07-29-pm-daily/">
+    <span class="title">« Prev</span>
+    <span>JavaScript 기초 다지기: 배열, 객체, 자료구조, 알고리즘, 숫자-문자열 변환 마스터</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-07-28-pm-daily/">
+    <span class="title">Next »</span>
+    <span>CSS 변환, 트랜지션, 애니메이션과 반응형 디자인 마스터하기</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
