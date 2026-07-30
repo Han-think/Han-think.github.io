@@ -6,8 +6,22 @@
     <description>Recent content on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Wed, 29 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 30 Jul 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>JavaScript 기초 다지기: 배열, Math, 연산, 조건문, 객체 활용 학습 정리</title>
+      <link>https://Han-think.github.io/learning/2026-07-30-am-daily/</link>
+      <pubDate>Thu, 30 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-30-am-daily/</guid>
+      <description>2026-07-30 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>반복문, 문자열 조작, 환경 차이점, 배열 필터링 학습 정리</title>
+      <link>https://Han-think.github.io/learning/2026-07-30-pm-daily/</link>
+      <pubDate>Thu, 30 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-30-pm-daily/</guid>
+      <description>2026-07-30 오후 학습 정리</description>
+    </item>
     <item>
       <title>JavaScript 기초 다지기: 배열, 객체, 자료구조, 알고리즘, 숫자-문자열 변환 마스터</title>
       <link>https://Han-think.github.io/learning/2026-07-29-pm-daily/</link>

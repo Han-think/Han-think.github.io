@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>JavaScript 기초 다지기: 배열, Math, 연산, 조건문, 객체 활용 학습 정리 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-07-30 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-07-30-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-07-30-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-30-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="JavaScript 기초 다지기: 배열, Math, 연산, 조건문, 객체 활용 학습 정리">
+  <meta property="og:description" content="2026-07-30 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-07-30T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-30T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="JavaScript 기초 다지기: 배열, Math, 연산, 조건문, 객체 활용 학습 정리">
+  <meta name="twitter:description" content="2026-07-30 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "JavaScript 기초 다지기: 배열, Math, 연산, 조건문, 객체 활용 학습 정리",
+      "item": "https://Han-think.github.io/learning/2026-07-30-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "JavaScript 기초 다지기: 배열, Math, 연산, 조건문, 객체 활용 학습 정리",
+  "name": "JavaScript 기초 다지기: 배열, Math, 연산, 조건문, 객체 활용 학습 정리",
+  "description": "2026-07-30 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 배열 수정과 활용: splice() 완벽 이해하기 JavaScript Math 객체와 숫자 변환 완벽 가이드 JavaScript 연산자와 자동 형변환 완벽 해설 비교·논리 연산자와 deprecated 이해 if 조건문과 검증 실습: 자연어 조건 변환 및 구문 오류 해결 객체 배열 필터링: 배열 요소 접근 및 조건 이해 총평 1. 배열 수정과 활용: splice() 완벽 이해하기 무엇을 배웠나 배열을 수정하는 splice() 함수와 복사하는 slice() 함수의 차이점을 명확히 이해하게 되었어요. splice()가 원본 배열을 직접 변경하는 반면, slice()는 새로운 배열을 만드는 것을 기억해야겠네요. 특히 splice()에서 삭제 개수를 0으로 설정하면 추가만 가능하다는 점을 확인했습니다.\n헷갈렸던 점 splice()가 여러 기능을 동시에 수행하는 방식이 복잡하게 느껴졌고, 삭제 개수가 0일 때 추가만 이루어지는 원리가 명확하지 않았습니다. 또한 slice()와 splice()의 이름이 비슷해서 원본 배열의 변경 여부를 구분하는 데 어려움을 겪었습니다.\n정리된 이해 slice()는 원본 배열을 건드리지 않고 필요한 부분만 복사해 새로운 배열을 만들지만, splice()는 원본 배열 자체를 수정하는 함수입니다. splice()는 삭제, 수정, 추가를 한 번에 처리할 수 있으며, 삭제 개수를 0으로 설정하면 추가 기능만 수행합니다. 따라서 splice()를 사용할 때는 원본 배열이 어떻게 변경될지 주의해야 합니다.\nlet slicedFruits = fruits.slice(2, 4); // ['포도', '배'] 복사 var fruits = ['사과', '바나나', '포도', '배', '오렌지', '복숭아']; fruits.splice(2, 2); // ['사과', '바나나', '오렌지', '복숭아'] 2. JavaScript Math 객체와 숫자 변환 완벽 가이드 무엇을 배웠나 JavaScript의 Math 객체에서 난수를 생성하고 범위를 조정하는 방법을 배웠습니다. 특히 Math.random()과 Math.floor() 함수의 역할을 명확히 이해했고, parseInt()와 parseFloat()는 Math 객체가 아닌 전역 함수라는 것을 알게 되었습니다. 이제 주사위와 같은 특정 범위의 난수를 생성하는 코드를 더 잘 이해하고 작성할 수 있게 되었습니다.\n헷갈렸던 점 처음에 Math.floor() 함수가 난수 생성 과정에서 어떤 역할을 하는지 잘 몰라서 0.9 * 6의 결과가 왜 6이 되는지 헷갈렸어요. 그리고 parseInt()나 parseFloat() 같은 함수들이 Math 객체에 속한 메서드라고 생각해서 당황했었네요.\n정리된 이해 Math 객체는 수학적인 상수와 함수들을 제공하며, 난수 생성 시 Math.random()과 Math.floor()를 조합하여 원하는 범위의 정수를 만들 수 있다. parseInt()와 parseFloat()는 Math 객체의 메서드가 아니라, 전역 함수로서 문자열을 숫자로 변환하는 역할을 한다. 주사위처럼 특정 범위의 난수를 생성하려면 Math.random()으로 난수를 만든 후, Math.floor()로 내림하여 원하는 범위의 값으로 조정해야 한다.\nlet diceRoll = Math.floor(Math.random() * 6) + 1; 3. JavaScript 연산자와 자동 형변환 완벽 해설 무엇을 배웠나 JavaScript에서 증감 연산자의 동작 방식과 문자열 연산 시 자동 형변환이 일어나는 점을 확실히 이해하게 되었습니다. 특히 ++num와 num++의 차이와 문자열 연산 시 숫자 계산이 어떻게 이루어지는지 명확해졌습니다. 이를 통해 코드를 더 정확하게 예측하고 디버깅할 수 있을 것 같습니다.\n헷갈렸던 점 문자열 연산에서 +만 결합을 하고 나머지는 숫자 연산으로 해석되는 점이 이해가 안 갔고, 증감 연산자의 전위/후위 연산 시점 차이도 헷갈렸습니다. 특히 삼항 연산자를 복잡하게 중첩해서 사용할 때 가독성이 떨어져서 코드를 이해하기 어려웠습니다.\n정리된 이해 증감 연산자는 전위 연산자는 값을 먼저 증가시키고 후위 연산자는 값을 먼저 사용한 뒤 증가시킨다는 점을 이해했다. 또한, JavaScript에서 문자열과 숫자를 혼합하여 연산할 때, 숫자처럼 해석될 수 있는 문자열은 자동 형변환이 이루어져 계산이 진행된다는 점을 기억해야겠다.\nvar num = 10; console.log(++num); console.log(num++); 4. 비교·논리 연산자와 deprecated 이해 무엇을 배웠나 비교 연산자 ==와 ===의 차이, 특히 ==가 자동 타입 변환을 수행한다는 점을 명확히 이해하게 되었고, 이를 통해 예상치 못한 오류를 방지할 수 있음을 알게 되었다. deprecated된 키워드와 권장되지 않는 관행의 차이를 구분하는 것의 중요성을 깨달았으며, 논리 연산자 활용 예시를 통해 조건문 작성 능력을 향상시킬 수 있을 것 같다. 앞으로 코드를 작성할 때 비교 연산자와 논리 연산자를 더욱 신중하게 사용해야겠다.\n헷갈렸던 점 = 와 == 비교 연산자를 쓸 때, 할당 연산자를 사용하는 건지 값 비교를 하는 건지 혼동했어요. 특히 ==가 자동으로 타입을 변환한다는 점이 예상 밖이었고, ==와 ===의 차이를 명확히 이해하지 못했습니다. var 키워드가 완전히 deprecated되었는지, 아니면 그냥 권장되지 않는 건지 구분하는 데 어려움이 있었습니다.\n정리된 이해 비교 연산자에서 =는 할당이고 ==는 타입 변환 후 비교, ===는 값과 자료형 모두 같아야 비교가 되는 것을 명확히 이해하게 되었어. 또한 var 키워드는 현재 사용하지 않는 것은 아니지만, let과 const를 사용하는 것이 더 현대적인 방법이라는 것을 알게 되었어. 이 점들을 기억하고 앞으로 코딩할 때 주의해야겠어.\nconsole.log(2 == '2'); console.log(2 === '2'); console.log(false == 0); console.log(false === 0); console.log('' == false); console.log('' === false); console.log(null == undefined); console.log(null === undefined); let flag = true; flag = !flag; 5. if 조건문과 검증 실습: 자연어 조건 변환 및 구문 오류 해결 무엇을 배웠나 자연어 조건을 JavaScript 조건문으로 정확하게 변환하는 과정에서 어려움을 겪었지만, 비교 연산자, 논리 연산자, 그리고 if문 구조에 대한 이해를 높일 수 있었습니다. 특히 기본적인 구문 오류를 해결하고, 직각삼각형 판별 시 피타고라스 정리를 활용하는 방법을 깨달았습니다. 앞으로는 이 지식을 바탕으로 더 복잡한 조건문과 검증 함수를 작성할 수 있을 것입니다.\n헷갈렸던 점 자연어 조건을 코드로 변환하는 과정에서 어떤 조건을 어떻게 표현해야 할지 감이 잘 잡히지 않았고, JavaScript 구문 오류에 대한 이해가 부족하여 간단한 조건문 작성에도 어려움을 겪었습니다. 특히 비교 연산자와 논리 연산자를 정확하게 사용하는 방법을 명확히 이해하지 못했습니다.\n정리된 이해 자연어 조건을 JavaScript 코드로 변환하는 과정에서 어려움이 있었지만, 비교 연산자와 논리 연산자를 제대로 활용하여 복합적인 조건을 만들 수 있게 되었습니다. 특히, if문 구조를 정확히 이해하고, 피타고라스 정리를 활용한 직각삼각형 판별 문제 해결 방법을 익혔습니다. 앞으로는 이러한 경험을 바탕으로 더욱 정확하고 효율적인 코드를 작성할 수 있을 것입니다.\nfunction isValidEmail(email) { if (typeof email !== 'string' || email.length \u003c 5 || email.indexOf('@') === -1 || email.indexOf('.') === -1) { return false; } return true; } 6. 객체 배열 필터링: 배열 요소 접근 및 조건 이해 무엇을 배웠나 객체 배열에서 특정 조건을 만족하는 객체를 골라내는 과정에서 배열과 객체에 대한 이해가 부족해서 오류가 발생했지만, 배열의 각 요소가 객체라는 점과 JavaScript의 대소문자 구분에 주의하며 문제를 해결했습니다. a가 배열 전체를 나타내고 a[i]가 배열의 각 객체를 의미한다는 것을 명확히 이해하게 되었습니다. 앞으로 객체 배열을 다룰 때 a의 의미를 혼동하지 않도록 주의해야겠습니다.\n헷갈렸던 점 처음에는 객체 배열을 다루는 과정에서 a가 하나의 객체라고 착각해서 객체 속성에 접근할 때 a.age처럼 사용하려고 했어요. 또 함수 이름을 정확히 입력하지 않아서 대소문자 구분에 대한 이해가 부족했다는 점도 실수를 유발했습니다. 이 두 가지 오해 때문에 코드가 예상대로 작동하지 않아 어려움을 겪었습니다.\n정리된 이해 객체 배열에서 특정 조건을 만족하는 객체를 찾을 때, 배열 전체를 a가 가리키고 각 객체는 a[i]로 접근해야 한다는 것을 명확히 이해하게 되었습니다. JavaScript는 대소문자를 엄격하게 구분하므로 함수 이름을 정확히 사용하는 것이 중요합니다. 이제 배열 내 객체들의 속성에 접근하는 방식에 대한 혼란은 사라졌습니다.\n// 예시 코드: // const a = [{name: 'Alice', age: 30}, {name: 'Bob', age: 20}, {name: 'Charlie', age: 35}]; // const getOnlyAdults = (a) =\u003e { // const adults = []; // for (let i = 0; i \u003c a.length; i++) { // if (a[i].age \u003e= 20) { // adults.push(a[i].name); // } // } // return adults; // }; 총평 오늘 오전 전체에서 배운 것 오늘은 배열 수정 함수, 난수 생성, 연산자 동작 방식, 조건문 활용, 그리고 객체 배열 필터링까지 JavaScript의 기본을 탄탄하게 다졌습니다. 특히 배열 메서드와 연산자의 미묘한 차이를 명확히 이해하고, 조건문과 객체 배열을 다루는 실전 경험을 통해 문제 해결 능력을 키울 수 있었습니다. 앞으로 이 지식들을 바탕으로 더 복잡한 코드를 작성하고 디버깅할 수 있을 것 같습니다.\n다음에 조심할 것 객체 배열을 다룰 때 a가 배열 전체를 나타낸다는 점과 각 요소가 객체라는 사실을 항상 기억해야겠다. 특히 대소문자 구분에 주의하며 코드를 작성해야 불필요한 오류를 줄일 수 있을 것 같다. 그리고 == 연산자와 같은 deprecated된 방식은 사용하지 않도록 주의하고, ===를 사용하여 예상치 못한 결과를 방지해야겠다.\n다음 복습 주제 splice()와 slice() 함수의 차이점을 다시 한번 복습해서 실제 코딩 상황에서 헷갈리지 않도록 해야겠고, deprecated된 키워드와 권장되지 않는 관행의 차이점을 잊지 않도록 주의해야겠습니다. 특히 객체 배열을 다룰 때 배열 요소에 접근하는 방식에 대한 이해도를 높여야 실수를 줄일 수 있을 것 같아요.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "1190",
+  "inLanguage": "en",
+  "datePublished": "2026-07-30T00:00:00Z",
+  "dateModified": "2026-07-30T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-07-30-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      JavaScript 기초 다지기: 배열, Math, 연산, 조건문, 객체 활용 학습 정리
+    </h1>
+    <div class="post-description">
+      2026-07-30 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-30 00:00:00 +0000 UTC'>2026년 7월 30일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EB%B0%B0%EC%97%B4-%EC%88%98%EC%A0%95%EA%B3%BC-%ED%99%9C%EC%9A%A9-splice-%EC%99%84%EB%B2%BD-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">배열 수정과 활용: <code>splice()</code> 완벽 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-javascript-math-%EA%B0%9D%EC%B2%B4%EC%99%80-%EC%88%AB%EC%9E%90-%EB%B3%80%ED%99%98-%EC%99%84%EB%B2%BD-%EA%B0%80%EC%9D%B4%EB%93%9C">JavaScript Math 객체와 숫자 변환 완벽 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-javascript-%EC%97%B0%EC%82%B0%EC%9E%90%EC%99%80-%EC%9E%90%EB%8F%99-%ED%98%95%EB%B3%80%ED%99%98-%EC%99%84%EB%B2%BD-%ED%95%B4%EC%84%A4">JavaScript 연산자와 자동 형변환 완벽 해설</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EB%B9%84%EA%B5%90%EB%85%BC%EB%A6%AC-%EC%97%B0%EC%82%B0%EC%9E%90%EC%99%80-deprecated-%EC%9D%B4%ED%95%B4">비교·논리 연산자와 deprecated 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-if-%EC%A1%B0%EA%B1%B4%EB%AC%B8%EA%B3%BC-%EA%B2%80%EC%A6%9D-%EC%8B%A4%EC%8A%B5-%EC%9E%90%EC%97%B0%EC%96%B4-%EC%A1%B0%EA%B1%B4-%EB%B3%80%ED%99%98-%EB%B0%8F-%EA%B5%AC%EB%AC%B8-%EC%98%A4%EB%A5%98-%ED%95%B4%EA%B2%B0">if 조건문과 검증 실습: 자연어 조건 변환 및 구문 오류 해결</a></li>
+</ol>
+</li>
+<li>
+<ol start="6">
+<li><a href="#6-%EA%B0%9D%EC%B2%B4-%EB%B0%B0%EC%97%B4-%ED%95%84%ED%84%B0%EB%A7%81-%EB%B0%B0%EC%97%B4-%EC%9A%94%EC%86%8C-%EC%A0%91%EA%B7%BC-%EB%B0%8F-%EC%A1%B0%EA%B1%B4-%EC%9D%B4%ED%95%B4">객체 배열 필터링: 배열 요소 접근 및 조건 이해</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-배열-수정과-활용-splice-완벽-이해하기">1. 배열 수정과 활용: <code>splice()</code> 완벽 이해하기<a hidden class="anchor" aria-hidden="true" href="#1-배열-수정과-활용-splice-완벽-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>배열을 수정하는 <code>splice()</code> 함수와 복사하는 <code>slice()</code> 함수의 차이점을 명확히 이해하게 되었어요. <code>splice()</code>가 원본 배열을 직접 변경하는 반면, <code>slice()</code>는 새로운 배열을 만드는 것을 기억해야겠네요. 특히 <code>splice()</code>에서 삭제 개수를 0으로 설정하면 추가만 가능하다는 점을 확인했습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p><code>splice()</code>가 여러 기능을 동시에 수행하는 방식이 복잡하게 느껴졌고, 삭제 개수가 0일 때 추가만 이루어지는 원리가 명확하지 않았습니다. 또한 <code>slice()</code>와 <code>splice()</code>의 이름이 비슷해서 원본 배열의 변경 여부를 구분하는 데 어려움을 겪었습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p><code>slice()</code>는 원본 배열을 건드리지 않고 필요한 부분만 복사해 새로운 배열을 만들지만, <code>splice()</code>는 원본 배열 자체를 수정하는 함수입니다. <code>splice()</code>는 삭제, 수정, 추가를 한 번에 처리할 수 있으며, 삭제 개수를 <code>0</code>으로 설정하면 추가 기능만 수행합니다. 따라서 <code>splice()</code>를 사용할 때는 원본 배열이 어떻게 변경될지 주의해야 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">slicedFruits</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">fruits</span>.<span style="color:#a6e22e">slice</span>(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4</span>); <span style="color:#75715e">// [&#39;포도&#39;, &#39;배&#39;] 복사
+</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">fruits</span> <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;사과&#39;</span>, <span style="color:#e6db74">&#39;바나나&#39;</span>, <span style="color:#e6db74">&#39;포도&#39;</span>, <span style="color:#e6db74">&#39;배&#39;</span>, <span style="color:#e6db74">&#39;오렌지&#39;</span>, <span style="color:#e6db74">&#39;복숭아&#39;</span>];
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">fruits</span>.<span style="color:#a6e22e">splice</span>(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>); <span style="color:#75715e">// [&#39;사과&#39;, &#39;바나나&#39;, &#39;오렌지&#39;, &#39;복숭아&#39;]
+</span></span></span></code></pre></div><h2 id="2-javascript-math-객체와-숫자-변환-완벽-가이드">2. JavaScript Math 객체와 숫자 변환 완벽 가이드<a hidden class="anchor" aria-hidden="true" href="#2-javascript-math-객체와-숫자-변환-완벽-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>JavaScript의 <code>Math</code> 객체에서 난수를 생성하고 범위를 조정하는 방법을 배웠습니다. 특히 <code>Math.random()</code>과 <code>Math.floor()</code> 함수의 역할을 명확히 이해했고, <code>parseInt()</code>와 <code>parseFloat()</code>는 <code>Math</code> 객체가 아닌 전역 함수라는 것을 알게 되었습니다. 이제 주사위와 같은 특정 범위의 난수를 생성하는 코드를 더 잘 이해하고 작성할 수 있게 되었습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음에 <code>Math.floor()</code> 함수가 난수 생성 과정에서 어떤 역할을 하는지 잘 몰라서 <code>0.9 * 6</code>의 결과가 왜 6이 되는지 헷갈렸어요. 그리고 <code>parseInt()</code>나 <code>parseFloat()</code> 같은 함수들이 <code>Math</code> 객체에 속한 메서드라고 생각해서 당황했었네요.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p><code>Math</code> 객체는 수학적인 상수와 함수들을 제공하며, 난수 생성 시 <code>Math.random()</code>과 <code>Math.floor()</code>를 조합하여 원하는 범위의 정수를 만들 수 있다. <code>parseInt()</code>와 <code>parseFloat()</code>는 <code>Math</code> 객체의 메서드가 아니라, 전역 함수로서 문자열을 숫자로 변환하는 역할을 한다. 주사위처럼 특정 범위의 난수를 생성하려면 <code>Math.random()</code>으로 난수를 만든 후, <code>Math.floor()</code>로 내림하여 원하는 범위의 값으로 조정해야 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">diceRoll</span> <span style="color:#f92672">=</span> Math.<span style="color:#a6e22e">floor</span>(Math.<span style="color:#a6e22e">random</span>() <span style="color:#f92672">*</span> <span style="color:#ae81ff">6</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+</span></span></code></pre></div><h2 id="3-javascript-연산자와-자동-형변환-완벽-해설">3. JavaScript 연산자와 자동 형변환 완벽 해설<a hidden class="anchor" aria-hidden="true" href="#3-javascript-연산자와-자동-형변환-완벽-해설">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>JavaScript에서 증감 연산자의 동작 방식과 문자열 연산 시 자동 형변환이 일어나는 점을 확실히 이해하게 되었습니다. 특히 <code>++num</code>와 <code>num++</code>의 차이와 문자열 연산 시 숫자 계산이 어떻게 이루어지는지 명확해졌습니다. 이를 통해 코드를 더 정확하게 예측하고 디버깅할 수 있을 것 같습니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>문자열 연산에서 <code>+</code>만 결합을 하고 나머지는 숫자 연산으로 해석되는 점이 이해가 안 갔고, 증감 연산자의 전위/후위 연산 시점 차이도 헷갈렸습니다. 특히 삼항 연산자를 복잡하게 중첩해서 사용할 때 가독성이 떨어져서 코드를 이해하기 어려웠습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>증감 연산자는 전위 연산자는 값을 먼저 증가시키고 후위 연산자는 값을 먼저 사용한 뒤 증가시킨다는 점을 이해했다. 또한, JavaScript에서 문자열과 숫자를 혼합하여 연산할 때, 숫자처럼 해석될 수 있는 문자열은 자동 형변환이 이루어져 계산이 진행된다는 점을 기억해야겠다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">num</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#f92672">++</span><span style="color:#a6e22e">num</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">num</span><span style="color:#f92672">++</span>);
+</span></span></code></pre></div><h2 id="4-비교논리-연산자와-deprecated-이해">4. 비교·논리 연산자와 deprecated 이해<a hidden class="anchor" aria-hidden="true" href="#4-비교논리-연산자와-deprecated-이해">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>비교 연산자 <code>==</code>와 <code>===</code>의 차이, 특히 <code>==</code>가 자동 타입 변환을 수행한다는 점을 명확히 이해하게 되었고, 이를 통해 예상치 못한 오류를 방지할 수 있음을 알게 되었다. deprecated된 키워드와 권장되지 않는 관행의 차이를 구분하는 것의 중요성을 깨달았으며, 논리 연산자 활용 예시를 통해 조건문 작성 능력을 향상시킬 수 있을 것 같다. 앞으로 코드를 작성할 때 비교 연산자와 논리 연산자를 더욱 신중하게 사용해야겠다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p><code>=</code> 와 <code>==</code> 비교 연산자를 쓸 때, 할당 연산자를 사용하는 건지 값 비교를 하는 건지 혼동했어요. 특히 <code>==</code>가 자동으로 타입을 변환한다는 점이 예상 밖이었고, <code>==</code>와 <code>===</code>의 차이를 명확히 이해하지 못했습니다. <code>var</code> 키워드가 완전히 deprecated되었는지, 아니면 그냥 권장되지 않는 건지 구분하는 데 어려움이 있었습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>비교 연산자에서 <code>=</code>는 할당이고 <code>==</code>는 타입 변환 후 비교, <code>===</code>는 값과 자료형 모두 같아야 비교가 되는 것을 명확히 이해하게 되었어. 또한 <code>var</code> 키워드는 현재 사용하지 않는 것은 아니지만, <code>let</code>과 <code>const</code>를 사용하는 것이 더 현대적인 방법이라는 것을 알게 되었어. 이 점들을 기억하고 앞으로 코딩할 때 주의해야겠어.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#ae81ff">2</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;2&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#ae81ff">2</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;2&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#66d9ef">false</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#66d9ef">false</span> <span style="color:#f92672">===</span> <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;&#39;</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;&#39;</span> <span style="color:#f92672">===</span> <span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#66d9ef">null</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">undefined</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#66d9ef">null</span> <span style="color:#f92672">===</span> <span style="color:#66d9ef">undefined</span>);
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">flag</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">flag</span> <span style="color:#f92672">=</span> <span style="color:#f92672">!</span><span style="color:#a6e22e">flag</span>;
+</span></span></code></pre></div><h2 id="5-if-조건문과-검증-실습-자연어-조건-변환-및-구문-오류-해결">5. if 조건문과 검증 실습: 자연어 조건 변환 및 구문 오류 해결<a hidden class="anchor" aria-hidden="true" href="#5-if-조건문과-검증-실습-자연어-조건-변환-및-구문-오류-해결">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>자연어 조건을 JavaScript 조건문으로 정확하게 변환하는 과정에서 어려움을 겪었지만, 비교 연산자, 논리 연산자, 그리고 if문 구조에 대한 이해를 높일 수 있었습니다. 특히 기본적인 구문 오류를 해결하고, 직각삼각형 판별 시 피타고라스 정리를 활용하는 방법을 깨달았습니다. 앞으로는 이 지식을 바탕으로 더 복잡한 조건문과 검증 함수를 작성할 수 있을 것입니다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>자연어 조건을 코드로 변환하는 과정에서 어떤 조건을 어떻게 표현해야 할지 감이 잘 잡히지 않았고, JavaScript 구문 오류에 대한 이해가 부족하여 간단한 조건문 작성에도 어려움을 겪었습니다. 특히 비교 연산자와 논리 연산자를 정확하게 사용하는 방법을 명확히 이해하지 못했습니다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>자연어 조건을 JavaScript 코드로 변환하는 과정에서 어려움이 있었지만, 비교 연산자와 논리 연산자를 제대로 활용하여 복합적인 조건을 만들 수 있게 되었습니다. 특히, <code>if</code>문 구조를 정확히 이해하고, 피타고라스 정리를 활용한 직각삼각형 판별 문제 해결 방법을 익혔습니다. 앞으로는 이러한 경험을 바탕으로 더욱 정확하고 효율적인 코드를 작성할 수 있을 것입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">isValidEmail</span>(<span style="color:#a6e22e">email</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">typeof</span> <span style="color:#a6e22e">email</span> <span style="color:#f92672">!==</span> <span style="color:#e6db74">&#39;string&#39;</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">email</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">5</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">email</span>.<span style="color:#a6e22e">indexOf</span>(<span style="color:#e6db74">&#39;@&#39;</span>) <span style="color:#f92672">===</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">email</span>.<span style="color:#a6e22e">indexOf</span>(<span style="color:#e6db74">&#39;.&#39;</span>) <span style="color:#f92672">===</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="6-객체-배열-필터링-배열-요소-접근-및-조건-이해">6. 객체 배열 필터링: 배열 요소 접근 및 조건 이해<a hidden class="anchor" aria-hidden="true" href="#6-객체-배열-필터링-배열-요소-접근-및-조건-이해">#</a></h2>
+<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
+<p>객체 배열에서 특정 조건을 만족하는 객체를 골라내는 과정에서 배열과 객체에 대한 이해가 부족해서 오류가 발생했지만, 배열의 각 요소가 객체라는 점과 JavaScript의 대소문자 구분에 주의하며 문제를 해결했습니다. <code>a</code>가 배열 전체를 나타내고 <code>a[i]</code>가 배열의 각 객체를 의미한다는 것을 명확히 이해하게 되었습니다. 앞으로 객체 배열을 다룰 때 <code>a</code>의 의미를 혼동하지 않도록 주의해야겠습니다.</p>
+<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
+<p>처음에는 객체 배열을 다루는 과정에서 <code>a</code>가 하나의 객체라고 착각해서 객체 속성에 접근할 때 <code>a.age</code>처럼 사용하려고 했어요. 또 함수 이름을 정확히 입력하지 않아서 대소문자 구분에 대한 이해가 부족했다는 점도 실수를 유발했습니다. 이 두 가지 오해 때문에 코드가 예상대로 작동하지 않아 어려움을 겪었습니다.</p>
+<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
+<p>객체 배열에서 특정 조건을 만족하는 객체를 찾을 때, 배열 전체를 <code>a</code>가 가리키고 각 객체는 <code>a[i]</code>로 접근해야 한다는 것을 명확히 이해하게 되었습니다.  JavaScript는 대소문자를 엄격하게 구분하므로 함수 이름을 정확히 사용하는 것이 중요합니다. 이제 배열 내 객체들의 속성에 접근하는 방식에 대한 혼란은 사라졌습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// 예시 코드:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// const a = [{name: &#39;Alice&#39;, age: 30}, {name: &#39;Bob&#39;, age: 20}, {name: &#39;Charlie&#39;, age: 35}];
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// const getOnlyAdults = (a) =&gt; {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//   const adults = [];
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//   for (let i = 0; i &lt; a.length; i++) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//     if (a[i].age &gt;= 20) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//       adults.push(a[i].name);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//     }
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//   }
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//   return adults;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// };
+</span></span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>오늘은 배열 수정 함수, 난수 생성, 연산자 동작 방식, 조건문 활용, 그리고 객체 배열 필터링까지 JavaScript의 기본을 탄탄하게 다졌습니다. 특히 배열 메서드와 연산자의 미묘한 차이를 명확히 이해하고, 조건문과 객체 배열을 다루는 실전 경험을 통해 문제 해결 능력을 키울 수 있었습니다. 앞으로 이 지식들을 바탕으로 더 복잡한 코드를 작성하고 디버깅할 수 있을 것 같습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>객체 배열을 다룰 때 <code>a</code>가 배열 전체를 나타낸다는 점과 각 요소가 객체라는 사실을 항상 기억해야겠다. 특히 대소문자 구분에 주의하며 코드를 작성해야 불필요한 오류를 줄일 수 있을 것 같다. 그리고 <code>==</code> 연산자와 같은 deprecated된 방식은 사용하지 않도록 주의하고, <code>===</code>를 사용하여 예상치 못한 결과를 방지해야겠다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p><code>splice()</code>와 <code>slice()</code> 함수의 차이점을 다시 한번 복습해서 실제 코딩 상황에서 헷갈리지 않도록 해야겠고, deprecated된 키워드와 권장되지 않는 관행의 차이점을 잊지 않도록 주의해야겠습니다. 특히 객체 배열을 다룰 때 배열 요소에 접근하는 방식에 대한 이해도를 높여야 실수를 줄일 수 있을 것 같아요.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://Han-think.github.io/learning/2026-07-30-pm-daily/">
+    <span class="title">Next »</span>
+    <span>반복문, 문자열 조작, 환경 차이점, 배열 필터링 학습 정리</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

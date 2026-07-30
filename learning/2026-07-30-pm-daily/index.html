@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>반복문, 문자열 조작, 환경 차이점, 배열 필터링 학습 정리 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-07-30 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-07-30-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-07-30-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-30-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="반복문, 문자열 조작, 환경 차이점, 배열 필터링 학습 정리">
+  <meta property="og:description" content="2026-07-30 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-07-30T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-30T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="반복문, 문자열 조작, 환경 차이점, 배열 필터링 학습 정리">
+  <meta name="twitter:description" content="2026-07-30 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "반복문, 문자열 조작, 환경 차이점, 배열 필터링 학습 정리",
+      "item": "https://Han-think.github.io/learning/2026-07-30-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "반복문, 문자열 조작, 환경 차이점, 배열 필터링 학습 정리",
+  "name": "반복문, 문자열 조작, 환경 차이점, 배열 필터링 학습 정리",
+  "description": "2026-07-30 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 JavaScript 반복 방식 비교: for, forEach, for…of while, do…while 반복문과 break 이해하기 문자열 문제 해결: 초보자를 위한 여정 브라우저와 Node 실행 환경, 이해와 활용법 배열 필터링과 동적 객체 키 활용법 익히기 총평 1. JavaScript 반복 방식 비교: for, forEach, for…of 무엇을 배웠나 for, forEach, for...of 반복 방식의 차이점을 명확하게 이해하게 되었어. for는 세밀한 제어가 가능하고, forEach는 break로 중단할 수 없으며, for...of는 값 중심으로 순회한다는 점을 기억해야겠다. 이제 상황에 맞는 적절한 반복 방식을 선택하여 코드를 작성할 수 있을 것 같아.\n헷갈렸던 점 어떤 반복 방식을 선택해야 할지 몰라서 여러 가지 방법을 다 써보게 되는데, 왜 이렇게 다양하게 존재하는지 이해하기 어려웠어. forEach랑 for...of의 차이점, 특히 forEach가 break를 사용할 수 없다는 점이 직관적이지 않았고, 인덱스 접근이 필요한 경우 for...of를 어떻게 활용해야 할지 막막했어. forEach가 문자열에 바로 적용되지 않는다는 제한 조건도 처음에는 헷갈렸어.\n정리된 이해 for 반복문은 인덱스 접근과 세밀한 제어가 가능한 반면, forEach()는 모든 요소를 처리하며 중간 중단이 어렵고, for...of는 값 중심 순회를 하며 break를 사용할 수 있다는 차이가 있다. 상황에 따라 적절한 반복 방식을 선택하는 것이 중요하며, 특히 break가 필요한 경우 for 또는 for...of를 사용해야 한다. forEach()는 배열의 모든 요소를 처리해야 할 때 유용하며, for...of는 값만 순회하며 break로 제어해야 할 때 적합하다.\nlet arr = [10, 20, 30, 40]; for (let i = 0; i \u003c arr.length; i++) { if (arr[i] == 30) { console.log(\"30을 찾았습니다:\", i); break; } } let arr = [1, 2, 3]; arr.forEach((item) =\u003e { console.log(item * 2); // 각 요소를 2배로 출력 }); 2. while, do…while 반복문과 break 이해하기 무엇을 배웠나 while 반복문은 조건이 참일 때 반복하고, do…while은 최소 한 번은 실행한다는 점을 확실히 이해하게 되었어. break 구문은 반복문을 즉시 종료하고 다음 코드를 실행한다는 것도 명확해졌고, 무한 루프의 위험성과 break를 이용한 종료 조건 설정의 중요성을 알게 되었어. do…while 문은 꼭 필요한 상황에서만 사용하는구나.\n헷갈렸던 점 처음에는 while 루프의 while (true) 같은 무한 루프가 어떻게 끝나는지, 그리고 언제 종료되는지 감이 잘 안 잡혔어. break 문을 사용해도 실행 흐름이 어떻게 되는지, 반복문 밖의 코드가 실행될지 계속 의문이었어. do...while 루프는 일반 while 루프랑 뭐가 다르고, 언제 사용하는 건가 싶었어.\n정리된 이해 while 반복문은 조건을 먼저 확인하고, do...while 반복문은 코드를 먼저 실행한 뒤 조건을 확인한다는 차이가 있어, 필요한 상황에 맞춰 선택해야 해. break 문은 현재 반복문을 즉시 종료하고 다음 코드를 실행하므로, 무한 루프를 제어하거나 특정 조건을 만족할 때 반복을 멈추는 데 유용해. 최소 한 번은 실행해야 하는 경우나, 조건 확인 전에 코드가 반드시 필요할 때 do...while이 적합해.\nvar cnt = 1; while (cnt \u003c= 10) { // 조건 검사 console.log(`${cnt}회 사용`); cnt++; // 값 변경 후 다시 조건 검사 } var cnt = 11; do { console.log(`do while : ${cnt}회 사용`); // 본문 실행 cnt++; } while (cnt \u003c= 10); // 조건 검사 while (true) { break; // 반복 종료 } console.log('도달 가능'); // 반복문 이후 코드 실행 가능 3. 문자열 문제 해결: 초보자를 위한 여정 무엇을 배웠나 문자열 문제 해결 과정에서 반복문과 변수 활용, replace() 함수의 전역 검색 기능, 그리고 실습 환경과 채점 코드의 차이에 대한 이해가 부족했던 점을 파악했습니다. 이를 바탕으로 문제 분석, 변수 초기화, 그리고 각 환경에 맞는 코드 작성의 중요성을 깨달았습니다. 앞으로는 좀 더 체계적인 접근 방식을 통해 문자열 조작 문제를 해결해 나가겠습니다.\n헷갈렸던 점 처음에는 반복문과 변수를 조합해서 문자열을 원하는 대로 바꾸는 코드를 짜는 게 너무 어려웠어. replace() 함수가 어떻게 동작하는지, 특히 전체 공백을 제거하는 방법을 이해하는 데 시간이 꽤 걸렸고, 실습 환경과 채점 코드가 달라서 당황스러웠던 기억이 있어.\n정리된 이해 문자열 문제 해결의 핵심은 반복문과 변수를 활용하여 원하는 방식으로 문자들을 이어붙이거나 수정하는 것이고, replace() 함수를 사용할 때는 전역 검색을 위한 옵션을 반드시 확인해야 합니다. 실습 환경과 채점 코드의 차이를 이해하고, 결과 변수를 초기화하는 시점을 정확하게 결정하는 것이 중요합니다.\n// 예시: 공백 제거 (replace() 사용) function removeAllSpaces(str) { return str.replace(/\\s/g, ''); } 4. 브라우저와 Node 실행 환경, 이해와 활용법 무엇을 배웠나 브라우저와 Node.js 실행 환경의 차이점을 명확히 이해하게 되었다. 브라우저에서는 직접 함수를 호출하고 console.log()를 통해 결과를 확인하는 반면, 엘리스 채점 시스템과 같은 Node.js 환경에서는 module.exports를 사용하여 함수와 입력값을 전달해야 한다. 특히 module.exports는 채점기에 필요한 정보 전달을 위한 설정이라는 점을 깨달았다.\n헷갈렸던 점 브라우저 콘솔에서 함수를 실행하는 것과 엘리스 채점 시스템에서 함수를 실행하는 방식이 달라서, 어떤 코드를 어떻게 실행해야 하는지 헷갈렸다. 특히 module.exports의 역할이 무엇인지 명확하게 이해하지 못해서, 코드 통합 과정에서 어려움을 겪었다. 브라우저 환경에서 실행하는 것과 Node 환경에서 실행하는 것의 차이를 명확히 구분해야 했다.\n정리된 이해 브라우저 환경에서는 console.log()를 사용하여 직접 함수를 실행하고 결과를 확인할 수 있으며, 엘리스/Node 환경에서는 module.exports를 통해 함수와 입력 데이터를 채점 시스템에 전달해야 합니다. 핵심은 두 환경의 실행 방식과 데이터 전달 방식이 다르다는 점을 이해하고, 각 환경에 맞는 코드를 작성해야 한다는 것입니다.\nmodule.exports = { inputs: [\"hello world\"], func: removeBlank }; 5. 배열 필터링과 동적 객체 키 활용법 익히기 무엇을 배웠나 배열 필터링 시 원본 배열을 변경하지 않고 새로운 배열을 만들어 결과를 반환하는 것이 안전하다는 것을 알게 되었다. 또한, 객체의 키를 동적으로 생성하여 접근하는 대괄호 표기법을 이해했고, 특정 조건에서 반복문을 종료하는 방법을 익혔다. 이 과정을 통해 초보자도 배열 필터링과 동적 객체 키 접근을 쉽게 할 수 있다는 자신감을 얻었다.\n헷갈렸던 점 배열 필터링을 할 때, 기존 배열을 변경해야 할지 새로운 배열을 만들어야 할지 몰랐다. 동적 객체 키를 사용할 때는 속성 이름이 문자열로 표현되어야 한다는 점이 낯설었다. 반복문에서 특정 조건이 충족되면 종료해야 하는데, 어떻게 조건을 설정하고 break 문을 사용하는지 명확하지 않았다.\n정리된 이해 배열 필터링은 원본 배열을 수정하는 대신 새로운 배열을 생성하여 값을 추출하는 것이 안전하고 예측 가능한 코드를 만드는 데 도움이 된다. 동적 객체 키를 활용하면 객체의 속성 이름을 런타임에 결정할 수 있어서 유연한 데이터 처리가 가능하다. 반복문에서는 특정 조건이 충족될 때 break 문을 사용하여 불필요한 반복을 피하는 것이 효율적이다.\nfunction getOnlyOddNumbers(arr) { let result = []; for (const num of arr) { if (num % 2 !== 0) { result.push(num); } } return result; } 총평 오늘 오후 전체에서 배운 것 오늘 JavaScript 반복문, 문자열 문제 해결, 실행 환경 차이, 배열 필터링, 동적 객체 키 활용법 등 다양한 개념을 익혔어. 특히 반복문 종류별 특징과 module.exports 사용법을 명확하게 이해하게 되었고, 문자열 문제 해결 시 체계적인 접근 방식의 중요성을 깨달았어. 앞으로는 오늘 배운 내용을 바탕으로 더욱 실력 있는 개발자가 되도록 노력해야겠다.\n다음에 조심할 것 문자열 문제 해결 시, 실습 환경과 채점 코드의 차이를 고려하여 변수 초기화 및 문제 분석 단계를 더욱 꼼꼼하게 진행해야겠어. 특히 Node.js 실행 환경에서는 module.exports를 정확하게 활용하여 채점기에 필요한 정보를 전달하는 것을 잊지 말아야 해.\n다음 복습 주제 문자열 문제 해결 시 실습 환경과 채점 코드의 차이점을 좀 더 깊이 이해하고, 디버깅 능력을 키워야 할 것 같아. module.exports를 사용하는 Node.js 환경에서의 코드 작성에 더욱 익숙해지도록 꾸준히 연습해야겠어. 배열 필터링과 동적 객체 키 활용법은 실제 문제에 적용해보면서 숙달해야겠다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "1068",
+  "inLanguage": "en",
+  "datePublished": "2026-07-30T00:00:00Z",
+  "dateModified": "2026-07-30T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-07-30-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      반복문, 문자열 조작, 환경 차이점, 배열 필터링 학습 정리
+    </h1>
+    <div class="post-description">
+      2026-07-30 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-30 00:00:00 +0000 UTC'>2026년 7월 30일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-javascript-%EB%B0%98%EB%B3%B5-%EB%B0%A9%EC%8B%9D-%EB%B9%84%EA%B5%90-for-foreach-forof">JavaScript 반복 방식 비교: for, forEach, for&hellip;of</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-while-dowhile-%EB%B0%98%EB%B3%B5%EB%AC%B8%EA%B3%BC-break-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">while, do&hellip;while 반복문과 break 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EB%AC%B8%EC%9E%90%EC%97%B4-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%97%AC%EC%A0%95">문자열 문제 해결: 초보자를 위한 여정</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80%EC%99%80-node-%EC%8B%A4%ED%96%89-%ED%99%98%EA%B2%BD-%EC%9D%B4%ED%95%B4%EC%99%80-%ED%99%9C%EC%9A%A9%EB%B2%95">브라우저와 Node 실행 환경, 이해와 활용법</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-%EB%B0%B0%EC%97%B4-%ED%95%84%ED%84%B0%EB%A7%81%EA%B3%BC-%EB%8F%99%EC%A0%81-%EA%B0%9D%EC%B2%B4-%ED%82%A4-%ED%99%9C%EC%9A%A9%EB%B2%95-%EC%9D%B5%ED%9E%88%EA%B8%B0">배열 필터링과 동적 객체 키 활용법 익히기</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-javascript-반복-방식-비교-for-foreach-forof">1. JavaScript 반복 방식 비교: for, forEach, for&hellip;of<a hidden class="anchor" aria-hidden="true" href="#1-javascript-반복-방식-비교-for-foreach-forof">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p><code>for</code>, <code>forEach</code>, <code>for...of</code> 반복 방식의 차이점을 명확하게 이해하게 되었어. <code>for</code>는 세밀한 제어가 가능하고, <code>forEach</code>는 <code>break</code>로 중단할 수 없으며, <code>for...of</code>는 값 중심으로 순회한다는 점을 기억해야겠다. 이제 상황에 맞는 적절한 반복 방식을 선택하여 코드를 작성할 수 있을 것 같아.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>어떤 반복 방식을 선택해야 할지 몰라서 여러 가지 방법을 다 써보게 되는데, 왜 이렇게 다양하게 존재하는지 이해하기 어려웠어. <code>forEach</code>랑 <code>for...of</code>의 차이점, 특히 <code>forEach</code>가 <code>break</code>를 사용할 수 없다는 점이 직관적이지 않았고, 인덱스 접근이 필요한 경우 <code>for...of</code>를 어떻게 활용해야 할지 막막했어. <code>forEach</code>가 문자열에 바로 적용되지 않는다는 제한 조건도 처음에는 헷갈렸어.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p><code>for</code> 반복문은 인덱스 접근과 세밀한 제어가 가능한 반면, <code>forEach()</code>는 모든 요소를 처리하며 중간 중단이 어렵고, <code>for...of</code>는 값 중심 순회를 하며 <code>break</code>를 사용할 수 있다는 차이가 있다. 상황에 따라 적절한 반복 방식을 선택하는 것이 중요하며, 특히 <code>break</code>가 필요한 경우 <code>for</code> 또는 <code>for...of</code>를 사용해야 한다. <code>forEach()</code>는 배열의 모든 요소를 처리해야 할 때 유용하며, <code>for...of</code>는 값만 순회하며 <code>break</code>로 제어해야 할 때 적합하다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">arr</span> <span style="color:#f92672">=</span> [<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">30</span>, <span style="color:#ae81ff">40</span>];
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">arr</span>.<span style="color:#a6e22e">length</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">arr</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">30</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;30을 찾았습니다:&#34;</span>, <span style="color:#a6e22e">i</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">arr</span> <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>];
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">arr</span>.<span style="color:#a6e22e">forEach</span>((<span style="color:#a6e22e">item</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">item</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>); <span style="color:#75715e">// 각 요소를 2배로 출력
+</span></span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h2 id="2-while-dowhile-반복문과-break-이해하기">2. while, do&hellip;while 반복문과 break 이해하기<a hidden class="anchor" aria-hidden="true" href="#2-while-dowhile-반복문과-break-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>while 반복문은 조건이 참일 때 반복하고, do&hellip;while은 최소 한 번은 실행한다는 점을 확실히 이해하게 되었어. break 구문은 반복문을 즉시 종료하고 다음 코드를 실행한다는 것도 명확해졌고, 무한 루프의 위험성과 break를 이용한 종료 조건 설정의 중요성을 알게 되었어. do&hellip;while 문은 꼭 필요한 상황에서만 사용하는구나.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음에는 <code>while</code> 루프의 <code>while (true)</code> 같은 무한 루프가 어떻게 끝나는지, 그리고 언제 종료되는지 감이 잘 안 잡혔어. <code>break</code> 문을 사용해도 실행 흐름이 어떻게 되는지, 반복문 밖의 코드가 실행될지 계속 의문이었어. <code>do...while</code> 루프는 일반 <code>while</code> 루프랑 뭐가 다르고, 언제 사용하는 건가 싶었어.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p><code>while</code> 반복문은 조건을 먼저 확인하고, <code>do...while</code> 반복문은 코드를 먼저 실행한 뒤 조건을 확인한다는 차이가 있어, 필요한 상황에 맞춰 선택해야 해. <code>break</code> 문은 현재 반복문을 즉시 종료하고 다음 코드를 실행하므로, 무한 루프를 제어하거나 특정 조건을 만족할 때 반복을 멈추는 데 유용해. 최소 한 번은 실행해야 하는 경우나, 조건 확인 전에 코드가 반드시 필요할 때 <code>do...while</code>이 적합해.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">cnt</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> (<span style="color:#a6e22e">cnt</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">10</span>) {  <span style="color:#75715e">// 조건 검사
+</span></span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">`</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">cnt</span><span style="color:#e6db74">}</span><span style="color:#e6db74">회 사용`</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">cnt</span><span style="color:#f92672">++</span>;            <span style="color:#75715e">// 값 변경 후 다시 조건 검사
+</span></span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">cnt</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">11</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">do</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">`do while : </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">cnt</span><span style="color:#e6db74">}</span><span style="color:#e6db74">회 사용`</span>);  <span style="color:#75715e">// 본문 실행
+</span></span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">cnt</span><span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">while</span> (<span style="color:#a6e22e">cnt</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">10</span>);  <span style="color:#75715e">// 조건 검사
+</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">break</span>;  <span style="color:#75715e">// 반복 종료
+</span></span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;도달 가능&#39;</span>);  <span style="color:#75715e">// 반복문 이후 코드 실행 가능
+</span></span></span></code></pre></div><h2 id="3-문자열-문제-해결-초보자를-위한-여정">3. 문자열 문제 해결: 초보자를 위한 여정<a hidden class="anchor" aria-hidden="true" href="#3-문자열-문제-해결-초보자를-위한-여정">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>문자열 문제 해결 과정에서 반복문과 변수 활용, <code>replace()</code> 함수의 전역 검색 기능, 그리고 실습 환경과 채점 코드의 차이에 대한 이해가 부족했던 점을 파악했습니다. 이를 바탕으로 문제 분석, 변수 초기화, 그리고 각 환경에 맞는 코드 작성의 중요성을 깨달았습니다. 앞으로는 좀 더 체계적인 접근 방식을 통해 문자열 조작 문제를 해결해 나가겠습니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>처음에는 반복문과 변수를 조합해서 문자열을 원하는 대로 바꾸는 코드를 짜는 게 너무 어려웠어. <code>replace()</code> 함수가 어떻게 동작하는지, 특히 전체 공백을 제거하는 방법을 이해하는 데 시간이 꽤 걸렸고, 실습 환경과 채점 코드가 달라서 당황스러웠던 기억이 있어.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>문자열 문제 해결의 핵심은 반복문과 변수를 활용하여 원하는 방식으로 문자들을 이어붙이거나 수정하는 것이고, <code>replace()</code> 함수를 사용할 때는 전역 검색을 위한 옵션을 반드시 확인해야 합니다. 실습 환경과 채점 코드의 차이를 이해하고, 결과 변수를 초기화하는 시점을 정확하게 결정하는 것이 중요합니다.</p>
+<pre tabindex="0"><code>// 예시: 공백 제거 (replace() 사용)
+function removeAllSpaces(str) {
+  return str.replace(/\s/g, &#39;&#39;);
+}
+</code></pre><h2 id="4-브라우저와-node-실행-환경-이해와-활용법">4. 브라우저와 Node 실행 환경, 이해와 활용법<a hidden class="anchor" aria-hidden="true" href="#4-브라우저와-node-실행-환경-이해와-활용법">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>브라우저와 Node.js 실행 환경의 차이점을 명확히 이해하게 되었다. 브라우저에서는 직접 함수를 호출하고 <code>console.log()</code>를 통해 결과를 확인하는 반면, 엘리스 채점 시스템과 같은 Node.js 환경에서는 <code>module.exports</code>를 사용하여 함수와 입력값을 전달해야 한다. 특히 <code>module.exports</code>는 채점기에 필요한 정보 전달을 위한 설정이라는 점을 깨달았다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>브라우저 콘솔에서 함수를 실행하는 것과 엘리스 채점 시스템에서 함수를 실행하는 방식이 달라서, 어떤 코드를 어떻게 실행해야 하는지 헷갈렸다. 특히 <code>module.exports</code>의 역할이 무엇인지 명확하게 이해하지 못해서, 코드 통합 과정에서 어려움을 겪었다. 브라우저 환경에서 실행하는 것과 Node 환경에서 실행하는 것의 차이를 명확히 구분해야 했다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>브라우저 환경에서는 <code>console.log()</code>를 사용하여 직접 함수를 실행하고 결과를 확인할 수 있으며, 엘리스/Node 환경에서는 <code>module.exports</code>를 통해 함수와 입력 데이터를 채점 시스템에 전달해야 합니다. 핵심은 두 환경의 실행 방식과 데이터 전달 방식이 다르다는 점을 이해하고, 각 환경에 맞는 코드를 작성해야 한다는 것입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">inputs</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;hello world&#34;</span>],
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">func</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">removeBlank</span>
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><h2 id="5-배열-필터링과-동적-객체-키-활용법-익히기">5. 배열 필터링과 동적 객체 키 활용법 익히기<a hidden class="anchor" aria-hidden="true" href="#5-배열-필터링과-동적-객체-키-활용법-익히기">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>배열 필터링 시 원본 배열을 변경하지 않고 새로운 배열을 만들어 결과를 반환하는 것이 안전하다는 것을 알게 되었다. 또한, 객체의 키를 동적으로 생성하여 접근하는 대괄호 표기법을 이해했고, 특정 조건에서 반복문을 종료하는 방법을 익혔다. 이 과정을 통해 초보자도 배열 필터링과 동적 객체 키 접근을 쉽게 할 수 있다는 자신감을 얻었다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>배열 필터링을 할 때, 기존 배열을 변경해야 할지 새로운 배열을 만들어야 할지 몰랐다. 동적 객체 키를 사용할 때는 속성 이름이 문자열로 표현되어야 한다는 점이 낯설었다. 반복문에서 특정 조건이 충족되면 종료해야 하는데, 어떻게 조건을 설정하고 <code>break</code> 문을 사용하는지 명확하지 않았다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>배열 필터링은 원본 배열을 수정하는 대신 새로운 배열을 생성하여 값을 추출하는 것이 안전하고 예측 가능한 코드를 만드는 데 도움이 된다. 동적 객체 키를 활용하면 객체의 속성 이름을 런타임에 결정할 수 있어서 유연한 데이터 처리가 가능하다. 반복문에서는 특정 조건이 충족될 때 <code>break</code> 문을 사용하여 불필요한 반복을 피하는 것이 효율적이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">getOnlyOddNumbers</span>(<span style="color:#a6e22e">arr</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> [];
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">num</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">arr</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">num</span> <span style="color:#f92672">%</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">num</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>오늘 JavaScript 반복문, 문자열 문제 해결, 실행 환경 차이, 배열 필터링, 동적 객체 키 활용법 등 다양한 개념을 익혔어. 특히 반복문 종류별 특징과 <code>module.exports</code> 사용법을 명확하게 이해하게 되었고, 문자열 문제 해결 시 체계적인 접근 방식의 중요성을 깨달았어. 앞으로는 오늘 배운 내용을 바탕으로 더욱 실력 있는 개발자가 되도록 노력해야겠다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>문자열 문제 해결 시, 실습 환경과 채점 코드의 차이를 고려하여 변수 초기화 및 문제 분석 단계를 더욱 꼼꼼하게 진행해야겠어. 특히 Node.js 실행 환경에서는 <code>module.exports</code>를 정확하게 활용하여 채점기에 필요한 정보를 전달하는 것을 잊지 말아야 해.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>문자열 문제 해결 시 실습 환경과 채점 코드의 차이점을 좀 더 깊이 이해하고, 디버깅 능력을 키워야 할 것 같아. <code>module.exports</code>를 사용하는 Node.js 환경에서의 코드 작성에 더욱 익숙해지도록 꾸준히 연습해야겠어. 배열 필터링과 동적 객체 키 활용법은 실제 문제에 적용해보면서 숙달해야겠다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-07-30-am-daily/">
+    <span class="title">« Prev</span>
+    <span>JavaScript 기초 다지기: 배열, Math, 연산, 조건문, 객체 활용 학습 정리</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-07-29-pm-daily/">
+    <span class="title">Next »</span>
+    <span>JavaScript 기초 다지기: 배열, 객체, 자료구조, 알고리즘, 숫자-문자열 변환 마스터</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
