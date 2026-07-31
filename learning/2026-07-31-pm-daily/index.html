@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>웹 페이지 상호작용부터 지식 그래프 기반 시스템 구축까지, 핵심 개념과 실전 활용법 정복 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-07-31 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-07-31-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-07-31-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-07-31-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="웹 페이지 상호작용부터 지식 그래프 기반 시스템 구축까지, 핵심 개념과 실전 활용법 정복">
+  <meta property="og:description" content="2026-07-31 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-07-31T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-07-31T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="웹 페이지 상호작용부터 지식 그래프 기반 시스템 구축까지, 핵심 개념과 실전 활용법 정복">
+  <meta name="twitter:description" content="2026-07-31 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "웹 페이지 상호작용부터 지식 그래프 기반 시스템 구축까지, 핵심 개념과 실전 활용법 정복",
+      "item": "https://Han-think.github.io/learning/2026-07-31-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "웹 페이지 상호작용부터 지식 그래프 기반 시스템 구축까지, 핵심 개념과 실전 활용법 정복",
+  "name": "웹 페이지 상호작용부터 지식 그래프 기반 시스템 구축까지, 핵심 개념과 실전 활용법 정복",
+  "description": "2026-07-31 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 DOM 이벤트와 핸들러: 연결 방식 비교 및 기본 이해 이벤트 객체와 폼 처리: 초보자를 위한 이해 정리 이벤트 리스너 등록 및 제거 방법 DOM 트리 생성, 삽입, 삭제: 초보자를 위한 가이드 classList와 이벤트 활용, 화면 상태 전환하기 온톨로지 오케스트레이터 프로젝트 연결 이해 가이드 총평 1. DOM 이벤트와 핸들러: 연결 방식 비교 및 기본 이해 무엇을 배웠나 DOM 이벤트와 이벤트 핸들러의 작동 원리를 이해하고, HTML 속성 방식, 자바스크립트 프로퍼티 방식, 그리고 addEventListener 방식의 차이점을 명확하게 구분하게 되었습니다. 개발 환경 활용에 대한 불안감도 조금 해소되었고, 이벤트 연결 방식에 대한 혼란을 이해하고 정리할 수 있었습니다. 이제 이벤트 처리 방식을 선택적으로 활용하여 웹 페이지에 상호작용을 구현할 수 있을 것 같습니다.\n헷갈렸던 점 이벤트 연결 방식이 왤케 다양하고, 각각 언제 써야 하는 건지 잘 모르겠어서 헷갈렸어. 그리고 VS Code랑 브라우저 콘솔을 어떻게 활용해야 하는지 감이 안 잡혀서 제대로 하고 있는 건가 막연하게 생각했어.\n정리된 이해 이벤트는 브라우저가 사용자의 동작이나 상태 변화를 감지하여 자바스크립트에게 알려주는 신호이고, 이벤트 핸들러는 그 신호에 반응하여 실행되는 함수입니다. HTML 속성, 자바스크립트 프로퍼티, addEventListener() 방식은 모두 이벤트 핸들러를 연결하는 방법이지만, 각기 다른 특징과 장단점을 가지고 있으며 addEventListener() 방식이 가장 유연하고 권장되는 방식입니다. 개발 환경에서 코드를 작성하고 브라우저 콘솔을 활용하는 과정에 익숙해지면 이벤트와 핸들러를 보다 효과적으로 활용할 수 있습니다.\nvar button = document.getElementById(\"btn\"); button.addEventListener(\"click\", showText); window.onload = function() { var text = document.getElementById(\"text\"); text.innerHTML = \"페이지가 열렸습니다\"; }; \u003cbutton onclick=\"getDay()\"\u003e날짜 추출\u003c/button\u003e \u003cdiv onmouseover=\"mouseEvt('over')\" onmouseout=\"mouseEvt('out')\"\u003e 내용 \u003c/div\u003e 2. 이벤트 객체와 폼 처리: 초보자를 위한 이해 정리 무엇을 배웠나 이벤트 객체의 evt.target, this, zone 변수가 각각 어떤 요소를 가리키는지 혼동되었지만, evt.target은 이벤트가 발생한 정확한 요소, this는 이벤트 핸들러가 연결된 요소를 참조한다는 것을 알게 되었습니다. 또한 다양한 이벤트 종류를 언제 사용해야 하는지 고민되었지만, 각 이벤트가 처리하는 사용자 입력의 종류에 따라 선택해야 한다는 점을 명확히 했습니다. 이러한 개념들을 실습 예시를 통해 확인하며 이해도를 높였습니다.\n헷갈렸던 점 이벤트 객체에서 evt.target, this, zone의 역할을 명확하게 구분하지 못해 어떤 변수를 사용해야 할지 헷갈렸고, 다양한 이벤트 종류가 언제 사용되어야 하는지 상황에 맞춰 판단하기 어려웠습니다. 특히 evt.target이 항상 예상대로 작동하는 것은 아닌 것 같아서 혼란스러웠고, this가 맥락에 따라 다른 값을 가지는 부분도 이해하기 힘들었습니다.\n정리된 이해 이벤트 객체에서 evt.target은 이벤트가 발생한 정확한 요소를, this는 이벤트 핸들러가 연결된 요소를 가리키고, zone 변수는 코드의 가독성을 높이기 위해 특정 요소를 미리 참조하는 용도로 사용됩니다. 따라서 상황에 따라 적절한 변수를 선택하여 사용해야 하며, 이벤트 종류에 따라서도 처리 방식이 달라지므로 사용자 입력의 종류를 잘 파악해야 합니다.\ndocument.getElementById('myElement').addEventListener('click', function(evt) { console.log(\"Clicked element ID:\", evt.target.id); // 실제 클릭된 요소의 ID 출력 }); document.getElementById('myElement').addEventListener('mouseout', function() { console.log(\"Element id:\", this.id); // 이벤트 핸들러가 연결된 요소의 ID 출력 }); 3. 이벤트 리스너 등록 및 제거 방법 무엇을 배웠나 이벤트 리스너 등록 시 printPos와 printPos()의 차이를 명확히 이해하게 되었고, 함수를 직접 호출하는 것과 참조하는 것의 적절한 사용법을 알게 되었다. 이름 있는 함수를 사용하는 것이 재사용성, 테스트 용이성, 제거 가능성 측면에서 이점을 제공한다는 것을 깨달았고, 이를 통해 더 효율적인 코드를 작성할 수 있을 것 같다. 앞으로는 이름 있는 함수를 활용하여 이벤트 리스너를 관리하는 습관을 들여야겠다.\n헷갈렸던 점 함수 호출 방식을 구분하는 게 너무 헷갈렸고, 함수를 이름으로 정의하는 것 대신 익명 함수를 계속 사용하고 싶었는데 왜 이름 있는 함수를 써야 하는지 이해가 안 됐습니다. 이벤트 리스너 등록과 제거할 때 이름 있는 함수가 필요하다는 점을 명확히 알지 못했습니다.\n정리된 이해 이벤트 리스너를 등록할 때는 함수를 직접 실행하지 않고, 함수 이름만 전달해야 하며, 이름 있는 함수를 사용하면 코드 재사용, 테스트, 제거가 용이하다는 것을 깨달았습니다. printPos와 printPos()의 차이를 이해하는 것이 중요했습니다.\ndiv.addEventListener(\"mousemove\", printPos); printPos(); 4. DOM 트리 생성, 삽입, 삭제: 초보자를 위한 가이드 무엇을 배웠나 DOM 트리 조작 과정에서 요소를 생성해도 바로 화면에 나타나지 않는 이유와, 텍스트 노드와 요소를 연결하는 복잡한 과정을 명확하게 이해하게 되었다. createElement(), createTextNode(), appendChild() 메서드의 사용법과 DOM 요소 삽입 순서를 익혔고, 반복문과 함수를 활용하여 동적으로 요소를 추가하는 방법을 알게 되었다. 특히 insertBefore()와 removeChild() 메서드를 통해 요소의 위치를 변경하고 삭제하는 방법을 배울 수 있었다.\n헷갈렸던 점 처음에는 createElement()로 요소를 만들었다고 바로 화면에 나타날 줄 알았는데, 그렇지 않아서 당황했습니다. 텍스트 노드를 따로 만들어서 연결하고, 이걸 다시 부모 요소에 붙이는 과정이 너무 복잡하게 느껴졌습니다. DOM 트리 조작이 생각보다 꼼꼼하게 단계를 거쳐야 한다는 점을 이해하는 데 시간이 걸렸습니다.\n정리된 이해 DOM 조작은 요소를 만들고, 텍스트를 연결한 뒤, 부모 요소에 삽입하는 단계를 거쳐야 화면에 반영됩니다. createElement(), createTextNode(), appendChild() 메서드를 이해하고, insertBefore()와 removeChild()를 활용하면 요소의 위치를 제어하고 삭제할 수 있습니다. 복잡해 보이지만, 단계별로 진행하면 DOM 트리를 원하는 대로 변경할 수 있습니다.\nfunction myFunction() { var newP = document.createElement(\"p\"); var text = document.createTextNode(\"새로운 단락!\"); newP.appendChild(text); document.body.appendChild(newP); } 5. classList와 이벤트 활용, 화면 상태 전환하기 무엇을 배웠나 이벤트 핸들러에서 스타일을 직접 변경하는 방식과 CSS 클래스를 추가하는 방식의 차이를 명확히 이해하게 되었어요. 특정 스타일을 즉시 변경해야 할 때는 style 속성을 쓰고, 여러 상태를 관리하거나 전환할 때는 classList를 사용하는 것이 좋다는 것을 알게 되었습니다. 실습 예제를 통해 실제로 적용해보니 훨씬 이해가 잘 되는 것 같아요.\n헷갈렸던 점 이벤트 핸들러에서 스타일을 직접 수정할까, 아니면 classList를 사용할까가 헷갈렸어요. 두 방식의 차이점을 명확히 인지하지 못해서 어떤 상황에 어떤 방식을 사용해야 할지 판단하기 어려웠습니다. 특히 상태 전환이 필요한 UI 요소에 대해서는 어떻게 적용해야 할지 갈피가 잡히지 않았습니다.\n정리된 이해 스타일을 직접 변경하는 방식은 간단한 즉각적인 수정에 좋지만, 여러 스타일을 묶어서 관리하거나 상태 전환이 필요할 때는 classList를 사용하는 것이 더 효율적입니다. classList를 사용하면 스타일 변경을 더 일관성 있고 관리하기 쉽게 만들 수 있습니다. 상황에 따라 적절한 방법을 선택하는 것이 중요합니다.\nfunction changeButtonOnClick() { // 클래스 추가로 스타일 변경 target.classList.add(\"changeColor\"); // 텍스트 변경 target.innerText = \"버튼 클릭 성공!\"; } function zoomIn() { // 클래스를 통해 스타일 변경 image.style.transform = \"scale(1.2)\"; image.style.transition = \"all 0.5s\"; // 부드럽게 전환 } 6. 온톨로지 오케스트레이터 프로젝트 연결 이해 가이드 무엇을 배웠나 Pipeline OS 오케스트레이터 이해를 위해 온톨로지, 지식 그래프, 상태 관리, 규칙 기반 시스템의 핵심 개념을 정리하고, 실제 시스템 구조에 적용할 수 있는 간단한 온톨로지 예시를 만들었습니다. 특히 온톨로지가 단순 분류 체계를 넘어 지식 구조와 실행 규칙까지 포함하는 개념임을 이해하게 되었고, 시스템의 상태 변화를 추적하고 규칙에 따라 모듈을 실행하는 방법을 생각해보게 되었습니다. 앞으로 실제 프로젝트에 적용하여 시스템을 더욱 효율적으로 관리할 수 있을 것 같습니다.\n헷갈렸던 점 온톨로지가 단순히 분류 체계인지, 지식 그래프인지, 실행 규칙까지 포함하는지 처음에는 잘 구분되지 않았고, 현재 프로젝트의 시스템 구조가 이미 온톨로지적 요소를 포함하고 있는지, 아니면 추가적인 계층이 필요한지 명확하지 않았습니다. 또한 Entity, Relation, State, Rule, Evidence의 정확한 의미와 역할이 어떻게 연결되는지 이해하는 데 어려움을 겪었습니다.\n정리된 이해 온톨로지는 단순한 분류 체계를 넘어, 시스템 내 개체, 관계, 상태, 규칙 등을 포괄하는 지식 구조를 의미합니다. Pipeline OS 오케스트레이터에서는 이 온톨로지를 활용하여 시스템의 흐름을 정의하고, 상태 변화에 따라 자동으로 모듈을 실행하는 규칙 기반 시스템을 구축합니다. 결국, 온톨로지는 시스템 운영을 위한 청사진 역할을 하는 것이라고 이해했습니다.\nontology = { \"entities\": [\"보고서 생성 모듈\", \"데이터 수집 모듈\"], \"relations\": { \"데이터 수집 모듈\": {\"보고서 총평 오늘 오후 전체에서 배운 것 DOM 이벤트 처리 방식, 이벤트 객체 활용, DOM 트리 조작, 화면 상태 전환, 그리고 온톨로지 기반 시스템 이해까지 폭넓게 학습했습니다. 특히 이벤트 리스너 관리, DOM 조작, 그리고 온톨로지 개념을 활용하여 실제 웹 페이지 개발 및 시스템 관리 능력을 향상시킬 수 있을 것 같습니다. 앞으로 학습한 내용을 바탕으로 프로젝트에 적용하며 실력을 더욱 키워나가겠습니다.\n다음에 조심할 것 이벤트 객체(evt.target, this)의 차이점을 완벽하게 숙지하고 실제 코드에서 자연스럽게 활용할 수 있도록 꾸준히 연습해야겠어. 특히 온톨로지 오케스트레이터 프로젝트 연결 부분은 개념이 낯설어서, 더 많은 예시를 찾아보고 적용해보면서 이해도를 높여야 할 것 같아.\n다음 복습 주제 이벤트 객체의 evt.target와 this를 더욱 다양한 상황에서 활용하여 혼동 없이 사용할 수 있도록 추가적으로 연습해야겠다. 특히, DOM 트리 조작 시 insertBefore()를 활용한 요소 위치 변경에 대한 숙련도를 높여야 할 것 같다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "1206",
+  "inLanguage": "en",
+  "datePublished": "2026-07-31T00:00:00Z",
+  "dateModified": "2026-07-31T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-07-31-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      웹 페이지 상호작용부터 지식 그래프 기반 시스템 구축까지, 핵심 개념과 실전 활용법 정복
+    </h1>
+    <div class="post-description">
+      2026-07-31 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-07-31 00:00:00 +0000 UTC'>2026년 7월 31일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-dom-%EC%9D%B4%EB%B2%A4%ED%8A%B8%EC%99%80-%ED%95%B8%EB%93%A4%EB%9F%AC-%EC%97%B0%EA%B2%B0-%EB%B0%A9%EC%8B%9D-%EB%B9%84%EA%B5%90-%EB%B0%8F-%EA%B8%B0%EB%B3%B8-%EC%9D%B4%ED%95%B4">DOM 이벤트와 핸들러: 연결 방식 비교 및 기본 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EA%B0%9D%EC%B2%B4%EC%99%80-%ED%8F%BC-%EC%B2%98%EB%A6%AC-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%9D%B4%ED%95%B4-%EC%A0%95%EB%A6%AC">이벤트 객체와 폼 처리: 초보자를 위한 이해 정리</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%A6%AC%EC%8A%A4%EB%84%88-%EB%93%B1%EB%A1%9D-%EB%B0%8F-%EC%A0%9C%EA%B1%B0-%EB%B0%A9%EB%B2%95">이벤트 리스너 등록 및 제거 방법</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-dom-%ED%8A%B8%EB%A6%AC-%EC%83%9D%EC%84%B1-%EC%82%BD%EC%9E%85-%EC%82%AD%EC%A0%9C-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EA%B0%80%EC%9D%B4%EB%93%9C">DOM 트리 생성, 삽입, 삭제: 초보자를 위한 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-classlist%EC%99%80-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%ED%99%9C%EC%9A%A9-%ED%99%94%EB%A9%B4-%EC%83%81%ED%83%9C-%EC%A0%84%ED%99%98%ED%95%98%EA%B8%B0">classList와 이벤트 활용, 화면 상태 전환하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="6">
+<li><a href="#6-%EC%98%A8%ED%86%A8%EB%A1%9C%EC%A7%80-%EC%98%A4%EC%BC%80%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%9D%B4%ED%84%B0-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%97%B0%EA%B2%B0-%EC%9D%B4%ED%95%B4-%EA%B0%80%EC%9D%B4%EB%93%9C">온톨로지 오케스트레이터 프로젝트 연결 이해 가이드</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-dom-이벤트와-핸들러-연결-방식-비교-및-기본-이해">1. DOM 이벤트와 핸들러: 연결 방식 비교 및 기본 이해<a hidden class="anchor" aria-hidden="true" href="#1-dom-이벤트와-핸들러-연결-방식-비교-및-기본-이해">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>DOM 이벤트와 이벤트 핸들러의 작동 원리를 이해하고, HTML 속성 방식, 자바스크립트 프로퍼티 방식, 그리고 addEventListener 방식의 차이점을 명확하게 구분하게 되었습니다. 개발 환경 활용에 대한 불안감도 조금 해소되었고, 이벤트 연결 방식에 대한 혼란을 이해하고 정리할 수 있었습니다. 이제 이벤트 처리 방식을 선택적으로 활용하여 웹 페이지에 상호작용을 구현할 수 있을 것 같습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>이벤트 연결 방식이 왤케 다양하고, 각각 언제 써야 하는 건지 잘 모르겠어서 헷갈렸어. 그리고 VS Code랑 브라우저 콘솔을 어떻게 활용해야 하는지 감이 안 잡혀서 제대로 하고 있는 건가 막연하게 생각했어.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>이벤트는 브라우저가 사용자의 동작이나 상태 변화를 감지하여 자바스크립트에게 알려주는 신호이고, 이벤트 핸들러는 그 신호에 반응하여 실행되는 함수입니다. HTML 속성, 자바스크립트 프로퍼티, <code>addEventListener()</code> 방식은 모두 이벤트 핸들러를 연결하는 방법이지만, 각기 다른 특징과 장단점을 가지고 있으며 <code>addEventListener()</code> 방식이 가장 유연하고 권장되는 방식입니다. 개발 환경에서 코드를 작성하고 브라우저 콘솔을 활용하는 과정에 익숙해지면 이벤트와 핸들러를 보다 효과적으로 활용할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">button</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;btn&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">button</span>.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#34;click&#34;</span>, <span style="color:#a6e22e">showText</span>);
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>window.<span style="color:#a6e22e">onload</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">text</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;text&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">text</span>.<span style="color:#a6e22e">innerHTML</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;페이지가 열렸습니다&#34;</span>;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">onclick</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;getDay()&#34;</span>&gt;날짜 추출&lt;/<span style="color:#f92672">button</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">onmouseover</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mouseEvt(&#39;over&#39;)&#34;</span> <span style="color:#a6e22e">onmouseout</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mouseEvt(&#39;out&#39;)&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    내용
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">div</span>&gt;
+</span></span></code></pre></div><h2 id="2-이벤트-객체와-폼-처리-초보자를-위한-이해-정리">2. 이벤트 객체와 폼 처리: 초보자를 위한 이해 정리<a hidden class="anchor" aria-hidden="true" href="#2-이벤트-객체와-폼-처리-초보자를-위한-이해-정리">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>이벤트 객체의 <code>evt.target</code>, <code>this</code>, <code>zone</code> 변수가 각각 어떤 요소를 가리키는지 혼동되었지만, <code>evt.target</code>은 이벤트가 발생한 정확한 요소, <code>this</code>는 이벤트 핸들러가 연결된 요소를 참조한다는 것을 알게 되었습니다. 또한 다양한 이벤트 종류를 언제 사용해야 하는지 고민되었지만, 각 이벤트가 처리하는 사용자 입력의 종류에 따라 선택해야 한다는 점을 명확히 했습니다. 이러한 개념들을 실습 예시를 통해 확인하며 이해도를 높였습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>이벤트 객체에서 <code>evt.target</code>, <code>this</code>, <code>zone</code>의 역할을 명확하게 구분하지 못해 어떤 변수를 사용해야 할지 헷갈렸고, 다양한 이벤트 종류가 언제 사용되어야 하는지 상황에 맞춰 판단하기 어려웠습니다. 특히 <code>evt.target</code>이 항상 예상대로 작동하는 것은 아닌 것 같아서 혼란스러웠고, <code>this</code>가 맥락에 따라 다른 값을 가지는 부분도 이해하기 힘들었습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>이벤트 객체에서 <code>evt.target</code>은 이벤트가 발생한 정확한 요소를, <code>this</code>는 이벤트 핸들러가 연결된 요소를 가리키고, <code>zone</code> 변수는 코드의 가독성을 높이기 위해 특정 요소를 미리 참조하는 용도로 사용됩니다. 따라서 상황에 따라 적절한 변수를 선택하여 사용해야 하며, 이벤트 종류에 따라서도 처리 방식이 달라지므로 사용자 입력의 종류를 잘 파악해야 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;myElement&#39;</span>).<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#39;click&#39;</span>, <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">evt</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Clicked element ID:&#34;</span>, <span style="color:#a6e22e">evt</span>.<span style="color:#a6e22e">target</span>.<span style="color:#a6e22e">id</span>); <span style="color:#75715e">// 실제 클릭된 요소의 ID 출력
+</span></span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;myElement&#39;</span>).<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#39;mouseout&#39;</span>, <span style="color:#66d9ef">function</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Element id:&#34;</span>, <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">id</span>); <span style="color:#75715e">// 이벤트 핸들러가 연결된 요소의 ID 출력
+</span></span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h2 id="3-이벤트-리스너-등록-및-제거-방법">3. 이벤트 리스너 등록 및 제거 방법<a hidden class="anchor" aria-hidden="true" href="#3-이벤트-리스너-등록-및-제거-방법">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>이벤트 리스너 등록 시 <code>printPos</code>와 <code>printPos()</code>의 차이를 명확히 이해하게 되었고, 함수를 직접 호출하는 것과 참조하는 것의 적절한 사용법을 알게 되었다. 이름 있는 함수를 사용하는 것이 재사용성, 테스트 용이성, 제거 가능성 측면에서 이점을 제공한다는 것을 깨달았고, 이를 통해 더 효율적인 코드를 작성할 수 있을 것 같다. 앞으로는 이름 있는 함수를 활용하여 이벤트 리스너를 관리하는 습관을 들여야겠다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>함수 호출 방식을 구분하는 게 너무 헷갈렸고, 함수를 이름으로 정의하는 것 대신 익명 함수를 계속 사용하고 싶었는데 왜 이름 있는 함수를 써야 하는지 이해가 안 됐습니다. 이벤트 리스너 등록과 제거할 때 이름 있는 함수가 필요하다는 점을 명확히 알지 못했습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>이벤트 리스너를 등록할 때는 함수를 직접 실행하지 않고, 함수 이름만 전달해야 하며, 이름 있는 함수를 사용하면 코드 재사용, 테스트, 제거가 용이하다는 것을 깨달았습니다. <code>printPos</code>와 <code>printPos()</code>의 차이를 이해하는 것이 중요했습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">div</span>.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#34;mousemove&#34;</span>, <span style="color:#a6e22e">printPos</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">printPos</span>();
+</span></span></code></pre></div><h2 id="4-dom-트리-생성-삽입-삭제-초보자를-위한-가이드">4. DOM 트리 생성, 삽입, 삭제: 초보자를 위한 가이드<a hidden class="anchor" aria-hidden="true" href="#4-dom-트리-생성-삽입-삭제-초보자를-위한-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>DOM 트리 조작 과정에서 요소를 생성해도 바로 화면에 나타나지 않는 이유와, 텍스트 노드와 요소를 연결하는 복잡한 과정을 명확하게 이해하게 되었다. createElement(), createTextNode(), appendChild() 메서드의 사용법과 DOM 요소 삽입 순서를 익혔고, 반복문과 함수를 활용하여 동적으로 요소를 추가하는 방법을 알게 되었다. 특히 insertBefore()와 removeChild() 메서드를 통해 요소의 위치를 변경하고 삭제하는 방법을 배울 수 있었다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>처음에는 <code>createElement()</code>로 요소를 만들었다고 바로 화면에 나타날 줄 알았는데, 그렇지 않아서 당황했습니다. 텍스트 노드를 따로 만들어서 연결하고, 이걸 다시 부모 요소에 붙이는 과정이 너무 복잡하게 느껴졌습니다. DOM 트리 조작이 생각보다 꼼꼼하게 단계를 거쳐야 한다는 점을 이해하는 데 시간이 걸렸습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>DOM 조작은 요소를 만들고, 텍스트를 연결한 뒤, 부모 요소에 삽입하는 단계를 거쳐야 화면에 반영됩니다. <code>createElement()</code>, <code>createTextNode()</code>, <code>appendChild()</code> 메서드를 이해하고, <code>insertBefore()</code>와 <code>removeChild()</code>를 활용하면 요소의 위치를 제어하고 삭제할 수 있습니다. 복잡해 보이지만, 단계별로 진행하면 DOM 트리를 원하는 대로 변경할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">myFunction</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">newP</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">createElement</span>(<span style="color:#e6db74">&#34;p&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">text</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">createTextNode</span>(<span style="color:#e6db74">&#34;새로운 단락!&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">newP</span>.<span style="color:#a6e22e">appendChild</span>(<span style="color:#a6e22e">text</span>);
+</span></span><span style="display:flex;"><span>    document.<span style="color:#a6e22e">body</span>.<span style="color:#a6e22e">appendChild</span>(<span style="color:#a6e22e">newP</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="5-classlist와-이벤트-활용-화면-상태-전환하기">5. classList와 이벤트 활용, 화면 상태 전환하기<a hidden class="anchor" aria-hidden="true" href="#5-classlist와-이벤트-활용-화면-상태-전환하기">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>이벤트 핸들러에서 스타일을 직접 변경하는 방식과 CSS 클래스를 추가하는 방식의 차이를 명확히 이해하게 되었어요. 특정 스타일을 즉시 변경해야 할 때는 <code>style</code> 속성을 쓰고, 여러 상태를 관리하거나 전환할 때는 <code>classList</code>를 사용하는 것이 좋다는 것을 알게 되었습니다. 실습 예제를 통해 실제로 적용해보니 훨씬 이해가 잘 되는 것 같아요.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>이벤트 핸들러에서 스타일을 직접 수정할까, 아니면 classList를 사용할까가 헷갈렸어요. 두 방식의 차이점을 명확히 인지하지 못해서 어떤 상황에 어떤 방식을 사용해야 할지 판단하기 어려웠습니다. 특히 상태 전환이 필요한 UI 요소에 대해서는 어떻게 적용해야 할지 갈피가 잡히지 않았습니다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>스타일을 직접 변경하는 방식은 간단한 즉각적인 수정에 좋지만, 여러 스타일을 묶어서 관리하거나 상태 전환이 필요할 때는 classList를 사용하는 것이 더 효율적입니다. classList를 사용하면 스타일 변경을 더 일관성 있고 관리하기 쉽게 만들 수 있습니다. 상황에 따라 적절한 방법을 선택하는 것이 중요합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">changeButtonOnClick</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 클래스 추가로 스타일 변경
+</span></span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">target</span>.<span style="color:#a6e22e">classList</span>.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;changeColor&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 텍스트 변경
+</span></span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">target</span>.<span style="color:#a6e22e">innerText</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;버튼 클릭 성공!&#34;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">zoomIn</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 클래스를 통해 스타일 변경
+</span></span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">style</span>.<span style="color:#a6e22e">transform</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;scale(1.2)&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">style</span>.<span style="color:#a6e22e">transition</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;all 0.5s&#34;</span>; <span style="color:#75715e">// 부드럽게 전환
+</span></span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="6-온톨로지-오케스트레이터-프로젝트-연결-이해-가이드">6. 온톨로지 오케스트레이터 프로젝트 연결 이해 가이드<a hidden class="anchor" aria-hidden="true" href="#6-온톨로지-오케스트레이터-프로젝트-연결-이해-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
+<p>Pipeline OS 오케스트레이터 이해를 위해 온톨로지, 지식 그래프, 상태 관리, 규칙 기반 시스템의 핵심 개념을 정리하고, 실제 시스템 구조에 적용할 수 있는 간단한 온톨로지 예시를 만들었습니다. 특히 온톨로지가 단순 분류 체계를 넘어 지식 구조와 실행 규칙까지 포함하는 개념임을 이해하게 되었고, 시스템의 상태 변화를 추적하고 규칙에 따라 모듈을 실행하는 방법을 생각해보게 되었습니다. 앞으로 실제 프로젝트에 적용하여 시스템을 더욱 효율적으로 관리할 수 있을 것 같습니다.</p>
+<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
+<p>온톨로지가 단순히 분류 체계인지, 지식 그래프인지, 실행 규칙까지 포함하는지 처음에는 잘 구분되지 않았고, 현재 프로젝트의 시스템 구조가 이미 온톨로지적 요소를 포함하고 있는지, 아니면 추가적인 계층이 필요한지 명확하지 않았습니다. 또한 Entity, Relation, State, Rule, Evidence의 정확한 의미와 역할이 어떻게 연결되는지 이해하는 데 어려움을 겪었습니다.</p>
+<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
+<p>온톨로지는 단순한 분류 체계를 넘어, 시스템 내 개체, 관계, 상태, 규칙 등을 포괄하는 지식 구조를 의미합니다. Pipeline OS 오케스트레이터에서는 이 온톨로지를 활용하여 시스템의 흐름을 정의하고, 상태 변화에 따라 자동으로 모듈을 실행하는 규칙 기반 시스템을 구축합니다. 결국, 온톨로지는 시스템 운영을 위한 청사진 역할을 하는 것이라고 이해했습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>ontology <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;entities&#34;</span>: [<span style="color:#e6db74">&#34;보고서 생성 모듈&#34;</span>, <span style="color:#e6db74">&#34;데이터 수집 모듈&#34;</span>],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;relations&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;데이터 수집 모듈&#34;</span>: {<span style="color:#e6db74">&#34;보고서</span>
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>DOM 이벤트 처리 방식, 이벤트 객체 활용, DOM 트리 조작, 화면 상태 전환, 그리고 온톨로지 기반 시스템 이해까지 폭넓게 학습했습니다. 특히 이벤트 리스너 관리, DOM 조작, 그리고 온톨로지 개념을 활용하여 실제 웹 페이지 개발 및 시스템 관리 능력을 향상시킬 수 있을 것 같습니다. 앞으로 학습한 내용을 바탕으로 프로젝트에 적용하며 실력을 더욱 키워나가겠습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>이벤트 객체(<code>evt.target</code>, <code>this</code>)의 차이점을 완벽하게 숙지하고 실제 코드에서 자연스럽게 활용할 수 있도록 꾸준히 연습해야겠어. 특히 온톨로지 오케스트레이터 프로젝트 연결 부분은 개념이 낯설어서, 더 많은 예시를 찾아보고 적용해보면서 이해도를 높여야 할 것 같아.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>이벤트 객체의 <code>evt.target</code>와 <code>this</code>를 더욱 다양한 상황에서 활용하여 혼동 없이 사용할 수 있도록 추가적으로 연습해야겠다. 특히, DOM 트리 조작 시 insertBefore()를 활용한 요소 위치 변경에 대한 숙련도를 높여야 할 것 같다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-07-31-am-daily/">
+    <span class="title">« Prev</span>
+    <span>배열 순회부터 DOM 조작까지, 오전 학습 정리</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-07-30-am-daily/">
+    <span class="title">Next »</span>
+    <span>JavaScript 기초 다지기: 배열, Math, 연산, 조건문, 객체 활용 학습 정리</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

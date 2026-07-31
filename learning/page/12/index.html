@@ -174,6 +174,40 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">fstring-gugudan-and-output-formatting
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 f-string 삽입 쉼표 방식 출력 포맷팅 기호 사용 코드 가독성 향상 총평 1. f-string 삽입 왜 이걸 보게 됐나 f-string의 직관적인 사용법과 기존 .format() 메소드와의 차이점 이해하기 위해 초기 혼란을 겪었습니다. 특히 변수 삽입과 포맷팅 기호의 적용 방법에 대한 명확한 이해가 필요했습니다.
+내가 헷갈린 지점 처음에는 쉼표 방식과 f-string의 차이점과 각각의 적절한 사용 시기를 명확히 파악하지 못했습니다. 또한, :.2f, :2d와 같은 포맷팅 기호의 구체적인 사용법에 대해 혼란스러웠습니다.
+시도한 코드 / 예시 # 구구단 출력 예시 (f-string) number = 3 for i in range(1, 11): line = f&#39;{number} x {i} = {number * i}&#39; print(line) # 소수점 포맷팅 예시 average = 87.666666 print(f&#39;평균: {average:.2f}&#39;) # 자리수 맞춤 예시 dan = 3 for i in range(1, 11): print(f&#39;{dan} x {i} = {dan * i:2d}&#39;) 결과와 해석 3 x 1 = 3 3 x 2 = 6 3 x 3 = 9 3 x 4 = 12 3 x 5 = 15 3 x 6 = 18 3 x 7 = 21 3 x 8 = 24 3 x 9 = 27 3 x 10 = 30 평균: 87.67 3 x 1 = 3 3 x 2 = 6 3 x 3 = 9 3 x 4 = 12 3 x 5 = 15 3 x 6 = 18 3 x 7 = 21 3 x 8 = 24 3 x 9 = 27 3 x 10 = 30 정리된 이해 f-string을 통해 코드의 가독성을 향상시키고 복잡한 문자열 포맷팅을 간편하게 처리할 수 있음을 이해했습니다. 쉼표 방식과 비교했을 때, f-string은 변수 삽입과 다양한 포맷팅 옵션을 제공하여 더 유연하고 효율적인 문자열 생성을 가능하게 합니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to fstring-gugudan-and-output-formatting" href="https://Han-think.github.io/learning/fstring-gugudan-and-output-formatting/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">git-bash-markdown-vi
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 터미널 명령어 기초 Markdown 문법 vi 편집 모드 Hugo 블로그 구축 총평 1. 터미널 명령어 기초 왜 이걸 보게 됐나 터미널 명령어와 편집기 사용법을 이해하여 시스템 관리와 문서 작성 효율성을 높이기 위함
+내가 헷갈린 지점 &gt; 와 &gt;&gt; 의 정확한 차이와 vi 편집 모드 전환 방법에 대한 혼란
+시도한 코드 / 예시 # 폴더 생성 예시 mkdir -p my_folder/sub_folder # 파일 생성 및 내용 추가 touch new_file.txt echo &#34;첫 번째 내용&#34; &gt; new_file.txt echo &#34;두 번째 내용&#34; &gt;&gt; new_file.txt cat new_file.txt # vi 편집기 사용 예시 vi new_file.txt # 삽입 모드 진입: i # 변경 후 저장 및 종료: ESC → :wq → Enter 결과와 해석 폴더 my_folder 내에 sub_folder가 생성되고, new_file.txt 파일에는 첫 번째 내용이 새로 쓰이고, 두 번째 내용이 이어붙여진다. vi 편집기에서는 파일 내용을 수정하고 저장 후 종료한다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+  <a class="entry-link" aria-label="post link to git-bash-markdown-vi" href="https://Han-think.github.io/learning/git-bash-markdown-vi/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">jupyterlab-localhost-vscode-gitbash
     </h2>
   </header>
@@ -298,39 +332,6 @@
 
 <span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
   <a class="entry-link" aria-label="post link to python-modules-entrypoint-docstring" href="https://Han-think.github.io/learning/python-modules-entrypoint-docstring/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">python-scope-global-shadowing
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 스코프 이해 Shadowing global 키워드 지역 변수 총평 1. 스코프 이해 왜 이걸 보게 됐나 초보 학습자로서 전역 변수의 수정 방법과 스코프 이해 부족으로 인해 UnboundLocalError 오류를 경험하며 혼란을 겪었습니다. 이를 통해 변수의 스코프와 global 키워드의 중요성을 깊이 이해하게 되었습니다.
-내가 헷갈린 지점 전역 변수 count를 함수 내에서 직접 수정하려고 했을 때 발생한 UnboundLocalError 오류 메시지와 그 원인을 이해하는 데 어려움을 겪었습니다. 특히 함수 내에서 변수를 수정할 때 global 키워드의 필요성을 깨달았습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
-  <a class="entry-link" aria-label="post link to python-scope-global-shadowing" href="https://Han-think.github.io/learning/python-scope-global-shadowing/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">today-learning-personal-notes
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 Git 명령어 적용 Markdown 기본 문법 1. Git 명령어 적용 왜 이걸 보게 됐나 Git 명령어를 실제 프로젝트 관리에 어떻게 적용할 수 있는지 이해하고자 합니다.
-내가 헷갈린 지점 특히 mkdir -p, touch, echo, &gt;, &gt;&gt; 명령어의 구체적인 사용 사례와 그 차이점에 대해 명확한 이해가 필요합니다.
-시도한 코드 / 예시 # 중첩 폴더 생성 mkdir -p my_project/docs/tutorials/beginner # 빈 파일 생성 touch my_notes.md # 텍스트 파일에 내용 추가 echo &#34;첫 번째 줄&#34; &gt; my_notes.md echo &#34;두 번째 줄&#34; &gt;&gt; my_notes.md 결과와 해석 위 명령어 실행 결과:
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
-  <a class="entry-link" aria-label="post link to today-learning-personal-notes" href="https://Han-think.github.io/learning/today-learning-personal-notes/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
