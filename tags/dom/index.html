@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Dom | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/tags/dom/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://Han-think.github.io/tags/dom/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/tags/dom/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/tags/dom/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="Dom">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="website">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Dom">
+
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header">
+  <h1>
+    Dom
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">스코프와 ES6 문법, 배열 메서드까지 자바스크립트 복습
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 스코프 체인: 변수 탐색 규칙 이해하기 화살표 함수, this, 호이스팅: 초보자를 위한 핵심 정리 옵셔널 체이닝과 템플릿 리터럴, 초보자를 위한 완벽 이해 Rest Operator 활용법: 함수 인자 처리 및 재귀 함수 응용 배열 메서드 활용법: forEach, map, filter, sort 완벽 가이드 객체, 이벤트, 배열 구조 분해 할당 활용법 스프레드 연산자와 Rest 문법 완벽하게 이해하기 총평 1. 스코프 체인: 변수 탐색 규칙 이해하기 무엇을 배웠나 스코프 체인이란 변수를 찾을 때 현재 스코프부터 바깥쪽 스코프를 차례대로 검색하는 규칙이라는 것을 배웠어. 특히 중첩된 함수 내에서 변수를 찾을 때, 가장 가까운 스코프의 변수가 우선적으로 사용된다는 점이 중요해. 예시 코드를 분석하면서 스코프 체인을 따라가는 과정을 이해하게 되었어.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-04 00:00:00 +0000 UTC'>2026년 8월 4일</span>&nbsp;·&nbsp;<span>7 min</span></footer>
+  <a class="entry-link" aria-label="post link to 스코프와 ES6 문법, 배열 메서드까지 자바스크립트 복습" href="https://Han-think.github.io/learning/2026-08-04-pm-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">타이머와 이벤트 위임, 스코프 체인으로 동작 흐름 익히기
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 다운로드 진행률 시뮬레이션: 타이머 활용 핵심 원리 이벤트 위임으로 색상 팔레트 상호작용 구현하기 카 레이싱 실습, 도착 조건 코드 정의 및 이해 ES6 변수 선언과 스코프 체인 완벽 이해 총평 1. 다운로드 진행률 시뮬레이션: 타이머 활용 핵심 원리 무엇을 배웠나 setInterval과 clearInterval을 사용하여 다운로드 진행률을 시뮬레이션하는 코드를 이해하는 데 어려움을 겪었지만, 각 단계별 역할을 분리하여 학습하면서 타이머 관련 함수들의 연동 방식을 파악할 수 있었다. 특히 setInterval 함수의 반복 실행과 clearInterval으로 타이머를 멈추는 과정을 명확히 이해하게 되었고, 템플릿 리터럴 사용법과 오타 수정의 중요성도 깨달았다. 이 과정을 통해 웹 개발에서 타이머를 활용하는 기본적인 원리를 익힐 수 있었다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-04 00:00:00 +0000 UTC'>2026년 8월 4일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+  <a class="entry-link" aria-label="post link to 타이머와 이벤트 위임, 스코프 체인으로 동작 흐름 익히기" href="https://Han-think.github.io/learning/2026-08-04-am-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">DOM 이벤트 전파와 폼 검증으로 이벤트 흐름 이해하기
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 DOM 이벤트 전파 완벽 해설: 캡처링, 타겟, 버블링 완벽 이해 이벤트 제어: 전파 중단과 기본 동작 방지 DOM 스크롤 제어: scrollTo와 scrollIntoView 활용 폼 제출과 입력값 검증: 초보자를 위한 워킹 노트 출석부 실습: 초보자를 위한 코드 위치 및 요소 역할 정리 총평 1. DOM 이벤트 전파 완벽 해설: 캡처링, 타겟, 버블링 완벽 이해 무엇을 배웠나 DOM 이벤트 전파 과정에서 여러 로그가 출력되는 이유가 클릭 이벤트 자체가 단일하며, 이벤트가 DOM 트리를 따라 버블링되면서 각 요소의 이벤트 리스너가 실행되기 때문이라는 것을 알게 되었다. 특히 캡처링, 타겟, 버블링 단계를 이해하면서 이벤트 전파의 전체적인 흐름을 파악할 수 있었고, 단순히 역류처럼 느껴졌던 버블링 또한 정상적인 이벤트 처리 과정임을 이해하게 되었다. 이제는 여러 요소에 이벤트 리스너를 등록하더라도 이벤트가 중복 실행되는 문제를 해결할 수 있을 것 같다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-03 00:00:00 +0000 UTC'>2026년 8월 3일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to DOM 이벤트 전파와 폼 검증으로 이벤트 흐름 이해하기" href="https://Han-think.github.io/learning/2026-08-03-am-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">로그인 UI부터 타이머와 동적 목록까지 이벤트 실습
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 로그인 버튼 활성화 및 JavaScript 문법 오류 해결 초보자를 위한 단일 활성 상태 및 classList 관리 setTimeout과 setInterval 활용법: 시간 제어 및 진행 관리 동적 쇼핑 목록 구현과 자동 채점 문제 해결 색상 팔레트 호버 효과 및 자동차 경주 이벤트 분석 총평 1. 로그인 버튼 활성화 및 JavaScript 문법 오류 해결 무엇을 배웠나 로그인 버튼 활성화 기능을 구현하는 과정에서 JavaScript 문법 오류, 특히 alert 함수 사용 시 괄호의 중요성을 깨달았다. 입력 조건 로직과 별개로 코드 전체가 실행되지 않아 오류가 발생할 수 있다는 점을 알게 되었고, keyup 이벤트와 classList 조작을 활용하여 동적인 UI를 구현하는 방법을 익혔다. 앞으로는 코드를 작성할 때 오타나 문법 오류에 더욱 주의하여 디버깅해야겠다는 생각을 했다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-03 00:00:00 +0000 UTC'>2026년 8월 3일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to 로그인 UI부터 타이머와 동적 목록까지 이벤트 실습" href="https://Han-think.github.io/learning/2026-08-03-pm-daily/"></a>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

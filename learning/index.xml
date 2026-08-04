@@ -9,18 +9,32 @@
     <lastBuildDate>Tue, 04 Aug 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/learning/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>DOM 이벤트부터 폼 검증, ES6 문법까지 웹 개발 핵심 개념 완벽 습득</title>
+      <title>스코프와 ES6 문법, 배열 메서드까지 자바스크립트 복습</title>
+      <link>https://Han-think.github.io/learning/2026-08-04-pm-daily/</link>
+      <pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-04-pm-daily/</guid>
+      <description>2026-08-04 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>타이머와 이벤트 위임, 스코프 체인으로 동작 흐름 익히기</title>
       <link>https://Han-think.github.io/learning/2026-08-04-am-daily/</link>
       <pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/learning/2026-08-04-am-daily/</guid>
       <description>2026-08-04 오전 학습 정리</description>
     </item>
     <item>
-      <title>JavaScript 핵심 개념 마스터하기: 오류 해결부터 심화 응용까지</title>
-      <link>https://Han-think.github.io/learning/2026-08-04-pm-daily/</link>
-      <pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/learning/2026-08-04-pm-daily/</guid>
-      <description>2026-08-04 오후 학습 정리</description>
+      <title>DOM 이벤트 전파와 폼 검증으로 이벤트 흐름 이해하기</title>
+      <link>https://Han-think.github.io/learning/2026-08-03-am-daily/</link>
+      <pubDate>Mon, 03 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-03-am-daily/</guid>
+      <description>2026-08-03 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>로그인 UI부터 타이머와 동적 목록까지 이벤트 실습</title>
+      <link>https://Han-think.github.io/learning/2026-08-03-pm-daily/</link>
+      <pubDate>Mon, 03 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-03-pm-daily/</guid>
+      <description>2026-08-03 오후 학습 정리</description>
     </item>
     <item>
       <title>배열 순회부터 DOM 조작까지, 오전 학습 정리</title>

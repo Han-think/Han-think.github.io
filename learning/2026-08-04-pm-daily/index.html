@@ -5,8 +5,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>JavaScript 핵심 개념 마스터하기: 오류 해결부터 심화 응용까지 | Han-think Blog</title>
-<meta name="keywords" content="">
+<title>스코프와 ES6 문법, 배열 메서드까지 자바스크립트 복습 | Han-think Blog</title>
+<meta name="keywords" content="javascript, dom, events, es6">
 <meta name="description" content="2026-08-04 오후 학습 정리">
 <meta name="author" content="">
 <link rel="canonical" href="https://Han-think.github.io/learning/2026-08-04-pm-daily/">
@@ -84,16 +84,20 @@
         }
       </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-08-04-pm-daily/">
   <meta property="og:site_name" content="Han-think Blog">
-  <meta property="og:title" content="JavaScript 핵심 개념 마스터하기: 오류 해결부터 심화 응용까지">
+  <meta property="og:title" content="스코프와 ES6 문법, 배열 메서드까지 자바스크립트 복습">
   <meta property="og:description" content="2026-08-04 오후 학습 정리">
   <meta property="og:locale" content="ko_KR">
   <meta property="og:type" content="article">
     <meta property="article:section" content="learning">
     <meta property="article:published_time" content="2026-08-04T00:00:00+00:00">
     <meta property="article:modified_time" content="2026-08-04T00:00:00+00:00">
+    <meta property="article:tag" content="Javascript">
+    <meta property="article:tag" content="Dom">
+    <meta property="article:tag" content="Events">
+    <meta property="article:tag" content="Es6">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="JavaScript 핵심 개념 마스터하기: 오류 해결부터 심화 응용까지">
+  <meta name="twitter:title" content="스코프와 ES6 문법, 배열 메서드까지 자바스크립트 복습">
   <meta name="twitter:description" content="2026-08-04 오후 학습 정리">
 
 
@@ -111,7 +115,7 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "JavaScript 핵심 개념 마스터하기: 오류 해결부터 심화 응용까지",
+      "name": "스코프와 ES6 문법, 배열 메서드까지 자바스크립트 복습",
       "item": "https://Han-think.github.io/learning/2026-08-04-pm-daily/"
     }
   ]
@@ -121,14 +125,14 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "JavaScript 핵심 개념 마스터하기: 오류 해결부터 심화 응용까지",
-  "name": "JavaScript 핵심 개념 마스터하기: 오류 해결부터 심화 응용까지",
+  "headline": "스코프와 ES6 문법, 배열 메서드까지 자바스크립트 복습",
+  "name": "스코프와 ES6 문법, 배열 메서드까지 자바스크립트 복습",
   "description": "2026-08-04 오후 학습 정리",
   "keywords": [
-    
+    "javascript", "dom", "events", "es6"
   ],
-  "articleBody": "목차 로그인 버튼 활성화 및 JavaScript 문법 오류 해결 스코프 체인: 변수 탐색 규칙 이해하기 화살표 함수, this, 호이스팅: 초보자를 위한 핵심 정리 초보자를 위한 단일 활성 상태 및 classList 관리 setTimeout과 setInterval 활용법: 시간 제어 및 진행 관리 옵셔널 체이닝과 템플릿 리터럴, 초보자를 위한 완벽 이해 동적 쇼핑 목록 구현과 자동 채점 문제 해결 Rest Operator 활용법: 함수 인자 처리 및 재귀 함수 응용 배열 메서드 활용법: forEach, map, filter, sort 완벽 가이드 색상 팔레트 호버 효과 및 자동차 경주 이벤트 분석 객체, 이벤트, 배열 구조 분해 할당 활용법 스프레드 연산자와 Rest 문법 완벽하게 이해하기 총평 1. 로그인 버튼 활성화 및 JavaScript 문법 오류 해결 무엇을 배웠나 로그인 버튼 활성화 기능을 구현하는 과정에서 JavaScript 문법 오류, 특히 alert 함수 사용 시 괄호의 중요성을 깨달았다. 입력 조건 로직과 별개로 코드 전체가 실행되지 않아 오류가 발생할 수 있다는 점을 알게 되었고, keyup 이벤트와 classList 조작을 활용하여 동적인 UI를 구현하는 방법을 익혔다. 앞으로는 코드를 작성할 때 오타나 문법 오류에 더욱 주의하여 디버깅해야겠다는 생각을 했다.\n헷갈렸던 점 버튼이 안 활성화되는 이유를 입력 조건 로직에 문제가 있다고 생각했는데, 알고 보니 스크립트 자체가 실행되지 않았다는 걸 몰랐다. alert 함수를 사용할 때 괄호를 안 써서 에러가 발생했고, 이 때문에 다른 함수들이 실행되지 않았던 것이다. 이 사소한 문법 오류 때문에 문제를 해결하는 데 오래 걸렸다.\n정리된 이해 로그인 버튼 활성화 문제의 원인은 예상과 달리 입력 조건 로직이 아니라 JavaScript 문법 오류, 특히 alert 함수 호출 시 소괄호 누락이었다. 아이디와 비밀번호 입력 시 keyup 이벤트를 활용하여 버튼 색상을 변경하고, 로그인 성공 여부를 별도로 확인하는 방식으로 코드를 수정했다. 이 과정을 통해 JavaScript 문법 오류 추적의 중요성을 깨달았다.\nfunction activateBtn() { if (id.value \u0026\u0026 pw.value) { loginButton.classList.add(\"activatedColor\"); loginButton.classList.remove(\"deactivatedColor\"); } else { loginButton.classList.add(\"deactivatedColor\"); loginButton.classList.remove(\"activatedColor\"); } } id.addEventListener(\"keyup\", activateBtn); pw.addEventListener(\"keyup\", activateBtn); if (id.value === \"일반사용자ID\" \u0026\u0026 pw.value === \"일반비밀번호\") { alert(\"로그인 성공!\"); } else { alert(\"아이디 또는 비밀번호를 확인해 주세요.\"); } 2. 스코프 체인: 변수 탐색 규칙 이해하기 무엇을 배웠나 스코프 체인이란 변수를 찾을 때 현재 스코프부터 바깥쪽 스코프를 차례대로 검색하는 규칙이라는 것을 배웠어. 특히 중첩된 함수 내에서 변수를 찾을 때, 가장 가까운 스코프의 변수가 우선적으로 사용된다는 점이 중요해. 예시 코드를 분석하면서 스코프 체인을 따라가는 과정을 이해하게 되었어.\n헷갈렸던 점 전역 변수와 지역 변수의 관계, 그리고 중첩 함수 내에서 변수가 어떻게 검색되는지 이해하는 데 어려움을 느꼈습니다. 특히 변수가 어떤 스코프에서 찾히는지 시각적으로 따라가기 어려웠고, 여러 스코프가 얽히면 추적하는 과정이 복잡하게 느껴졌습니다.\n정리된 이해 스코프 체인은 변수를 찾을 때 현재 스코프부터 시작해서 바깥쪽 스코프를 차례대로 검색하는 규칙이야. 같은 이름의 변수가 여러 스코프에 존재할 경우, 가장 가까운 스코프에 있는 변수가 우선적으로 사용되고, 이렇게 스코프를 따라가는 연결고리를 스코프 체인이라고 부르는 거지. 즉, 변수 검색은 코드가 정의된 위치의 스코프를 따라가며 이루어진다는 것을 기억해야 해.\nfunction demo() { const x = 10; // demo의 지역 스코프 if (true) 3. 화살표 함수, this, 호이스팅: 초보자를 위한 핵심 정리 무엇을 배웠나 화살표 함수에 대한 기본 개념과 ES6 문법의 축약 표현 방식을 이해하게 되었고, 일반 함수와 화살표 함수 간의 this 키워드 동작 방식 차이를 명확히 인지하게 되었다. 특히 이벤트 핸들러에서 this의 동작을 제대로 파악하고 evt.currentTarget을 사용하는 이유를 알게 되어, 더욱 안전한 코딩을 할 수 있을 것 같다. 앞으로 화살표 함수를 좀 더 자신 있게 활용할 수 있을 것 같다.\n헷갈렸던 점 처음에는 화살표 함수라는 새로운 문법이 기존 함수와 어떻게 다른지, 특히 this 키워드가 어떻게 동작하는지 이해하는 데 어려움을 느꼈습니다. 이벤트 핸들러에서 this가 왜 예상과 다르게 작동하는지, 그리고 evt.currentTarget을 사용해야 하는 이유도 명확하지 않았습니다. 이러한 점들을 명확히 이해하고 정리하여 앞으로 화살표 함수를 활용하는 데 도움이 되도록 학습했습니다.\n정리된 이해 화살표 함수는 ES6에서 도입된 간결한 함수 표현 방식이며, 일반 함수와 달리 자체적인 this 컨텍스트를 가지지 않고 호출되는 위치의 this를 상속받습니다. 따라서 이벤트 핸들러에서 this 대신 evt.currentTarget을 사용해야 하는 이유는 화살표 함수의 this가 예상과 다르게 동작할 수 있기 때문입니다. 이 두 가지 차이점을 이해하는 것이 화살표 함수를 정확하게 활용하는 데 중요합니다.\ndocument.getElementById('btn') .addEventListener('click', evt =\u003e { console.log(evt.currentTarget); // 정확한 이벤트 타겟 참조 }); 4. 초보자를 위한 단일 활성 상태 및 classList 관리 무엇을 배웠나 처음에는 세 개의 요소를 전기 회로처럼 생각하고 라디오 버튼처럼 자동 관리될 것이라고 기대했지만, JavaScript를 사용하여 직접 상태를 관리하고 상호 배타적인 선택을 구현해야 한다는 것을 알게 되었습니다. 즉, 각 요소를 독립적으로 관리하고 JavaScript를 통해 상태를 동기화하여 하나의 요소만 활성화되도록 만들어야 합니다. 이 과정을 통해 DOM 조작과 이벤트 핸들링에 대한 이해를 높일 수 있었습니다.\n헷갈렸던 점 처음에는 세 개의 요소를 전기 회로처럼 생각해서 하나가 켜지면 나머지가 자동으로 꺼진다고 생각했어요. 또 HTML 라디오 버튼처럼 같은 그룹 내에서 자동으로 하나만 활성화되는 걸 기대했지만, 요소는 그런 기능이 없다는 점이 헷갈렸습니다.\n정리된 이해 세 개의 요소 중 하나만 활성화 상태를 유지하도록 만드는 것을, 라디오 버튼처럼 자동으로 관리될 것이라는 잘못된 기대를 했습니다. 결국 JavaScript를 활용해 각 요소를 독립적으로 관리하고 상태를 동기화하여, 상호 배타적인 선택을 구현해야 한다는 것을 알게 되었습니다. 즉, 원치 않는 자동 관리 기능이 없기에 직접 인터록 메커니즘을 만들어야 했습니다.\n\u003c!DOCTYPE html\u003e \u003chtml lang=\"ko\"\u003e \u003chead\u003e \u003cmeta charset=\"UTF-8\"\u003e 5. setTimeout과 setInterval 활용법: 시간 제어 및 진행 관리 무엇을 배웠나 setTimeout과 setInterval 함수의 차이점을 명확하게 이해하게 되었고, setInterval을 사용할 때 반환되는 타이머 식별값을 저장하여 나중에 중지할 수 있다는 점을 알게 되었습니다. 또한, 타이머를 제어하는 변수를 먼저 정의하고 사용하는 것이 중요하다는 것을 깨달았습니다. 실습 예제를 통해 시간 제어 함수의 작동 방식을 더 잘 이해할 수 있었습니다.\n헷갈렸던 점 처음에는 setTimeout과 setInterval의 사용법을 제대로 이해하지 못하고, 특히 setInterval에서 반환되는 타이머 식별값을 저장하고 사용하는 부분에서 어려움을 느꼈습니다. 또한, 타이머를 중지하는 clearInterval 함수를 사용할 때, 타이머 식별값을 저장하는 변수가 정의되지 않아 오류가 발생하는 상황을 해결하지 못했습니다. 복잡한 예제를 풀 때 각 타이머의 역할을 명확하게 구분하지 못해 전체적인 흐름 파악이 어려웠습니다.\n정리된 이해 setTimeout은 함수를 딱 한 번 실행하는 함수이고, setInterval은 특정 간격으로 반복 실행하는 함수라는 것을 명확히 이해했습니다. setInterval을 사용할 때는 반드시 반환되는 타이머 식별값을 변수에 저장하고, clearInterval()을 사용하여 반복을 멈춰야 한다는 점을 깨달았습니다. 이제는 타이머를 제어하는 코드를 작성할 때, 타이머 식별값을 잊지 않고 사용할 수 있을 것 같습니다.\nvar i = 0; var time; var h1 = document.getElementById(\"cnt\"); time = setInterval(function() { i++; h1.innerHTML = i; if (i \u003e= 10) clearInterval(time); }, 100) 6. 옵셔널 체이닝과 템플릿 리터럴, 초보자를 위한 완벽 이해 무엇을 배웠나 옵셔널 체이닝은 객체 속성 접근 시, 값이 undefined나 null일 때 에러를 방지하고 안전하게 undefined를 반환하는 방법이라는 것을 알게 되었습니다. 템플릿 리터럴에서는 변수가 null일 경우에도 에러 없이 처리할 수 있도록 null 체킹이나 기본값 설정을 고려해야 함을 배웠습니다. 이 두 개념을 통해 코드를 더욱 안전하고 간결하게 만들 수 있을 것 같습니다.\n헷갈렸던 점 옵셔널 체이닝을 사용할 때 어떤 값이 undefined인지, 언제 붙여야 하는지 판단하기 어려웠어요. 템플릿 리터럴에서 변수가 null일 경우 어떻게 처리해야 하는지, 에러가 발생하는 조건에 대한 이해가 부족했습니다. 실제 코드 적용 시 어떻게 활용해야 할지 감이 잘 잡히지 않았습니다.\n정리된 이해 옵셔널 체이닝은 객체 속성에 접근할 때, 속성값이 null이나 undefined일 경우 에러를 발생시키지 않고 안전하게 undefined를 반환하도록 해주는 편리한 기능이다. 템플릿 리터럴은 변수나 표현식을 문자열 안에 삽입하여 문자열을 조합하는 데 사용되며, 변수가 null일 경우에도 에러를 방지하기 위해 조건부 렌더링이나 기본값을 제공하는 방식으로 처리할 수 있다. 중요한 점은 옵셔널 체이닝은 체이닝되는 모든 값이 존재할 필요는 없지만, 템플릿 리터럴 안에서는 변수가 존재하지 않으면 에러가 발생할 수 있다는 것이다.\nconst user = { contact: { email: 'example@example.com' } }; console.log(user.contact?.email); const emptyUser = {}; console.log(emptyUser.contact?.email); 7. 동적 쇼핑 목록 구현과 자동 채점 문제 해결 무엇을 배웠나 동적 쇼핑 목록 실습에서 자동 채점 오류가 발생했을 때, 단순히 코드가 작동하는 것 외에 채점 시스템이 기대하는 DOM 구조와 텍스트 내용의 정확한 일치 여부가 중요하다는 것을 알게 되었습니다. 특히 버튼 텍스트와 함수 정의 방식이 중요하며, 채점 기준에 맞춰 코드를 수정해야 함을 배웠습니다. 이 과정을 통해 자동 채점 시스템의 작동 방식을 조금 더 이해하게 되었습니다.\n헷갈렸던 점 자동 채점 결과가 0점인 이유가 코드 자체의 기능적 오류 때문인지, 아니면 채점 기준과 나의 결과물의 불일치인지 확신이 서지 않았습니다. 특히 버튼 텍스트와 DOM 구조의 미세한 불일치가 채점 시스템에 큰 영향을 미칠 수 있다는 점을 인지하지 못했습니다. 함수 정의 방식에 대한 주의가 필요했고, 기존 함수를 수정하는 것이 아니라 기존 함수를 재정의하면 안 된다는 점을 깨달았습니다.\n정리된 이해 자동 채점 시스템은 코드 실행 결과뿐만 아니라, 기대하는 DOM 구조와 텍스트 내용까지 정확히 일치해야 제대로 작동한다는 점을 알게 되었습니다. 특히, 버튼 텍스트와 함수 정의 방식에 주의해야 했으며, 채점 기준에 명시된 정확한 내용과 형식을 따라야 했습니다. 이번 경험을 통해 자동 채점 시스템의 평가 기준을 더 명확하게 이해하게 되었습니다.\n\u003cbutton class=\"btn btn-danger btn-sm float-right delete\"\u003eX\u003c/button\u003e 8. Rest Operator 활용법: 함수 인자 처리 및 재귀 함수 응용 무엇을 배웠나 Rest Operator는 함수의 매개변수들을 하나의 배열로 묶어주는 역할을 하며, Spread Operator와 구분해서 이해해야 한다는 점을 알게 되었다. 특히 Rest Operator의 사용 위치와 재귀 함수에서의 활용 방식이 처음에는 헷갈렸지만, 예시 코드를 통해 조금 더 명확하게 이해할 수 있었다. 앞으로는 이 지식을 바탕으로 다양한 함수를 작성해 보면서 실력을 키워나가야겠다.\n헷갈렸던 점 Rest Operator와 Spread Operator를 구분하는 데 어려움이 있었고, 재귀 함수에서 head와 tail을 분리하여 나머지 인자를 넘기는 부분이 이해가 잘 안 되었습니다. 특히 재귀 호출이 반복되는 과정이 복잡하게 느껴졌습니다.\n정리된 이해 Rest Operator는 함수에서 나머지 인자들을 하나의 배열로 묶어주는 역할을 하며, 매개변수 목록의 마지막에 위치해야 합니다. Spread Operator와 혼동하지 않도록 주의해야 하며, 재귀 함수에서는 배열을 head와 tail로 나누고 tail을 Rest Operator로 처리하는 부분이 핵심입니다. 이러한 이해를 바탕으로 다양한 함수 구현에 활용할 수 있습니다.\nfunction mul(...arr) { 9. 배열 메서드 활용법: forEach, map, filter, sort 완벽 가이드 무엇을 배웠나 배열 처리 메서드 선택에 어려움을 겪었는데, forEach, map, filter, sort 각각의 역할과 반환값을 명확히 이해하게 되었다. forEach는 작업을 수행, map은 요소 변환, filter는 조건 만족 요소 추출, sort는 정렬임을 기억해야겠다. 중복 선언 실수도 줄이고, 각 메서드의 목적에 맞춰 적절한 코드를 작성할 수 있을 것 같다.\n헷갈렸던 점 배열 메서드들을 보면서 각각의 역할이 비슷해 보여서 언제 어떤 걸 써야 할지 혼란스러웠다. 특히 forEach, map, filter는 기존 for문과 어떻게 연결되는지 파악하는 데 어려움을 느꼈다. 또한, 코드를 작성할 때 배열 선언과 함수 적용 부분을 헷갈려 중복 선언하는 실수를 자주 했다.\n정리된 이해 배열 처리 메서드는 각자 명확한 목적을 가지고 있으며, forEach는 단순히 각 요소를 처리하고, map은 변환된 요소를 담은 새 배열을, filter는 조건을 만족하는 요소만 담은 새 배열을 생성합니다. sort는 배열 자체를 정렬하는 역할을 합니다. 이들을 상황에 맞게 선택하고 사용하는 것이 중요합니다.\nfruits.forEach(fruit =\u003e console.log(`현재 과일: ${fruit}`)); const names = persons.map(person =\u003e `${person.firstName} ${person.lastName}`); const qualifiedBooks = bestsellers.filter(book =\u003e book.price \u003e 20); const sortedCities = cities.sort((a, b) =\u003e a.population - b.population); 10. 색상 팔레트 호버 효과 및 자동차 경주 이벤트 분석 무엇을 배웠나 JavaScript 코드를 통해 HTML 요소의 className을 읽어와 화면에 표시하는 호버 효과 구현 방식을 이해하게 되었고, 기존 HTML 요소와 동적으로 생성된 요소의 차이점을 명확히 구분할 수 있게 되었습니다. 또한, marginLeft 값을 활용하여 자동차 경주와 같은 애니메이션 효과를 만들어낼 수 있다는 것을 알게 되었으며, DOM 조작과 이벤트 리스너 활용의 중요성을 체감했습니다. 초보자에게 도움이 될 만한 키워드들을 정리하여 앞으로 학습에 참고할 수 있도록 했습니다.\n헷갈렸던 점 처음에는 None!이라는 색상명이 코드에서 어떻게 처리되는지, 그리고 노란색 팔레트가 어떻게 생성되었는지 이해하는 데 어려움을 겪었습니다. 또한, className을 통해 색상 이름을 추출하는 과정과 자동차 경주를 구현하기 위한 marginLeft 값 조절 방식이 명확하게 파악되지 않았습니다.\n정리된 이해 팔레트 호버 효과는 mouseover 이벤트를 사용하여 마우스가 올라간 요소의 className을 읽어 화면에 표시하며, None!은 초기 HTML에 있던 텍스트였음을 알게 되었습니다. 자동차 경주 이벤트는 각 자동차의 marginLeft 값을 무작위로 증가시켜 경쟁하는 듯한 효과를 구현하는 것으로 이해했습니다. DOM 조작과 이벤트 리스너를 활용하여 웹 페이지의 동적인 상호작용을 만들어낼 수 있다는 점을 배웠습니다.\nvar section = document.querySelector(\"section\"); section.addEventListener(\"mouseover\", function (event) { var selected = document.querySelector(\".selected\"); selected.innerText = event.target.className; // 마우스가 올라간 요소의 className을 가져옴 }); function raceCar(car) { car.style.marginLeft = parseInt(car.style.marginLeft) + Math.random() * 60 + \"px\"; } 11. 객체, 이벤트, 배열 구조 분해 할당 활용법 무엇을 배웠나 구조 분해 할당 시 변수 이름을 너무 짧게 사용하면 코드를 이해하기 어려워지고, 속성이 없을 때 사용할 기본값을 제대로 이해하지 못했음을 깨달았습니다. 앞으로는 가독성을 위해 의미 있는 변수 이름을 사용하고, 기본값은 속성 자체가 없는 경우에 사용된다는 점을 기억해야겠습니다. 실습 예시를 통해 작업 객체와 이벤트 객체에서 필요한 필드를 효율적으로 추출하는 방법을 익혔습니다.\n헷갈렸던 점 객체 분해 할당 시 짧은 별칭을 사용하면 변수 의미를 파악하기 어려워 코드 가독성이 떨어지고, 기본값을 설정하는 부분에서 객체 속성을 새로 추가하는 것으로 착각했습니다. 별칭 사용과 기본값 설정에 대한 이해가 부족하여 학습 효율이 낮았습니다.\n정리된 이해 구조 분해 할당 시에는 변수 이름이 의미 있도록 길게 쓰는 것이 코드 가독성을 높이는 데 중요하다. 특히 기본값을 설정할 때, 객체에 새로운 속성을 추가하는 것이 아니라 속성이 없을 때 사용할 값을 지정하는 것임을 명확히 이해해야 한다. 이러한 점들을 인지하고 실습을 통해 적용하면 더욱 효율적인 코드를 작성할 수 있을 것이다.\nconst { jobId, modelName, runtime: { cpu }, policy = 'default' } = job; console.log(`Job ID: ${jobId}, Model: ${modelName}, CPU: ${cpu}, Policy: ${policy}`); document.querySelector('.button').addEventListener('click', ({ target: { id, className } }) =\u003e { console.log( 12. 스프레드 연산자와 Rest 문법 완벽하게 이해하기 무엇을 배웠나 Spread 연산자와 Rest 문법이 같은 기호를 사용하지만 역할이 다르다는 것을 명확히 이해하게 되었어요. Spread 연산자는 배열을 펼치고, Rest 문법은 함수 매개변수를 처리합니다. 특히 Spread 연산자의 얕은 복사 개념과 중첩 객체 참조 문제는 앞으로 주의해야 할 부분인 것 같습니다.\n헷갈렸던 점 처음에는 Spread 연산자와 Rest 문법이 모두 ... 기호를 사용해서 어떤 차이가 있는지 파악하기 어려웠고, Spread 연산자가 얕은 복사를 한다는 개념과 그로 인해 발생하는 문제점(중첩 객체 참조)을 이해하는 데 시간이 걸렸습니다. 얕은 복사가 실제로 어떻게 동작하는지 시각적으로 확인하고 다양한 예제를 통해 직접 코드를 작성하면서 그 차이를 명확하게 알게 되었습니다.\n정리된 이해 Spread 연산자는 배열이나 문자열을 펼쳐서 개별 요소로 만들고, 얕은 복사를 수행하여 중첩된 객체는 참조를 공유합니다. Rest 문법은 함수에서 여러 인자를 받아들이는 데 사용되며, Spread 연산자와는 역할이 다릅니다. 이 둘의 차이점을 명확히 이해하고, 얕은 복사의 한계점을 인지하는 것이 중요합니다.\nfunction sumValues(...numbers) { return numbers.reduce((total, value) =\u003e total + value, 0); } const combinedArray = [...arr1, ...arr2]; const copiedArray = [...arr1]; 총평 오늘 오후 전체에서 배운 것 오늘 오후 학습을 통해 JavaScript 문법 오류 해결부터 스코프 체인, 화살표 함수, 배열 메서드 활용, 자동 채점 시스템 이해 등 다양한 개념을 익혔습니다. 특히 DOM 조작, 이벤트 핸들링, 코드 가독성, 자동 채점 시스템의 요구사항 등을 고려하는 것이 중요하다는 점을 깨달았고, 앞으로 코드 작성 시 더욱 신중하게 접근할 필요가 있습니다. 이러한 학습 내용을 바탕으로 실력 향상을 위해 꾸준히 노력할 것입니다.\n다음에 조심할 것 자동 채점 시스템은 단순한 코드 작동 여부 외에 DOM 구조와 텍스트 내용의 정확한 일치 여부를 중요하게 고려하므로, 채점 기준에 맞춰 코드를 작성해야겠다. 또한, Spread 연산자의 얕은 복사 개념처럼 언뜻 보기에 비슷한 문법이라도 미묘한 차이가 결과에 큰 영향을 미칠 수 있으니, 주의해서 사용해야 할 것 같다.\n다음 복습 주제 화살표 함수와 this 키워드 동작 방식의 차이를 좀 더 깊이 파고들어서, 다양한 상황에서 적용하는 연습을 해야겠다. 배열 메서드 선택에 어려움을 겪었는데, 각 메서드의 특징을 잊지 않고 상황에 맞게 활용할 수 있도록 꾸준히 사용해봐야겠다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
-  "wordCount" : "2321",
+  "articleBody": "목차 스코프 체인: 변수 탐색 규칙 이해하기 화살표 함수, this, 호이스팅: 초보자를 위한 핵심 정리 옵셔널 체이닝과 템플릿 리터럴, 초보자를 위한 완벽 이해 Rest Operator 활용법: 함수 인자 처리 및 재귀 함수 응용 배열 메서드 활용법: forEach, map, filter, sort 완벽 가이드 객체, 이벤트, 배열 구조 분해 할당 활용법 스프레드 연산자와 Rest 문법 완벽하게 이해하기 총평 1. 스코프 체인: 변수 탐색 규칙 이해하기 무엇을 배웠나 스코프 체인이란 변수를 찾을 때 현재 스코프부터 바깥쪽 스코프를 차례대로 검색하는 규칙이라는 것을 배웠어. 특히 중첩된 함수 내에서 변수를 찾을 때, 가장 가까운 스코프의 변수가 우선적으로 사용된다는 점이 중요해. 예시 코드를 분석하면서 스코프 체인을 따라가는 과정을 이해하게 되었어.\n헷갈렸던 점 전역 변수와 지역 변수의 관계, 그리고 중첩 함수 내에서 변수가 어떻게 검색되는지 이해하는 데 어려움을 느꼈습니다. 특히 변수가 어떤 스코프에서 찾히는지 시각적으로 따라가기 어려웠고, 여러 스코프가 얽히면 추적하는 과정이 복잡하게 느껴졌습니다.\n정리된 이해 스코프 체인은 변수를 찾을 때 현재 스코프부터 시작해서 바깥쪽 스코프를 차례대로 검색하는 규칙이야. 같은 이름의 변수가 여러 스코프에 존재할 경우, 가장 가까운 스코프에 있는 변수가 우선적으로 사용되고, 이렇게 스코프를 따라가는 연결고리를 스코프 체인이라고 부르는 거지. 즉, 변수 검색은 코드가 정의된 위치의 스코프를 따라가며 이루어진다는 것을 기억해야 해.\nfunction demo() { const x = 10; // demo의 지역 스코프 if (true) 2. 화살표 함수, this, 호이스팅: 초보자를 위한 핵심 정리 무엇을 배웠나 화살표 함수에 대한 기본 개념과 ES6 문법의 축약 표현 방식을 이해하게 되었고, 일반 함수와 화살표 함수 간의 this 키워드 동작 방식 차이를 명확히 인지하게 되었다. 특히 이벤트 핸들러에서 this의 동작을 제대로 파악하고 evt.currentTarget을 사용하는 이유를 알게 되어, 더욱 안전한 코딩을 할 수 있을 것 같다. 앞으로 화살표 함수를 좀 더 자신 있게 활용할 수 있을 것 같다.\n헷갈렸던 점 처음에는 화살표 함수라는 새로운 문법이 기존 함수와 어떻게 다른지, 특히 this 키워드가 어떻게 동작하는지 이해하는 데 어려움을 느꼈습니다. 이벤트 핸들러에서 this가 왜 예상과 다르게 작동하는지, 그리고 evt.currentTarget을 사용해야 하는 이유도 명확하지 않았습니다. 이러한 점들을 명확히 이해하고 정리하여 앞으로 화살표 함수를 활용하는 데 도움이 되도록 학습했습니다.\n정리된 이해 화살표 함수는 ES6에서 도입된 간결한 함수 표현 방식이며, 일반 함수와 달리 자체적인 this 컨텍스트를 가지지 않고 호출되는 위치의 this를 상속받습니다. 따라서 이벤트 핸들러에서 this 대신 evt.currentTarget을 사용해야 하는 이유는 화살표 함수의 this가 예상과 다르게 동작할 수 있기 때문입니다. 이 두 가지 차이점을 이해하는 것이 화살표 함수를 정확하게 활용하는 데 중요합니다.\ndocument.getElementById('btn') .addEventListener('click', evt =\u003e { console.log(evt.currentTarget); // 정확한 이벤트 타겟 참조 }); 3. 옵셔널 체이닝과 템플릿 리터럴, 초보자를 위한 완벽 이해 무엇을 배웠나 옵셔널 체이닝은 객체 속성 접근 시, 값이 undefined나 null일 때 에러를 방지하고 안전하게 undefined를 반환하는 방법이라는 것을 알게 되었습니다. 템플릿 리터럴에서는 변수가 null일 경우에도 에러 없이 처리할 수 있도록 null 체킹이나 기본값 설정을 고려해야 함을 배웠습니다. 이 두 개념을 통해 코드를 더욱 안전하고 간결하게 만들 수 있을 것 같습니다.\n헷갈렸던 점 옵셔널 체이닝을 사용할 때 어떤 값이 undefined인지, 언제 붙여야 하는지 판단하기 어려웠어요. 템플릿 리터럴에서 변수가 null일 경우 어떻게 처리해야 하는지, 에러가 발생하는 조건에 대한 이해가 부족했습니다. 실제 코드 적용 시 어떻게 활용해야 할지 감이 잘 잡히지 않았습니다.\n정리된 이해 옵셔널 체이닝은 객체 속성에 접근할 때, 속성값이 null이나 undefined일 경우 에러를 발생시키지 않고 안전하게 undefined를 반환하도록 해주는 편리한 기능이다. 템플릿 리터럴은 변수나 표현식을 문자열 안에 삽입하여 문자열을 조합하는 데 사용되며, 변수가 null일 경우에도 에러를 방지하기 위해 조건부 렌더링이나 기본값을 제공하는 방식으로 처리할 수 있다. 중요한 점은 옵셔널 체이닝은 체이닝되는 모든 값이 존재할 필요는 없지만, 템플릿 리터럴 안에서는 변수가 존재하지 않으면 에러가 발생할 수 있다는 것이다.\nconst user = { contact: { email: 'example@example.com' } }; console.log(user.contact?.email); const emptyUser = {}; console.log(emptyUser.contact?.email); 4. Rest Operator 활용법: 함수 인자 처리 및 재귀 함수 응용 무엇을 배웠나 Rest Operator는 함수의 매개변수들을 하나의 배열로 묶어주는 역할을 하며, Spread Operator와 구분해서 이해해야 한다는 점을 알게 되었다. 특히 Rest Operator의 사용 위치와 재귀 함수에서의 활용 방식이 처음에는 헷갈렸지만, 예시 코드를 통해 조금 더 명확하게 이해할 수 있었다. 앞으로는 이 지식을 바탕으로 다양한 함수를 작성해 보면서 실력을 키워나가야겠다.\n헷갈렸던 점 Rest Operator와 Spread Operator를 구분하는 데 어려움이 있었고, 재귀 함수에서 head와 tail을 분리하여 나머지 인자를 넘기는 부분이 이해가 잘 안 되었습니다. 특히 재귀 호출이 반복되는 과정이 복잡하게 느껴졌습니다.\n정리된 이해 Rest Operator는 함수에서 나머지 인자들을 하나의 배열로 묶어주는 역할을 하며, 매개변수 목록의 마지막에 위치해야 합니다. Spread Operator와 혼동하지 않도록 주의해야 하며, 재귀 함수에서는 배열을 head와 tail로 나누고 tail을 Rest Operator로 처리하는 부분이 핵심입니다. 이러한 이해를 바탕으로 다양한 함수 구현에 활용할 수 있습니다.\nfunction mul(...arr) { 5. 배열 메서드 활용법: forEach, map, filter, sort 완벽 가이드 무엇을 배웠나 배열 처리 메서드 선택에 어려움을 겪었는데, forEach, map, filter, sort 각각의 역할과 반환값을 명확히 이해하게 되었다. forEach는 작업을 수행, map은 요소 변환, filter는 조건 만족 요소 추출, sort는 정렬임을 기억해야겠다. 중복 선언 실수도 줄이고, 각 메서드의 목적에 맞춰 적절한 코드를 작성할 수 있을 것 같다.\n헷갈렸던 점 배열 메서드들을 보면서 각각의 역할이 비슷해 보여서 언제 어떤 걸 써야 할지 혼란스러웠다. 특히 forEach, map, filter는 기존 for문과 어떻게 연결되는지 파악하는 데 어려움을 느꼈다. 또한, 코드를 작성할 때 배열 선언과 함수 적용 부분을 헷갈려 중복 선언하는 실수를 자주 했다.\n정리된 이해 배열 처리 메서드는 각자 명확한 목적을 가지고 있으며, forEach는 단순히 각 요소를 처리하고, map은 변환된 요소를 담은 새 배열을, filter는 조건을 만족하는 요소만 담은 새 배열을 생성합니다. sort는 배열 자체를 정렬하는 역할을 합니다. 이들을 상황에 맞게 선택하고 사용하는 것이 중요합니다.\nfruits.forEach(fruit =\u003e console.log(`현재 과일: ${fruit}`)); const names = persons.map(person =\u003e `${person.firstName} ${person.lastName}`); const qualifiedBooks = bestsellers.filter(book =\u003e book.price \u003e 20); const sortedCities = cities.sort((a, b) =\u003e a.population - b.population); 6. 객체, 이벤트, 배열 구조 분해 할당 활용법 무엇을 배웠나 구조 분해 할당 시 변수 이름을 너무 짧게 사용하면 코드를 이해하기 어려워지고, 속성이 없을 때 사용할 기본값을 제대로 이해하지 못했음을 깨달았습니다. 앞으로는 가독성을 위해 의미 있는 변수 이름을 사용하고, 기본값은 속성 자체가 없는 경우에 사용된다는 점을 기억해야겠습니다. 실습 예시를 통해 작업 객체와 이벤트 객체에서 필요한 필드를 효율적으로 추출하는 방법을 익혔습니다.\n헷갈렸던 점 객체 분해 할당 시 짧은 별칭을 사용하면 변수 의미를 파악하기 어려워 코드 가독성이 떨어지고, 기본값을 설정하는 부분에서 객체 속성을 새로 추가하는 것으로 착각했습니다. 별칭 사용과 기본값 설정에 대한 이해가 부족하여 학습 효율이 낮았습니다.\n정리된 이해 구조 분해 할당 시에는 변수 이름이 의미 있도록 길게 쓰는 것이 코드 가독성을 높이는 데 중요하다. 특히 기본값을 설정할 때, 객체에 새로운 속성을 추가하는 것이 아니라 속성이 없을 때 사용할 값을 지정하는 것임을 명확히 이해해야 한다. 이러한 점들을 인지하고 실습을 통해 적용하면 더욱 효율적인 코드를 작성할 수 있을 것이다.\nconst { jobId, modelName, runtime: { cpu }, policy = 'default' } = job; console.log(`Job ID: ${jobId}, Model: ${modelName}, CPU: ${cpu}, Policy: ${policy}`); document.querySelector('.button').addEventListener('click', ({ target: { id, className } }) =\u003e { console.log( 7. 스프레드 연산자와 Rest 문법 완벽하게 이해하기 무엇을 배웠나 Spread 연산자와 Rest 문법이 같은 기호를 사용하지만 역할이 다르다는 것을 명확히 이해하게 되었어요. Spread 연산자는 배열을 펼치고, Rest 문법은 함수 매개변수를 처리합니다. 특히 Spread 연산자의 얕은 복사 개념과 중첩 객체 참조 문제는 앞으로 주의해야 할 부분인 것 같습니다.\n헷갈렸던 점 처음에는 Spread 연산자와 Rest 문법이 모두 ... 기호를 사용해서 어떤 차이가 있는지 파악하기 어려웠고, Spread 연산자가 얕은 복사를 한다는 개념과 그로 인해 발생하는 문제점(중첩 객체 참조)을 이해하는 데 시간이 걸렸습니다. 얕은 복사가 실제로 어떻게 동작하는지 시각적으로 확인하고 다양한 예제를 통해 직접 코드를 작성하면서 그 차이를 명확하게 알게 되었습니다.\n정리된 이해 Spread 연산자는 배열이나 문자열을 펼쳐서 개별 요소로 만들고, 얕은 복사를 수행하여 중첩된 객체는 참조를 공유합니다. Rest 문법은 함수에서 여러 인자를 받아들이는 데 사용되며, Spread 연산자와는 역할이 다릅니다. 이 둘의 차이점을 명확히 이해하고, 얕은 복사의 한계점을 인지하는 것이 중요합니다.\nfunction sumValues(...numbers) { return numbers.reduce((total, value) =\u003e total + value, 0); } const combinedArray = [...arr1, ...arr2]; const copiedArray = [...arr1]; 총평 오늘 오후 전체에서 배운 것 스코프 체인과 화살표 함수의 this, 호이스팅을 다시 확인하고 옵셔널 체이닝과 템플릿 리터럴을 정리했다. Rest·Spread, 구조 분해 할당과 forEach·map·filter·sort를 연결해 ES6 문법이 데이터 처리에서 어떻게 쓰이는지 살펴봤다.\n다음에 조심할 것 화살표 함수의 this를 일반 함수와 동일하게 생각하지 않고, 옵셔널 체이닝은 값이 없을 수 있는 위치에만 사용한다. Rest와 Spread의 모양은 같아도 값을 모으는지 펼치는지 문맥으로 구분한다.\n다음 복습 주제 일반 함수와 화살표 함수의 this 차이, Rest 매개변수와 Spread 복사, 배열 메서드별 반환값을 작은 코드로 비교한다. 객체와 배열의 구조 분해 할당도 중첩 예제로 연습한다.\n이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.\n",
+  "wordCount" : "1298",
   "inLanguage": "en",
   "datePublished": "2026-08-04T00:00:00Z",
   "dateModified": "2026-08-04T00:00:00Z",
@@ -205,14 +209,14 @@
   <header class="post-header">
     
     <h1 class="post-title entry-hint-parent">
-      JavaScript 핵심 개념 마스터하기: 오류 해결부터 심화 응용까지
+      스코프와 ES6 문법, 배열 메서드까지 자바스크립트 복습
     </h1>
     <div class="post-description">
       2026-08-04 오후 학습 정리
     </div>
     <div class="post-meta">
 
-<span title='2026-08-04 00:00:00 +0000 UTC'>2026년 8월 4일</span>&nbsp;·&nbsp;<span>11 min</span>
+<span title='2026-08-04 00:00:00 +0000 UTC'>2026년 8월 4일</span>&nbsp;·&nbsp;<span>7 min</span>
 
 </div>
   </header> 
@@ -220,210 +224,111 @@
 <ul>
 <li>
 <ol>
-<li><a href="#1-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EB%B2%84%ED%8A%BC-%ED%99%9C%EC%84%B1%ED%99%94-%EB%B0%8F-javascript-%EB%AC%B8%EB%B2%95-%EC%98%A4%EB%A5%98-%ED%95%B4%EA%B2%B0">로그인 버튼 활성화 및 JavaScript 문법 오류 해결</a></li>
+<li><a href="#1-%EC%8A%A4%EC%BD%94%ED%94%84-%EC%B2%B4%EC%9D%B8-%EB%B3%80%EC%88%98-%ED%83%90%EC%83%89-%EA%B7%9C%EC%B9%99-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">스코프 체인: 변수 탐색 규칙 이해하기</a></li>
 </ol>
 </li>
 <li>
 <ol start="2">
-<li><a href="#2-%EC%8A%A4%EC%BD%94%ED%94%84-%EC%B2%B4%EC%9D%B8-%EB%B3%80%EC%88%98-%ED%83%90%EC%83%89-%EA%B7%9C%EC%B9%99-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">스코프 체인: 변수 탐색 규칙 이해하기</a></li>
+<li><a href="#2-%ED%99%94%EC%82%B4%ED%91%9C-%ED%95%A8%EC%88%98-this-%ED%98%B8%EC%9D%B4%EC%8A%A4%ED%8C%85-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%ED%95%B5%EC%8B%AC-%EC%A0%95%EB%A6%AC">화살표 함수, this, 호이스팅: 초보자를 위한 핵심 정리</a></li>
 </ol>
 </li>
 <li>
 <ol start="3">
-<li><a href="#3-%ED%99%94%EC%82%B4%ED%91%9C-%ED%95%A8%EC%88%98-this-%ED%98%B8%EC%9D%B4%EC%8A%A4%ED%8C%85-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%ED%95%B5%EC%8B%AC-%EC%A0%95%EB%A6%AC">화살표 함수, this, 호이스팅: 초보자를 위한 핵심 정리</a></li>
+<li><a href="#3-%EC%98%B5%EC%85%94%EB%84%90-%EC%B2%B4%EC%9D%B4%EB%8B%9D%EA%B3%BC-%ED%85%9C%ED%94%8C%EB%A6%BF-%EB%A6%AC%ED%84%B0%EB%9F%B4-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%99%84%EB%B2%BD-%EC%9D%B4%ED%95%B4">옵셔널 체이닝과 템플릿 리터럴, 초보자를 위한 완벽 이해</a></li>
 </ol>
 </li>
 <li>
 <ol start="4">
-<li><a href="#4-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EB%8B%A8%EC%9D%BC-%ED%99%9C%EC%84%B1-%EC%83%81%ED%83%9C-%EB%B0%8F-classlist-%EA%B4%80%EB%A6%AC">초보자를 위한 단일 활성 상태 및 classList 관리</a></li>
+<li><a href="#4-rest-operator-%ED%99%9C%EC%9A%A9%EB%B2%95-%ED%95%A8%EC%88%98-%EC%9D%B8%EC%9E%90-%EC%B2%98%EB%A6%AC-%EB%B0%8F-%EC%9E%AC%EA%B7%80-%ED%95%A8%EC%88%98-%EC%9D%91%EC%9A%A9">Rest Operator 활용법: 함수 인자 처리 및 재귀 함수 응용</a></li>
 </ol>
 </li>
 <li>
 <ol start="5">
-<li><a href="#5-settimeout%EA%B3%BC-setinterval-%ED%99%9C%EC%9A%A9%EB%B2%95-%EC%8B%9C%EA%B0%84-%EC%A0%9C%EC%96%B4-%EB%B0%8F-%EC%A7%84%ED%96%89-%EA%B4%80%EB%A6%AC">setTimeout과 setInterval 활용법: 시간 제어 및 진행 관리</a></li>
+<li><a href="#5-%EB%B0%B0%EC%97%B4-%EB%A9%94%EC%84%9C%EB%93%9C-%ED%99%9C%EC%9A%A9%EB%B2%95-foreach-map-filter-sort-%EC%99%84%EB%B2%BD-%EA%B0%80%EC%9D%B4%EB%93%9C">배열 메서드 활용법: forEach, map, filter, sort 완벽 가이드</a></li>
 </ol>
 </li>
 <li>
 <ol start="6">
-<li><a href="#6-%EC%98%B5%EC%85%94%EB%84%90-%EC%B2%B4%EC%9D%B4%EB%8B%9D%EA%B3%BC-%ED%85%9C%ED%94%8C%EB%A6%BF-%EB%A6%AC%ED%84%B0%EB%9F%B4-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%99%84%EB%B2%BD-%EC%9D%B4%ED%95%B4">옵셔널 체이닝과 템플릿 리터럴, 초보자를 위한 완벽 이해</a></li>
+<li><a href="#6-%EA%B0%9D%EC%B2%B4-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%B0%B0%EC%97%B4-%EA%B5%AC%EC%A1%B0-%EB%B6%84%ED%95%B4-%ED%95%A0%EB%8B%B9-%ED%99%9C%EC%9A%A9%EB%B2%95">객체, 이벤트, 배열 구조 분해 할당 활용법</a></li>
 </ol>
 </li>
 <li>
 <ol start="7">
-<li><a href="#7-%EB%8F%99%EC%A0%81-%EC%87%BC%ED%95%91-%EB%AA%A9%EB%A1%9D-%EA%B5%AC%ED%98%84%EA%B3%BC-%EC%9E%90%EB%8F%99-%EC%B1%84%EC%A0%90-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0">동적 쇼핑 목록 구현과 자동 채점 문제 해결</a></li>
-</ol>
-</li>
-<li>
-<ol start="8">
-<li><a href="#8-rest-operator-%ED%99%9C%EC%9A%A9%EB%B2%95-%ED%95%A8%EC%88%98-%EC%9D%B8%EC%9E%90-%EC%B2%98%EB%A6%AC-%EB%B0%8F-%EC%9E%AC%EA%B7%80-%ED%95%A8%EC%88%98-%EC%9D%91%EC%9A%A9">Rest Operator 활용법: 함수 인자 처리 및 재귀 함수 응용</a></li>
-</ol>
-</li>
-<li>
-<ol start="9">
-<li><a href="#9-%EB%B0%B0%EC%97%B4-%EB%A9%94%EC%84%9C%EB%93%9C-%ED%99%9C%EC%9A%A9%EB%B2%95-foreach-map-filter-sort-%EC%99%84%EB%B2%BD-%EA%B0%80%EC%9D%B4%EB%93%9C">배열 메서드 활용법: forEach, map, filter, sort 완벽 가이드</a></li>
-</ol>
-</li>
-<li>
-<ol start="10">
-<li><a href="#10-%EC%83%89%EC%83%81-%ED%8C%94%EB%A0%88%ED%8A%B8-%ED%98%B8%EB%B2%84-%ED%9A%A8%EA%B3%BC-%EB%B0%8F-%EC%9E%90%EB%8F%99%EC%B0%A8-%EA%B2%BD%EC%A3%BC-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%B6%84%EC%84%9D">색상 팔레트 호버 효과 및 자동차 경주 이벤트 분석</a></li>
-</ol>
-</li>
-<li>
-<ol start="11">
-<li><a href="#11-%EA%B0%9D%EC%B2%B4-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%B0%B0%EC%97%B4-%EA%B5%AC%EC%A1%B0-%EB%B6%84%ED%95%B4-%ED%95%A0%EB%8B%B9-%ED%99%9C%EC%9A%A9%EB%B2%95">객체, 이벤트, 배열 구조 분해 할당 활용법</a></li>
-</ol>
-</li>
-<li>
-<ol start="12">
-<li><a href="#12-%EC%8A%A4%ED%94%84%EB%A0%88%EB%93%9C-%EC%97%B0%EC%82%B0%EC%9E%90%EC%99%80-rest-%EB%AC%B8%EB%B2%95-%EC%99%84%EB%B2%BD%ED%95%98%EA%B2%8C-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">스프레드 연산자와 Rest 문법 완벽하게 이해하기</a></li>
+<li><a href="#7-%EC%8A%A4%ED%94%84%EB%A0%88%EB%93%9C-%EC%97%B0%EC%82%B0%EC%9E%90%EC%99%80-rest-%EB%AC%B8%EB%B2%95-%EC%99%84%EB%B2%BD%ED%95%98%EA%B2%8C-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">스프레드 연산자와 Rest 문법 완벽하게 이해하기</a></li>
 </ol>
 </li>
 <li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
 </ul>
-<h2 id="1-로그인-버튼-활성화-및-javascript-문법-오류-해결">1. 로그인 버튼 활성화 및 JavaScript 문법 오류 해결<a hidden class="anchor" aria-hidden="true" href="#1-로그인-버튼-활성화-및-javascript-문법-오류-해결">#</a></h2>
+<h2 id="1-스코프-체인-변수-탐색-규칙-이해하기">1. 스코프 체인: 변수 탐색 규칙 이해하기<a hidden class="anchor" aria-hidden="true" href="#1-스코프-체인-변수-탐색-규칙-이해하기">#</a></h2>
 <h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
-<p>로그인 버튼 활성화 기능을 구현하는 과정에서 JavaScript 문법 오류, 특히 <code>alert</code> 함수 사용 시 괄호의 중요성을 깨달았다. 입력 조건 로직과 별개로 코드 전체가 실행되지 않아 오류가 발생할 수 있다는 점을 알게 되었고, <code>keyup</code> 이벤트와 <code>classList</code> 조작을 활용하여 동적인 UI를 구현하는 방법을 익혔다. 앞으로는 코드를 작성할 때 오타나 문법 오류에 더욱 주의하여 디버깅해야겠다는 생각을 했다.</p>
-<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
-<p>버튼이 안 활성화되는 이유를 입력 조건 로직에 문제가 있다고 생각했는데, 알고 보니 스크립트 자체가 실행되지 않았다는 걸 몰랐다. <code>alert</code> 함수를 사용할 때 괄호를 안 써서 에러가 발생했고, 이 때문에 다른 함수들이 실행되지 않았던 것이다. 이 사소한 문법 오류 때문에 문제를 해결하는 데 오래 걸렸다.</p>
-<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
-<p>로그인 버튼 활성화 문제의 원인은 예상과 달리 입력 조건 로직이 아니라 JavaScript 문법 오류, 특히 <code>alert</code> 함수 호출 시 소괄호 누락이었다. 아이디와 비밀번호 입력 시 <code>keyup</code> 이벤트를 활용하여 버튼 색상을 변경하고, 로그인 성공 여부를 별도로 확인하는 방식으로 코드를 수정했다. 이 과정을 통해 JavaScript 문법 오류 추적의 중요성을 깨달았다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">activateBtn</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">id</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">pw</span>.<span style="color:#a6e22e">value</span>) {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">loginButton</span>.<span style="color:#a6e22e">classList</span>.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;activatedColor&#34;</span>);
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">loginButton</span>.<span style="color:#a6e22e">classList</span>.<span style="color:#a6e22e">remove</span>(<span style="color:#e6db74">&#34;deactivatedColor&#34;</span>);
-</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">loginButton</span>.<span style="color:#a6e22e">classList</span>.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;deactivatedColor&#34;</span>);
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">loginButton</span>.<span style="color:#a6e22e">classList</span>.<span style="color:#a6e22e">remove</span>(<span style="color:#e6db74">&#34;activatedColor&#34;</span>);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">id</span>.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#34;keyup&#34;</span>, <span style="color:#a6e22e">activateBtn</span>);
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">pw</span>.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#34;keyup&#34;</span>, <span style="color:#a6e22e">activateBtn</span>);
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">id</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;일반사용자ID&#34;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">pw</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;일반비밀번호&#34;</span>) {
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">alert</span>(<span style="color:#e6db74">&#34;로그인 성공!&#34;</span>);
-</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">else</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">alert</span>(<span style="color:#e6db74">&#34;아이디 또는 비밀번호를 확인해 주세요.&#34;</span>);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="2-스코프-체인-변수-탐색-규칙-이해하기">2. 스코프 체인: 변수 탐색 규칙 이해하기<a hidden class="anchor" aria-hidden="true" href="#2-스코프-체인-변수-탐색-규칙-이해하기">#</a></h2>
-<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
 <p>스코프 체인이란 변수를 찾을 때 현재 스코프부터 바깥쪽 스코프를 차례대로 검색하는 규칙이라는 것을 배웠어. 특히 중첩된 함수 내에서 변수를 찾을 때, 가장 가까운 스코프의 변수가 우선적으로 사용된다는 점이 중요해. 예시 코드를 분석하면서 스코프 체인을 따라가는 과정을 이해하게 되었어.</p>
-<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
 <p>전역 변수와 지역 변수의 관계, 그리고 중첩 함수 내에서 변수가 어떻게 검색되는지 이해하는 데 어려움을 느꼈습니다. 특히 변수가 어떤 스코프에서 찾히는지 시각적으로 따라가기 어려웠고, 여러 스코프가 얽히면 추적하는 과정이 복잡하게 느껴졌습니다.</p>
-<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
 <p>스코프 체인은 변수를 찾을 때 현재 스코프부터 시작해서 바깥쪽 스코프를 차례대로 검색하는 규칙이야. 같은 이름의 변수가 여러 스코프에 존재할 경우, 가장 가까운 스코프에 있는 변수가 우선적으로 사용되고, 이렇게 스코프를 따라가는 연결고리를 스코프 체인이라고 부르는 거지. 즉, 변수 검색은 코드가 정의된 위치의 스코프를 따라가며 이루어진다는 것을 기억해야 해.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">demo</span>() {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>;  <span style="color:#75715e">// demo의 지역 스코프
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">true</span>)
-</span></span></code></pre></div><h2 id="3-화살표-함수-this-호이스팅-초보자를-위한-핵심-정리">3. 화살표 함수, this, 호이스팅: 초보자를 위한 핵심 정리<a hidden class="anchor" aria-hidden="true" href="#3-화살표-함수-this-호이스팅-초보자를-위한-핵심-정리">#</a></h2>
-<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+</span></span></code></pre></div><h2 id="2-화살표-함수-this-호이스팅-초보자를-위한-핵심-정리">2. 화살표 함수, this, 호이스팅: 초보자를 위한 핵심 정리<a hidden class="anchor" aria-hidden="true" href="#2-화살표-함수-this-호이스팅-초보자를-위한-핵심-정리">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
 <p>화살표 함수에 대한 기본 개념과 ES6 문법의 축약 표현 방식을 이해하게 되었고, 일반 함수와 화살표 함수 간의 <code>this</code> 키워드 동작 방식 차이를 명확히 인지하게 되었다. 특히 이벤트 핸들러에서 <code>this</code>의 동작을 제대로 파악하고 <code>evt.currentTarget</code>을 사용하는 이유를 알게 되어, 더욱 안전한 코딩을 할 수 있을 것 같다. 앞으로 화살표 함수를 좀 더 자신 있게 활용할 수 있을 것 같다.</p>
-<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
 <p>처음에는 화살표 함수라는 새로운 문법이 기존 함수와 어떻게 다른지, 특히 <code>this</code> 키워드가 어떻게 동작하는지 이해하는 데 어려움을 느꼈습니다. 이벤트 핸들러에서 <code>this</code>가 왜 예상과 다르게 작동하는지, 그리고 <code>evt.currentTarget</code>을 사용해야 하는 이유도 명확하지 않았습니다. 이러한 점들을 명확히 이해하고 정리하여 앞으로 화살표 함수를 활용하는 데 도움이 되도록 학습했습니다.</p>
-<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
 <p>화살표 함수는 ES6에서 도입된 간결한 함수 표현 방식이며, 일반 함수와 달리 자체적인 <code>this</code> 컨텍스트를 가지지 않고 호출되는 위치의 <code>this</code>를 상속받습니다. 따라서 이벤트 핸들러에서 <code>this</code> 대신 <code>evt.currentTarget</code>을 사용해야 하는 이유는 화살표 함수의 <code>this</code>가 예상과 다르게 동작할 수 있기 때문입니다. 이 두 가지 차이점을 이해하는 것이 화살표 함수를 정확하게 활용하는 데 중요합니다.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>   document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;btn&#39;</span>)
 </span></span><span style="display:flex;"><span>       .<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#39;click&#39;</span>, <span style="color:#a6e22e">evt</span> =&gt; {
 </span></span><span style="display:flex;"><span>           <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">evt</span>.<span style="color:#a6e22e">currentTarget</span>); <span style="color:#75715e">// 정확한 이벤트 타겟 참조
 </span></span></span><span style="display:flex;"><span>       });
-</span></span></code></pre></div><h2 id="4-초보자를-위한-단일-활성-상태-및-classlist-관리">4. 초보자를 위한 단일 활성 상태 및 classList 관리<a hidden class="anchor" aria-hidden="true" href="#4-초보자를-위한-단일-활성-상태-및-classlist-관리">#</a></h2>
-<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
-<p>처음에는 세 개의 요소를 전기 회로처럼 생각하고 라디오 버튼처럼 자동 관리될 것이라고 기대했지만, JavaScript를 사용하여 직접 상태를 관리하고 상호 배타적인 선택을 구현해야 한다는 것을 알게 되었습니다. 즉, 각 요소를 독립적으로 관리하고 JavaScript를 통해 상태를 동기화하여 하나의 요소만 활성화되도록 만들어야 합니다. 이 과정을 통해 DOM 조작과 이벤트 핸들링에 대한 이해를 높일 수 있었습니다.</p>
-<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
-<p>처음에는 세 개의 <code>&lt;i&gt;</code> 요소를 전기 회로처럼 생각해서 하나가 켜지면 나머지가 자동으로 꺼진다고 생각했어요. 또 HTML 라디오 버튼처럼 같은 그룹 내에서 자동으로 하나만 활성화되는 걸 기대했지만, <code>&lt;i&gt;</code> 요소는 그런 기능이 없다는 점이 헷갈렸습니다.</p>
-<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
-<p>세 개의 요소 중 하나만 활성화 상태를 유지하도록 만드는 것을, 라디오 버튼처럼 자동으로 관리될 것이라는 잘못된 기대를 했습니다. 결국 JavaScript를 활용해 각 요소를 독립적으로 관리하고 상태를 동기화하여, 상호 배타적인 선택을 구현해야 한다는 것을 알게 되었습니다.  즉, 원치 않는 자동 관리 기능이 없기에 직접 인터록 메커니즘을 만들어야 했습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
-</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ko&#34;</span>&gt;
-</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">head</span>&gt;
-</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span>&gt;
-</span></span></code></pre></div><h2 id="5-settimeout과-setinterval-활용법-시간-제어-및-진행-관리">5. setTimeout과 setInterval 활용법: 시간 제어 및 진행 관리<a hidden class="anchor" aria-hidden="true" href="#5-settimeout과-setinterval-활용법-시간-제어-및-진행-관리">#</a></h2>
-<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
-<p>setTimeout과 setInterval 함수의 차이점을 명확하게 이해하게 되었고, setInterval을 사용할 때 반환되는 타이머 식별값을 저장하여 나중에 중지할 수 있다는 점을 알게 되었습니다. 또한, 타이머를 제어하는 변수를 먼저 정의하고 사용하는 것이 중요하다는 것을 깨달았습니다. 실습 예제를 통해 시간 제어 함수의 작동 방식을 더 잘 이해할 수 있었습니다.</p>
-<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
-<p>처음에는 <code>setTimeout</code>과 <code>setInterval</code>의 사용법을 제대로 이해하지 못하고, 특히 <code>setInterval</code>에서 반환되는 타이머 식별값을 저장하고 사용하는 부분에서 어려움을 느꼈습니다. 또한, 타이머를 중지하는 <code>clearInterval</code> 함수를 사용할 때, 타이머 식별값을 저장하는 변수가 정의되지 않아 오류가 발생하는 상황을 해결하지 못했습니다. 복잡한 예제를 풀 때 각 타이머의 역할을 명확하게 구분하지 못해 전체적인 흐름 파악이 어려웠습니다.</p>
-<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
-<p><code>setTimeout</code>은 함수를 딱 한 번 실행하는 함수이고, <code>setInterval</code>은 특정 간격으로 반복 실행하는 함수라는 것을 명확히 이해했습니다. <code>setInterval</code>을 사용할 때는 반드시 반환되는 타이머 식별값을 변수에 저장하고, <code>clearInterval()</code>을 사용하여 반복을 멈춰야 한다는 점을 깨달았습니다. 이제는 타이머를 제어하는 코드를 작성할 때, 타이머 식별값을 잊지 않고 사용할 수 있을 것 같습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">time</span>;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">h1</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;cnt&#34;</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">time</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">setInterval</span>(<span style="color:#66d9ef">function</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">h1</span>.<span style="color:#a6e22e">innerHTML</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">i</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">i</span> <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">10</span>) <span style="color:#a6e22e">clearInterval</span>(<span style="color:#a6e22e">time</span>);
-</span></span><span style="display:flex;"><span>}, <span style="color:#ae81ff">100</span>)
-</span></span></code></pre></div><h2 id="6-옵셔널-체이닝과-템플릿-리터럴-초보자를-위한-완벽-이해">6. 옵셔널 체이닝과 템플릿 리터럴, 초보자를 위한 완벽 이해<a hidden class="anchor" aria-hidden="true" href="#6-옵셔널-체이닝과-템플릿-리터럴-초보자를-위한-완벽-이해">#</a></h2>
-<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
+</span></span></code></pre></div><h2 id="3-옵셔널-체이닝과-템플릿-리터럴-초보자를-위한-완벽-이해">3. 옵셔널 체이닝과 템플릿 리터럴, 초보자를 위한 완벽 이해<a hidden class="anchor" aria-hidden="true" href="#3-옵셔널-체이닝과-템플릿-리터럴-초보자를-위한-완벽-이해">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
 <p>옵셔널 체이닝은 객체 속성 접근 시, 값이 undefined나 null일 때 에러를 방지하고 안전하게 undefined를 반환하는 방법이라는 것을 알게 되었습니다. 템플릿 리터럴에서는 변수가 null일 경우에도 에러 없이 처리할 수 있도록 null 체킹이나 기본값 설정을 고려해야 함을 배웠습니다. 이 두 개념을 통해 코드를 더욱 안전하고 간결하게 만들 수 있을 것 같습니다.</p>
-<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
 <p>옵셔널 체이닝을 사용할 때 어떤 값이 <code>undefined</code>인지, 언제 붙여야 하는지 판단하기 어려웠어요. 템플릿 리터럴에서 변수가 <code>null</code>일 경우 어떻게 처리해야 하는지, 에러가 발생하는 조건에 대한 이해가 부족했습니다. 실제 코드 적용 시 어떻게 활용해야 할지 감이 잘 잡히지 않았습니다.</p>
-<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
 <p>옵셔널 체이닝은 객체 속성에 접근할 때, 속성값이 <code>null</code>이나 <code>undefined</code>일 경우 에러를 발생시키지 않고 안전하게 <code>undefined</code>를 반환하도록 해주는 편리한 기능이다. 템플릿 리터럴은 변수나 표현식을 문자열 안에 삽입하여 문자열을 조합하는 데 사용되며, 변수가 <code>null</code>일 경우에도 에러를 방지하기 위해 조건부 렌더링이나 기본값을 제공하는 방식으로 처리할 수 있다. 중요한 점은 옵셔널 체이닝은 체이닝되는 모든 값이 존재할 필요는 없지만, 템플릿 리터럴 안에서는 변수가 존재하지 않으면 에러가 발생할 수 있다는 것이다.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">user</span> <span style="color:#f92672">=</span> { <span style="color:#a6e22e">contact</span><span style="color:#f92672">:</span> { <span style="color:#a6e22e">email</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;example@example.com&#39;</span> } };
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">contact</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">email</span>);
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">emptyUser</span> <span style="color:#f92672">=</span> {};
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">emptyUser</span>.<span style="color:#a6e22e">contact</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">email</span>);
-</span></span></code></pre></div><h2 id="7-동적-쇼핑-목록-구현과-자동-채점-문제-해결">7. 동적 쇼핑 목록 구현과 자동 채점 문제 해결<a hidden class="anchor" aria-hidden="true" href="#7-동적-쇼핑-목록-구현과-자동-채점-문제-해결">#</a></h2>
-<h3 id="무엇을-배웠나-6">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-6">#</a></h3>
-<p>동적 쇼핑 목록 실습에서 자동 채점 오류가 발생했을 때, 단순히 코드가 작동하는 것 외에 채점 시스템이 기대하는 DOM 구조와 텍스트 내용의 정확한 일치 여부가 중요하다는 것을 알게 되었습니다. 특히 버튼 텍스트와 함수 정의 방식이 중요하며, 채점 기준에 맞춰 코드를 수정해야 함을 배웠습니다. 이 과정을 통해 자동 채점 시스템의 작동 방식을 조금 더 이해하게 되었습니다.</p>
-<h3 id="헷갈렸던-점-6">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-6">#</a></h3>
-<p>자동 채점 결과가 0점인 이유가 코드 자체의 기능적 오류 때문인지, 아니면 채점 기준과 나의 결과물의 불일치인지 확신이 서지 않았습니다. 특히 버튼 텍스트와 DOM 구조의 미세한 불일치가 채점 시스템에 큰 영향을 미칠 수 있다는 점을 인지하지 못했습니다. 함수 정의 방식에 대한 주의가 필요했고, 기존 함수를 수정하는 것이 아니라 기존 함수를 재정의하면 안 된다는 점을 깨달았습니다.</p>
-<h3 id="정리된-이해-6">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-6">#</a></h3>
-<p>자동 채점 시스템은 코드 실행 결과뿐만 아니라, 기대하는 DOM 구조와 텍스트 내용까지 정확히 일치해야 제대로 작동한다는 점을 알게 되었습니다. 특히, 버튼 텍스트와 함수 정의 방식에 주의해야 했으며, 채점 기준에 명시된 정확한 내용과 형식을 따라야 했습니다. 이번 경험을 통해 자동 채점 시스템의 평가 기준을 더 명확하게 이해하게 되었습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">button</span> <span style="color:#66d9ef">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;btn btn-danger btn-sm float-right delete&#34;</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">X</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/button&gt;</span>
-</span></span></code></pre></div><h2 id="8-rest-operator-활용법-함수-인자-처리-및-재귀-함수-응용">8. Rest Operator 활용법: 함수 인자 처리 및 재귀 함수 응용<a hidden class="anchor" aria-hidden="true" href="#8-rest-operator-활용법-함수-인자-처리-및-재귀-함수-응용">#</a></h2>
-<h3 id="무엇을-배웠나-7">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-7">#</a></h3>
+</span></span></code></pre></div><h2 id="4-rest-operator-활용법-함수-인자-처리-및-재귀-함수-응용">4. Rest Operator 활용법: 함수 인자 처리 및 재귀 함수 응용<a hidden class="anchor" aria-hidden="true" href="#4-rest-operator-활용법-함수-인자-처리-및-재귀-함수-응용">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
 <p>Rest Operator는 함수의 매개변수들을 하나의 배열로 묶어주는 역할을 하며, Spread Operator와 구분해서 이해해야 한다는 점을 알게 되었다. 특히 Rest Operator의 사용 위치와 재귀 함수에서의 활용 방식이 처음에는 헷갈렸지만, 예시 코드를 통해 조금 더 명확하게 이해할 수 있었다. 앞으로는 이 지식을 바탕으로 다양한 함수를 작성해 보면서 실력을 키워나가야겠다.</p>
-<h3 id="헷갈렸던-점-7">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-7">#</a></h3>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
 <p>Rest Operator와 Spread Operator를 구분하는 데 어려움이 있었고, 재귀 함수에서 <code>head</code>와 <code>tail</code>을 분리하여 나머지 인자를 넘기는 부분이 이해가 잘 안 되었습니다. 특히 재귀 호출이 반복되는 과정이 복잡하게 느껴졌습니다.</p>
-<h3 id="정리된-이해-7">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-7">#</a></h3>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
 <p>Rest Operator는 함수에서 나머지 인자들을 하나의 배열로 묶어주는 역할을 하며, 매개변수 목록의 마지막에 위치해야 합니다. Spread Operator와 혼동하지 않도록 주의해야 하며, 재귀 함수에서는 배열을 head와 tail로 나누고 tail을 Rest Operator로 처리하는 부분이 핵심입니다. 이러한 이해를 바탕으로 다양한 함수 구현에 활용할 수 있습니다.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">mul</span>(...<span style="color:#a6e22e">arr</span>) {
-</span></span></code></pre></div><h2 id="9-배열-메서드-활용법-foreach-map-filter-sort-완벽-가이드">9. 배열 메서드 활용법: forEach, map, filter, sort 완벽 가이드<a hidden class="anchor" aria-hidden="true" href="#9-배열-메서드-활용법-foreach-map-filter-sort-완벽-가이드">#</a></h2>
-<h3 id="무엇을-배웠나-8">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-8">#</a></h3>
+</span></span></code></pre></div><h2 id="5-배열-메서드-활용법-foreach-map-filter-sort-완벽-가이드">5. 배열 메서드 활용법: forEach, map, filter, sort 완벽 가이드<a hidden class="anchor" aria-hidden="true" href="#5-배열-메서드-활용법-foreach-map-filter-sort-완벽-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
 <p>배열 처리 메서드 선택에 어려움을 겪었는데, <code>forEach</code>, <code>map</code>, <code>filter</code>, <code>sort</code> 각각의 역할과 반환값을 명확히 이해하게 되었다. <code>forEach</code>는 작업을 수행, <code>map</code>은 요소 변환, <code>filter</code>는 조건 만족 요소 추출, <code>sort</code>는 정렬임을 기억해야겠다. 중복 선언 실수도 줄이고, 각 메서드의 목적에 맞춰 적절한 코드를 작성할 수 있을 것 같다.</p>
-<h3 id="헷갈렸던-점-8">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-8">#</a></h3>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
 <p>배열 메서드들을 보면서 각각의 역할이 비슷해 보여서 언제 어떤 걸 써야 할지 혼란스러웠다. 특히 <code>forEach</code>, <code>map</code>, <code>filter</code>는 기존 <code>for</code>문과 어떻게 연결되는지 파악하는 데 어려움을 느꼈다. 또한, 코드를 작성할 때 배열 선언과 함수 적용 부분을 헷갈려 중복 선언하는 실수를 자주 했다.</p>
-<h3 id="정리된-이해-8">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-8">#</a></h3>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
 <p>배열 처리 메서드는 각자 명확한 목적을 가지고 있으며, <code>forEach</code>는 단순히 각 요소를 처리하고, <code>map</code>은 변환된 요소를 담은 새 배열을, <code>filter</code>는 조건을 만족하는 요소만 담은 새 배열을 생성합니다. <code>sort</code>는 배열 자체를 정렬하는 역할을 합니다. 이들을 상황에 맞게 선택하고 사용하는 것이 중요합니다.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">fruits</span>.<span style="color:#a6e22e">forEach</span>(<span style="color:#a6e22e">fruit</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">`현재 과일: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">fruit</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>));
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">names</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">persons</span>.<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">person</span> =&gt; <span style="color:#e6db74">`</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">person</span>.<span style="color:#a6e22e">firstName</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">person</span>.<span style="color:#a6e22e">lastName</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>);
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">qualifiedBooks</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">bestsellers</span>.<span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">book</span> =&gt; <span style="color:#a6e22e">book</span>.<span style="color:#a6e22e">price</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">20</span>);
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sortedCities</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">cities</span>.<span style="color:#a6e22e">sort</span>((<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span>) =&gt; <span style="color:#a6e22e">a</span>.<span style="color:#a6e22e">population</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">population</span>);
-</span></span></code></pre></div><h2 id="10-색상-팔레트-호버-효과-및-자동차-경주-이벤트-분석">10. 색상 팔레트 호버 효과 및 자동차 경주 이벤트 분석<a hidden class="anchor" aria-hidden="true" href="#10-색상-팔레트-호버-효과-및-자동차-경주-이벤트-분석">#</a></h2>
-<h3 id="무엇을-배웠나-9">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-9">#</a></h3>
-<p>JavaScript 코드를 통해 HTML 요소의 <code>className</code>을 읽어와 화면에 표시하는 호버 효과 구현 방식을 이해하게 되었고, 기존 HTML 요소와 동적으로 생성된 요소의 차이점을 명확히 구분할 수 있게 되었습니다. 또한, <code>marginLeft</code> 값을 활용하여 자동차 경주와 같은 애니메이션 효과를 만들어낼 수 있다는 것을 알게 되었으며, DOM 조작과 이벤트 리스너 활용의 중요성을 체감했습니다. 초보자에게 도움이 될 만한 키워드들을 정리하여 앞으로 학습에 참고할 수 있도록 했습니다.</p>
-<h3 id="헷갈렸던-점-9">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-9">#</a></h3>
-<p>처음에는 <code>None!</code>이라는 색상명이 코드에서 어떻게 처리되는지, 그리고 노란색 팔레트가 어떻게 생성되었는지 이해하는 데 어려움을 겪었습니다. 또한, <code>className</code>을 통해 색상 이름을 추출하는 과정과 자동차 경주를 구현하기 위한 <code>marginLeft</code> 값 조절 방식이 명확하게 파악되지 않았습니다.</p>
-<h3 id="정리된-이해-9">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-9">#</a></h3>
-<p>팔레트 호버 효과는 <code>mouseover</code> 이벤트를 사용하여 마우스가 올라간 요소의 <code>className</code>을 읽어 화면에 표시하며, <code>None!</code>은 초기 HTML에 있던 텍스트였음을 알게 되었습니다. 자동차 경주 이벤트는 각 자동차의 <code>marginLeft</code> 값을 무작위로 증가시켜 경쟁하는 듯한 효과를 구현하는 것으로 이해했습니다. DOM 조작과 이벤트 리스너를 활용하여 웹 페이지의 동적인 상호작용을 만들어낼 수 있다는 점을 배웠습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">section</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">querySelector</span>(<span style="color:#e6db74">&#34;section&#34;</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">section</span>.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#34;mouseover&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">selected</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">querySelector</span>(<span style="color:#e6db74">&#34;.selected&#34;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">selected</span>.<span style="color:#a6e22e">innerText</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">event</span>.<span style="color:#a6e22e">target</span>.<span style="color:#a6e22e">className</span>; <span style="color:#75715e">// 마우스가 올라간 요소의 className을 가져옴
-</span></span></span><span style="display:flex;"><span>});
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">raceCar</span>(<span style="color:#a6e22e">car</span>) {
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">car</span>.<span style="color:#a6e22e">style</span>.<span style="color:#a6e22e">marginLeft</span> <span style="color:#f92672">=</span> parseInt(<span style="color:#a6e22e">car</span>.<span style="color:#a6e22e">style</span>.<span style="color:#a6e22e">marginLeft</span>) <span style="color:#f92672">+</span> Math.<span style="color:#a6e22e">random</span>() <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;px&#34;</span>;
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="11-객체-이벤트-배열-구조-분해-할당-활용법">11. 객체, 이벤트, 배열 구조 분해 할당 활용법<a hidden class="anchor" aria-hidden="true" href="#11-객체-이벤트-배열-구조-분해-할당-활용법">#</a></h2>
-<h3 id="무엇을-배웠나-10">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-10">#</a></h3>
+</span></span></code></pre></div><h2 id="6-객체-이벤트-배열-구조-분해-할당-활용법">6. 객체, 이벤트, 배열 구조 분해 할당 활용법<a hidden class="anchor" aria-hidden="true" href="#6-객체-이벤트-배열-구조-분해-할당-활용법">#</a></h2>
+<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
 <p>구조 분해 할당 시 변수 이름을 너무 짧게 사용하면 코드를 이해하기 어려워지고, 속성이 없을 때 사용할 기본값을 제대로 이해하지 못했음을 깨달았습니다. 앞으로는 가독성을 위해 의미 있는 변수 이름을 사용하고, 기본값은 속성 자체가 없는 경우에 사용된다는 점을 기억해야겠습니다. 실습 예시를 통해 작업 객체와 이벤트 객체에서 필요한 필드를 효율적으로 추출하는 방법을 익혔습니다.</p>
-<h3 id="헷갈렸던-점-10">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-10">#</a></h3>
+<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
 <p>객체 분해 할당 시 짧은 별칭을 사용하면 변수 의미를 파악하기 어려워 코드 가독성이 떨어지고, 기본값을 설정하는 부분에서 객체 속성을 새로 추가하는 것으로 착각했습니다. 별칭 사용과 기본값 설정에 대한 이해가 부족하여 학습 효율이 낮았습니다.</p>
-<h3 id="정리된-이해-10">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-10">#</a></h3>
+<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
 <p>구조 분해 할당 시에는 변수 이름이 의미 있도록 길게 쓰는 것이 코드 가독성을 높이는 데 중요하다. 특히 기본값을 설정할 때, 객체에 새로운 속성을 추가하는 것이 아니라 속성이 없을 때 사용할 값을 지정하는 것임을 명확히 이해해야 한다. 이러한 점들을 인지하고 실습을 통해 적용하면 더욱 효율적인 코드를 작성할 수 있을 것이다.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">jobId</span>, <span style="color:#a6e22e">modelName</span>, <span style="color:#a6e22e">runtime</span><span style="color:#f92672">:</span> { <span style="color:#a6e22e">cpu</span> }, <span style="color:#a6e22e">policy</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;default&#39;</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">job</span>;
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">`Job ID: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">jobId</span><span style="color:#e6db74">}</span><span style="color:#e6db74">, Model: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">modelName</span><span style="color:#e6db74">}</span><span style="color:#e6db74">, CPU: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">cpu</span><span style="color:#e6db74">}</span><span style="color:#e6db74">, Policy: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">policy</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>);
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>document.<span style="color:#a6e22e">querySelector</span>(<span style="color:#e6db74">&#39;.button&#39;</span>).<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#39;click&#39;</span>, ({ <span style="color:#a6e22e">target</span><span style="color:#f92672">:</span> { <span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">className</span> } }) =&gt; {
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(
-</span></span></code></pre></div><h2 id="12-스프레드-연산자와-rest-문법-완벽하게-이해하기">12. 스프레드 연산자와 Rest 문법 완벽하게 이해하기<a hidden class="anchor" aria-hidden="true" href="#12-스프레드-연산자와-rest-문법-완벽하게-이해하기">#</a></h2>
-<h3 id="무엇을-배웠나-11">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-11">#</a></h3>
+</span></span></code></pre></div><h2 id="7-스프레드-연산자와-rest-문법-완벽하게-이해하기">7. 스프레드 연산자와 Rest 문법 완벽하게 이해하기<a hidden class="anchor" aria-hidden="true" href="#7-스프레드-연산자와-rest-문법-완벽하게-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-6">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-6">#</a></h3>
 <p>Spread 연산자와 Rest 문법이 같은 기호를 사용하지만 역할이 다르다는 것을 명확히 이해하게 되었어요. Spread 연산자는 배열을 펼치고, Rest 문법은 함수 매개변수를 처리합니다. 특히 Spread 연산자의 얕은 복사 개념과 중첩 객체 참조 문제는 앞으로 주의해야 할 부분인 것 같습니다.</p>
-<h3 id="헷갈렸던-점-11">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-11">#</a></h3>
+<h3 id="헷갈렸던-점-6">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-6">#</a></h3>
 <p>처음에는 Spread 연산자와 Rest 문법이 모두 <code>...</code> 기호를 사용해서 어떤 차이가 있는지 파악하기 어려웠고, Spread 연산자가 얕은 복사를 한다는 개념과 그로 인해 발생하는 문제점(중첩 객체 참조)을 이해하는 데 시간이 걸렸습니다. 얕은 복사가 실제로 어떻게 동작하는지 시각적으로 확인하고 다양한 예제를 통해 직접 코드를 작성하면서 그 차이를 명확하게 알게 되었습니다.</p>
-<h3 id="정리된-이해-11">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-11">#</a></h3>
+<h3 id="정리된-이해-6">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-6">#</a></h3>
 <p>Spread 연산자는 배열이나 문자열을 펼쳐서 개별 요소로 만들고, 얕은 복사를 수행하여 중첩된 객체는 참조를 공유합니다. Rest 문법은 함수에서 여러 인자를 받아들이는 데 사용되며, Spread 연산자와는 역할이 다릅니다. 이 둘의 차이점을 명확히 이해하고, 얕은 복사의 한계점을 인지하는 것이 중요합니다.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">sumValues</span>(...<span style="color:#a6e22e">numbers</span>) {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">numbers</span>.<span style="color:#a6e22e">reduce</span>((<span style="color:#a6e22e">total</span>, <span style="color:#a6e22e">value</span>) =&gt; <span style="color:#a6e22e">total</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">value</span>, <span style="color:#ae81ff">0</span>);
@@ -432,14 +337,13 @@
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">copiedArray</span> <span style="color:#f92672">=</span> [...<span style="color:#a6e22e">arr1</span>];
 </span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
 <h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
-<p>오늘 오후 학습을 통해 JavaScript 문법 오류 해결부터 스코프 체인, 화살표 함수, 배열 메서드 활용, 자동 채점 시스템 이해 등 다양한 개념을 익혔습니다. 특히 DOM 조작, 이벤트 핸들링, 코드 가독성, 자동 채점 시스템의 요구사항 등을 고려하는 것이 중요하다는 점을 깨달았고, 앞으로 코드 작성 시 더욱 신중하게 접근할 필요가 있습니다. 이러한 학습 내용을 바탕으로 실력 향상을 위해 꾸준히 노력할 것입니다.</p>
+<p>스코프 체인과 화살표 함수의 this, 호이스팅을 다시 확인하고 옵셔널 체이닝과 템플릿 리터럴을 정리했다. Rest·Spread, 구조 분해 할당과 forEach·map·filter·sort를 연결해 ES6 문법이 데이터 처리에서 어떻게 쓰이는지 살펴봤다.</p>
 <h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
-<p>자동 채점 시스템은 단순한 코드 작동 여부 외에 DOM 구조와 텍스트 내용의 정확한 일치 여부를 중요하게 고려하므로, 채점 기준에 맞춰 코드를 작성해야겠다. 또한, Spread 연산자의 얕은 복사 개념처럼 언뜻 보기에 비슷한 문법이라도 미묘한 차이가 결과에 큰 영향을 미칠 수 있으니, 주의해서 사용해야 할 것 같다.</p>
+<p>화살표 함수의 this를 일반 함수와 동일하게 생각하지 않고, 옵셔널 체이닝은 값이 없을 수 있는 위치에만 사용한다. Rest와 Spread의 모양은 같아도 값을 모으는지 펼치는지 문맥으로 구분한다.</p>
 <h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
-<p>화살표 함수와 <code>this</code> 키워드 동작 방식의 차이를 좀 더 깊이 파고들어서, 다양한 상황에서 적용하는 연습을 해야겠다. 배열 메서드 선택에 어려움을 겪었는데, 각 메서드의 특징을 잊지 않고 상황에 맞게 활용할 수 있도록 꾸준히 사용해봐야겠다.</p>
+<p>일반 함수와 화살표 함수의 this 차이, Rest 매개변수와 Spread 복사, 배열 메서드별 반환값을 작은 코드로 비교한다. 객체와 배열의 구조 분해 할당도 중첩 예제로 연습한다.</p>
 <blockquote>
-<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
-This post was written with the help of a local LLM (AI).</p>
+<p>이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.</p>
 </blockquote>
 
 
@@ -447,15 +351,15 @@ This post was written with the help of a local LLM (AI).</p>
 
   <footer class="post-footer">
     <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/javascript/">Javascript</a></li>
+      <li><a href="https://Han-think.github.io/tags/dom/">Dom</a></li>
+      <li><a href="https://Han-think.github.io/tags/events/">Events</a></li>
+      <li><a href="https://Han-think.github.io/tags/es6/">Es6</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://Han-think.github.io/learning/2026-08-04-am-daily/">
-    <span class="title">« Prev</span>
-    <span>DOM 이벤트부터 폼 검증, ES6 문법까지 웹 개발 핵심 개념 완벽 습득</span>
-  </a>
-  <a class="next" href="https://Han-think.github.io/learning/2026-07-31-am-daily/">
+  <a class="next" href="https://Han-think.github.io/learning/2026-08-04-am-daily/">
     <span class="title">Next »</span>
-    <span>배열 순회부터 DOM 조작까지, 오전 학습 정리</span>
+    <span>타이머와 이벤트 위임, 스코프 체인으로 동작 흐름 익히기</span>
   </a>
 </nav>
 

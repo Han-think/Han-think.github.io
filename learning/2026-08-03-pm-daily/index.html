@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>로그인 UI부터 타이머와 동적 목록까지 이벤트 실습 | Han-think Blog</title>
+<meta name="keywords" content="javascript, dom, events, es6">
+<meta name="description" content="2026-08-03 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-08-03-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-08-03-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-08-03-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="로그인 UI부터 타이머와 동적 목록까지 이벤트 실습">
+  <meta property="og:description" content="2026-08-03 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-08-03T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-08-03T00:00:00+00:00">
+    <meta property="article:tag" content="Javascript">
+    <meta property="article:tag" content="Dom">
+    <meta property="article:tag" content="Events">
+    <meta property="article:tag" content="Es6">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="로그인 UI부터 타이머와 동적 목록까지 이벤트 실습">
+  <meta name="twitter:description" content="2026-08-03 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "로그인 UI부터 타이머와 동적 목록까지 이벤트 실습",
+      "item": "https://Han-think.github.io/learning/2026-08-03-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "로그인 UI부터 타이머와 동적 목록까지 이벤트 실습",
+  "name": "로그인 UI부터 타이머와 동적 목록까지 이벤트 실습",
+  "description": "2026-08-03 오후 학습 정리",
+  "keywords": [
+    "javascript", "dom", "events", "es6"
+  ],
+  "articleBody": "목차 로그인 버튼 활성화 및 JavaScript 문법 오류 해결 초보자를 위한 단일 활성 상태 및 classList 관리 setTimeout과 setInterval 활용법: 시간 제어 및 진행 관리 동적 쇼핑 목록 구현과 자동 채점 문제 해결 색상 팔레트 호버 효과 및 자동차 경주 이벤트 분석 총평 1. 로그인 버튼 활성화 및 JavaScript 문법 오류 해결 무엇을 배웠나 로그인 버튼 활성화 기능을 구현하는 과정에서 JavaScript 문법 오류, 특히 alert 함수 사용 시 괄호의 중요성을 깨달았다. 입력 조건 로직과 별개로 코드 전체가 실행되지 않아 오류가 발생할 수 있다는 점을 알게 되었고, keyup 이벤트와 classList 조작을 활용하여 동적인 UI를 구현하는 방법을 익혔다. 앞으로는 코드를 작성할 때 오타나 문법 오류에 더욱 주의하여 디버깅해야겠다는 생각을 했다.\n헷갈렸던 점 버튼이 안 활성화되는 이유를 입력 조건 로직에 문제가 있다고 생각했는데, 알고 보니 스크립트 자체가 실행되지 않았다는 걸 몰랐다. alert 함수를 사용할 때 괄호를 안 써서 에러가 발생했고, 이 때문에 다른 함수들이 실행되지 않았던 것이다. 이 사소한 문법 오류 때문에 문제를 해결하는 데 오래 걸렸다.\n정리된 이해 로그인 버튼 활성화 문제의 원인은 예상과 달리 입력 조건 로직이 아니라 JavaScript 문법 오류, 특히 alert 함수 호출 시 소괄호 누락이었다. 아이디와 비밀번호 입력 시 keyup 이벤트를 활용하여 버튼 색상을 변경하고, 로그인 성공 여부를 별도로 확인하는 방식으로 코드를 수정했다. 이 과정을 통해 JavaScript 문법 오류 추적의 중요성을 깨달았다.\nfunction activateBtn() { if (id.value \u0026\u0026 pw.value) { loginButton.classList.add(\"activatedColor\"); loginButton.classList.remove(\"deactivatedColor\"); } else { loginButton.classList.add(\"deactivatedColor\"); loginButton.classList.remove(\"activatedColor\"); } } id.addEventListener(\"keyup\", activateBtn); pw.addEventListener(\"keyup\", activateBtn); if (id.value === \"일반사용자ID\" \u0026\u0026 pw.value === \"일반비밀번호\") { alert(\"로그인 성공!\"); } else { alert(\"아이디 또는 비밀번호를 확인해 주세요.\"); } 2. 초보자를 위한 단일 활성 상태 및 classList 관리 무엇을 배웠나 처음에는 세 개의 요소를 전기 회로처럼 생각하고 라디오 버튼처럼 자동 관리될 것이라고 기대했지만, JavaScript를 사용하여 직접 상태를 관리하고 상호 배타적인 선택을 구현해야 한다는 것을 알게 되었습니다. 즉, 각 요소를 독립적으로 관리하고 JavaScript를 통해 상태를 동기화하여 하나의 요소만 활성화되도록 만들어야 합니다. 이 과정을 통해 DOM 조작과 이벤트 핸들링에 대한 이해를 높일 수 있었습니다.\n헷갈렸던 점 처음에는 세 개의 요소를 전기 회로처럼 생각해서 하나가 켜지면 나머지가 자동으로 꺼진다고 생각했어요. 또 HTML 라디오 버튼처럼 같은 그룹 내에서 자동으로 하나만 활성화되는 걸 기대했지만, 요소는 그런 기능이 없다는 점이 헷갈렸습니다.\n정리된 이해 세 개의 요소 중 하나만 활성화 상태를 유지하도록 만드는 것을, 라디오 버튼처럼 자동으로 관리될 것이라는 잘못된 기대를 했습니다. 결국 JavaScript를 활용해 각 요소를 독립적으로 관리하고 상태를 동기화하여, 상호 배타적인 선택을 구현해야 한다는 것을 알게 되었습니다. 즉, 원치 않는 자동 관리 기능이 없기에 직접 인터록 메커니즘을 만들어야 했습니다.\n\u003c!DOCTYPE html\u003e \u003chtml lang=\"ko\"\u003e \u003chead\u003e \u003cmeta charset=\"UTF-8\"\u003e 3. setTimeout과 setInterval 활용법: 시간 제어 및 진행 관리 무엇을 배웠나 setTimeout과 setInterval 함수의 차이점을 명확하게 이해하게 되었고, setInterval을 사용할 때 반환되는 타이머 식별값을 저장하여 나중에 중지할 수 있다는 점을 알게 되었습니다. 또한, 타이머를 제어하는 변수를 먼저 정의하고 사용하는 것이 중요하다는 것을 깨달았습니다. 실습 예제를 통해 시간 제어 함수의 작동 방식을 더 잘 이해할 수 있었습니다.\n헷갈렸던 점 처음에는 setTimeout과 setInterval의 사용법을 제대로 이해하지 못하고, 특히 setInterval에서 반환되는 타이머 식별값을 저장하고 사용하는 부분에서 어려움을 느꼈습니다. 또한, 타이머를 중지하는 clearInterval 함수를 사용할 때, 타이머 식별값을 저장하는 변수가 정의되지 않아 오류가 발생하는 상황을 해결하지 못했습니다. 복잡한 예제를 풀 때 각 타이머의 역할을 명확하게 구분하지 못해 전체적인 흐름 파악이 어려웠습니다.\n정리된 이해 setTimeout은 함수를 딱 한 번 실행하는 함수이고, setInterval은 특정 간격으로 반복 실행하는 함수라는 것을 명확히 이해했습니다. setInterval을 사용할 때는 반드시 반환되는 타이머 식별값을 변수에 저장하고, clearInterval()을 사용하여 반복을 멈춰야 한다는 점을 깨달았습니다. 이제는 타이머를 제어하는 코드를 작성할 때, 타이머 식별값을 잊지 않고 사용할 수 있을 것 같습니다.\nvar i = 0; var time; var h1 = document.getElementById(\"cnt\"); time = setInterval(function() { i++; h1.innerHTML = i; if (i \u003e= 10) clearInterval(time); }, 100) 4. 동적 쇼핑 목록 구현과 자동 채점 문제 해결 무엇을 배웠나 동적 쇼핑 목록 실습에서 자동 채점 오류가 발생했을 때, 단순히 코드가 작동하는 것 외에 채점 시스템이 기대하는 DOM 구조와 텍스트 내용의 정확한 일치 여부가 중요하다는 것을 알게 되었습니다. 특히 버튼 텍스트와 함수 정의 방식이 중요하며, 채점 기준에 맞춰 코드를 수정해야 함을 배웠습니다. 이 과정을 통해 자동 채점 시스템의 작동 방식을 조금 더 이해하게 되었습니다.\n헷갈렸던 점 자동 채점 결과가 0점인 이유가 코드 자체의 기능적 오류 때문인지, 아니면 채점 기준과 나의 결과물의 불일치인지 확신이 서지 않았습니다. 특히 버튼 텍스트와 DOM 구조의 미세한 불일치가 채점 시스템에 큰 영향을 미칠 수 있다는 점을 인지하지 못했습니다. 함수 정의 방식에 대한 주의가 필요했고, 기존 함수를 수정하는 것이 아니라 기존 함수를 재정의하면 안 된다는 점을 깨달았습니다.\n정리된 이해 자동 채점 시스템은 코드 실행 결과뿐만 아니라, 기대하는 DOM 구조와 텍스트 내용까지 정확히 일치해야 제대로 작동한다는 점을 알게 되었습니다. 특히, 버튼 텍스트와 함수 정의 방식에 주의해야 했으며, 채점 기준에 명시된 정확한 내용과 형식을 따라야 했습니다. 이번 경험을 통해 자동 채점 시스템의 평가 기준을 더 명확하게 이해하게 되었습니다.\n\u003cbutton class=\"btn btn-danger btn-sm float-right delete\"\u003eX\u003c/button\u003e 5. 색상 팔레트 호버 효과 및 자동차 경주 이벤트 분석 무엇을 배웠나 JavaScript 코드를 통해 HTML 요소의 className을 읽어와 화면에 표시하는 호버 효과 구현 방식을 이해하게 되었고, 기존 HTML 요소와 동적으로 생성된 요소의 차이점을 명확히 구분할 수 있게 되었습니다. 또한, marginLeft 값을 활용하여 자동차 경주와 같은 애니메이션 효과를 만들어낼 수 있다는 것을 알게 되었으며, DOM 조작과 이벤트 리스너 활용의 중요성을 체감했습니다. 초보자에게 도움이 될 만한 키워드들을 정리하여 앞으로 학습에 참고할 수 있도록 했습니다.\n헷갈렸던 점 처음에는 None!이라는 색상명이 코드에서 어떻게 처리되는지, 그리고 노란색 팔레트가 어떻게 생성되었는지 이해하는 데 어려움을 겪었습니다. 또한, className을 통해 색상 이름을 추출하는 과정과 자동차 경주를 구현하기 위한 marginLeft 값 조절 방식이 명확하게 파악되지 않았습니다.\n정리된 이해 팔레트 호버 효과는 mouseover 이벤트를 사용하여 마우스가 올라간 요소의 className을 읽어 화면에 표시하며, None!은 초기 HTML에 있던 텍스트였음을 알게 되었습니다. 자동차 경주 이벤트는 각 자동차의 marginLeft 값을 무작위로 증가시켜 경쟁하는 듯한 효과를 구현하는 것으로 이해했습니다. DOM 조작과 이벤트 리스너를 활용하여 웹 페이지의 동적인 상호작용을 만들어낼 수 있다는 점을 배웠습니다.\nvar section = document.querySelector(\"section\"); section.addEventListener(\"mouseover\", function (event) { var selected = document.querySelector(\".selected\"); selected.innerText = event.target.className; // 마우스가 올라간 요소의 className을 가져옴 }); function raceCar(car) { car.style.marginLeft = parseInt(car.style.marginLeft) + Math.random() * 60 + \"px\"; } 총평 오늘 오후 전체에서 배운 것 입력값에 따른 로그인 버튼 상태 변경, classList를 이용한 단일 활성 상태, 타이머 기반 진행률을 실습했다. 동적 쇼핑 목록과 색상 팔레트·자동차 경주 이벤트를 살펴보며 상태와 화면을 함께 갱신하는 흐름을 익혔다.\n다음에 조심할 것 이벤트를 연결할 요소와 실제로 변경할 요소를 혼동하지 않고, 변수 이름과 CSS 클래스 이름의 오타를 먼저 점검한다. setInterval을 사용할 때는 종료 조건과 clearInterval 호출을 반드시 함께 둔다.\n다음 복습 주제 로그인 입력 검증, 활성 클래스 전환, 타이머 종료 조건을 각각 짧은 예제로 다시 구현한다. 동적으로 추가된 요소에는 이벤트 위임을 적용하는 방법도 복습한다.\n이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.\n",
+  "wordCount" : "1046",
+  "inLanguage": "en",
+  "datePublished": "2026-08-03T00:00:00Z",
+  "dateModified": "2026-08-03T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-08-03-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      로그인 UI부터 타이머와 동적 목록까지 이벤트 실습
+    </h1>
+    <div class="post-description">
+      2026-08-03 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-08-03 00:00:00 +0000 UTC'>2026년 8월 3일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EB%B2%84%ED%8A%BC-%ED%99%9C%EC%84%B1%ED%99%94-%EB%B0%8F-javascript-%EB%AC%B8%EB%B2%95-%EC%98%A4%EB%A5%98-%ED%95%B4%EA%B2%B0">로그인 버튼 활성화 및 JavaScript 문법 오류 해결</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EB%8B%A8%EC%9D%BC-%ED%99%9C%EC%84%B1-%EC%83%81%ED%83%9C-%EB%B0%8F-classlist-%EA%B4%80%EB%A6%AC">초보자를 위한 단일 활성 상태 및 classList 관리</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-settimeout%EA%B3%BC-setinterval-%ED%99%9C%EC%9A%A9%EB%B2%95-%EC%8B%9C%EA%B0%84-%EC%A0%9C%EC%96%B4-%EB%B0%8F-%EC%A7%84%ED%96%89-%EA%B4%80%EB%A6%AC">setTimeout과 setInterval 활용법: 시간 제어 및 진행 관리</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EB%8F%99%EC%A0%81-%EC%87%BC%ED%95%91-%EB%AA%A9%EB%A1%9D-%EA%B5%AC%ED%98%84%EA%B3%BC-%EC%9E%90%EB%8F%99-%EC%B1%84%EC%A0%90-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0">동적 쇼핑 목록 구현과 자동 채점 문제 해결</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-%EC%83%89%EC%83%81-%ED%8C%94%EB%A0%88%ED%8A%B8-%ED%98%B8%EB%B2%84-%ED%9A%A8%EA%B3%BC-%EB%B0%8F-%EC%9E%90%EB%8F%99%EC%B0%A8-%EA%B2%BD%EC%A3%BC-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%B6%84%EC%84%9D">색상 팔레트 호버 효과 및 자동차 경주 이벤트 분석</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-로그인-버튼-활성화-및-javascript-문법-오류-해결">1. 로그인 버튼 활성화 및 JavaScript 문법 오류 해결<a hidden class="anchor" aria-hidden="true" href="#1-로그인-버튼-활성화-및-javascript-문법-오류-해결">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>로그인 버튼 활성화 기능을 구현하는 과정에서 JavaScript 문법 오류, 특히 <code>alert</code> 함수 사용 시 괄호의 중요성을 깨달았다. 입력 조건 로직과 별개로 코드 전체가 실행되지 않아 오류가 발생할 수 있다는 점을 알게 되었고, <code>keyup</code> 이벤트와 <code>classList</code> 조작을 활용하여 동적인 UI를 구현하는 방법을 익혔다. 앞으로는 코드를 작성할 때 오타나 문법 오류에 더욱 주의하여 디버깅해야겠다는 생각을 했다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>버튼이 안 활성화되는 이유를 입력 조건 로직에 문제가 있다고 생각했는데, 알고 보니 스크립트 자체가 실행되지 않았다는 걸 몰랐다. <code>alert</code> 함수를 사용할 때 괄호를 안 써서 에러가 발생했고, 이 때문에 다른 함수들이 실행되지 않았던 것이다. 이 사소한 문법 오류 때문에 문제를 해결하는 데 오래 걸렸다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>로그인 버튼 활성화 문제의 원인은 예상과 달리 입력 조건 로직이 아니라 JavaScript 문법 오류, 특히 <code>alert</code> 함수 호출 시 소괄호 누락이었다. 아이디와 비밀번호 입력 시 <code>keyup</code> 이벤트를 활용하여 버튼 색상을 변경하고, 로그인 성공 여부를 별도로 확인하는 방식으로 코드를 수정했다. 이 과정을 통해 JavaScript 문법 오류 추적의 중요성을 깨달았다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">activateBtn</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">id</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">pw</span>.<span style="color:#a6e22e">value</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">loginButton</span>.<span style="color:#a6e22e">classList</span>.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;activatedColor&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">loginButton</span>.<span style="color:#a6e22e">classList</span>.<span style="color:#a6e22e">remove</span>(<span style="color:#e6db74">&#34;deactivatedColor&#34;</span>);
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">loginButton</span>.<span style="color:#a6e22e">classList</span>.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;deactivatedColor&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">loginButton</span>.<span style="color:#a6e22e">classList</span>.<span style="color:#a6e22e">remove</span>(<span style="color:#e6db74">&#34;activatedColor&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">id</span>.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#34;keyup&#34;</span>, <span style="color:#a6e22e">activateBtn</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">pw</span>.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#34;keyup&#34;</span>, <span style="color:#a6e22e">activateBtn</span>);
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">id</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;일반사용자ID&#34;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">pw</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;일반비밀번호&#34;</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">alert</span>(<span style="color:#e6db74">&#34;로그인 성공!&#34;</span>);
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">alert</span>(<span style="color:#e6db74">&#34;아이디 또는 비밀번호를 확인해 주세요.&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="2-초보자를-위한-단일-활성-상태-및-classlist-관리">2. 초보자를 위한 단일 활성 상태 및 classList 관리<a hidden class="anchor" aria-hidden="true" href="#2-초보자를-위한-단일-활성-상태-및-classlist-관리">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>처음에는 세 개의 요소를 전기 회로처럼 생각하고 라디오 버튼처럼 자동 관리될 것이라고 기대했지만, JavaScript를 사용하여 직접 상태를 관리하고 상호 배타적인 선택을 구현해야 한다는 것을 알게 되었습니다. 즉, 각 요소를 독립적으로 관리하고 JavaScript를 통해 상태를 동기화하여 하나의 요소만 활성화되도록 만들어야 합니다. 이 과정을 통해 DOM 조작과 이벤트 핸들링에 대한 이해를 높일 수 있었습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음에는 세 개의 <code>&lt;i&gt;</code> 요소를 전기 회로처럼 생각해서 하나가 켜지면 나머지가 자동으로 꺼진다고 생각했어요. 또 HTML 라디오 버튼처럼 같은 그룹 내에서 자동으로 하나만 활성화되는 걸 기대했지만, <code>&lt;i&gt;</code> 요소는 그런 기능이 없다는 점이 헷갈렸습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>세 개의 요소 중 하나만 활성화 상태를 유지하도록 만드는 것을, 라디오 버튼처럼 자동으로 관리될 것이라는 잘못된 기대를 했습니다. 결국 JavaScript를 활용해 각 요소를 독립적으로 관리하고 상태를 동기화하여, 상호 배타적인 선택을 구현해야 한다는 것을 알게 되었습니다.  즉, 원치 않는 자동 관리 기능이 없기에 직접 인터록 메커니즘을 만들어야 했습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ko&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span>&gt;
+</span></span></code></pre></div><h2 id="3-settimeout과-setinterval-활용법-시간-제어-및-진행-관리">3. setTimeout과 setInterval 활용법: 시간 제어 및 진행 관리<a hidden class="anchor" aria-hidden="true" href="#3-settimeout과-setinterval-활용법-시간-제어-및-진행-관리">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>setTimeout과 setInterval 함수의 차이점을 명확하게 이해하게 되었고, setInterval을 사용할 때 반환되는 타이머 식별값을 저장하여 나중에 중지할 수 있다는 점을 알게 되었습니다. 또한, 타이머를 제어하는 변수를 먼저 정의하고 사용하는 것이 중요하다는 것을 깨달았습니다. 실습 예제를 통해 시간 제어 함수의 작동 방식을 더 잘 이해할 수 있었습니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>처음에는 <code>setTimeout</code>과 <code>setInterval</code>의 사용법을 제대로 이해하지 못하고, 특히 <code>setInterval</code>에서 반환되는 타이머 식별값을 저장하고 사용하는 부분에서 어려움을 느꼈습니다. 또한, 타이머를 중지하는 <code>clearInterval</code> 함수를 사용할 때, 타이머 식별값을 저장하는 변수가 정의되지 않아 오류가 발생하는 상황을 해결하지 못했습니다. 복잡한 예제를 풀 때 각 타이머의 역할을 명확하게 구분하지 못해 전체적인 흐름 파악이 어려웠습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p><code>setTimeout</code>은 함수를 딱 한 번 실행하는 함수이고, <code>setInterval</code>은 특정 간격으로 반복 실행하는 함수라는 것을 명확히 이해했습니다. <code>setInterval</code>을 사용할 때는 반드시 반환되는 타이머 식별값을 변수에 저장하고, <code>clearInterval()</code>을 사용하여 반복을 멈춰야 한다는 점을 깨달았습니다. 이제는 타이머를 제어하는 코드를 작성할 때, 타이머 식별값을 잊지 않고 사용할 수 있을 것 같습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">time</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">h1</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;cnt&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">time</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">setInterval</span>(<span style="color:#66d9ef">function</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">h1</span>.<span style="color:#a6e22e">innerHTML</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">i</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">i</span> <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">10</span>) <span style="color:#a6e22e">clearInterval</span>(<span style="color:#a6e22e">time</span>);
+</span></span><span style="display:flex;"><span>}, <span style="color:#ae81ff">100</span>)
+</span></span></code></pre></div><h2 id="4-동적-쇼핑-목록-구현과-자동-채점-문제-해결">4. 동적 쇼핑 목록 구현과 자동 채점 문제 해결<a hidden class="anchor" aria-hidden="true" href="#4-동적-쇼핑-목록-구현과-자동-채점-문제-해결">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>동적 쇼핑 목록 실습에서 자동 채점 오류가 발생했을 때, 단순히 코드가 작동하는 것 외에 채점 시스템이 기대하는 DOM 구조와 텍스트 내용의 정확한 일치 여부가 중요하다는 것을 알게 되었습니다. 특히 버튼 텍스트와 함수 정의 방식이 중요하며, 채점 기준에 맞춰 코드를 수정해야 함을 배웠습니다. 이 과정을 통해 자동 채점 시스템의 작동 방식을 조금 더 이해하게 되었습니다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>자동 채점 결과가 0점인 이유가 코드 자체의 기능적 오류 때문인지, 아니면 채점 기준과 나의 결과물의 불일치인지 확신이 서지 않았습니다. 특히 버튼 텍스트와 DOM 구조의 미세한 불일치가 채점 시스템에 큰 영향을 미칠 수 있다는 점을 인지하지 못했습니다. 함수 정의 방식에 대한 주의가 필요했고, 기존 함수를 수정하는 것이 아니라 기존 함수를 재정의하면 안 된다는 점을 깨달았습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>자동 채점 시스템은 코드 실행 결과뿐만 아니라, 기대하는 DOM 구조와 텍스트 내용까지 정확히 일치해야 제대로 작동한다는 점을 알게 되었습니다. 특히, 버튼 텍스트와 함수 정의 방식에 주의해야 했으며, 채점 기준에 명시된 정확한 내용과 형식을 따라야 했습니다. 이번 경험을 통해 자동 채점 시스템의 평가 기준을 더 명확하게 이해하게 되었습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">button</span> <span style="color:#66d9ef">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;btn btn-danger btn-sm float-right delete&#34;</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">X</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/button&gt;</span>
+</span></span></code></pre></div><h2 id="5-색상-팔레트-호버-효과-및-자동차-경주-이벤트-분석">5. 색상 팔레트 호버 효과 및 자동차 경주 이벤트 분석<a hidden class="anchor" aria-hidden="true" href="#5-색상-팔레트-호버-효과-및-자동차-경주-이벤트-분석">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>JavaScript 코드를 통해 HTML 요소의 <code>className</code>을 읽어와 화면에 표시하는 호버 효과 구현 방식을 이해하게 되었고, 기존 HTML 요소와 동적으로 생성된 요소의 차이점을 명확히 구분할 수 있게 되었습니다. 또한, <code>marginLeft</code> 값을 활용하여 자동차 경주와 같은 애니메이션 효과를 만들어낼 수 있다는 것을 알게 되었으며, DOM 조작과 이벤트 리스너 활용의 중요성을 체감했습니다. 초보자에게 도움이 될 만한 키워드들을 정리하여 앞으로 학습에 참고할 수 있도록 했습니다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>처음에는 <code>None!</code>이라는 색상명이 코드에서 어떻게 처리되는지, 그리고 노란색 팔레트가 어떻게 생성되었는지 이해하는 데 어려움을 겪었습니다. 또한, <code>className</code>을 통해 색상 이름을 추출하는 과정과 자동차 경주를 구현하기 위한 <code>marginLeft</code> 값 조절 방식이 명확하게 파악되지 않았습니다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>팔레트 호버 효과는 <code>mouseover</code> 이벤트를 사용하여 마우스가 올라간 요소의 <code>className</code>을 읽어 화면에 표시하며, <code>None!</code>은 초기 HTML에 있던 텍스트였음을 알게 되었습니다. 자동차 경주 이벤트는 각 자동차의 <code>marginLeft</code> 값을 무작위로 증가시켜 경쟁하는 듯한 효과를 구현하는 것으로 이해했습니다. DOM 조작과 이벤트 리스너를 활용하여 웹 페이지의 동적인 상호작용을 만들어낼 수 있다는 점을 배웠습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">section</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">querySelector</span>(<span style="color:#e6db74">&#34;section&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">section</span>.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#34;mouseover&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">selected</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">querySelector</span>(<span style="color:#e6db74">&#34;.selected&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">selected</span>.<span style="color:#a6e22e">innerText</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">event</span>.<span style="color:#a6e22e">target</span>.<span style="color:#a6e22e">className</span>; <span style="color:#75715e">// 마우스가 올라간 요소의 className을 가져옴
+</span></span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">raceCar</span>(<span style="color:#a6e22e">car</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">car</span>.<span style="color:#a6e22e">style</span>.<span style="color:#a6e22e">marginLeft</span> <span style="color:#f92672">=</span> parseInt(<span style="color:#a6e22e">car</span>.<span style="color:#a6e22e">style</span>.<span style="color:#a6e22e">marginLeft</span>) <span style="color:#f92672">+</span> Math.<span style="color:#a6e22e">random</span>() <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;px&#34;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>입력값에 따른 로그인 버튼 상태 변경, classList를 이용한 단일 활성 상태, 타이머 기반 진행률을 실습했다. 동적 쇼핑 목록과 색상 팔레트·자동차 경주 이벤트를 살펴보며 상태와 화면을 함께 갱신하는 흐름을 익혔다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>이벤트를 연결할 요소와 실제로 변경할 요소를 혼동하지 않고, 변수 이름과 CSS 클래스 이름의 오타를 먼저 점검한다. setInterval을 사용할 때는 종료 조건과 clearInterval 호출을 반드시 함께 둔다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>로그인 입력 검증, 활성 클래스 전환, 타이머 종료 조건을 각각 짧은 예제로 다시 구현한다. 동적으로 추가된 요소에는 이벤트 위임을 적용하는 방법도 복습한다.</p>
+<blockquote>
+<p>이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/javascript/">Javascript</a></li>
+      <li><a href="https://Han-think.github.io/tags/dom/">Dom</a></li>
+      <li><a href="https://Han-think.github.io/tags/events/">Events</a></li>
+      <li><a href="https://Han-think.github.io/tags/es6/">Es6</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-08-03-am-daily/">
+    <span class="title">« Prev</span>
+    <span>DOM 이벤트 전파와 폼 검증으로 이벤트 흐름 이해하기</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-07-31-am-daily/">
+    <span class="title">Next »</span>
+    <span>배열 순회부터 DOM 조작까지, 오전 학습 정리</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
