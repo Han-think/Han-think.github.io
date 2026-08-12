@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>HTTP, REST, Axios 정복과 API 데이터 결합 문제 해결 학습 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-08-10 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-08-10-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-08-10-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-08-10-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="HTTP, REST, Axios 정복과 API 데이터 결합 문제 해결 학습">
+  <meta property="og:description" content="2026-08-10 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-08-10T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-08-10T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="HTTP, REST, Axios 정복과 API 데이터 결합 문제 해결 학습">
+  <meta name="twitter:description" content="2026-08-10 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "HTTP, REST, Axios 정복과 API 데이터 결합 문제 해결 학습",
+      "item": "https://Han-think.github.io/learning/2026-08-10-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "HTTP, REST, Axios 정복과 API 데이터 결합 문제 해결 학습",
+  "name": "HTTP, REST, Axios 정복과 API 데이터 결합 문제 해결 학습",
+  "description": "2026-08-10 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 HTTP, REST, AJAX, Axios: 초보자를 위한 핵심 개념 정리 Axios API 활용 및 데이터 렌더링 실습 Posts 데이터 결합 및 자동채점 문제점 총평 1. HTTP, REST, AJAX, Axios: 초보자를 위한 핵심 개념 정리 무엇을 배웠나 HTTP, REST, AJAX, Axios 개념이 헷갈렸는데, 각 개념의 역할과 계층 구조를 명확하게 정리했다. HTTP는 통신 규칙, REST는 설계 방식, AJAX는 통신 기술, Axios는 JavaScript에서 HTTP 요청을 쉽게 하도록 돕는 라이브러리라는 것을 이해하게 되었다. 특히 상태 코드를 통해 요청 문제와 서버 오류를 구분하는 것이 중요함을 깨달았다.\n헷갈렸던 점 HTTP, REST, AJAX, Axios가 모두 웹 관련 용어라서 비슷하게 들리고, 각각이 어떤 역할을 하는지 명확하게 구분되지 않았던 것 같아 어려웠다. 특히 상태 코드, 특히 4xx 에러가 서버 문제인지, 아니면 내 요청에 문제가 있는 건지 헷갈렸다.\n정리된 이해 웹 데이터를 주고받는 기본 규칙은 HTTP이고, HTTP를 활용한 효율적인 API 설계 방식이 REST이다. AJAX는 페이지 새로고침 없이 서버와 데이터를 교환하는 기술이며, Axios는 자바스크립트에서 이러한 HTTP 요청을 쉽게 할 수 있도록 도와주는 도구이다. 이러한 개념들을 정리하고 실습을 통해 이해도를 높였다.\n// Axios를 사용한 간단한 GET 요청 예시 const axios = require('axios'); axios.get('https://api.example.com/data') .then(response =\u003e { console.log('데이터:', response.data); }) .catch(error =\u003e { console.error('오류:', error); }); 2. Axios API 활용 및 데이터 렌더링 실습 무엇을 배웠나 Axios API 실습을 통해 각 API마다 응답 구조가 다르고, 그 구조에 맞춰 데이터를 추출하는 과정이 중요하다는 것을 알게 되었습니다. 응답 데이터 확인 및 가공 단계를 거쳐 원하는 데이터를 HTML에 렌더링하는 방법을 익혔습니다. 앞으로는 API 응답 구조를 꼼꼼히 확인하고, 그에 맞춰 데이터 추출 코드를 작성해야 한다는 점을 깨달았습니다.\n헷갈렸던 점 처음 API 실습을 할 때는 응답 데이터가 예상과 다를 경우, 어디서부터 어떻게 접근해야 할지 막막했습니다. 각 API마다 데이터 구조가 달라서, 응답을 받아서 확인하는 과정이 반복적으로 필요했습니다. 어떤 API는 바로 원하는 데이터가 data 안에 있었지만, 다른 API는 여러 단계의 중첩 구조를 거쳐야 했습니다.\n정리된 이해 Axios를 사용한 API 호출은 사용법 자체는 간단하지만, 각 API의 응답 데이터 구조에 따라 데이터 접근 방법이 크게 달라질 수 있다는 것을 알게 되었다. 응답 데이터의 구조를 꼼꼼히 확인하고 필요한 데이터를 추출하는 과정이 중요하며, 이는 각 API마다 다른 접근 방식을 요구한다.\n// Axios를 사용한 API 호출 예시 axios.get('https://api.example.com/data') .then((response) =\u003e { // 응답 데이터 확인 console.log(response.data); 3. Posts 데이터 결합 및 자동채점 문제점 무엇을 배웠나 분산된 Posts, Users, Comments 데이터를 ID를 기준으로 결합하는 실습을 진행했는데, 코드는 문제없이 작동했지만 자동채점 시스템에서 계속 실패했습니다. 자동채점 시스템의 정확한 요구사항을 파악하고, 반환값 형태와 데이터 구조가 시스템의 기대치에 부합하도록 수정해야 한다는 것을 깨달았습니다. 이 과정에서 JavaScript의 Promise, map, reduce를 활용하여 데이터를 효율적으로 처리하는 방법을 복습했습니다.\n헷갈렸던 점 처음에는 Promise.all()을 사용해서 동시 요청을 하는 부분에서 데이터가 어떻게 합쳐지는지 감이 잘 안 잡혔다. 또, 자동채점 시스템이 Promise가 아닌 특정 형태의 Array를 요구한다는 것을 왜 정확히 파악하지 못했는지도 궁금하다. 결국 데이터 결합의 논리적인 흐름은 이해했지만, 자동채점 시스템의 요구사항을 충족시키는 형식을 맞추는 데 어려움을 겪었다.\n정리된 이해 여러 데이터 소스를 결합하는 과정을 실습하며 Promise.all()과 reduce 함수를 활용하여 posts, users, comments 데이터를 통합하는 방법을 익혔습니다. 하지만 자동채점 시스템과의 계약 조건 불일치로 인해 예상치 못한 문제에 직면했고, 반환값 형태와 데이터 구조에 대한 정확한 요구사항을 파악하는 것이 중요함을 알게 되었습니다. 앞으로는 자동채점 시스템의 요구사항을 명확히 이해하고, 이에 맞춰 코드를 작성해야 함을 깨달았습니다.\nconst createUserMap = (users) =\u003e { return users.reduce((userMap, user) =\u003e { userMap[user.id] = user; return userMap; }, {}); }; 총평 오늘 오전 전체에서 배운 것 HTTP, REST, AJAX, Axios의 개념과 역할, 그리고 API 활용 및 데이터 렌더링 방법을 익혔습니다. 특히 API 응답 구조에 맞춰 데이터를 추출하고 HTML에 렌더링하는 과정이 중요하며, 자동채점 시스템의 요구사항에 맞춰 데이터 반환 형식을 조정하는 것이 필요하다는 점을 알게 되었습니다. JavaScript Promise, map, reduce 활용도 복습했습니다.\n다음에 조심할 것 API 응답 구조를 꼼꼼히 확인하고, 추출해야 할 데이터가 정확히 어떤 형태인지 파악하는 데 더욱 신경 써야겠어. 특히 자동채점 시스템의 요구사항을 제대로 파악하지 못하면 코드가 완벽해도 실패할 수 있다는 점을 명심해야겠다. Promise, map, reduce 등의 JavaScript 기능을 활용해 데이터 처리 효율성을 높이는 연습도 꾸준히 해야겠어.\n다음 복습 주제 자동채점 시스템의 요구사항을 정확히 파악하고, 반환값 형태와 데이터 구조를 맞춰 수정하는 부분을 다시 집중적으로 복습해야겠다. Promise, map, reduce 활용법을 다시 한번 살펴보고, 자동채점 시스템의 실패 원인을 분석하여 해결하는 연습을 해야 할 것 같다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "667",
+  "inLanguage": "en",
+  "datePublished": "2026-08-10T00:00:00Z",
+  "dateModified": "2026-08-10T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-08-10-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      HTTP, REST, Axios 정복과 API 데이터 결합 문제 해결 학습
+    </h1>
+    <div class="post-description">
+      2026-08-10 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-08-10 00:00:00 +0000 UTC'>2026년 8월 10일</span>&nbsp;·&nbsp;<span>4 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-http-rest-ajax-axios-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%ED%95%B5%EC%8B%AC-%EA%B0%9C%EB%85%90-%EC%A0%95%EB%A6%AC">HTTP, REST, AJAX, Axios: 초보자를 위한 핵심 개념 정리</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-axios-api-%ED%99%9C%EC%9A%A9-%EB%B0%8F-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%A0%8C%EB%8D%94%EB%A7%81-%EC%8B%A4%EC%8A%B5">Axios API 활용 및 데이터 렌더링 실습</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-posts-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B2%B0%ED%95%A9-%EB%B0%8F-%EC%9E%90%EB%8F%99%EC%B1%84%EC%A0%90-%EB%AC%B8%EC%A0%9C%EC%A0%90">Posts 데이터 결합 및 자동채점 문제점</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-http-rest-ajax-axios-초보자를-위한-핵심-개념-정리">1. HTTP, REST, AJAX, Axios: 초보자를 위한 핵심 개념 정리<a hidden class="anchor" aria-hidden="true" href="#1-http-rest-ajax-axios-초보자를-위한-핵심-개념-정리">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>HTTP, REST, AJAX, Axios 개념이 헷갈렸는데, 각 개념의 역할과 계층 구조를 명확하게 정리했다. HTTP는 통신 규칙, REST는 설계 방식, AJAX는 통신 기술, Axios는 JavaScript에서 HTTP 요청을 쉽게 하도록 돕는 라이브러리라는 것을 이해하게 되었다. 특히 상태 코드를 통해 요청 문제와 서버 오류를 구분하는 것이 중요함을 깨달았다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>HTTP, REST, AJAX, Axios가 모두 웹 관련 용어라서 비슷하게 들리고, 각각이 어떤 역할을 하는지 명확하게 구분되지 않았던 것 같아 어려웠다. 특히 상태 코드, 특히 4xx 에러가 서버 문제인지, 아니면 내 요청에 문제가 있는 건지 헷갈렸다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>웹 데이터를 주고받는 기본 규칙은 HTTP이고, HTTP를 활용한 효율적인 API 설계 방식이 REST이다. AJAX는 페이지 새로고침 없이 서버와 데이터를 교환하는 기술이며, Axios는 자바스크립트에서 이러한 HTTP 요청을 쉽게 할 수 있도록 도와주는 도구이다. 이러한 개념들을 정리하고 실습을 통해 이해도를 높였다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// Axios를 사용한 간단한 GET 요청 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">axios</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;axios&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">axios</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#39;https://api.example.com/data&#39;</span>)
+</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">response</span> =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;데이터:&#39;</span>, <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">data</span>);
+</span></span><span style="display:flex;"><span>  })
+</span></span><span style="display:flex;"><span>  .<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">error</span> =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>(<span style="color:#e6db74">&#39;오류:&#39;</span>, <span style="color:#a6e22e">error</span>);
+</span></span><span style="display:flex;"><span>  });
+</span></span></code></pre></div><h2 id="2-axios-api-활용-및-데이터-렌더링-실습">2. Axios API 활용 및 데이터 렌더링 실습<a hidden class="anchor" aria-hidden="true" href="#2-axios-api-활용-및-데이터-렌더링-실습">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>Axios API 실습을 통해 각 API마다 응답 구조가 다르고, 그 구조에 맞춰 데이터를 추출하는 과정이 중요하다는 것을 알게 되었습니다. 응답 데이터 확인 및 가공 단계를 거쳐 원하는 데이터를 HTML에 렌더링하는 방법을 익혔습니다. 앞으로는 API 응답 구조를 꼼꼼히 확인하고, 그에 맞춰 데이터 추출 코드를 작성해야 한다는 점을 깨달았습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음 API 실습을 할 때는 응답 데이터가 예상과 다를 경우, 어디서부터 어떻게 접근해야 할지 막막했습니다. 각 API마다 데이터 구조가 달라서, 응답을 받아서 확인하는 과정이 반복적으로 필요했습니다. 어떤 API는 바로 원하는 데이터가 <code>data</code> 안에 있었지만, 다른 API는 여러 단계의 중첩 구조를 거쳐야 했습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>Axios를 사용한 API 호출은 사용법 자체는 간단하지만, 각 API의 응답 데이터 구조에 따라 데이터 접근 방법이 크게 달라질 수 있다는 것을 알게 되었다. 응답 데이터의 구조를 꼼꼼히 확인하고 필요한 데이터를 추출하는 과정이 중요하며, 이는 각 API마다 다른 접근 방식을 요구한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// Axios를 사용한 API 호출 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">axios</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#39;https://api.example.com/data&#39;</span>)
+</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">response</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 응답 데이터 확인
+</span></span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">data</span>);
+</span></span></code></pre></div><h2 id="3-posts-데이터-결합-및-자동채점-문제점">3. Posts 데이터 결합 및 자동채점 문제점<a hidden class="anchor" aria-hidden="true" href="#3-posts-데이터-결합-및-자동채점-문제점">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>분산된 Posts, Users, Comments 데이터를 ID를 기준으로 결합하는 실습을 진행했는데, 코드는 문제없이 작동했지만 자동채점 시스템에서 계속 실패했습니다. 자동채점 시스템의 정확한 요구사항을 파악하고, 반환값 형태와 데이터 구조가 시스템의 기대치에 부합하도록 수정해야 한다는 것을 깨달았습니다. 이 과정에서 JavaScript의 Promise, map, reduce를 활용하여 데이터를 효율적으로 처리하는 방법을 복습했습니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>처음에는 <code>Promise.all()</code>을 사용해서 동시 요청을 하는 부분에서 데이터가 어떻게 합쳐지는지 감이 잘 안 잡혔다. 또, 자동채점 시스템이 <code>Promise</code>가 아닌 특정 형태의 <code>Array</code>를 요구한다는 것을 왜 정확히 파악하지 못했는지도 궁금하다. 결국 데이터 결합의 논리적인 흐름은 이해했지만, 자동채점 시스템의 요구사항을 충족시키는 형식을 맞추는 데 어려움을 겪었다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>여러 데이터 소스를 결합하는 과정을 실습하며 <code>Promise.all()</code>과 <code>reduce</code> 함수를 활용하여 <code>posts</code>, <code>users</code>, <code>comments</code> 데이터를 통합하는 방법을 익혔습니다. 하지만 자동채점 시스템과의 계약 조건 불일치로 인해 예상치 못한 문제에 직면했고, 반환값 형태와 데이터 구조에 대한 정확한 요구사항을 파악하는 것이 중요함을 알게 되었습니다. 앞으로는 자동채점 시스템의 요구사항을 명확히 이해하고, 이에 맞춰 코드를 작성해야 함을 깨달았습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">createUserMap</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">users</span>) =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">users</span>.<span style="color:#a6e22e">reduce</span>((<span style="color:#a6e22e">userMap</span>, <span style="color:#a6e22e">user</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">userMap</span>[<span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">id</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">user</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">userMap</span>;
+</span></span><span style="display:flex;"><span>  }, {});
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>HTTP, REST, AJAX, Axios의 개념과 역할, 그리고 API 활용 및 데이터 렌더링 방법을 익혔습니다. 특히 API 응답 구조에 맞춰 데이터를 추출하고 HTML에 렌더링하는 과정이 중요하며, 자동채점 시스템의 요구사항에 맞춰 데이터 반환 형식을 조정하는 것이 필요하다는 점을 알게 되었습니다. JavaScript Promise, map, reduce 활용도 복습했습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>API 응답 구조를 꼼꼼히 확인하고, 추출해야 할 데이터가 정확히 어떤 형태인지 파악하는 데 더욱 신경 써야겠어. 특히 자동채점 시스템의 요구사항을 제대로 파악하지 못하면 코드가 완벽해도 실패할 수 있다는 점을 명심해야겠다. Promise, map, reduce 등의 JavaScript 기능을 활용해 데이터 처리 효율성을 높이는 연습도 꾸준히 해야겠어.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>자동채점 시스템의 요구사항을 정확히 파악하고, 반환값 형태와 데이터 구조를 맞춰 수정하는 부분을 다시 집중적으로 복습해야겠다. Promise, map, reduce 활용법을 다시 한번 살펴보고, 자동채점 시스템의 실패 원인을 분석하여 해결하는 연습을 해야 할 것 같다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-08-11-pm-daily/">
+    <span class="title">« Prev</span>
+    <span>JSX, 스타일, 컴포넌트, 이벤트 처리, 그리고 WebStorm AI 설정까지 익힌 오후 학습 정리</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-08-10-pm-daily/">
+    <span class="title">Next »</span>
+    <span>객체지향 프로그래밍 핵심 개념 완화: 클래스 설계부터 상속 활용까지</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

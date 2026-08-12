@@ -164,6 +164,131 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">pm-02-subquery-basic-single-multi
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 서브쿼리 작성 방식 메인쿼리와 서브쿼리 역할 기준값 제공 정보 계산 총평 1. 서브쿼리 작성 방식 왜 이걸 보게 됐나 평소 문제 해결을 단계별로 생각하는 내 사고방식과 SQL 서브쿼리 작성 방식이 충돌해서 어려움을 겪었거든. 특히 앨범 ID를 먼저 찾는 게 자연스러웠는데, SQL에서는 결과값을 기준으로 메인쿼리를 먼저 작성해야 해서 계속 헷갈렸어. 그래서 서브쿼리의 역할 분담을 명확히 이해하고, 메인쿼리와 서브쿼리를 역순으로 생각하는 방식을 익히게 됐어.
+내가 헷갈린 지점 평소 문제 해결 방식이 알던 단서부터 시작해서 점진적으로 답을 찾아가는 흐름인데, 서브쿼리는 그 반대로 최종 결과부터 생각하고 메인쿼리를 먼저 작성해야 해서 처음에는 역순으로 생각해야 한다는 점이 헷갈렸어요. 특히 앨범 이름을 기준으로 AlbumId를 찾는 문제가 직관적이지 않아서 SQL 작성 방식이 어색하게 느껴졌습니다. 이러한 사고방식의 차이 때문에 서브쿼리 작성에 어려움을 겪었습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to pm-02-subquery-basic-single-multi" href="https://Han-think.github.io/learning/pm-02-subquery-basic-single-multi/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">pm-03-dml-insert-update-delete
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 INSERT 문법 UPDATE 연산 DELETE 구문 WHERE 절 총평 1. INSERT 문법 왜 이걸 보게 됐나 SQLite 실습을 시작하면서 데이터 테이블에 새로운 정보를 추가하는 가장 기본적인 방법인 INSERT 문법을 익히게 되었어. 처음에 컬럼 순서나 작은따옴표 처리 때문에 어려움을 겪었지만, 기본적인 문법을 이해하고 연습하면서 데이터 추가 작업을 효과적으로 수행할 수 있게 되었어. INSERT 문법은 데이터베이스를 관리하고 활용하는 데 필수적인 요소라는 것을 깨달았어.
+내가 헷갈린 지점 INSERT 문을 쓸 때 컬럼과 값의 순서가 헷갈리는 경우가 많았고, 특히 문자열 안에 작은따옴표를 넣는 방식이 어떻게 해야 하는지 고민했습니다. ‘It’s’처럼 작은따옴표가 포함된 문자열을 입력할 때 작은따옴표를 두 번 사용해야 한다는 점을 깨닫지 못해 삽질했습니다. 컬럼 순서, 값 순서, 그리고 작은따옴표 처리 모두 숙지해야 하는 부분이라는 것을 알게 되었습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to pm-03-dml-insert-update-delete" href="https://Han-think.github.io/learning/pm-03-dml-insert-update-delete/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">pm-03-join-vs-subquery-choice
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 서브쿼리 JOIN 조건 조달 데이터 통합 총평 1. 서브쿼리 왜 이걸 보게 됐나 데이터를 분석하려면 여러 테이블에 흩어져 있는 정보를 합쳐서 봐야 했는데, 서브쿼리를 배우기 전에는 어떻게 해야 할지 감이 잘 안 잡혔어. 특히 복잡한 조건을 만족하는 데이터를 찾는 과정이 너무 비효율적으로 느껴졌고, 코드가 길어져서 가독성도 떨어졌어. 그래서 좀 더 효율적이고 깔끔하게 데이터를 추출할 수 있는 방법이 서브쿼리라는 것을 알게 됐어.
+내가 헷갈린 지점 처음에 서브쿼리가 왜 복잡한 쿼리를 풀어야 하는지 이해하기 어려웠다. 여러 테이블을 거쳐 값을 찾아오는 과정이 JOIN과 비교했을 때 효율성이 떨어지는 것 같았고, 어떤 상황에서 서브쿼리를 사용하는 것이 가장 적절한지 감이 잘 잡히지 않았다. 결과적으로 서브쿼리는 필요한 값을 먼저 구해내는 과정이라는 것을 이해했지만, 처음에는 그 이유와 장점을 파악하기 힘들었다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to pm-03-join-vs-subquery-choice" href="https://Han-think.github.io/learning/pm-03-join-vs-subquery-choice/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">pm-04-book-table-review-queries
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 데이터 변화 LIKE 연산자 WHERE 절 ORDER BY 총평 1. 데이터 변화 왜 이걸 보게 됐나 DELETE 명령어를 실행하고 나서 SELECT 결과가 달라지는 것을 보고, 데이터베이스의 상태가 쿼리 실행 결과에 직접적으로 영향을 미친다는 것을 깨달았습니다. 이전에는 데이터가 항상 존재한다고 생각하고 쿼리를 짰었는데, 데이터 변경이 결과에 영향을 주는 것을 알게 되면서 데이터베이스의 상태를 고려하는 쿼리 작성의 중요성을 인지하게 되었습니다.
+내가 헷갈린 지점 DELETE 명령을 실행했는데, 그 뒤에 바로 SELECT 쿼리를 돌려보니 데이터가 사라져서 당황스러웠어요. 마치 데이터베이스의 내용이 갑자기 변하는 마법처럼 느껴졌었죠. 데이터의 일관성을 당연하게 생각해서, 쿼리 실행 순서에 따른 결과 변화를 예상하지 못했습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to pm-04-book-table-review-queries" href="https://Han-think.github.io/learning/pm-04-book-table-review-queries/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">pm-04-subquery-learning-friction
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 메인쿼리 접근 방식 테이블 및 컬럼 연결 서브쿼리 접근법 서브쿼리 반환 값 총평 1. 메인쿼리 접근 방식 왜 이걸 보게 됐나 처음에는 문제를 풀 때 자연스럽게 단서를 찾고 해결해 나가는 방식에 익숙했기에, 서브쿼리를 사용할 때 메인 쿼리부터 접근해야 한다는 개념이 굉장히 어색하고 거꾸로 느껴졌습니다. 특히 서브쿼리의 결과값을 미리 넣는 듯한 느낌 때문에, 문제 해결의 논리적 흐름을 파악하기 어려웠던 거죠. 그래서 이 접근 방식을 이해하게 되면서 쿼리 작성 과정의 흐름을 잡을 수 있었습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to pm-04-subquery-learning-friction" href="https://Han-think.github.io/learning/pm-04-subquery-learning-friction/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">pm-05-erd-reading-training
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 테이블 관계 프라이머리 키 포린 키 조인 총평 1. 테이블 관계 왜 이걸 보게 됐나 데이터를 효과적으로 관리하고 분석하기 위해서는 데이터가 어떻게 저장되고 연결되는지 이해하는 것이 필수적이었어요. ERD는 이 데이터 구조를 시각적으로 보여주기 때문에, 복잡한 데이터베이스 쿼리를 작성하거나 데이터 모델을 설계할 때 필요한 중요한 도구라는 것을 알게 됐습니다. 덕분에 데이터가 어떻게 연결되는지 파악하고 필요한 정보를 정확하게 가져오는 쿼리를 만들 수 있게 될 것 같습니다.
+내가 헷갈린 지점 처음에는 테이블들을 단순히 나열된 목록으로 생각해서 테이블 간의 관계가 어떻게 연결되는지 파악하는 데 어려움을 겪었습니다. 테이블을 부품으로 생각하라는 비유 때문에 오히려 더 복잡하게 느껴졌고, Primary Key나 Foreign Key가 어떤 역할을 하는지 명확히 이해하지 못했습니다. 테이블 간의 연결이 회로도처럼 복잡하게 얽혀 있다는 점을 깨닫고, 각 연결고리가 의미하는 바를 하나씩 파악해야 할 필요성을 느꼈습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to pm-05-erd-reading-training" href="https://Han-think.github.io/learning/pm-05-erd-reading-training/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">rlhf-good-bad-response
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 강화학습과 LoRA LLM 학습 단계 좋은 응답 기준 프로토콜 기반 평가 총평 1. 강화학습과 LoRA 왜 이걸 보게 됐나 RLHF 학습 과정에서 모델의 성능을 향상시키는 여러 기술들이 사용되는데, 초기에 강화학습 자체와 LoRA라는 기술을 혼동하여 전체적인 학습 흐름을 제대로 파악하지 못했습니다. 따라서 RLHF의 역할과 LoRA의 역할을 구분하여 학습해야 더 깊이 있는 이해가 가능하다고 생각하여 이 개념을 배우게 되었습니다. 이 개념을 명확히 이해하면 모델 학습 과정을 더 효율적으로 분석하고 개선할 수 있을 것입니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to rlhf-good-bad-response" href="https://Han-think.github.io/learning/rlhf-good-bad-response/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">SQL GROUP BY, JOIN, ERD 활용 능력 향상을 위한 학습 정리
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 am-01-sql-groupby-having am-02-sql-join-alias-erd am-03-sql-join-problem-solving 총평 1. am-01-sql-groupby-having 무엇을 배웠나 SQL의 GROUP BY와 HAVING을 이해하는 데 어려움을 겪었는데, 문제를 세 단계로 나누어 생각하는 방법을 통해 해결할 수 있었다. GROUP BY는 데이터를 묶는 기준을 명확히 설정하는 것이 중요하며, HAVING은 그룹화된 결과에 조건을 추가하여 원하는 결과를 얻는 데 활용된다는 것을 알게 되었다. 이제 SQL 쿼리를 작성할 때 어떤 테이블에서 데이터를 가져오고, 어떤 기준으로 묶고, 어떤 값을 계산할지 질문하며 접근하면 더욱 효과적일 것 같다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+  <a class="entry-link" aria-label="post link to SQL GROUP BY, JOIN, ERD 활용 능력 향상을 위한 학습 정리" href="https://Han-think.github.io/learning/2026-06-09-am-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">SQL 쿼리 작성, ERD와 서브쿼리 활용법을 익히다
     </h2>
   </header>
@@ -191,132 +316,6 @@
 
 <span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
   <a class="entry-link" aria-label="post link to sqlite-learning-resources-and-notion-export" href="https://Han-think.github.io/learning/sqlite-learning-resources-and-notion-export/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">sqlite-select-crud-basics
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 SQL 질문 이해 CRUD와 SQL 대응 테이블 생성 데이터 삽입 총평 1. SQL 질문 이해 왜 이걸 보게 됐나 처음에는 SQL을 단순히 데이터 가져오는 명령어로 생각해서, 원하는 데이터를 효율적으로 추출하는 질문을 구성하는 데 어려움을 겪었습니다. SQL의 질문 구조를 제대로 이해하지 못해 데이터베이스의 잠재력을 최대한 활용하지 못한다는 느낌을 받았고, 그래서 SQL의 본질적인 개념인 ‘질문’에 집중하게 되었습니다.
-내가 헷갈린 지점 처음에는 SQL을 단순히 데이터를 조회하는 명령어로만 생각해서, 어떤 질문을 던져야 원하는 답을 얻을 수 있을지 막막했다. SQL 명령어가 데이터베이스에 던지는 질문이라는 개념이 부족해서, 데이터베이스를 쿼리하는 유연성을 제대로 활용하지 못하고 있었다. 마치 정해진 답만 알고 있는 시험 문제를 푸는 듯한 느낌이었달까.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
-  <a class="entry-link" aria-label="post link to sqlite-select-crud-basics" href="https://Han-think.github.io/learning/sqlite-select-crud-basics/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">sqlite-sqltools-nextweek
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 VS Code 작업 공간 SQLite 데이터베이스 SQLTools 확장팩 SQLite 드라이버 총평 1. VS Code 작업 공간 왜 이걸 보게 됐나 처음에는 제가 익숙한 다른 편집기를 주로 사용해 왔기 때문에, 교육 환경에서 VS Code를 사용해야 한다는 점이 낯설었습니다. 하지만 모든 학생이 동일한 환경에서 작업하도록 강제하기 위해 VS Code가 표준 작업 공간으로 지정되었고, 이를 통해 강의 내용 이해와 문제 해결 과정에서 혼란을 줄이고자 합니다. VS Code를 활용하면 선생님과 제가 동일한 환경에서 동일한 도구를 사용하며 학습할 수 있게 됩니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
-  <a class="entry-link" aria-label="post link to sqlite-sqltools-nextweek" href="https://Han-think.github.io/learning/sqlite-sqltools-nextweek/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">sqltools-selected-query-execution
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 SQL 기본 명령어 선택 영역 실행 실행 순서 데이터베이스 활용 총평 1. SQL 기본 명령어 왜 이걸 보게 됐나 개인 학습 기록을 효율적으로 관리하고 싶어서, 데이터베이스를 활용하는 방법을 익히기로 했어. 간단한 SQL 명령어를 통해 노트를 저장하고 조회하는 기능을 구현하면, 훨씬 체계적으로 학습 내용을 정리하고 복습할 수 있을 것 같아. 앞으로 LearningLog 시스템 구축에 이 기본 명령어들이 필수적으로 사용될 예정이라, 지금부터 확실히 다져놓아야 해.
-내가 헷갈린 지점 처음에는 SQL 문법 오류가 나서 실행이 안 될 때마다 문법에 문제가 있다고 생각했는데, 테이블이 생성되지 않은 상태에서 바로 조회하려고 해서 오류가 났던 것 같아. 그리고 전체 파일을 다 실행해야 한다고 생각해서, 필요한 부분만 선택해서 실행할 수 있다는 점이 신기했다. 명령어를 순서대로 실행해야 한다는 점을 명확하게 인지하지 못해서 삽질을 했던 것 같아.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
-  <a class="entry-link" aria-label="post link to sqltools-selected-query-execution" href="https://Han-think.github.io/learning/sqltools-selected-query-execution/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">ai-tools-cursor-perplexity-qwen
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 코드 편집 정보 검색 로컬 코드 보조 프로젝트 수정 총평 1. 코드 편집 왜 이걸 보게 됐나 코딩 실력이 부족해서, 간단한 코드 수정에도 어려움을 느끼고 있던 차에 이 도구들을 알게 됐어. 특히 실시간 코드 제안 기능이 있는 도구는 기존에 비해 훨씬 빠르게 코드를 수정하고 배울 수 있을 것 같다는 기대감을 갖게 했지. 앞으로 생산성을 높이고, 코딩 학습 속도를 올리기 위해 이 도구들에 대한 이해는 필수적이라고 생각했어.
-내가 헷갈린 지점 처음에는 Cursor가 단순히 코드 자동 완성 기능만 제공하는 줄 알았습니다. 단순히 자동 완성 기능 이상의 적극적인 코드 편집 기능이 있다는 점, 그리고 명령어를 통해 구체적인 수정 방향을 제시할 수 있다는 점이 신기했습니다. 이전에는 IDE의 자동 완성 기능 정도로 생각했지만, 훨씬 더 능동적인 코드 수정 도구라는 것을 알게 되었습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-08 00:00:00 +0000 UTC'>2026년 6월 8일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
-  <a class="entry-link" aria-label="post link to ai-tools-cursor-perplexity-qwen" href="https://Han-think.github.io/learning/ai-tools-cursor-perplexity-qwen/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">chinook-classicmodels-sample-db
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 샘플 데이터베이스 관계형 데이터베이스 테이블 구조 판매 관계 총평 1. 샘플 데이터베이스 왜 이걸 보게 됐나 SQL 실습을 통해 데이터베이스를 다루는 감각을 익히고, 실제 업무에서 활용될 수 있는 데이터 분석 능력을 키우기 위해 샘플 데이터베이스를 공부하게 됐어. Chinook과 ClassicModels는 다양한 규모와 주제를 가진 데이터베이스를 경험하며, SQL 쿼리 작성 및 데이터 조작에 대한 이해도를 높이는 데 도움이 될 것 같아. 특히 관계형 데이터베이스의 기본 원리를 실질적으로 적용해보고 싶었어.
-내가 헷갈린 지점 샘플 데이터베이스라는 이름에 너무 집중해서, 실제 데이터베이스와 얼마나 차이가 나는지, 어떤 규모로 활용해야 하는지 불확실했습니다. 특히 두 개의 데이터베이스 파일을 동시에 제시했을 때, 어느 것을 중심으로 실습해야 할지 판단하기 어려웠고, 강의 자료에서 Chinook DB가 더 중요하게 다뤄진다는 언급은 혼란을 가중시켰습니다. 처음에는 어떤 목적을 가지고 만들어진 데이터베이스인지 명확하게 파악하지 못했습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-08 00:00:00 +0000 UTC'>2026년 6월 8일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
-  <a class="entry-link" aria-label="post link to chinook-classicmodels-sample-db" href="https://Han-think.github.io/learning/chinook-classicmodels-sample-db/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">colab-local-environment-and-sources
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 Python 버전 호환성 가상 환경 Colab 역할 파일 관리 구조 총평 1. Python 버전 호환성 왜 이걸 보게 됐나 강의 자료를 따라하다가 라이브러리 오류가 계속 발생했고, 그 원인이 Python 버전 차이 때문이라는 것을 알게 되었습니다. 로컬 환경과 Colab 환경의 버전이 달라서 호환성 문제가 생긴다는 설명을 듣고, 학습 환경을 제대로 구축하기 위해 꼭 이해해야 할 개념임을 깨달았습니다. 버전 차이로 인한 문제를 해결하고 효율적인 학습을 위해 Python 버전 호환성에 대한 이해가 필요했습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-08 00:00:00 +0000 UTC'>2026년 6월 8일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
-  <a class="entry-link" aria-label="post link to colab-local-environment-and-sources" href="https://Han-think.github.io/learning/colab-local-environment-and-sources/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">data-cleaning-dict-comprehension-sorted-lambda
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 데이터 전처리 리스트 컴프리헨션 딕셔너리 컴프리헨션 람다 함수 총평 1. 데이터 전처리 왜 이걸 보게 됐나 데이터 전처리 과정에서 불필요한 데이터를 제거하고 일관된 형식으로 변환하는 이유와 그 중요성을 이해하고자 합니다. 특히, 공백 제거와 필터링 기법을 통해 데이터의 품질을 향상시키는 방법을 명확히 파악하고 싶습니다.
-내가 헷갈린 지점 딕셔너리 컴프리헨션 예제가 중단되어 전체적인 이해에 어려움이 있습니다. 특히, salary_by_name 딕셔너리 생성 과정의 완성된 코드와 결과에 대한 설명이 필요합니다. 또한, lambda 함수의 매개변수 역할에 대한 구체적인 예시를 통해 더 명확한 이해를 얻고자 합니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-08 00:00:00 +0000 UTC'>2026년 6월 8일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
-  <a class="entry-link" aria-label="post link to data-cleaning-dict-comprehension-sorted-lambda" href="https://Han-think.github.io/learning/data-cleaning-dict-comprehension-sorted-lambda/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">day-bridge-python-code-to-ecosystem
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 함수 활용 라이브러리 관리 의존성 관리 f-string 포매팅 총평 1. 함수 활용 왜 이걸 보게 됐나 데이터를 효율적으로 처리하고 코드를 재사용 가능하게 만들기 위해 함수 활용을 배우게 됐어. 함수를 사용하면 반복되는 작업을 줄이고, 코드를 더 깔끔하고 이해하기 쉽게 만들 수 있어서, 프로젝트 규모가 커질수록 필수적인 기술이라고 생각했어. 특히 복잡한 데이터 분석이나 웹 애플리케이션 개발에서는 함수의 중요도가 더욱 커지는 것 같아.
-내가 헷갈린 지점 처음에는 함수가 단순히 코드 블록을 묶는 역할만 하는 줄 알았습니다. 하지만 함수를 활용해서 코드를 재사용하고, 복잡한 작업을 더 작고 관리하기 쉬운 부분으로 나누는 것을 이해하는 데 시간이 걸렸습니다. 특히 lambda 함수는 익명 함수라는 개념이 생소해서, 어떤 상황에서 사용해야 하는지 파악하는 데 어려움을 겪었습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-08 00:00:00 +0000 UTC'>2026년 6월 8일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
-  <a class="entry-link" aria-label="post link to day-bridge-python-code-to-ecosystem" href="https://Han-think.github.io/learning/day-bridge-python-code-to-ecosystem/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

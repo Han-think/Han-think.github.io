@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>React 입력 관리와 DOM 조작, 핵심 개념 정리 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-08-12 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-08-12-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-08-12-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-08-12-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="React 입력 관리와 DOM 조작, 핵심 개념 정리">
+  <meta property="og:description" content="2026-08-12 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-08-12T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-08-12T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="React 입력 관리와 DOM 조작, 핵심 개념 정리">
+  <meta name="twitter:description" content="2026-08-12 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "React 입력 관리와 DOM 조작, 핵심 개념 정리",
+      "item": "https://Han-think.github.io/learning/2026-08-12-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "React 입력 관리와 DOM 조작, 핵심 개념 정리",
+  "name": "React 입력 관리와 DOM 조작, 핵심 개념 정리",
+  "description": "2026-08-12 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 여러 React 입력과 상태 관리하기 React Ref와 State: 값 관리와 DOM 조작의 차이점 총평 1. 여러 React 입력과 상태 관리하기 무엇을 배웠나 React에서 입력 필드와 상태를 연결하는 방법을 배우면서, 단일 입력은 useState로 간단히, 여러 입력은 객체 상태로 묶어서 관리해야 함을 알게 되었다. onChange 이벤트 핸들러에서 e.target.value를 통해 입력 값을 가져와 상태를 업데이트하는 과정이 중요하며, Spread Operator를 사용하여 객체 상태를 안전하게 업데이트하는 방법을 익혔다. React의 상태가 value 속성을 통해 직접 관리된다는 점도 명확하게 이해하게 되었다.\n헷갈렸던 점 처음에는 왜 useState로 초기화된 변수에 계속해서 value 속성을 넣어줘야 하는지, 그리고 여러 개의 입력 필드를 다룰 때 상태를 객체 형태로 묶어야 하는 이유가 잘 이해가 되지 않았다. 특히 onChange 이벤트에서 e.target.value를 어떻게 활용해야 하는지, 그리고 Spread Operator를 이용한 상태 업데이트가 직관적으로 다가오지 않았다.\n정리된 이해 React에서 입력 필드와 상태를 연결할 때, 단일 입력은 useState로 간단히 관리하지만 여러 입력은 객체 상태로 묶어 관리해야 한다는 점을 이해했습니다. onChange 이벤트 핸들러에서 e.target.value를 통해 입력값을 가져와 setInputs 함수와 Spread Operator를 사용하여 상태 객체를 업데이트하는 방식이 핵심이며, React의 상태가 UI의 value 속성을 직접 관리한다는 점이 중요합니다. 이러한 이해를 바탕으로 다양한 입력 필드를 다루는 React 컴포넌트를 만들 수 있을 것 같습니다.\nimport { useState } from \"react\"; function InputComponent() { const [inputValue, setInputValue] = useState(''); const handleChange = (e) =\u003e { console.log(e.target.value); // 현재 입력값 확인 setInputValue(e.target.value); // 상태 업데이트 }; return ( \u003cdiv\u003e \u003cinput type=\"text\" value={inputValue} onChange={handleChange} /\u003e \u003ch3\u003e입력 내용 : {inputValue}\u003c/h3\u003e \u003c/div\u003e ); } 2. React Ref와 State: 값 관리와 DOM 조작의 차이점 무엇을 배웠나 React에서 useRef와 useState의 역할을 명확히 구분하는 방법을 익혔습니다. useState는 입력값의 변화를 추적하고 UI를 갱신하는 데 사용되고, useRef는 DOM 요소 자체를 직접 조작하는 데 활용된다는 것을 알게 되었습니다. 이를 통해 input 요소의 값 관리와 DOM 조작을 분리하여 컴포넌트를 이해하고 구현할 수 있게 되었습니다.\n헷갈렸던 점 Ref 개념을 배우는 과정에서 State가 갑자기 다시 등장해서 학습 흐름이 끊기는 듯한 느낌을 받았고, 코드에 TAB 버튼이 포함되어 있지만 실제 기능은 구현되지 않은 점이 혼란스러웠다. State와 Ref의 차이점을 명확하게 이해하지 못해 각 개념의 역할을 제대로 파악하지 못했다.\n정리된 이해 State는 input 요소의 값과 관련된 상태를 관리하고 UI를 갱신하는 역할을 합니다. 반면 Ref는 특정 DOM 요소에 직접 접근하여, focus()와 같은 DOM 레벨의 동작을 수행할 수 있도록 해줍니다. 즉, State는 값의 변화를 추적하고 UI를 업데이트하는 데 사용되고, Ref는 DOM 요소 자체를 조작하는 데 사용됩니다.\nimport { useState } from 'react'; function GetElem() { const [val, setVal] = useState(\"\"); const chgText = (e) =\u003e { setVal(e.target.value); // State 업데이트 }; return ( \u003cdiv\u003e \u003ch2\u003e 입력값: {val} \u003c/h2\u003e \u003cinput type 총평 오늘 오전 전체에서 배운 것 React 입력 필드와 상태 관리를 통해 여러 입력값을 객체 상태로 묶어 관리하고, useRef를 사용하여 DOM 요소를 직접 조작하는 방법을 익혔습니다. useState는 값 관리, useRef는 DOM 조작이라는 명확한 역할 구분을 통해 React 컴포넌트의 동작 방식을 더 깊이 이해하게 되었습니다. 이제 입력값 관리와 DOM 조작을 분리하여 React 컴포넌트를 구현할 수 있을 것 같습니다.\n다음에 조심할 것 객체 상태를 활용한 여러 입력 필드 관리는 응용력을 키워야겠고, 특히 Spread Operator를 통해 안전하게 업데이트하는 습관을 들여야겠다. useRef를 사용할 때 useState와 혼동하지 않도록 명확히 구분해서 사용해야 더 효율적인 코드를 작성할 수 있을 것 같다.\n다음 복습 주제 지금까지 배운 내용을 바탕으로, 다양한 입력 필드와 객체 상태를 함께 관리하는 더 복잡한 폼 구현 연습을 해보고 싶습니다. useRef를 활용하여 DOM 요소에 접근하는 상황을 좀 더 깊이 있게 고민하고, 실제 프로젝트에서 어떻게 활용될 수 있는지 파악해 보고 싶습니다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "553",
+  "inLanguage": "en",
+  "datePublished": "2026-08-12T00:00:00Z",
+  "dateModified": "2026-08-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-08-12-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      React 입력 관리와 DOM 조작, 핵심 개념 정리
+    </h1>
+    <div class="post-description">
+      2026-08-12 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-08-12 00:00:00 +0000 UTC'>2026년 8월 12일</span>&nbsp;·&nbsp;<span>3 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EC%97%AC%EB%9F%AC-react-%EC%9E%85%EB%A0%A5%EA%B3%BC-%EC%83%81%ED%83%9C-%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0">여러 React 입력과 상태 관리하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-react-ref%EC%99%80-state-%EA%B0%92-%EA%B4%80%EB%A6%AC%EC%99%80-dom-%EC%A1%B0%EC%9E%91%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90">React Ref와 State: 값 관리와 DOM 조작의 차이점</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-여러-react-입력과-상태-관리하기">1. 여러 React 입력과 상태 관리하기<a hidden class="anchor" aria-hidden="true" href="#1-여러-react-입력과-상태-관리하기">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>React에서 입력 필드와 상태를 연결하는 방법을 배우면서, 단일 입력은 <code>useState</code>로 간단히, 여러 입력은 객체 상태로 묶어서 관리해야 함을 알게 되었다. <code>onChange</code> 이벤트 핸들러에서 <code>e.target.value</code>를 통해 입력 값을 가져와 상태를 업데이트하는 과정이 중요하며, Spread Operator를 사용하여 객체 상태를 안전하게 업데이트하는 방법을 익혔다. React의 상태가 <code>value</code> 속성을 통해 직접 관리된다는 점도 명확하게 이해하게 되었다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>처음에는 왜 <code>useState</code>로 초기화된 변수에 계속해서 <code>value</code> 속성을 넣어줘야 하는지, 그리고 여러 개의 입력 필드를 다룰 때 상태를 객체 형태로 묶어야 하는 이유가 잘 이해가 되지 않았다. 특히 <code>onChange</code> 이벤트에서 <code>e.target.value</code>를 어떻게 활용해야 하는지, 그리고 Spread Operator를 이용한 상태 업데이트가 직관적으로 다가오지 않았다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>React에서 입력 필드와 상태를 연결할 때, 단일 입력은 <code>useState</code>로 간단히 관리하지만 여러 입력은 객체 상태로 묶어 관리해야 한다는 점을 이해했습니다. <code>onChange</code> 이벤트 핸들러에서 <code>e.target.value</code>를 통해 입력값을 가져와 <code>setInputs</code> 함수와 Spread Operator를 사용하여 상태 객체를 업데이트하는 방식이 핵심이며, React의 상태가 UI의 <code>value</code> 속성을 직접 관리한다는 점이 중요합니다. 이러한 이해를 바탕으로 다양한 입력 필드를 다루는 React 컴포넌트를 만들 수 있을 것 같습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">useState</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;react&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">InputComponent</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">inputValue</span>, <span style="color:#a6e22e">setInputValue</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">useState</span>(<span style="color:#e6db74">&#39;&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">handleChange</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">e</span>) =&gt; {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">target</span>.<span style="color:#a6e22e">value</span>); <span style="color:#75715e">// 현재 입력값 확인
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">setInputValue</span>(<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">target</span>.<span style="color:#a6e22e">value</span>); <span style="color:#75715e">// 상태 업데이트
+</span></span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>            &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">inputValue</span>} <span style="color:#a6e22e">onChange</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">handleChange</span>} /&gt;
+</span></span><span style="display:flex;"><span>            &lt;<span style="color:#f92672">h3</span>&gt;<span style="color:#a6e22e">입력</span> <span style="color:#a6e22e">내용</span> <span style="color:#f92672">:</span> {<span style="color:#a6e22e">inputValue</span>}&lt;/<span style="color:#f92672">h3</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="2-react-ref와-state-값-관리와-dom-조작의-차이점">2. React Ref와 State: 값 관리와 DOM 조작의 차이점<a hidden class="anchor" aria-hidden="true" href="#2-react-ref와-state-값-관리와-dom-조작의-차이점">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>React에서 <code>useRef</code>와 <code>useState</code>의 역할을 명확히 구분하는 방법을 익혔습니다. <code>useState</code>는 입력값의 변화를 추적하고 UI를 갱신하는 데 사용되고, <code>useRef</code>는 DOM 요소 자체를 직접 조작하는 데 활용된다는 것을 알게 되었습니다. 이를 통해 <code>input</code> 요소의 값 관리와 DOM 조작을 분리하여 컴포넌트를 이해하고 구현할 수 있게 되었습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p><code>Ref</code> 개념을 배우는 과정에서 <code>State</code>가 갑자기 다시 등장해서 학습 흐름이 끊기는 듯한 느낌을 받았고, 코드에 <code>TAB</code> 버튼이 포함되어 있지만 실제 기능은 구현되지 않은 점이 혼란스러웠다. <code>State</code>와 <code>Ref</code>의 차이점을 명확하게 이해하지 못해 각 개념의 역할을 제대로 파악하지 못했다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>State는 input 요소의 값과 관련된 상태를 관리하고 UI를 갱신하는 역할을 합니다. 반면 Ref는 특정 DOM 요소에 직접 접근하여, focus()와 같은 DOM 레벨의 동작을 수행할 수 있도록 해줍니다. 즉, State는 값의 변화를 추적하고 UI를 업데이트하는 데 사용되고, Ref는 DOM 요소 자체를 조작하는 데 사용됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">useState</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">GetElem</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">val</span>, <span style="color:#a6e22e">setVal</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">useState</span>(<span style="color:#e6db74">&#34;&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">chgText</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">e</span>) =&gt; {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">setVal</span>(<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">target</span>.<span style="color:#a6e22e">value</span>);  <span style="color:#75715e">// State 업데이트
+</span></span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>            &lt;<span style="color:#f92672">h2</span>&gt; <span style="color:#a6e22e">입력값</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">val</span>} &lt;/<span style="color:#f92672">h2</span>&gt;
+</span></span><span style="display:flex;"><span>            &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span>
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>React 입력 필드와 상태 관리를 통해 여러 입력값을 객체 상태로 묶어 관리하고, <code>useRef</code>를 사용하여 DOM 요소를 직접 조작하는 방법을 익혔습니다. <code>useState</code>는 값 관리, <code>useRef</code>는 DOM 조작이라는 명확한 역할 구분을 통해 React 컴포넌트의 동작 방식을 더 깊이 이해하게 되었습니다. 이제 입력값 관리와 DOM 조작을 분리하여 React 컴포넌트를 구현할 수 있을 것 같습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>객체 상태를 활용한 여러 입력 필드 관리는 응용력을 키워야겠고, 특히 Spread Operator를 통해 안전하게 업데이트하는 습관을 들여야겠다. <code>useRef</code>를 사용할 때 <code>useState</code>와 혼동하지 않도록 명확히 구분해서 사용해야 더 효율적인 코드를 작성할 수 있을 것 같다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>지금까지 배운 내용을 바탕으로, 다양한 입력 필드와 객체 상태를 함께 관리하는 더 복잡한 폼 구현 연습을 해보고 싶습니다. <code>useRef</code>를 활용하여 DOM 요소에 접근하는 상황을 좀 더 깊이 있게 고민하고, 실제 프로젝트에서 어떻게 활용될 수 있는지 파악해 보고 싶습니다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-08-12-pm-daily/">
+    <span class="title">« Prev</span>
+    <span>React SPA 블로그 UI 구현부터 Modern JavaScript 문법 정리까지, 핵심 개념 학습 여정</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-08-11-am-daily/">
+    <span class="title">Next »</span>
+    <span>JavaScript 상속부터 React 기초, AI 연동까지 오전 학습 정리</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

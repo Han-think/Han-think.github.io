@@ -6,8 +6,64 @@
     <description>Recent content in 학습 기록 on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Thu, 06 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 12 Aug 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>React SPA 블로그 UI 구현부터 Modern JavaScript 문법 정리까지, 핵심 개념 학습 여정</title>
+      <link>https://Han-think.github.io/learning/2026-08-12-pm-daily/</link>
+      <pubDate>Wed, 12 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-12-pm-daily/</guid>
+      <description>2026-08-12 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>React 입력 관리와 DOM 조작, 핵심 개념 정리</title>
+      <link>https://Han-think.github.io/learning/2026-08-12-am-daily/</link>
+      <pubDate>Wed, 12 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-12-am-daily/</guid>
+      <description>2026-08-12 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>JavaScript 상속부터 React 기초, AI 연동까지 오전 학습 정리</title>
+      <link>https://Han-think.github.io/learning/2026-08-11-am-daily/</link>
+      <pubDate>Tue, 11 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-11-am-daily/</guid>
+      <description>2026-08-11 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>JSX, 스타일, 컴포넌트, 이벤트 처리, 그리고 WebStorm AI 설정까지 익힌 오후 학습 정리</title>
+      <link>https://Han-think.github.io/learning/2026-08-11-pm-daily/</link>
+      <pubDate>Tue, 11 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-11-pm-daily/</guid>
+      <description>2026-08-11 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>HTTP, REST, Axios 정복과 API 데이터 결합 문제 해결 학습</title>
+      <link>https://Han-think.github.io/learning/2026-08-10-am-daily/</link>
+      <pubDate>Mon, 10 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-10-am-daily/</guid>
+      <description>2026-08-10 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>객체지향 프로그래밍 핵심 개념 완화: 클래스 설계부터 상속 활용까지</title>
+      <link>https://Han-think.github.io/learning/2026-08-10-pm-daily/</link>
+      <pubDate>Mon, 10 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-10-pm-daily/</guid>
+      <description>2026-08-10 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>HTTP, API, Axios 마스터하기: 웹 개발 핵심 개념 완전 정복</title>
+      <link>https://Han-think.github.io/learning/2026-08-07-pm-daily/</link>
+      <pubDate>Fri, 07 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-07-pm-daily/</guid>
+      <description>2026-08-07 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>스프라이트 애니메이션부터 비동기 처리, 예외 처리까지 핵심 개념 마스터</title>
+      <link>https://Han-think.github.io/learning/2026-08-07-am-daily/</link>
+      <pubDate>Fri, 07 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-07-am-daily/</guid>
+      <description>2026-08-07 오전 학습 정리</description>
+    </item>
     <item>
       <title>JavaScript 핵심 개념 완벽 마스터: this, 스코프, 비동기, 객체 메서드 심층 학습</title>
       <link>https://Han-think.github.io/learning/2026-08-06-am-daily/</link>

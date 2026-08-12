@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>JavaScript 상속부터 React 기초, AI 연동까지 오전 학습 정리 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-08-11 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-08-11-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-08-11-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-08-11-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="JavaScript 상속부터 React 기초, AI 연동까지 오전 학습 정리">
+  <meta property="og:description" content="2026-08-11 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-08-11T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-08-11T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="JavaScript 상속부터 React 기초, AI 연동까지 오전 학습 정리">
+  <meta name="twitter:description" content="2026-08-11 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "JavaScript 상속부터 React 기초, AI 연동까지 오전 학습 정리",
+      "item": "https://Han-think.github.io/learning/2026-08-11-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "JavaScript 상속부터 React 기초, AI 연동까지 오전 학습 정리",
+  "name": "JavaScript 상속부터 React 기초, AI 연동까지 오전 학습 정리",
+  "description": "2026-08-11 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 JavaScript 상속과 오버라이드 완벽하게 이해하기 React 입문: Virtual DOM, SPA, Component 기초 React 개발 환경, 초보자를 위한 완벽 가이드 로컬 AI와 JetBrains IDE 연결, 핵심 개념과 설정 이해 총평 1. JavaScript 상속과 오버라이드 완벽하게 이해하기 무엇을 배웠나 상속에서 super()는 부모 클래스의 생성자를 호출하고, super.printSpec()는 부모 클래스의 메서드를 직접 호출하는 차이가 있다는 것을 알게 되었습니다. 특히 오버라이드 시 ...super_spec을 통해 부모 객체의 속성을 펼쳐서 활용하는 방법을 이해하게 되었습니다. 이제 자식 클래스에서 부모 클래스의 기능을 확장하고 수정하는 오버라이드 개념을 더 명확하게 이해할 수 있을 것 같습니다.\n헷갈렸던 점 부모 생성자를 호출하는 super(name, speed)와 부모 메서드를 직접 호출하는 super.printSpec()의 역할이 비슷해 보여서 처음에는 혼동되었고, 오버라이드된 메서드 내에서 ...super_spec을 보는 순간 스프레드 문법을 알고 있지만 왜 여기서 사용되었는지 바로 떠오르지 않았습니다. 자식 클래스가 부모 클래스의 기능을 어떻게 확장하는지, 그리고 super를 어떻게 활용해야 하는지가 명확하지 않았습니다.\n정리된 이해 상속을 할 때 super()는 부모 클래스의 생성자를 호출하여 초기화를 담당하고, super.printSpec()은 부모 클래스의 메서드를 직접 호출하여 정보를 가져옵니다. 오버라이드는 자식 클래스에서 부모 클래스의 메서드를 재정의하여 기능을 확장하거나 수정하는 것을 의미하며, 이 때 ...super_spec은 부모 객체의 속성을 펼쳐서 자식 객체에 추가하는 역할을 합니다. 이 개념들을 이해하면 객체 지향 프로그래밍에서 상속을 활용하여 코드를 효율적으로 관리할 수 있습니다.\nclass SportsCar extends Car { constructor(name, speed, isTurbo, horsePower) { super(name, speed); // 부모 클래스의 생성자 호출 this.#isTurbo = isTurbo; this.#horsePower = horsePower; } } printSpec() { let super_spec = super.printSpec(); // 부모의 printSpec() 호출 console.log(super_spec); // 부모 객체의 정보를 기반으로 자식 클래스의 추가 정보를 더함 return { ...super_spec, // 부모 객체 속성 펼치기 isTurbo: this.#isTurbo, horsePower: this.#horsePower }; } 2. React 입문: Virtual DOM, SPA, Component 기초 무엇을 배웠나 React 입문 과정에서 Virtual DOM을 통한 효율적인 UI 업데이트와 SPA의 개념, 그리고 Component 구조의 중요성을 배웠습니다. 특히 props, state, ref, useEffect 등의 개념을 이해하고, App.jsx, main.jsx, index.html 파일들의 역할을 명확히 파악하여 React 프로젝트 구조를 이해하는 데 도움이 되었습니다. 앞으로 이러한 이해를 바탕으로 좀 더 복잡한 React 애플리케이션 개발에 도전해볼 수 있을 것 같습니다.\n헷갈렸던 점 처음에는 props, state, ref, useEffect 개념들이 JavaScript 지식과 어떻게 연결되는지 파악하기 어려웠다. Component들을 어떻게 조립해서 전체 애플리케이션을 만들지, 그리고 각 파일들의 역할이 무엇인지 구체적으로 감이 잘 오지 않았던 것도 혼란스러웠다. 프로젝트 구조가 복잡해 보이면서 어디서부터 시작해야 할지 막막했다.\n정리된 이해 React는 Virtual DOM을 사용하여 효율적인 SPA 개발을 가능하게 하는 라이브러리이며, 큰 UI를 작은 Component 단위로 나누어 전체 애플리케이션을 구성할 수 있다. App.jsx, main.jsx, index.html은 각각 Component 조합, App 호출, 실제 DOM의 root 역할을 수행하며, 이들의 연결을 이해하는 것이 중요했다. 앞으로는 props, state, ref, useEffect의 활용법을 익히고 Component 구조를 더욱 명확하게 이해해야겠다.\n// 예시: App.jsx (Component 조합) function App() { return ( \u003cdiv\u003e \u003ch1\u003eWelcome to my App!\u003c/h1\u003e \u003cMyComponent /\u003e \u003c/div\u003e ); } // 예시: main.jsx (App 호출) import React from 'react'; import ReactDOM from 'react-dom/client'; import App from './App'; const root = ReactDOM.createRoot(document.getElementById('root')); root.render(\u003cApp /\u003e); \u003c!DOCTYPE html\u003e \u003chtml\u003e \u003chead\u003e \u003ctitle\u003eMy React App\u003c/title\u003e \u003c/head\u003e \u003cbody\u003e \u003cdiv id=\"root\"\u003e\u003c/div\u003e \u003c/body\u003e \u003c/html\u003e 3. React 개발 환경, 초보자를 위한 완벽 가이드 무엇을 배웠나 React 개발 환경 설정 시 헷갈렸던 Node.js, npm, Vite, WebStorm의 역할을 명확히 이해하게 되었고, 각 도구의 역할과 실제 사용법을 정리할 수 있었습니다. 특히, Node.js는 JavaScript 실행 환경, npm은 패키지 관리 도구, Vite는 빠른 개발 환경 구축, WebStorm은 개발 환경을 제공한다는 것을 알게 되었습니다. 실습을 통해 각 도구를 실제로 사용해보며 이해도를 높일 수 있었습니다.\n헷갈렸던 점 처음에는 Node.js, npm, Vite, WebStorm이 각각 어떤 역할을 하는지, 그리고 이들이 서로 어떻게 연관되는지 파악하는 데 어려움이 있었습니다. 특히 WebStorm 설정 방법이 키맵 예시만 있어서 어떻게 설정해야 하는지 감을 잡기 어려웠고, Node.js와 npm의 역할 차이도 명확하게 이해되지 않았습니다.\n정리된 이해 React 개발 환경 설정 시 Node.js는 JavaScript 실행 환경, npm은 패키지 관리 도구, Vite는 빠른 개발 환경 구축을 돕는 도구, WebStorm은 효율적인 개발을 위한 통합 개발 환경이라는 역할을 각각 수행한다는 것을 알게 되었다. 실습을 통해 각 도구의 역할을 직접 확인하고 간단한 React 프로젝트를 생성하며 기본적인 사용법을 익혔다. 앞으로는 이 도구들을 효과적으로 활용하여 React 개발 역량을 향상시킬 것이다.\nnode -v npm -v npm install -g vite npm create vite react@latest my-react-app cd my-react-app npm install npm run dev 4. 로컬 AI와 JetBrains IDE 연결, 핵심 개념과 설정 이해 무엇을 배웠나 JetBrains IDE는 단순히 코드를 편집하는 도구가 아니라, 로컬 AI 모델과 외부 도구를 연결하는 통합 플랫폼이라는 것을 알게 되었습니다. MCP는 AI 모델이 외부 데이터나 도구에 접근할 수 있도록 돕는 통로 역할을 한다는 것도 명확해졌습니다. 이 노트는 로컬 AI 모델, MCP, 그리고 IDE의 역할을 분리하여 이해하는 데 큰 도움이 되었습니다.\n헷갈렸던 점 MCP가 로컬 모델을 직접 연결하는 것인지, 아니면 다른 도구와 데이터 연결의 역할을 하는지 이해가 안 됐어요. 그리고 WebStorm 같은 IDE가 단순히 코드 편집기인지, 아니면 AI 모델과의 통합 플랫폼인지도 헷갈렸습니다. 이 두 가지를 명확히 구분하고 각각의 역할과 기능을 이해하는 것이 중요했습니다.\n정리된 이해 로컬 AI 모델은 Local Model Provider를 통해 IDE에 연결되고, MCP는 모델이 외부 도구나 데이터에 접근할 수 있도록 지원하는 통로 역할을 합니다. JetBrains IDE는 단순히 코드 편집기를 넘어, 로컬 AI 모델과 외부 도구를 통합하는 플랫폼으로 활용될 수 있습니다. 즉, IDE는 개발 환경과 AI 모델을 연결하는 핵심적인 역할을 수행합니다.\n// 예시: WebStorm 설정 파일 (settings.json) - 로컬 모델 연결 옵션 { \"exaone_ai\": { \"local_model_path\": \"/path/to/your/exaone3.5/model\", \"api_key\": \"YOUR_API_KEY\" // 예시: API 키 필요할 수 있음 } } 총평 오늘 오전 전체에서 배운 것 오늘 오전에는 JavaScript 상속과 오버라이드 개념을 명확히 이해하고, React의 기본 원리와 개발 환경 구축 방법을 익혔습니다. 또한 JetBrains IDE와 로컬 AI 모델을 연결하여 활용하는 방법에 대한 핵심 개념도 파악하여 앞으로 개발 효율성을 높일 수 있을 것 같습니다.\n다음에 조심할 것 상속과 오버라이드 개념은 이론적으로 이해했지만, 실제 코드를 작성하면서 발생하는 예상치 못한 오류에 대비해야겠다. React 프로젝트 구조와 각 파일의 역할은 이제 시작이고, 다양한 컴포넌트와 상태 관리를 다루면서 더욱 숙달해야 할 것 같다. 로컬 AI와 IDE 연결은 흥미롭지만, 실제 활용 사례를 찾아보고 실습을 통해 능숙하게 다룰 수 있도록 노력해야겠다.\n다음 복습 주제 JavaScript 상속과 오버라이드 부분에서 super()와 super.method()의 미묘한 차이를 좀 더 다양한 예제를 통해 복습해 봐야 할 것 같아요. React에서는 props와 state의 변화에 따른 컴포넌트 리렌더링 최적화 방안을 좀 더 깊이 있게 공부하고, 실제 코딩을 통해 숙달하고 싶습니다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "979",
+  "inLanguage": "en",
+  "datePublished": "2026-08-11T00:00:00Z",
+  "dateModified": "2026-08-11T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-08-11-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      JavaScript 상속부터 React 기초, AI 연동까지 오전 학습 정리
+    </h1>
+    <div class="post-description">
+      2026-08-11 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-08-11 00:00:00 +0000 UTC'>2026년 8월 11일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-javascript-%EC%83%81%EC%86%8D%EA%B3%BC-%EC%98%A4%EB%B2%84%EB%9D%BC%EC%9D%B4%EB%93%9C-%EC%99%84%EB%B2%BD%ED%95%98%EA%B2%8C-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">JavaScript 상속과 오버라이드 완벽하게 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-react-%EC%9E%85%EB%AC%B8-virtual-dom-spa-component-%EA%B8%B0%EC%B4%88">React 입문: Virtual DOM, SPA, Component 기초</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-react-%EA%B0%9C%EB%B0%9C-%ED%99%98%EA%B2%BD-%EC%B4%88%EB%B3%B4%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%99%84%EB%B2%BD-%EA%B0%80%EC%9D%B4%EB%93%9C">React 개발 환경, 초보자를 위한 완벽 가이드</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EB%A1%9C%EC%BB%AC-ai%EC%99%80-jetbrains-ide-%EC%97%B0%EA%B2%B0-%ED%95%B5%EC%8B%AC-%EA%B0%9C%EB%85%90%EA%B3%BC-%EC%84%A4%EC%A0%95-%EC%9D%B4%ED%95%B4">로컬 AI와 JetBrains IDE 연결, 핵심 개념과 설정 이해</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-javascript-상속과-오버라이드-완벽하게-이해하기">1. JavaScript 상속과 오버라이드 완벽하게 이해하기<a hidden class="anchor" aria-hidden="true" href="#1-javascript-상속과-오버라이드-완벽하게-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>상속에서 <code>super()</code>는 부모 클래스의 생성자를 호출하고, <code>super.printSpec()</code>는 부모 클래스의 메서드를 직접 호출하는 차이가 있다는 것을 알게 되었습니다. 특히 오버라이드 시 <code>...super_spec</code>을 통해 부모 객체의 속성을 펼쳐서 활용하는 방법을 이해하게 되었습니다. 이제 자식 클래스에서 부모 클래스의 기능을 확장하고 수정하는 오버라이드 개념을 더 명확하게 이해할 수 있을 것 같습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>부모 생성자를 호출하는 <code>super(name, speed)</code>와 부모 메서드를 직접 호출하는 <code>super.printSpec()</code>의 역할이 비슷해 보여서 처음에는 혼동되었고, 오버라이드된 메서드 내에서 <code>...super_spec</code>을 보는 순간 스프레드 문법을 알고 있지만 왜 여기서 사용되었는지 바로 떠오르지 않았습니다. 자식 클래스가 부모 클래스의 기능을 어떻게 확장하는지, 그리고 <code>super</code>를 어떻게 활용해야 하는지가 명확하지 않았습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>상속을 할 때 <code>super()</code>는 부모 클래스의 생성자를 호출하여 초기화를 담당하고, <code>super.printSpec()</code>은 부모 클래스의 메서드를 직접 호출하여 정보를 가져옵니다. 오버라이드는 자식 클래스에서 부모 클래스의 메서드를 재정의하여 기능을 확장하거나 수정하는 것을 의미하며, 이 때 <code>...super_spec</code>은 부모 객체의 속성을 펼쳐서 자식 객체에 추가하는 역할을 합니다. 이 개념들을 이해하면 객체 지향 프로그래밍에서 상속을 활용하여 코드를 효율적으로 관리할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SportsCar</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Car</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">constructor</span>(<span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">speed</span>, <span style="color:#a6e22e">isTurbo</span>, <span style="color:#a6e22e">horsePower</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span>(<span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">speed</span>);  <span style="color:#75715e">// 부모 클래스의 생성자 호출
+</span></span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#960050;background-color:#1e0010">#</span><span style="color:#a6e22e">isTurbo</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">isTurbo</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#960050;background-color:#1e0010">#</span><span style="color:#a6e22e">horsePower</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">horsePower</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">printSpec</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">super_spec</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">super</span>.<span style="color:#a6e22e">printSpec</span>();  <span style="color:#75715e">// 부모의 printSpec() 호출
+</span></span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">super_spec</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 부모 객체의 정보를 기반으로 자식 클래스의 추가 정보를 더함
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>        ...<span style="color:#a6e22e">super_spec</span>,  <span style="color:#75715e">// 부모 객체 속성 펼치기
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">isTurbo</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">this</span>.<span style="color:#960050;background-color:#1e0010">#</span><span style="color:#a6e22e">isTurbo</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">horsePower</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">this</span>.<span style="color:#960050;background-color:#1e0010">#</span><span style="color:#a6e22e">horsePower</span>
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="2-react-입문-virtual-dom-spa-component-기초">2. React 입문: Virtual DOM, SPA, Component 기초<a hidden class="anchor" aria-hidden="true" href="#2-react-입문-virtual-dom-spa-component-기초">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>React 입문 과정에서 Virtual DOM을 통한 효율적인 UI 업데이트와 SPA의 개념, 그리고 Component 구조의 중요성을 배웠습니다. 특히 props, state, ref, useEffect 등의 개념을 이해하고, App.jsx, main.jsx, index.html 파일들의 역할을 명확히 파악하여 React 프로젝트 구조를 이해하는 데 도움이 되었습니다. 앞으로 이러한 이해를 바탕으로 좀 더 복잡한 React 애플리케이션 개발에 도전해볼 수 있을 것 같습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음에는 props, state, ref, useEffect 개념들이 JavaScript 지식과 어떻게 연결되는지 파악하기 어려웠다. Component들을 어떻게 조립해서 전체 애플리케이션을 만들지, 그리고 각 파일들의 역할이 무엇인지 구체적으로 감이 잘 오지 않았던 것도 혼란스러웠다. 프로젝트 구조가 복잡해 보이면서 어디서부터 시작해야 할지 막막했다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>React는 Virtual DOM을 사용하여 효율적인 SPA 개발을 가능하게 하는 라이브러리이며, 큰 UI를 작은 Component 단위로 나누어 전체 애플리케이션을 구성할 수 있다. <code>App.jsx</code>, <code>main.jsx</code>, <code>index.html</code>은 각각 Component 조합, App 호출, 실제 DOM의 root 역할을 수행하며, 이들의 연결을 이해하는 것이 중요했다. 앞으로는 props, state, ref, useEffect의 활용법을 익히고 Component 구조를 더욱 명확하게 이해해야겠다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// 예시: App.jsx (Component 조합)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">App</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">h1</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Welcome</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">my</span> <span style="color:#a6e22e">App</span><span style="color:#f92672">!&lt;</span><span style="color:#960050;background-color:#1e0010">/h1&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">MyComponent</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;</span>
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// 예시: main.jsx (App 호출)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">React</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">ReactDOM</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react-dom/client&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">App</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./App&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">root</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">ReactDOM</span>.<span style="color:#a6e22e">createRoot</span>(document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;root&#39;</span>));
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">root</span>.<span style="color:#a6e22e">render</span>(<span style="color:#f92672">&lt;</span><span style="color:#a6e22e">App</span> <span style="color:#f92672">/&gt;</span>);
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- 예시: index.html (#root) --&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">title</span>&gt;My React App&lt;/<span style="color:#f92672">title</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;root&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><h2 id="3-react-개발-환경-초보자를-위한-완벽-가이드">3. React 개발 환경, 초보자를 위한 완벽 가이드<a hidden class="anchor" aria-hidden="true" href="#3-react-개발-환경-초보자를-위한-완벽-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>React 개발 환경 설정 시 헷갈렸던 Node.js, npm, Vite, WebStorm의 역할을 명확히 이해하게 되었고, 각 도구의 역할과 실제 사용법을 정리할 수 있었습니다. 특히, Node.js는 JavaScript 실행 환경, npm은 패키지 관리 도구, Vite는 빠른 개발 환경 구축, WebStorm은 개발 환경을 제공한다는 것을 알게 되었습니다. 실습을 통해 각 도구를 실제로 사용해보며 이해도를 높일 수 있었습니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>처음에는 Node.js, npm, Vite, WebStorm이 각각 어떤 역할을 하는지, 그리고 이들이 서로 어떻게 연관되는지 파악하는 데 어려움이 있었습니다. 특히 WebStorm 설정 방법이 키맵 예시만 있어서 어떻게 설정해야 하는지 감을 잡기 어려웠고, Node.js와 npm의 역할 차이도 명확하게 이해되지 않았습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>React 개발 환경 설정 시 Node.js는 JavaScript 실행 환경, npm은 패키지 관리 도구, Vite는 빠른 개발 환경 구축을 돕는 도구, WebStorm은 효율적인 개발을 위한 통합 개발 환경이라는 역할을 각각 수행한다는 것을 알게 되었다. 실습을 통해 각 도구의 역할을 직접 확인하고 간단한 React 프로젝트를 생성하며 기본적인 사용법을 익혔다. 앞으로는 이 도구들을 효과적으로 활용하여 React 개발 역량을 향상시킬 것이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>node -v
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npm -v
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npm install -g vite
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npm create vite react@latest my-react-app
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd my-react-app
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npm install
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npm run dev
+</span></span></code></pre></div><h2 id="4-로컬-ai와-jetbrains-ide-연결-핵심-개념과-설정-이해">4. 로컬 AI와 JetBrains IDE 연결, 핵심 개념과 설정 이해<a hidden class="anchor" aria-hidden="true" href="#4-로컬-ai와-jetbrains-ide-연결-핵심-개념과-설정-이해">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>JetBrains IDE는 단순히 코드를 편집하는 도구가 아니라, 로컬 AI 모델과 외부 도구를 연결하는 통합 플랫폼이라는 것을 알게 되었습니다. MCP는 AI 모델이 외부 데이터나 도구에 접근할 수 있도록 돕는 통로 역할을 한다는 것도 명확해졌습니다. 이 노트는 로컬 AI 모델, MCP, 그리고 IDE의 역할을 분리하여 이해하는 데 큰 도움이 되었습니다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>MCP가 로컬 모델을 직접 연결하는 것인지, 아니면 다른 도구와 데이터 연결의 역할을 하는지 이해가 안 됐어요. 그리고 WebStorm 같은 IDE가 단순히 코드 편집기인지, 아니면 AI 모델과의 통합 플랫폼인지도 헷갈렸습니다. 이 두 가지를 명확히 구분하고 각각의 역할과 기능을 이해하는 것이 중요했습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>로컬 AI 모델은 Local Model Provider를 통해 IDE에 연결되고, MCP는 모델이 외부 도구나 데이터에 접근할 수 있도록 지원하는 통로 역할을 합니다. JetBrains IDE는 단순히 코드 편집기를 넘어, 로컬 AI 모델과 외부 도구를 통합하는 플랫폼으로 활용될 수 있습니다. 즉, IDE는 개발 환경과 AI 모델을 연결하는 핵심적인 역할을 수행합니다.</p>
+<pre tabindex="0"><code>// 예시: WebStorm 설정 파일 (settings.json) - 로컬 모델 연결 옵션
+
+{
+  &#34;exaone_ai&#34;: {
+    &#34;local_model_path&#34;: &#34;/path/to/your/exaone3.5/model&#34;,
+    &#34;api_key&#34;: &#34;YOUR_API_KEY&#34; // 예시: API 키 필요할 수 있음
+  }
+}
+</code></pre><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>오늘 오전에는 JavaScript 상속과 오버라이드 개념을 명확히 이해하고, React의 기본 원리와 개발 환경 구축 방법을 익혔습니다. 또한 JetBrains IDE와 로컬 AI 모델을 연결하여 활용하는 방법에 대한 핵심 개념도 파악하여 앞으로 개발 효율성을 높일 수 있을 것 같습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>상속과 오버라이드 개념은 이론적으로 이해했지만, 실제 코드를 작성하면서 발생하는 예상치 못한 오류에 대비해야겠다. React 프로젝트 구조와 각 파일의 역할은 이제 시작이고, 다양한 컴포넌트와 상태 관리를 다루면서 더욱 숙달해야 할 것 같다. 로컬 AI와 IDE 연결은 흥미롭지만, 실제 활용 사례를 찾아보고 실습을 통해 능숙하게 다룰 수 있도록 노력해야겠다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>JavaScript 상속과 오버라이드 부분에서 <code>super()</code>와 <code>super.method()</code>의 미묘한 차이를 좀 더 다양한 예제를 통해 복습해 봐야 할 것 같아요. React에서는 props와 state의 변화에 따른 컴포넌트 리렌더링 최적화 방안을 좀 더 깊이 있게 공부하고, 실제 코딩을 통해 숙달하고 싶습니다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-08-12-am-daily/">
+    <span class="title">« Prev</span>
+    <span>React 입력 관리와 DOM 조작, 핵심 개념 정리</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-08-11-pm-daily/">
+    <span class="title">Next »</span>
+    <span>JSX, 스타일, 컴포넌트, 이벤트 처리, 그리고 WebStorm AI 설정까지 익힌 오후 학습 정리</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
