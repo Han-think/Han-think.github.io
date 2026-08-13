@@ -6,8 +6,22 @@
     <description>Recent content in 학습 기록 on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Wed, 12 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 13 Aug 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>React 핵심 개념 마스터: 상태 관리부터 라우팅까지</title>
+      <link>https://Han-think.github.io/learning/2026-08-13-pm-daily/</link>
+      <pubDate>Thu, 13 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-13-pm-daily/</guid>
+      <description>2026-08-13 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>React와 CSS 학습 여정: 배열 출력, Todo 앱 구현, useRef 활용, 그리고 디버깅</title>
+      <link>https://Han-think.github.io/learning/2026-08-13-am-daily/</link>
+      <pubDate>Thu, 13 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-13-am-daily/</guid>
+      <description>2026-08-13 오전 학습 정리</description>
+    </item>
     <item>
       <title>React SPA 블로그 UI 구현부터 Modern JavaScript 문법 정리까지, 핵심 개념 학습 여정</title>
       <link>https://Han-think.github.io/learning/2026-08-12-pm-daily/</link>
