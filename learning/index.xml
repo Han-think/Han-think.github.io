@@ -6,8 +6,22 @@
     <description>Recent content in 학습 기록 on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Thu, 13 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 14 Aug 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Next.js App Router에서 Server Component와 Client Component의 경계를 명확히 이해하고, Axios를 통한 데이터 흐름과 상태 관리 로직을 정리했습니다. 네트워크 주소 체계의 각 요소가 담당하는 역할을 정확히 인식하여 웹 애플리케이션 전체를 관통하는 하나의 흐름으로 학습했습니다.</title>
+      <link>https://Han-think.github.io/learning/2026-08-14-pm-daily/</link>
+      <pubDate>Fri, 14 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-14-pm-daily/</guid>
+      <description>2026-08-14 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>Next.js 서버-클라이언트 경계와 URL 파라미터 처리, 동적 라우팅 및 URL 설계의 구조적 역할에 대한 정리</title>
+      <link>https://Han-think.github.io/learning/2026-08-14-am-daily/</link>
+      <pubDate>Fri, 14 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-14-am-daily/</guid>
+      <description>2026-08-14 오전 학습 정리</description>
+    </item>
     <item>
       <title>React 핵심 개념 마스터: 상태 관리부터 라우팅까지</title>
       <link>https://Han-think.github.io/learning/2026-08-13-pm-daily/</link>

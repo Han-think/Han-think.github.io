@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Next.js 서버-클라이언트 경계와 URL 파라미터 처리, 동적 라우팅 및 URL 설계의 구조적 역할에 대한 정리 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-08-14 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-08-14-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-08-14-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-08-14-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="Next.js 서버-클라이언트 경계와 URL 파라미터 처리, 동적 라우팅 및 URL 설계의 구조적 역할에 대한 정리">
+  <meta property="og:description" content="2026-08-14 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-08-14T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-08-14T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Next.js 서버-클라이언트 경계와 URL 파라미터 처리, 동적 라우팅 및 URL 설계의 구조적 역할에 대한 정리">
+  <meta name="twitter:description" content="2026-08-14 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Next.js 서버-클라이언트 경계와 URL 파라미터 처리, 동적 라우팅 및 URL 설계의 구조적 역할에 대한 정리",
+      "item": "https://Han-think.github.io/learning/2026-08-14-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Next.js 서버-클라이언트 경계와 URL 파라미터 처리, 동적 라우팅 및 URL 설계의 구조적 역할에 대한 정리",
+  "name": "Next.js 서버-클라이언트 경계와 URL 파라미터 처리, 동적 라우팅 및 URL 설계의 구조적 역할에 대한 정리",
+  "description": "2026-08-14 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 Next.js 서버-클라이언트 경계 이해하기 URL Query를 Object 변환하여 화면에 출력하기 동적 라우팅과 캐치올 슬러그의 이해 URL 설계의 3가지 역할: 이동·분류·추적 총평 1. Next.js 서버-클라이언트 경계 이해하기 무엇을 배웠나 Next.js는 React 위에 라우팅과 서버-클라이언트 실행 경계라는 새로운 개념을 추가한 프레임워크입니다. App Router 구조에서 폴더와 URL 경로가 직접 연결되며, 기본적으로 서버 컴포넌트가 작동합니다. 필요한 경우에만 'use client'를 선언하여 클라이언트 측 상호작용을 제어할 수 있습니다.\n헷갈렸던 점 React를 배울 때는 “브라우저에서 실행되는 것\"이라는 인식이 강했지만, Next.js에서는 기본적으로 서버가 렌더링을 시작한다는 점이 가장 큰 전환점이었습니다. 특히 page.js와 URL이 어떻게 연결되는지, 그리고 서버와 클라이언트의 경계가 어디인지 감 잡기 어려웠습니다.\n정리된 이해 Next.js는 React 위에 라우팅, 서버-클라이언트 경계, 데이터 페칭 등 프레임워크 특화 기능을 덧씌운 것이다. 핵심은 컴포넌트 모델을 유지하면서도 “코드가 어디서 실행되는지(Server vs Client)“를 명확히 구분하는 것이다. App Router 구조에서 폴더 경로가 URL과 직접 연결되며, 기본적으로 서버 컴포넌트가 작동하므로 필요한 경우에만 'use client'로 클라이언트 경계선을 긋는다.\n// app/layout.js - 전체 페이지의 공통 레이아웃 import './globals.css'; export default function RootLayout({ children, }: { children: React.ReactNode; }) { return ( \u003chtml lang=\"ko\"\u003e \u003cbody\u003e{children}\u003c/body\u003e \u003c/html\u003e ); } // app/page.jsx - 루트 페이지 (서버 컴포넌트 기본) export default function HomePage() { return \u003ch1\u003eWelcome to Next.js\u003c/h1\u003e; } // components/counter.jsx - 클라이언트 컴포넌트 예시 'use client'; import { useState } from 'react'; export function Counter() { const [count, setCount] = useState(0); return ( \u003cdiv\u003e \u003cp\u003e카운트: {count}\u003c/p\u003e \u003cbutton onClick={() =\u003e setCount(count + 1)}\u003e증가\u003c/button\u003e \u003c/div\u003e ); } 2. URL Query를 Object 변환하여 화면에 출력하기 무엇을 배웠나 URL query string을 다룰 때 key라는 단어가 React 고유 값과 데이터 속성명으로 동시에 쓰여 혼란스러웠지만, 데이터 구조에 맞춰 접근 방법을 선택하면 된다는 점을 깨달았다. Object에는 기본적으로 map 메서드가 없으므로 Object.keys()나 Object.entries()를 활용해 배열 형태로 변환한 뒤 반복 처리를 해야 한다. 이를 통해 URL 파라미터를 쉽게 꺼내어 화면에 출력하는 로직을 이해할 수 있었다.\n헷갈렸던 점 React의 key와 Object의 key가 같은 단어지만 다른 의미를 가지는 점이 가장 큰 혼란 요소였다. 또한, object에는 기본적으로 map 메서드가 없기 때문에 데이터를 꺼내오는 방법에 막막함을 느꼈다. 데이터 구조에 맞춰 접근 방법을 선택하고, Object.keys()나 Object.entries()를 활용해 배열 형태로 변환한 뒤 반복 처리해야 한다는 점을 이해하게 되었다.\n정리된 이해 URL query string을 다룰 때 가장 중요한 것은 데이터 구조에 맞는 메서드를 선택하는 것이다. Object 형태의 검색 파라미터는 기본적으로 map 메서드가 제공되지 않으므로, Object.keys()나 Object.entries()를 활용해 배열로 변환한 뒤 반복 처리를 해야 한다. 이를 통해 키와 값을 명확히 구분하여 화면에 출력할 수 있다.\nObject.keys(search).map(function(key){ console.log(key, search[key]); }); 3. 동적 라우팅과 캐치올 슬러그의 이해 무엇을 배웠나 Dynamic Route를 통해 URL을 데이터 구조로 변환하여 활용할 수 있다는 점을 이해하게 되었다. 특히 Catch-all Route([...slug])는 URL의 깊이에 따라 자동으로 배열에 담기며, 이를 분해하면 코드의 가독성을 높일 수 있다. 실습을 통해 params.slug가 어떻게 경로 조각들을 배열 형태로 반환하는지 직접 확인할 수 있었다.\n헷갈렸던 점 [slug]는 URL에서 경로 조각 하나를만 가져오는 반면, [...slug]는 남은 모든 조각을 배열에 담아온다는 점이 가장 헷갈렸다. 특히 React의 key prop에서 인덱스 대신 고유 ID를 사용하는 것이 중요한 이유를 감 잡지 못했는데, 이는 데이터가 추가되거나 삭제될 때 화면이 꼬이는 부작용 때문이었다. 결국 Dynamic Route는 URL을 데이터 구조로 변환해주는 기능이며, 배열을 해체하여 각 자리에 의미 있는 이름을 붙여 사용하면 코드의 가독성이 높아진다는 점을 명확히 했다.\n정리된 이해 Dynamic Route는 URL을 데이터 구조로 변환하여, 경로의 각 조각을 배열 형태로 받아올 수 있게 해준다. 특히 [...slug]를 사용하면 URL의 깊이가 깊어지더라도 모든 경로 조각을 하나의 배열에 담아 처리할 수 있다. 이를 통해 const [category, region, id] = params.slug;와 같이 변수를 분해하여 의미 있는 이름으로 해석함으로써 코드의 가독성과 유지보수성을 높일 수 있다.\nexport default async function Page(props) { let params = await props.params; console.log(\"params\", params.slug); // [...slug] 일 경우 blog/11 -\u003e slug:['11'] // [...slug] 일 경우 blog/food/11 -\u003e slug:['food','11'] // [...slug] 일 경우 blog/food/korea/11 -\u003e slug:['food','korea','11'] 4. URL 설계의 3가지 역할: 이동·분류·추적 무엇을 배웠나 URL은 단순히 페이지로 이동하는 주소가 아니라, 목차와 분류, 추적 정보를 포함할 수 있는 구조적 도구라는 점을 이해하게 되었다. 특히 params를 통해 동적으로 전달되는 경로가 트리 구조로 시각화될 수 있다는 사실을 통해, URL 설계가 시스템이 문서를 자연스럽게 따라갈 수 있게 한다는 것을 배웠다. 이를 통해 URL 규칙을 일관되게 설계하는 것이 검색 엔진이나 자동화 시스템에게 콘텐츠의 구조를 쉽게 파악하게 하는 핵심임을 깨달았다.\n헷갈렸던 점 처음에는 URL이 단순히 페이지 이동 주소나 데이터 파라미터 정도로만 생각하여, 그 안에 담긴 구조적 의미(목차·분류·추적 가능성)가 잘 보이지 않았습니다. 특히 params.slug 같은 코드가 화면에 어떻게 출력되는지에 집중하다 보니, URL이 단순한 경로가 아니라 콘텐츠를 분류하고 시스템이 문서를 찾고 정리할 수 있게 하는 ‘용기’라는 점을 구분하지 못해 혼란스러웠습니다.\n정리된 이해 URL은 단순한 이동 경로가 아니라, 콘텐츠를 분류하고 시스템이 구조를 파악할 수 있게 설계된 ‘용기’다. params와 같은 동적 요소를 규칙적으로 구성하면, 별도의 크롤링 없이도 계층적인 목차와 고유 식별 정보가 자연스럽게 전달된다. 따라서 URL 설계는 페이지 연결을 넘어 데이터의 조직화와 추적 가능성을 보장하는 핵심 구조가 된다.\n/blog/food/korea/11 총평 오늘 오전 전체에서 배운 것 Next.js의 App Router 구조에서 서버-클라이언트 경계와 URL 파라미터 처리 방법을 정리했다. 기본적으로 서버 컴포넌트가 작동하며, 'use client'를 선언하여 클라이언트 상호작용을 제어하는 방식을 이해했다. 또한 Object.entries() 등을 활용해 쿼리 스트링을 배열로 변환하고, 동적 라우팅과 catch-all 슬러그를 통해 URL의 깊이를 데이터 구조로 활용하는 방법을 학습했다.\n다음에 조심할 것 key와 같은 용어가 데이터 구조명과 React 고유 속성명으로 중복될 경우, 변환 로직을 통해 명확히 구분하여 혼동을 피해야 한다. Object 형태의 query string은 기본적으로 map이 제공되지 않으므로, Object.keys()나 Object.entries()를 활용해 배열로 전처리하는 습관을 들여야 한다. 다음 복습 주제 Next.js의 서버 컴포넌트 기본 동작과 'use client' 선언 위치에 대한 개념을 확실히 다져야 합니다. 특히 클라이언트와 서버 간의 데이터 페칭 시점과 경계 처리가 애플리케이션 성능에 미치는 영향을 깊이 이해해야 할 것입니다.\n동적 라우팅에서 슬러그 배열 처리 방식과 캐치올 라우트의 구조적 특성에 대한 복습이 필요합니다. [...slug] 패턴이 URL 깊이에 따라 어떻게 자동으로 배열로 변환되는지, 그리고 이를 분해하여 활용하는 연습을 통해 실제 라우팅 로직의 흐름을 정확히 파악해야 합니다.\nURL이 단순한 이동 경로를 넘어 데이터 구조와 추적 기능을 수행한다는 점을 재정립해야 합니다. params를 통한 동적 전달이 어떻게 트리 구조로 시각화되는지 이해하고, 일관된 URL 설계가 검색 엔진과 자동화 시스템에 콘텐츠 구조를 효과적으로 전달하는 핵심 요소임을 다시 한번 점검해야 합니다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "961",
+  "inLanguage": "en",
+  "datePublished": "2026-08-14T00:00:00Z",
+  "dateModified": "2026-08-14T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-08-14-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Next.js 서버-클라이언트 경계와 URL 파라미터 처리, 동적 라우팅 및 URL 설계의 구조적 역할에 대한 정리
+    </h1>
+    <div class="post-description">
+      2026-08-14 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-08-14 00:00:00 +0000 UTC'>2026년 8월 14일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-nextjs-%EC%84%9C%EB%B2%84-%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8-%EA%B2%BD%EA%B3%84-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">Next.js 서버-클라이언트 경계 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-url-query%EB%A5%BC-object-%EB%B3%80%ED%99%98%ED%95%98%EC%97%AC-%ED%99%94%EB%A9%B4%EC%97%90-%EC%B6%9C%EB%A0%A5%ED%95%98%EA%B8%B0">URL Query를 Object 변환하여 화면에 출력하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EB%8F%99%EC%A0%81-%EB%9D%BC%EC%9A%B0%ED%8C%85%EA%B3%BC-%EC%BA%90%EC%B9%98%EC%98%AC-%EC%8A%AC%EB%9F%AC%EA%B7%B8%EC%9D%98-%EC%9D%B4%ED%95%B4">동적 라우팅과 캐치올 슬러그의 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-url-%EC%84%A4%EA%B3%84%EC%9D%98-3%EA%B0%80%EC%A7%80-%EC%97%AD%ED%95%A0-%EC%9D%B4%EB%8F%99%EB%B6%84%EB%A5%98%EC%B6%94%EC%A0%81">URL 설계의 3가지 역할: 이동·분류·추적</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-nextjs-서버-클라이언트-경계-이해하기">1. Next.js 서버-클라이언트 경계 이해하기<a hidden class="anchor" aria-hidden="true" href="#1-nextjs-서버-클라이언트-경계-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>Next.js는 React 위에 라우팅과 서버-클라이언트 실행 경계라는 새로운 개념을 추가한 프레임워크입니다. App Router 구조에서 폴더와 URL 경로가 직접 연결되며, 기본적으로 서버 컴포넌트가 작동합니다. 필요한 경우에만 <code>'use client'</code>를 선언하여 클라이언트 측 상호작용을 제어할 수 있습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>React를 배울 때는 &ldquo;브라우저에서 실행되는 것&quot;이라는 인식이 강했지만, Next.js에서는 기본적으로 서버가 렌더링을 시작한다는 점이 가장 큰 전환점이었습니다. 특히 <code>page.js</code>와 URL이 어떻게 연결되는지, 그리고 서버와 클라이언트의 경계가 어디인지 감 잡기 어려웠습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>Next.js는 React 위에 라우팅, 서버-클라이언트 경계, 데이터 페칭 등 프레임워크 특화 기능을 덧씌운 것이다. 핵심은 컴포넌트 모델을 유지하면서도 &ldquo;코드가 어디서 실행되는지(Server vs Client)&ldquo;를 명확히 구분하는 것이다. App Router 구조에서 폴더 경로가 URL과 직접 연결되며, 기본적으로 서버 컴포넌트가 작동하므로 필요한 경우에만 <code>'use client'</code>로 클라이언트 경계선을 긋는다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#75715e">// app/layout.js - 전체 페이지의 공통 레이아웃
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#e6db74">&#39;./globals.css&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">RootLayout</span>({
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">children</span>,
+</span></span><span style="display:flex;"><span>}<span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">children</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">ReactNode</span>;
+</span></span><span style="display:flex;"><span>}) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ko&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">body</span>&gt;{<span style="color:#a6e22e">children</span>}&lt;/<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#75715e">// app/page.jsx - 루트 페이지 (서버 컴포넌트 기본)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">HomePage</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> &lt;<span style="color:#f92672">h1</span>&gt;<span style="color:#a6e22e">Welcome</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">Next</span>.<span style="color:#a6e22e">js</span>&lt;/<span style="color:#f92672">h1</span>&gt;;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#75715e">// components/counter.jsx - 클라이언트 컴포넌트 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;use client&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">useState</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">Counter</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">count</span>, <span style="color:#a6e22e">setCount</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">useState</span>(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">p</span>&gt;<span style="color:#a6e22e">카운트</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">count</span>}&lt;/<span style="color:#f92672">p</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">onClick</span><span style="color:#f92672">=</span>{() =&gt; <span style="color:#a6e22e">setCount</span>(<span style="color:#a6e22e">count</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>)}&gt;<span style="color:#a6e22e">증가</span>&lt;/<span style="color:#f92672">button</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="2-url-query를-object-변환하여-화면에-출력하기">2. URL Query를 Object 변환하여 화면에 출력하기<a hidden class="anchor" aria-hidden="true" href="#2-url-query를-object-변환하여-화면에-출력하기">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>URL query string을 다룰 때 <code>key</code>라는 단어가 React 고유 값과 데이터 속성명으로 동시에 쓰여 혼란스러웠지만, 데이터 구조에 맞춰 접근 방법을 선택하면 된다는 점을 깨달았다. Object에는 기본적으로 <code>map</code> 메서드가 없으므로 <code>Object.keys()</code>나 <code>Object.entries()</code>를 활용해 배열 형태로 변환한 뒤 반복 처리를 해야 한다. 이를 통해 URL 파라미터를 쉽게 꺼내어 화면에 출력하는 로직을 이해할 수 있었다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>React의 <code>key</code>와 Object의 <code>key</code>가 같은 단어지만 다른 의미를 가지는 점이 가장 큰 혼란 요소였다. 또한, object에는 기본적으로 <code>map</code> 메서드가 없기 때문에 데이터를 꺼내오는 방법에 막막함을 느꼈다. 데이터 구조에 맞춰 접근 방법을 선택하고, <code>Object.keys()</code>나 <code>Object.entries()</code>를 활용해 배열 형태로 변환한 뒤 반복 처리해야 한다는 점을 이해하게 되었다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>URL query string을 다룰 때 가장 중요한 것은 데이터 구조에 맞는 메서드를 선택하는 것이다. Object 형태의 검색 파라미터는 기본적으로 <code>map</code> 메서드가 제공되지 않으므로, <code>Object.keys()</code>나 <code>Object.entries()</code>를 활용해 배열로 변환한 뒤 반복 처리를 해야 한다. 이를 통해 키와 값을 명확히 구분하여 화면에 출력할 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>Object.<span style="color:#a6e22e">keys</span>(<span style="color:#a6e22e">search</span>).<span style="color:#a6e22e">map</span>(<span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">key</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">key</span>, <span style="color:#a6e22e">search</span>[<span style="color:#a6e22e">key</span>]);
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h2 id="3-동적-라우팅과-캐치올-슬러그의-이해">3. 동적 라우팅과 캐치올 슬러그의 이해<a hidden class="anchor" aria-hidden="true" href="#3-동적-라우팅과-캐치올-슬러그의-이해">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>Dynamic Route를 통해 URL을 데이터 구조로 변환하여 활용할 수 있다는 점을 이해하게 되었다. 특히 Catch-all Route(<code>[...slug]</code>)는 URL의 깊이에 따라 자동으로 배열에 담기며, 이를 분해하면 코드의 가독성을 높일 수 있다. 실습을 통해 params.slug가 어떻게 경로 조각들을 배열 형태로 반환하는지 직접 확인할 수 있었다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p><code>[slug]</code>는 URL에서 경로 조각 하나를만 가져오는 반면, <code>[...slug]</code>는 남은 모든 조각을 배열에 담아온다는 점이 가장 헷갈렸다. 특히 React의 <code>key</code> prop에서 인덱스 대신 고유 ID를 사용하는 것이 중요한 이유를 감 잡지 못했는데, 이는 데이터가 추가되거나 삭제될 때 화면이 꼬이는 부작용 때문이었다. 결국 Dynamic Route는 URL을 데이터 구조로 변환해주는 기능이며, 배열을 해체하여 각 자리에 의미 있는 이름을 붙여 사용하면 코드의 가독성이 높아진다는 점을 명확히 했다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>Dynamic Route는 URL을 데이터 구조로 변환하여, 경로의 각 조각을 배열 형태로 받아올 수 있게 해준다. 특히 <code>[...slug]</code>를 사용하면 URL의 깊이가 깊어지더라도 모든 경로 조각을 하나의 배열에 담아 처리할 수 있다. 이를 통해 <code>const [category, region, id] = params.slug;</code>와 같이 변수를 분해하여 의미 있는 이름으로 해석함으로써 코드의 가독성과 유지보수성을 높일 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">Page</span>(<span style="color:#a6e22e">props</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">params</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">params</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;params&#34;</span>, <span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">slug</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// [...slug] 일 경우 blog/11 -&gt; slug:[&#39;11&#39;]
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// [...slug] 일 경우 blog/food/11 -&gt; slug:[&#39;food&#39;,&#39;11&#39;]
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// [...slug] 일 경우 blog/food/korea/11 -&gt; slug:[&#39;food&#39;,&#39;korea&#39;,&#39;11&#39;]
+</span></span></span></code></pre></div><h2 id="4-url-설계의-3가지-역할-이동분류추적">4. URL 설계의 3가지 역할: 이동·분류·추적<a hidden class="anchor" aria-hidden="true" href="#4-url-설계의-3가지-역할-이동분류추적">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>URL은 단순히 페이지로 이동하는 주소가 아니라, 목차와 분류, 추적 정보를 포함할 수 있는 구조적 도구라는 점을 이해하게 되었다. 특히 <code>params</code>를 통해 동적으로 전달되는 경로가 트리 구조로 시각화될 수 있다는 사실을 통해, URL 설계가 시스템이 문서를 자연스럽게 따라갈 수 있게 한다는 것을 배웠다. 이를 통해 URL 규칙을 일관되게 설계하는 것이 검색 엔진이나 자동화 시스템에게 콘텐츠의 구조를 쉽게 파악하게 하는 핵심임을 깨달았다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>처음에는 URL이 단순히 페이지 이동 주소나 데이터 파라미터 정도로만 생각하여, 그 안에 담긴 구조적 의미(목차·분류·추적 가능성)가 잘 보이지 않았습니다. 특히 <code>params.slug</code> 같은 코드가 화면에 어떻게 출력되는지에 집중하다 보니, URL이 단순한 경로가 아니라 콘텐츠를 분류하고 시스템이 문서를 찾고 정리할 수 있게 하는 &lsquo;용기&rsquo;라는 점을 구분하지 못해 혼란스러웠습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>URL은 단순한 이동 경로가 아니라, 콘텐츠를 분류하고 시스템이 구조를 파악할 수 있게 설계된 &lsquo;용기&rsquo;다. <code>params</code>와 같은 동적 요소를 규칙적으로 구성하면, 별도의 크롤링 없이도 계층적인 목차와 고유 식별 정보가 자연스럽게 전달된다. 따라서 URL 설계는 페이지 연결을 넘어 데이터의 조직화와 추적 가능성을 보장하는 핵심 구조가 된다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>/blog/food/korea/11
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>Next.js의 App Router 구조에서 서버-클라이언트 경계와 URL 파라미터 처리 방법을 정리했다. 기본적으로 서버 컴포넌트가 작동하며, <code>'use client'</code>를 선언하여 클라이언트 상호작용을 제어하는 방식을 이해했다. 또한 <code>Object.entries()</code> 등을 활용해 쿼리 스트링을 배열로 변환하고, 동적 라우팅과 catch-all 슬러그를 통해 URL의 깊이를 데이터 구조로 활용하는 방법을 학습했다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<ol>
+<li><strong><code>key</code>와 같은 용어가 데이터 구조명과 React 고유 속성명으로 중복될 경우, 변환 로직을 통해 명확히 구분하여 혼동을 피해야 한다.</strong></li>
+<li><strong>Object 형태의 query string은 기본적으로 <code>map</code>이 제공되지 않으므로, <code>Object.keys()</code>나 <code>Object.entries()</code>를 활용해 배열로 전처리하는 습관을 들여야 한다.</strong></li>
+</ol>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>Next.js의 서버 컴포넌트 기본 동작과 <code>'use client'</code> 선언 위치에 대한 개념을 확실히 다져야 합니다. 특히 클라이언트와 서버 간의 데이터 페칭 시점과 경계 처리가 애플리케이션 성능에 미치는 영향을 깊이 이해해야 할 것입니다.</p>
+<p>동적 라우팅에서 슬러그 배열 처리 방식과 캐치올 라우트의 구조적 특성에 대한 복습이 필요합니다. <code>[...slug]</code> 패턴이 URL 깊이에 따라 어떻게 자동으로 배열로 변환되는지, 그리고 이를 분해하여 활용하는 연습을 통해 실제 라우팅 로직의 흐름을 정확히 파악해야 합니다.</p>
+<p>URL이 단순한 이동 경로를 넘어 데이터 구조와 추적 기능을 수행한다는 점을 재정립해야 합니다. <code>params</code>를 통한 동적 전달이 어떻게 트리 구조로 시각화되는지 이해하고, 일관된 URL 설계가 검색 엔진과 자동화 시스템에 콘텐츠 구조를 효과적으로 전달하는 핵심 요소임을 다시 한번 점검해야 합니다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-08-14-pm-daily/">
+    <span class="title">« Prev</span>
+    <span>Next.js App Router에서 Server Component와 Client Component의 경계를 명확히 이해하고, Axios를 통한 데이터 흐름과 상태 관리 로직을 정리했습니다. 네트워크 주소 체계의 각 요소가 담당하는 역할을 정확히 인식하여 웹 애플리케이션 전체를 관통하는 하나의 흐름으로 학습했습니다.</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-08-13-pm-daily/">
+    <span class="title">Next »</span>
+    <span>React 핵심 개념 마스터: 상태 관리부터 라우팅까지</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
