@@ -9,7 +9,7 @@
     <lastBuildDate>Fri, 14 Aug 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Next.js App Router에서 Server Component와 Client Component의 경계를 명확히 이해하고, Axios를 통한 데이터 흐름과 상태 관리 로직을 정리했습니다. 네트워크 주소 체계의 각 요소가 담당하는 역할을 정확히 인식하여 웹 애플리케이션 전체를 관통하는 하나의 흐름으로 학습했습니다.</title>
+      <title>Next.js Image 컴포넌트와 서버-클라이언트 경계, Axios 데이터 흐름, 네트워크 주소 체계까지</title>
       <link>https://Han-think.github.io/learning/2026-08-14-pm-daily/</link>
       <pubDate>Fri, 14 Aug 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/learning/2026-08-14-pm-daily/</guid>
