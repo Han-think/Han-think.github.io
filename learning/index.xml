@@ -6,8 +6,22 @@
     <description>Recent content in 학습 기록 on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Fri, 14 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 18 Aug 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>form 상태 관리의 핵심 원리와 axios를 통한 토큰 관리, 그리고 Next.js App Router에서의 브라우저 상태 관리 경계에 대한 요약입니다.</title>
+      <link>https://Han-think.github.io/learning/2026-08-18-pm-daily/</link>
+      <pubDate>Tue, 18 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-18-pm-daily/</guid>
+      <description>2026-08-18 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>Next.js와 Java 백엔드 분리, useEffect로 게시글 목록 가져오기, controlled form 핵심 원리 이해, axios POST 흐름과 상세 페이지 이동</title>
+      <link>https://Han-think.github.io/learning/2026-08-18-am-daily/</link>
+      <pubDate>Tue, 18 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-18-am-daily/</guid>
+      <description>2026-08-18 오전 학습 정리</description>
+    </item>
     <item>
       <title>Next.js Image 컴포넌트와 서버-클라이언트 경계, Axios 데이터 흐름, 네트워크 주소 체계까지</title>
       <link>https://Han-think.github.io/learning/2026-08-14-pm-daily/</link>
