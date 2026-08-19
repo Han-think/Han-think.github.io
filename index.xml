@@ -6,8 +6,22 @@
     <description>Recent content on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Tue, 18 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 19 Aug 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>오늘 오전, JWT 로그인과 sessionStorage 활용법, 게시판 목록 렌더링 논리 분리, 그리고 URL 파라미터를 통한 동적 라우팅의 원리를 정리했습니다. token 저장 여부가 인증 관문이 된다는 점을 코드 점검의 기준으로 삼고, 조건문과 반복문을 분리해 가독성을 높이며, URL 자체가 데이터 요청의 트리거가 된다는 흐름을 명확히 이해한 하루였습니다.</title>
+      <link>https://Han-think.github.io/learning/2026-08-19-am-daily/</link>
+      <pubDate>Wed, 19 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-19-am-daily/</guid>
+      <description>2026-08-19 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>파일 업로드의 두 얼굴: 미리보기와 전송 이미지 경로와 데이터 흐름의 차이 카카오맵 적용, &#39;키&#39;와 &#39;어디서&#39;의 필수 계약</title>
+      <link>https://Han-think.github.io/learning/2026-08-19-pm-daily/</link>
+      <pubDate>Wed, 19 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-19-pm-daily/</guid>
+      <description>2026-08-19 오후 학습 정리</description>
+    </item>
     <item>
       <title>form 상태 관리의 핵심 원리와 axios를 통한 토큰 관리, 그리고 Next.js App Router에서의 브라우저 상태 관리 경계에 대한 요약입니다.</title>
       <link>https://Han-think.github.io/learning/2026-08-18-pm-daily/</link>
