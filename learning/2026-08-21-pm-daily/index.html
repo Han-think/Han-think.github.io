@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오늘 오후, React 배열 map과 Props 흐름, State Hooks 실전 가이드까지 핵심 개념을 정리했습니다. DevTools를 활용한 코드 검증법과 문제 풀이 시 패턴 인식의 중요성도 깨닫는 소중한 시간이었습니다. | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-08-21 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-08-21-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-08-21-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-08-21-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오늘 오후, React 배열 map과 Props 흐름, State Hooks 실전 가이드까지 핵심 개념을 정리했습니다. DevTools를 활용한 코드 검증법과 문제 풀이 시 패턴 인식의 중요성도 깨닫는 소중한 시간이었습니다.">
+  <meta property="og:description" content="2026-08-21 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-08-21T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-08-21T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오늘 오후, React 배열 map과 Props 흐름, State Hooks 실전 가이드까지 핵심 개념을 정리했습니다. DevTools를 활용한 코드 검증법과 문제 풀이 시 패턴 인식의 중요성도 깨닫는 소중한 시간이었습니다.">
+  <meta name="twitter:description" content="2026-08-21 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오늘 오후, React 배열 map과 Props 흐름, State Hooks 실전 가이드까지 핵심 개념을 정리했습니다. DevTools를 활용한 코드 검증법과 문제 풀이 시 패턴 인식의 중요성도 깨닫는 소중한 시간이었습니다.",
+      "item": "https://Han-think.github.io/learning/2026-08-21-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오늘 오후, React 배열 map과 Props 흐름, State Hooks 실전 가이드까지 핵심 개념을 정리했습니다. DevTools를 활용한 코드 검증법과 문제 풀이 시 패턴 인식의 중요성도 깨닫는 소중한 시간이었습니다.",
+  "name": "오늘 오후, React 배열 map과 Props 흐름, State Hooks 실전 가이드까지 핵심 개념을 정리했습니다. DevTools를 활용한 코드 검증법과 문제 풀이 시 패턴 인식의 중요성도 깨닫는 소중한 시간이었습니다.",
+  "description": "2026-08-21 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 React 배열 map을 통한 JSX 생성하기 1. React 배열 map을 통한 JSX 생성하기 무엇을 배웠나 React에서 map()을 사용해 JSX를 렌더링할 때는 ‘배열 → map 함수 → JSX 반환’이라는 3단계 흐름만 기억하면 된다. 핵심은 각 요소에 고유한 key prop을 부여해야 React가 변경된 항목을 효율적으로 업데이트할 수 있다는 점이다. 가장 큰 장벽이었던 blank state에서 코드를 작성할 때도, 중괄호와 소괄호의 위치만 정확히 하면 items.map((item) =\u003e (...)) 구조를 자연스럽게 잡을 수 있다.\n헷갈렸던 점 처음에는 map() 안에 JSX를 어떻게 감싸야 할지 괄호와 중괄호의 위치가 막막했다. 특히 빈 에디터에서 시작할 때, map이 단순히 반복하는 함수인지, JSX를 반환하는 변환기인지 구분이 안 되어 코드 작성에 큰 장벽이 있었다. 결국 핵심은 map이 배열의 각 아이템을 받아 JSX 형태로 변환해주는 장치이며, 이때 반드시 고유한 key prop을 부여해야 한다는 점을 이해하는 것이 가장 중요했다.\n정리된 이해 React에서 배열을 화면에 그리려면 map() 함수를 사용해 각 아이템을 JSX로 변환하는 과정이 필수적이다. 가장 중요한 핵심은 반환값 전체를 소괄호로 감싸야 한다는 점이며, 각각의 요소에는 고유한 key prop을 반드시 부여해야 효율적인 업데이트가 가능하다.\nconst fruits = ['사과', '바나나', '딸기']; function FruitList() { return ( \u003cdiv\u003e {fruits.map((fruit) =\u003e ( \u003cli key={fruit}\u003e{fruit}\u003c/li\u003e ))} \u003c/div\u003e ); } 2. React Props를 읽고 컴포넌트로 옮기기 무엇을 배웠나 function Book({ title }) 형태가 낯설었지만, prop 이름을 함수 인자로 받는다는 규칙을 이해하고 나니 코드 작성이 수월해졌습니다. 부모 JSX에서 보낸 데이터를 자식 컴포넌트에서 바로 받아 화면에 표시하는 흐름을 파악할 수 있었습니다. 특히 prop 이름이 하나뿐일 경우 { title } 구문만으로도 값이 전달되는 것을 확인하며 직관적으로 익힐 수 있었습니다.\n헷갈렸던 점 함수 파라미터로 prop 이름을 직접 받는 { title } 구문이 낯설게 느껴져서, 함수 인자로 전달되는 개념과 JSX 속성 이름이 어떻게 연결되는지 감을 잡기 어려웠습니다.\n핵심은 부모가 넘긴 prop 이름 그대로 자식 함수의 변수가 된다는 점이며, function Book({ title }) 형태를 통해 prop의 이름을 바로 지역 변수로 사용할 수 있다는 사실을 이해하는 데 집중했습니다.\n정리된 이해 부모 컴포넌트가 자식에게 전달한 prop 이름은, 자식 함수에서 바로 파라미터로 받아 쓸 수 있다. 이를 통해 부모는 JSX에 title=\"값\"과 같이 작성하고, 자식은 { title } 구문을 사용해 값을 꺼내 화면에 표시할 수 있다. 이처럼 ‘prop 이름 = 함수 인자’라는 규칙을 기억하면 컴포넌트 간 데이터 전달이 자연스럽게 이루어진다.\n// 부모 컴포넌트 function App() { return \u003cBook title=\"해리포터\" /\u003e; } // 자식 컴포넌트 (prop 이름 = 함수 인자) function Book({ title }) { return \u003ch2\u003e도서명: {title}\u003c/h2\u003e; } 3. React State Hooks 실전 가이드 무엇을 배웠나 React State는 화면에서 계속 기억해야 하는 내부 값이며, useState를 통해 변수와 setter를 동시에 선언하면 된다. 상태 변화는 이벤트 핸들러를 통해 setState 함수에 값을 전달함으로써 업데이트된다. 특히 input의 onChange에서는 e.target.value를 직접 인자로 넘겨주어야 화면이 실시간으로 반영된다.\n헷갈렸던 점 useState 안에 숫자나 문자열을 직접 넣는 것이 아니라, 그 값을 관리하는 ‘함수(setter)‘를 함께 받아야 한다는 점이 가장 어려웠습니다. 또한 이벤트 핸들러 안에서 발생한 값(e.target.value)을 setState 함수에 어떻게 인자로 넘겨주어야 화면이 업데이트되는지 연결하는 과정이 직관적이지 않았습니다.\n정리된 이해 React State는 화면에서 계속 기억해야 하는 컴포넌트 내부의 값이며, useState를 통해 초기값을 선언하고 이벤트를 연결해 setter 함수를 호출하면 자동으로 화면이 업데이트된다. 핵심은 상태가 필요한 값을 찾고, 그에 맞는 이벤트와 setter를 연결하는 패턴을 익히는 것이다.\nimport { useState } from 'react'; function Counter() { const [count, setCount] = useState(0); return ( \u003cdiv\u003e \u003cp\u003e카운트: {count}\u003c/p\u003e \u003cbutton onClick={() =\u003e setCount(count + 1)}\u003e+\u003c/button\u003e \u003c/div\u003e ); } 4. DevTools는 ‘코드 검증’을 위한 도구입니다. 무엇을 배웠나 DevTools는 코드를 짜주는 에디터가 아니라, 이미 작성된 코드가 실제 화면에 어떻게 반영되었는지 확인하는 검증 도구입니다. 주요 기능은 요소 이름과 props, state의 실시간 확인이며, $0 같은 특수 변수를 활용해 선택된 요소의 값이나 스타일을 바로 조회할 수 있습니다. 결국 DevTools는 내가 짠 코드가 브라우저 환경에서 의도한 대로 작동하는지 디버깅하고 검증하는 창구 역할을 합니다.\n헷갈렸던 점 DevTools는 코드를 자동으로 작성해주는 에디터가 아니라, 이미 실행된 코드가 화면에 어떻게 반영되었는지 확인하는 검증 도구라는 점이 가장 큰 혼란 포인트였습니다.\n주요 역할은 요소의 이름과 상태를 파악하고, 변수의 실시간 값을 확인하며, 내가 작성한 로직이 브라우저 환경에서 실제로 어떻게 해석되는지 디버깅하는 것입니다.\n정리된 이해 DevTools는 코드를 직접 작성하는 에디터가 아니라, 이미 실행된 코드가 실제 화면에 어떻게 반영되었는지 확인하고 디버깅하는 검증 도구입니다. 주요 기능은 요소의 이름과 상태를 파악하고, 변수의 값을 실시간으로 확인하며, 내가 짠 로직이 브라우저 환경에서 올바르게 동작하는지 검증하는 것입니다.\nLearningLog: Chrome·React DevTools를 검증 도구로 사용하는 법 (초보자 워킹 노트) 🔍 무엇이 헷갈렸나 처음 DevTools를 켰을 때, 화면에 떠있는 방대한 정보들에 압도되었습니다. 특히 **“이걸로 코드를 자동으로 짤 수 있지 않을까?”**라는 기대감이 들었습니다. ‘Elements’ 패널에서 $0, $r 같은 특수 변수들이나 ‘Console’의 자동완성 기능이 마치 마법처럼 느껴졌죠. 하지만 막상 사용해보니, DevTools는 이미 작성된 코드가 실제 화면에 어떻게 반영되었는지 확인하는 창구일 뿐, 새로운 로직을 설계해주는 에디터는 아니었습니다. “상태 이름이나 문제 구조까지 대신 설계해주진 않는다\"는 점이 가장 큰 혼란 포인트였습니다.\n📌 정리된 이해 DevTools의 핵심 역할은 **“내 코드가 실제 런타임 상태와 맞는지 검증하는 것”**입니다.\n이름 확인: 어떤 요소가 선택되었는지, props나 state의 이름은 무엇인지 파악. 값 확인: 현재 변수의 값이 의도한 대로 동작하고 있는지 실시간 확인. 현재 상태 확인: 화면상의 DOM 구조나 React 컴포넌트의 Hooks/State 변화를 눈으로 직접 확인. 내 코드 결과 검증: 내가 작성한 로직이 브라우저나 리액트 환경에서 실제로 어떻게 해석되는지 디버깅. 결론적으로, DevTools는 **“코드를 대신 짜주는 도구\"가 아니라 “내가 짠 코드가 제대로 작동하는지 확인하는 검증 도구”**로 이해해야 합니다.\n🛠️ 실습 예시 간단한 콘솔 자동완성 연습부터 시작했습니다.\n// Console에서 입력 시 자동완성 제안 document. // document.querySelector 등 제안 [1, 2, 3]. // 배열 메서드 제안 Math. // 수학 함수 제안 그리고 Elements 패널에서의 $0 활용 예시입니다.\n// 요소를 선택한 후 Console에서 $0.value // 선택된 input 요소의 값 확인 $0.checked // 체크박스 상태 확인 $0.style // inline 스타일 확인 $0 5. 시험 대비 핵심 패턴 인식법 무엇을 배웠나 처음에는 문제 전체를 외워야 한다고 생각했지만, 메서드 이름이 안 보여도 뼈대 구조가 머릿속에 있다면 힌트로 바로 복구할 수 있다는 점을 깨달았다. 핵심은 문제를 개별 답안이 아니라 표준 구조로 분류하고 인식해내는 ‘패턴 인식’ 능력이다. 그래서 DOM, Fetch, React 등 각 상황에 맞는 기본 패턴을 익혀두면 새로운 문제에도 유연하게 대처할 수 있게 된다.\n헷갈렸던 점 처음에는 문제 풀이의 정답을 외우는 것이 목표라고 생각했지만, 막상 시험에 들어가니 이름 하나 기억나지 않아 전체가 무너지는 경험을 했다. 그러다 ‘이름은 까먹어도 구조는 안다’는 사실을 깨닫고, 각 문제를 DOM 선택이나 상태 업데이트 같은 표준 패턴으로 분류해두면 힌트만으로도 바로 복구할 수 있다는 것을 알게 되었다.\n정리된 이해 시험 대비의 핵심은 개별 답안 암기가 아니라, 문제를 표준 구조로 분류하고 인식해내는 능력이다. 메서드 이름이 기억나지 않더라도 DOM 선택 → 이벤트 → 값 처리 → 출력 같은 뼈대 구조가 머릿속에 있다면 자동완성이나 힌트로 바로 복구할 수 있다. 따라서 헷갈릴 때마다 해당 패턴을 카테고리별로 묶어두는 것이 중요하다.\n[DOM 패턴] 1. 버튼 클릭 → input 값 읽기 → 유효성 검사 → 결과 출력 2. li 요소 찾기 → 텍스트 변경 → 클래스 추가/제거 [Fetch 패턴] 입력값 준비 → fetch() 호출 → json() 변환 → 배열 필터링 → 화면 업데이트 [React 패턴] 부모 컴포넌트 → props 전달 → 자식에서 onClick 사용 → setState로 rerender 총평 오늘 오후 전체에서 배운 것 React 개발자로서 오늘 오후 핵심 내용을 정리하자면, map을 통한 JSX 생성 시 고유 key 부여와 blank state 코드 작성법, 그리고 prop과 state를 활용해 컴포넌트 간 데이터를 흐르게 하는 패턴을 확실히 익힌 점이 가장 크다. 또한 DevTools가 코드의 실제 동작 여부를 검증하는 도구임을 깨닫고, 문제 풀이 시 전체 암기보다는 구조적인 패턴 인식 능력을 키우는 것이 효율적이라는 전략적 사고도 함께 습득했다.\n다음에 조심할 것 오늘 React 핵심 내용을 정리하며 느낀 점은, 코드를 짜는 ‘방법’보다 ‘구조’를 이해하는 것이 훨씬 중요하다는 것입니다.\n첫째, map 함수와 key prop의 조합은 반복되는 UI를 만들 때 필수적인 패턴이지만, blank state 같은 예외 상황에서도 당황하지 않고 중괄호와 소괄호 위치를 잡는 것만으로도 자연스럽게 해결된다는 점이 인상 깊었습니다. 둘째, Props와 State의 흐름을 이해하는 과정이 처음에는 낯설었지만, 데이터가 부모에서 자식으로 어떻게 전달되고 화면에 반영되는지 파악하니 컴포넌트 분리가 훨씬 수월해졌습니다. 앞으로는 이러한 ‘데이터 흐름’과 ‘패턴 인식’을 중심으로 복습하며, DevTools를 단순히 디버깅하는 도구가 아니라 내가 짠 코드가 브라우저에서 어떻게 동작하는지 검증하는 거울로 활용해야겠습니다.\n다음 복습 주제 오늘 배운 React 핵심 내용을 바탕으로, 다음에 복습할 주제는 다음과 같다.\nReact에서 데이터를 화면에 표시하는 가장 기본적인 흐름은 ‘props 전달 → state 관리 → UI 업데이트’이다. props는 부모로부터 자식으로 일방향으로 흐르며, 사용자 입력이나 변하는 데이터는 state를 통해 관리해야만 화면이 실시간으로 반영된다. 따라서 컴포넌트를 설계할 때는 데이터가 어디서 오는지, 그리고 상태 변화가 UI에 어떻게 영향을 미치는지 전체적인 파이프라인을 파악하는 것이 무엇보다 중요하다.\n다음 단계에서는 useEffect Hook을 활용해 비동기 통신이나 라이프사이클 이벤트를 처리하는 방법을 학습해야 한다. 컴포넌트가 마운트될 때나 업데이트 될 시점에 특정 로직을 실행하고, 정리 함수(cleanup)를 통해 메모리 누수를 방지하는 패턴을 익히면 실제 서비스 개발에서 필수적인 데이터 fetching과 이벤트 바인딩 능력을 기를 수 있을 것이다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "1356",
+  "inLanguage": "en",
+  "datePublished": "2026-08-21T00:00:00Z",
+  "dateModified": "2026-08-21T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-08-21-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오늘 오후, React 배열 map과 Props 흐름, State Hooks 실전 가이드까지 핵심 개념을 정리했습니다. DevTools를 활용한 코드 검증법과 문제 풀이 시 패턴 인식의 중요성도 깨닫는 소중한 시간이었습니다.
+    </h1>
+    <div class="post-description">
+      2026-08-21 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-08-21 00:00:00 +0000 UTC'>2026년 8월 21일</span>&nbsp;·&nbsp;<span>7 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-react-%EB%B0%B0%EC%97%B4-map%EC%9D%84-%ED%86%B5%ED%95%9C-jsx-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0">React 배열 map을 통한 JSX 생성하기</a></li>
+</ol>
+</li>
+</ul>
+<h2 id="1-react-배열-map을-통한-jsx-생성하기">1. React 배열 map을 통한 JSX 생성하기<a hidden class="anchor" aria-hidden="true" href="#1-react-배열-map을-통한-jsx-생성하기">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>React에서 <code>map()</code>을 사용해 JSX를 렌더링할 때는 &lsquo;배열 → map 함수 → JSX 반환&rsquo;이라는 3단계 흐름만 기억하면 된다. 핵심은 각 요소에 고유한 <code>key</code> prop을 부여해야 React가 변경된 항목을 효율적으로 업데이트할 수 있다는 점이다. 가장 큰 장벽이었던 blank state에서 코드를 작성할 때도, 중괄호와 소괄호의 위치만 정확히 하면 <code>items.map((item) =&gt; (&lt;div&gt;...&lt;/div&gt;))</code> 구조를 자연스럽게 잡을 수 있다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>처음에는 <code>map()</code> 안에 JSX를 어떻게 감싸야 할지 괄호와 중괄호의 위치가 막막했다. 특히 빈 에디터에서 시작할 때, <code>map</code>이 단순히 반복하는 함수인지, JSX를 반환하는 변환기인지 구분이 안 되어 코드 작성에 큰 장벽이 있었다. 결국 핵심은 <code>map</code>이 배열의 각 아이템을 받아 JSX 형태로 변환해주는 장치이며, 이때 반드시 고유한 <code>key</code> prop을 부여해야 한다는 점을 이해하는 것이 가장 중요했다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>React에서 배열을 화면에 그리려면 <code>map()</code> 함수를 사용해 각 아이템을 JSX로 변환하는 과정이 필수적이다. 가장 중요한 핵심은 반환값 전체를 소괄호로 감싸야 한다는 점이며, 각각의 요소에는 고유한 <code>key</code> prop을 반드시 부여해야 효율적인 업데이트가 가능하다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fruits</span> <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;사과&#39;</span>, <span style="color:#e6db74">&#39;바나나&#39;</span>, <span style="color:#e6db74">&#39;딸기&#39;</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">FruitList</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>      {<span style="color:#a6e22e">fruits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">fruit</span>) =&gt; (
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">li</span> <span style="color:#a6e22e">key</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">fruit</span>}&gt;{<span style="color:#a6e22e">fruit</span>}&lt;/<span style="color:#f92672">li</span>&gt;
+</span></span><span style="display:flex;"><span>      ))}
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="2-react-props를-읽고-컴포넌트로-옮기기">2. React Props를 읽고 컴포넌트로 옮기기<a hidden class="anchor" aria-hidden="true" href="#2-react-props를-읽고-컴포넌트로-옮기기">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>function Book({ title }) 형태가 낯설었지만, prop 이름을 함수 인자로 받는다는 규칙을 이해하고 나니 코드 작성이 수월해졌습니다. 부모 JSX에서 보낸 데이터를 자식 컴포넌트에서 바로 받아 화면에 표시하는 흐름을 파악할 수 있었습니다. 특히 prop 이름이 하나뿐일 경우 <code>{ title }</code> 구문만으로도 값이 전달되는 것을 확인하며 직관적으로 익힐 수 있었습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>함수 파라미터로 prop 이름을 직접 받는 <code>{ title }</code> 구문이 낯설게 느껴져서, 함수 인자로 전달되는 개념과 JSX 속성 이름이 어떻게 연결되는지 감을 잡기 어려웠습니다.</p>
+<p>핵심은 부모가 넘긴 prop 이름 그대로 자식 함수의 변수가 된다는 점이며, <code>function Book({ title })</code> 형태를 통해 prop의 이름을 바로 지역 변수로 사용할 수 있다는 사실을 이해하는 데 집중했습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>부모 컴포넌트가 자식에게 전달한 prop 이름은, 자식 함수에서 바로 파라미터로 받아 쓸 수 있다. 이를 통해 부모는 JSX에 <code>title=&quot;값&quot;</code>과 같이 작성하고, 자식은 <code>{ title }</code> 구문을 사용해 값을 꺼내 화면에 표시할 수 있다. 이처럼 &lsquo;prop 이름 = 함수 인자&rsquo;라는 규칙을 기억하면 컴포넌트 간 데이터 전달이 자연스럽게 이루어진다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#75715e">// 부모 컴포넌트
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">App</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> &lt;<span style="color:#f92672">Book</span> <span style="color:#a6e22e">title</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;해리포터&#34;</span> /&gt;;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 자식 컴포넌트 (prop 이름 = 함수 인자)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">Book</span>({ <span style="color:#a6e22e">title</span> }) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> &lt;<span style="color:#f92672">h2</span>&gt;<span style="color:#a6e22e">도서명</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">title</span>}&lt;/<span style="color:#f92672">h2</span>&gt;;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="3-react-state-hooks-실전-가이드">3. React State Hooks 실전 가이드<a hidden class="anchor" aria-hidden="true" href="#3-react-state-hooks-실전-가이드">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>React State는 화면에서 계속 기억해야 하는 내부 값이며, <code>useState</code>를 통해 변수와 setter를 동시에 선언하면 된다. 상태 변화는 이벤트 핸들러를 통해 <code>setState</code> 함수에 값을 전달함으로써 업데이트된다. 특히 input의 <code>onChange</code>에서는 <code>e.target.value</code>를 직접 인자로 넘겨주어야 화면이 실시간으로 반영된다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>useState 안에 숫자나 문자열을 직접 넣는 것이 아니라, 그 값을 관리하는 &lsquo;함수(setter)&lsquo;를 함께 받아야 한다는 점이 가장 어려웠습니다. 또한 이벤트 핸들러 안에서 발생한 값(e.target.value)을 setState 함수에 어떻게 인자로 넘겨주어야 화면이 업데이트되는지 연결하는 과정이 직관적이지 않았습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>React State는 화면에서 계속 기억해야 하는 컴포넌트 내부의 값이며, <code>useState</code>를 통해 초기값을 선언하고 이벤트를 연결해 setter 함수를 호출하면 자동으로 화면이 업데이트된다. 핵심은 상태가 필요한 값을 찾고, 그에 맞는 이벤트와 setter를 연결하는 패턴을 익히는 것이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">useState</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">Counter</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">count</span>, <span style="color:#a6e22e">setCount</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">useState</span>(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">p</span>&gt;<span style="color:#a6e22e">카운트</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">count</span>}&lt;/<span style="color:#f92672">p</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">onClick</span><span style="color:#f92672">=</span>{() =&gt; <span style="color:#a6e22e">setCount</span>(<span style="color:#a6e22e">count</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>)}&gt;<span style="color:#f92672">+</span>&lt;/<span style="color:#f92672">button</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="4-devtools는-코드-검증을-위한-도구입니다">4. DevTools는 &lsquo;코드 검증&rsquo;을 위한 도구입니다.<a hidden class="anchor" aria-hidden="true" href="#4-devtools는-코드-검증을-위한-도구입니다">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>DevTools는 코드를 짜주는 에디터가 아니라, 이미 작성된 코드가 실제 화면에 어떻게 반영되었는지 확인하는 검증 도구입니다. 주요 기능은 요소 이름과 props, state의 실시간 확인이며, <code>$0</code> 같은 특수 변수를 활용해 선택된 요소의 값이나 스타일을 바로 조회할 수 있습니다. 결국 DevTools는 내가 짠 코드가 브라우저 환경에서 의도한 대로 작동하는지 디버깅하고 검증하는 창구 역할을 합니다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>DevTools는 코드를 자동으로 작성해주는 에디터가 아니라, 이미 실행된 코드가 화면에 어떻게 반영되었는지 확인하는 검증 도구라는 점이 가장 큰 혼란 포인트였습니다.</p>
+<p>주요 역할은 요소의 이름과 상태를 파악하고, 변수의 실시간 값을 확인하며, 내가 작성한 로직이 브라우저 환경에서 실제로 어떻게 해석되는지 디버깅하는 것입니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>DevTools는 코드를 직접 작성하는 에디터가 아니라, 이미 실행된 코드가 실제 화면에 어떻게 반영되었는지 확인하고 디버깅하는 검증 도구입니다. 주요 기능은 요소의 이름과 상태를 파악하고, 변수의 값을 실시간으로 확인하며, 내가 짠 로직이 브라우저 환경에서 올바르게 동작하는지 검증하는 것입니다.</p>
+<h1 id="learninglog-chromereact-devtools를-검증-도구로-사용하는-법-초보자-워킹-노트">LearningLog: Chrome·React DevTools를 검증 도구로 사용하는 법 (초보자 워킹 노트)<a hidden class="anchor" aria-hidden="true" href="#learninglog-chromereact-devtools를-검증-도구로-사용하는-법-초보자-워킹-노트">#</a></h1>
+<h2 id="-무엇이-헷갈렸나">🔍 무엇이 헷갈렸나<a hidden class="anchor" aria-hidden="true" href="#-무엇이-헷갈렸나">#</a></h2>
+<p>처음 DevTools를 켰을 때, 화면에 떠있는 방대한 정보들에 압도되었습니다. 특히 **&ldquo;이걸로 코드를 자동으로 짤 수 있지 않을까?&rdquo;**라는 기대감이 들었습니다. &lsquo;Elements&rsquo; 패널에서 <code>$0</code>, <code>$r</code> 같은 특수 변수들이나 &lsquo;Console&rsquo;의 자동완성 기능이 마치 마법처럼 느껴졌죠. 하지만 막상 사용해보니, DevTools는 <strong>이미 작성된 코드가 실제 화면에 어떻게 반영되었는지 확인하는 창구</strong>일 뿐, 새로운 로직을 설계해주는 에디터는 아니었습니다. &ldquo;상태 이름이나 문제 구조까지 대신 설계해주진 않는다&quot;는 점이 가장 큰 혼란 포인트였습니다.</p>
+<h2 id="-정리된-이해">📌 정리된 이해<a hidden class="anchor" aria-hidden="true" href="#-정리된-이해">#</a></h2>
+<p>DevTools의 핵심 역할은 **&ldquo;내 코드가 실제 런타임 상태와 맞는지 검증하는 것&rdquo;**입니다.</p>
+<ul>
+<li><strong>이름 확인:</strong> 어떤 요소가 선택되었는지, props나 state의 이름은 무엇인지 파악.</li>
+<li><strong>값 확인:</strong> 현재 변수의 값이 의도한 대로 동작하고 있는지 실시간 확인.</li>
+<li><strong>현재 상태 확인:</strong> 화면상의 DOM 구조나 React 컴포넌트의 Hooks/State 변화를 눈으로 직접 확인.</li>
+<li><strong>내 코드 결과 검증:</strong> 내가 작성한 로직이 브라우저나 리액트 환경에서 실제로 어떻게 해석되는지 디버깅.</li>
+</ul>
+<p>결론적으로, DevTools는 **&ldquo;코드를 대신 짜주는 도구&quot;가 아니라 &ldquo;내가 짠 코드가 제대로 작동하는지 확인하는 검증 도구&rdquo;**로 이해해야 합니다.</p>
+<h2 id="-실습-예시">🛠️ 실습 예시<a hidden class="anchor" aria-hidden="true" href="#-실습-예시">#</a></h2>
+<p>간단한 콘솔 자동완성 연습부터 시작했습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// Console에서 입력 시 자동완성 제안
+</span></span></span><span style="display:flex;"><span>document.    <span style="color:#75715e">// document.querySelector 등 제안
+</span></span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>].   <span style="color:#75715e">// 배열 메서드 제안
+</span></span></span><span style="display:flex;"><span>Math.        <span style="color:#75715e">// 수학 함수 제안
+</span></span></span></code></pre></div><p>그리고 Elements 패널에서의 <code>$0</code> 활용 예시입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// 요소를 선택한 후 Console에서
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">$0</span>.<span style="color:#a6e22e">value</span>     <span style="color:#75715e">// 선택된 input 요소의 값 확인
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">$0</span>.<span style="color:#a6e22e">checked</span>   <span style="color:#75715e">// 체크박스 상태 확인
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">$0</span>.<span style="color:#a6e22e">style</span>     <span style="color:#75715e">// inline 스타일 확인
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">$0</span>
+</span></span></code></pre></div><h2 id="5-시험-대비-핵심-패턴-인식법">5. 시험 대비 핵심 패턴 인식법<a hidden class="anchor" aria-hidden="true" href="#5-시험-대비-핵심-패턴-인식법">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>처음에는 문제 전체를 외워야 한다고 생각했지만, 메서드 이름이 안 보여도 뼈대 구조가 머릿속에 있다면 힌트로 바로 복구할 수 있다는 점을 깨달았다. 핵심은 문제를 개별 답안이 아니라 표준 구조로 분류하고 인식해내는 &lsquo;패턴 인식&rsquo; 능력이다. 그래서 DOM, Fetch, React 등 각 상황에 맞는 기본 패턴을 익혀두면 새로운 문제에도 유연하게 대처할 수 있게 된다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>처음에는 문제 풀이의 정답을 외우는 것이 목표라고 생각했지만, 막상 시험에 들어가니 이름 하나 기억나지 않아 전체가 무너지는 경험을 했다. 그러다 &lsquo;이름은 까먹어도 구조는 안다&rsquo;는 사실을 깨닫고, 각 문제를 DOM 선택이나 상태 업데이트 같은 표준 패턴으로 분류해두면 힌트만으로도 바로 복구할 수 있다는 것을 알게 되었다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>시험 대비의 핵심은 개별 답안 암기가 아니라, 문제를 표준 구조로 분류하고 인식해내는 능력이다. 메서드 이름이 기억나지 않더라도 <code>DOM 선택 → 이벤트 → 값 처리 → 출력</code> 같은 뼈대 구조가 머릿속에 있다면 자동완성이나 힌트로 바로 복구할 수 있다. 따라서 헷갈릴 때마다 해당 패턴을 카테고리별로 묶어두는 것이 중요하다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[DOM 패턴]
+</span></span><span style="display:flex;"><span>1. 버튼 클릭 → input 값 읽기 → 유효성 검사 → 결과 출력
+</span></span><span style="display:flex;"><span>2. li 요소 찾기 → 텍스트 변경 → 클래스 추가/제거
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[Fetch 패턴]
+</span></span><span style="display:flex;"><span>입력값 준비 → fetch() 호출 → json() 변환 → 배열 필터링 → 화면 업데이트
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[React 패턴]
+</span></span><span style="display:flex;"><span>부모 컴포넌트 → props 전달 → 자식에서 onClick 사용 → setState로 rerender
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>React 개발자로서 오늘 오후 핵심 내용을 정리하자면, <code>map</code>을 통한 JSX 생성 시 고유 key 부여와 blank state 코드 작성법, 그리고 prop과 state를 활용해 컴포넌트 간 데이터를 흐르게 하는 패턴을 확실히 익힌 점이 가장 크다. 또한 DevTools가 코드의 실제 동작 여부를 검증하는 도구임을 깨닫고, 문제 풀이 시 전체 암기보다는 구조적인 패턴 인식 능력을 키우는 것이 효율적이라는 전략적 사고도 함께 습득했다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>오늘 React 핵심 내용을 정리하며 느낀 점은, 코드를 짜는 &lsquo;방법&rsquo;보다 &lsquo;구조&rsquo;를 이해하는 것이 훨씬 중요하다는 것입니다.</p>
+<p>첫째, <code>map</code> 함수와 <code>key</code> prop의 조합은 반복되는 UI를 만들 때 필수적인 패턴이지만, blank state 같은 예외 상황에서도 당황하지 않고 중괄호와 소괄호 위치를 잡는 것만으로도 자연스럽게 해결된다는 점이 인상 깊었습니다. 둘째, Props와 State의 흐름을 이해하는 과정이 처음에는 낯설었지만, 데이터가 부모에서 자식으로 어떻게 전달되고 화면에 반영되는지 파악하니 컴포넌트 분리가 훨씬 수월해졌습니다. 앞으로는 이러한 &lsquo;데이터 흐름&rsquo;과 &lsquo;패턴 인식&rsquo;을 중심으로 복습하며, DevTools를 단순히 디버깅하는 도구가 아니라 내가 짠 코드가 브라우저에서 어떻게 동작하는지 검증하는 거울로 활용해야겠습니다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>오늘 배운 React 핵심 내용을 바탕으로, 다음에 복습할 주제는 다음과 같다.</p>
+<p>React에서 데이터를 화면에 표시하는 가장 기본적인 흐름은 &lsquo;props 전달 → state 관리 → UI 업데이트&rsquo;이다. props는 부모로부터 자식으로 일방향으로 흐르며, 사용자 입력이나 변하는 데이터는 state를 통해 관리해야만 화면이 실시간으로 반영된다. 따라서 컴포넌트를 설계할 때는 데이터가 어디서 오는지, 그리고 상태 변화가 UI에 어떻게 영향을 미치는지 전체적인 파이프라인을 파악하는 것이 무엇보다 중요하다.</p>
+<p>다음 단계에서는 useEffect Hook을 활용해 비동기 통신이나 라이프사이클 이벤트를 처리하는 방법을 학습해야 한다. 컴포넌트가 마운트될 때나 업데이트 될 시점에 특정 로직을 실행하고, 정리 함수(cleanup)를 통해 메모리 누수를 방지하는 패턴을 익히면 실제 서비스 개발에서 필수적인 데이터 fetching과 이벤트 바인딩 능력을 기를 수 있을 것이다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://Han-think.github.io/learning/2026-08-21-am-daily/">
+    <span class="title">Next »</span>
+    <span>입력→처리→출력 파이프라인으로 DOM 입출력 해결하기 DOM 스타일·클래스·속성 명확히 구분하기 데이터 구조와 입력 값 의미 정확히 파악하기 순회와 정렬 개념을 명확히 분리하기</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

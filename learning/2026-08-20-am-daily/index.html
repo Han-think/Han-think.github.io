@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>리팩터링으로 다진 구조, 라우팅과 차트로 완성한 다음 단계 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-08-20 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-08-20-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-08-20-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-08-20-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="리팩터링으로 다진 구조, 라우팅과 차트로 완성한 다음 단계">
+  <meta property="og:description" content="2026-08-20 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-08-20T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-08-20T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="리팩터링으로 다진 구조, 라우팅과 차트로 완성한 다음 단계">
+  <meta name="twitter:description" content="2026-08-20 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "리팩터링으로 다진 구조, 라우팅과 차트로 완성한 다음 단계",
+      "item": "https://Han-think.github.io/learning/2026-08-20-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "리팩터링으로 다진 구조, 라우팅과 차트로 완성한 다음 단계",
+  "name": "리팩터링으로 다진 구조, 라우팅과 차트로 완성한 다음 단계",
+  "description": "2026-08-20 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 React 리팩터링 흐름 복습: 초보자의 구조 이해하기 React Router 비동기 상태 관리 복습 무엇이 헷갈렸나 정리된 이해 실습 예시 (오늘의 전환 과정) 자동 채점 계약과 기능 구현의 균형 카카오 지도 SDK와 React의 연결 고리 React Bootstrap 버튼 UI 입문하기 Next.js Link, 차트 페이지 라우팅 구성하기 MUI X Charts 핵심 prop 분류와 학습 포인트 📌 핵심 요약 🔑 핵심 prop 분류 💡 문법의 요령 📊 핵심 코드 예시 총평 1. React 리팩터링 흐름 복습: 초보자의 구조 이해하기 무엇을 배웠나 리팩터링은 화면을 바꾸는 것이 아니라, 같은 기능을 유지하면서 내부 구조를 개선하는 작업이라는 점을 명확히 이해했습니다. 특히 CSS Modules와 styled-components가 클래스 이름 격리나 JavaScript 템플릿 리터럴을 통해 스타일 관리의 방식을 어떻게 변화시키는지 구체적인 예시를 보며 체감할 수 있었습니다. 단순히 문법을 익히는 것을 넘어, 코드 관리 방식의 차이를 인지하는 연습이 무엇보다 중요하다고 느꼈습니다.\n헷갈렸던 점 처음에는 화면이 똑같아 보여서 리팩터링의 필요성을 즉시 체감하기 어려웠습니다. 특히 CSS Modules나 styled-components 같은 도구가 단순히 스타일 적용 방식뿐만 아니라 프로젝트 전체의 코드 관리 구조를 근본적으로 바꾸는 것인 줄 몰랐습니다. 결국 “같은 기능을 유지하면서 내부 구조를 개선하는 작업\"이라는 정의 아래, 각 스타일링 기법이 가진 고유한 장단점과 관리 방식을 이해하는 과정이었음을 깨달았습니다.\n정리된 이해 리팩터링은 화면을 바꾸는 것이 아니라 같은 기능을 유지하면서 내부 구조를 개선하는 작업입니다. 일반 CSS, CSS Modules, styled-components는 스타일 관리 방식이 다를 뿐 최종적인 화면 표현은 비슷할 수 있습니다. 이 과정은 문법 암기보다 코드 관리 방식의 차이를 체감하는 연습에 가깝습니다.\n// 1. 일반 CSS (HTML) \u003cbutton class=\"btn\"\u003e클릭\u003c/button\u003e // 2. CSS Modules (JS import) import styles from './Button.module.css'; \u003cbutton className={styles.btn}\u003e클릭\u003c/button\u003e // 3. styled-components (JS 템플릿 리터럴) const Button = styled.button` background-color: blue; color: white; `; \u003cButton\u003e클릭\u003c/Button\u003e 2. React Router 비동기 상태 관리 복습 무엇을 배웠나 오늘은 수많은 상태 관리 도구를 사용해보며, 단순히 화면이 비슷비슷하게 보이는 이유를 고민했습니다. 결국 각 도구가 필요한 이유는 ‘데이터 전달과 상태 변경의 책임’을 얼마나 명확히 나누느냐에 달려 있다는 생각이 들었습니다. 특히 Redux Toolkit 같은 툴이 boilerplate 코드를 줄여주어 진입 장벽을 낮춰준다는 점은 실무에서 효율성을 높이는 중요한 요소라고 느꼈습니다.\n헷갈렸던 점 useState와 useReducer, Context, Redux 등 다양한 도구를 사용해도 화면 결과가 비슷비슷해 ‘필요성’을 파악하기 어려웠다.\n상태 관리 도구는 단순히 코드를 줄이기 위한 것이 아니라, 데이터 전달과 상태 변경의 책임을 명확히 나누기 위해 선택하는 것이다. 상태의 범위와 변경의 복잡도가 높을수록 더 체계적인 도구를 사용해야 한다.\n정리된 이해 도구를 교체하는 핵심 목적은 화면 표현이 아닌 데이터 전달과 상태 변경의 책임을 명확히 나누는 데 있습니다. useState부터 Redux Toolkit까지, 상태의 범위와 변경의 복잡도가 높을수록 더 체계적인 관리 도구가 필요합니다. 결국 개발자는 앱의 규모와 상황에 맞는 최적의 상태 관리 전략을 선택해야 합니다.\nLearningLog 워킹 노트: React Router, 비동기 서비스, 상태 관리 진화 복습 작성일: 2026-08-20 초보자 시점: 오늘도 수많은 개념들이 쏟아지니 머릿속이 복잡해지는 순간들입니다. 특히 “왜 이 도구를 쓰지?“라는 질문에 대한 답을 찾기 위해 코드를 이리저비 옮겨보았는데, 정작 중요한 건 ‘화면의 결과’가 아니라 ‘데이터가 어떻게 흐르는지’였습니다.\n1. 무엇이 헷갈렸나 오늘 가장 큰 혼란은 **“화면이 비슷비슷하게 나오는데, 내부 구조가 계속 바뀌니 왜 필요한지 감이 안 잡혔다”**는 점이었습니다. useState로 시작했다가 useReducer, Context, Redux… 차근차근 도구를 업그레이드해보니 코드의 양과 복잡도는 급격히 늘었는데, 정작 보이는 결과물은 비슷비슷해서 “이게 무슨 의미일까?“라는 의문이 들었습니다. 단순히 문법을 외우는 것이 아니라, 어떤 상황에서 어떤 도구가 필요한지를 감으로 잡는 과정이 필요하다고 느꼈습니다.\n2. 정리된 이해 도구를 바꾸는 가장 큰 목적은 **“화면 표현이 아니라 데이터 전달과 상태 변경의 책임을 더 명확히 나누기 위함”**이었습니다.\nuseState: 내 컴포넌트 안에서 간단하게 다룰 수 있는 로컬 상태 useReducer: 상태 변화의 규칙이 조금이라도 복잡해질 때 유용한 도구 Context: 컴포넌트 트리 사이에서 값을 공유해야 할 때, 중간 다리를 놓는 통로 역할 Redux: 앱 전체의 상태를 store라는 중앙 집중식 창고에 관리하고, 명확한 흐름으로 변경하고 싶을 때 Redux Toolkit: Redux를 시작할 때 겪게 되는 번거로운 boilerplate 코드를 줄여주어 진입 장벽을 낮춰주는 친구 결론적으로, **“상태의 범위와 변경의 복잡도”**가 높을수록 더 체계적인 도구를 선택하게 된다는 생각이 들었습니다.\n3. 실습 예시 (오늘의 전환 과정) 강사님께서 보여주신 방식은 정말 인상 깊었습니다. 같은 기능을 위해 useState로 관리하던 카운터를 useReducer로 리팩토링한 과정을 통해, 액션(Action)과 리듀서(Reducer)가 상태 변화를 어떻게 체계적으로 관리하는지 실감할 수 있었습니다. 특히 useReducer는 단순한 값의 변경이 아니라, ‘어떤 의도’로 상태가 변하는지를 명시할 수 있어 코드의 의도가 훨씬 명확해지는 것을 체감했습니다.\n// useReducer를 활용한 카운터 예시 const initialState = { count: 0 }; function reducer(state, action) { switch (action.type) { case 'increment': return { count: state.count + 1 }; case 'decrement': return { count: state.count - 1 }; default: return state; } } const [state, dispatch] = useReducer(reducer, initialState); // 버튼 클릭 시.dispatch({ type: 'increment' })와 같이 호출 핵심을 보여주는 코드 예시’만’ 백틱3개 코드블록으로 출력하라. 노트에 코드 근거가 없으면 아무것도 쓰지 마라.\n3. 자동 채점 계약과 기능 구현의 균형 무엇을 배웠나 자동 채점 시스템은 코드의 기능적 완성도뿐만 아니라, starter code가 제시한 인터페이스와 DOM 구조 등 ‘계약’을 정확히 따르는지를 검증한다는 점을 깨달았다. 특히 import 경로나 태그 구조의 미세한 변경조차 테스트를 실패시킬 수 있어, 기능 구현 전 반드시 제공된 skeleton을 준수하는 것이 우선임을 느꼈다. 이를 통해 ‘더 좋은 코드’와 ‘채점 계약 사이의 균형’이 단순히 문법적 완성도가 아닌, 시스템 요구사항 충족 여부로 판단되어야 한다는 관점을 갖게 되었다.\n헷갈렸던 점 가장 큰 혼란은 “기능이 정상 작동해 보여도, DOM 구조의 작은 변화 하나가 채점을 실패하게 만든 경우\"였습니다. 특히 코드를 더 깔끔하게 리팩토링했음에도 불구하고, 태그 하나만 사라져도 XPath 기준의 자동 채점 시스템에서 테스트가 깨지는 경험을 했습니다.\n또 한 가지는 “더 좋은 코드\"를 작성하는 것과 “채점 계약(계약)“을 지키는 것 사이의 균형이었습니다. 기능상 완벽해 보여도, starter code와 요구사항에 명시된 import 경로, 파일 구조, DOM 계층 구조 등과의 불일치가 있으면 채점이 되지 않는다는 점이 처음에는 직관적이지 않았습니다.\n자동 채점 문제는 단순히 “코드가 작동하는지\"를 넘어, **“정해진 인터페이스와 구조를 정확히 맞추는 문제”**라는 점을 깨달았습니다. 기능 검증과 구조 준수는 별개의 문제이며, starter code의 구조를 보존하는 것이 자동 채점 환경에서 최우선 과제가 됩니다.\n정리된 이해 자동 채점 시스템은 코드의 기능적 완성도보다, starter code와의 인터페이스와 구조 일치 여부를 우선적으로 검증합니다. 따라서 기능을 구현하기 전에는 DOM 구조나 import 경로 등 ‘계약’을 정확히 맞추는 것이 최우선 과제가 되어야 합니다. 일단 테스트가 통과한 후에는 코드 리팩토링이나 개선이 가능하지만, 초기 단계에서는 강사님이 제시한 구조를 보존하는 것이 채점 실패를 막는 가장 안전한 방법입니다.\n// React Testing Library와 채점 스켈레톤 민감도 복습을 위한 핵심 원칙 요약 /* 핵심 원칙: 1. 기능 검증(structural compliance)보다 DOM 구조/import 경로 등 '계약' 준수를 우선시 2. starter code의 디렉터리 구조, import 경로, 기본 DOM 레이아웃을 먼저 파악 3. 최소한의 변경으로 테스트 통과를 목표로 한 후, 리팩토링 검증 */ 4. 카카오 지도 SDK와 React의 연결 고리 무엇을 배웠나 React와 외부 SDK를 결합할 때 가장 중요한 것은 useRef를 통해 DOM 엘리먼트를 정확히 참조하고, 지도 객체 생성 시 그 컨테이너를 전달하는 것입니다. new kakao.maps.Map과 new kakao.maps.Marker는 각각 지도와 마커 객체를 생성하지만, 실제 화면에 나타나게 하려면 setMap(map) 메서드를 호출해 마커를 지도에 부착해야 합니다. 마지막으로 클릭 이벤트 리스너를 통해 evt.latLng로 좌표를 추출하면, 위도와 경도를 각각 getLat()와 getLng() 메서드로 손쉽게 분리할 수 있습니다.\n헷갈렸던 점 React와 외부 SDK(카카오맵)의 생명주기 차이로 인해 useRef를 직접 변형하려다 구조적 불일치가 발생했다. 특히 마커와 이벤트 객체가 React의 상태 관리와 어떻게 연결되는지 파악하는 것이 처음에는 직관적이지 않았다. 결국 핵심은 외부 SDK 객체를 React의 렌더링 주기에 맞게 연결하는 ‘고리’를 만드는 것이었다.\n정리된 이해 외부 SDK 객체와 React의 생명주기를 연결하는 것이 핵심입니다. useRef로 DOM을 참조하고, 지도 생성 시점에 setMap을 호출해 마커를 화면에 뿌려줍니다. 마지막으로 클릭 이벤트 리스너를 통해 evt.latLng로 좌표를 추출하여 상태와 연동하면 됩니다.\nimport { useEffect, useRef } from 'react'; import { Map, Marker } from '@kakao/maps-sdk'; export default function KakaoMap() { const mapContainer = useRef(null); const mapRef = useRef(null); useEffect(() =\u003e { // 1. SDK 로딩 및 지도 생성 const map = new Map(mapContainer.current); mapRef.current = map; // 2. 마커 생성 및 추가 const marker = new Marker({ position: new kakao.maps.LatLng(37.5665, 126.9780), }); marker.setMap(map); // 3. 클릭 이벤트 리스너 등록 (핵심) kakao.maps.event.addListener(map, 'click', function(mouseEvent) { const latlng = mouseEvent.latLng; // evt.latLng와 동일 console.log('클릭 좌표 - 위도:', latlng.getLat(), '경도:', latlng.getLng()); // 클릭한 위치에 마커 이동 예시 marker.setPosition(latlng); }); }, []); // 의존성 배열 비워두기 (컴포넌트 마운트 시 한 번만 실행) return \u003cdiv ref={mapContainer} style={{ width: '100%', height: '500px' }} /\u003e; } 5. React Bootstrap 버튼 UI 입문하기 무엇을 배웠나 React Bootstrap은 Bootstrap의 디자인 시스템을 React 컴포넌트 형태로 제공하는 라이브러리이며, 핵심 CSS를 import한 후 variant나 size와 같은 prop을 통해 스타일을 제어한다. 기존에 직접 CSS를 작성하던 방식과 달리, 사전에 정의된 속성을 활용해 빠르게 일관성 있는 UI를 구성할 수 있다는 점이 가장 큰 특징이다. 특히 import \"bootstrap/dist/css/bootstrap.min.css\"와 같이 Bootstrap의 기본 스타일을 최상위 컴포넌트에서 적용해야 React Bootstrap 컴포넌트가 제대로 작동한다는 점을 반드시 기억해야 한다.\n헷갈렸던 점 React Bootstrap에서 variant=\"primary\"와 같은 prop을 주는 방식이 기존 HTML class 적용과는 다른 개념이며, 스타일이 실제로 적용되는지 처음에는 의심이 들었다.\n또, import \"bootstrap/dist/css/bootstrap.min.css\"와 { Button } from \"react-bootstrap\"가 섞여 있어, 핵심 CSS와 React 전용 컴포넌트의 출처를 구분하기 어려웠다.\n정리된 이해 React Bootstrap은 Bootstrap의 디자인 시스템을 React 컴포넌트 형태로 제공하는 라이브러리이며, 핵심 CSS를 import한 후 variant와 같은 prop을 통해 스타일을 제어하여 빠른 구성과 일관된 디자인을 실현한다.\nimport React from 'react'; import { Button, ButtonToolbar } from \"react-bootstrap\"; import \"bootstrap/dist/css/bootstrap.min.css\"; function App() { return ( \u003cdiv\u003e {/* variant prop을 통해 스타일 선택 */} \u003cButton variant=\"primary\"\u003ePrimary\u003c/Button\u003e {/* size prop으로 크기 조절 가능 */} \u003cButton variant=\"secondary\" size=\"lg\"\u003eLarge Secondary\u003c/Button\u003e {/* ButtonToolbar로 버튼 그룹화 */} \u003cButtonToolbar\u003e \u003cButton variant=\"success\"\u003eSuccess\u003c/Button\u003e \u003cButton variant=\"danger\"\u003eDanger\u003c/Button\u003e \u003c/ButtonToolbar\u003e \u003c/div\u003e ); } export default App; 6. Next.js Link, 차트 페이지 라우팅 구성하기 무엇을 배웠나 Next.js의 Link 컴포넌트는 React Router의 그것과 네이밍이 같아 혼란스러울 수 있지만, 실제로는 Next.js의 파일 시스템 라우팅과 연동되어 페이지 이동을 담당한다는 점을 명확히 했다. 단순히 URL을 전환하는 것을 넘어, 클라이언트 사이드에서 부드러운 네비게이션을 제공하며 next/link를 사용하는 것이 핵심임을 깨달았다.\n헷갈렸던 점 React Router와 Next.js 모두 Link라는 동일한 컴포넌트 이름을 사용하지만, import 경로가 react-router-dom인지 next/link인지에 따라 완전히 달라져 코드 작성 시 실수가 잦았다.\n특히 “페이지 이동\"이라는 개념은 같지만, 그 주체가 React Router인지 Next.js의 디렉토리 구조인지 구분이 가지 않아 라우팅 시스템의 작동 원리를 혼동하기 쉬웠다.\n정리된 이해 Next.js에서 Link는 페이지 이동을 담당하며, 실제 라우팅은 Next.js의 디렉토리 구조가 관리한다. next/link를 사용하면 단순 리프레시 없이 클라이언트 사이드에서 부드럽게 전환되며, 정의된 경로대로 자동 매핑된다. 따라서 개발자는 Link를 통해 URL을 선언적으로 제어하고, 시스템은 파일 기반 라우팅으로 페이지를 연결한다.\nimport Link from \"next/link\"; export default function Navigation() { return ( \u003cnav\u003e \u003cul\u003e \u003cli\u003e\u003cLink href=\"/\"\u003eHome\u003c/Link\u003e\u003c/li\u003e \u003cli\u003e\u003cLink href=\"/bar\"\u003eBar Page\u003c/Link\u003e\u003c/li\u003e \u003cli\u003e\u003cLink href=\"/line\"\u003eLine Page\u003c/Link\u003e\u003c/li\u003e \u003c/ul\u003e \u003c/nav\u003e ); } 7. MUI X Charts 핵심 prop 분류와 학습 포인트 무엇을 배웠나 MUI X Charts를 공부하면서 JSX 문법과 데이터 구조가 결합되는 부분이 가장 어려웠습니다. 특히 배열과 객체가 중첩된 series={[{ data: [...], label: \"...\" }]} 형태에서 닫는 기호의 위치를 파악하는 데 애를 먹었습니다. 핵심은 series, xAxis 같은 prop이 데이터를 표현하고, barLabel나 stack 같은 prop이 스타일링과 상호작용을 담당한다는 점으로 정리했습니다.\n헷갈렸던 점 JSX 문법에서 대괄호와 중괄호가 섞여 있어 }]나 }} 어디서 닫혀야 할지 감이 잡히지 않았다.\n특히 /\u003e(자 closing 태그)를 빼먹었을 때 에러 메시지가 추상적이어서 코드 어디가 잘못된지 찾기 어려웠고, stack, area, highlightScope 같은 prop들이 어떤 역할을 하는지 데이터 흐름 전체를 한 번에 파악하기 힘들었다.\n정리된 이해 MUI X Charts는 데이터 표현(series, xAxis), 스타일링(barLabel, area), 상호작용(onLineClick)을 구분하여 이해해야 한다. 특히 JSX의 중괄호와 대괄호 조합에 익숙해지는 것이 가장 중요한 첫걸음이다.\nMUI X Charts: BarChart와 LineChart 구성 및 이벤트 (초보자 워킹 노트) 📌 핵심 요약 MUI X Charts에서 가장 큰 어려움은 JSX 문법과 데이터 구조의 결합이었습니다. 특히 series prop에 사용되는 대괄호([])와 중괼호({})의 조합, 그리고 컴포넌트 닫기(/\u003e) 위치가 혼동을 주었습니다.\n🔑 핵심 prop 분류 카테고리 주요 prop 의미 데이터 표현 series 실제 차트에 표시할 데이터 묶음 (라벨 포함) xAxis x축의 카테고리/스케일 정의 grid 격자 선의 방향 및 스타일 스타일링 barLabel 막대 위에 값 표시 여부 borderRadius 모서리의 둥근 정도 area 라인 차트 아래 영역 채우기 stack 같은 이름끼리 막대를 누적 표시 상호작용 onAreaClick, onLineClick 사용자가 차트를 클릭했을 때 실행되는 함수 💡 문법의 요령 JSX 닫기: 컴포넌트는 중첩된 {와 } 그리고 [와 ]를 정확히 맞물려 닫아야 합니다. 닫는 기호 확인: /\u003e(자 closing 태그)를 빼먹었을 때 에러 메시지가 추상적이므로, 대괄호와 중괄호의 개수를 꼼꼼히 확인하는 습관이 필요합니다. 📊 핵심 코드 예시 import * as React from 'react'; import { BarChart, LineChart } from '@mui/x-charts'; const data = [ { month: 'Jan', uv: 400, pv: 300 }, { month: 'Feb', uv: 300, pv: 200 }, { month: 'Mar', uv: 200, pv: 250 }, ]; // BarChart 예시 \u003cBarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}\u003e \u003cXAxis dataKey=\"month\" /\u003e {/* series는 데이터 표현을 담당하며, 대괄호와 중괄호가 섞여 있음 */} \u003cBar dataKey=\"uv\" fill=\"#8884d8\" barLabel /\u003e \u003cBar dataKey=\"pv\" fill=\"#82ca9a\" barLabel /\u003e \u003c/BarChart\u003e // LineChart 예시 \u003cLineChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}\u003e \u003cXAxis dataKey=\"month\" /\u003e {/* series 구성: [{ dataKey, type, ... }] 형태 */} \u003cLine type=\"monotone\" dataKey=\"uv\" stroke=\"#8884d8\" activeDot={{ r: 8 }} /\u003e \u003cLine type=\"monotone\" dataKey=\"pv\" stroke=\"#82ca9a\" activeDot={{ r: 8 }} /\u003e \u003c/LineChart\u003e 총평 오늘 오전 전체에서 배운 것 React 리팩터링과 상태 관리, 그리고 자동 채점 시스템의 ‘계약’ 개념을 통해 코드를 단순히 기능적으로 완성하는 것을 넘어 구조와 인터페이스의 중요성을 재인식했습니다. 특히 외부 SDK와의 연동이나 UI 라이브러리 사용 시 제공된 스켈레톤 준수의 필연성을 깨닫고, 문법적 완성도보다 시스템 요구사항 충족을 최우선으로 하는 개발 관점을 갖게 되었습니다.\n다음에 조심할 것 자동 채점 시스템은 코드의 완성도보다 제공된 인터페이스와 DOM 구조를 정확히 따르는 것이 최우선이므로, skeleton 코드를 임의로 수정하기보다는 기능을 구현하는 순서를 재고해야 한다. React Bootstrap 등 외부 라이브러리를 사용할 때는 CSS 파일을 최상위 컴포넌트에서 반드시 import하여 스타일 시트가 로드된 상태여야지만 컴포넌트가 정상적으로 작동한다는 점을 간과하지 말아야 한다. MUI X Charts와 같은 차트 라이브러리에서는 데이터 구조(series, xAxis 등)와 닫는 괄호 위치에 각별히 주의해야 하며, JSX 문법과 데이터 결합 시 실수가 발생하기 쉬우니 코드 작성을 신중히 검토해야 한다. 다음 복습 주제 React와 외부 SDK 연동 시 useRef를 통한 DOM 참조와 객체 부착(setMap)의 필수 과정을 명확히 이해했다. 또한, 자동 채점 시스템에서 ‘인터페이스 계약 준수’가 기능 구현 그 이상으로 중요한 검증 기준임을 인지하고 실무 적용에 임하겠다.\n다음 학습 주제로는 React 상태 관리의 핵심인 useEffect와 useReducer의 동작 원리, 그리고 Next.js와 연동된 데이터 페칭 전략을 복습하여 화면 전환 시 발생하는 비동기 처리 이슈를 해결하는 방법을 심화하고자 한다.\n🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다. This post was written with the help of a local LLM (AI).\n",
+  "wordCount" : "2212",
+  "inLanguage": "en",
+  "datePublished": "2026-08-20T00:00:00Z",
+  "dateModified": "2026-08-20T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-08-20-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      리팩터링으로 다진 구조, 라우팅과 차트로 완성한 다음 단계
+    </h1>
+    <div class="post-description">
+      2026-08-20 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-08-20 00:00:00 +0000 UTC'>2026년 8월 20일</span>&nbsp;·&nbsp;<span>11 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-react-%EB%A6%AC%ED%8C%A9%ED%84%B0%EB%A7%81-%ED%9D%90%EB%A6%84-%EB%B3%B5%EC%8A%B5-%EC%B4%88%EB%B3%B4%EC%9E%90%EC%9D%98-%EA%B5%AC%EC%A1%B0-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">React 리팩터링 흐름 복습: 초보자의 구조 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-react-router-%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%83%81%ED%83%9C-%EA%B4%80%EB%A6%AC-%EB%B3%B5%EC%8A%B5">React Router 비동기 상태 관리 복습</a></li>
+</ol>
+</li>
+<li>
+<ol>
+<li><a href="#1-%EB%AC%B4%EC%97%87%EC%9D%B4-%ED%97%B7%EA%B0%88%EB%A0%B8%EB%82%98">무엇이 헷갈렸나</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%A0%95%EB%A6%AC%EB%90%9C-%EC%9D%B4%ED%95%B4">정리된 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%8B%A4%EC%8A%B5-%EC%98%88%EC%8B%9C-%EC%98%A4%EB%8A%98%EC%9D%98-%EC%A0%84%ED%99%98-%EA%B3%BC%EC%A0%95">실습 예시 (오늘의 전환 과정)</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%9E%90%EB%8F%99-%EC%B1%84%EC%A0%90-%EA%B3%84%EC%95%BD%EA%B3%BC-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84%EC%9D%98-%EA%B7%A0%ED%98%95">자동 채점 계약과 기능 구현의 균형</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EC%B9%B4%EC%B9%B4%EC%98%A4-%EC%A7%80%EB%8F%84-sdk%EC%99%80-react%EC%9D%98-%EC%97%B0%EA%B2%B0-%EA%B3%A0%EB%A6%AC">카카오 지도 SDK와 React의 연결 고리</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-react-bootstrap-%EB%B2%84%ED%8A%BC-ui-%EC%9E%85%EB%AC%B8%ED%95%98%EA%B8%B0">React Bootstrap 버튼 UI 입문하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="6">
+<li><a href="#6-nextjs-link-%EC%B0%A8%ED%8A%B8-%ED%8E%98%EC%9D%B4%EC%A7%80-%EB%9D%BC%EC%9A%B0%ED%8C%85-%EA%B5%AC%EC%84%B1%ED%95%98%EA%B8%B0">Next.js Link, 차트 페이지 라우팅 구성하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="7">
+<li><a href="#7-mui-x-charts-%ED%95%B5%EC%8B%AC-prop-%EB%B6%84%EB%A5%98%EC%99%80-%ED%95%99%EC%8A%B5-%ED%8F%AC%EC%9D%B8%ED%8A%B8">MUI X Charts 핵심 prop 분류와 학습 포인트</a></li>
+</ol>
+</li>
+<li><a href="#%ED%95%B5%EC%8B%AC-%EC%9A%94%EC%95%BD">📌 핵심 요약</a></li>
+<li><a href="#%ED%95%B5%EC%8B%AC-prop-%EB%B6%84%EB%A5%98">🔑 핵심 prop 분류</a></li>
+<li><a href="#%EB%AC%B8%EB%B2%95%EC%9D%98-%EC%9A%94%EB%A0%B9">💡 문법의 요령</a></li>
+<li><a href="#%ED%95%B5%EC%8B%AC-%EC%BD%94%EB%93%9C-%EC%98%88%EC%8B%9C">📊 핵심 코드 예시</a></li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-react-리팩터링-흐름-복습-초보자의-구조-이해하기">1. React 리팩터링 흐름 복습: 초보자의 구조 이해하기<a hidden class="anchor" aria-hidden="true" href="#1-react-리팩터링-흐름-복습-초보자의-구조-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>리팩터링은 화면을 바꾸는 것이 아니라, 같은 기능을 유지하면서 내부 구조를 개선하는 작업이라는 점을 명확히 이해했습니다. 특히 CSS Modules와 styled-components가 클래스 이름 격리나 JavaScript 템플릿 리터럴을 통해 스타일 관리의 방식을 어떻게 변화시키는지 구체적인 예시를 보며 체감할 수 있었습니다. 단순히 문법을 익히는 것을 넘어, 코드 관리 방식의 차이를 인지하는 연습이 무엇보다 중요하다고 느꼈습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>처음에는 화면이 똑같아 보여서 리팩터링의 필요성을 즉시 체감하기 어려웠습니다. 특히 CSS Modules나 styled-components 같은 도구가 단순히 스타일 적용 방식뿐만 아니라 프로젝트 전체의 코드 관리 구조를 근본적으로 바꾸는 것인 줄 몰랐습니다. 결국 &ldquo;같은 기능을 유지하면서 내부 구조를 개선하는 작업&quot;이라는 정의 아래, 각 스타일링 기법이 가진 고유한 장단점과 관리 방식을 이해하는 과정이었음을 깨달았습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>리팩터링은 화면을 바꾸는 것이 아니라 같은 기능을 유지하면서 내부 구조를 개선하는 작업입니다. 일반 CSS, CSS Modules, styled-components는 스타일 관리 방식이 다를 뿐 최종적인 화면 표현은 비슷할 수 있습니다. 이 과정은 문법 암기보다 코드 관리 방식의 차이를 체감하는 연습에 가깝습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// 1. 일반 CSS (HTML)
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">button</span> <span style="color:#66d9ef">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;btn&#34;</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">클릭</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/button&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 2. CSS Modules (JS import)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">styles</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./Button.module.css&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">button</span> <span style="color:#a6e22e">className</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">styles</span>.<span style="color:#a6e22e">btn</span>}<span style="color:#f92672">&gt;</span><span style="color:#a6e22e">클릭</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/button&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 3. styled-components (JS 템플릿 리터럴)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Button</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">styled</span>.<span style="color:#a6e22e">button</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  background-color: blue;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  color: white;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">`</span>;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Button</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">클릭</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/Button&gt;</span>
+</span></span></code></pre></div><h2 id="2-react-router-비동기-상태-관리-복습">2. React Router 비동기 상태 관리 복습<a hidden class="anchor" aria-hidden="true" href="#2-react-router-비동기-상태-관리-복습">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>오늘은 수많은 상태 관리 도구를 사용해보며, 단순히 화면이 비슷비슷하게 보이는 이유를 고민했습니다. 결국 각 도구가 필요한 이유는 &lsquo;데이터 전달과 상태 변경의 책임&rsquo;을 얼마나 명확히 나누느냐에 달려 있다는 생각이 들었습니다. 특히 Redux Toolkit 같은 툴이 boilerplate 코드를 줄여주어 진입 장벽을 낮춰준다는 점은 실무에서 효율성을 높이는 중요한 요소라고 느꼈습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>useState와 useReducer, Context, Redux 등 다양한 도구를 사용해도 화면 결과가 비슷비슷해 &lsquo;필요성&rsquo;을 파악하기 어려웠다.</p>
+<p>상태 관리 도구는 단순히 코드를 줄이기 위한 것이 아니라, <strong>데이터 전달과 상태 변경의 책임을 명확히 나누기 위해 선택하는 것</strong>이다. 상태의 범위와 변경의 복잡도가 높을수록 더 체계적인 도구를 사용해야 한다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>도구를 교체하는 핵심 목적은 화면 표현이 아닌 데이터 전달과 상태 변경의 책임을 명확히 나누는 데 있습니다. useState부터 Redux Toolkit까지, 상태의 범위와 변경의 복잡도가 높을수록 더 체계적인 관리 도구가 필요합니다. 결국 개발자는 앱의 규모와 상황에 맞는 최적의 상태 관리 전략을 선택해야 합니다.</p>
+<h1 id="learninglog-워킹-노트-react-router-비동기-서비스-상태-관리-진화-복습">LearningLog 워킹 노트: React Router, 비동기 서비스, 상태 관리 진화 복습<a hidden class="anchor" aria-hidden="true" href="#learninglog-워킹-노트-react-router-비동기-서비스-상태-관리-진화-복습">#</a></h1>
+<p><strong>작성일:</strong> 2026-08-20
+<strong>초보자 시점:</strong> 오늘도 수많은 개념들이 쏟아지니 머릿속이 복잡해지는 순간들입니다. 특히 &ldquo;왜 이 도구를 쓰지?&ldquo;라는 질문에 대한 답을 찾기 위해 코드를 이리저비 옮겨보았는데, 정작 중요한 건 &lsquo;화면의 결과&rsquo;가 아니라 &lsquo;데이터가 어떻게 흐르는지&rsquo;였습니다.</p>
+<h2 id="1-무엇이-헷갈렸나">1. 무엇이 헷갈렸나<a hidden class="anchor" aria-hidden="true" href="#1-무엇이-헷갈렸나">#</a></h2>
+<p>오늘 가장 큰 혼란은 **&ldquo;화면이 비슷비슷하게 나오는데, 내부 구조가 계속 바뀌니 왜 필요한지 감이 안 잡혔다&rdquo;**는 점이었습니다.
+useState로 시작했다가 useReducer, Context, Redux&hellip; 차근차근 도구를 업그레이드해보니 코드의 양과 복잡도는 급격히 늘었는데, 정작 보이는 결과물은 비슷비슷해서 &ldquo;이게 무슨 의미일까?&ldquo;라는 의문이 들었습니다. 단순히 문법을 외우는 것이 아니라, <strong>어떤 상황에서 어떤 도구가 필요한지</strong>를 감으로 잡는 과정이 필요하다고 느꼈습니다.</p>
+<h2 id="2-정리된-이해">2. 정리된 이해<a hidden class="anchor" aria-hidden="true" href="#2-정리된-이해">#</a></h2>
+<p>도구를 바꾸는 가장 큰 목적은 **&ldquo;화면 표현이 아니라 데이터 전달과 상태 변경의 책임을 더 명확히 나누기 위함&rdquo;**이었습니다.</p>
+<ul>
+<li><strong>useState:</strong> 내 컴포넌트 안에서 간단하게 다룰 수 있는 로컬 상태</li>
+<li><strong>useReducer:</strong> 상태 변화의 규칙이 조금이라도 복잡해질 때 유용한 도구</li>
+<li><strong>Context:</strong> 컴포넌트 트리 사이에서 값을 공유해야 할 때, 중간 다리를 놓는 통로 역할</li>
+<li><strong>Redux:</strong> 앱 전체의 상태를 store라는 중앙 집중식 창고에 관리하고, 명확한 흐름으로 변경하고 싶을 때</li>
+<li><strong>Redux Toolkit:</strong> Redux를 시작할 때 겪게 되는 번거로운 boilerplate 코드를 줄여주어 진입 장벽을 낮춰주는 친구</li>
+</ul>
+<p>결론적으로, **&ldquo;상태의 범위와 변경의 복잡도&rdquo;**가 높을수록 더 체계적인 도구를 선택하게 된다는 생각이 들었습니다.</p>
+<h2 id="3-실습-예시-오늘의-전환-과정">3. 실습 예시 (오늘의 전환 과정)<a hidden class="anchor" aria-hidden="true" href="#3-실습-예시-오늘의-전환-과정">#</a></h2>
+<p>강사님께서 보여주신 방식은 정말 인상 깊었습니다.
+같은 기능을 위해 <code>useState</code>로 관리하던 카운터를 <code>useReducer</code>로 리팩토링한 과정을 통해, 액션(Action)과 리듀서(Reducer)가 상태 변화를 어떻게 체계적으로 관리하는지 실감할 수 있었습니다. 특히 <code>useReducer</code>는 단순한 값의 변경이 아니라, &lsquo;어떤 의도&rsquo;로 상태가 변하는지를 명시할 수 있어 코드의 의도가 훨씬 명확해지는 것을 체감했습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// useReducer를 활용한 카운터 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">initialState</span> <span style="color:#f92672">=</span> { <span style="color:#a6e22e">count</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span> };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">reducer</span>(<span style="color:#a6e22e">state</span>, <span style="color:#a6e22e">action</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">switch</span> (<span style="color:#a6e22e">action</span>.<span style="color:#a6e22e">type</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;increment&#39;</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> { <span style="color:#a6e22e">count</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">count</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> };
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;decrement&#39;</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> { <span style="color:#a6e22e">count</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">count</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> };
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">state</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">state</span>, <span style="color:#a6e22e">dispatch</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">useReducer</span>(<span style="color:#a6e22e">reducer</span>, <span style="color:#a6e22e">initialState</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 버튼 클릭 시.dispatch({ type: &#39;increment&#39; })와 같이 호출
+</span></span></span></code></pre></div><p>핵심을 보여주는 코드 예시&rsquo;만&rsquo; 백틱3개 코드블록으로 출력하라. 노트에 코드 근거가 없으면 아무것도 쓰지 마라.</p>
+<h2 id="3-자동-채점-계약과-기능-구현의-균형">3. 자동 채점 계약과 기능 구현의 균형<a hidden class="anchor" aria-hidden="true" href="#3-자동-채점-계약과-기능-구현의-균형">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>자동 채점 시스템은 코드의 기능적 완성도뿐만 아니라, starter code가 제시한 인터페이스와 DOM 구조 등 &lsquo;계약&rsquo;을 정확히 따르는지를 검증한다는 점을 깨달았다. 특히 import 경로나 태그 구조의 미세한 변경조차 테스트를 실패시킬 수 있어, 기능 구현 전 반드시 제공된 skeleton을 준수하는 것이 우선임을 느꼈다. 이를 통해 &lsquo;더 좋은 코드&rsquo;와 &lsquo;채점 계약 사이의 균형&rsquo;이 단순히 문법적 완성도가 아닌, 시스템 요구사항 충족 여부로 판단되어야 한다는 관점을 갖게 되었다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>가장 큰 혼란은 &ldquo;기능이 정상 작동해 보여도, DOM 구조의 작은 변화 하나가 채점을 실패하게 만든 경우&quot;였습니다. 특히 코드를 더 깔끔하게 리팩토링했음에도 불구하고, <code>&lt;div&gt;</code> 태그 하나만 사라져도 XPath 기준의 자동 채점 시스템에서 테스트가 깨지는 경험을 했습니다.</p>
+<p>또 한 가지는 &ldquo;더 좋은 코드&quot;를 작성하는 것과 &ldquo;채점 계약(계약)&ldquo;을 지키는 것 사이의 균형이었습니다. 기능상 완벽해 보여도, starter code와 요구사항에 명시된 import 경로, 파일 구조, DOM 계층 구조 등과의 불일치가 있으면 채점이 되지 않는다는 점이 처음에는 직관적이지 않았습니다.</p>
+<p>자동 채점 문제는 단순히 &ldquo;코드가 작동하는지&quot;를 넘어, **&ldquo;정해진 인터페이스와 구조를 정확히 맞추는 문제&rdquo;**라는 점을 깨달았습니다. 기능 검증과 구조 준수는 별개의 문제이며, starter code의 구조를 보존하는 것이 자동 채점 환경에서 최우선 과제가 됩니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>자동 채점 시스템은 코드의 기능적 완성도보다, starter code와의 인터페이스와 구조 일치 여부를 우선적으로 검증합니다. 따라서 기능을 구현하기 전에는 DOM 구조나 import 경로 등 &lsquo;계약&rsquo;을 정확히 맞추는 것이 최우선 과제가 되어야 합니다. 일단 테스트가 통과한 후에는 코드 리팩토링이나 개선이 가능하지만, 초기 단계에서는 강사님이 제시한 구조를 보존하는 것이 채점 실패를 막는 가장 안전한 방법입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// React Testing Library와 채점 스켈레톤 민감도 복습을 위한 핵심 원칙 요약
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">핵심 원칙:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">1. 기능 검증(structural compliance)보다 DOM 구조/import 경로 등 &#39;계약&#39; 준수를 우선시
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">2. starter code의 디렉터리 구조, import 경로, 기본 DOM 레이아웃을 먼저 파악
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">3. 최소한의 변경으로 테스트 통과를 목표로 한 후, 리팩토링 검증
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span>
+</span></span></code></pre></div><h2 id="4-카카오-지도-sdk와-react의-연결-고리">4. 카카오 지도 SDK와 React의 연결 고리<a hidden class="anchor" aria-hidden="true" href="#4-카카오-지도-sdk와-react의-연결-고리">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>React와 외부 SDK를 결합할 때 가장 중요한 것은 <code>useRef</code>를 통해 DOM 엘리먼트를 정확히 참조하고, 지도 객체 생성 시 그 컨테이너를 전달하는 것입니다. <code>new kakao.maps.Map</code>과 <code>new kakao.maps.Marker</code>는 각각 지도와 마커 객체를 생성하지만, 실제 화면에 나타나게 하려면 <code>setMap(map)</code> 메서드를 호출해 마커를 지도에 부착해야 합니다. 마지막으로 클릭 이벤트 리스너를 통해 <code>evt.latLng</code>로 좌표를 추출하면, 위도와 경도를 각각 <code>getLat()</code>와 <code>getLng()</code> 메서드로 손쉽게 분리할 수 있습니다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>React와 외부 SDK(카카오맵)의 생명주기 차이로 인해 <code>useRef</code>를 직접 변형하려다 구조적 불일치가 발생했다. 특히 마커와 이벤트 객체가 React의 상태 관리와 어떻게 연결되는지 파악하는 것이 처음에는 직관적이지 않았다. 결국 핵심은 외부 SDK 객체를 React의 렌더링 주기에 맞게 연결하는 &lsquo;고리&rsquo;를 만드는 것이었다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>외부 SDK 객체와 React의 생명주기를 연결하는 것이 핵심입니다. <code>useRef</code>로 DOM을 참조하고, 지도 생성 시점에 <code>setMap</code>을 호출해 마커를 화면에 뿌려줍니다. 마지막으로 클릭 이벤트 리스너를 통해 <code>evt.latLng</code>로 좌표를 추출하여 상태와 연동하면 됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">useEffect</span>, <span style="color:#a6e22e">useRef</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">Map</span>, <span style="color:#a6e22e">Marker</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;@kakao/maps-sdk&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">KakaoMap</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">mapContainer</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">useRef</span>(<span style="color:#66d9ef">null</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">mapRef</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">useRef</span>(<span style="color:#66d9ef">null</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">useEffect</span>(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 1. SDK 로딩 및 지도 생성
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">map</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Map</span>(<span style="color:#a6e22e">mapContainer</span>.<span style="color:#a6e22e">current</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">mapRef</span>.<span style="color:#a6e22e">current</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">map</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 2. 마커 생성 및 추가
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">marker</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Marker</span>({
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">position</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">kakao</span>.<span style="color:#a6e22e">maps</span>.<span style="color:#a6e22e">LatLng</span>(<span style="color:#ae81ff">37.5665</span>, <span style="color:#ae81ff">126.9780</span>),
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">marker</span>.<span style="color:#a6e22e">setMap</span>(<span style="color:#a6e22e">map</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 3. 클릭 이벤트 리스너 등록 (핵심)
+</span></span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">kakao</span>.<span style="color:#a6e22e">maps</span>.<span style="color:#a6e22e">event</span>.<span style="color:#a6e22e">addListener</span>(<span style="color:#a6e22e">map</span>, <span style="color:#e6db74">&#39;click&#39;</span>, <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">mouseEvent</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">latlng</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">mouseEvent</span>.<span style="color:#a6e22e">latLng</span>; <span style="color:#75715e">// evt.latLng와 동일
+</span></span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;클릭 좌표 - 위도:&#39;</span>, <span style="color:#a6e22e">latlng</span>.<span style="color:#a6e22e">getLat</span>(), <span style="color:#e6db74">&#39;경도:&#39;</span>, <span style="color:#a6e22e">latlng</span>.<span style="color:#a6e22e">getLng</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// 클릭한 위치에 마커 이동 예시
+</span></span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">marker</span>.<span style="color:#a6e22e">setPosition</span>(<span style="color:#a6e22e">latlng</span>);
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>  }, []); <span style="color:#75715e">// 의존성 배열 비워두기 (컴포넌트 마운트 시 한 번만 실행)
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span> <span style="color:#a6e22e">ref</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">mapContainer</span>} <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span>{{ <span style="color:#a6e22e">width</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;100%&#39;</span>, <span style="color:#a6e22e">height</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;500px&#39;</span> }} <span style="color:#f92672">/&gt;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="5-react-bootstrap-버튼-ui-입문하기">5. React Bootstrap 버튼 UI 입문하기<a hidden class="anchor" aria-hidden="true" href="#5-react-bootstrap-버튼-ui-입문하기">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>React Bootstrap은 Bootstrap의 디자인 시스템을 React 컴포넌트 형태로 제공하는 라이브러리이며, 핵심 CSS를 import한 후 <code>variant</code>나 <code>size</code>와 같은 prop을 통해 스타일을 제어한다. 기존에 직접 CSS를 작성하던 방식과 달리, 사전에 정의된 속성을 활용해 빠르게 일관성 있는 UI를 구성할 수 있다는 점이 가장 큰 특징이다. 특히 <code>import &quot;bootstrap/dist/css/bootstrap.min.css&quot;</code>와 같이 Bootstrap의 기본 스타일을 최상위 컴포넌트에서 적용해야 React Bootstrap 컴포넌트가 제대로 작동한다는 점을 반드시 기억해야 한다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>React Bootstrap에서 <code>variant=&quot;primary&quot;</code>와 같은 prop을 주는 방식이 기존 HTML class 적용과는 다른 개념이며, 스타일이 실제로 적용되는지 처음에는 의심이 들었다.</p>
+<p>또, <code>import &quot;bootstrap/dist/css/bootstrap.min.css&quot;</code>와 <code>{ Button } from &quot;react-bootstrap&quot;</code>가 섞여 있어, 핵심 CSS와 React 전용 컴포넌트의 출처를 구분하기 어려웠다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>React Bootstrap은 Bootstrap의 디자인 시스템을 React 컴포넌트 형태로 제공하는 라이브러리이며, 핵심 CSS를 import한 후 <code>variant</code>와 같은 prop을 통해 스타일을 제어하여 빠른 구성과 일관된 디자인을 실현한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">React</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">Button</span>, <span style="color:#a6e22e">ButtonToolbar</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;react-bootstrap&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#e6db74">&#34;bootstrap/dist/css/bootstrap.min.css&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">App</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      {<span style="color:#75715e">/* variant prop을 통해 스타일 선택 */</span>}
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Button</span> <span style="color:#a6e22e">variant</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;primary&#34;</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Primary</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/Button&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      {<span style="color:#75715e">/* size prop으로 크기 조절 가능 */</span>}
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Button</span> <span style="color:#a6e22e">variant</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;secondary&#34;</span> <span style="color:#a6e22e">size</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;lg&#34;</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Large</span> <span style="color:#a6e22e">Secondary</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/Button&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      {<span style="color:#75715e">/* ButtonToolbar로 버튼 그룹화 */</span>}
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">ButtonToolbar</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Button</span> <span style="color:#a6e22e">variant</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;success&#34;</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Success</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/Button&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Button</span> <span style="color:#a6e22e">variant</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;danger&#34;</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Danger</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/Button&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/ButtonToolbar&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;</span>
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#a6e22e">App</span>;
+</span></span></code></pre></div><h2 id="6-nextjs-link-차트-페이지-라우팅-구성하기">6. Next.js Link, 차트 페이지 라우팅 구성하기<a hidden class="anchor" aria-hidden="true" href="#6-nextjs-link-차트-페이지-라우팅-구성하기">#</a></h2>
+<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
+<p>Next.js의 <code>Link</code> 컴포넌트는 React Router의 그것과 네이밍이 같아 혼란스러울 수 있지만, 실제로는 Next.js의 파일 시스템 라우팅과 연동되어 페이지 이동을 담당한다는 점을 명확히 했다. 단순히 URL을 전환하는 것을 넘어, 클라이언트 사이드에서 부드러운 네비게이션을 제공하며 <code>next/link</code>를 사용하는 것이 핵심임을 깨달았다.</p>
+<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
+<p>React Router와 Next.js 모두 <code>Link</code>라는 동일한 컴포넌트 이름을 사용하지만, import 경로가 <code>react-router-dom</code>인지 <code>next/link</code>인지에 따라 완전히 달라져 코드 작성 시 실수가 잦았다.</p>
+<p>특히 &ldquo;페이지 이동&quot;이라는 개념은 같지만, 그 주체가 React Router인지 Next.js의 디렉토리 구조인지 구분이 가지 않아 라우팅 시스템의 작동 원리를 혼동하기 쉬웠다.</p>
+<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
+<p>Next.js에서 <code>Link</code>는 페이지 이동을 담당하며, 실제 라우팅은 Next.js의 디렉토리 구조가 관리한다. <code>next/link</code>를 사용하면 단순 리프레시 없이 클라이언트 사이드에서 부드럽게 전환되며, 정의된 경로대로 자동 매핑된다. 따라서 개발자는 <code>Link</code>를 통해 URL을 선언적으로 제어하고, 시스템은 파일 기반 라우팅으로 페이지를 연결한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">Link</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;next/link&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">Navigation</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">nav</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">ul</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">li</span>&gt;&lt;<span style="color:#f92672">Link</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/&#34;</span>&gt;<span style="color:#a6e22e">Home</span>&lt;/<span style="color:#f92672">Link</span>&gt;&lt;/<span style="color:#f92672">li</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">li</span>&gt;&lt;<span style="color:#f92672">Link</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/bar&#34;</span>&gt;<span style="color:#a6e22e">Bar</span> <span style="color:#a6e22e">Page</span>&lt;/<span style="color:#f92672">Link</span>&gt;&lt;/<span style="color:#f92672">li</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">li</span>&gt;&lt;<span style="color:#f92672">Link</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/line&#34;</span>&gt;<span style="color:#a6e22e">Line</span> <span style="color:#a6e22e">Page</span>&lt;/<span style="color:#f92672">Link</span>&gt;&lt;/<span style="color:#f92672">li</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#f92672">ul</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">nav</span>&gt;
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="7-mui-x-charts-핵심-prop-분류와-학습-포인트">7. MUI X Charts 핵심 prop 분류와 학습 포인트<a hidden class="anchor" aria-hidden="true" href="#7-mui-x-charts-핵심-prop-분류와-학습-포인트">#</a></h2>
+<h3 id="무엇을-배웠나-6">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-6">#</a></h3>
+<p>MUI X Charts를 공부하면서 JSX 문법과 데이터 구조가 결합되는 부분이 가장 어려웠습니다. 특히 배열과 객체가 중첩된 <code>series={[{ data: [...], label: &quot;...&quot; }]}</code> 형태에서 닫는 기호의 위치를 파악하는 데 애를 먹었습니다. 핵심은 <code>series</code>, <code>xAxis</code> 같은 prop이 데이터를 표현하고, <code>barLabel</code>나 <code>stack</code> 같은 prop이 스타일링과 상호작용을 담당한다는 점으로 정리했습니다.</p>
+<h3 id="헷갈렸던-점-6">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-6">#</a></h3>
+<p>JSX 문법에서 대괄호와 중괄호가 섞여 있어 <code>}]</code>나 <code>}}</code> 어디서 닫혀야 할지 감이 잡히지 않았다.</p>
+<p>특히 <code>/&gt;</code>(자 closing 태그)를 빼먹었을 때 에러 메시지가 추상적이어서 코드 어디가 잘못된지 찾기 어려웠고, <code>stack</code>, <code>area</code>, <code>highlightScope</code> 같은 prop들이 어떤 역할을 하는지 데이터 흐름 전체를 한 번에 파악하기 힘들었다.</p>
+<h3 id="정리된-이해-6">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-6">#</a></h3>
+<p>MUI X Charts는 데이터 표현(<code>series</code>, <code>xAxis</code>), 스타일링(<code>barLabel</code>, <code>area</code>), 상호작용(<code>onLineClick</code>)을 구분하여 이해해야 한다. 특히 JSX의 중괄호와 대괄호 조합에 익숙해지는 것이 가장 중요한 첫걸음이다.</p>
+<h1 id="mui-x-charts-barchart와-linechart-구성-및-이벤트-초보자-워킹-노트">MUI X Charts: BarChart와 LineChart 구성 및 이벤트 (초보자 워킹 노트)<a hidden class="anchor" aria-hidden="true" href="#mui-x-charts-barchart와-linechart-구성-및-이벤트-초보자-워킹-노트">#</a></h1>
+<h2 id="-핵심-요약">📌 핵심 요약<a hidden class="anchor" aria-hidden="true" href="#-핵심-요약">#</a></h2>
+<p>MUI X Charts에서 가장 큰 어려움은 <strong>JSX 문법과 데이터 구조의 결합</strong>이었습니다. 특히 <code>series</code> prop에 사용되는 대괄호(<code>[]</code>)와 중괼호(<code>{}</code>)의 조합, 그리고 컴포넌트 닫기(<code>/&gt;</code>) 위치가 혼동을 주었습니다.</p>
+<h2 id="-핵심-prop-분류">🔑 핵심 prop 분류<a hidden class="anchor" aria-hidden="true" href="#-핵심-prop-분류">#</a></h2>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: left">카테고리</th>
+					<th style="text-align: left">주요 prop</th>
+					<th style="text-align: left">의미</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: left"><strong>데이터 표현</strong></td>
+					<td style="text-align: left"><code>series</code></td>
+					<td style="text-align: left">실제 차트에 표시할 데이터 묶음 (라벨 포함)</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"></td>
+					<td style="text-align: left"><code>xAxis</code></td>
+					<td style="text-align: left">x축의 카테고리/스케일 정의</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"></td>
+					<td style="text-align: left"><code>grid</code></td>
+					<td style="text-align: left">격자 선의 방향 및 스타일</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>스타일링</strong></td>
+					<td style="text-align: left"><code>barLabel</code></td>
+					<td style="text-align: left">막대 위에 값 표시 여부</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"></td>
+					<td style="text-align: left"><code>borderRadius</code></td>
+					<td style="text-align: left">모서리의 둥근 정도</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"></td>
+					<td style="text-align: left"><code>area</code></td>
+					<td style="text-align: left">라인 차트 아래 영역 채우기</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"></td>
+					<td style="text-align: left"><code>stack</code></td>
+					<td style="text-align: left">같은 이름끼리 막대를 누적 표시</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>상호작용</strong></td>
+					<td style="text-align: left"><code>onAreaClick</code>, <code>onLineClick</code></td>
+					<td style="text-align: left">사용자가 차트를 클릭했을 때 실행되는 함수</td>
+			</tr>
+	</tbody>
+</table>
+<h2 id="-문법의-요령">💡 문법의 요령<a hidden class="anchor" aria-hidden="true" href="#-문법의-요령">#</a></h2>
+<ul>
+<li><strong>JSX 닫기:</strong> 컴포넌트는 중첩된 <code>{</code>와 <code>}</code> 그리고 <code>[</code>와 <code>]</code>를 정확히 맞물려 닫아야 합니다.</li>
+<li><strong>닫는 기호 확인:</strong> <code>/&gt;</code>(자 closing 태그)를 빼먹었을 때 에러 메시지가 추상적이므로, 대괄호와 중괄호의 개수를 꼼꼼히 확인하는 습관이 필요합니다.</li>
+</ul>
+<h2 id="-핵심-코드-예시">📊 핵심 코드 예시<a hidden class="anchor" aria-hidden="true" href="#-핵심-코드-예시">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">as</span> <span style="color:#a6e22e">React</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">BarChart</span>, <span style="color:#a6e22e">LineChart</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;@mui/x-charts&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">data</span> <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">month</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;Jan&#39;</span>, <span style="color:#a6e22e">uv</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">400</span>, <span style="color:#a6e22e">pv</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">300</span> },
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">month</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;Feb&#39;</span>, <span style="color:#a6e22e">uv</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">300</span>, <span style="color:#a6e22e">pv</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">200</span> },
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">month</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;Mar&#39;</span>, <span style="color:#a6e22e">uv</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">200</span>, <span style="color:#a6e22e">pv</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">250</span> },
+</span></span><span style="display:flex;"><span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// BarChart 예시
+</span></span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">BarChart</span> <span style="color:#a6e22e">data</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">data</span>} <span style="color:#a6e22e">margin</span><span style="color:#f92672">=</span>{{ <span style="color:#a6e22e">top</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">20</span>, <span style="color:#a6e22e">right</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">30</span>, <span style="color:#a6e22e">left</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">bottom</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span> }}&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">XAxis</span> <span style="color:#a6e22e">dataKey</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;month&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  {<span style="color:#75715e">/* series는 데이터 표현을 담당하며, 대괄호와 중괄호가 섞여 있음 */</span>}
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">Bar</span> <span style="color:#a6e22e">dataKey</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;uv&#34;</span> <span style="color:#a6e22e">fill</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#8884d8&#34;</span> <span style="color:#a6e22e">barLabel</span> /&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">Bar</span> <span style="color:#a6e22e">dataKey</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pv&#34;</span> <span style="color:#a6e22e">fill</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#82ca9a&#34;</span> <span style="color:#a6e22e">barLabel</span> /&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">BarChart</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// LineChart 예시
+</span></span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">LineChart</span> <span style="color:#a6e22e">data</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">data</span>} <span style="color:#a6e22e">margin</span><span style="color:#f92672">=</span>{{ <span style="color:#a6e22e">top</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">20</span>, <span style="color:#a6e22e">right</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">30</span>, <span style="color:#a6e22e">left</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">bottom</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span> }}&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">XAxis</span> <span style="color:#a6e22e">dataKey</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;month&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  {<span style="color:#75715e">/* series 구성: [{ dataKey, type, ... }] 형태 */</span>}
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">Line</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;monotone&#34;</span> <span style="color:#a6e22e">dataKey</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;uv&#34;</span> <span style="color:#a6e22e">stroke</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#8884d8&#34;</span> <span style="color:#a6e22e">activeDot</span><span style="color:#f92672">=</span>{{ <span style="color:#a6e22e">r</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">8</span> }} /&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">Line</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;monotone&#34;</span> <span style="color:#a6e22e">dataKey</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pv&#34;</span> <span style="color:#a6e22e">stroke</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#82ca9a&#34;</span> <span style="color:#a6e22e">activeDot</span><span style="color:#f92672">=</span>{{ <span style="color:#a6e22e">r</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">8</span> }} /&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">LineChart</span>&gt;
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>React 리팩터링과 상태 관리, 그리고 자동 채점 시스템의 &lsquo;계약&rsquo; 개념을 통해 코드를 단순히 기능적으로 완성하는 것을 넘어 구조와 인터페이스의 중요성을 재인식했습니다. 특히 외부 SDK와의 연동이나 UI 라이브러리 사용 시 제공된 스켈레톤 준수의 필연성을 깨닫고, 문법적 완성도보다 시스템 요구사항 충족을 최우선으로 하는 개발 관점을 갖게 되었습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<ol>
+<li>자동 채점 시스템은 코드의 완성도보다 제공된 인터페이스와 DOM 구조를 정확히 따르는 것이 최우선이므로, skeleton 코드를 임의로 수정하기보다는 기능을 구현하는 순서를 재고해야 한다.</li>
+<li>React Bootstrap 등 외부 라이브러리를 사용할 때는 CSS 파일을 최상위 컴포넌트에서 반드시 import하여 스타일 시트가 로드된 상태여야지만 컴포넌트가 정상적으로 작동한다는 점을 간과하지 말아야 한다.</li>
+<li>MUI X Charts와 같은 차트 라이브러리에서는 데이터 구조(series, xAxis 등)와 닫는 괄호 위치에 각별히 주의해야 하며, JSX 문법과 데이터 결합 시 실수가 발생하기 쉬우니 코드 작성을 신중히 검토해야 한다.</li>
+</ol>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>React와 외부 SDK 연동 시 <code>useRef</code>를 통한 DOM 참조와 객체 부착(<code>setMap</code>)의 필수 과정을 명확히 이해했다. 또한, 자동 채점 시스템에서 &lsquo;인터페이스 계약 준수&rsquo;가 기능 구현 그 이상으로 중요한 검증 기준임을 인지하고 실무 적용에 임하겠다.</p>
+<p>다음 학습 주제로는 React 상태 관리의 핵심인 <code>useEffect</code>와 <code>useReducer</code>의 동작 원리, 그리고 Next.js와 연동된 데이터 페칭 전략을 복습하여 화면 전환 시 발생하는 비동기 처리 이슈를 해결하는 방법을 심화하고자 한다.</p>
+<blockquote>
+<p>🤖 이 글은 로컬 LLM(AI)의 도움을 받아 작성되었습니다.
+This post was written with the help of a local LLM (AI).</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-08-21-am-daily/">
+    <span class="title">« Prev</span>
+    <span>입력→처리→출력 파이프라인으로 DOM 입출력 해결하기 DOM 스타일·클래스·속성 명확히 구분하기 데이터 구조와 입력 값 의미 정확히 파악하기 순회와 정렬 개념을 명확히 분리하기</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-08-20-pm-daily/">
+    <span class="title">Next »</span>
+    <span>오후 데이터 변환과 라벨 처리, 서버 응답 검증 및 React Context 활용 정리</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
