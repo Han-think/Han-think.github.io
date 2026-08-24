@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>배열 순회와 조건문의 핵심: 시작·종료·증감 조립하기 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="배열 순회와 조건문의 핵심: 시작·종료·증감 조립하기 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/array-condition-practice/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/array-condition-practice/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/array-condition-practice/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="배열 순회와 조건문의 핵심: 시작·종료·증감 조립하기">
+  <meta property="og:description" content="배열 순회와 조건문의 핵심: 시작·종료·증감 조립하기 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-08-24T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-08-24T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="배열 순회와 조건문의 핵심: 시작·종료·증감 조립하기">
+  <meta name="twitter:description" content="배열 순회와 조건문의 핵심: 시작·종료·증감 조립하기 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "배열 순회와 조건문의 핵심: 시작·종료·증감 조립하기",
+      "item": "https://Han-think.github.io/learning/array-condition-practice/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "배열 순회와 조건문의 핵심: 시작·종료·증감 조립하기",
+  "name": "배열 순회와 조건문의 핵심: 시작·종료·증감 조립하기",
+  "description": "배열 순회와 조건문의 핵심: 시작·종료·증감 조립하기 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 반복문 조건문 for문 while문 총평 1. 반복문 왜 이걸 보게 됐나 나는 데이터 처리 과정에서 단순히 값을 나열하는 것을 넘어, 배열의 구조를 정확히 파악하고 제어해야 할 필요성을 느꼈다. 특히 ‘순서’가 정렬된 것인지 원래 위치인지 구별하지 못해 혼란을 겪으며, 반복문이 단순한 출력이 아니라 인덱스를 조작해 배열을 탐색하는 도구임을 깨닫게 되었다. 따라서 length - 1과 같은 공식이 왜 필요한지 이해하고, 시작점과 종료 조건, 증감 방향을 직접 설정하여 원하는 대로 데이터를 처리할 수 있는 능력을 기르고자 한다.\n내가 헷갈린 지점 처음에는 ‘순서’가 데이터의 크기 순인지 배열에 저장된 원래 위치 순인지 구별하지 못해 혼란스러웠습니다. 특히 역순 문제를 마주했을 때 length - 1 공식이 왜 필요한지 바로 머릿속에 그려지지 않아 답답함을 느꼈습니다. 반복문의 종료 조건에 대한 감이 없어 “왜 굳이 length에서 1을 빼야 하지?“라는 의문이 들었습니다.\n시도한 코드 / 예시 // 정방향 순회 (0부터 시작하여 length 미만까지) for (let i = 0; i \u003c arr.length; i++) { console.log(arr[i]); } // 역순 순회 (length - 1부터 0까지 감소) for (let i = arr.length - 1; i \u003e= 0; i--) { console.log(arr[i]); } 결과와 해석 반복문은 배열의 각 요소에 접근하기 위해 시작점, 종료 조건, 증감 방향을 조립하는 도구입니다. 정방향 순회는 0부터 length 미만까지 1씩 증가시키며 진행하고, 역순 순회는 length에서 1을 뺀 값부터 0 이상까지 1씩 감소시킵니다. 이 구조를 이해하면 배열의 앞뒤로 자유롭게 접근하여 데이터를 처리할 수 있습니다.\n정리된 이해 반복문은 배열을 순회하는 도구이며, 시작 위치와 종료 조건, 증감 방향을 직접 조립해야 한다. for문은 저장된 순서를 읽고, sort는 값의 위치를 재배치하는 서로 다른 개념으로 구분해야 한다. 핵심은 ‘시작점, 끝나는 기준, 방향’ 세 가지 뼈대를 스스로 구성할 수 있는 능력에 있다.\n2. 조건문 왜 이걸 보게 됐나 처음에는 ‘순서’가 데이터의 크기 순인지 배열의 위치 순인지 구별하지 못해 혼란스러웠습니다. 특히 역순 문제를 마주했을 때 length - 1 공식이 왜 필요한지 바로 머릿속에 그려지지 않아 답답함을 느꼈습니다.\n반복문과 정렬이라는 두 개념을 확실히 분리해서 생각하게 된 계기가 되었습니다. 반복문은 배열의 저장 순서를 읽어오는 도구이며, 시작 위치와 종료 조건, 증감 방향을 직접 조립해야 한다는 점이 핵심입니다.\n내가 헷갈린 지점 처음에는 ‘순서’라는 단어가 배열에 저장된 위치 순서를 뜻하는지, 데이터 크기 순으로 정렬된 것인지 구분하지 못해 혼란스러웠습니다. 특히 역순 문제에서 length - 1 공식이 왜 필요한지 바로 머릿속에 그려지지 않아 반복문 종료 조건에 대한 감이 없었습니다. 결국 반복문의 ‘시작 위치, 종료 조건, 증감 방향’이라는 세 가지 뼈대를 직접 세워야 한다는 점을 깨닫고 나니 정방향과 역방향을 명확히 구별할 수 있게 되었습니다.\n시도한 코드 / 예시 // 정방향 순회 (0부터 시작, 길이 미만일 동안) // i = 0, arr[0] = '사과' // i = 1, arr[1] = '바나나' // i = 2, arr[2] = '체리' const fruits = ['사과', '바나나', '체리']; for (let i = 0; i \u003c fruits.length; i++) { console.log(fruits[i]); } // 역순 순회 (length - 1부터 시작, 0 이상일 동안) // i = 2, arr[2] = '체리' // i = 1, arr[1] = '바나나' // i = 0, arr[0] = '사과' for (let i = fruits.length - 1; i \u003e= 0; i--) { console.log(fruits[i]); } // 조건부 출력 (짝수만 출력) // i = 0, arr[0] = '사과' (출력) // i = 1, arr[1] = '바나나' (건너뜀) // i = 2, arr[2] = '체리' (출력) for (let i = 0; i \u003c fruits.length; i++) { if (i % 2 === 0) { console.log(fruits[i]); } } 결과와 해석 반복문의 종료 조건은 배열의 마지막 인덱스(length - 1)를 기준으로 설정해야 합니다. 이는 배열의 인덱스가 0부터 시작하기 때문에, 실제 마지막 요소의 번호가 길이에서 1을 뺀 값과 같기 때문입니다. 이 공식 없이 반복문을 작성하면 정의되지 않은 인덱스에 접근하여 오류가 발생하거나 의도치 않은 결과가 나올 수 있습니다.\n정리된 이해 반복문은 배열의 저장 순서를 읽는 도구이며, 시작 위치와 종료 조건, 증감 방향을 직접 조립해야 한다. sort는 값의 위치를 재배치하는 별도 개념이므로 반복문과 혼동해서는 안 된다. 핵심은 ‘시작점, 끝나는 기준, 방향’ 세 가지만 정확히 설정하면 된다는 점이다.\n3. for문 왜 이걸 보게 됐나 처음에는 ‘순서’가 데이터의 크기 순인지 배열의 위치 순인지 구별하지 못해 혼란스러웠습니다. 특히 역순 문제를 마주했을 때 length - 1 공식이 왜 필요한지 바로 머릿속에 그려지지 않아 답답함을 느꼈습니다. 반복문의 종료 조건에 대한 감이 없어 공식의 의미를 바로 파악할 수 없었기 때문입니다.\n내가 헷갈린 지점 처음에는 ‘순서’가 데이터의 크기 순으로 정렬된 것인지, 배열에 저장된 원래 위치 순서인지 구별하지 못해 혼란이 컸습니다. 특히 역순 문제를 마주했을 때 length - 1 공식이 왜 필요한지 바로 머릿속에 그려지지 않아 답답함을 느꼈습니다. 반복문의 종료 조건에 대한 감이 없어 “왜 굳이 length에서 1을 빼야 하지?“라는 의문이 들었던 것이 가장 큰 어려움이었습니다.\n시도한 코드 / 예시 // 정방향 순회 (0부터 시작, length 미만까지) // 예시: arr = [10, 20, 30] for (let i = 0; i \u003c arr.length; i++) { console.log(arr[i]); // 출력 결과: 10, 20, 30 } // 역순 순회 (length - 1부터 시작, 0 이상까지) // 예시: arr = [10, 20, 30] for (let i = arr.length - 1; i \u003e= 0; i--) { console.log(arr[i]); // 출력 결과: 30, 20, 10 } // 조건부 출력 // 예시: arr = [1, 2, 3, 4, 5], 조건: 짝수만 for (let i = 0; i \u003c arr.length; i++) { if (arr[i] % 2 === 0) { console.log(arr[i]); // 출력 결과: 2, 4 } } 결과와 해석 for문은 배열의 저장 순서를 읽어오는 반복 구조입니다. 시작점을 0으로 설정하고, 종료 조건을 length 미만이 될 때까지 반복하도록 작성합니다. 증감 연산자(++)를 사용하여 다음 인덱스로 이동하며 데이터를 처리합니다.\n정리된 이해 for문은 배열의 저장 순서를 읽어오는 도구로, 시작 위치와 종료 조건, 증감 방향을 직접 조립해야 한다. 정방향은 0부터 length까지, 역순은 length-1부터 0까지 내려가는 식으로 반복 횟수와 방향을 설정하는 것이 핵심이다. 단순히 코드를 외우는 것보다 이 세 가지 뼈대를 스스로 세울 수 있어야 실제 문제에서 유연하게 대처할 수 있다.\n4. while문 왜 이걸 보게 됐나 while문을 배우게 된 것은, 배열을 거꾸로 읽거나 특정 조건이 만족될 때까지 반복해야 할 때 for문의 고정된 시작점과 종료 조건이 제약이 되어서입니다. i++ 대신 직접 카운트를 조절하거나, 데이터의 끝나는 시점을 정확히 모를 때 무한 루프를 방지하기 위해 반복 횟수를 스스로 관리할 수 있기 때문입니다.\n내가 헷갈린 지점 while문은 ‘조건이 참일 동안 계속 실행된다’는 점이 가장 핵심적이었습니다. 처음에는 무한 루프에 빠질까 봐 종료 조건을 설정하는 것이 막연하게 느껴졌습니다. 특히 i--와 같은 감소식이나 특정 지점에서 멈추는 break문의 작동 원리를 이해하는 데 시간이 걸렸습니다. 결국 반복 횟수가 정해져 있지 않아도 논리적으로 ‘그만둬야 할 시점’을 정확히 짚어내는 것이 while문의 핵심이라고 느꼈습니다.\n시도한 코드 / 예시 // while문: 조건이 참인 동안 반복 실행 let i = 0; while (i \u003c arr.length) { console.log(arr[i]); // 예시 출력: arr[0] = '사과' i++; } 결과와 해석 while문은 조건이 참일 동안 반복해서 실행되는 제어문입니다. for문과 달리 초기값 설정, 종료 조건, 증감이 모두 코드 안에 명시되지 않고 자유롭게 구성할 수 있다는 점이 가장 큰 차이점입니다. 주로 배열의 특정 요소를 검색하거나 무한 루프가 필요한 상황에서 유용하게 사용됩니다.\n정리된 이해 while문은 반복 횟수가 불확실하거나 특정 조건이 충족될 때까지 실행해야 할 때 사용합니다. 무한 루프를 방지하기 위해 반드시 반복을 멈추는 조건(break 또는 while문의 종료 조건)을 설정해야 합니다. 변수 값을 변경하며 점진적으로 목표 상태에 도달하도록 제어하는 것이 핵심입니다.\n총평 오늘 전체에서 배운 것 반복문의 시작점, 종료 조건, 증감 방향 세 가지를 조립하여 배열을 제어하는 것이 핵심입니다. 특히 역순 순회는 length - 1부터 0까지 감소하며 내려가는 패턴을 정확히 이해해야 합니다.\n다음에 조심할 것 반복문의 시작점, 종료 조건, 증감 방향을 외우는 것이 아니라 직접 조립하는 연습을 해야 합니다.\n특히 length - 1 공식은 역순 순회 시 배열의 마지막 인덱스를 정확히 가리키기 위한 필수 계산임을 기억해야 합니다.\n다음 복습 주제 반복문의 종료 조건(i \u003c arr.length vs i \u003e= 0)을 외우는 것보다, 배열의 인덱스가 0부터 시작한다는 전제 하에 ‘마지막 요소의 번호’가 length - 1이라는 관계를 직접 계산하는 연습을 해야 합니다.\n특히 for...of문은 인덱스 값을 자동으로 제공하지 않으므로, 특정 위치의 요소를 제어하거나 역순으로 출력해야 할 때는 전통적인 for문을 사용하는 습관을 들여야 합니다.\n",
+  "wordCount" : "1222",
+  "inLanguage": "en",
+  "datePublished": "2026-08-24T00:00:00Z",
+  "dateModified": "2026-08-24T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/array-condition-practice/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      배열 순회와 조건문의 핵심: 시작·종료·증감 조립하기
+    </h1>
+    <div class="post-description">
+      배열 순회와 조건문의 핵심: 시작·종료·증감 조립하기 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-08-24 00:00:00 +0000 UTC'>2026년 8월 24일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EB%B0%98%EB%B3%B5%EB%AC%B8">반복문</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%A1%B0%EA%B1%B4%EB%AC%B8">조건문</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-for%EB%AC%B8">for문</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-while%EB%AC%B8">while문</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-반복문">1. 반복문<a hidden class="anchor" aria-hidden="true" href="#1-반복문">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>나는 데이터 처리 과정에서 단순히 값을 나열하는 것을 넘어, 배열의 구조를 정확히 파악하고 제어해야 할 필요성을 느꼈다. 특히 &lsquo;순서&rsquo;가 정렬된 것인지 원래 위치인지 구별하지 못해 혼란을 겪으며, 반복문이 단순한 출력이 아니라 인덱스를 조작해 배열을 탐색하는 도구임을 깨닫게 되었다. 따라서 <code>length - 1</code>과 같은 공식이 왜 필요한지 이해하고, 시작점과 종료 조건, 증감 방향을 직접 설정하여 원하는 대로 데이터를 처리할 수 있는 능력을 기르고자 한다.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>처음에는 &lsquo;순서&rsquo;가 데이터의 크기 순인지 배열에 저장된 원래 위치 순인지 구별하지 못해 혼란스러웠습니다. 특히 역순 문제를 마주했을 때 <code>length - 1</code> 공식이 왜 필요한지 바로 머릿속에 그려지지 않아 답답함을 느꼈습니다. 반복문의 종료 조건에 대한 감이 없어 &ldquo;왜 굳이 length에서 1을 빼야 하지?&ldquo;라는 의문이 들었습니다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// 정방향 순회 (0부터 시작하여 length 미만까지)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">arr</span>.<span style="color:#a6e22e">length</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">arr</span>[<span style="color:#a6e22e">i</span>]);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 역순 순회 (length - 1부터 0까지 감소)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">arr</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">--</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">arr</span>[<span style="color:#a6e22e">i</span>]);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p>반복문은 배열의 각 요소에 접근하기 위해 시작점, 종료 조건, 증감 방향을 조립하는 도구입니다. 정방향 순회는 0부터 length 미만까지 1씩 증가시키며 진행하고, 역순 순회는 length에서 1을 뺀 값부터 0 이상까지 1씩 감소시킵니다. 이 구조를 이해하면 배열의 앞뒤로 자유롭게 접근하여 데이터를 처리할 수 있습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>반복문은 배열을 순회하는 도구이며, 시작 위치와 종료 조건, 증감 방향을 직접 조립해야 한다. <code>for</code>문은 저장된 순서를 읽고, <code>sort</code>는 값의 위치를 재배치하는 서로 다른 개념으로 구분해야 한다. 핵심은 &lsquo;시작점, 끝나는 기준, 방향&rsquo; 세 가지 뼈대를 스스로 구성할 수 있는 능력에 있다.</p>
+<h2 id="2-조건문">2. 조건문<a hidden class="anchor" aria-hidden="true" href="#2-조건문">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>처음에는 &lsquo;순서&rsquo;가 데이터의 크기 순인지 배열의 위치 순인지 구별하지 못해 혼란스러웠습니다. 특히 역순 문제를 마주했을 때 <code>length - 1</code> 공식이 왜 필요한지 바로 머릿속에 그려지지 않아 답답함을 느꼈습니다.</p>
+<p>반복문과 정렬이라는 두 개념을 확실히 분리해서 생각하게 된 계기가 되었습니다. 반복문은 배열의 저장 순서를 읽어오는 도구이며, 시작 위치와 종료 조건, 증감 방향을 직접 조립해야 한다는 점이 핵심입니다.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>처음에는 &lsquo;순서&rsquo;라는 단어가 배열에 저장된 위치 순서를 뜻하는지, 데이터 크기 순으로 정렬된 것인지 구분하지 못해 혼란스러웠습니다. 특히 역순 문제에서 <code>length - 1</code> 공식이 왜 필요한지 바로 머릿속에 그려지지 않아 반복문 종료 조건에 대한 감이 없었습니다. 결국 반복문의 &lsquo;시작 위치, 종료 조건, 증감 방향&rsquo;이라는 세 가지 뼈대를 직접 세워야 한다는 점을 깨닫고 나니 정방향과 역방향을 명확히 구별할 수 있게 되었습니다.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// 정방향 순회 (0부터 시작, 길이 미만일 동안)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// i = 0, arr[0] = &#39;사과&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// i = 1, arr[1] = &#39;바나나&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// i = 2, arr[2] = &#39;체리&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fruits</span> <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;사과&#39;</span>, <span style="color:#e6db74">&#39;바나나&#39;</span>, <span style="color:#e6db74">&#39;체리&#39;</span>];
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">fruits</span>.<span style="color:#a6e22e">length</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">fruits</span>[<span style="color:#a6e22e">i</span>]);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 역순 순회 (length - 1부터 시작, 0 이상일 동안)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// i = 2, arr[2] = &#39;체리&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// i = 1, arr[1] = &#39;바나나&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// i = 0, arr[0] = &#39;사과&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">fruits</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">--</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">fruits</span>[<span style="color:#a6e22e">i</span>]);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 조건부 출력 (짝수만 출력)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// i = 0, arr[0] = &#39;사과&#39; (출력)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// i = 1, arr[1] = &#39;바나나&#39; (건너뜀)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// i = 2, arr[2] = &#39;체리&#39; (출력)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">fruits</span>.<span style="color:#a6e22e">length</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">i</span> <span style="color:#f92672">%</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">===</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">fruits</span>[<span style="color:#a6e22e">i</span>]);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p>반복문의 종료 조건은 배열의 마지막 인덱스(<code>length - 1</code>)를 기준으로 설정해야 합니다. 이는 배열의 인덱스가 0부터 시작하기 때문에, 실제 마지막 요소의 번호가 <code>길이에서 1을 뺀 값</code>과 같기 때문입니다. 이 공식 없이 반복문을 작성하면 정의되지 않은 인덱스에 접근하여 오류가 발생하거나 의도치 않은 결과가 나올 수 있습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>반복문은 배열의 저장 순서를 읽는 도구이며, 시작 위치와 종료 조건, 증감 방향을 직접 조립해야 한다. <code>sort</code>는 값의 위치를 재배치하는 별도 개념이므로 반복문과 혼동해서는 안 된다. 핵심은 &lsquo;시작점, 끝나는 기준, 방향&rsquo; 세 가지만 정확히 설정하면 된다는 점이다.</p>
+<h2 id="3-for문">3. for문<a hidden class="anchor" aria-hidden="true" href="#3-for문">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>처음에는 &lsquo;순서&rsquo;가 데이터의 크기 순인지 배열의 위치 순인지 구별하지 못해 혼란스러웠습니다. 특히 역순 문제를 마주했을 때 <code>length - 1</code> 공식이 왜 필요한지 바로 머릿속에 그려지지 않아 답답함을 느꼈습니다. 반복문의 종료 조건에 대한 감이 없어 공식의 의미를 바로 파악할 수 없었기 때문입니다.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>처음에는 &lsquo;순서&rsquo;가 데이터의 크기 순으로 정렬된 것인지, 배열에 저장된 원래 위치 순서인지 구별하지 못해 혼란이 컸습니다. 특히 역순 문제를 마주했을 때 <code>length - 1</code> 공식이 왜 필요한지 바로 머릿속에 그려지지 않아 답답함을 느꼈습니다. 반복문의 종료 조건에 대한 감이 없어 &ldquo;왜 굳이 length에서 1을 빼야 하지?&ldquo;라는 의문이 들었던 것이 가장 큰 어려움이었습니다.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// 정방향 순회 (0부터 시작, length 미만까지)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 예시: arr = [10, 20, 30]
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">arr</span>.<span style="color:#a6e22e">length</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">arr</span>[<span style="color:#a6e22e">i</span>]); <span style="color:#75715e">// 출력 결과: 10, 20, 30
+</span></span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 역순 순회 (length - 1부터 시작, 0 이상까지)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 예시: arr = [10, 20, 30]
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">arr</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">--</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">arr</span>[<span style="color:#a6e22e">i</span>]); <span style="color:#75715e">// 출력 결과: 30, 20, 10
+</span></span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 조건부 출력
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 예시: arr = [1, 2, 3, 4, 5], 조건: 짝수만
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">arr</span>.<span style="color:#a6e22e">length</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">arr</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">%</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">===</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">arr</span>[<span style="color:#a6e22e">i</span>]); <span style="color:#75715e">// 출력 결과: 2, 4
+</span></span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p>for문은 배열의 저장 순서를 읽어오는 반복 구조입니다. 시작점을 0으로 설정하고, 종료 조건을 length 미만이 될 때까지 반복하도록 작성합니다. 증감 연산자(++)를 사용하여 다음 인덱스로 이동하며 데이터를 처리합니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>for문은 배열의 저장 순서를 읽어오는 도구로, 시작 위치와 종료 조건, 증감 방향을 직접 조립해야 한다. 정방향은 0부터 length까지, 역순은 length-1부터 0까지 내려가는 식으로 반복 횟수와 방향을 설정하는 것이 핵심이다. 단순히 코드를 외우는 것보다 이 세 가지 뼈대를 스스로 세울 수 있어야 실제 문제에서 유연하게 대처할 수 있다.</p>
+<h2 id="4-while문">4. while문<a hidden class="anchor" aria-hidden="true" href="#4-while문">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>while문을 배우게 된 것은, 배열을 거꾸로 읽거나 특정 조건이 만족될 때까지 반복해야 할 때 <code>for</code>문의 고정된 시작점과 종료 조건이 제약이 되어서입니다. <code>i++</code> 대신 직접 카운트를 조절하거나, 데이터의 끝나는 시점을 정확히 모를 때 무한 루프를 방지하기 위해 반복 횟수를 스스로 관리할 수 있기 때문입니다.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>while문은 &lsquo;조건이 참일 동안 계속 실행된다&rsquo;는 점이 가장 핵심적이었습니다. 처음에는 무한 루프에 빠질까 봐 종료 조건을 설정하는 것이 막연하게 느껴졌습니다. 특히 <code>i--</code>와 같은 감소식이나 특정 지점에서 멈추는 break문의 작동 원리를 이해하는 데 시간이 걸렸습니다. 결국 반복 횟수가 정해져 있지 않아도 논리적으로 &lsquo;그만둬야 할 시점&rsquo;을 정확히 짚어내는 것이 while문의 핵심이라고 느꼈습니다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// while문: 조건이 참인 동안 반복 실행
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> (<span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">arr</span>.<span style="color:#a6e22e">length</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">arr</span>[<span style="color:#a6e22e">i</span>]); <span style="color:#75715e">// 예시 출력: arr[0] = &#39;사과&#39;
+</span></span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<p>while문은 조건이 참일 동안 반복해서 실행되는 제어문입니다. for문과 달리 초기값 설정, 종료 조건, 증감이 모두 코드 안에 명시되지 않고 자유롭게 구성할 수 있다는 점이 가장 큰 차이점입니다. 주로 배열의 특정 요소를 검색하거나 무한 루프가 필요한 상황에서 유용하게 사용됩니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>while문은 반복 횟수가 불확실하거나 특정 조건이 충족될 때까지 실행해야 할 때 사용합니다. 무한 루프를 방지하기 위해 반드시 반복을 멈추는 조건(break 또는 while문의 종료 조건)을 설정해야 합니다. 변수 값을 변경하며 점진적으로 목표 상태에 도달하도록 제어하는 것이 핵심입니다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>반복문의 시작점, 종료 조건, 증감 방향 세 가지를 조립하여 배열을 제어하는 것이 핵심입니다. 특히 역순 순회는 <code>length - 1</code>부터 <code>0</code>까지 감소하며 내려가는 패턴을 정확히 이해해야 합니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>반복문의 시작점, 종료 조건, 증감 방향을 외우는 것이 아니라 직접 조립하는 연습을 해야 합니다.</p>
+<p>특히 <code>length - 1</code> 공식은 역순 순회 시 배열의 마지막 인덱스를 정확히 가리키기 위한 필수 계산임을 기억해야 합니다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>반복문의 종료 조건(<code>i &lt; arr.length</code> vs <code>i &gt;= 0</code>)을 외우는 것보다, 배열의 인덱스가 0부터 시작한다는 전제 하에 &lsquo;마지막 요소의 번호&rsquo;가 <code>length - 1</code>이라는 관계를 직접 계산하는 연습을 해야 합니다.</p>
+<p>특히 <code>for...of</code>문은 인덱스 값을 자동으로 제공하지 않으므로, 특정 위치의 요소를 제어하거나 역순으로 출력해야 할 때는 전통적인 <code>for</code>문을 사용하는 습관을 들여야 합니다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/react-devtools-practice/">
+    <span class="title">« Prev</span>
+    <span>React에서 map·Props·State를 분리해 마스터하기</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/exam-day-consolidation/">
+    <span class="title">Next »</span>
+    <span>시험 전 핵심 패턴 압축과 실전 적용하기</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

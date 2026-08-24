@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>시험 전 핵심 패턴 압축과 실전 적용하기 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="시험 전 핵심 패턴 압축과 실전 적용하기 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/exam-day-consolidation/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/exam-day-consolidation/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/exam-day-consolidation/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="시험 전 핵심 패턴 압축과 실전 적용하기">
+  <meta property="og:description" content="시험 전 핵심 패턴 압축과 실전 적용하기 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-08-24T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-08-24T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="시험 전 핵심 패턴 압축과 실전 적용하기">
+  <meta name="twitter:description" content="시험 전 핵심 패턴 압축과 실전 적용하기 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "시험 전 핵심 패턴 압축과 실전 적용하기",
+      "item": "https://Han-think.github.io/learning/exam-day-consolidation/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "시험 전 핵심 패턴 압축과 실전 적용하기",
+  "name": "시험 전 핵심 패턴 압축과 실전 적용하기",
+  "description": "시험 전 핵심 패턴 압축과 실전 적용하기 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 for 루프 기반 실습 패턴 value 속성 (입력값) checked 속성 (체크박스/라디오) 1. for 루프 기반 실습 패턴 왜 이걸 보게 됐나 시험 직전 막연한 불안감에 빠져 방대한 자료를 이리저리 뒤적거리다가, 정작 중요한 핵심 내용을 놓칠까 봐 조급해했던 경험이 있었습니다. 그러다 완성된 코드를 외우는 것보다, 문제를 구조적으로 파악하고 필요한 패턴만 빠르게 꺼내 쓰는 방식이 훨씬 효율적임을 깨닫고 학습 방법을 전환하게 되었습니다. 특히 반복되는 for 루프 같은 기본기를 직접 작성하며 확인함으로써, 어떤 부분이 약한지 실시간으로 파악하고 자신감을 키울 수 있었습니다.\n내가 헷갈린 지점 처음에는 for 루프가 단순히 숫자를 세는 반복 도구로만 느껴져, 문제의 조건에 맞춰 언제 멈출지(break), 어떻게 건너뛰는지(continue) 제어하는 로직을 잡는 것이 어렵게 느껴졌다. 또한 반복문 안에서 변수의 스코프나 상태가 어떻게 변하는지 추적하다 보면, 기존에 작성하던 코드와 다른 흐름 제어로 인해 예상치 못한 결과가 나와 당황했던 적이 있다. 결국 “반복되는 패턴을 구조화해서 읽고, 필요한 부분만 골라 수정하는 과정” 자체가 낯설어서 처음에는 전체를 파악하려다 세부 로직에 매몰되기 쉬웠다.\n시도한 코드 / 예시 for 정방향 / 역방향 조건문 DOM 선택 / 이벤트 value / checked style / classList setTimeout / fetch React map / Props / State 결과와 해석 for 루프를 활용한 실습은 문제 유형을 빠르게 파악하고 기본 골격을 잡는 데 매우 효과적이었다. 반복되는 패턴을 직접 코드로 작성하면서, 자주 사용하는 구조와 항상 헷갈리는 부분을 실시간으로 인지할 수 있었다. 이를 통해 완성된 코드를 외우는 것이 아니라, 문제를 구조로 읽고 필요한 패턴을 꺼내 쓰는 습관이 형성되었다.\n정리된 이해 시험 직전에는 정보를 추가하는 것보다 압축→분류→즉시 확인의 과정이 무엇보다 중요하며, 완성된 코드를 외우는 것이 아니라 문제를 구조로 읽고 필요한 패턴을 꺼내 쓰며 실행 상태를 확인하면서 수정한다.\n2. 조건문 왜 이걸 보게 됐나 시험 직전 막막함을 극복하기 위해, 수많은 자료 속에서 무엇을 먼저 봐야 할지 방향성을 잃지 않기 위해 조건문을 공부하게 되었습니다. 특히 반복되는 패턴을 빠르게 파악하고, 헷갈리는 부분은 즉시 확인하며 수정하는 연습을 통해 개념을 확실히 다질 수 있었습니다.\n내가 헷갈린 지점 조건문의 참과 거짓 판단을 위해 변수의 값이 아니라 논리식 자체에 집중하다 보니, 부수 효과가 있는 코드나 복잡한 연산이 섞여 있어도 결과값만 보고 판단하려다 실제 실행 흐름과는 다른 결과를 낳곤 했습니다. 또한 if문 안에서 else if를 연결할 때 각 분기가 중복되지 않도록 신중히 검토하지 않으면, 앞선 조건이 참일 경우 뒤에 오는 코드가 무시되는지 확인하지 않아 의도치 않은 로직 흐름이 발생하기도 했습니다.\n시도한 코드 / 예시 // 조건문 (if-else) 핵심 예시 const score = 85; if (score \u003e= 90) { console.log(\"등급: A\"); } else if (score \u003e= 80) { console.log(\"등급: B\"); // 실제 값 적용 } else { console.log(\"등급: C\"); } 결과와 해석 조건문을 작성할 때는 먼저 변수의 값이 참인지 거짓인지 명확히 판단하고, if와 else를 통해 실행 흐름을 나누는 연습을 했습니다. 작성한 코드를 바로 실행해보며 true일 때와 false일 때의 결과가 어떻게 다른지 즉시 확인함으로써, 논리적인 오류를 빠르게 수정하는 습관을 들였습니다.\n정리된 이해 조건문을 단순한 참/거짓 판단이 아니라, 프로그램 흐름을 결정하는 **‘갈림길’**로 인식하고 핵심 비교 대상을 정확히 파악해 실행 순서를 예측한다.\n필요한 경우에만 실행되는 선택적 로직임을 이해하고, else문과 결합했을 때 어떤 경우의 수가 발생하는지 전체적인 흐름도를 머릿속으로 그려가며 디버깅의 효율을 높인다.\n3. DOM 선택 / 이벤트 왜 이걸 보게 됐나 시험 직전 막연한 불안감에 대처하기 위해, 방대한 자료 중에서 핵심 패턴을 빠르게 식별하고 적용할 수 있는 실전적인 학습 방법이 필요했습니다. 특히 마크다운 파일의 구조적 한계를 극복하고, 문제를 단순한 지식 나열이 아닌 ‘구조’와 ‘패턴’으로 인식하여 효율적으로 복습하고 수정하는 훈련을 하게 되었습니다.\n내가 헷갈린 지점 처음에는 document.getElementById() 같은 특정 메서드에만 집중하다가, 실제로는 이벤트가 발생한 요소 자체(this나 event.target)를 기준으로 움직여야 한다는 사실을 놓쳤습니다. 또한 이벤트 핸들러 등록 시 addEventListener와 onclick 속성 사용의 차이점이나 이벤트 버블링(전파) 동작이 어떻게 DOM 트리를 타고 올라가는지 정확히 이해하지 못해, 의도치 않은 요소까지 반응하거나 반대로 반응하지 않는 경우를 경험했습니다.\n시도한 코드 / 예시 // DOM 선택 및 이벤트 핸들링 예시 const button = document.querySelector('#myButton'); // 버튼 요소 선택 const input = document.getElementById('username'); // 입력란 요소 선택 button.addEventListener('click', () =\u003e { // 클릭 이벤트 리스너 등록 const value = input.value; // 입력값 가져오기 console.log(`입력된 값: ${value}`); // 콘솔에 출력 }); 결과와 해석 DOM 선택은 document.querySelector() 같은 메서드를 사용해 특정 요소를 찾고, 이벤트는 .addEventListener()로 해당 요소에 반응을 연결하는 방식입니다.\n실제로 버튼 클릭 시 btn.addEventListener('click', () =\u003e { ... }) 형태로 리스너를 등록하고, 내부에서 console.log()나 스타일 변경을 실행해보면 화면이 즉시 업데이트되는 것을 확인할 수 있습니다.\n정리된 이해 DOM 선택은 document.querySelector나 getElementById 같은 메서드를 통해 요소에 직접 접근하는 것이고, 이벤트는 사용자의 행동(클릭 등)에 반응해 실행되는 콜백 함수를 등록하는 것이다. 핵심은 요소를 먼저 찾아낸 뒤, 그 위에 특정 동작을 연결한다는 순서다. 이렇게 접근하면 매번 전체 코드를 다시 짜지 않고 필요한 부분만 수정하며 빠르게 확인할 수 있다.\n4. value / checked 왜 이걸 보게 됐나 시험 직전, 방대한 양의 학습 자료를 앞에 두고 어떤 내용을 우선적으로 봐야 할지 막막함을 느꼈습니다. 특히 Markdown 파일의 경우 내용 보존에는 유리하지만, 빠른 훑어보기와 검색에 있어 HTML보다 불편함을 느껴 효율적인 복습 방법을 고민하게 되었습니다. 이에 완성된 코드를 외우는 것이 아니라, 문제를 구조로 읽고 필요한 패턴을 꺼내 쓰는 방식으로 접근하여 핵심만 빠르게 확인하고 수정하는 연습을 하게 되었습니다.\n내가 헷갈린 지점 value와 checked는 HTML input 요소에서 데이터 전달 방식과 상태 확인 방법이라는 점에서 차이가 있었습니다. value는 주로 텍스트 입력란이나 숫자 입력 시 사용자가 입력한 실제 값을 의미하며, checked는 체크박스나 라디오 버튼처럼 On/Off 상태를 나타내는 불리언 값입니다. 특히 value는 input 태그의 attribute로써 초기값(default value)뿐만 아니라 사용자의 입력값까지 포함하지만, checked는 단순히 선택 여부만을 판단하기 때문에 두 속성 모두 form 데이터를 서버에 전송할 때 각각 name과 함께 묶여 전달된다는 점에서 혼동이 있었습니다.\n시도한 코드 / 예시 # 💻 실습 예시: value / checked value 속성 (입력값) \u003cinput type=\"text\" id=\"username\" value=\"홍길동\"\u003e \u003cscript\u003e const input = document.getElementById('username'); // 현재 입력된 값 읽기 console.log(input.value); // \"홍길동\" // 값 변경하기 input.value = \"김철수\"; \u003c/script\u003e checked 속성 (체크박스/라디오) \u003cinput type=\"checkbox\" id=\"agree\" checked\u003e \u003cscript\u003e const checkbox = document.getElementById('agree'); // 체크 여부 확인 console.log(checkbox.checked); // true // 체크 상태 토글 checkbox.checked = !checkbox.checked; \u003c/script\u003e 결과와 해석 value는 입력 폼이나 드롭다운 등에서 사용자가 선택한 데이터 자체를 의미하며, checked는 체크박스나 라디오 버튼이 현재 선택된 상태인지 여부를 나타냅니다. 실습을 통해 value는 주로 태그의 속성으로, 제출되는 데이터를 담아내는 역할을 한다는 것을 확인했습니다. 반면 checked는 boolean 형태의 상태로, 사용자가 항목을 직접 활성화하거나 비활성화하는 인터랙션의 핵심임을 체감했습니다.\n정리된 이해 value는 입력 요소에 담긴 실제 데이터(텍스트, 숫자 등)를 의미하며, checked는 체크박스나 라디오 버튼이 선택된 상태인지 여부를 나타내는 불린 값입니다.\n총평 오늘 전체에서 배운 것 시험 직전 방대한 자료 앞에서 방향성을 잃지 않기 위해, ‘압축 → 분류 → 즉시 확인’의 과정을 통해 핵심 패턴을 빠르게 파악하고 실행에 옮겼습니다. 특히 for 루프와 같은 기본 구조를 직접 작성하며, 자주 사용하는 패턴과 헷갈리는 부분을 실시간으로 점검하여 효율적인 복습을 마무리했습니다.\n다음에 조심할 것 시험 직전에는 새로운 문제를 풀기보다, 지금까지 푼 문제들에서 자주 틀리거나 헷갈렸던 핵심 패턴을 위주로 빠르게 확인하는 것이 가장 중요했습니다.\n특히 for 루프, 조건문, DOM 선택 등 기본 골격은 그대로 두고 필요한 부분만 수정하는 방식으로 접근하니, 막연하게 전체를 다시 공부하는 것보다 훨씬 효율적으로 약점을 파악할 수 있었습니다.\n다음 복습 주제 시험 직전 핵심 패턴을 요약한 메모장을 바탕으로, 다음 복습 주제는 다음과 같습니다.\n다음에 복습하거나 더 알아볼 주제\n반복문 최적화 및 예외 처리: for 루프에서 break, continue를 활용해 불필요한 반복을 줄이는 방법과, 배열이나 객체 traversal 시 발생할 수 있는 인덱스 범위 오류(IndexError)나 타입 에러를 어떻게 방어적으로 코딩하는지 점검한다. 이벤트 위임(Event Delegation)의 원리: 개별 요소에 이벤트를 바인딩하는 대신 부모 요소 한 곳에 이벤트를 위임해 메모리를 절약하고 동적 추가된 요소까지 처리하는 방식의 동작 원리와 실제 적용 시나리오를 이해한다. ",
+  "wordCount" : "1156",
+  "inLanguage": "en",
+  "datePublished": "2026-08-24T00:00:00Z",
+  "dateModified": "2026-08-24T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/exam-day-consolidation/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      시험 전 핵심 패턴 압축과 실전 적용하기
+    </h1>
+    <div class="post-description">
+      시험 전 핵심 패턴 압축과 실전 적용하기 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-08-24 00:00:00 +0000 UTC'>2026년 8월 24일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-for-%EB%A3%A8%ED%94%84-%EA%B8%B0%EB%B0%98-%EC%8B%A4%EC%8A%B5-%ED%8C%A8%ED%84%B4">for 루프 기반 실습 패턴</a></li>
+</ol>
+</li>
+<li><a href="#value-%EC%86%8D%EC%84%B1-%EC%9E%85%EB%A0%A5%EA%B0%92">value 속성 (입력값)</a></li>
+<li><a href="#checked-%EC%86%8D%EC%84%B1-%EC%B2%B4%ED%81%AC%EB%B0%95%EC%8A%A4%EB%9D%BC%EB%94%94%EC%98%A4">checked 속성 (체크박스/라디오)</a></li>
+</ul>
+<h2 id="1-for-루프-기반-실습-패턴">1. for 루프 기반 실습 패턴<a hidden class="anchor" aria-hidden="true" href="#1-for-루프-기반-실습-패턴">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>시험 직전 막연한 불안감에 빠져 방대한 자료를 이리저리 뒤적거리다가, 정작 중요한 핵심 내용을 놓칠까 봐 조급해했던 경험이 있었습니다. 그러다 완성된 코드를 외우는 것보다, 문제를 구조적으로 파악하고 필요한 패턴만 빠르게 꺼내 쓰는 방식이 훨씬 효율적임을 깨닫고 학습 방법을 전환하게 되었습니다. 특히 반복되는 <code>for 루프</code> 같은 기본기를 직접 작성하며 확인함으로써, 어떤 부분이 약한지 실시간으로 파악하고 자신감을 키울 수 있었습니다.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>처음에는 <code>for</code> 루프가 단순히 숫자를 세는 반복 도구로만 느껴져, 문제의 조건에 맞춰 언제 멈출지(break), 어떻게 건너뛰는지(continue) 제어하는 로직을 잡는 것이 어렵게 느껴졌다. 또한 반복문 안에서 변수의 스코프나 상태가 어떻게 변하는지 추적하다 보면, 기존에 작성하던 코드와 다른 흐름 제어로 인해 예상치 못한 결과가 나와 당황했던 적이 있다. 결국 &ldquo;반복되는 패턴을 구조화해서 읽고, 필요한 부분만 골라 수정하는 과정&rdquo; 자체가 낯설어서 처음에는 전체를 파악하려다 세부 로직에 매몰되기 쉬웠다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>for 정방향 / 역방향
+</span></span><span style="display:flex;"><span>조건문
+</span></span><span style="display:flex;"><span>DOM 선택 / 이벤트
+</span></span><span style="display:flex;"><span>value / checked
+</span></span><span style="display:flex;"><span>style / classList
+</span></span><span style="display:flex;"><span>setTimeout / fetch
+</span></span><span style="display:flex;"><span>React map / Props / State
+</span></span></code></pre></div><h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p>for 루프를 활용한 실습은 문제 유형을 빠르게 파악하고 기본 골격을 잡는 데 매우 효과적이었다. 반복되는 패턴을 직접 코드로 작성하면서, 자주 사용하는 구조와 항상 헷갈리는 부분을 실시간으로 인지할 수 있었다. 이를 통해 완성된 코드를 외우는 것이 아니라, 문제를 구조로 읽고 필요한 패턴을 꺼내 쓰는 습관이 형성되었다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>시험 직전에는 정보를 추가하는 것보다 압축→분류→즉시 확인의 과정이 무엇보다 중요하며, 완성된 코드를 외우는 것이 아니라 문제를 구조로 읽고 필요한 패턴을 꺼내 쓰며 실행 상태를 확인하면서 수정한다.</p>
+<h2 id="2-조건문">2. 조건문<a hidden class="anchor" aria-hidden="true" href="#2-조건문">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>시험 직전 막막함을 극복하기 위해, 수많은 자료 속에서 무엇을 먼저 봐야 할지 방향성을 잃지 않기 위해 조건문을 공부하게 되었습니다. 특히 반복되는 패턴을 빠르게 파악하고, 헷갈리는 부분은 즉시 확인하며 수정하는 연습을 통해 개념을 확실히 다질 수 있었습니다.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>조건문의 참과 거짓 판단을 위해 변수의 값이 아니라 논리식 자체에 집중하다 보니, 부수 효과가 있는 코드나 복잡한 연산이 섞여 있어도 결과값만 보고 판단하려다 실제 실행 흐름과는 다른 결과를 낳곤 했습니다. 또한 <code>if</code>문 안에서 <code>else if</code>를 연결할 때 각 분기가 중복되지 않도록 신중히 검토하지 않으면, 앞선 조건이 참일 경우 뒤에 오는 코드가 무시되는지 확인하지 않아 의도치 않은 로직 흐름이 발생하기도 했습니다.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// 조건문 (if-else) 핵심 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">score</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">85</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">score</span> <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">90</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;등급: A&#34;</span>);
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">score</span> <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">80</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;등급: B&#34;</span>); <span style="color:#75715e">// 실제 값 적용
+</span></span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;등급: C&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p>조건문을 작성할 때는 먼저 변수의 값이 참인지 거짓인지 명확히 판단하고, <code>if</code>와 <code>else</code>를 통해 실행 흐름을 나누는 연습을 했습니다. 작성한 코드를 바로 실행해보며 <code>true</code>일 때와 <code>false</code>일 때의 결과가 어떻게 다른지 즉시 확인함으로써, 논리적인 오류를 빠르게 수정하는 습관을 들였습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>조건문을 단순한 참/거짓 판단이 아니라, 프로그램 흐름을 결정하는 **&lsquo;갈림길&rsquo;**로 인식하고 핵심 비교 대상을 정확히 파악해 실행 순서를 예측한다.</p>
+<p>필요한 경우에만 실행되는 <strong>선택적 로직</strong>임을 이해하고, else문과 결합했을 때 어떤 경우의 수가 발생하는지 전체적인 흐름도를 머릿속으로 그려가며 디버깅의 효율을 높인다.</p>
+<h2 id="3-dom-선택--이벤트">3. DOM 선택 / 이벤트<a hidden class="anchor" aria-hidden="true" href="#3-dom-선택--이벤트">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>시험 직전 막연한 불안감에 대처하기 위해, 방대한 자료 중에서 핵심 패턴을 빠르게 식별하고 적용할 수 있는 실전적인 학습 방법이 필요했습니다. 특히 마크다운 파일의 구조적 한계를 극복하고, 문제를 단순한 지식 나열이 아닌 &lsquo;구조&rsquo;와 &lsquo;패턴&rsquo;으로 인식하여 효율적으로 복습하고 수정하는 훈련을 하게 되었습니다.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>처음에는 <code>document.getElementById()</code> 같은 특정 메서드에만 집중하다가, 실제로는 이벤트가 발생한 요소 자체(<code>this</code>나 <code>event.target</code>)를 기준으로 움직여야 한다는 사실을 놓쳤습니다. 또한 이벤트 핸들러 등록 시 <code>addEventListener</code>와 <code>onclick</code> 속성 사용의 차이점이나 이벤트 버블링(전파) 동작이 어떻게 DOM 트리를 타고 올라가는지 정확히 이해하지 못해, 의도치 않은 요소까지 반응하거나 반대로 반응하지 않는 경우를 경험했습니다.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// DOM 선택 및 이벤트 핸들링 예시
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">button</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">querySelector</span>(<span style="color:#e6db74">&#39;#myButton&#39;</span>); <span style="color:#75715e">// 버튼 요소 선택
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">input</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;username&#39;</span>);   <span style="color:#75715e">// 입력란 요소 선택
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">button</span>.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#39;click&#39;</span>, () =&gt; {             <span style="color:#75715e">// 클릭 이벤트 리스너 등록
+</span></span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">input</span>.<span style="color:#a6e22e">value</span>;                         <span style="color:#75715e">// 입력값 가져오기
+</span></span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">`입력된 값: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">value</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>);                <span style="color:#75715e">// 콘솔에 출력
+</span></span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p>DOM 선택은 <code>document.querySelector()</code> 같은 메서드를 사용해 특정 요소를 찾고, 이벤트는 <code>.addEventListener()</code>로 해당 요소에 반응을 연결하는 방식입니다.</p>
+<p>실제로 버튼 클릭 시 <code>btn.addEventListener('click', () =&gt; { ... })</code> 형태로 리스너를 등록하고, 내부에서 <code>console.log()</code>나 스타일 변경을 실행해보면 화면이 즉시 업데이트되는 것을 확인할 수 있습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>DOM 선택은 <code>document.querySelector</code>나 <code>getElementById</code> 같은 메서드를 통해 요소에 직접 접근하는 것이고, 이벤트는 사용자의 행동(클릭 등)에 반응해 실행되는 콜백 함수를 등록하는 것이다. 핵심은 요소를 먼저 찾아낸 뒤, 그 위에 특정 동작을 연결한다는 순서다. 이렇게 접근하면 매번 전체 코드를 다시 짜지 않고 필요한 부분만 수정하며 빠르게 확인할 수 있다.</p>
+<h2 id="4-value--checked">4. value / checked<a hidden class="anchor" aria-hidden="true" href="#4-value--checked">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>시험 직전, 방대한 양의 학습 자료를 앞에 두고 어떤 내용을 우선적으로 봐야 할지 막막함을 느꼈습니다. 특히 Markdown 파일의 경우 내용 보존에는 유리하지만, 빠른 훑어보기와 검색에 있어 HTML보다 불편함을 느껴 효율적인 복습 방법을 고민하게 되었습니다. 이에 완성된 코드를 외우는 것이 아니라, 문제를 구조로 읽고 필요한 패턴을 꺼내 쓰는 방식으로 접근하여 핵심만 빠르게 확인하고 수정하는 연습을 하게 되었습니다.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>value와 checked는 HTML input 요소에서 데이터 전달 방식과 상태 확인 방법이라는 점에서 차이가 있었습니다. value는 주로 텍스트 입력란이나 숫자 입력 시 사용자가 입력한 실제 값을 의미하며, checked는 체크박스나 라디오 버튼처럼 On/Off 상태를 나타내는 불리언 값입니다. 특히 value는 input 태그의 attribute로써 초기값(default value)뿐만 아니라 사용자의 입력값까지 포함하지만, checked는 단순히 선택 여부만을 판단하기 때문에 두 속성 모두 form 데이터를 서버에 전송할 때 각각 name과 함께 묶여 전달된다는 점에서 혼동이 있었습니다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span># 💻 실습 예시: value / checked
+</span></span></code></pre></div><h2 id="value-속성-입력값">value 속성 (입력값)<a hidden class="anchor" aria-hidden="true" href="#value-속성-입력값">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;username&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;홍길동&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">input</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;username&#39;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 현재 입력된 값 읽기
+</span></span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">input</span>.<span style="color:#a6e22e">value</span>); <span style="color:#75715e">// &#34;홍길동&#34;
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 값 변경하기
+</span></span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">input</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;김철수&#34;</span>;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span></code></pre></div><h2 id="checked-속성-체크박스라디오">checked 속성 (체크박스/라디오)<a hidden class="anchor" aria-hidden="true" href="#checked-속성-체크박스라디오">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;checkbox&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;agree&#34;</span> <span style="color:#a6e22e">checked</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">checkbox</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;agree&#39;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 체크 여부 확인
+</span></span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">checkbox</span>.<span style="color:#a6e22e">checked</span>); <span style="color:#75715e">// true
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 체크 상태 토글
+</span></span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">checkbox</span>.<span style="color:#a6e22e">checked</span> <span style="color:#f92672">=</span> <span style="color:#f92672">!</span><span style="color:#a6e22e">checkbox</span>.<span style="color:#a6e22e">checked</span>;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<p><code>value</code>는 입력 폼이나 드롭다운 등에서 사용자가 선택한 데이터 자체를 의미하며, <code>checked</code>는 체크박스나 라디오 버튼이 현재 선택된 상태인지 여부를 나타냅니다. 실습을 통해 <code>value</code>는 주로 <code>&lt;input&gt;</code> 태그의 속성으로, 제출되는 데이터를 담아내는 역할을 한다는 것을 확인했습니다. 반면 <code>checked</code>는 boolean 형태의 상태로, 사용자가 항목을 직접 활성화하거나 비활성화하는 인터랙션의 핵심임을 체감했습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>value는 입력 요소에 담긴 실제 데이터(텍스트, 숫자 등)를 의미하며, checked는 체크박스나 라디오 버튼이 선택된 상태인지 여부를 나타내는 불린 값입니다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>시험 직전 방대한 자료 앞에서 방향성을 잃지 않기 위해, &lsquo;압축 → 분류 → 즉시 확인&rsquo;의 과정을 통해 핵심 패턴을 빠르게 파악하고 실행에 옮겼습니다. 특히 for 루프와 같은 기본 구조를 직접 작성하며, 자주 사용하는 패턴과 헷갈리는 부분을 실시간으로 점검하여 효율적인 복습을 마무리했습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>시험 직전에는 새로운 문제를 풀기보다, 지금까지 푼 문제들에서 자주 틀리거나 헷갈렸던 핵심 패턴을 위주로 빠르게 확인하는 것이 가장 중요했습니다.</p>
+<p>특히 <code>for 루프</code>, <code>조건문</code>, <code>DOM 선택</code> 등 기본 골격은 그대로 두고 필요한 부분만 수정하는 방식으로 접근하니, 막연하게 전체를 다시 공부하는 것보다 훨씬 효율적으로 약점을 파악할 수 있었습니다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>시험 직전 핵심 패턴을 요약한 메모장을 바탕으로, 다음 복습 주제는 다음과 같습니다.</p>
+<p><strong>다음에 복습하거나 더 알아볼 주제</strong></p>
+<ol>
+<li><strong>반복문 최적화 및 예외 처리</strong>: <code>for</code> 루프에서 <code>break</code>, <code>continue</code>를 활용해 불필요한 반복을 줄이는 방법과, 배열이나 객체 traversal 시 발생할 수 있는 인덱스 범위 오류(IndexError)나 타입 에러를 어떻게 방어적으로 코딩하는지 점검한다.</li>
+<li><strong>이벤트 위임(Event Delegation)의 원리</strong>: 개별 요소에 이벤트를 바인딩하는 대신 부모 요소 한 곳에 이벤트를 위임해 메모리를 절약하고 동적 추가된 요소까지 처리하는 방식의 동작 원리와 실제 적용 시나리오를 이해한다.</li>
+</ol>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/array-condition-practice/">
+    <span class="title">« Prev</span>
+    <span>배열 순회와 조건문의 핵심: 시작·종료·증감 조립하기</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-08-21-pm-daily/">
+    <span class="title">Next »</span>
+    <span>오늘 오후, React 배열 map과 Props 흐름, State Hooks 실전 가이드까지 핵심 개념을 정리했습니다. DevTools를 활용한 코드 검증법과 문제 풀이 시 패턴 인식의 중요성도 깨닫는 소중한 시간이었습니다.</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

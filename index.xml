@@ -6,8 +6,50 @@
     <description>Recent content on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Fri, 21 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 24 Aug 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[초보자를 위한] f-string·클래스·this 바인딩 이론 퀴즈 정복하기</title>
+      <link>https://Han-think.github.io/learning/theory-quiz-core/</link>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/theory-quiz-core/</guid>
+      <description>[초보자를 위한] f-string·클래스·this 바인딩 이론 퀴즈 정복하기 학습 정리</description>
+    </item>
+    <item>
+      <title>DOM 선택과 fetch 흐름, 입력을 먼저 확인하는 습관</title>
+      <link>https://Han-think.github.io/learning/dom-async-fetch-practice/</link>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/dom-async-fetch-practice/</guid>
+      <description>DOM 선택과 fetch 흐름, 입력을 먼저 확인하는 습관 학습 정리</description>
+    </item>
+    <item>
+      <title>React 삼각관계와 DOM 선택자 정복: 시험 직전 패턴 완성</title>
+      <link>https://Han-think.github.io/learning/summary-exam-day/</link>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/summary-exam-day/</guid>
+      <description>React 삼각관계와 DOM 선택자 정복: 시험 직전 패턴 완성 학습 정리</description>
+    </item>
+    <item>
+      <title>React에서 map·Props·State를 분리해 마스터하기</title>
+      <link>https://Han-think.github.io/learning/react-devtools-practice/</link>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/react-devtools-practice/</guid>
+      <description>React에서 map·Props·State를 분리해 마스터하기 학습 정리</description>
+    </item>
+    <item>
+      <title>배열 순회와 조건문의 핵심: 시작·종료·증감 조립하기</title>
+      <link>https://Han-think.github.io/learning/array-condition-practice/</link>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/array-condition-practice/</guid>
+      <description>배열 순회와 조건문의 핵심: 시작·종료·증감 조립하기 학습 정리</description>
+    </item>
+    <item>
+      <title>시험 전 핵심 패턴 압축과 실전 적용하기</title>
+      <link>https://Han-think.github.io/learning/exam-day-consolidation/</link>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/exam-day-consolidation/</guid>
+      <description>시험 전 핵심 패턴 압축과 실전 적용하기 학습 정리</description>
+    </item>
     <item>
       <title>오늘 오후, React 배열 map과 Props 흐름, State Hooks 실전 가이드까지 핵심 개념을 정리했습니다. DevTools를 활용한 코드 검증법과 문제 풀이 시 패턴 인식의 중요성도 깨닫는 소중한 시간이었습니다.</title>
       <link>https://Han-think.github.io/learning/2026-08-21-pm-daily/</link>
@@ -380,6 +422,13 @@
       <description>팀원들과 분석, 모델, 서비스, 발표자료를 하나로 합친 경험을 돌아보고 처음 보는 데이터를 받았을 때 재사용할 문제 정의와 검증 절차를 정리했다.</description>
     </item>
     <item>
+      <title>classmap 프로젝트 릴리스, 초보자를 위한 Git과 PyPI 활용 경험</title>
+      <link>https://Han-think.github.io/projects/classmap-release-workflow/</link>
+      <pubDate>Thu, 16 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/classmap-release-workflow/</guid>
+      <description>classmap 프로젝트 릴리스, 초보자를 위한 Git과 PyPI 활용 경험 학습 정리</description>
+    </item>
+    <item>
       <title>Kaggle 프로젝트 보완, 압도감 극복과 체계적인 접근법</title>
       <link>https://Han-think.github.io/learning/2026-07-16-pm-daily/</link>
       <pubDate>Thu, 16 Jul 2026 00:00:00 +0000</pubDate>
@@ -387,11 +436,39 @@
       <description>2026-07-16 오후 학습 정리</description>
     </item>
     <item>
+      <title>다음 중 적절한 제목을 선택하세요.</title>
+      <link>https://Han-think.github.io/projects/python-package-release-workflow/</link>
+      <pubDate>Thu, 16 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/python-package-release-workflow/</guid>
+      <description>다음 중 적절한 제목을 선택하세요. 학습 정리</description>
+    </item>
+    <item>
+      <title>다음은 워킹노트 내용을 바탕으로 지은 제목입니다.</title>
+      <link>https://Han-think.github.io/projects/local-tool-distribution-design/</link>
+      <pubDate>Thu, 16 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/local-tool-distribution-design/</guid>
+      <description>다음은 워킹노트 내용을 바탕으로 지은 제목입니다. 학습 정리</description>
+    </item>
+    <item>
       <title>머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해</title>
       <link>https://Han-think.github.io/learning/2026-07-16-am-daily/</link>
       <pubDate>Thu, 16 Jul 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/learning/2026-07-16-am-daily/</guid>
       <description>2026-07-16 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>자동화 프로세스, 반복문 활용법</title>
+      <link>https://Han-think.github.io/projects/learninglog-kit-loop-automation-idea/</link>
+      <pubDate>Thu, 16 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/learninglog-kit-loop-automation-idea/</guid>
+      <description>자동화 프로세스, 반복문 활용법 학습 정리</description>
+    </item>
+    <item>
+      <title>파이썬 패키지 배포 환경, 초보자를 위한 완벽 가이드</title>
+      <link>https://Han-think.github.io/projects/python-package-environment-reference/</link>
+      <pubDate>Thu, 16 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/python-package-environment-reference/</guid>
+      <description>파이썬 패키지 배포 환경, 초보자를 위한 완벽 가이드 학습 정리</description>
     </item>
     <item>
       <title>Kaggle Playground S6E7 개인 도전 - 10. 실패를 분류하고 증거의 등급을 매기다</title>

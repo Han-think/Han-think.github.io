@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>DOM 선택과 fetch 흐름, 입력을 먼저 확인하는 습관 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="DOM 선택과 fetch 흐름, 입력을 먼저 확인하는 습관 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/dom-async-fetch-practice/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/dom-async-fetch-practice/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/dom-async-fetch-practice/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="DOM 선택과 fetch 흐름, 입력을 먼저 확인하는 습관">
+  <meta property="og:description" content="DOM 선택과 fetch 흐름, 입력을 먼저 확인하는 습관 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-08-24T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-08-24T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="DOM 선택과 fetch 흐름, 입력을 먼저 확인하는 습관">
+  <meta name="twitter:description" content="DOM 선택과 fetch 흐름, 입력을 먼저 확인하는 습관 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "DOM 선택과 fetch 흐름, 입력을 먼저 확인하는 습관",
+      "item": "https://Han-think.github.io/learning/dom-async-fetch-practice/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "DOM 선택과 fetch 흐름, 입력을 먼저 확인하는 습관",
+  "name": "DOM 선택과 fetch 흐름, 입력을 먼저 확인하는 습관",
+  "description": "DOM 선택과 fetch 흐름, 입력을 먼저 확인하는 습관 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 getElementById querySelector JSON 1. getElementById 왜 이걸 보게 됐나 DOM 요소 선택에 익숙해지기 위해 getElementById를 배우게 되었습니다. ID 하나로 특정 요소를 정확히 찾아내는 기본기가 필요했기 때문입니다. 이를 통해 querySelector 등 다른 메서드와의 차이점을 명확히 구분할 수 있게 되었습니다.\n내가 헷갈린 지점 ID를 넣어야 하는지, class를 넣어야 하는지, 혹은 name을 넣어야 하는지를 구분하는 것이 가장 어려웠습니다. 특히 getElementById와 querySelector 같은 메서드 이름이 비슷해 혼동되기 쉽고, 잘못된 이름을 머릿속에 그리다가 정정해야 했습니다. 무엇보다도 어떤 데이터를 입력값으로 주어야 하는지 감이 안 서 있어 코드를 작성하기 전에 먼저 확인하는 습관이 필요했습니다.\n시도한 코드 / 예시 // DOM 요소 선택 (ID를 인자로 받음) const element = document.getElementById(\"input\"); 주의: getElementById는 유일한 ID 문자열을 인자로 전달받습니다.\n결과와 해석 getElementById는 HTML 문서에서 id 속성 값이 정확히 일치하는 단 하나의 요소를 선택합니다. 입력값으로 특정 ID를 직접 전달하여 해당 요소에 접근하며, 선택된 요소의 .value나 .textContent 같은 프로퍼티를 통해 데이터를 가져오거나 수정할 수 있습니다. 이 메서드는 ID가 유일해야 하므로, 여러 개의 동일한 ID가 존재하면 첫 번째 요소만 반환되고 오류가 발생할 위험이 있습니다.\n정리된 이해 getElementById는 HTML 문서 내에 존재하는 유일한 ID 값을 가진 요소를 선택하는 메서드입니다. 이 메서드를 사용하면 특정 요소에 접근해 그 속성이나 내용을 쉽게 조작할 수 있습니다. 선택 시 ID 문자열을 정확하게 입력해야만 원하는 요소를 찾을 수 있습니다.\n2. querySelector 왜 이걸 보게 됐나 DOM 요소 선택 시 getElementById는 특정 ID를 정확히 찾지만, 여러 요소를 선택하거나 복잡한 조건이 필요할 때는 querySelector가 더 유연하고 직관적이기 때문에 배우게 되었습니다. 특히 클래스명이나 태그명, 속성 조합을 기준으로 요소를 찾을 때 getElementsByClassName 같은 결과값 배열 반환 방식보다 querySelector로 단일 요소나 특정 조건에 맞는 첫 번째 요소를 바로 가져올 수 있어 실무에서 자주 활용하게 됩니다.\n내가 헷갈린 지점 querySelector와 querySelectorAll은 모두 CSS 선택자를 사용한다는 점에서 비슷해 보였지만, 반환값의 형태가 다르다는 점이 가장 큰 혼란이었습니다. getElementById나 getElementsByClassName처럼 특정 요소 하나를 바로 반환하는지, 아니면 NodeList 같은 컬렉션을 반환하는지를 미리 파악하지 못하면 코드 실행 시 예상치 못한 오류에 부딪히기 쉽습니다. 결국 ‘무엇을 선택하느냐’보다 ‘몇 개를 선택하느냐’가 메서드의 핵심 차이였습니다.\n시도한 코드 / 예시 // querySelector: 첫 번째 일치하는 요소 반환 const firstElement = document.querySelector('.my-class'); // 결과: ... // querySelectorAll: 모든 일치하는 요소를 NodeList로 반환 const allElements = document.querySelectorAll('.my-class'); // 결과: [ ..., ... ] 결과와 해석 querySelector는 CSS 선택자를 이용해 첫 번째 일치하는 요소를 반환하며, querySelectorAll은 모든 일치하는 요소들을 NodeList로 반환한다는 점이 가장 큰 차이점입니다. 실습을 통해 클래스명이나 태그명으로 요소를 정확히 타겟팅할 수 있다는 자신감이 생겼고, 여러 요소를 다룰 때는 반복문과 결합하여 활용하게 되었습니다.\n정리된 이해 querySelector는 CSS 선택자를 사용해 첫 번째 일치하는 요소를, querySelectorAll은 모든 일치하는 요소들을 NodeList로 반환한다는 점이 핵심입니다. 따라서 “하나를 찾을 때”와 “여러 개를 찾을 때” 구분하여 사용하는 것이 가장 중요합니다.\n3. JSON 왜 이걸 보게 됐나 JSON은 웹 서버와 클라이언트 사이에서 데이터를 주고받을 때 가장 널리 사용되는 표준 형식입니다. fetch API를 통해 서버에서 받아온 원시 데이터는 텍스트 형태이지만, 실제 애플리케이션에서는 객체나 배열로 다뤄야 하므로 JSON 메서드를 사용하여 파싱해야 합니다. 이를 통해 자바스크립트 코드 내에서 데이터를 쉽게 접근하고 manipulate할 수 있게 됩니다.\n내가 헷갈린 지점 처음에는 JSON이 단순히 ‘데이터 포맷’ 정도로만 생각했었다. 하지만 실제로는 서버로부터 받아온 텍스트를 자바스크립트 객체로 변환해주는 필수적인 과정이었음을 깨달았다. 또한 fetch의 결과가 바로 사용 가능한 객체가 아니라 response 객체라는 점과, 이를 json() 메서드로 한 번 더 변환해야 한다는 점이 가장 큰 진입장애였다.\n시도한 코드 / 예시 // JSON 데이터 구조 예시 (노트 내용 기반) { \"id\": 1, \"name\": \"홍길동\", \"age\": 25 } 결과와 해석 JSON은 서버로부터 받아온 텍스트 데이터를 자바스크립트 객체 형태로 변환한 것입니다. response.json() 메서드를 사용하면 비동기적으로 데이터를 파싱하여 사용할 수 있습니다. 이를 통해 배열이나 객체의 메서드인 map, filter 등을 활용해 원하는 정보만 쉽게 추출하고 화면에 출력할 수 있습니다.\n정리된 이해 JSON은 서버로부터 전달된 데이터를 자바스크립트 객체 형태로 변환한 것입니다. 이 형태를 통해 데이터의 구조를 파악하고 필요한 정보를 추출할 수 있습니다. fetch로 받은 원시 응답을 JSON으로 변환하는 것이 데이터 활용의 핵심 단계입니다.\n4. filter 왜 이걸 보게 됐나 데이터를 걸러내는 실무적 필요성을 느껴 배우기 시작했다. 단순히 전체 데이터를 보여주는 것보다 특정 조건에 맞는 데이터만 추출해야 하는 경우가 많았기 때문이다. filter를 통해 불필요한 데이터를 제거하고 필요한 정보만 효율적으로 처리할 수 있게 되었다.\n내가 헷갈린 지점 filter는 배열 전체를 순회하며 조건을 만족하는 요소들만 걸러내어 새로운 배열을 반환합니다. 저는 처음에는 filter가 첫 번째로 찾은 하나의 요소를 반환하는 것인 줄 알았지만, 실제로는 여러 개를 담은 배열을 만든다는 점이 달랐습니다. 따라서 조건에 맞는 항목이 없을 경우 빈 배열([])이 반환된다는 점을 꼭 기억해야 합니다.\n시도한 코드 / 예시 // notes: filter는 조건을 만족하는 요소만 걸러내어 새로운 배열을 반환합니다. const numbers = [1, 2, 3, 4, 5]; const filteredNumbers = numbers.filter(num =\u003e num \u003e 2); // 결과: [3, 4, 5] 결과와 해석 filter는 배열에서 조건에 맞는 요소만 골라내는 메서드입니다. 입력값을 비교 함수로 전달하면, true를 반환하는 요소들로 새로운 배열을 만들어 반환합니다. 이를 통해 불필요한 데이터를 걸러내고 원하는 데이터만 효율적으로 추출할 수 있습니다.\n정리된 이해 filter는 배열에서 조건에 맞는 요소만 걸러내어 새로운 배열을 반환하는 메서드입니다. 사용자가 원하는 특정 데이터가 포함된지를 확인하거나, 불필요한 데이터를 제거할 때 유용하게 활용됩니다. filter의 반환값은 항상 배열이므로, 이후 다른 메서드와 연쇄하여 사용할 수 있습니다.\n총평 오늘 전체에서 배운 것 DOM 요소 선택 시 ID와 클래스 구분법을 명확히 하고, fetch 실습에서는 요청할 데이터의 형태(ID, index 등)를 먼저 확인하는 습관이 필요합니다.\n다음에 조심할 것 ID와 class를 혼동하지 않도록 getElementById와 querySelector의 용도를 명확히 구분해서 사용한다.\n입력값이 ID, index, name 중 어떤 형태인지 먼저 확인한 뒤 해당하는 API를 선택해야 코드가 올바르게 동작한다.\n다음 복습 주제 다음에 복습하거나 더 알아볼 주제 DOM 선택자는 id와 class의 차이를 명확히 구분하는 연습이 필요합니다. 특히 querySelectorAll은 NodeList를 반환하므로, 실제 DOM 조작을 위해서는 배열 변환(Array.from)이나 forEach 사용이 필수적입니다.\nfetch 실습에서는 요청 URL과 파라미터가 어떻게 데이터에 영향을 주는지 시뮬레이션 데이터를 직접 만들어보며 검증하는 연습을 해보면 좋습니다. 특히 응답 코드(status code)별 처리 흐름과 에러 처리의 기본 패턴을 숙지하면 실제 서비스 개발 시 당황하지 않고 대처할 수 있습니다.\n",
+  "wordCount" : "915",
+  "inLanguage": "en",
+  "datePublished": "2026-08-24T00:00:00Z",
+  "dateModified": "2026-08-24T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/dom-async-fetch-practice/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      DOM 선택과 fetch 흐름, 입력을 먼저 확인하는 습관
+    </h1>
+    <div class="post-description">
+      DOM 선택과 fetch 흐름, 입력을 먼저 확인하는 습관 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-08-24 00:00:00 +0000 UTC'>2026년 8월 24일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-getelementbyid">getElementById</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-queryselector">querySelector</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-json">JSON</a></li>
+</ol>
+</li>
+</ul>
+<h2 id="1-getelementbyid">1. getElementById<a hidden class="anchor" aria-hidden="true" href="#1-getelementbyid">#</a></h2>
+<h3 id="왜-이걸-보게-됐나">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나">#</a></h3>
+<p>DOM 요소 선택에 익숙해지기 위해 <code>getElementById</code>를 배우게 되었습니다. ID 하나로 특정 요소를 정확히 찾아내는 기본기가 필요했기 때문입니다. 이를 통해 <code>querySelector</code> 등 다른 메서드와의 차이점을 명확히 구분할 수 있게 되었습니다.</p>
+<h3 id="내가-헷갈린-지점">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점">#</a></h3>
+<p>ID를 넣어야 하는지, class를 넣어야 하는지, 혹은 name을 넣어야 하는지를 구분하는 것이 가장 어려웠습니다. 특히 <code>getElementById</code>와 <code>querySelector</code> 같은 메서드 이름이 비슷해 혼동되기 쉽고, 잘못된 이름을 머릿속에 그리다가 정정해야 했습니다. 무엇보다도 어떤 데이터를 입력값으로 주어야 하는지 감이 안 서 있어 코드를 작성하기 전에 먼저 확인하는 습관이 필요했습니다.</p>
+<h3 id="시도한-코드--예시">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// DOM 요소 선택 (ID를 인자로 받음)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">element</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;input&#34;</span>);
+</span></span></code></pre></div><p>주의: <code>getElementById</code>는 <strong>유일한 ID 문자열</strong>을 인자로 전달받습니다.</p>
+<h3 id="결과와-해석">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석">#</a></h3>
+<p><code>getElementById</code>는 HTML 문서에서 <code>id</code> 속성 값이 정확히 일치하는 단 하나의 요소를 선택합니다. 입력값으로 특정 ID를 직접 전달하여 해당 요소에 접근하며, 선택된 요소의 <code>.value</code>나 <code>.textContent</code> 같은 프로퍼티를 통해 데이터를 가져오거나 수정할 수 있습니다. 이 메서드는 ID가 유일해야 하므로, 여러 개의 동일한 ID가 존재하면 첫 번째 요소만 반환되고 오류가 발생할 위험이 있습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p><code>getElementById</code>는 HTML 문서 내에 존재하는 유일한 ID 값을 가진 요소를 선택하는 메서드입니다. 이 메서드를 사용하면 특정 요소에 접근해 그 속성이나 내용을 쉽게 조작할 수 있습니다. 선택 시 ID 문자열을 정확하게 입력해야만 원하는 요소를 찾을 수 있습니다.</p>
+<h2 id="2-queryselector">2. querySelector<a hidden class="anchor" aria-hidden="true" href="#2-queryselector">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-1">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-1">#</a></h3>
+<p>DOM 요소 선택 시 <code>getElementById</code>는 특정 ID를 정확히 찾지만, 여러 요소를 선택하거나 복잡한 조건이 필요할 때는 <code>querySelector</code>가 더 유연하고 직관적이기 때문에 배우게 되었습니다. 특히 클래스명이나 태그명, 속성 조합을 기준으로 요소를 찾을 때 <code>getElementsByClassName</code> 같은 결과값 배열 반환 방식보다 <code>querySelector</code>로 단일 요소나 특정 조건에 맞는 첫 번째 요소를 바로 가져올 수 있어 실무에서 자주 활용하게 됩니다.</p>
+<h3 id="내가-헷갈린-지점-1">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-1">#</a></h3>
+<p>querySelector와 querySelectorAll은 모두 CSS 선택자를 사용한다는 점에서 비슷해 보였지만, 반환값의 형태가 다르다는 점이 가장 큰 혼란이었습니다. getElementById나 getElementsByClassName처럼 특정 요소 하나를 바로 반환하는지, 아니면 NodeList 같은 컬렉션을 반환하는지를 미리 파악하지 못하면 코드 실행 시 예상치 못한 오류에 부딪히기 쉽습니다. 결국 &lsquo;무엇을 선택하느냐&rsquo;보다 &lsquo;몇 개를 선택하느냐&rsquo;가 메서드의 핵심 차이였습니다.</p>
+<h3 id="시도한-코드--예시-1">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// querySelector: 첫 번째 일치하는 요소 반환
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">firstElement</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">querySelector</span>(<span style="color:#e6db74">&#39;.my-class&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 결과: &lt;div class=&#34;my-class&#34;&gt;...&lt;/div&gt;
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// querySelectorAll: 모든 일치하는 요소를 NodeList로 반환
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">allElements</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">querySelectorAll</span>(<span style="color:#e6db74">&#39;.my-class&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 결과: [ &lt;div class=&#34;my-class&#34;&gt;...&lt;/div&gt;, &lt;span class=&#34;my-class&#34;&gt;...&lt;/span&gt; ]
+</span></span></span></code></pre></div><h3 id="결과와-해석-1">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-1">#</a></h3>
+<p><code>querySelector</code>는 CSS 선택자를 이용해 첫 번째 일치하는 요소를 반환하며, <code>querySelectorAll</code>은 모든 일치하는 요소들을 NodeList로 반환한다는 점이 가장 큰 차이점입니다. 실습을 통해 클래스명이나 태그명으로 요소를 정확히 타겟팅할 수 있다는 자신감이 생겼고, 여러 요소를 다룰 때는 반복문과 결합하여 활용하게 되었습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p><code>querySelector</code>는 CSS 선택자를 사용해 첫 번째 일치하는 요소를, <code>querySelectorAll</code>은 모든 일치하는 요소들을 NodeList로 반환한다는 점이 핵심입니다. 따라서 “하나를 찾을 때”와 “여러 개를 찾을 때” 구분하여 사용하는 것이 가장 중요합니다.</p>
+<h2 id="3-json">3. JSON<a hidden class="anchor" aria-hidden="true" href="#3-json">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-2">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-2">#</a></h3>
+<p>JSON은 웹 서버와 클라이언트 사이에서 데이터를 주고받을 때 가장 널리 사용되는 표준 형식입니다. fetch API를 통해 서버에서 받아온 원시 데이터는 텍스트 형태이지만, 실제 애플리케이션에서는 객체나 배열로 다뤄야 하므로 JSON 메서드를 사용하여 파싱해야 합니다. 이를 통해 자바스크립트 코드 내에서 데이터를 쉽게 접근하고 manipulate할 수 있게 됩니다.</p>
+<h3 id="내가-헷갈린-지점-2">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-2">#</a></h3>
+<p>처음에는 JSON이 단순히 &lsquo;데이터 포맷&rsquo; 정도로만 생각했었다. 하지만 실제로는 서버로부터 받아온 텍스트를 자바스크립트 객체로 변환해주는 필수적인 과정이었음을 깨달았다. 또한 <code>fetch</code>의 결과가 바로 사용 가능한 객체가 아니라 <code>response</code> 객체라는 점과, 이를 <code>json()</code> 메서드로 한 번 더 변환해야 한다는 점이 가장 큰 진입장애였다.</p>
+<h3 id="시도한-코드--예시-2">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// JSON 데이터 구조 예시 (노트 내용 기반)
+</span></span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;홍길동&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;age&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">25</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="결과와-해석-2">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-2">#</a></h3>
+<p>JSON은 서버로부터 받아온 텍스트 데이터를 자바스크립트 객체 형태로 변환한 것입니다. <code>response.json()</code> 메서드를 사용하면 비동기적으로 데이터를 파싱하여 사용할 수 있습니다. 이를 통해 배열이나 객체의 메서드인 <code>map</code>, <code>filter</code> 등을 활용해 원하는 정보만 쉽게 추출하고 화면에 출력할 수 있습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>JSON은 서버로부터 전달된 데이터를 자바스크립트 객체 형태로 변환한 것입니다. 이 형태를 통해 데이터의 구조를 파악하고 필요한 정보를 추출할 수 있습니다. fetch로 받은 원시 응답을 JSON으로 변환하는 것이 데이터 활용의 핵심 단계입니다.</p>
+<h2 id="4-filter">4. filter<a hidden class="anchor" aria-hidden="true" href="#4-filter">#</a></h2>
+<h3 id="왜-이걸-보게-됐나-3">왜 이걸 보게 됐나<a hidden class="anchor" aria-hidden="true" href="#왜-이걸-보게-됐나-3">#</a></h3>
+<p>데이터를 걸러내는 실무적 필요성을 느껴 배우기 시작했다. 단순히 전체 데이터를 보여주는 것보다 특정 조건에 맞는 데이터만 추출해야 하는 경우가 많았기 때문이다. filter를 통해 불필요한 데이터를 제거하고 필요한 정보만 효율적으로 처리할 수 있게 되었다.</p>
+<h3 id="내가-헷갈린-지점-3">내가 헷갈린 지점<a hidden class="anchor" aria-hidden="true" href="#내가-헷갈린-지점-3">#</a></h3>
+<p>filter는 배열 전체를 순회하며 조건을 만족하는 요소들만 걸러내어 새로운 배열을 반환합니다. 저는 처음에는 filter가 첫 번째로 찾은 하나의 요소를 반환하는 것인 줄 알았지만, 실제로는 여러 개를 담은 배열을 만든다는 점이 달랐습니다. 따라서 조건에 맞는 항목이 없을 경우 빈 배열([])이 반환된다는 점을 꼭 기억해야 합니다.</p>
+<h3 id="시도한-코드--예시-3">시도한 코드 / 예시<a hidden class="anchor" aria-hidden="true" href="#시도한-코드--예시-3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// notes: filter는 조건을 만족하는 요소만 걸러내어 새로운 배열을 반환합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">numbers</span> <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>];
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">filteredNumbers</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">numbers</span>.<span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">num</span> =&gt; <span style="color:#a6e22e">num</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">2</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 결과: [3, 4, 5]
+</span></span></span></code></pre></div><h3 id="결과와-해석-3">결과와 해석<a hidden class="anchor" aria-hidden="true" href="#결과와-해석-3">#</a></h3>
+<p>filter는 배열에서 조건에 맞는 요소만 골라내는 메서드입니다. 입력값을 비교 함수로 전달하면, true를 반환하는 요소들로 새로운 배열을 만들어 반환합니다. 이를 통해 불필요한 데이터를 걸러내고 원하는 데이터만 효율적으로 추출할 수 있습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>filter는 배열에서 조건에 맞는 요소만 걸러내어 새로운 배열을 반환하는 메서드입니다. 사용자가 원하는 특정 데이터가 포함된지를 확인하거나, 불필요한 데이터를 제거할 때 유용하게 활용됩니다. filter의 반환값은 항상 배열이므로, 이후 다른 메서드와 연쇄하여 사용할 수 있습니다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-전체에서-배운-것">오늘 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-전체에서-배운-것">#</a></h3>
+<p>DOM 요소 선택 시 ID와 클래스 구분법을 명확히 하고, fetch 실습에서는 요청할 데이터의 형태(ID, index 등)를 먼저 확인하는 습관이 필요합니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>ID와 class를 혼동하지 않도록 <code>getElementById</code>와 <code>querySelector</code>의 용도를 명확히 구분해서 사용한다.</p>
+<p>입력값이 ID, index, name 중 어떤 형태인지 먼저 확인한 뒤 해당하는 API를 선택해야 코드가 올바르게 동작한다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<h2 id="다음에-복습하거나-더-알아볼-주제">다음에 복습하거나 더 알아볼 주제<a hidden class="anchor" aria-hidden="true" href="#다음에-복습하거나-더-알아볼-주제">#</a></h2>
+<p>DOM 선택자는 <code>id</code>와 <code>class</code>의 차이를 명확히 구분하는 연습이 필요합니다. 특히 <code>querySelectorAll</code>은 NodeList를 반환하므로, 실제 DOM 조작을 위해서는 배열 변환(<code>Array.from</code>)이나 <code>forEach</code> 사용이 필수적입니다.</p>
+<p>fetch 실습에서는 요청 URL과 파라미터가 어떻게 데이터에 영향을 주는지 시뮬레이션 데이터를 직접 만들어보며 검증하는 연습을 해보면 좋습니다. 특히 응답 코드(status code)별 처리 흐름과 에러 처리의 기본 패턴을 숙지하면 실제 서비스 개발 시 당황하지 않고 대처할 수 있습니다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/theory-quiz-core/">
+    <span class="title">« Prev</span>
+    <span>[초보자를 위한] f-string·클래스·this 바인딩 이론 퀴즈 정복하기</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/summary-exam-day/">
+    <span class="title">Next »</span>
+    <span>React 삼각관계와 DOM 선택자 정복: 시험 직전 패턴 완성</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

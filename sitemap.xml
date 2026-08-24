@@ -2,16 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://Han-think.github.io/learning/theory-quiz-core/</loc>
+    <lastmod>2026-08-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/learning/dom-async-fetch-practice/</loc>
+    <lastmod>2026-08-24T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://Han-think.github.io/</loc>
-    <lastmod>2026-08-21T00:00:00+00:00</lastmod>
+    <lastmod>2026-08-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/learning/summary-exam-day/</loc>
+    <lastmod>2026-08-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/learning/react-devtools-practice/</loc>
+    <lastmod>2026-08-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/learning/array-condition-practice/</loc>
+    <lastmod>2026-08-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/learning/exam-day-consolidation/</loc>
+    <lastmod>2026-08-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/learning/</loc>
+    <lastmod>2026-08-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/learning/2026-08-21-pm-daily/</loc>
     <lastmod>2026-08-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/learning/2026-08-21-am-daily/</loc>
-    <lastmod>2026-08-21T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/learning/</loc>
     <lastmod>2026-08-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/learning/2026-08-20-am-daily/</loc>
@@ -287,10 +305,25 @@
     <loc>https://Han-think.github.io/tags/team-project/</loc>
     <lastmod>2026-07-17T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://Han-think.github.io/projects/classmap-release-workflow/</loc>
+    <lastmod>2026-07-16T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://Han-think.github.io/learning/2026-07-16-pm-daily/</loc>
     <lastmod>2026-07-16T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://Han-think.github.io/projects/python-package-release-workflow/</loc>
+    <lastmod>2026-07-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/projects/local-tool-distribution-design/</loc>
+    <lastmod>2026-07-16T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://Han-think.github.io/learning/2026-07-16-am-daily/</loc>
+    <lastmod>2026-07-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/projects/learninglog-kit-loop-automation-idea/</loc>
+    <lastmod>2026-07-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/projects/python-package-environment-reference/</loc>
     <lastmod>2026-07-16T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/experiment-tracking/</loc>

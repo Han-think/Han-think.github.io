@@ -6,8 +6,50 @@
     <description>Recent content in 학습 기록 on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Fri, 21 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 24 Aug 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[초보자를 위한] f-string·클래스·this 바인딩 이론 퀴즈 정복하기</title>
+      <link>https://Han-think.github.io/learning/theory-quiz-core/</link>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/theory-quiz-core/</guid>
+      <description>[초보자를 위한] f-string·클래스·this 바인딩 이론 퀴즈 정복하기 학습 정리</description>
+    </item>
+    <item>
+      <title>DOM 선택과 fetch 흐름, 입력을 먼저 확인하는 습관</title>
+      <link>https://Han-think.github.io/learning/dom-async-fetch-practice/</link>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/dom-async-fetch-practice/</guid>
+      <description>DOM 선택과 fetch 흐름, 입력을 먼저 확인하는 습관 학습 정리</description>
+    </item>
+    <item>
+      <title>React 삼각관계와 DOM 선택자 정복: 시험 직전 패턴 완성</title>
+      <link>https://Han-think.github.io/learning/summary-exam-day/</link>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/summary-exam-day/</guid>
+      <description>React 삼각관계와 DOM 선택자 정복: 시험 직전 패턴 완성 학습 정리</description>
+    </item>
+    <item>
+      <title>React에서 map·Props·State를 분리해 마스터하기</title>
+      <link>https://Han-think.github.io/learning/react-devtools-practice/</link>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/react-devtools-practice/</guid>
+      <description>React에서 map·Props·State를 분리해 마스터하기 학습 정리</description>
+    </item>
+    <item>
+      <title>배열 순회와 조건문의 핵심: 시작·종료·증감 조립하기</title>
+      <link>https://Han-think.github.io/learning/array-condition-practice/</link>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/array-condition-practice/</guid>
+      <description>배열 순회와 조건문의 핵심: 시작·종료·증감 조립하기 학습 정리</description>
+    </item>
+    <item>
+      <title>시험 전 핵심 패턴 압축과 실전 적용하기</title>
+      <link>https://Han-think.github.io/learning/exam-day-consolidation/</link>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/exam-day-consolidation/</guid>
+      <description>시험 전 핵심 패턴 압축과 실전 적용하기 학습 정리</description>
+    </item>
     <item>
       <title>오늘 오후, React 배열 map과 Props 흐름, State Hooks 실전 가이드까지 핵심 개념을 정리했습니다. DevTools를 활용한 코드 검증법과 문제 풀이 시 패턴 인식의 중요성도 깨닫는 소중한 시간이었습니다.</title>
       <link>https://Han-think.github.io/learning/2026-08-21-pm-daily/</link>
