@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Categories on Han-think Blog</title>
+    <link>https://Han-think.github.io/categories/</link>
+    <description>Recent content in Categories on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Tue, 25 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Learning</title>
+      <link>https://Han-think.github.io/categories/learning/</link>
+      <pubDate>Tue, 25 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/categories/learning/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Projects</title>
+      <link>https://Han-think.github.io/categories/projects/</link>
+      <pubDate>Mon, 20 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/categories/projects/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Dev</title>
+      <link>https://Han-think.github.io/categories/dev/</link>
+      <pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/categories/dev/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Practice</title>
+      <link>https://Han-think.github.io/categories/practice/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/categories/practice/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Goals</title>
+      <link>https://Han-think.github.io/categories/goals/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/categories/goals/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

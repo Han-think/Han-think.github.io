@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title description">
+  <title id="title">대청마루에서 바라본 하늘 · maru-sky</title>
+  <desc id="description">낮은 한옥 처마 곡선과 나무 대청마루를 foreground에 두고, 옅은 청록 하늘과 달빛을 넓게 남긴 차분한 한국적 장면.</desc>
+  <metadata>
+    asset-id: scene-maru-sky-rooftop-v01
+    prompt-ko: 낮은 한옥 처마 아래 대청마루에 앉아 올려다본 넓은 하늘, 옅은 청록과 한지 크림색 그라데이션, 먼 달빛, 절제된 목재 결, 고요하고 현대적인 한국적 미감, 텍스트가 놓일 중앙 여백, low contrast, wide hero background, no people, no text
+    prompt-en: wide cinematic view from a Korean hanok daecheongmaru, low curved eaves in the distance, pale blue-green hanji sky, soft moon glow, restrained warm wood floor in the foreground, calm modern Korean atmosphere, generous negative space for blog text, low contrast, no people, no text
+    negative: saturated colors, busy ornaments, readable letters, people, buildings blocking the sky, harsh shadows, photorealistic noise
+  </metadata>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b8d4dc"/>
+      <stop offset="0.62" stop-color="#dce8df"/>
+      <stop offset="1" stop-color="#f3ead8"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6f4c36"/>
+      <stop offset="0.5" stop-color="#a6774e"/>
+      <stop offset="1" stop-color="#5e402f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <circle cx="1210" cy="180" r="74" fill="#f2d98a" opacity=".8"/>
+  <path d="M170 520 Q800 360 1430 520" fill="none" stroke="#506c6f" stroke-width="22" opacity=".44"/>
+  <path d="M220 555 Q800 420 1380 555" fill="none" stroke="#d8e2df" stroke-width="8" opacity=".8"/>
+  <path d="M0 665h1600v235H0z" fill="url(#wood)" opacity=".94"/>
+  <path d="M0 725h1600M0 795h1600M0 865h1600" stroke="#d9b083" stroke-width="5" opacity=".32"/>
+</svg>

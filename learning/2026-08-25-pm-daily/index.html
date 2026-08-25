@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Redux 데이터 흐름 재정비와 마이그레이션 과정에서 마주한 인지 부하 관리하기 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-08-25 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-08-25-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-08-25-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function () {
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-08-25-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="Redux 데이터 흐름 재정비와 마이그레이션 과정에서 마주한 인지 부하 관리하기">
+  <meta property="og:description" content="2026-08-25 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-08-25T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-08-25T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Redux 데이터 흐름 재정비와 마이그레이션 과정에서 마주한 인지 부하 관리하기">
+  <meta name="twitter:description" content="2026-08-25 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Redux 데이터 흐름 재정비와 마이그레이션 과정에서 마주한 인지 부하 관리하기",
+      "item": "https://Han-think.github.io/learning/2026-08-25-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Redux 데이터 흐름 재정비와 마이그레이션 과정에서 마주한 인지 부하 관리하기",
+  "name": "Redux 데이터 흐름 재정비와 마이그레이션 과정에서 마주한 인지 부하 관리하기",
+  "description": "2026-08-25 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 Redux 데이터 흐름과 비동기 처리 위치 수정 (pm-01-redux-data-flow-refactor) 게시판 목록 데이터 흐름 이해하기 🔰 초보자 시점: 내가 헷갈렸던 점 📌 정리된 이해 💻 실습 예시 (코드 흐름) 상세보기 진행 상태와 사진·삭제 기능 다음 단계 미리보기 사진 데이터 흐름 (상세보기 연결 필요) 삭제 기능 (DELETE 요청 구조) 리팩토링 시 인지 부하 관리: 기존 코드 이해부터 재구조화까지 🟡 초보자 시점: 오늘의 혼란과 발견 📌 정리된 이해: 효율적인 학습 전략 총평 1. Redux 데이터 흐름과 비동기 처리 위치 수정 (pm-01-redux-data-flow-refactor) 무엇을 배웠나 Redux는 상태 변경 경로와 조회 경로를 분리하여 관리하는 것이 핵심이며, reducer는 단순히 데이터를 state에 넣는 단순 저장 전용 역할임을 깨달았다. 서버 요청 후 dispatch를 통해 reducer가 state를 업데이트하고, useSelector로 값을 꺼내 화면에 렌더링하는 전체 흐름을 이해하게 되어 혼란이 해소되었다.\n헷갈렸던 점 dispatch와 reducer가 단순히 데이터를 넣는 통로라고 생각하다 보니, 비동기 처리가 어떻게 맞물리는지 감이 안 잡혔습니다. 실제로는 서버 요청 후 받아온 데이터를 dispatch해야 reducer가 실행되므로, 흐름을 분리해서 이해하는 것이 중요했습니다.\n정리된 이해 Redux는 상태 변경 경로와 조회 통로를 분리하여 데이터 흐름을 일관되게 관리하는 도구다. 핵심은 dispatch를 통해 reducer가 state를 업데이트하고, useSelector로 화면에 값을 전달하는 구조를 이해하는 것이다. 복잡한 비동기 처리는 미들웨어나 thunk를 사용하더라도 이 기본적인 흐름만 명확히 하면 코드의 의도가 쉽게 파악된다.\n// boardSlicer.jsx - reducer (단순 저장 전용) reducers: { setList(state, action) { state['list'] = action.payload.list; state['pages'] = action.payload.pages; return state; }, setDetail(state, action) { state['detail'] = action.payload.detail; return state; } } 2. 게시판 목록 데이터 흐름 이해하기 무엇을 배웠나 처음에는 파일 구조와 Redux 흐름이 복잡하게 느껴졌지만, 핵심은 ‘데이터 담당’과 ‘화면 담당’으로 나뉘는 것이었다. 목록 기능은 URL을 확인해 데이터를 요청하고, Redux를 통해 전역 상태를 관리하며, ListComp가 그 데이터를 화면에 뿌리는 식으로 동작한다. 또한 Pagination은 새로운 데이터 요청을 트리거하는 스위치 역할을 한다는 점을 명확히 이해할 수 있었다.\n헷갈렸던 점 처음에는 파일 구조가 복잡하게 느껴져 각 파일의 역할이 겹치는 것 같아 혼란스러웠습니다. 특히 Redux를 기존 코드에 적용할 때 데이터가 어디서 오고 가는지 감이 안 잡혀 ‘목록 기능이 어디에 있는지’를 파악하는 데 어려움이 있었습니다.\n핵심은 목록 기능이 **데이터 요청(ListPage)**과 **화면 출력(ListComp)**으로 나뉘어 있다는 점입니다. Pagination은 새로운 시스템이 아니라 데이터 흐름 회로에 ‘스위치’를 켜는 역할이며, 특정 페이지 번호를 누르면 onSubmit(page) 함수를 호출해 다시 데이터를 요청하는 트리거가 된다는 점을 명확히 했습니다.\n정리된 이해 핵심은 데이터 담당과 화면 담당으로 나뉘어 있다는 점이다. 목록 기능은 URL slug를 확인해 axios로 데이터를 요청하고, Redux store에 저장한다. 이후 ListComp는 stored된 데이터를 읽어 화면에 뿌리고, 페이지 변경 시 부모에게 알리는 역할을 한다. Pagination은 새로운 시스템이 아니라 데이터 흐름 회로에 ‘스위치’를 켜는 역할이다.\nLearningLog 워킹 노트: 게시판 목록, 페이지네이션, 컴포넌트 분리 🔰 초보자 시점: 내가 헷갈렸던 점 처음에는 파일 구조가 너무 복잡하게 느껴졌다. page.jsx, ListComp.jsx, boardSlicer.jsx, store.jsx까지 네 개의 파일이 연관되어 있는데, “왜 이렇게 쪼개져 있지?“라는 의문이 들었다.\n특히 Redux라는 새로운 개념을 기존 게시판 코드에 끼워 넣으려니 감이 안 왔다. 각 파일의 역할이 겹치는 것 같으면서도 어디서 데이터가 오고 가는지 감이 잡히지 않았다. “이게 다 무슨 역할을 하는 거지?” 하며 코드를 line-by-line로 따라가야만 겨우 이해되는 수준이었다.\n가장 혼란스러웠던 지점은 **‘목록 기능이 어디에 있는지’**였다. 페이지 이동(Pagination) 버튼을 누르면 데이터가 다시 오는 건 알겠는데, 그 과정이 page.jsx에서 시작되는지, ListComp에서 시작되는지, 아니면 Redux store를 경유하는지 구분이 안 갔다. “Pagination이 새로 데이터를 요청하는 주체인가, 아니면 그냥 화면을 넘어가는 역할만 하는 건가?“라는 질문이 끊임없이 들었다.\n📌 정리된 이해 핵심은 **“목록 기능은 데이터 담당과 화면 담당으로 나뉘어 있다”**는 점이다.\n데이터 요청 및 관리 (ListPage): URL의 slug를 확인하고, axios로 서버에 목록을 요청한 뒤, Redux store에 데이터를 저장한다. 상태 공유 (Redux): 요청된 데이터와 전체 페이지 수(pages)를 전역 상태에 저장해 모든 컴포넌트가 접근할 수 있게 한다. 화면 출력 (ListComp): stored된 데이터를 읽어와 화면에 뿌리고, 페이지가 변경되면 부모에게 알리는 역할을 한다. Pagination은 새로운 시스템이 아니라, 이 데이터 흐름 회로에 ‘스위치’를 켜는 역할이다. 특정 페이지 번호를 누르면 onSubmit(page) 함수를 호출해 다시 데이터를 요청하는 트리거가 된다.\n💻 실습 예시 (코드 흐름) // ListPage.jsx import { useEffect } from 'react'; import { useDispatch, useSelector } from 'react-redux'; import { fetchBoardList } from './store'; // 액션 생성자 import import ListComp from './ListComp'; // 화면 컴포넌트 import const ListPage = ({ match }) =\u003e { const dispatch = useDispatch(); const { data, pages } = useSelector(state =\u003e state.board); // Redux에서 데이터 가져오기 const slug = match.params.slug; // URL 파라미터 추출 // 컴포넌트 마운트 시 한 번 데이터 요청 useEffect(() =\u003e { dispatch(fetchBoardList(slug)); // store에 데이터 저장 }, [dispatch, slug]); return ( \u003cdiv\u003e {/* ListComp는 Redux에 저장된 data와 pages를 props로 받음 */} \u003cListComp data={data} pages={pages} onPageChange={page =\u003e dispatch(fetchBoardList(slug, page))} /\u003e \u003c/div\u003e ); }; export default ListPage; // ListComp.jsx import React from 'react'; const ListComp = ({ data, pages, currentPage, onPageChange }) =\u003e { return ( \u003cdiv\u003e {/* 화면에 데이터 목록 뿌리기 */} {data.map(item =\u003e ( \u003cdiv key={item.id}\u003e \u003ch3\u003e{item.title}\u003c/h3\u003e \u003cp\u003e{item.content}\u003c/p\u003e \u003c/div\u003e ))} {/* 페이지네이션 버튼 */} \u003cdiv\u003e {pages.map(pageNum =\u003e ( \u003cbutton key={pageNum} onClick={() =\u003e onPageChange(pageNum)}\u003e {pageNum} \u003c/button\u003e ))} \u003c/div\u003e \u003c/div\u003e ); }; export default ListComp; // store.jsx (Redux Store 예시) import { createSlice, configureStore } from '@reduxjs/toolkit'; const boardSlice = createSlice({ name: 'board', initialState: { data: [], // 게시글 목록 데이터 pages: 1, // 전체 페이지 수 currentPage: 1 // 현재 페이지 번호 }, reducers: { fetchBoardListStart: (state) =\u003e { /* 로딩 상태 처리 */ }, fetchBoardListSuccess: (state, action) =\u003e { state.data = action.payload 3. 상세보기 진행 상태와 사진·삭제 기능 다음 단계 미리보기 무엇을 배웠나 Redux를 처음 접할 때 기존 로컬 상태와 새로운 데이터 흐름이 겹치면서 “이 변수는 왜 필요한지”, “이미 Redux에서 관리하는데 굳이 또 쓰는지\"라는 혼란이 들었다. 특히 사진과 삭제 기능은 단순히 코드를 추가하는 것을 넘어, 기존의 데이터 흐름(Redux state)과 연결되는 지점이 여러 곳이라 어디서 데이터를 가져오고 어떻게 화면에 반영해야 할지 동시에 추적해야 했다. 기능 자체보다 이전 구조와 새 구조 사이의 정합성 추적이 더 어려웠던 순간이었다.\n현재까지 진행된 흐름은 다음과 같다. 목록에서 제목을 클릭하면 /detail/{idx}로 이동해 서버에서 데이터를 요청하고, Redux state에 board.info, board.photos를 저장한다. 글쓰기 단계에서는 텍스트 입력, 사진 선택(FileReader을 통한 미리보기), FormData를 활용한 전송이 상당 부분 구현된 상태다. 상세보기에서의 사진 출력은 서버가 준 data.photos를 화면에 연결하는 작업이 남아 있으며, 삭제는 DELETE URL 구조는 갖춰져 있지만 어떤 idx를 기준으로 요청할지가 현재 수정 포인트다.\n헷갈렸던 점 처음 Redux를 접했을 때, 기존 local state 방식과 새로운 데이터 흐름이 동시에 존재하다 보니 “이 변수는 뭘 위한 거지?“라는 혼란에 빠졌던 점이 가장 기억에 남습니다.\n특히 사진과 삭제 기능은 단순히 코드를 추가하는 수준을 넘어, 기존의 Redux state와 연결되는 지점이 여러 곳이다 보니 “어디서 데이터를 가져오지?”, “이 함수 호출하면 화면에 어떻게 반영되지?“를 동시에 추적해야 했습니다. 기능 자체보다 이전 구조와 새 구조 사이의 정합성 추적이 더 어렵게 느껴졌던 순간이었습니다.\n정리된 이해 Redux로 전환하면서 가장 어려웠던 점은 기존 로컬 상태와 새로운 데이터 흐름 사이의 정합성 추적이었다. 특히 사진과 삭제 기능은 기존 구조와의 연결 고리 파악이 필수적이어서, “어디서 데이터를 가져오는지\"를 동시에 확인해야 했다. 현재까지 상세보기 이동 및 글쓰기 단계는 완성되었으나, 서버로부터 받은 사진 데이터를 화면에 출력하고 삭제 시 어떤 idx를 기준으로 요청할지 정하는 작업이 남아 있다.\n📌 핵심 요약: 사진·삭제 기능 다음 단계 1. 사진 데이터 흐름 (상세보기 연결 필요) // 상세 페이지에서 서버로부터 받은 photos 배열을 화면에 매핑 const { photos } = board.info; // Redux state에서 추출 return ( \u003cdiv className=\"photo-gallery\"\u003e {photos.map((photo, index) =\u003e ( \u003cimg key={index} src={photo.url} // 또는 photo.thumbnailUrl 등 실제 필드명에 맞게 수정 alt={`photo ${index}`} style={{ width: '200px', height: 'auto', objectFit: 'cover' }} /\u003e ))} \u003c/div\u003e ); 2. 삭제 기능 (DELETE 요청 구조) // idx를 인자로 받아 DELETE 요청 전송 const handleDelete = async (idx) =\u003e { await api.delete(`/boards/${idx}`); // 실제 API 경로에 맞게 조정 dispatch(fetchBoardList()); // 목록 새로고침 또는 상태 초기화 history.push('/'); // 홈으로 이동 또는 이전 페이지 복귀 }; 💡 참고: 위 코드는 노트 내 ‘핵심 포인트’와 ‘실습 예시’ 섹션을 기반으로 재구성한 것입니다.\n4. 리팩토링 시 인지 부하 관리: 기존 코드 이해부터 재구조화까지 무엇을 배웠나 오늘은 기존 완성된 코드에 새 구조를 입히는 마이그레이션 과정을 경험하며, 단순히 문법을 외우는 것을 넘어 ‘이전 코드를 이해하고 재구성하는 일’의 어려움을 실감했습니다. 특히 store, slice 등 용어와 구조가 주는 압박감 때문에 목적보다 세부 사항을 쫓게 되는 함정에 빠졌지만, 강사님의 단계적 리팩토링 방식에서 기존 코드의 정합성을 유지하며 점진적으로 개선하는 방법의 가치를 배웠습니다. 결국 기존 코드를 읽고 이해한 뒤 구조를 변경하고 작동 여부를 검증하는 일련의 과정이, 새로운 주입을 효율적으로 소화하는 핵심 학습 전략임을 깨닫게 되었습니다.\n헷갈렸던 점 오늘은 단순히 문법을 익히는 것이 아니라, 기존 코드에 새로운 구조를 입히는 ‘리팩토링’ 과정을 경험했습니다. 가장 큰 혼란은 **“목적 없이 세부 부품의 이름과 파일 구조부터 따라가다”**가 되어, 왜 이 구조가 필요한지보다는 코드가 어디에 무엇을 위한 것인지 쫓게 되었다는 점입니다. 또한 강사님의 단계적 추가 방식과 저의 접근 방식 사이에는 **“기존 코드를 복구하고 새 코드를 입력하는 연쇄 오류”**가 발생할 위험이 있어, 중간 목적을 보기 전에 구현을 시작했다가 방향을 잃기 쉽다는 점을 깨달았습니다.\n정리된 이해 기존 코드를 읽고 이해하는 것에서 시작해, 목적에 맞게 구조를 변경하고 검증하는 과정 자체가 리팩토링임을 깨달았다. 단순히 문법을 외우는 것이 아니라, 기존 시스템의 맥락을 파악한 뒤 안전하게 새로운 설계로 이관하는 ‘마이그레이션’의 중요성을 체험했다.\nLearningLog: 효율적인 리팩토링 전략 🟡 초보자 시점: 오늘의 혼란과 발견 오늘은 단순히 Redux 문법을 배우는 것을 넘어, 이미 완성된 코드에 새 구조를 입히는 과정을 경험했습니다. 저는 학습자 입장에서 다음과 같은 지점에서 큰 혼란을 느꼈습니다.\n무엇이 헷갈렸나 가장 큰 문제는 **“목적 없이 세부 부품의 이름부터 따라갔다”**는 점이었습니다. store, slice, reducer, dispatch, selector라는 연속된 영어 용어와 파일 분리 구조에 압도되어, “왜 이 구조가 필요한가\"라는 근본적인 질문보다 “이 코드는 어디에 무엇을 위한 것인가\"를 쫓게 되었습니다.\n특히 기존의 JWT 게시판 코드를 다시 가져와 Redux로 변환하는 과정은, **‘과거 프로젝트에서 정합성을 잡기 위해 연결을 추적했던 경험’**과 비슷했습니다. 중간중간 비동기 처리 문제로 구현 방향이 수정되면서, 현재 어떤 상태가 최종적인 것인지 추적하기 어려웠습니다.\n강사님의 방식과 저의 한계 강사님은 기존 완성 코드에 기능과 구조를 단계적으로 추가하며 실제 리팩토링 과정을 보여주셨습니다. 이 방식은 실전 흐름을 직접 볼 수 있다는 장점이 있지만, 오늘처럼 중간 구조 자체가 수정되는 상황에서는 **“완성 목적을 보기 전 구현을 시작했다가, 기존 코드를 복구하고 새 코드를 입력하는 연쇄 오류”**에 빠졌습니다.\n오늘 배운 핵심 오늘의 수업은 결과적으로 다음과 같은 경험을 포함했습니다.\n기존 코드 읽기 (읽고 이해하기) 마이그레이션 (구조 변경하기) 리팩토링 (설계 변경하기) 회귀 확인 (작동 여부 검증하기) 최종 구조 재정리 (정리하기) 📌 정리된 이해: 효율적인 학습 전략 오늘의 어려움은 **“새로운 주입이 많아서”**뿐만 아니라, **“기존 구조를 다시 불러와 실시간으로 구조를 바꾸는 migration 수업”**이라는 점에서 발생했습니다.\n중요한 것은 **‘어떤 순서로 코드를 입력해야 하는가’**가 아니라, **“왜 이 구조 변화가 필요한가”**에 대한 명확한 목표 설정입니다. 다음 학습부터는 전체적인 설계도(아키텍처)를 먼저 파악한 후 세부 구현으로 들어가는 전략을 사용하겠습니다.\n핵심을 보여주는 코드 예시’만’ 백틱3개 코드블록으로 출력하라. 노트에 코드 근거가 없으면 아무것도 쓰지 마라.\n총평 오늘 오후 전체에서 배운 것 Redux는 상태 변경 경로와 조회 경로를 분리하여 관리해야 하며, reducer는 단순히 데이터를 저장하는 전용 역할임을 명확히 이해했다. 기존 코드를 읽고 재구성하는 마이그레이션 과정에서 ‘이전 구조와의 정합성 추적’이 핵심이며, 세부 용어에 매몰되기보다 단계적으로 리팩토링하며 목적과 흐름을 파악하는 전략을 배웠다.\n다음에 조심할 것 기존 코드 흐름을 온전히 이해한 뒤 리팩토링에 착수해야, 목적에서 벗어나 세부 사항을 쫓는 실수를 막을 수 있다. Redux state와 로컬 상태의 중복 및 연결 지점을 명확히 파악하지 않으면 사진·삭제 기능 등 복합 기능 구현 시 데이터 흐름 추적이 어려워진다. 다음 복습 주제 Redux 상태 관리와 비동기 흐름에서 ‘데이터 담당’과 ‘화면 담당’의 역할을 명확히 구분하는 것이 핵심임을 재확인했다. 특히 상세보기 기능 구현 시 기존 로컬 상태와 Redux state 간의 정합성 추적은 코드 추가보다 구조 이해가 우선이라는 점을 뼈저리게 느꼈다.\n다음 복습 주제는 Redux를 활용한 비동기 데이터 흐름에서 dispatch와 useSelector의 정확한 호출 시점과 순서이며, 삭제 및 사진 기능 구현 시 어떤 idx를 기준으로 API 요청을 보내야 할지 데이터 참조 경로를 명확히 하는 것이다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1819",
+  "inLanguage": "en",
+  "datePublished": "2026-08-25T00:00:00Z",
+  "dateModified": "2026-08-25T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-08-25-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/life/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/ai-research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Redux 데이터 흐름 재정비와 마이그레이션 과정에서 마주한 인지 부하 관리하기
+    </h1>
+    <div class="post-description">
+      2026-08-25 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-08-25 00:00:00 +0000 UTC'>2026년 8월 25일</span>&nbsp;·&nbsp;<span>9 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-redux-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%9D%90%EB%A6%84%EA%B3%BC-%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%B2%98%EB%A6%AC-%EC%9C%84%EC%B9%98-%EC%88%98%EC%A0%95-pm-01-redux-data-flow-refactor">Redux 데이터 흐름과 비동기 처리 위치 수정 (pm-01-redux-data-flow-refactor)</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%AA%A9%EB%A1%9D-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%9D%90%EB%A6%84-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">게시판 목록 데이터 흐름 이해하기</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%88%EB%B3%B4%EC%9E%90-%EC%8B%9C%EC%A0%90-%EB%82%B4%EA%B0%80-%ED%97%B7%EA%B0%88%EB%A0%B8%EB%8D%98-%EC%A0%90">🔰 초보자 시점: 내가 헷갈렸던 점</a></li>
+<li><a href="#%EC%A0%95%EB%A6%AC%EB%90%9C-%EC%9D%B4%ED%95%B4">📌 정리된 이해</a></li>
+<li><a href="#%EC%8B%A4%EC%8A%B5-%EC%98%88%EC%8B%9C-%EC%BD%94%EB%93%9C-%ED%9D%90%EB%A6%84">💻 실습 예시 (코드 흐름)</a></li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%83%81%EC%84%B8%EB%B3%B4%EA%B8%B0-%EC%A7%84%ED%96%89-%EC%83%81%ED%83%9C%EC%99%80-%EC%82%AC%EC%A7%84%EC%82%AD%EC%A0%9C-%EA%B8%B0%EB%8A%A5-%EB%8B%A4%EC%9D%8C-%EB%8B%A8%EA%B3%84-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0">상세보기 진행 상태와 사진·삭제 기능 다음 단계 미리보기</a></li>
+</ol>
+</li>
+<li>
+<ol>
+<li><a href="#1-%EC%82%AC%EC%A7%84-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%9D%90%EB%A6%84-%EC%83%81%EC%84%B8%EB%B3%B4%EA%B8%B0-%EC%97%B0%EA%B2%B0-%ED%95%84%EC%9A%94">사진 데이터 흐름 (상세보기 연결 필요)</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%82%AD%EC%A0%9C-%EA%B8%B0%EB%8A%A5-delete-%EC%9A%94%EC%B2%AD-%EA%B5%AC%EC%A1%B0">삭제 기능 (DELETE 요청 구조)</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%81-%EC%8B%9C-%EC%9D%B8%EC%A7%80-%EB%B6%80%ED%95%98-%EA%B4%80%EB%A6%AC-%EA%B8%B0%EC%A1%B4-%EC%BD%94%EB%93%9C-%EC%9D%B4%ED%95%B4%EB%B6%80%ED%84%B0-%EC%9E%AC%EA%B5%AC%EC%A1%B0%ED%99%94%EA%B9%8C%EC%A7%80">리팩토링 시 인지 부하 관리: 기존 코드 이해부터 재구조화까지</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%88%EB%B3%B4%EC%9E%90-%EC%8B%9C%EC%A0%90-%EC%98%A4%EB%8A%98%EC%9D%98-%ED%98%BC%EB%9E%80%EA%B3%BC-%EB%B0%9C%EA%B2%AC">🟡 초보자 시점: 오늘의 혼란과 발견</a></li>
+<li><a href="#%EC%A0%95%EB%A6%AC%EB%90%9C-%EC%9D%B4%ED%95%B4-%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9D%B8-%ED%95%99%EC%8A%B5-%EC%A0%84%EB%9E%B5">📌 정리된 이해: 효율적인 학습 전략</a></li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-redux-데이터-흐름과-비동기-처리-위치-수정-pm-01-redux-data-flow-refactor">1. Redux 데이터 흐름과 비동기 처리 위치 수정 (pm-01-redux-data-flow-refactor)<a hidden class="anchor" aria-hidden="true" href="#1-redux-데이터-흐름과-비동기-처리-위치-수정-pm-01-redux-data-flow-refactor">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>Redux는 상태 변경 경로와 조회 경로를 분리하여 관리하는 것이 핵심이며, reducer는 단순히 데이터를 state에 넣는 단순 저장 전용 역할임을 깨달았다. 서버 요청 후 dispatch를 통해 reducer가 state를 업데이트하고, useSelector로 값을 꺼내 화면에 렌더링하는 전체 흐름을 이해하게 되어 혼란이 해소되었다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>dispatch와 reducer가 단순히 데이터를 넣는 통로라고 생각하다 보니, 비동기 처리가 어떻게 맞물리는지 감이 안 잡혔습니다. 실제로는 서버 요청 후 받아온 데이터를 dispatch해야 reducer가 실행되므로, 흐름을 분리해서 이해하는 것이 중요했습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>Redux는 상태 변경 경로와 조회 통로를 분리하여 데이터 흐름을 일관되게 관리하는 도구다. 핵심은 <code>dispatch</code>를 통해 reducer가 state를 업데이트하고, <code>useSelector</code>로 화면에 값을 전달하는 구조를 이해하는 것이다. 복잡한 비동기 처리는 미들웨어나 thunk를 사용하더라도 이 기본적인 흐름만 명확히 하면 코드의 의도가 쉽게 파악된다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// boardSlicer.jsx - reducer (단순 저장 전용)
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">reducers</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">setList</span>(<span style="color:#a6e22e">state</span>, <span style="color:#a6e22e">action</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">state</span>[<span style="color:#e6db74">&#39;list&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">action</span>.<span style="color:#a6e22e">payload</span>.<span style="color:#a6e22e">list</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">state</span>[<span style="color:#e6db74">&#39;pages&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">action</span>.<span style="color:#a6e22e">payload</span>.<span style="color:#a6e22e">pages</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">state</span>;
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">setDetail</span>(<span style="color:#a6e22e">state</span>, <span style="color:#a6e22e">action</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">state</span>[<span style="color:#e6db74">&#39;detail&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">action</span>.<span style="color:#a6e22e">payload</span>.<span style="color:#a6e22e">detail</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">state</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="2-게시판-목록-데이터-흐름-이해하기">2. 게시판 목록 데이터 흐름 이해하기<a hidden class="anchor" aria-hidden="true" href="#2-게시판-목록-데이터-흐름-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>처음에는 파일 구조와 Redux 흐름이 복잡하게 느껴졌지만, 핵심은 &lsquo;데이터 담당&rsquo;과 &lsquo;화면 담당&rsquo;으로 나뉘는 것이었다. 목록 기능은 URL을 확인해 데이터를 요청하고, Redux를 통해 전역 상태를 관리하며, ListComp가 그 데이터를 화면에 뿌리는 식으로 동작한다. 또한 Pagination은 새로운 데이터 요청을 트리거하는 스위치 역할을 한다는 점을 명확히 이해할 수 있었다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음에는 파일 구조가 복잡하게 느껴져 각 파일의 역할이 겹치는 것 같아 혼란스러웠습니다. 특히 Redux를 기존 코드에 적용할 때 데이터가 어디서 오고 가는지 감이 안 잡혀 &lsquo;목록 기능이 어디에 있는지&rsquo;를 파악하는 데 어려움이 있었습니다.</p>
+<p>핵심은 목록 기능이 **데이터 요청(ListPage)**과 **화면 출력(ListComp)**으로 나뉘어 있다는 점입니다. Pagination은 새로운 시스템이 아니라 데이터 흐름 회로에 &lsquo;스위치&rsquo;를 켜는 역할이며, 특정 페이지 번호를 누르면 <code>onSubmit(page)</code> 함수를 호출해 다시 데이터를 요청하는 트리거가 된다는 점을 명확히 했습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>핵심은 데이터 담당과 화면 담당으로 나뉘어 있다는 점이다. 목록 기능은 URL slug를 확인해 axios로 데이터를 요청하고, Redux store에 저장한다. 이후 ListComp는 stored된 데이터를 읽어 화면에 뿌리고, 페이지 변경 시 부모에게 알리는 역할을 한다. Pagination은 새로운 시스템이 아니라 데이터 흐름 회로에 &lsquo;스위치&rsquo;를 켜는 역할이다.</p>
+<h1 id="learninglog-워킹-노트-게시판-목록-페이지네이션-컴포넌트-분리">LearningLog 워킹 노트: 게시판 목록, 페이지네이션, 컴포넌트 분리<a hidden class="anchor" aria-hidden="true" href="#learninglog-워킹-노트-게시판-목록-페이지네이션-컴포넌트-분리">#</a></h1>
+<h2 id="-초보자-시점-내가-헷갈렸던-점">🔰 초보자 시점: 내가 헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#-초보자-시점-내가-헷갈렸던-점">#</a></h2>
+<p>처음에는 파일 구조가 너무 복잡하게 느껴졌다. <code>page.jsx</code>, <code>ListComp.jsx</code>, <code>boardSlicer.jsx</code>, <code>store.jsx</code>까지 네 개의 파일이 연관되어 있는데, &ldquo;왜 이렇게 쪼개져 있지?&ldquo;라는 의문이 들었다.</p>
+<p>특히 Redux라는 새로운 개념을 기존 게시판 코드에 끼워 넣으려니 감이 안 왔다. 각 파일의 역할이 겹치는 것 같으면서도 어디서 데이터가 오고 가는지 감이 잡히지 않았다. &ldquo;이게 다 무슨 역할을 하는 거지?&rdquo; 하며 코드를 line-by-line로 따라가야만 겨우 이해되는 수준이었다.</p>
+<p>가장 혼란스러웠던 지점은 **&lsquo;목록 기능이 어디에 있는지&rsquo;**였다. 페이지 이동(Pagination) 버튼을 누르면 데이터가 다시 오는 건 알겠는데, 그 과정이 <code>page.jsx</code>에서 시작되는지, <code>ListComp</code>에서 시작되는지, 아니면 Redux store를 경유하는지 구분이 안 갔다. &ldquo;Pagination이 새로 데이터를 요청하는 주체인가, 아니면 그냥 화면을 넘어가는 역할만 하는 건가?&ldquo;라는 질문이 끊임없이 들었다.</p>
+<h2 id="-정리된-이해">📌 정리된 이해<a hidden class="anchor" aria-hidden="true" href="#-정리된-이해">#</a></h2>
+<p>핵심은 **&ldquo;목록 기능은 데이터 담당과 화면 담당으로 나뉘어 있다&rdquo;**는 점이다.</p>
+<ol>
+<li><strong>데이터 요청 및 관리 (ListPage)</strong>: URL의 <code>slug</code>를 확인하고, axios로 서버에 목록을 요청한 뒤, Redux store에 데이터를 저장한다.</li>
+<li><strong>상태 공유 (Redux)</strong>: 요청된 데이터와 전체 페이지 수(<code>pages</code>)를 전역 상태에 저장해 모든 컴포넌트가 접근할 수 있게 한다.</li>
+<li><strong>화면 출력 (ListComp)</strong>: stored된 데이터를 읽어와 화면에 뿌리고, 페이지가 변경되면 부모에게 알리는 역할을 한다.</li>
+</ol>
+<p><strong>Pagination은 새로운 시스템이 아니라, 이 데이터 흐름 회로에 &lsquo;스위치&rsquo;를 켜는 역할</strong>이다. 특정 페이지 번호를 누르면 <code>onSubmit(page)</code> 함수를 호출해 다시 데이터를 요청하는 트리거가 된다.</p>
+<h2 id="-실습-예시-코드-흐름">💻 실습 예시 (코드 흐름)<a hidden class="anchor" aria-hidden="true" href="#-실습-예시-코드-흐름">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// ListPage.jsx
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">useEffect</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">useDispatch</span>, <span style="color:#a6e22e">useSelector</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react-redux&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">fetchBoardList</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./store&#39;</span>; <span style="color:#75715e">// 액션 생성자 import
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">ListComp</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./ListComp&#39;</span>;       <span style="color:#75715e">// 화면 컴포넌트 import
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">ListPage</span> <span style="color:#f92672">=</span> ({ <span style="color:#a6e22e">match</span> }) =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">dispatch</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">useDispatch</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">data</span>, <span style="color:#a6e22e">pages</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">useSelector</span>(<span style="color:#a6e22e">state</span> =&gt; <span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">board</span>); <span style="color:#75715e">// Redux에서 데이터 가져오기
+</span></span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">slug</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">match</span>.<span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">slug</span>; <span style="color:#75715e">// URL 파라미터 추출
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 컴포넌트 마운트 시 한 번 데이터 요청
+</span></span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">useEffect</span>(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">dispatch</span>(<span style="color:#a6e22e">fetchBoardList</span>(<span style="color:#a6e22e">slug</span>)); <span style="color:#75715e">// store에 데이터 저장
+</span></span></span><span style="display:flex;"><span>  }, [<span style="color:#a6e22e">dispatch</span>, <span style="color:#a6e22e">slug</span>]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      {<span style="color:#75715e">/* ListComp는 Redux에 저장된 data와 pages를 props로 받음 */</span>}
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">ListComp</span> <span style="color:#a6e22e">data</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">data</span>} <span style="color:#a6e22e">pages</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">pages</span>} <span style="color:#a6e22e">onPageChange</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">page</span> =&gt; <span style="color:#a6e22e">dispatch</span>(<span style="color:#a6e22e">fetchBoardList</span>(<span style="color:#a6e22e">slug</span>, <span style="color:#a6e22e">page</span>))} <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;</span>
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#a6e22e">ListPage</span>;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// ListComp.jsx
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">React</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">ListComp</span> <span style="color:#f92672">=</span> ({ <span style="color:#a6e22e">data</span>, <span style="color:#a6e22e">pages</span>, <span style="color:#a6e22e">currentPage</span>, <span style="color:#a6e22e">onPageChange</span> }) =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      {<span style="color:#75715e">/* 화면에 데이터 목록 뿌리기 */</span>}
+</span></span><span style="display:flex;"><span>      {<span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">item</span> =&gt; (
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span> <span style="color:#a6e22e">key</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">item</span>.<span style="color:#a6e22e">id</span>}<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">h3</span><span style="color:#f92672">&gt;</span>{<span style="color:#a6e22e">item</span>.<span style="color:#a6e22e">title</span>}<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/h3&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">p</span><span style="color:#f92672">&gt;</span>{<span style="color:#a6e22e">item</span>.<span style="color:#a6e22e">content</span>}<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/p&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;</span>
+</span></span><span style="display:flex;"><span>      ))}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      {<span style="color:#75715e">/* 페이지네이션 버튼 */</span>}
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        {<span style="color:#a6e22e">pages</span>.<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">pageNum</span> =&gt; (
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">button</span> <span style="color:#a6e22e">key</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">pageNum</span>} <span style="color:#a6e22e">onClick</span><span style="color:#f92672">=</span>{() =&gt; <span style="color:#a6e22e">onPageChange</span>(<span style="color:#a6e22e">pageNum</span>)}<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>            {<span style="color:#a6e22e">pageNum</span>}
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/button&gt;</span>
+</span></span><span style="display:flex;"><span>        ))}
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;</span>
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#a6e22e">ListComp</span>;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// store.jsx (Redux Store 예시)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">createSlice</span>, <span style="color:#a6e22e">configureStore</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;@reduxjs/toolkit&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">boardSlice</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">createSlice</span>({
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;board&#39;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">initialState</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">data</span><span style="color:#f92672">:</span> [],      <span style="color:#75715e">// 게시글 목록 데이터
+</span></span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">pages</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>,     <span style="color:#75715e">// 전체 페이지 수
+</span></span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">currentPage</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span> <span style="color:#75715e">// 현재 페이지 번호
+</span></span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">reducers</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fetchBoardListStart</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">state</span>) =&gt; { <span style="color:#75715e">/* 로딩 상태 처리 */</span> },
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fetchBoardListSuccess</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">state</span>, <span style="color:#a6e22e">action</span>) =&gt; {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">data</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">action</span>.<span style="color:#a6e22e">payload</span>
+</span></span></code></pre></div><h2 id="3-상세보기-진행-상태와-사진삭제-기능-다음-단계-미리보기">3. 상세보기 진행 상태와 사진·삭제 기능 다음 단계 미리보기<a hidden class="anchor" aria-hidden="true" href="#3-상세보기-진행-상태와-사진삭제-기능-다음-단계-미리보기">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>Redux를 처음 접할 때 기존 로컬 상태와 새로운 데이터 흐름이 겹치면서 &ldquo;이 변수는 왜 필요한지&rdquo;, &ldquo;이미 Redux에서 관리하는데 굳이 또 쓰는지&quot;라는 혼란이 들었다. 특히 사진과 삭제 기능은 단순히 코드를 추가하는 것을 넘어, 기존의 데이터 흐름(Redux state)과 연결되는 지점이 여러 곳이라 어디서 데이터를 가져오고 어떻게 화면에 반영해야 할지 동시에 추적해야 했다. 기능 자체보다 이전 구조와 새 구조 사이의 정합성 추적이 더 어려웠던 순간이었다.</p>
+<p>현재까지 진행된 흐름은 다음과 같다. 목록에서 제목을 클릭하면 <code>/detail/{idx}</code>로 이동해 서버에서 데이터를 요청하고, Redux state에 <code>board.info</code>, <code>board.photos</code>를 저장한다. 글쓰기 단계에서는 텍스트 입력, 사진 선택(FileReader을 통한 미리보기), FormData를 활용한 전송이 상당 부분 구현된 상태다. 상세보기에서의 사진 출력은 서버가 준 <code>data.photos</code>를 화면에 연결하는 작업이 남아 있으며, 삭제는 DELETE URL 구조는 갖춰져 있지만 어떤 <code>idx</code>를 기준으로 요청할지가 현재 수정 포인트다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>처음 Redux를 접했을 때, 기존 local state 방식과 새로운 데이터 흐름이 동시에 존재하다 보니 &ldquo;이 변수는 뭘 위한 거지?&ldquo;라는 혼란에 빠졌던 점이 가장 기억에 남습니다.</p>
+<p>특히 사진과 삭제 기능은 단순히 코드를 추가하는 수준을 넘어, 기존의 Redux state와 연결되는 지점이 여러 곳이다 보니 &ldquo;어디서 데이터를 가져오지?&rdquo;, &ldquo;이 함수 호출하면 화면에 어떻게 반영되지?&ldquo;를 동시에 추적해야 했습니다. 기능 자체보다 이전 구조와 새 구조 사이의 정합성 추적이 더 어렵게 느껴졌던 순간이었습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>Redux로 전환하면서 가장 어려웠던 점은 기존 로컬 상태와 새로운 데이터 흐름 사이의 정합성 추적이었다. 특히 사진과 삭제 기능은 기존 구조와의 연결 고리 파악이 필수적이어서, &ldquo;어디서 데이터를 가져오는지&quot;를 동시에 확인해야 했다. 현재까지 상세보기 이동 및 글쓰기 단계는 완성되었으나, 서버로부터 받은 사진 데이터를 화면에 출력하고 삭제 시 어떤 idx를 기준으로 요청할지 정하는 작업이 남아 있다.</p>
+<h1 id="-핵심-요약-사진삭제-기능-다음-단계">📌 핵심 요약: 사진·삭제 기능 다음 단계<a hidden class="anchor" aria-hidden="true" href="#-핵심-요약-사진삭제-기능-다음-단계">#</a></h1>
+<h2 id="1-사진-데이터-흐름-상세보기-연결-필요">1. 사진 데이터 흐름 (상세보기 연결 필요)<a hidden class="anchor" aria-hidden="true" href="#1-사진-데이터-흐름-상세보기-연결-필요">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// 상세 페이지에서 서버로부터 받은 photos 배열을 화면에 매핑
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">photos</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">board</span>.<span style="color:#a6e22e">info</span>; <span style="color:#75715e">// Redux state에서 추출
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span> <span style="color:#a6e22e">className</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;photo-gallery&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    {<span style="color:#a6e22e">photos</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">photo</span>, <span style="color:#a6e22e">index</span>) =&gt; (
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">img</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">key</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">index</span>}
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">photo</span>.<span style="color:#a6e22e">url</span>} <span style="color:#75715e">// 또는 photo.thumbnailUrl 등 실제 필드명에 맞게 수정
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">alt</span><span style="color:#f92672">=</span>{<span style="color:#e6db74">`photo </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">index</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>}
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span>{{ <span style="color:#a6e22e">width</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;200px&#39;</span>, <span style="color:#a6e22e">height</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;auto&#39;</span>, <span style="color:#a6e22e">objectFit</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;cover&#39;</span> }}
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    ))}
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;</span>
+</span></span><span style="display:flex;"><span>);
+</span></span></code></pre></div><h2 id="2-삭제-기능-delete-요청-구조">2. 삭제 기능 (DELETE 요청 구조)<a hidden class="anchor" aria-hidden="true" href="#2-삭제-기능-delete-요청-구조">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// idx를 인자로 받아 DELETE 요청 전송
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">handleDelete</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">async</span> (<span style="color:#a6e22e">idx</span>) =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">api</span>.<span style="color:#66d9ef">delete</span>(<span style="color:#e6db74">`/boards/</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">idx</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>); <span style="color:#75715e">// 실제 API 경로에 맞게 조정
+</span></span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">dispatch</span>(<span style="color:#a6e22e">fetchBoardList</span>()); <span style="color:#75715e">// 목록 새로고침 또는 상태 초기화
+</span></span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">history</span>.<span style="color:#a6e22e">push</span>(<span style="color:#e6db74">&#39;/&#39;</span>); <span style="color:#75715e">// 홈으로 이동 또는 이전 페이지 복귀
+</span></span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p><strong>💡 참고:</strong> 위 코드는 노트 내 &lsquo;핵심 포인트&rsquo;와 &lsquo;실습 예시&rsquo; 섹션을 기반으로 재구성한 것입니다.</p>
+<h2 id="4-리팩토링-시-인지-부하-관리-기존-코드-이해부터-재구조화까지">4. 리팩토링 시 인지 부하 관리: 기존 코드 이해부터 재구조화까지<a hidden class="anchor" aria-hidden="true" href="#4-리팩토링-시-인지-부하-관리-기존-코드-이해부터-재구조화까지">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>오늘은 기존 완성된 코드에 새 구조를 입히는 마이그레이션 과정을 경험하며, 단순히 문법을 외우는 것을 넘어 &lsquo;이전 코드를 이해하고 재구성하는 일&rsquo;의 어려움을 실감했습니다. 특히 <code>store</code>, <code>slice</code> 등 용어와 구조가 주는 압박감 때문에 목적보다 세부 사항을 쫓게 되는 함정에 빠졌지만, 강사님의 단계적 리팩토링 방식에서 기존 코드의 정합성을 유지하며 점진적으로 개선하는 방법의 가치를 배웠습니다. 결국 기존 코드를 읽고 이해한 뒤 구조를 변경하고 작동 여부를 검증하는 일련의 과정이, 새로운 주입을 효율적으로 소화하는 핵심 학습 전략임을 깨닫게 되었습니다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>오늘은 단순히 문법을 익히는 것이 아니라, 기존 코드에 새로운 구조를 입히는 &lsquo;리팩토링&rsquo; 과정을 경험했습니다. 가장 큰 혼란은 **&ldquo;목적 없이 세부 부품의 이름과 파일 구조부터 따라가다&rdquo;**가 되어, 왜 이 구조가 필요한지보다는 코드가 어디에 무엇을 위한 것인지 쫓게 되었다는 점입니다. 또한 강사님의 단계적 추가 방식과 저의 접근 방식 사이에는 **&ldquo;기존 코드를 복구하고 새 코드를 입력하는 연쇄 오류&rdquo;**가 발생할 위험이 있어, 중간 목적을 보기 전에 구현을 시작했다가 방향을 잃기 쉽다는 점을 깨달았습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>기존 코드를 읽고 이해하는 것에서 시작해, 목적에 맞게 구조를 변경하고 검증하는 과정 자체가 리팩토링임을 깨달았다. 단순히 문법을 외우는 것이 아니라, 기존 시스템의 맥락을 파악한 뒤 안전하게 새로운 설계로 이관하는 &lsquo;마이그레이션&rsquo;의 중요성을 체험했다.</p>
+<h1 id="learninglog-효율적인-리팩토링-전략">LearningLog: 효율적인 리팩토링 전략<a hidden class="anchor" aria-hidden="true" href="#learninglog-효율적인-리팩토링-전략">#</a></h1>
+<h2 id="-초보자-시점-오늘의-혼란과-발견">🟡 초보자 시점: 오늘의 혼란과 발견<a hidden class="anchor" aria-hidden="true" href="#-초보자-시점-오늘의-혼란과-발견">#</a></h2>
+<p>오늘은 단순히 Redux 문법을 배우는 것을 넘어, <strong>이미 완성된 코드에 새 구조를 입히는 과정</strong>을 경험했습니다. 저는 학습자 입장에서 다음과 같은 지점에서 큰 혼란을 느꼈습니다.</p>
+<h3 id="무엇이-헷갈렸나">무엇이 헷갈렸나<a hidden class="anchor" aria-hidden="true" href="#무엇이-헷갈렸나">#</a></h3>
+<p>가장 큰 문제는 **&ldquo;목적 없이 세부 부품의 이름부터 따라갔다&rdquo;**는 점이었습니다. <code>store</code>, <code>slice</code>, <code>reducer</code>, <code>dispatch</code>, <code>selector</code>라는 연속된 영어 용어와 파일 분리 구조에 압도되어, &ldquo;왜 이 구조가 필요한가&quot;라는 근본적인 질문보다 &ldquo;이 코드는 어디에 무엇을 위한 것인가&quot;를 쫓게 되었습니다.</p>
+<p>특히 기존의 JWT 게시판 코드를 다시 가져와 Redux로 변환하는 과정은, **&lsquo;과거 프로젝트에서 정합성을 잡기 위해 연결을 추적했던 경험&rsquo;**과 비슷했습니다. 중간중간 비동기 처리 문제로 구현 방향이 수정되면서, 현재 어떤 상태가 최종적인 것인지 추적하기 어려웠습니다.</p>
+<h3 id="강사님의-방식과-저의-한계">강사님의 방식과 저의 한계<a hidden class="anchor" aria-hidden="true" href="#강사님의-방식과-저의-한계">#</a></h3>
+<p>강사님은 기존 완성 코드에 기능과 구조를 단계적으로 추가하며 실제 리팩토링 과정을 보여주셨습니다. 이 방식은 실전 흐름을 직접 볼 수 있다는 장점이 있지만, 오늘처럼 중간 구조 자체가 수정되는 상황에서는 **&ldquo;완성 목적을 보기 전 구현을 시작했다가, 기존 코드를 복구하고 새 코드를 입력하는 연쇄 오류&rdquo;**에 빠졌습니다.</p>
+<h3 id="오늘-배운-핵심">오늘 배운 핵심<a hidden class="anchor" aria-hidden="true" href="#오늘-배운-핵심">#</a></h3>
+<p>오늘의 수업은 결과적으로 다음과 같은 경험을 포함했습니다.</p>
+<ol>
+<li><strong>기존 코드 읽기</strong> (읽고 이해하기)</li>
+<li><strong>마이그레이션</strong> (구조 변경하기)</li>
+<li><strong>리팩토링</strong> (설계 변경하기)</li>
+<li><strong>회귀 확인</strong> (작동 여부 검증하기)</li>
+<li><strong>최종 구조 재정리</strong> (정리하기)</li>
+</ol>
+<h2 id="-정리된-이해-효율적인-학습-전략">📌 정리된 이해: 효율적인 학습 전략<a hidden class="anchor" aria-hidden="true" href="#-정리된-이해-효율적인-학습-전략">#</a></h2>
+<p>오늘의 어려움은 **&ldquo;새로운 주입이 많아서&rdquo;**뿐만 아니라, **&ldquo;기존 구조를 다시 불러와 실시간으로 구조를 바꾸는 migration 수업&rdquo;**이라는 점에서 발생했습니다.</p>
+<p>중요한 것은 **&lsquo;어떤 순서로 코드를 입력해야 하는가&rsquo;**가 아니라, **&ldquo;왜 이 구조 변화가 필요한가&rdquo;**에 대한 명확한 목표 설정입니다. 다음 학습부터는 전체적인 설계도(아키텍처)를 먼저 파악한 후 세부 구현으로 들어가는 전략을 사용하겠습니다.</p>
+<p>핵심을 보여주는 코드 예시&rsquo;만&rsquo; 백틱3개 코드블록으로 출력하라. 노트에 코드 근거가 없으면 아무것도 쓰지 마라.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>Redux는 상태 변경 경로와 조회 경로를 분리하여 관리해야 하며, reducer는 단순히 데이터를 저장하는 전용 역할임을 명확히 이해했다. 기존 코드를 읽고 재구성하는 마이그레이션 과정에서 &lsquo;이전 구조와의 정합성 추적&rsquo;이 핵심이며, 세부 용어에 매몰되기보다 단계적으로 리팩토링하며 목적과 흐름을 파악하는 전략을 배웠다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<ul>
+<li>기존 코드 흐름을 온전히 이해한 뒤 리팩토링에 착수해야, 목적에서 벗어나 세부 사항을 쫓는 실수를 막을 수 있다.</li>
+<li>Redux state와 로컬 상태의 중복 및 연결 지점을 명확히 파악하지 않으면 사진·삭제 기능 등 복합 기능 구현 시 데이터 흐름 추적이 어려워진다.</li>
+</ul>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>Redux 상태 관리와 비동기 흐름에서 &lsquo;데이터 담당&rsquo;과 &lsquo;화면 담당&rsquo;의 역할을 명확히 구분하는 것이 핵심임을 재확인했다. 특히 상세보기 기능 구현 시 기존 로컬 상태와 Redux state 간의 정합성 추적은 코드 추가보다 구조 이해가 우선이라는 점을 뼈저리게 느꼈다.</p>
+<p>다음 복습 주제는 Redux를 활용한 비동기 데이터 흐름에서 <code>dispatch</code>와 <code>useSelector</code>의 정확한 호출 시점과 순서이며, 삭제 및 사진 기능 구현 시 어떤 <code>idx</code>를 기준으로 API 요청을 보내야 할지 데이터 참조 경로를 명확히 하는 것이다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://Han-think.github.io/learning/2026-08-25-am-daily/">
+    <span class="title">Next »</span>
+    <span>상태 공유와 렌더링 흐름 분리, 그리고 Redux 핵심 회로도 이해하기</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

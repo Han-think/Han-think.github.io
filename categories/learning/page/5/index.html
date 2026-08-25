@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Learning | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/categories/learning/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://Han-think.github.io/categories/learning/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/categories/learning/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function () {
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/categories/learning/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="Learning">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="website">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Learning">
+
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/life/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/ai-research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header">
+  <h1>
+    Learning
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">JavaScript 기초 다지기: 배열, 객체, 자료구조, 알고리즘, 숫자-문자열 변환 마스터
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 배열 인덱싱, 정렬, 역순 처리: 초보자를 위한 정리 객체 접근, 변수, 비교 연산자: 초보자를 위한 핵심 개념 배열 메서드와 자료구조 활용법 반복문과 조건문으로 짝수 판별과 소수 합 구하기 숫자 변환과 문자열 연결: JavaScript 활용법 총평 1. 배열 인덱싱, 정렬, 역순 처리: 초보자를 위한 정리 무엇을 배웠나 배열 인덱스가 0부터 시작하며, 인덱스를 잘못 이해하면 원하는 값을 가져오지 못한다는 것을 알게 되었습니다. 단순히 reverse()가 아닌 상황에 따라 sort().reverse()를 사용해야 한다는 점, 그리고 정렬 및 역순 처리 시 원본 배열이 변경될 수 있으므로 slice()를 사용하여 복사본을 만들어서 처리해야 한다는 점을 배웠습니다. 이제 배열 인덱싱과 정렬, 역순 처리 개념을 좀 더 명확하게 이해할 수 있게 되었습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-29 00:00:00 +0000 UTC'>2026년 7월 29일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to JavaScript 기초 다지기: 배열, 객체, 자료구조, 알고리즘, 숫자-문자열 변환 마스터" href="https://Han-think.github.io/learning/2026-07-29-pm-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">JavaScript 기초 다지기: 실행, 변수, 함수 완벽 이해
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 JavaScript 코드 실행과 디버깅 기초 JavaScript 변수, 타입, 그리고 데이터 변환 이해하기 함수 활용법: 매개변수, 인자, 반환값 완벽하게 이해하기 JavaScript 실습: 흔한 오류와 핵심 개념 정리 총평 1. JavaScript 코드 실행과 디버깅 기초 무엇을 배웠나 JavaScript 코드가 웹 페이지에 바로 반영되지 않는 이유를 이해하고, &lt;script&gt; 태그와 외부 파일 연결을 통해 코드 실행 위치를 명확히 알게 되었다. 브라우저 개발자 도구의 각 탭(Console, Sources, Elements)의 역할을 구분하고, console 출력 확인과 breakpoint 설정 등 기본적인 디버깅 방법을 익혔다. 이제 HTML 파일을 직접 열고 개발자 도구를 활용하여 코드를 실행하고 오류를 해결할 수 있게 되었다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-29 00:00:00 +0000 UTC'>2026년 7월 29일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to JavaScript 기초 다지기: 실행, 변수, 함수 완벽 이해" href="https://Han-think.github.io/learning/2026-07-29-am-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">CSS 변환, 트랜지션, 애니메이션과 반응형 디자인 마스터하기
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 CSS 변환과 브라우저 Prefix 완벽 이해하기 호버 효과를 부드럽게 만드는 CSS 트랜지션 완벽 가이드 UI 애플리케이션 메뉴 및 카드에 트랜지션 효과 적용하기 CSS 애니메이션과 키프레임 동작 원리 이해하기 변환 애니메이션 조합과 시간 속성 이해 반응형 상단 영역 구현을 위한 미디어 쿼리 활용법 총평 1. CSS 변환과 브라우저 Prefix 완벽 이해하기 무엇을 배웠나 CSS transform 속성은 여러 변환을 한 줄로 연결하여 적용하며, 각 변환은 순차적으로 적용되지 않고 마지막 선언이 우선합니다. 브라우저 prefix는 이전 버전의 브라우저와의 호환성을 위해 사용되었으며, 최신 브라우저는 대부분 기본 CSS를 지원합니다. transform 속성과 prefix를 사용하여 요소를 변형하는 방법에 대한 기본적인 이해를 쌓았습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-28 00:00:00 +0000 UTC'>2026년 7월 28일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to CSS 변환, 트랜지션, 애니메이션과 반응형 디자인 마스터하기" href="https://Han-think.github.io/learning/2026-07-28-pm-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">CSS 주석부터 브라우저 호환성까지 웹 개발 핵심 개념 학습 정리
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 CSS 주석 작성법 및 VS Code 활용 가이드 플로팅과 클리어: 웹 레이아웃의 기본 원리 시맨틱 HTML과 외부 CSS를 활용한 카드 페이지 구축 CSS Transform 속성 활용법: 변환 순서와 비율 이해하기 브라우저 호환성을 위한 CSS 접두사 완벽 이해 총평 1. CSS 주석 작성법 및 VS Code 활용 가이드 무엇을 배웠나 CSS 주석을 적용하는 방법과 VS Code 단축키 사용법을 명확히 이해하게 되었다. 특히, 원하는 부분만 주석 처리하는 방법을 알고 나니 이전보다 훨씬 효율적으로 CSS 코드를 관리할 수 있게 되었다. 앞으로는 프로젝트에 참여할 때 이 지식을 활용하여 코드의 가독성과 유지보수성을 높이는 데 기여할 수 있을 것 같다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-28 00:00:00 +0000 UTC'>2026년 7월 28일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to CSS 주석부터 브라우저 호환성까지 웹 개발 핵심 개념 학습 정리" href="https://Han-think.github.io/learning/2026-07-28-am-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">CSS 기본 정립 및 레이아웃 문제 해결 학습 정리
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 CSS 스타일 우선순위: 캐스케이드와 구체성 이해 CSS 크기, 글꼴, 배경, 테두리 및 스프라이트 실습 워크노트 CSS 박스 모델: Margin, Padding, Border 완벽 이해 CSS 레이아웃 기본: Block, Inline, Position 이해 float, clear, 레이아웃 초기화: 초보자를 위한 CSS 정리 총평 1. CSS 스타일 우선순위: 캐스케이드와 구체성 이해 무엇을 배웠나 CSS 캐스케이드 과정에서 선택자의 구체성이 규칙 적용 순서보다 우선한다는 것을 명확히 이해하게 되었다. 단순히 코드가 나중에 작성된 순서대로 적용되는 것이 아니라, 구체적인 선택자가 우선하며, 구체성이 같을 때만 작성 순서가 영향을 미친다는 점을 알게 되었다. 실습 과정에서 문법 오류를 통해 CSS 코딩의 세심함을 다시 한번 깨닫게 되었다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-27 00:00:00 +0000 UTC'>2026년 7월 27일</span>&nbsp;·&nbsp;<span>7 min</span></footer>
+  <a class="entry-link" aria-label="post link to CSS 기본 정립 및 레이아웃 문제 해결 학습 정리" href="https://Han-think.github.io/learning/2026-07-27-pm-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">HTML과 CSS 기초, 선택자와 상속 개념 완벽 정복
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 HTML 기본 구조와 태그 이해하기 CSS 적용 방식: 인라인 스타일과 Internal Style Sheet CSS 선택자와 구체적 지시 우선순위 완벽 이해 CSS 상속과 자식 선택자: 개념과 차이점 이해 총평 1. HTML 기본 구조와 태그 이해하기 무엇을 배웠나 HTML 기본 구조와 태그를 배우면서, 태그의 중첩 관계를 트리 형태로 이해하는 것이 중요함을 알게 되었다. 단순히 태그를 나열하는 것이 아니라, 부모-자식 관계를 고려해야 하는 점이 헷갈렸지만, 예제를 통해 조금씩 감을 잡았다. 또한, 태그와 요소를 명확히 구분하고 속성을 이해하는 것이 HTML 문서를 만드는 데 필수적임을 깨달았다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-27 00:00:00 +0000 UTC'>2026년 7월 27일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+  <a class="entry-link" aria-label="post link to HTML과 CSS 기초, 선택자와 상속 개념 완벽 정복" href="https://Han-think.github.io/learning/2026-07-27-am-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">웹 기초와 HTML 심화 학습으로 프로젝트 관리 역량 강화
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 uv 프로젝트 초기화 및 의존성 관리 가이드 웹 기초: 웹 표준, 접근성, 크로스 브라우징 이해 HTML 문서 구조와 &lt;head&gt; 메타데이터 완벽 이해하기 HTML 태그 진화와 속성 이해하기 HTML 기본 태그 실습: 제목 태그와 하이퍼링크 완벽 이해 HTML 편집기 포맷팅, 빠른 학습 속도, 그리고 효과적인 이해 전략 1. uv 프로젝트 초기화 및 의존성 관리 가이드 무엇을 배웠나 uv 프로젝트를 초기화하고 의존성을 관리할 때 pip install와 uv add의 차이점을 명확히 이해하게 되었다. pyproject.toml은 프로젝트의 의존성 정보를 정의하고, uv.lock은 실제 설치된 패키지 버전과 해시값을 기록하여 재현성을 보장한다는 것도 알게 되었다. 이제 uv를 사용한 프로젝트를 더 효과적으로 관리할 수 있을 것 같다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-24 00:00:00 +0000 UTC'>2026년 7월 24일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to 웹 기초와 HTML 심화 학습으로 프로젝트 관리 역량 강화" href="https://Han-think.github.io/learning/2026-07-24-pm-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">파이썬 스타일 가이드부터 패키지 관리까지, 코드 품질 향상을 위한 핵심 내용 정리
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 파이썬 코드 스타일 가이드: 컨벤션과 네이밍 규칙 함수 컨벤션과 테스트 가능성 이해 코드 이해를 돕는 주석, 독스트링, 타입 힌트 활용법 프로젝트 구조와 모듈 분리, 효율적인 코드 관리를 위한 고민 Python 패키지 관리: PyPI, pip, requirements.txt 활용법 수업 보조 자료 링크 관리 및 접근 가이드 총평 1. 파이썬 코드 스타일 가이드: 컨벤션과 네이밍 규칙 무엇을 배웠나 로컬 임포트는 직접 작성한 코드뿐 아니라 조직 내에서 공유되는 패키지도 포함하는 개념이라는 것을 알게 되었고, 케이스 표기법은 코드 실행에 영향을 미치는 것이 아니라 코딩 스타일 가이드라인이라는 것을 명확히 이해했습니다. 특히 파이썬에서도 대소문자 구분이 중요하며, snake_case는 대소문자를 구분하여 사용해야 한다는 점을 다시 한번 확인했습니다. 이러한 규칙들을 통해 코드의 가독성과 유지보수성을 높일 수 있다는 것을 깨달았습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-24 00:00:00 +0000 UTC'>2026년 7월 24일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to 파이썬 스타일 가이드부터 패키지 관리까지, 코드 품질 향상을 위한 핵심 내용 정리" href="https://Han-think.github.io/learning/2026-07-24-am-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">딥러닝 기초 다지기: 옵티마이저부터 CNN 실습까지
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 옵티마이저와 기울기 흐름: 기본 개념 및 주요 비교 활성화 함수, 초기화, 기울기 소실 완벽 이해하기 과적합 방지 및 값 정규화 기법: 정규화 vs. 정규화 실험과 프로젝트 적용을 위한 초보 가이드 PyTorch 학습 파이프라인 핵심 구성 요소 MNIST 실습으로 배우는 MLP, Softmax, CNN 이해 총평 1. 옵티마이저와 기울기 흐름: 기본 개념 및 주요 비교 무엇을 배웠나 옵티마이저와 손실 함수의 역할을 명확히 구분하고, 주요 옵티마이저들의 특징을 비교하며 이해하게 되었다. Adam 옵티마이저가 항상 최선은 아니라는 점을 깨닫고, 문제와 모델 구조에 따라 다른 옵티마이저를 선택해야 함을 알게 되었다. PyTorch 코드를 통해 옵티마이저 적용 과정을 간략하게나마 경험해 볼 수 있었다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-21 00:00:00 +0000 UTC'>2026년 7월 21일</span>&nbsp;·&nbsp;<span>7 min</span></footer>
+  <a class="entry-link" aria-label="post link to 딥러닝 기초 다지기: 옵티마이저부터 CNN 실습까지" href="https://Han-think.github.io/learning/2026-07-21-am-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">클라우드, 파이썬, 머신러닝 데이터 전처리 핵심 개념 정리
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 개발자와 클라우드, 초보자를 위한 진로 이해 파이썬 함수와 메인 구조: 초보자를 위한 핵심 이해 머신러닝 데이터 전처리, 초보자를 위한 핵심 이해 데이터 전처리 및 EDA 학습 가이드 총평 1. 개발자와 클라우드, 초보자를 위한 진로 이해 무엇을 배웠나 강의에서 AWS 시가총액은 단순한 기업 규모가 아니라 클라우드 시장에서의 영향력을 보여주는 지표라는 것을 알게 되었다. Cloudflare와 같은 엣지 네트워크 전문 기업도 있지만, 서버, 데이터베이스, 네트워크 관리 등 종합적인 클라우드 개발 직무에서는 AWS, Azure, GCP가 더 중요하게 활용된다는 것을 이해했다. 또한, 자격증은 기본 학습의 증거일 뿐이며, 실제 프로젝트 경험과 경력이 중요함을 깨달았다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-07-21 00:00:00 +0000 UTC'>2026년 7월 21일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to 클라우드, 파이썬, 머신러닝 데이터 전처리 핵심 개념 정리" href="https://Han-think.github.io/learning/2026-07-21-pm-daily/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="https://Han-think.github.io/categories/learning/page/4/">
+      «&nbsp;Prev&nbsp;
+    </a>
+    <a class="next" href="https://Han-think.github.io/categories/learning/page/6/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

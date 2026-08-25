@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>상태 공유와 렌더링 흐름 분리, 그리고 Redux 핵심 회로도 이해하기 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-08-25 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-08-25-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-08-25-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function () {
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-08-25-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="상태 공유와 렌더링 흐름 분리, 그리고 Redux 핵심 회로도 이해하기">
+  <meta property="og:description" content="2026-08-25 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-08-25T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-08-25T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="상태 공유와 렌더링 흐름 분리, 그리고 Redux 핵심 회로도 이해하기">
+  <meta name="twitter:description" content="2026-08-25 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "상태 공유와 렌더링 흐름 분리, 그리고 Redux 핵심 회로도 이해하기",
+      "item": "https://Han-think.github.io/learning/2026-08-25-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "상태 공유와 렌더링 흐름 분리, 그리고 Redux 핵심 회로도 이해하기",
+  "name": "상태 공유와 렌더링 흐름 분리, 그리고 Redux 핵심 회로도 이해하기",
+  "description": "2026-08-25 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 상태 공유와 렌더링 흐름의 분리 Redux 핵심 회로도: dispatch → reducer → store → useSelector → 화면갱신 비동기 통신과 상태 관리의 분리 총평 1. 상태 공유와 렌더링 흐름의 분리 무엇을 배웠나 React Context는 상태를 멀리 있는 컴포넌트까지 전달하는 ‘통로’ 역할을 하며, useMemo는 의존값이 바뀔 때만 계산을 재실행하여 렌더링 성능을 최적화하는 도구다. 이 두 기능은 각각 상태 공유 경로와 재계산 시점을 제어한다는 점에서 별개의 개념으로 분리되어 이해해야 한다.\n헷갈렸던 점 Context는 상태를 공유하는 통로일 뿐, 상태 자체를 생성하거나 관리하는 기능이 아니라는 점이 가장 혼란스러웠습니다. 또한 useMemo가 단순히 값을 저장하는 것이 아니라, 의존값에 따라 렌더링 시점을 제어하는 성능 최적화 도구라는 점도 명확히 구분하지 못해 애를 먹었습니다. 결국 두 기능은 ‘상태 공유 경로(Context)‘와 ‘재계산 시점 제어(useMemo)‘라는 완전히 다른 목적을 가지고 있다는 점을 이해하는 데 시간이 걸렸습니다.\n정리된 이해 Context는 상태 자체를 생성하는 기능이 아니라, 부모 컴포넌트에서 자식 컴포넌트로 깊숙한 곳까지 상태를 전달할 수 있는 ‘공유 경로’를 만들어주는 역할을 한다. 반면 useMemo는 단순히 값을 저장하는 것이 아니라, 특정 의존값이 변경될 때만 계산을 다시 수행하도록 렌더링 시점을 제어하여 성능을 최적화하는 도구다. 즉, Context는 상태의 전달 경로를 담당하고, useMemo는 계산의 재실행 시점을 관리하는 독립적인 개념이다.\n// Context를 통한 상태 공유 예시 const ThemeContext = React.createContext(); function Parent() { const [theme, setTheme] = useState('light'); return ( \u003cThemeContext.Provider value={theme}\u003e \u003cChild /\u003e \u003c/ThemeContext.Provider\u003e ); } function Child() { // Context에서 상태를 꺼내 씀 (공유 경로) const theme = useContext(ThemeContext); return \u003cdiv style={{ color: theme === 'dark' ? '#fff' : '#000' }}\u003e내용\u003c/div\u003e; } // useMemo에 의한 렌더링 제어 예시 function ExpensiveComponent({ value }) { // dependency array에 따라 계산 재실행 제어 const processed = useMemo(() =\u003e heavyComputation(value), [value]); return \u003cdiv\u003e{processed}\u003c/div\u003e; } 2. Redux 핵심 회로도: dispatch → reducer → store → useSelector → 화면갱신 무엇을 배웠나 처음 Redux를 접했을 때 ‘store’, ‘slice’, ‘dispatch’ 등 다양한 용어가 섞여 혼란스러웠지만, 핵심은 단순히 값을 저장하는 기술이 아니라 공용 상태의 변경과 조회를 규칙화하는 구조라는 점을 이해하게 되었다. 특히 dispatch로 요청하고 reducer가 규칙을 적용해 store에 반영한 뒤, useSelector로 화면에 출력하는 일련의 흐름을 파악하니 각 API의 존재 이유를 명확히 할 수 있었다. now I understand that Redux is not just a value storage technology but a structure that systematizes common state changes and lookups. The process of requesting via dispatch, applying rules through reducer, storing in store, and reading with useSelector finally made the purpose of each API clear.\n헷갈렸던 점 처음 Redux를 접했을 때 가장 큰 문제는 **“용어의 홍수”**였습니다. store, slice, state, reducer, action, dispatch, selector가 한꺼번에 등장해서, 하나의 단순한 숫자(카운터 값)를 위해 너무 많은 이름이 필요하다는 느낌이 들었습니다.\n특히 강의가 “API를 하나씩 연결하는 순서 설명\"부터 시작하다 보니, **“왜 이렇게 복잡한 구조를 써야 하지?”**라는 목적성보다 “연결 규칙을 외우는 것\"에 집중하게 되는 느낌이 들었습니다. 최종 목적인 “상태 업데이트 → 화면 갱신\"이라는 큰 그림이 보이지 않으면, 각 API의 존재 이유를 이해하기 어렵죠.\n핵심 회로를 단순화하면 Redux는 **“값을 저장하는 기술\"보다는 “공용 상태의 변경과 조회를 규칙화하는 구조”**로 이해하는 편이 맞습니다. 오늘 학습한 내용을 내 방식으로 압축하면 다음과 같습니다: 버튼 클릭 → dispatch(변경 요청) → reducer(규칙 적용) → store/state(저장) → useSelector(읽기) → 화면 갱신(출력).\n정리된 이해 Redux는 단순히 값을 저장하는 기술이 아니라, **‘상태 변경 요청 → 규칙 적용 → 저장 → 조회 → 화면 반영’**이라는 순환 구조를 통해 공용 상태를 일관되게 관리하는 시스템입니다. 핵심은 dispatch로 변화를 요청하고 reducer가 그 규칙을 적용해 store에 반영한 뒤, useSelector로 값을 읽어 화면에 전달한다는 점이며, 각 API 이름은 이 흐름 속에서 ‘위치’와 ‘역할’을 구분하는 용도에 불과합니다.\n// Redux Store \u0026 Slice 연결 예시 (초보자 관점) import { configureStore } from '@reduxjs/toolkit'; import { createSlice, useSelector, useDispatch } from 'react-redux'; // 1. slice: 변경 규칙 정의 const counterSlice = createSlice({ name: 'counter', initialState: { value: 0 }, reducers: { increment: (state) =\u003e { state.value += 1 }, // reducer: 저장 규칙 decrement: (state) =\u003e { state.value -= 1 } } }); // 2. store: 상태를 보관하는 곳 const store = configureStore({ reducer: counterSlice.reducer }); // 3. 컴포넌트에서 사용 function Counter() { // useSelector: 저장된 값 조회 (화면 갱신) const value = useSelector(state =\u003e state.counter.value); // useDispatch: 변경 요청 발사 const dispatch = useDispatch(); return ( \u003cdiv\u003e \u003ch2\u003e카운터: {value}\u003c/h2\u003e \u003cbutton onClick(() =\u003e dispatch(increment()))\u003e + \u003c/button\u003e \u003cbutton onClick(() =\u003e dispatch(decrement()))\u003e - \u003c/button\u003e \u003c/div\u003e ); } 3. 비동기 통신과 상태 관리의 분리 무엇을 배웠나 Redux 적용 과정에서 가장 큰 혼란은 비동기 서버 통신과 동기 상태 변경이 reducer 안에서 동시에 발생하려 했던 점입니다. 저는 결국 서버 요청을 Component가 담당하고, reducer는 받은 데이터를 단순히 저장하는 역할로 분리해야 한다는 것을 깨달았습니다. 이를 통해 Redux의 핵심 목적인 ‘데이터 관리’에 집중할 수 있었고, 코드의 흐름이 명확해졌습니다.\n헷갈렸던 점 핵심은 비동기 서버 통신과 동기 상태 변경의 위치 분담이었습니다.\n처음에는 reducer가 axios 요청까지 담당하려 했으나, 이는 동기 규칙과 충돌했습니다. 결국 Component가 통신을 담당하고 Redux는 저장 관리만 맡기로 방향을 전환했습니다.\n정리된 이해 Redux는 비동기 서버 통신보다는 동기적인 상태 관리에 집중해야 합니다. 실제 데이터 fetching은 컴포넌트에서 담당하고, reducer는 받아온 데이터를 단순히 저장하는 역할로 분리해야 합니다.\n// [변경 전 - 헷갈리던 구조] // Component에서 dispatch를 호출하면 reducer 내부에 axios 요청이 포함되어 // 비동기 처리가 불확실해지는 문제 발생 /* Component └── dispatch(page) ↓ board reducer (async 시도) ↓ (Promise 반환 문제) axios 요청 및 state 변경 ❌ */ // [변경 후 - 명확한 구조] // 서버 통신은 Component가 담당하고, Reducer는 상태 변화만 관리 const fetchPosts = async () =\u003e { const response = await axios.get('/api/posts'); dispatch({ type: 'FETCH_SUCCESS', payload: response.data }); }; // Reducer는 순수 함수로 동기적 상태 변경만 책임짐 const boardReducer = (state = initialState, action) =\u003e { switch (action.type) { case 'FETCH_SUCCESS': return { ...state, list: action.payload }; default: return state; } }; 총평 오늘 오전 전체에서 배운 것 React Context와 useMemo는 상태 전달 경로와 재실행 시점을 제어하는 별개의 개념이며, Redux는 store·dispatch·reducer·useSelector를 통해 공용 상태의 변경과 조회를 규칙화하는 구조임을 이해했다. 특히 비동기 통신과 동기 상태 변경을 분리하여 reducer가 데이터 관리에 집중하도록 설계한 점을 명확히 했다.\n다음에 조심할 것 Redux에서 비동기 작업은 Component가 담당하고 reducer는 데이터 저장에만 집중해야 한다는 분리 원칙을 명확히 했다.\nContext와 useMemo는 각각 상태 전달 경로와 재계산 시점을 제어하는 별개의 개념으로 접근하여 혼동을 피해야 한다.\nReducer 내부에 서버 통신 로직이 섞이지 않도록 하여, ‘데이터 관리’라는 Redux의 핵심 목적에 집중할 수 있는 코드 구조를 유지해야 한다.\n다음 복습 주제 Redux에서 비동기 로직을 처리하는 구체적인 패턴(예: thunk나 saga 등)을 이해하고, 컴포넌트와 reducer 사이의 데이터 흐름을 더욱 명확히 구분할 수 있어야 한다.\n이전 학습에서 확인한 Redux의 핵심 흐름(dispatch → reducer → store → useSelector)을 기반으로, 상태 업데이트가 화면에 어떻게 반영되는지 디버깅하는 연습을 통해 실제 프로젝트 적용 시 발생할 수 있는 부수 효과를 최소화해야 한다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1055",
+  "inLanguage": "en",
+  "datePublished": "2026-08-25T00:00:00Z",
+  "dateModified": "2026-08-25T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-08-25-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/life/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/ai-research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      상태 공유와 렌더링 흐름 분리, 그리고 Redux 핵심 회로도 이해하기
+    </h1>
+    <div class="post-description">
+      2026-08-25 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-08-25 00:00:00 +0000 UTC'>2026년 8월 25일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EC%83%81%ED%83%9C-%EA%B3%B5%EC%9C%A0%EC%99%80-%EB%A0%8C%EB%8D%94%EB%A7%81-%ED%9D%90%EB%A6%84%EC%9D%98-%EB%B6%84%EB%A6%AC">상태 공유와 렌더링 흐름의 분리</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-redux-%ED%95%B5%EC%8B%AC-%ED%9A%8C%EB%A1%9C%EB%8F%84-dispatch-reducer-store-useselector-%ED%99%94%EB%A9%B4%EA%B0%B1%EC%8B%A0">Redux 핵심 회로도: dispatch → reducer → store → useSelector → 화면갱신</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EB%B9%84%EB%8F%99%EA%B8%B0-%ED%86%B5%EC%8B%A0%EA%B3%BC-%EC%83%81%ED%83%9C-%EA%B4%80%EB%A6%AC%EC%9D%98-%EB%B6%84%EB%A6%AC">비동기 통신과 상태 관리의 분리</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-상태-공유와-렌더링-흐름의-분리">1. 상태 공유와 렌더링 흐름의 분리<a hidden class="anchor" aria-hidden="true" href="#1-상태-공유와-렌더링-흐름의-분리">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>React Context는 상태를 멀리 있는 컴포넌트까지 전달하는 &lsquo;통로&rsquo; 역할을 하며, useMemo는 의존값이 바뀔 때만 계산을 재실행하여 렌더링 성능을 최적화하는 도구다. 이 두 기능은 각각 상태 공유 경로와 재계산 시점을 제어한다는 점에서 별개의 개념으로 분리되어 이해해야 한다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>Context는 상태를 공유하는 통로일 뿐, 상태 자체를 생성하거나 관리하는 기능이 아니라는 점이 가장 혼란스러웠습니다. 또한 useMemo가 단순히 값을 저장하는 것이 아니라, 의존값에 따라 렌더링 시점을 제어하는 성능 최적화 도구라는 점도 명확히 구분하지 못해 애를 먹었습니다. 결국 두 기능은 &lsquo;상태 공유 경로(Context)&lsquo;와 &lsquo;재계산 시점 제어(useMemo)&lsquo;라는 완전히 다른 목적을 가지고 있다는 점을 이해하는 데 시간이 걸렸습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>Context는 상태 자체를 생성하는 기능이 아니라, 부모 컴포넌트에서 자식 컴포넌트로 깊숙한 곳까지 상태를 전달할 수 있는 &lsquo;공유 경로&rsquo;를 만들어주는 역할을 한다. 반면 useMemo는 단순히 값을 저장하는 것이 아니라, 특정 의존값이 변경될 때만 계산을 다시 수행하도록 렌더링 시점을 제어하여 성능을 최적화하는 도구다. 즉, Context는 상태의 전달 경로를 담당하고, useMemo는 계산의 재실행 시점을 관리하는 독립적인 개념이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// Context를 통한 상태 공유 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">ThemeContext</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">createContext</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">Parent</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">theme</span>, <span style="color:#a6e22e">setTheme</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">useState</span>(<span style="color:#e6db74">&#39;light&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">ThemeContext</span>.<span style="color:#a6e22e">Provider</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">theme</span>}<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Child</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/ThemeContext.Provider&gt;</span>
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">Child</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Context에서 상태를 꺼내 씀 (공유 경로)
+</span></span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">theme</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">useContext</span>(<span style="color:#a6e22e">ThemeContext</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span> <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span>{{ <span style="color:#a6e22e">color</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">theme</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;dark&#39;</span> <span style="color:#f92672">?</span> <span style="color:#e6db74">&#39;#fff&#39;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;#000&#39;</span> }}<span style="color:#f92672">&gt;</span><span style="color:#a6e22e">내용</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// useMemo에 의한 렌더링 제어 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">ExpensiveComponent</span>({ <span style="color:#a6e22e">value</span> }) {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// dependency array에 따라 계산 재실행 제어
+</span></span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">processed</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">useMemo</span>(() =&gt; <span style="color:#a6e22e">heavyComputation</span>(<span style="color:#a6e22e">value</span>), [<span style="color:#a6e22e">value</span>]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>{<span style="color:#a6e22e">processed</span>}<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="2-redux-핵심-회로도-dispatch--reducer--store--useselector--화면갱신">2. Redux 핵심 회로도: dispatch → reducer → store → useSelector → 화면갱신<a hidden class="anchor" aria-hidden="true" href="#2-redux-핵심-회로도-dispatch--reducer--store--useselector--화면갱신">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>처음 Redux를 접했을 때 &lsquo;store&rsquo;, &lsquo;slice&rsquo;, &lsquo;dispatch&rsquo; 등 다양한 용어가 섞여 혼란스러웠지만, 핵심은 단순히 값을 저장하는 기술이 아니라 <strong>공용 상태의 변경과 조회를 규칙화하는 구조</strong>라는 점을 이해하게 되었다. 특히 <code>dispatch</code>로 요청하고 <code>reducer</code>가 규칙을 적용해 <code>store</code>에 반영한 뒤, <code>useSelector</code>로 화면에 출력하는 일련의 흐름을 파악하니 각 API의 존재 이유를 명확히 할 수 있었다. now I understand that Redux is not just a value storage technology but a structure that systematizes common state changes and lookups. The process of requesting via <code>dispatch</code>, applying rules through <code>reducer</code>, storing in <code>store</code>, and reading with <code>useSelector</code> finally made the purpose of each API clear.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음 Redux를 접했을 때 가장 큰 문제는 **&ldquo;용어의 홍수&rdquo;**였습니다. <code>store</code>, <code>slice</code>, <code>state</code>, <code>reducer</code>, <code>action</code>, <code>dispatch</code>, <code>selector</code>가 한꺼번에 등장해서, 하나의 단순한 숫자(카운터 값)를 위해 너무 많은 이름이 필요하다는 느낌이 들었습니다.</p>
+<p>특히 강의가 &ldquo;API를 하나씩 연결하는 순서 설명&quot;부터 시작하다 보니, **&ldquo;왜 이렇게 복잡한 구조를 써야 하지?&rdquo;**라는 목적성보다 &ldquo;연결 규칙을 외우는 것&quot;에 집중하게 되는 느낌이 들었습니다. 최종 목적인 &ldquo;상태 업데이트 → 화면 갱신&quot;이라는 큰 그림이 보이지 않으면, 각 API의 존재 이유를 이해하기 어렵죠.</p>
+<p>핵심 회로를 단순화하면 Redux는 **&ldquo;값을 저장하는 기술&quot;보다는 &ldquo;공용 상태의 변경과 조회를 규칙화하는 구조&rdquo;**로 이해하는 편이 맞습니다. 오늘 학습한 내용을 내 방식으로 압축하면 다음과 같습니다: 버튼 클릭 → dispatch(변경 요청) → reducer(규칙 적용) → store/state(저장) → useSelector(읽기) → 화면 갱신(출력).</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>Redux는 단순히 값을 저장하는 기술이 아니라, **&lsquo;상태 변경 요청 → 규칙 적용 → 저장 → 조회 → 화면 반영&rsquo;**이라는 순환 구조를 통해 공용 상태를 일관되게 관리하는 시스템입니다. 핵심은 <code>dispatch</code>로 변화를 요청하고 <code>reducer</code>가 그 규칙을 적용해 <code>store</code>에 반영한 뒤, <code>useSelector</code>로 값을 읽어 화면에 전달한다는 점이며, 각 API 이름은 이 흐름 속에서 &lsquo;위치&rsquo;와 &lsquo;역할&rsquo;을 구분하는 용도에 불과합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// Redux Store &amp; Slice 연결 예시 (초보자 관점)
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">configureStore</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;@reduxjs/toolkit&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">createSlice</span>, <span style="color:#a6e22e">useSelector</span>, <span style="color:#a6e22e">useDispatch</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react-redux&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 1. slice: 변경 규칙 정의
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">counterSlice</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">createSlice</span>({
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;counter&#39;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">initialState</span><span style="color:#f92672">:</span> { <span style="color:#a6e22e">value</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span> },
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">reducers</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">increment</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">state</span>) =&gt; { <span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span> }, <span style="color:#75715e">// reducer: 저장 규칙
+</span></span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">decrement</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">state</span>) =&gt; { <span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">-=</span> <span style="color:#ae81ff">1</span> }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 2. store: 상태를 보관하는 곳
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">store</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">configureStore</span>({
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">reducer</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">counterSlice</span>.<span style="color:#a6e22e">reducer</span>
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 3. 컴포넌트에서 사용
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">Counter</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// useSelector: 저장된 값 조회 (화면 갱신)
+</span></span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">useSelector</span>(<span style="color:#a6e22e">state</span> =&gt; <span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">counter</span>.<span style="color:#a6e22e">value</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// useDispatch: 변경 요청 발사
+</span></span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">dispatch</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">useDispatch</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">h2</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">카운터</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">value</span>}<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/h2&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">button</span> <span style="color:#a6e22e">onClick</span>(() =&gt; <span style="color:#a6e22e">dispatch</span>(<span style="color:#a6e22e">increment</span>()))<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/button&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">button</span> <span style="color:#a6e22e">onClick</span>(() =&gt; <span style="color:#a6e22e">dispatch</span>(<span style="color:#a6e22e">decrement</span>()))<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">-</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/button&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;</span>
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="3-비동기-통신과-상태-관리의-분리">3. 비동기 통신과 상태 관리의 분리<a hidden class="anchor" aria-hidden="true" href="#3-비동기-통신과-상태-관리의-분리">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>Redux 적용 과정에서 가장 큰 혼란은 비동기 서버 통신과 동기 상태 변경이 reducer 안에서 동시에 발생하려 했던 점입니다. 저는 결국 서버 요청을 Component가 담당하고, reducer는 받은 데이터를 단순히 저장하는 역할로 분리해야 한다는 것을 깨달았습니다. 이를 통해 Redux의 핵심 목적인 &lsquo;데이터 관리&rsquo;에 집중할 수 있었고, 코드의 흐름이 명확해졌습니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>핵심은 비동기 서버 통신과 동기 상태 변경의 위치 분담이었습니다.</p>
+<p>처음에는 reducer가 axios 요청까지 담당하려 했으나, 이는 동기 규칙과 충돌했습니다. 결국 Component가 통신을 담당하고 Redux는 저장 관리만 맡기로 방향을 전환했습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>Redux는 비동기 서버 통신보다는 동기적인 상태 관리에 집중해야 합니다. 실제 데이터 fetching은 컴포넌트에서 담당하고, reducer는 받아온 데이터를 단순히 저장하는 역할로 분리해야 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// [변경 전 - 헷갈리던 구조]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// Component에서 dispatch를 호출하면 reducer 내부에 axios 요청이 포함되어
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 비동기 처리가 불확실해지는 문제 발생
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">Component
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  └── dispatch(page)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">      ↓
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    board reducer (async 시도)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">      ↓ (Promise 반환 문제)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    axios 요청 및 state 변경 ❌
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// [변경 후 - 명확한 구조]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 서버 통신은 Component가 담당하고, Reducer는 상태 변화만 관리
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fetchPosts</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">async</span> () =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">response</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">axios</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#39;/api/posts&#39;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">dispatch</span>({ <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;FETCH_SUCCESS&#39;</span>, <span style="color:#a6e22e">payload</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">data</span> });
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Reducer는 순수 함수로 동기적 상태 변경만 책임짐
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">boardReducer</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">initialState</span>, <span style="color:#a6e22e">action</span>) =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">switch</span> (<span style="color:#a6e22e">action</span>.<span style="color:#a6e22e">type</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;FETCH_SUCCESS&#39;</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> { ...<span style="color:#a6e22e">state</span>, <span style="color:#a6e22e">list</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">action</span>.<span style="color:#a6e22e">payload</span> };
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">state</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>React Context와 useMemo는 상태 전달 경로와 재실행 시점을 제어하는 별개의 개념이며, Redux는 store·dispatch·reducer·useSelector를 통해 공용 상태의 변경과 조회를 규칙화하는 구조임을 이해했다. 특히 비동기 통신과 동기 상태 변경을 분리하여 reducer가 데이터 관리에 집중하도록 설계한 점을 명확히 했다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>Redux에서 비동기 작업은 Component가 담당하고 reducer는 데이터 저장에만 집중해야 한다는 분리 원칙을 명확히 했다.</p>
+<p>Context와 useMemo는 각각 상태 전달 경로와 재계산 시점을 제어하는 별개의 개념으로 접근하여 혼동을 피해야 한다.</p>
+<p>Reducer 내부에 서버 통신 로직이 섞이지 않도록 하여, &lsquo;데이터 관리&rsquo;라는 Redux의 핵심 목적에 집중할 수 있는 코드 구조를 유지해야 한다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>Redux에서 비동기 로직을 처리하는 구체적인 패턴(예: thunk나 saga 등)을 이해하고, 컴포넌트와 reducer 사이의 데이터 흐름을 더욱 명확히 구분할 수 있어야 한다.</p>
+<p>이전 학습에서 확인한 Redux의 핵심 흐름(dispatch → reducer → store → useSelector)을 기반으로, 상태 업데이트가 화면에 어떻게 반영되는지 디버깅하는 연습을 통해 실제 프로젝트 적용 시 발생할 수 있는 부수 효과를 최소화해야 한다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-08-25-pm-daily/">
+    <span class="title">« Prev</span>
+    <span>Redux 데이터 흐름 재정비와 마이그레이션 과정에서 마주한 인지 부하 관리하기</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/theory-quiz-core/">
+    <span class="title">Next »</span>
+    <span>[초보자를 위한] f-string·클래스·this 바인딩 이론 퀴즈 정복하기</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

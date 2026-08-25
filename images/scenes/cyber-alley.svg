@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title description">
+  <title id="title">사이버 골목에서 바라본 네온 하늘 · cyber-alley</title>
+  <desc id="description">낮은 골목 건물 사이로 먼 하늘을 바라보는 구도, 분홍과 청록 네온, 젖은 바닥의 원근선, 글을 읽을 수 있는 어두운 중앙 여백.</desc>
+  <metadata>
+    asset-id: scene-cyber-alley-neon-v01
+    prompt-ko: 낮은 골목 건물 사이에서 먼 하늘을 올려다보는 사이버펑크 장면, 어두운 남색 하늘, 분홍과 청록 네온 라인, 젖은 바닥의 원근선, 하층민의 생활감은 암시하되 사람은 보이지 않게, 중앙은 블로그 텍스트를 위한 어두운 여백, cinematic wide background, no text
+    prompt-en: cinematic cyberpunk alley seen from street level, looking toward a small opening of sky between low buildings, deep navy night, magenta and cyan neon, wet pavement perspective lines, hints of lived-in lower-city texture without visible people, dark readable center for blog text, wide hero background, no text
+    negative: giant skyscrapers, clean luxury sci-fi, visible faces, logos, readable signage, excessive glow, cluttered foreground, violent mood
+  </metadata>
+  <defs>
+    <linearGradient id="night" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#111936"/>
+      <stop offset="1" stop-color="#070a16"/>
+    </linearGradient>
+    <linearGradient id="neon" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ff4fa3"/>
+      <stop offset="1" stop-color="#55d6ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#night)"/>
+  <circle cx="1120" cy="170" r="110" fill="#5367d6" opacity=".22"/>
+  <path d="M150 0h360l190 900H0V200z" fill="#0b1023" opacity=".95"/>
+  <path d="M1450 0h-360L900 900h700V200z" fill="#0b1023" opacity=".95"/>
+  <path d="M0 640h1600" stroke="#253a67" stroke-width="9"/>
+  <path d="M120 620h420M1060 620h420" stroke="url(#neon)" stroke-width="10"/>
+  <path d="M170 700h1260M210 790h1180" stroke="#55d6ff" stroke-width="3" opacity=".5"/>
+  <path d="M180 900L620 620M1420 900L980 620" stroke="#ff4fa3" stroke-width="5" opacity=".75"/>
+  <path d="M360 350h230M1010 430h300" stroke="#ff4fa3" stroke-width="12" opacity=".8"/>
+</svg>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Learning | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/categories/learning/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://Han-think.github.io/categories/learning/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/categories/learning/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function () {
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/categories/learning/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="Learning">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="website">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Learning">
+
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/life/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/ai-research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header">
+  <h1>
+    Learning
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">React SPA 블로그 UI 구현부터 Modern JavaScript 문법 정리까지, 핵심 개념 학습 여정
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 React SPA 블로그 리스트 UI 구현 실습 React Todo 앱: 컴포넌트 구조와 역할 이해 React를 위한 Modern JavaScript 핵심 개념 정리 Modern JavaScript 핵심 문법: 구조 분해, 단축 속성, Spread, 템플릿 리터럴 React import와 JSX 환경 이해: 초보자를 위한 핵심 정리 총평 1. React SPA 블로그 리스트 UI 구현 실습 무엇을 배웠나 SPA 개념을 페이지 이동이 아닌 컴포넌트 단위 업데이트로 이해하게 되었고, props를 통해 데이터를 전달하여 하위 컴포넌트에서 map() 함수를 사용해 리스트 UI를 만들 수 있다는 것을 알게 되었다. 배열 데이터를 기반으로 블로그 리스트 UI를 만드는 실습을 통해 데이터 처리 과정과 JSX 반복 사용법을 익혔다. 이제 SPA 구조에서 데이터 흐름과 컴포넌트 간 상호작용에 대한 이해가 조금 더 명확해졌다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-12 00:00:00 +0000 UTC'>2026년 8월 12일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to React SPA 블로그 UI 구현부터 Modern JavaScript 문법 정리까지, 핵심 개념 학습 여정" href="https://Han-think.github.io/learning/2026-08-12-pm-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">React 입력 관리와 DOM 조작, 핵심 개념 정리
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 여러 React 입력과 상태 관리하기 React Ref와 State: 값 관리와 DOM 조작의 차이점 총평 1. 여러 React 입력과 상태 관리하기 무엇을 배웠나 React에서 입력 필드와 상태를 연결하는 방법을 배우면서, 단일 입력은 useState로 간단히, 여러 입력은 객체 상태로 묶어서 관리해야 함을 알게 되었다. onChange 이벤트 핸들러에서 e.target.value를 통해 입력 값을 가져와 상태를 업데이트하는 과정이 중요하며, Spread Operator를 사용하여 객체 상태를 안전하게 업데이트하는 방법을 익혔다. React의 상태가 value 속성을 통해 직접 관리된다는 점도 명확하게 이해하게 되었다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-12 00:00:00 +0000 UTC'>2026년 8월 12일</span>&nbsp;·&nbsp;<span>3 min</span></footer>
+  <a class="entry-link" aria-label="post link to React 입력 관리와 DOM 조작, 핵심 개념 정리" href="https://Han-think.github.io/learning/2026-08-12-am-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">JavaScript 상속부터 React 기초, AI 연동까지 오전 학습 정리
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 JavaScript 상속과 오버라이드 완벽하게 이해하기 React 입문: Virtual DOM, SPA, Component 기초 React 개발 환경, 초보자를 위한 완벽 가이드 로컬 AI와 JetBrains IDE 연결, 핵심 개념과 설정 이해 총평 1. JavaScript 상속과 오버라이드 완벽하게 이해하기 무엇을 배웠나 상속에서 super()는 부모 클래스의 생성자를 호출하고, super.printSpec()는 부모 클래스의 메서드를 직접 호출하는 차이가 있다는 것을 알게 되었습니다. 특히 오버라이드 시 ...super_spec을 통해 부모 객체의 속성을 펼쳐서 활용하는 방법을 이해하게 되었습니다. 이제 자식 클래스에서 부모 클래스의 기능을 확장하고 수정하는 오버라이드 개념을 더 명확하게 이해할 수 있을 것 같습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-11 00:00:00 +0000 UTC'>2026년 8월 11일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to JavaScript 상속부터 React 기초, AI 연동까지 오전 학습 정리" href="https://Han-think.github.io/learning/2026-08-11-am-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">JSX, 스타일, 컴포넌트, 이벤트 처리, 그리고 WebStorm AI 설정까지 익힌 오후 학습 정리
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 JSX 문법: Fragment, {} 사용법, 조건 표현 이해하기 React 스타일 컴포넌트: 초보자를 위한 이해 정리 React 컴포넌트: Props와 State 완벽 이해 React 입력 이벤트 처리: onChange와 이벤트 객체 활용하기 WebStorm 로컬 AI 플러그인 설치 및 환경 설정 가이드 총평 1. JSX 문법: Fragment, {} 사용법, 조건 표현 이해하기 무엇을 배웠나 JSX 기본 문법을 공부하면서 Fragment, JavaScript 값 삽입, 조건 표현 방식에서 어려움을 겪었지만, Fragment는 여러 요소를 묶는 방법, {}는 JavaScript 값을 삽입하는 방법, 그리고 삼항 연산자와 익명 함수를 활용하여 조건을 처리하는 방법을 익혔습니다. 이를 통해 JSX를 좀 더 효과적으로 사용할 수 있게 되었고, 리액트 컴포넌트 개발에 필요한 기본적인 이해를 쌓았습니다. 앞으로는 다양한 실습을 통해 이 지식을 더욱 숙달해나가겠습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-11 00:00:00 +0000 UTC'>2026년 8월 11일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to JSX, 스타일, 컴포넌트, 이벤트 처리, 그리고 WebStorm AI 설정까지 익힌 오후 학습 정리" href="https://Han-think.github.io/learning/2026-08-11-pm-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">HTTP, REST, Axios 정복과 API 데이터 결합 문제 해결 학습
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 HTTP, REST, AJAX, Axios: 초보자를 위한 핵심 개념 정리 Axios API 활용 및 데이터 렌더링 실습 Posts 데이터 결합 및 자동채점 문제점 총평 1. HTTP, REST, AJAX, Axios: 초보자를 위한 핵심 개념 정리 무엇을 배웠나 HTTP, REST, AJAX, Axios 개념이 헷갈렸는데, 각 개념의 역할과 계층 구조를 명확하게 정리했다. HTTP는 통신 규칙, REST는 설계 방식, AJAX는 통신 기술, Axios는 JavaScript에서 HTTP 요청을 쉽게 하도록 돕는 라이브러리라는 것을 이해하게 되었다. 특히 상태 코드를 통해 요청 문제와 서버 오류를 구분하는 것이 중요함을 깨달았다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-10 00:00:00 +0000 UTC'>2026년 8월 10일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+  <a class="entry-link" aria-label="post link to HTTP, REST, Axios 정복과 API 데이터 결합 문제 해결 학습" href="https://Han-think.github.io/learning/2026-08-10-am-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">객체지향 프로그래밍 핵심 개념 완화: 클래스 설계부터 상속 활용까지
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 클래스 이름 짓기: 대상 중심의 추상화 가이드 객체지향 프로그래밍, 클래스 정의 및 분류 기준 객체 생성 및 속성 접근: this, getter, setter, private 상속과 직업 클래스: Character 이해하기 자식 클래스 메서드 오버라이딩과 super 활용하기 총평 1. 클래스 이름 짓기: 대상 중심의 추상화 가이드 무엇을 배웠나 클래스 이름은 특정 행동이 아닌, 그 행동들을 수행하는 대상 자체를 대표해야 한다는 것을 알게 되었습니다. 클래스 이름을 짓을 때 너무 구체적인 단어보다는 더 일반적인 개념을 사용하는 것이 좋고, MovingObject와 같이 광범위한 의미를 담는 이름이 적절할 수 있다는 것을 깨달았습니다. 이러한 이해를 바탕으로 앞으로 클래스 이름을 짓는 과정에서 대상 중심적인 관점을 가지도록 노력해야겠습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-10 00:00:00 +0000 UTC'>2026년 8월 10일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to 객체지향 프로그래밍 핵심 개념 완화: 클래스 설계부터 상속 활용까지" href="https://Han-think.github.io/learning/2026-08-10-pm-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">HTTP, API, Axios 마스터하기: 웹 개발 핵심 개념 완전 정복
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 HTTP 요청 및 응답 구조와 상태 코드 완벽 이해 API, REST, AJAX: 초보자를 위한 핵심 개념 정리 Axios로 API 데이터 요청하기: 초보자를 위한 가이드 포켓몬 API 활용, 초보자를 위한 이미지 처리 및 요청 구조 이해 총평 1. HTTP 요청 및 응답 구조와 상태 코드 완벽 이해 무엇을 배웠나 HTTP 요청과 응답 메시지의 구조, 특히 시작 줄, 헤더, 바디의 역할과 GET과 POST 메서드의 차이점을 이해하게 되었다. 400 Bad Request 상태 코드가 단순히 파라미터 개수 오류가 아니라 클라이언트 측의 다양한 잘못된 요청을 의미한다는 것을 알게 되었고, 다양한 상태 코드의 의미와 범위를 좀 더 명확히 파악했다. 이를 통해 HTTP 통신 과정을 더 깊이 이해하고, 문제 발생 시 디버깅에 도움이 될 것으로 생각한다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-07 00:00:00 +0000 UTC'>2026년 8월 7일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to HTTP, API, Axios 마스터하기: 웹 개발 핵심 개념 완전 정복" href="https://Han-think.github.io/learning/2026-08-07-pm-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">스프라이트 애니메이션부터 비동기 처리, 예외 처리까지 핵심 개념 마스터
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 Sprite 애니메이션 프레임 제어와 setInterval 활용법 캐릭터 이동과 배경 스크롤 연출, 변수 스코프 이해 Promise 기반 비동기 처리, async/await 활용 가이드 try-catch-finally와 JSON 파싱 예외 처리 가이드 총평 1. Sprite 애니메이션 프레임 제어와 setInterval 활용법 무엇을 배웠나 setInterval 함수가 단순히 속도를 조절하는 것이 아니라, 주어진 시간 간격마다 함수를 반복 실행하는 주기적 타이머라는 것을 이해하게 되었어. 초기에는 프레임 속도와 시간 간격을 혼동했지만, i % pos.length를 사용하여 프레임을 반복하는 방식과 setInterval의 역할을 명확히 구분할 수 있게 되었어. 이제 setInterval을 활용하여 스프라이트 애니메이션을 보다 효과적으로 제어할 수 있을 것 같아.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-07 00:00:00 +0000 UTC'>2026년 8월 7일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to 스프라이트 애니메이션부터 비동기 처리, 예외 처리까지 핵심 개념 마스터" href="https://Han-think.github.io/learning/2026-08-07-am-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">JavaScript 핵심 개념 완벽 마스터: this, 스코프, 비동기, 객체 메서드 심층 학습
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 JavaScript this와 바인딩: 초보자를 위한 완벽 이해 실행 컨텍스트, 스코프, 호이스팅 완벽 이해 비동기 처리, 타이머 함수, 이벤트 루프 완벽 이해 비동기 결과 처리와 콜백 지옥 해소 객체 메서드 실습: 초보자의 흔한 오류와 핵심 이해 총평 1. JavaScript this와 바인딩: 초보자를 위한 완벽 이해 무엇을 배웠나 템플릿 리터럴은 문자열 내에 JavaScript 표현식을 삽입하여 값을 쉽게 넣을 수 있다는 것을 이해하게 되었고, this가 함수 호출 방식에 따라 동적으로 결정된다는 점을 명확히 알게 되었다. 특히 apply, call, bind의 차이점을 이해하고 콜백 함수에서 bind가 왜 유용한지 알 수 있었으며, 화살표 함수가 this 바인딩에 미치는 영향에 대해서도 학습했다. 앞으로는 이러한 점들을 염두에 두고 JavaScript 코딩을 진행해야겠다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-06 00:00:00 +0000 UTC'>2026년 8월 6일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to JavaScript 핵심 개념 완벽 마스터: this, 스코프, 비동기, 객체 메서드 심층 학습" href="https://Han-think.github.io/learning/2026-08-06-am-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">비동기 코드, 타이머, Promise와 DOM 실습으로 실력 업그레이드
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 Promise 체인과 async/await 완벽 이해하기 타이머와 콜백 이해: setTimeout과 setInterval 완벽 가이드 Promise 기본: 생성, resolve, reject 완벽 이해 DOM 링크 변경 및 테이블 입력 테스트 실습 총평 1. Promise 체인과 async/await 완벽 이해하기 무엇을 배웠나 Promise 체인 방식과 async/await 방식을 통해 비동기 코드의 흐름을 이해하게 되었고, .then() 안의 return이 어떻게 다음 Promise로 이어지는지 명확해졌습니다. async/await은 Promise를 대체하는 것이 아니라, Promise 기반 코드를 더 읽기 쉽게 만들고 순차적인 흐름을 파악하도록 도와주는 문법이라는 것을 알게 되었습니다. 이제 비동기 코드 작성 시 두 방식 중 상황에 맞게 선택하여 활용할 수 있을 것 같습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-06 00:00:00 +0000 UTC'>2026년 8월 6일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+  <a class="entry-link" aria-label="post link to 비동기 코드, 타이머, Promise와 DOM 실습으로 실력 업그레이드" href="https://Han-think.github.io/learning/2026-08-06-pm-daily/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="https://Han-think.github.io/categories/learning/page/2/">
+      «&nbsp;Prev&nbsp;
+    </a>
+    <a class="next" href="https://Han-think.github.io/categories/learning/page/4/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

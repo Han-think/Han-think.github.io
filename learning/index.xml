@@ -6,8 +6,22 @@
     <description>Recent content in 학습 기록 on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Mon, 24 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 25 Aug 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Redux 데이터 흐름 재정비와 마이그레이션 과정에서 마주한 인지 부하 관리하기</title>
+      <link>https://Han-think.github.io/learning/2026-08-25-pm-daily/</link>
+      <pubDate>Tue, 25 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-25-pm-daily/</guid>
+      <description>2026-08-25 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>상태 공유와 렌더링 흐름 분리, 그리고 Redux 핵심 회로도 이해하기</title>
+      <link>https://Han-think.github.io/learning/2026-08-25-am-daily/</link>
+      <pubDate>Tue, 25 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-25-am-daily/</guid>
+      <description>2026-08-25 오전 학습 정리</description>
+    </item>
     <item>
       <title>[초보자를 위한] f-string·클래스·this 바인딩 이론 퀴즈 정복하기</title>
       <link>https://Han-think.github.io/learning/theory-quiz-core/</link>

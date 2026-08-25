@@ -11,12 +11,12 @@
 <meta name="author" content="">
 <link rel="canonical" href="https://Han-think.github.io/learning/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://Han-think.github.io/favicon.ico">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
 <link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
 <link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
 <link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
+<meta name="theme-color" content="#1f3345">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <link rel="alternate" type="application/rss+xml" href="https://Han-think.github.io/learning/index.xml" title="rss">
 <link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/">
@@ -70,6 +70,35 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
 
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function () {
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
       <script>
         var doNotTrack = false;
@@ -114,7 +143,9 @@
     <header class="header">
     <nav class="header-nav">
         <div class="logo">
-            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">Han-think Blog</a>
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
             <div class="logo-switches">
                 <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
@@ -155,6 +186,16 @@
                 </a>
             </li>
             <li>
+                <a href="https://Han-think.github.io/categories/life/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/ai-research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
                 <a href="https://Han-think.github.io/search/" title="검색">
                     <span>검색</span>
                 </a>
@@ -171,6 +212,36 @@
     강의와 자료에서 배운 내용 — 내 혼란과 교정된 이해를 포함한 학습 노트
   </div>
 </header>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">리팩터링으로 다진 구조, 라우팅과 차트로 완성한 다음 단계
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 React 리팩터링 흐름 복습: 초보자의 구조 이해하기 React Router 비동기 상태 관리 복습 무엇이 헷갈렸나 정리된 이해 실습 예시 (오늘의 전환 과정) 자동 채점 계약과 기능 구현의 균형 카카오 지도 SDK와 React의 연결 고리 React Bootstrap 버튼 UI 입문하기 Next.js Link, 차트 페이지 라우팅 구성하기 MUI X Charts 핵심 prop 분류와 학습 포인트 📌 핵심 요약 🔑 핵심 prop 분류 💡 문법의 요령 📊 핵심 코드 예시 총평 1. React 리팩터링 흐름 복습: 초보자의 구조 이해하기 무엇을 배웠나 리팩터링은 화면을 바꾸는 것이 아니라, 같은 기능을 유지하면서 내부 구조를 개선하는 작업이라는 점을 명확히 이해했습니다. 특히 CSS Modules와 styled-components가 클래스 이름 격리나 JavaScript 템플릿 리터럴을 통해 스타일 관리의 방식을 어떻게 변화시키는지 구체적인 예시를 보며 체감할 수 있었습니다. 단순히 문법을 익히는 것을 넘어, 코드 관리 방식의 차이를 인지하는 연습이 무엇보다 중요하다고 느꼈습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-20 00:00:00 +0000 UTC'>2026년 8월 20일</span>&nbsp;·&nbsp;<span>11 min</span></footer>
+  <a class="entry-link" aria-label="post link to 리팩터링으로 다진 구조, 라우팅과 차트로 완성한 다음 단계" href="https://Han-think.github.io/learning/2026-08-20-am-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">오후 데이터 변환과 라벨 처리, 서버 응답 검증 및 React Context 활용 정리
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 MUI X Charts 데이터 변환과 라벨 처리 정리 서버 데이터 정확히 확인하기 React 데이터 공유: Prop Drilling에서 Context로 (초보자 시점) Context 실험: 값 변경 시 재렌더링 확인하기 수업 중 디버깅 원칙: 원본 보존과 안전한 진행 총평 1. MUI X Charts 데이터 변환과 라벨 처리 정리 무엇을 배웠나 차트의 핵심은 ‘원본 데이터’를 라이브러리가 요구하는 특정 구조로 변환하는 과정임을 깨달았다. arcLabel 함수를 통해 라벨과 값의 의미가 화면에 어떻게 표시되는지 명확히 구분할 수 있게 되었다. 또한, map()을 활용해 객체 배열을 시리즈별로 분리하는 데이터 가공 로직이 체계적으로 정리되었다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-20 00:00:00 +0000 UTC'>2026년 8월 20일</span>&nbsp;·&nbsp;<span>8 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오후 데이터 변환과 라벨 처리, 서버 응답 검증 및 React Context 활용 정리" href="https://Han-think.github.io/learning/2026-08-20-pm-daily/"></a>
+</article>
 
 <article class="post-entry"> 
   <header class="entry-header">
@@ -291,36 +362,6 @@
 
 <span title='2026-08-13 00:00:00 +0000 UTC'>2026년 8월 13일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
   <a class="entry-link" aria-label="post link to React와 CSS 학습 여정: 배열 출력, Todo 앱 구현, useRef 활용, 그리고 디버깅" href="https://Han-think.github.io/learning/2026-08-13-am-daily/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">React SPA 블로그 UI 구현부터 Modern JavaScript 문법 정리까지, 핵심 개념 학습 여정
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 React SPA 블로그 리스트 UI 구현 실습 React Todo 앱: 컴포넌트 구조와 역할 이해 React를 위한 Modern JavaScript 핵심 개념 정리 Modern JavaScript 핵심 문법: 구조 분해, 단축 속성, Spread, 템플릿 리터럴 React import와 JSX 환경 이해: 초보자를 위한 핵심 정리 총평 1. React SPA 블로그 리스트 UI 구현 실습 무엇을 배웠나 SPA 개념을 페이지 이동이 아닌 컴포넌트 단위 업데이트로 이해하게 되었고, props를 통해 데이터를 전달하여 하위 컴포넌트에서 map() 함수를 사용해 리스트 UI를 만들 수 있다는 것을 알게 되었다. 배열 데이터를 기반으로 블로그 리스트 UI를 만드는 실습을 통해 데이터 처리 과정과 JSX 반복 사용법을 익혔다. 이제 SPA 구조에서 데이터 흐름과 컴포넌트 간 상호작용에 대한 이해가 조금 더 명확해졌다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-08-12 00:00:00 +0000 UTC'>2026년 8월 12일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
-  <a class="entry-link" aria-label="post link to React SPA 블로그 UI 구현부터 Modern JavaScript 문법 정리까지, 핵심 개념 학습 여정" href="https://Han-think.github.io/learning/2026-08-12-pm-daily/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">React 입력 관리와 DOM 조작, 핵심 개념 정리
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 여러 React 입력과 상태 관리하기 React Ref와 State: 값 관리와 DOM 조작의 차이점 총평 1. 여러 React 입력과 상태 관리하기 무엇을 배웠나 React에서 입력 필드와 상태를 연결하는 방법을 배우면서, 단일 입력은 useState로 간단히, 여러 입력은 객체 상태로 묶어서 관리해야 함을 알게 되었다. onChange 이벤트 핸들러에서 e.target.value를 통해 입력 값을 가져와 상태를 업데이트하는 과정이 중요하며, Spread Operator를 사용하여 객체 상태를 안전하게 업데이트하는 방법을 익혔다. React의 상태가 value 속성을 통해 직접 관리된다는 점도 명확하게 이해하게 되었다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-08-12 00:00:00 +0000 UTC'>2026년 8월 12일</span>&nbsp;·&nbsp;<span>3 min</span></footer>
-  <a class="entry-link" aria-label="post link to React 입력 관리와 DOM 조작, 핵심 개념 정리" href="https://Han-think.github.io/learning/2026-08-12-am-daily/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

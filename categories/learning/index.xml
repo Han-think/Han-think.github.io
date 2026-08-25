@@ -1,0 +1,1006 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Learning on Han-think Blog</title>
+    <link>https://Han-think.github.io/categories/learning/</link>
+    <description>Recent content in Learning on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Tue, 25 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/categories/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Redux 데이터 흐름 재정비와 마이그레이션 과정에서 마주한 인지 부하 관리하기</title>
+      <link>https://Han-think.github.io/learning/2026-08-25-pm-daily/</link>
+      <pubDate>Tue, 25 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-25-pm-daily/</guid>
+      <description>2026-08-25 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>상태 공유와 렌더링 흐름 분리, 그리고 Redux 핵심 회로도 이해하기</title>
+      <link>https://Han-think.github.io/learning/2026-08-25-am-daily/</link>
+      <pubDate>Tue, 25 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-25-am-daily/</guid>
+      <description>2026-08-25 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>[초보자를 위한] f-string·클래스·this 바인딩 이론 퀴즈 정복하기</title>
+      <link>https://Han-think.github.io/learning/theory-quiz-core/</link>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/theory-quiz-core/</guid>
+      <description>[초보자를 위한] f-string·클래스·this 바인딩 이론 퀴즈 정복하기 학습 정리</description>
+    </item>
+    <item>
+      <title>DOM 선택과 fetch 흐름, 입력을 먼저 확인하는 습관</title>
+      <link>https://Han-think.github.io/learning/dom-async-fetch-practice/</link>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/dom-async-fetch-practice/</guid>
+      <description>DOM 선택과 fetch 흐름, 입력을 먼저 확인하는 습관 학습 정리</description>
+    </item>
+    <item>
+      <title>React 삼각관계와 DOM 선택자 정복: 시험 직전 패턴 완성</title>
+      <link>https://Han-think.github.io/learning/summary-exam-day/</link>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/summary-exam-day/</guid>
+      <description>React 삼각관계와 DOM 선택자 정복: 시험 직전 패턴 완성 학습 정리</description>
+    </item>
+    <item>
+      <title>React에서 map·Props·State를 분리해 마스터하기</title>
+      <link>https://Han-think.github.io/learning/react-devtools-practice/</link>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/react-devtools-practice/</guid>
+      <description>React에서 map·Props·State를 분리해 마스터하기 학습 정리</description>
+    </item>
+    <item>
+      <title>배열 순회와 조건문의 핵심: 시작·종료·증감 조립하기</title>
+      <link>https://Han-think.github.io/learning/array-condition-practice/</link>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/array-condition-practice/</guid>
+      <description>배열 순회와 조건문의 핵심: 시작·종료·증감 조립하기 학습 정리</description>
+    </item>
+    <item>
+      <title>시험 전 핵심 패턴 압축과 실전 적용하기</title>
+      <link>https://Han-think.github.io/learning/exam-day-consolidation/</link>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/exam-day-consolidation/</guid>
+      <description>시험 전 핵심 패턴 압축과 실전 적용하기 학습 정리</description>
+    </item>
+    <item>
+      <title>오늘 오후, React 배열 map과 Props 흐름, State Hooks 실전 가이드까지 핵심 개념을 정리했습니다. DevTools를 활용한 코드 검증법과 문제 풀이 시 패턴 인식의 중요성도 깨닫는 소중한 시간이었습니다.</title>
+      <link>https://Han-think.github.io/learning/2026-08-21-pm-daily/</link>
+      <pubDate>Fri, 21 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-21-pm-daily/</guid>
+      <description>2026-08-21 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>입력→처리→출력 파이프라인으로 DOM 입출력 해결하기 DOM 스타일·클래스·속성 명확히 구분하기 데이터 구조와 입력 값 의미 정확히 파악하기 순회와 정렬 개념을 명확히 분리하기</title>
+      <link>https://Han-think.github.io/learning/2026-08-21-am-daily/</link>
+      <pubDate>Fri, 21 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-21-am-daily/</guid>
+      <description>2026-08-21 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>리팩터링으로 다진 구조, 라우팅과 차트로 완성한 다음 단계</title>
+      <link>https://Han-think.github.io/learning/2026-08-20-am-daily/</link>
+      <pubDate>Thu, 20 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-20-am-daily/</guid>
+      <description>2026-08-20 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>오후 데이터 변환과 라벨 처리, 서버 응답 검증 및 React Context 활용 정리</title>
+      <link>https://Han-think.github.io/learning/2026-08-20-pm-daily/</link>
+      <pubDate>Thu, 20 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-20-pm-daily/</guid>
+      <description>2026-08-20 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>오늘 오전, JWT 로그인과 sessionStorage 활용법, 게시판 목록 렌더링 논리 분리, 그리고 URL 파라미터를 통한 동적 라우팅의 원리를 정리했습니다. token 저장 여부가 인증 관문이 된다는 점을 코드 점검의 기준으로 삼고, 조건문과 반복문을 분리해 가독성을 높이며, URL 자체가 데이터 요청의 트리거가 된다는 흐름을 명확히 이해한 하루였습니다.</title>
+      <link>https://Han-think.github.io/learning/2026-08-19-am-daily/</link>
+      <pubDate>Wed, 19 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-19-am-daily/</guid>
+      <description>2026-08-19 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>파일 업로드의 두 얼굴: 미리보기와 전송 이미지 경로와 데이터 흐름의 차이 카카오맵 적용, &#39;키&#39;와 &#39;어디서&#39;의 필수 계약</title>
+      <link>https://Han-think.github.io/learning/2026-08-19-pm-daily/</link>
+      <pubDate>Wed, 19 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-19-pm-daily/</guid>
+      <description>2026-08-19 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>form 상태 관리의 핵심 원리와 axios를 통한 토큰 관리, 그리고 Next.js App Router에서의 브라우저 상태 관리 경계에 대한 요약입니다.</title>
+      <link>https://Han-think.github.io/learning/2026-08-18-pm-daily/</link>
+      <pubDate>Tue, 18 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-18-pm-daily/</guid>
+      <description>2026-08-18 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>Next.js와 Java 백엔드 분리, useEffect로 게시글 목록 가져오기, controlled form 핵심 원리 이해, axios POST 흐름과 상세 페이지 이동</title>
+      <link>https://Han-think.github.io/learning/2026-08-18-am-daily/</link>
+      <pubDate>Tue, 18 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-18-am-daily/</guid>
+      <description>2026-08-18 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>Next.js Image 컴포넌트와 서버-클라이언트 경계, Axios 데이터 흐름, 네트워크 주소 체계까지</title>
+      <link>https://Han-think.github.io/learning/2026-08-14-pm-daily/</link>
+      <pubDate>Fri, 14 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-14-pm-daily/</guid>
+      <description>2026-08-14 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>Next.js 서버-클라이언트 경계와 URL 파라미터 처리, 동적 라우팅 및 URL 설계의 구조적 역할에 대한 정리</title>
+      <link>https://Han-think.github.io/learning/2026-08-14-am-daily/</link>
+      <pubDate>Fri, 14 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-14-am-daily/</guid>
+      <description>2026-08-14 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>React 핵심 개념 마스터: 상태 관리부터 라우팅까지</title>
+      <link>https://Han-think.github.io/learning/2026-08-13-pm-daily/</link>
+      <pubDate>Thu, 13 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-13-pm-daily/</guid>
+      <description>2026-08-13 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>React와 CSS 학습 여정: 배열 출력, Todo 앱 구현, useRef 활용, 그리고 디버깅</title>
+      <link>https://Han-think.github.io/learning/2026-08-13-am-daily/</link>
+      <pubDate>Thu, 13 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-13-am-daily/</guid>
+      <description>2026-08-13 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>React SPA 블로그 UI 구현부터 Modern JavaScript 문법 정리까지, 핵심 개념 학습 여정</title>
+      <link>https://Han-think.github.io/learning/2026-08-12-pm-daily/</link>
+      <pubDate>Wed, 12 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-12-pm-daily/</guid>
+      <description>2026-08-12 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>React 입력 관리와 DOM 조작, 핵심 개념 정리</title>
+      <link>https://Han-think.github.io/learning/2026-08-12-am-daily/</link>
+      <pubDate>Wed, 12 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-12-am-daily/</guid>
+      <description>2026-08-12 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>JavaScript 상속부터 React 기초, AI 연동까지 오전 학습 정리</title>
+      <link>https://Han-think.github.io/learning/2026-08-11-am-daily/</link>
+      <pubDate>Tue, 11 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-11-am-daily/</guid>
+      <description>2026-08-11 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>JSX, 스타일, 컴포넌트, 이벤트 처리, 그리고 WebStorm AI 설정까지 익힌 오후 학습 정리</title>
+      <link>https://Han-think.github.io/learning/2026-08-11-pm-daily/</link>
+      <pubDate>Tue, 11 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-11-pm-daily/</guid>
+      <description>2026-08-11 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>HTTP, REST, Axios 정복과 API 데이터 결합 문제 해결 학습</title>
+      <link>https://Han-think.github.io/learning/2026-08-10-am-daily/</link>
+      <pubDate>Mon, 10 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-10-am-daily/</guid>
+      <description>2026-08-10 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>객체지향 프로그래밍 핵심 개념 완화: 클래스 설계부터 상속 활용까지</title>
+      <link>https://Han-think.github.io/learning/2026-08-10-pm-daily/</link>
+      <pubDate>Mon, 10 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-10-pm-daily/</guid>
+      <description>2026-08-10 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>HTTP, API, Axios 마스터하기: 웹 개발 핵심 개념 완전 정복</title>
+      <link>https://Han-think.github.io/learning/2026-08-07-pm-daily/</link>
+      <pubDate>Fri, 07 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-07-pm-daily/</guid>
+      <description>2026-08-07 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>스프라이트 애니메이션부터 비동기 처리, 예외 처리까지 핵심 개념 마스터</title>
+      <link>https://Han-think.github.io/learning/2026-08-07-am-daily/</link>
+      <pubDate>Fri, 07 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-07-am-daily/</guid>
+      <description>2026-08-07 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>JavaScript 핵심 개념 완벽 마스터: this, 스코프, 비동기, 객체 메서드 심층 학습</title>
+      <link>https://Han-think.github.io/learning/2026-08-06-am-daily/</link>
+      <pubDate>Thu, 06 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-06-am-daily/</guid>
+      <description>2026-08-06 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>비동기 코드, 타이머, Promise와 DOM 실습으로 실력 업그레이드</title>
+      <link>https://Han-think.github.io/learning/2026-08-06-pm-daily/</link>
+      <pubDate>Thu, 06 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-06-pm-daily/</guid>
+      <description>2026-08-06 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>ES6 문법부터 웹 개발 기초까지, 오늘 학습 내용 정리</title>
+      <link>https://Han-think.github.io/learning/2026-08-05-am-daily/</link>
+      <pubDate>Wed, 05 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-05-am-daily/</guid>
+      <description>2026-08-05 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>JavaScript 객체 활용과 문제 해결 능력 향상: 숫자, 날짜, 폼 처리, 금융 계산 등</title>
+      <link>https://Han-think.github.io/learning/2026-08-05-pm-daily/</link>
+      <pubDate>Wed, 05 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-05-pm-daily/</guid>
+      <description>2026-08-05 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>스코프와 ES6 문법, 배열 메서드까지 자바스크립트 복습</title>
+      <link>https://Han-think.github.io/learning/2026-08-04-pm-daily/</link>
+      <pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-04-pm-daily/</guid>
+      <description>2026-08-04 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>타이머와 이벤트 위임, 스코프 체인으로 동작 흐름 익히기</title>
+      <link>https://Han-think.github.io/learning/2026-08-04-am-daily/</link>
+      <pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-04-am-daily/</guid>
+      <description>2026-08-04 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>DOM 이벤트 전파와 폼 검증으로 이벤트 흐름 이해하기</title>
+      <link>https://Han-think.github.io/learning/2026-08-03-am-daily/</link>
+      <pubDate>Mon, 03 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-03-am-daily/</guid>
+      <description>2026-08-03 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>로그인 UI부터 타이머와 동적 목록까지 이벤트 실습</title>
+      <link>https://Han-think.github.io/learning/2026-08-03-pm-daily/</link>
+      <pubDate>Mon, 03 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-03-pm-daily/</guid>
+      <description>2026-08-03 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>배열 순회부터 DOM 조작까지, 오전 학습 정리</title>
+      <link>https://Han-think.github.io/learning/2026-07-31-am-daily/</link>
+      <pubDate>Fri, 31 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-31-am-daily/</guid>
+      <description>2026-07-31 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>웹 페이지 상호작용부터 지식 그래프 기반 시스템 구축까지, 핵심 개념과 실전 활용법 정복</title>
+      <link>https://Han-think.github.io/learning/2026-07-31-pm-daily/</link>
+      <pubDate>Fri, 31 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-31-pm-daily/</guid>
+      <description>2026-07-31 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>JavaScript 기초 다지기: 배열, Math, 연산, 조건문, 객체 활용 학습 정리</title>
+      <link>https://Han-think.github.io/learning/2026-07-30-am-daily/</link>
+      <pubDate>Thu, 30 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-30-am-daily/</guid>
+      <description>2026-07-30 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>반복문, 문자열 조작, 환경 차이점, 배열 필터링 학습 정리</title>
+      <link>https://Han-think.github.io/learning/2026-07-30-pm-daily/</link>
+      <pubDate>Thu, 30 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-30-pm-daily/</guid>
+      <description>2026-07-30 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>JavaScript 기초 다지기: 배열, 객체, 자료구조, 알고리즘, 숫자-문자열 변환 마스터</title>
+      <link>https://Han-think.github.io/learning/2026-07-29-pm-daily/</link>
+      <pubDate>Wed, 29 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-29-pm-daily/</guid>
+      <description>2026-07-29 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>JavaScript 기초 다지기: 실행, 변수, 함수 완벽 이해</title>
+      <link>https://Han-think.github.io/learning/2026-07-29-am-daily/</link>
+      <pubDate>Wed, 29 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-29-am-daily/</guid>
+      <description>2026-07-29 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>CSS 변환, 트랜지션, 애니메이션과 반응형 디자인 마스터하기</title>
+      <link>https://Han-think.github.io/learning/2026-07-28-pm-daily/</link>
+      <pubDate>Tue, 28 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-28-pm-daily/</guid>
+      <description>2026-07-28 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>CSS 주석부터 브라우저 호환성까지 웹 개발 핵심 개념 학습 정리</title>
+      <link>https://Han-think.github.io/learning/2026-07-28-am-daily/</link>
+      <pubDate>Tue, 28 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-28-am-daily/</guid>
+      <description>2026-07-28 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>CSS 기본 정립 및 레이아웃 문제 해결 학습 정리</title>
+      <link>https://Han-think.github.io/learning/2026-07-27-pm-daily/</link>
+      <pubDate>Mon, 27 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-27-pm-daily/</guid>
+      <description>2026-07-27 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>HTML과 CSS 기초, 선택자와 상속 개념 완벽 정복</title>
+      <link>https://Han-think.github.io/learning/2026-07-27-am-daily/</link>
+      <pubDate>Mon, 27 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-27-am-daily/</guid>
+      <description>2026-07-27 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>웹 기초와 HTML 심화 학습으로 프로젝트 관리 역량 강화</title>
+      <link>https://Han-think.github.io/learning/2026-07-24-pm-daily/</link>
+      <pubDate>Fri, 24 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-24-pm-daily/</guid>
+      <description>2026-07-24 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>파이썬 스타일 가이드부터 패키지 관리까지, 코드 품질 향상을 위한 핵심 내용 정리</title>
+      <link>https://Han-think.github.io/learning/2026-07-24-am-daily/</link>
+      <pubDate>Fri, 24 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-24-am-daily/</guid>
+      <description>2026-07-24 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>딥러닝 기초 다지기: 옵티마이저부터 CNN 실습까지</title>
+      <link>https://Han-think.github.io/learning/2026-07-21-am-daily/</link>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-21-am-daily/</guid>
+      <description>2026-07-21 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>클라우드, 파이썬, 머신러닝 데이터 전처리 핵심 개념 정리</title>
+      <link>https://Han-think.github.io/learning/2026-07-21-pm-daily/</link>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-21-pm-daily/</guid>
+      <description>2026-07-21 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>PyTorch 기초 다지기: 데이터 전처리부터 신경망 시각화까지</title>
+      <link>https://Han-think.github.io/learning/2026-07-20-am-daily/</link>
+      <pubDate>Mon, 20 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-20-am-daily/</guid>
+      <description>2026-07-20 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>딥러닝 기초 다지기: 텐서, 모델, 학습, 그리고 PyTorch 적용 전략</title>
+      <link>https://Han-think.github.io/learning/2026-07-20-pm-daily/</link>
+      <pubDate>Mon, 20 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-20-pm-daily/</guid>
+      <description>2026-07-20 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>Kaggle 프로젝트 보완, 압도감 극복과 체계적인 접근법</title>
+      <link>https://Han-think.github.io/learning/2026-07-16-pm-daily/</link>
+      <pubDate>Thu, 16 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-16-pm-daily/</guid>
+      <description>2026-07-16 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>머신러닝, 딥러닝 기초 다지기와 PyTorch 모델 구조 이해</title>
+      <link>https://Han-think.github.io/learning/2026-07-16-am-daily/</link>
+      <pubDate>Thu, 16 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-16-am-daily/</guid>
+      <description>2026-07-16 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>Kaggle 베이스라인에서 검증 가능한 프로젝트 구조까지</title>
+      <link>https://Han-think.github.io/learning/2026-07-13-am-daily/</link>
+      <pubDate>Mon, 13 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-13-am-daily/</guid>
+      <description>2026-07-13 오전 수업에서 Kaggle 베이스라인, EDA 기반 변수 선택, 점수 설계와 개인 최적화의 관계를 정리했다.</description>
+    </item>
+    <item>
+      <title>데이터 분석 기초 다지기: 비지도 학습부터 분류 모델까지</title>
+      <link>https://Han-think.github.io/learning/2026-07-10-am-daily/</link>
+      <pubDate>Fri, 10 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-10-am-daily/</guid>
+      <description>2026-07-10 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>비지도 학습, 데이터 분석의 핵심과 실제 적용 노하우 습득</title>
+      <link>https://Han-think.github.io/learning/2026-07-10-pm-daily/</link>
+      <pubDate>Fri, 10 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-10-pm-daily/</guid>
+      <description>2026-07-10 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>분류 모델 학습부터 앙상블, 통계적 해석까지 핵심 개념 마스터</title>
+      <link>https://Han-think.github.io/learning/2026-07-09-am-daily/</link>
+      <pubDate>Thu, 09 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-09-am-daily/</guid>
+      <description>2026-07-09 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>분류부터 시계열 분석까지, 머신러닝 핵심 개념과 실무 적용 노하우 정리</title>
+      <link>https://Han-think.github.io/learning/2026-07-09-pm-daily/</link>
+      <pubDate>Thu, 09 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-09-pm-daily/</guid>
+      <description>2026-07-09 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>시계열 분석부터 머신러닝 핵심 개념까지, 완전정복 학습 정리</title>
+      <link>https://Han-think.github.io/learning/2026-07-08-am-daily/</link>
+      <pubDate>Wed, 08 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-08-am-daily/</guid>
+      <description>2026-07-08 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>회귀 분석 핵심 개념과 실전 적용, 그리고 문제 해결 경험</title>
+      <link>https://Han-think.github.io/learning/2026-07-08-pm-daily/</link>
+      <pubDate>Wed, 08 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-08-pm-daily/</guid>
+      <description>2026-07-08 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>API 크롤링부터 랜덤 포레스트, PC 자원 관리까지: 깊이 있는 학습 여정</title>
+      <link>https://Han-think.github.io/learning/2026-07-07-am-daily/</link>
+      <pubDate>Tue, 07 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-07-am-daily/</guid>
+      <description>2026-07-07 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>데이터 분석, 머신러닝 핵심 원리 완벽 해설 및 활용법 익히기</title>
+      <link>https://Han-think.github.io/learning/2026-07-07-pm-daily/</link>
+      <pubDate>Tue, 07 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-07-pm-daily/</guid>
+      <description>2026-07-07 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>선형대수와 시계열 분석, 그리고 파생변수 설계까지 머릿속으로 꽉 찬 오늘</title>
+      <link>https://Han-think.github.io/learning/2026-07-06-am-daily/</link>
+      <pubDate>Mon, 06 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-06-am-daily/</guid>
+      <description>2026-07-06 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>수학, 데이터 분석, 멀티모달 메모리 설계 학습 정리</title>
+      <link>https://Han-think.github.io/learning/2026-07-06-pm-daily/</link>
+      <pubDate>Mon, 06 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-06-pm-daily/</guid>
+      <description>2026-07-06 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>데이터 분석, 머신러닝 프로젝트의 핵심 원칙과 실전 전략 학습</title>
+      <link>https://Han-think.github.io/learning/2026-07-03-pm-daily/</link>
+      <pubDate>Fri, 03 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-03-pm-daily/</guid>
+      <description>2026-07-03 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>머신러닝 기초 다지기: 데이터 수집부터 모델 평가까지 핵심 개념 정리</title>
+      <link>https://Han-think.github.io/learning/2026-07-03-am-daily/</link>
+      <pubDate>Fri, 03 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-03-am-daily/</guid>
+      <description>2026-07-03 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>베이지안 추론과 구조화 방법론을 통한 문제 해결 프레임워크 구축</title>
+      <link>https://Han-think.github.io/learning/2026-07-02-am-daily/</link>
+      <pubDate>Thu, 02 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-02-am-daily/</guid>
+      <description>2026-07-02 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>확률, 최적화, 선형대수, 정규분포 학습으로 데이터 분석 기초 다지기</title>
+      <link>https://Han-think.github.io/learning/2026-07-02-pm-daily/</link>
+      <pubDate>Thu, 02 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-07-02-pm-daily/</guid>
+      <description>2026-07-02 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>데이터 분석 핵심 개념과 실증적 보고서 작성법 학습 정리</title>
+      <link>https://Han-think.github.io/learning/2026-06-30-am-daily/</link>
+      <pubDate>Tue, 30 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-30-am-daily/</guid>
+      <description>2026-06-30 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>선형대수, 고객 분석, 그리고 비즈니스 문제 해결</title>
+      <link>https://Han-think.github.io/learning/2026-06-30-pm-daily/</link>
+      <pubDate>Tue, 30 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-30-pm-daily/</guid>
+      <description>2026-06-30 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>데이터 시각화부터 모델 성능 평가, 자동화 시스템 구축까지: 오늘 학습 정리</title>
+      <link>https://Han-think.github.io/learning/2026-06-29-pm-daily/</link>
+      <pubDate>Mon, 29 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-29-pm-daily/</guid>
+      <description>2026-06-29 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>머신러닝 도구부터 리눅스 명령어까지, 데이터 분석 기초 다지기</title>
+      <link>https://Han-think.github.io/learning/2026-06-29-am-daily/</link>
+      <pubDate>Mon, 29 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-29-am-daily/</guid>
+      <description>2026-06-29 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>시험 직전 초보자 복습팩: 객관식 40개와 실습 60문제</title>
+      <link>https://Han-think.github.io/learning/2026-06-coding-test-last-minute-review/</link>
+      <pubDate>Tue, 23 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-coding-test-last-minute-review/</guid>
+      <description>DB, SQL, Python, pandas, 그래프, 가설검정을 초보자 기준으로 연결해 연습하는 시험 직전 예상문제 100선</description>
+    </item>
+    <item>
+      <title>데이터 분석 핵심 개념 완벽 마스터: 경로 표기법부터 가설 검정, t-검정까지</title>
+      <link>https://Han-think.github.io/learning/2026-06-22-am-daily/</link>
+      <pubDate>Mon, 22 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-22-am-daily/</guid>
+      <description>2026-06-22 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>통계 분석 핵심 개념 정립 및 데이터 분석 자동화 설계</title>
+      <link>https://Han-think.github.io/learning/2026-06-22-pm-daily/</link>
+      <pubDate>Mon, 22 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-22-pm-daily/</guid>
+      <description>2026-06-22 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>데이터 분석 기초 다지기: Pandas, NumPy, 그리고 문제 해결 실전</title>
+      <link>https://Han-think.github.io/learning/2026-06-20-pm-daily/</link>
+      <pubDate>Sat, 20 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-20-pm-daily/</guid>
+      <description>2026-06-20 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>데이터 분석 기초 다지기: pandas, SQL, 시각화, 품질 관리, 통계 이해</title>
+      <link>https://Han-think.github.io/learning/2026-06-20-am-daily/</link>
+      <pubDate>Sat, 20 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-20-am-daily/</guid>
+      <description>2026-06-20 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>데이터 설계부터 콘텐츠 파이프라인 구축까지: 오늘 학습 여정</title>
+      <link>https://Han-think.github.io/learning/2026-06-17-pm-daily/</link>
+      <pubDate>Wed, 17 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-17-pm-daily/</guid>
+      <description>2026-06-17 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>데이터베이스 설계부터 DBMS 선택까지 핵심 개념 정리</title>
+      <link>https://Han-think.github.io/learning/2026-06-17-am-daily/</link>
+      <pubDate>Wed, 17 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-17-am-daily/</guid>
+      <description>2026-06-17 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>SQL, 데이터베이스 설계, 클라우드 아키텍처 학습 정리</title>
+      <link>https://Han-think.github.io/learning/2026-06-15-am-daily/</link>
+      <pubDate>Mon, 15 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-15-am-daily/</guid>
+      <description>2026-06-15 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>데이터베이스 설계, 무결성 확보, ERD 실습을 통한 이해도 향상</title>
+      <link>https://Han-think.github.io/learning/2026-06-15-pm-daily/</link>
+      <pubDate>Mon, 15 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-15-pm-daily/</guid>
+      <description>2026-06-15 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>SQL 윈도우 함수와 그룹 함수, 이제 완벽하게 이해했다</title>
+      <link>https://Han-think.github.io/learning/2026-06-14-pm-daily/</link>
+      <pubDate>Sun, 14 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-14-pm-daily/</guid>
+      <description>2026-06-14 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>SQL 윈도우 함수와 날짜 다루기, 그리고 실전 분석 능력 향상</title>
+      <link>https://Han-think.github.io/learning/2026-06-12-am-daily/</link>
+      <pubDate>Fri, 12 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-12-am-daily/</guid>
+      <description>2026-06-12 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지</title>
+      <link>https://Han-think.github.io/learning/2026-06-12-pm-daily/</link>
+      <pubDate>Fri, 12 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-12-pm-daily/</guid>
+      <description>2026-06-12 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>daily-index-v2</title>
+      <link>https://Han-think.github.io/learning/daily-index-v2/</link>
+      <pubDate>Thu, 11 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/daily-index-v2/</guid>
+      <description>daily-index-v2 학습 정리</description>
+    </item>
+    <item>
+      <title>SQL JOIN, 서브쿼리, 뷰, PL/SQL, 윈도우 함수 학습 정리</title>
+      <link>https://Han-think.github.io/learning/2026-06-11-pm-daily/</link>
+      <pubDate>Thu, 11 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-11-pm-daily/</guid>
+      <description>2026-06-11 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>SQL, ERD, 파이썬 SQLite 연동 및 CRUD 실습으로 데이터베이스 활용 능력 향상</title>
+      <link>https://Han-think.github.io/learning/2026-06-11-am-daily/</link>
+      <pubDate>Thu, 11 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-11-am-daily/</guid>
+      <description>2026-06-11 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>컨설팅 보고서 작성, 초보자를 위한 핵심 가이드</title>
+      <link>https://Han-think.github.io/learning/consulting-report-prompting/</link>
+      <pubDate>Thu, 11 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/consulting-report-prompting/</guid>
+      <description>컨설팅 보고서 작성, 초보자를 위한 핵심 가이드 학습 정리</description>
+    </item>
+    <item>
+      <title>GROUP BY에서 FROM 절 서브쿼리까지, SQL을 데이터 파이프라인으로 보기</title>
+      <link>https://Han-think.github.io/learning/2026-06-10-am-sql-group-join-subquery/</link>
+      <pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-10-am-sql-group-join-subquery/</guid>
+      <description>GROUP BY, HAVING, JOIN, 스칼라 서브쿼리와 FROM 절 서브쿼리를 데이터 흐름으로 다시 정리한 오전 학습 기록</description>
+    </item>
+    <item>
+      <title>UNION ALL부터 재귀 CTE까지, SQL 결과표를 조립하는 방식</title>
+      <link>https://Han-think.github.io/learning/2026-06-10-pm-sql-set-operators-recursive-cte/</link>
+      <pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-10-pm-sql-set-operators-recursive-cte/</guid>
+      <description>집합 연산자, UNION ALL 리포트, WITH RECURSIVE 계층형 질의를 결과표 조립 관점으로 정리한 오후 학습 기록</description>
+    </item>
+    <item>
+      <title>am-01-sql-groupby-having</title>
+      <link>https://Han-think.github.io/learning/am-01-sql-groupby-having/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/am-01-sql-groupby-having/</guid>
+      <description>am-01-sql-groupby-having 학습 정리</description>
+    </item>
+    <item>
+      <title>am-02-sql-join-alias-erd</title>
+      <link>https://Han-think.github.io/learning/am-02-sql-join-alias-erd/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/am-02-sql-join-alias-erd/</guid>
+      <description>am-02-sql-join-alias-erd 학습 정리</description>
+    </item>
+    <item>
+      <title>am-03-sql-join-problem-solving</title>
+      <link>https://Han-think.github.io/learning/am-03-sql-join-problem-solving/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/am-03-sql-join-problem-solving/</guid>
+      <description>am-03-sql-join-problem-solving 학습 정리</description>
+    </item>
+    <item>
+      <title>erd-crows-foot-chinook</title>
+      <link>https://Han-think.github.io/learning/erd-crows-foot-chinook/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/erd-crows-foot-chinook/</guid>
+      <description>erd-crows-foot-chinook 학습 정리</description>
+    </item>
+    <item>
+      <title>hallucination-symbolic-control</title>
+      <link>https://Han-think.github.io/learning/hallucination-symbolic-control/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/hallucination-symbolic-control/</guid>
+      <description>hallucination-symbolic-control 학습 정리</description>
+    </item>
+    <item>
+      <title>minto-scqa-mece</title>
+      <link>https://Han-think.github.io/learning/minto-scqa-mece/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/minto-scqa-mece/</guid>
+      <description>minto-scqa-mece 학습 정리</description>
+    </item>
+    <item>
+      <title>pm-01-data-definition-erd-map</title>
+      <link>https://Han-think.github.io/learning/pm-01-data-definition-erd-map/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/pm-01-data-definition-erd-map/</guid>
+      <description>pm-01-data-definition-erd-map 학습 정리</description>
+    </item>
+    <item>
+      <title>pm-02-subquery-basic-single-multi</title>
+      <link>https://Han-think.github.io/learning/pm-02-subquery-basic-single-multi/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/pm-02-subquery-basic-single-multi/</guid>
+      <description>pm-02-subquery-basic-single-multi 학습 정리</description>
+    </item>
+    <item>
+      <title>pm-03-join-vs-subquery-choice</title>
+      <link>https://Han-think.github.io/learning/pm-03-join-vs-subquery-choice/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/pm-03-join-vs-subquery-choice/</guid>
+      <description>pm-03-join-vs-subquery-choice 학습 정리</description>
+    </item>
+    <item>
+      <title>pm-04-subquery-learning-friction</title>
+      <link>https://Han-think.github.io/learning/pm-04-subquery-learning-friction/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/pm-04-subquery-learning-friction/</guid>
+      <description>pm-04-subquery-learning-friction 학습 정리</description>
+    </item>
+    <item>
+      <title>pm-05-erd-reading-training</title>
+      <link>https://Han-think.github.io/learning/pm-05-erd-reading-training/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/pm-05-erd-reading-training/</guid>
+      <description>pm-05-erd-reading-training 학습 정리</description>
+    </item>
+    <item>
+      <title>rlhf-good-bad-response</title>
+      <link>https://Han-think.github.io/learning/rlhf-good-bad-response/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/rlhf-good-bad-response/</guid>
+      <description>rlhf-good-bad-response 학습 정리</description>
+    </item>
+    <item>
+      <title>SQL GROUP BY, JOIN, ERD 활용 능력 향상을 위한 학습 정리</title>
+      <link>https://Han-think.github.io/learning/2026-06-09-am-daily/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-09-am-daily/</guid>
+      <description>2026-06-09 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>SQL 쿼리 작성, ERD와 서브쿼리 활용법을 익히다</title>
+      <link>https://Han-think.github.io/learning/2026-06-09-pm-daily/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-09-pm-daily/</guid>
+      <description>2026-06-09 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>sqlite-select-crud-basics</title>
+      <link>https://Han-think.github.io/learning/sqlite-select-crud-basics/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/sqlite-select-crud-basics/</guid>
+      <description>sqlite-select-crud-basics 학습 정리</description>
+    </item>
+    <item>
+      <title>data-cleaning-dict-comprehension-sorted-lambda</title>
+      <link>https://Han-think.github.io/learning/data-cleaning-dict-comprehension-sorted-lambda/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/data-cleaning-dict-comprehension-sorted-lambda/</guid>
+      <description>data-cleaning-dict-comprehension-sorted-lambda 학습 정리</description>
+    </item>
+    <item>
+      <title>day-bridge-python-code-to-ecosystem</title>
+      <link>https://Han-think.github.io/learning/day-bridge-python-code-to-ecosystem/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/day-bridge-python-code-to-ecosystem/</guid>
+      <description>day-bridge-python-code-to-ecosystem 학습 정리</description>
+    </item>
+    <item>
+      <title>enumerate-rank-output</title>
+      <link>https://Han-think.github.io/learning/enumerate-rank-output/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/enumerate-rank-output/</guid>
+      <description>enumerate-rank-output 학습 정리</description>
+    </item>
+    <item>
+      <title>fstring-formatting-and-report-output</title>
+      <link>https://Han-think.github.io/learning/fstring-formatting-and-report-output/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/fstring-formatting-and-report-output/</guid>
+      <description>fstring-formatting-and-report-output 학습 정리</description>
+    </item>
+    <item>
+      <title>function-structure-and-testable-code</title>
+      <link>https://Han-think.github.io/learning/function-structure-and-testable-code/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/function-structure-and-testable-code/</guid>
+      <description>function-structure-and-testable-code 학습 정리</description>
+    </item>
+    <item>
+      <title>import-alias-namespace-api-reference</title>
+      <link>https://Han-think.github.io/learning/import-alias-namespace-api-reference/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/import-alias-namespace-api-reference/</guid>
+      <description>import-alias-namespace-api-reference 학습 정리</description>
+    </item>
+    <item>
+      <title>library-ecosystem-selection</title>
+      <link>https://Han-think.github.io/learning/library-ecosystem-selection/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/library-ecosystem-selection/</guid>
+      <description>library-ecosystem-selection 학습 정리</description>
+    </item>
+    <item>
+      <title>list-comprehension-filter-transform</title>
+      <link>https://Han-think.github.io/learning/list-comprehension-filter-transform/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/list-comprehension-filter-transform/</guid>
+      <description>list-comprehension-filter-transform 학습 정리</description>
+    </item>
+    <item>
+      <title>pandas-read-csv-parameter-design</title>
+      <link>https://Han-think.github.io/learning/pandas-read-csv-parameter-design/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/pandas-read-csv-parameter-design/</guid>
+      <description>pandas-read-csv-parameter-design 학습 정리</description>
+    </item>
+    <item>
+      <title>python-basic-types-print-variables</title>
+      <link>https://Han-think.github.io/learning/python-basic-types-print-variables/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-basic-types-print-variables/</guid>
+      <description>python-basic-types-print-variables 학습 정리</description>
+    </item>
+    <item>
+      <title>python-function-return-parameters</title>
+      <link>https://Han-think.github.io/learning/python-function-return-parameters/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-function-return-parameters/</guid>
+      <description>python-function-return-parameters 학습 정리</description>
+    </item>
+    <item>
+      <title>python-inheritance-department-tree</title>
+      <link>https://Han-think.github.io/learning/python-inheritance-department-tree/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-inheritance-department-tree/</guid>
+      <description>python-inheritance-department-tree 학습 정리</description>
+    </item>
+    <item>
+      <title>python-init-self-docstring-attributes</title>
+      <link>https://Han-think.github.io/learning/python-init-self-docstring-attributes/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-init-self-docstring-attributes/</guid>
+      <description>python-init-self-docstring-attributes 학습 정리</description>
+    </item>
+    <item>
+      <title>python-magic-methods-str-repr</title>
+      <link>https://Han-think.github.io/learning/python-magic-methods-str-repr/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-magic-methods-str-repr/</guid>
+      <description>python-magic-methods-str-repr 학습 정리</description>
+    </item>
+    <item>
+      <title>python-methods-split-join-tuple-dict</title>
+      <link>https://Han-think.github.io/learning/python-methods-split-join-tuple-dict/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-methods-split-join-tuple-dict/</guid>
+      <description>python-methods-split-join-tuple-dict 학습 정리</description>
+    </item>
+    <item>
+      <title>python-operations-input-indexing-slicing</title>
+      <link>https://Han-think.github.io/learning/python-operations-input-indexing-slicing/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-operations-input-indexing-slicing/</guid>
+      <description>python-operations-input-indexing-slicing 학습 정리</description>
+    </item>
+    <item>
+      <title>SQLite 입문 오전: SQLTools 실행부터 ERD까지</title>
+      <link>https://Han-think.github.io/learning/2026-06-08-am-sqlite-foundations/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-08-am-sqlite-foundations/</guid>
+      <description>VS Code SQLTools로 SQLite를 다루며 SELECT/CRUD 기본기와 ERD·샘플 DB 구조를 익힌 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>SQLite 입문 오후: SELECT 실습부터 DML과 ERD 읽기까지</title>
+      <link>https://Han-think.github.io/learning/2026-06-08-pm-sql-select-dml-erd/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-06-08-pm-sql-select-dml-erd/</guid>
+      <description>chinook.db와 book 테이블로 SELECT 기본기, 자주 한 실수 교정, INSERT/UPDATE/DELETE, ERD 읽기를 실습한 오후 정리</description>
+    </item>
+    <item>
+      <title>validation-report</title>
+      <link>https://Han-think.github.io/learning/validation-report/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/validation-report/</guid>
+      <description>validation-report 학습 정리</description>
+    </item>
+    <item>
+      <title>web-server-http-github-pages</title>
+      <link>https://Han-think.github.io/learning/web-server-http-github-pages/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/web-server-http-github-pages/</guid>
+      <description>web-server-http-github-pages 학습 정리</description>
+    </item>
+    <item>
+      <title>conditions-boolean-bmi-gate-thinking</title>
+      <link>https://Han-think.github.io/learning/conditions-boolean-bmi-gate-thinking/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/conditions-boolean-bmi-gate-thinking/</guid>
+      <description>conditions-boolean-bmi-gate-thinking 학습 정리</description>
+    </item>
+    <item>
+      <title>for-loop-range-accumulator-print</title>
+      <link>https://Han-think.github.io/learning/for-loop-range-accumulator-print/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/for-loop-range-accumulator-print/</guid>
+      <description>for-loop-range-accumulator-print 학습 정리</description>
+    </item>
+    <item>
+      <title>fstring-gugudan-and-output-formatting</title>
+      <link>https://Han-think.github.io/learning/fstring-gugudan-and-output-formatting/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/fstring-gugudan-and-output-formatting/</guid>
+      <description>fstring-gugudan-and-output-formatting 학습 정리</description>
+    </item>
+    <item>
+      <title>git-bash-markdown-vi</title>
+      <link>https://Han-think.github.io/learning/git-bash-markdown-vi/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/git-bash-markdown-vi/</guid>
+      <description>git-bash-markdown-vi 학습 정리</description>
+    </item>
+    <item>
+      <title>jupyterlab-localhost-vscode-gitbash</title>
+      <link>https://Han-think.github.io/learning/jupyterlab-localhost-vscode-gitbash/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/jupyterlab-localhost-vscode-gitbash/</guid>
+      <description>jupyterlab-localhost-vscode-gitbash 학습 정리</description>
+    </item>
+    <item>
+      <title>list-methods-scenarios-dedupe-connection</title>
+      <link>https://Han-think.github.io/learning/list-methods-scenarios-dedupe-connection/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/list-methods-scenarios-dedupe-connection/</guid>
+      <description>list-methods-scenarios-dedupe-connection 학습 정리</description>
+    </item>
+    <item>
+      <title>official-docs-error-messages-methods</title>
+      <link>https://Han-think.github.io/learning/official-docs-error-messages-methods/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/official-docs-error-messages-methods/</guid>
+      <description>official-docs-error-messages-methods 학습 정리</description>
+    </item>
+    <item>
+      <title>python-class-instance-basic</title>
+      <link>https://Han-think.github.io/learning/python-class-instance-basic/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-class-instance-basic/</guid>
+      <description>python-class-instance-basic 학습 정리</description>
+    </item>
+    <item>
+      <title>python-class-variables-instance-variables</title>
+      <link>https://Han-think.github.io/learning/python-class-variables-instance-variables/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-class-variables-instance-variables/</guid>
+      <description>python-class-variables-instance-variables 학습 정리</description>
+    </item>
+    <item>
+      <title>python-classmethod-staticmethod-from-string</title>
+      <link>https://Han-think.github.io/learning/python-classmethod-staticmethod-from-string/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-classmethod-staticmethod-from-string/</guid>
+      <description>python-classmethod-staticmethod-from-string 학습 정리</description>
+    </item>
+    <item>
+      <title>python-isinstance-issubclass-polymorphism</title>
+      <link>https://Han-think.github.io/learning/python-isinstance-issubclass-polymorphism/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-isinstance-issubclass-polymorphism/</guid>
+      <description>python-isinstance-issubclass-polymorphism 학습 정리</description>
+    </item>
+    <item>
+      <title>python-modules-entrypoint-docstring</title>
+      <link>https://Han-think.github.io/learning/python-modules-entrypoint-docstring/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-modules-entrypoint-docstring/</guid>
+      <description>python-modules-entrypoint-docstring 학습 정리</description>
+    </item>
+    <item>
+      <title>python-scope-global-shadowing</title>
+      <link>https://Han-think.github.io/learning/python-scope-global-shadowing/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/python-scope-global-shadowing/</guid>
+      <description>python-scope-global-shadowing 학습 정리</description>
+    </item>
+    <item>
+      <title>today-learning-personal-notes</title>
+      <link>https://Han-think.github.io/learning/today-learning-personal-notes/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/today-learning-personal-notes/</guid>
+      <description>today-learning-personal-notes 학습 정리</description>
+    </item>
+    <item>
+      <title>uv-environment-setup</title>
+      <link>https://Han-think.github.io/learning/uv-environment-setup/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/uv-environment-setup/</guid>
+      <description>uv-environment-setup 학습 정리</description>
+    </item>
+    <item>
+      <title>while-break-fizzbuzz-control-flow</title>
+      <link>https://Han-think.github.io/learning/while-break-fizzbuzz-control-flow/</link>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/while-break-fizzbuzz-control-flow/</guid>
+      <description>while-break-fizzbuzz-control-flow 학습 정리</description>
+    </item>
+  </channel>
+</rss>

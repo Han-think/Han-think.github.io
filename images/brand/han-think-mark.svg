@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title description">
+  <title id="title">Han-think mark</title>
+  <desc id="description">작은 달과 한옥 처마 곡선, 대청마루 선을 결합한 Han-think 블로그의 원형 브랜드 마크.</desc>
+  <metadata>
+    asset-id: brand-han-think-mark-v01
+    prompt-ko: 작은 달빛, 한옥 처마의 곡선, 대청마루의 수평선을 하나의 단순한 아이콘으로 결합, 짙은 청람색 배경, 단청 금빛 포인트, 현대적이고 조용한 한국적 브랜드 마크, 1:1, no text
+    prompt-en: minimal 1:1 brand mark combining a small moon, a Korean hanok eave curve and horizontal daecheongmaru floor lines, deep blue background, muted dancheong gold accent, modern quiet Korean identity, clean vector icon, no text
+    negative: detailed illustration, gradients with noise, letters, animals, generic AI robot icon, excessive ornament
+  </metadata>
+  <rect width="64" height="64" rx="16" fill="#1f3345"/>
+  <circle cx="46" cy="18" r="6" fill="#e6c36a"/>
+  <path d="M9 35c7-1 12-6 16-12 4 6 9 11 16 12 5 1 10 1 14 0" fill="none" stroke="#e6c36a" stroke-width="3" stroke-linecap="round"/>
+  <path d="M14 38h36M18 43h28M22 48h20" fill="none" stroke="#d9e4e8" stroke-width="3" stroke-linecap="round"/>
+</svg>
