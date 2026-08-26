@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오전 학습 요약: Redux 상태 흐름 이해하기와 Git 핵심 개념 정리 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-08-26 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-08-26-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-08-26-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function () {
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-08-26-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오전 학습 요약: Redux 상태 흐름 이해하기와 Git 핵심 개념 정리">
+  <meta property="og:description" content="2026-08-26 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-08-26T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-08-26T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오전 학습 요약: Redux 상태 흐름 이해하기와 Git 핵심 개념 정리">
+  <meta name="twitter:description" content="2026-08-26 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오전 학습 요약: Redux 상태 흐름 이해하기와 Git 핵심 개념 정리",
+      "item": "https://Han-think.github.io/learning/2026-08-26-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오전 학습 요약: Redux 상태 흐름 이해하기와 Git 핵심 개념 정리",
+  "name": "오전 학습 요약: Redux 상태 흐름 이해하기와 Git 핵심 개념 정리",
+  "description": "2026-08-26 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 Redux 상태 흐름 이해하기: 컴포넌트→요청→dispatch→reducer→store→렌더링 Git의 핵심 흐름과 개념을 정리한 글입니다. 총평 1. Redux 상태 흐름 이해하기: 컴포넌트→요청→dispatch→reducer→store→렌더링 무엇을 배웠나 Redux를 처음 접할 때 가장 큰 혼란은 ‘데이터 흐름’을 이해하지 못해 각 라이브러리의 역할이 겹치는 것처럼 보였던 점입니다. 핵심적으로 Reducer는 HTTP 요청을 실행하는 곳이 아니라, 이미 도착한 데이터를 State에 반영하는 규칙이라는 점을 깨닫고 구조가 명확해졌습니다. 특히 페이지네이션 같은 경우 page 번호 변경이 트리거가 되어 결과가 Store에 반영되어 UI가 업데이트되는 흐름으로 이해했습니다.\n헷갈렸던 점 처음 Redux를 접했을 때, 가장 큰 혼란은 ‘도구들의 집합’이 아니라 ‘데이터가 흐르는 구조’로 받아들이지 못했던 점입니다. 특히 reducer 코드 안에서 axios 호출이나 async/await 같은 비동기 관련 코드가 섞여 보여서 “Reducer가 직접 통신을 하는 건가?“라는 오해를 하게 되었고, state를 업데이트하는 시점과 데이터가 화면에 그려지는 시점을 구분하지 못했습니다.\n강사님의 피드백을 통해 ‘Redux = 상태 저장소’라는 본질을 되찾았습니다. 핵심은 Reducer는 HTTP 요청을 실행하는 곳이 아니라, 이미 도착한 데이터를 State에 반영하는 ‘규칙’이라는 점입니다.Reducer는 state를 업데이트하는 규칙이며, 비동기 통신은 액션 생성자나 미들웨어가 담당한다는 점을 명확히 이해하게 되었습니다.\n정리된 이해 Redux는 상태를 저장하는 공간이며, Reducer는 비동기 통신 결과물을 단순히 State에 반영하는 규칙일 뿐 직접 HTTP 요청을 수행하지 않는다. 데이터 흐름은 컴포넌트에서 Axios로 외부 요청을 보낸 뒤, 그 응답을 dispatch하여 Reducer가 Store에 업데이트하고, 최종적으로 useSelector로 화면에 렌더링되도록 연결된다.\n// 1. 액션 생성 (변경 요청) const setPosts = (posts) =\u003e { return { type: 'posts/setPosts', payload: posts }; }; // 2. 리듀서 (상태 변경 규칙) // Reducer 안에는 axios 코드를 넣지 않으며, 오직 state를 업데이트하는 규칙만 정의합니다. const postsReducer = (state = initialState, action) =\u003e { switch (action.type) { case 'posts/setPosts': return { ...state, list: action.payload }; default: return state; } }; 2. Git의 핵심 흐름과 개념을 정리한 글입니다. 무엇을 배웠나 Git은 Working Tree, Staging Area, Commit으로 이어지는 명확한 상태 전이를 통해 파일 변경을 관리한다. git add 명령어를 통해 파일을 스테이징 영역에 올리는 과정은 단순히 저장하는 것이 아니라, 다음 커밋에 포함시킬 후보를 선별하는 역할을 한다. 또한, git commit -a와 같은 옵션을 사용하면 tracked된 파일만 자동으로 처리되어 전체 파일을 수동으로 추가할 필요 없이 효율적으로 작업할 수 있다.\n헷갈렸던 점 git add는 단순히 파일을 저장하는 것이 아니라, ‘다음 커밋에 포함시킬 파일’을 스테이징 영역에 올리는 별도 과정이라는 점이 가장 혼란스러웠다.\n또한 git commit -a가 tracked 파일만 자동으로 처리한다는 사실로 인해, untracked 파일이 포함되지 않을까 걱정하며 실수할 뻔했던 경험이 있다.\n정리된 이해 Git은 **Working Tree(작업 트리)**에서 파일을 수정하고, git add 명령어로 변경된 내용을 **Staging Area(스테이징 영역)**에 올린 뒤, commit을 통해 영구적으로 저장하는 명확한 상태 전이를 기반으로 동작한다. 이 과정에서 git status로 현재 위치를 확인하고, git commit -a와 같은 옵션은 tracked 파일만 자동으로 처리한다는 점을 구분하여 사용하는 것이 중요하다. ultimately, 이러한 흐름을 Redux와 유사한 ‘변화하는 상태를 추적한다’는 관점에서 이해하면 명령어의 목적과 순서가 더 명확해진다.\n# 1. 현재 상태 확인 (Working Tree 위치 파악) git status # 2. 파일을 스테이징 영역에 올리기 (커밋 후보 등록) git add readme.md 총평 오늘 오전 전체에서 배운 것 Redux는 상태 업데이트를 위한 ‘규칙’과 ‘저장소’로 구성되며, 컴포넌트에서 발생한 액션이 리듀서를 거쳐 스토어에 반영되어 UI가 갱신되는 흐름을 이해했다. 또한 Git은 Working Tree와 Staging Area를 거치는 명확한 상태 전이를 통해 파일 변경을 관리하며, git add는 다음 커밋 후보를 선별하는 역할을 한다는 점을 정리했다.\n다음에 조심할 것 Redux는 상태 업데이트를 위해 불필요한 HTTP 요청을 실행하지 않으며, 오직 도착한 데이터를 State에 반영하는 순수 함수임을 기억해야 합니다.\nGit에서는 add가 단순히 저장하는 것이 아니라 다음 커밋 후보를 선별하는 과정이므로, 명령어 옵션의 동작 원리를 정확히 파악해 실수를 줄여야 합니다.\n다음 복습 주제 Redux에서 미들웨어(예: thunk)의 역할과 비동기 액션 처리 흐름을 확실히 이해해야겠다. 단순히 동기적인 상태 업데이트를 넘어, API 통신 후 받아온 데이터를 어떻게 디스패치하고 리듀서에 전달할지 전체 파이프라인을 머릿속에 그릴 수 있어야 한다.\nGit에서 브랜치 전략(Feature Branch, Git Flow 등)과 충돌 해결(CONFLICT) 과정에 대해 심화 학습해야 한다. add와 commit의 기본 개념은 알았지만, 실제 팀 프로젝트에서 여러 명이 동시에 수정했을 때 발생하는 복잡한 상황과 해결 방법을 체계적으로 익혀야 실전 역량이 될 것이다.\nRedux와 Git의 기초 흐름을 확실히 잡았으니, 다음 단계로는 각 라이브러리/도구의 고급 기능이나 실제 프로젝트 적용 사례에 집중해야겠다. 특히 Redux Toolkit을 활용한 효율적인 상태 관리 패턴과, Git에서 리베이스(Rebase)나 머지 전략(Merge Strategy)을 정확히 이해하여 이력 관리를 깔끔하게 하는 방법을 공부하고 싶다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "667",
+  "inLanguage": "en",
+  "datePublished": "2026-08-26T00:00:00Z",
+  "dateModified": "2026-08-26T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-08-26-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/life/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/ai-research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오전 학습 요약: Redux 상태 흐름 이해하기와 Git 핵심 개념 정리
+    </h1>
+    <div class="post-description">
+      2026-08-26 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-08-26 00:00:00 +0000 UTC'>2026년 8월 26일</span>&nbsp;·&nbsp;<span>4 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-redux-%EC%83%81%ED%83%9C-%ED%9D%90%EB%A6%84-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EC%9A%94%EC%B2%ADdispatchreducerstore%EB%A0%8C%EB%8D%94%EB%A7%81">Redux 상태 흐름 이해하기: 컴포넌트→요청→dispatch→reducer→store→렌더링</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-git%EC%9D%98-%ED%95%B5%EC%8B%AC-%ED%9D%90%EB%A6%84%EA%B3%BC-%EA%B0%9C%EB%85%90%EC%9D%84-%EC%A0%95%EB%A6%AC%ED%95%9C-%EA%B8%80%EC%9E%85%EB%8B%88%EB%8B%A4">Git의 핵심 흐름과 개념을 정리한 글입니다.</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-redux-상태-흐름-이해하기-컴포넌트요청dispatchreducerstore렌더링">1. Redux 상태 흐름 이해하기: 컴포넌트→요청→dispatch→reducer→store→렌더링<a hidden class="anchor" aria-hidden="true" href="#1-redux-상태-흐름-이해하기-컴포넌트요청dispatchreducerstore렌더링">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>Redux를 처음 접할 때 가장 큰 혼란은 &lsquo;데이터 흐름&rsquo;을 이해하지 못해 각 라이브러리의 역할이 겹치는 것처럼 보였던 점입니다. 핵심적으로 Reducer는 HTTP 요청을 실행하는 곳이 아니라, 이미 도착한 데이터를 State에 반영하는 규칙이라는 점을 깨닫고 구조가 명확해졌습니다. 특히 페이지네이션 같은 경우 <code>page 번호 변경</code>이 트리거가 되어 결과가 Store에 반영되어 UI가 업데이트되는 흐름으로 이해했습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>처음 Redux를 접했을 때, 가장 큰 혼란은 &lsquo;도구들의 집합&rsquo;이 아니라 &lsquo;데이터가 흐르는 구조&rsquo;로 받아들이지 못했던 점입니다. 특히 reducer 코드 안에서 axios 호출이나 async/await 같은 비동기 관련 코드가 섞여 보여서 &ldquo;Reducer가 직접 통신을 하는 건가?&ldquo;라는 오해를 하게 되었고, state를 업데이트하는 시점과 데이터가 화면에 그려지는 시점을 구분하지 못했습니다.</p>
+<p>강사님의 피드백을 통해 &lsquo;Redux = 상태 저장소&rsquo;라는 본질을 되찾았습니다. 핵심은 Reducer는 HTTP 요청을 실행하는 곳이 아니라, 이미 도착한 데이터를 State에 반영하는 &lsquo;규칙&rsquo;이라는 점입니다.Reducer는 state를 업데이트하는 규칙이며, 비동기 통신은 액션 생성자나 미들웨어가 담당한다는 점을 명확히 이해하게 되었습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>Redux는 상태를 저장하는 공간이며, Reducer는 비동기 통신 결과물을 단순히 State에 반영하는 규칙일 뿐 직접 HTTP 요청을 수행하지 않는다. 데이터 흐름은 컴포넌트에서 Axios로 외부 요청을 보낸 뒤, 그 응답을 dispatch하여 Reducer가 Store에 업데이트하고, 최종적으로 useSelector로 화면에 렌더링되도록 연결된다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// 1. 액션 생성 (변경 요청)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">setPosts</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">posts</span>) =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> { <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;posts/setPosts&#39;</span>, <span style="color:#a6e22e">payload</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">posts</span> };
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 2. 리듀서 (상태 변경 규칙)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// Reducer 안에는 axios 코드를 넣지 않으며, 오직 state를 업데이트하는 규칙만 정의합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">postsReducer</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">initialState</span>, <span style="color:#a6e22e">action</span>) =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">switch</span> (<span style="color:#a6e22e">action</span>.<span style="color:#a6e22e">type</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;posts/setPosts&#39;</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> { ...<span style="color:#a6e22e">state</span>, <span style="color:#a6e22e">list</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">action</span>.<span style="color:#a6e22e">payload</span> };
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">state</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><h2 id="2-git의-핵심-흐름과-개념을-정리한-글입니다">2. Git의 핵심 흐름과 개념을 정리한 글입니다.<a hidden class="anchor" aria-hidden="true" href="#2-git의-핵심-흐름과-개념을-정리한-글입니다">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>Git은 Working Tree, Staging Area, Commit으로 이어지는 명확한 상태 전이를 통해 파일 변경을 관리한다. <code>git add</code> 명령어를 통해 파일을 스테이징 영역에 올리는 과정은 단순히 저장하는 것이 아니라, 다음 커밋에 포함시킬 후보를 선별하는 역할을 한다. 또한, <code>git commit -a</code>와 같은 옵션을 사용하면 tracked된 파일만 자동으로 처리되어 전체 파일을 수동으로 추가할 필요 없이 효율적으로 작업할 수 있다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p><code>git add</code>는 단순히 파일을 저장하는 것이 아니라, &lsquo;다음 커밋에 포함시킬 파일&rsquo;을 스테이징 영역에 올리는 별도 과정이라는 점이 가장 혼란스러웠다.</p>
+<p>또한 <code>git commit -a</code>가 tracked 파일만 자동으로 처리한다는 사실로 인해, untracked 파일이 포함되지 않을까 걱정하며 실수할 뻔했던 경험이 있다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>Git은 **Working Tree(작업 트리)**에서 파일을 수정하고, <code>git add</code> 명령어로 변경된 내용을 **Staging Area(스테이징 영역)**에 올린 뒤, <code>commit</code>을 통해 영구적으로 저장하는 명확한 상태 전이를 기반으로 동작한다. 이 과정에서 <code>git status</code>로 현재 위치를 확인하고, <code>git commit -a</code>와 같은 옵션은 tracked 파일만 자동으로 처리한다는 점을 구분하여 사용하는 것이 중요하다. ultimately, 이러한 흐름을 Redux와 유사한 &lsquo;변화하는 상태를 추적한다&rsquo;는 관점에서 이해하면 명령어의 목적과 순서가 더 명확해진다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 1. 현재 상태 확인 (Working Tree 위치 파악)</span>
+</span></span><span style="display:flex;"><span>git status
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. 파일을 스테이징 영역에 올리기 (커밋 후보 등록)</span>
+</span></span><span style="display:flex;"><span>git add readme.md
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>Redux는 상태 업데이트를 위한 &lsquo;규칙&rsquo;과 &lsquo;저장소&rsquo;로 구성되며, 컴포넌트에서 발생한 액션이 리듀서를 거쳐 스토어에 반영되어 UI가 갱신되는 흐름을 이해했다. 또한 Git은 Working Tree와 Staging Area를 거치는 명확한 상태 전이를 통해 파일 변경을 관리하며, <code>git add</code>는 다음 커밋 후보를 선별하는 역할을 한다는 점을 정리했다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>Redux는 상태 업데이트를 위해 불필요한 HTTP 요청을 실행하지 않으며, 오직 도착한 데이터를 State에 반영하는 순수 함수임을 기억해야 합니다.</p>
+<p>Git에서는 <code>add</code>가 단순히 저장하는 것이 아니라 다음 커밋 후보를 선별하는 과정이므로, 명령어 옵션의 동작 원리를 정확히 파악해 실수를 줄여야 합니다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>Redux에서 미들웨어(예: thunk)의 역할과 비동기 액션 처리 흐름을 확실히 이해해야겠다. 단순히 동기적인 상태 업데이트를 넘어, API 통신 후 받아온 데이터를 어떻게 디스패치하고 리듀서에 전달할지 전체 파이프라인을 머릿속에 그릴 수 있어야 한다.</p>
+<p>Git에서 브랜치 전략(Feature Branch, Git Flow 등)과 충돌 해결(CONFLICT) 과정에 대해 심화 학습해야 한다. <code>add</code>와 <code>commit</code>의 기본 개념은 알았지만, 실제 팀 프로젝트에서 여러 명이 동시에 수정했을 때 발생하는 복잡한 상황과 해결 방법을 체계적으로 익혀야 실전 역량이 될 것이다.</p>
+<p>Redux와 Git의 기초 흐름을 확실히 잡았으니, 다음 단계로는 각 라이브러리/도구의 고급 기능이나 실제 프로젝트 적용 사례에 집중해야겠다. 특히 Redux Toolkit을 활용한 효율적인 상태 관리 패턴과, Git에서 리베이스(Rebase)나 머지 전략(Merge Strategy)을 정확히 이해하여 이력 관리를 깔끔하게 하는 방법을 공부하고 싶다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-08-26-pm-daily/">
+    <span class="title">« Prev</span>
+    <span>오늘 오후, Jest 설정과 testable code의 경계에서 테스트 실행 순서의 중요성을 확인하고, RTL UI 테스트에서 `test.each()`를 활용해 반복되는 코드를 효율적으로 압축하는 방법을 실험했습니다.</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-08-25-pm-daily/">
+    <span class="title">Next »</span>
+    <span>Redux 데이터 흐름 재정비와 마이그레이션 과정에서 마주한 인지 부하 관리하기</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

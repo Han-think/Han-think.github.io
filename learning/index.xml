@@ -6,8 +6,22 @@
     <description>Recent content in 학습 기록 on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Tue, 25 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 26 Aug 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>오늘 오후, Jest 설정과 testable code의 경계에서 테스트 실행 순서의 중요성을 확인하고, RTL UI 테스트에서 `test.each()`를 활용해 반복되는 코드를 효율적으로 압축하는 방법을 실험했습니다.</title>
+      <link>https://Han-think.github.io/learning/2026-08-26-pm-daily/</link>
+      <pubDate>Wed, 26 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-26-pm-daily/</guid>
+      <description>2026-08-26 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>오전 학습 요약: Redux 상태 흐름 이해하기와 Git 핵심 개념 정리</title>
+      <link>https://Han-think.github.io/learning/2026-08-26-am-daily/</link>
+      <pubDate>Wed, 26 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-26-am-daily/</guid>
+      <description>2026-08-26 오전 학습 정리</description>
+    </item>
     <item>
       <title>Redux 데이터 흐름 재정비와 마이그레이션 과정에서 마주한 인지 부하 관리하기</title>
       <link>https://Han-think.github.io/learning/2026-08-25-pm-daily/</link>
