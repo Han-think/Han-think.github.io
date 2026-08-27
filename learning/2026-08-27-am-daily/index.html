@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오늘 오전, UI 테스트 리팩토링과 Express 서버 라우팅 원리를 정리했습니다. helper function을 활용해 테스트 케이스의 고유 이름을 유지하면서 반복되는 흐름을 캡슐화하는 방법을 배웠고, 문법 강조에 의존하지 않고 서버의 &#39;대기 상태&#39; 개념을 명확히 이해하여 스크립트와 서버 실행의 차이를 구분할 수 있게 되었습니다. 특히 URL 경로와 HTTP 메서드의 조합으로 라우팅이 결정되며, 404 에러는 경로가 없다는 뜻임을 깨닫고 Router 분리를 통해 로직을 분리하는 중요성을 확인했습니다. | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-08-27 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-08-27-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-08-27-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function () {
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-08-27-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오늘 오전, UI 테스트 리팩토링과 Express 서버 라우팅 원리를 정리했습니다. helper function을 활용해 테스트 케이스의 고유 이름을 유지하면서 반복되는 흐름을 캡슐화하는 방법을 배웠고, 문법 강조에 의존하지 않고 서버의 &#39;대기 상태&#39; 개념을 명확히 이해하여 스크립트와 서버 실행의 차이를 구분할 수 있게 되었습니다. 특히 URL 경로와 HTTP 메서드의 조합으로 라우팅이 결정되며, 404 에러는 경로가 없다는 뜻임을 깨닫고 Router 분리를 통해 로직을 분리하는 중요성을 확인했습니다.">
+  <meta property="og:description" content="2026-08-27 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-08-27T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-08-27T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오늘 오전, UI 테스트 리팩토링과 Express 서버 라우팅 원리를 정리했습니다. helper function을 활용해 테스트 케이스의 고유 이름을 유지하면서 반복되는 흐름을 캡슐화하는 방법을 배웠고, 문법 강조에 의존하지 않고 서버의 &#39;대기 상태&#39; 개념을 명확히 이해하여 스크립트와 서버 실행의 차이를 구분할 수 있게 되었습니다. 특히 URL 경로와 HTTP 메서드의 조합으로 라우팅이 결정되며, 404 에러는 경로가 없다는 뜻임을 깨닫고 Router 분리를 통해 로직을 분리하는 중요성을 확인했습니다.">
+  <meta name="twitter:description" content="2026-08-27 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오늘 오전, UI 테스트 리팩토링과 Express 서버 라우팅 원리를 정리했습니다. helper function을 활용해 테스트 케이스의 고유 이름을 유지하면서 반복되는 흐름을 캡슐화하는 방법을 배웠고, 문법 강조에 의존하지 않고 서버의 '대기 상태' 개념을 명확히 이해하여 스크립트와 서버 실행의 차이를 구분할 수 있게 되었습니다. 특히 URL 경로와 HTTP 메서드의 조합으로 라우팅이 결정되며, 404 에러는 경로가 없다는 뜻임을 깨닫고 Router 분리를 통해 로직을 분리하는 중요성을 확인했습니다.",
+      "item": "https://Han-think.github.io/learning/2026-08-27-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오늘 오전, UI 테스트 리팩토링과 Express 서버 라우팅 원리를 정리했습니다. helper function을 활용해 테스트 케이스의 고유 이름을 유지하면서 반복되는 흐름을 캡슐화하는 방법을 배웠고, 문법 강조에 의존하지 않고 서버의 '대기 상태' 개념을 명확히 이해하여 스크립트와 서버 실행의 차이를 구분할 수 있게 되었습니다. 특히 URL 경로와 HTTP 메서드의 조합으로 라우팅이 결정되며, 404 에러는 경로가 없다는 뜻임을 깨닫고 Router 분리를 통해 로직을 분리하는 중요성을 확인했습니다.",
+  "name": "오늘 오전, UI 테스트 리팩토링과 Express 서버 라우팅 원리를 정리했습니다. helper function을 활용해 테스트 케이스의 고유 이름을 유지하면서 반복되는 흐름을 캡슐화하는 방법을 배웠고, 문법 강조에 의존하지 않고 서버의 \u0027대기 상태\u0027 개념을 명확히 이해하여 스크립트와 서버 실행의 차이를 구분할 수 있게 되었습니다. 특히 URL 경로와 HTTP 메서드의 조합으로 라우팅이 결정되며, 404 에러는 경로가 없다는 뜻임을 깨닫고 Router 분리를 통해 로직을 분리하는 중요성을 확인했습니다.",
+  "description": "2026-08-27 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 RTL UI Test Refactoring with Helper Function 무엇이 헷갈렸나 정리된 이해 Express 서버 구동과 라우팅의 원리 이해하기 1. RTL UI Test Refactoring with Helper Function 무엇을 배웠나 오늘은 반복되는 UI 테스트 흐름을 함수로 캡슐화하는 방법을 배웠습니다. test.each()가 데이터 통합에 유리한 반면, helper function을 사용하면 각 테스트 케이스의 고유 이름을 유지하면서 ‘어떻게 테스트하는か’를 추상화할 수 있다는 점을 이해했습니다. 무엇보다도 고정되는 동작과 바뀌는 데이터를 분리하여 인자로 전달하는 것이 코드의 가독성과 유지보수성을 높이는 핵심이라는 점을 명확히 했습니다.\n헷갈렸던 점 test.each() 방식이 코드 양을 줄여주는 것처럼 보여도, 실제 UI 동작 흐름 자체를 캡슐화하는 것과는 목적이 달랐습니다.\nhelper function을 만들면 테스트 케이스마다 코드를 다시 짜야 해서 번거로워 보였지만, 이는 ‘어떻게 테스트하는가(UI 조작 흐름)‘를 함수로 추상화한 것이고, test.each()는 단순히 데이터만 통합한 것에 불과했습니다.\n정리된 이해 반복되는 UI 테스트 흐름을 하나의 함수로 캡슐화하여, 공통된 동작은 숨기고 변하는 데이터(값과 연산자)만 인자로 전달함으로써 코드의 중복을 효과적으로 제거할 수 있다. test.each()가 테스트 데이터를 통합하는 반면, 헬퍼 함수는 ‘어떻게 테스트하는か(UI 조작 흐름)’ 자체를 추상화하여 테스트 케이스 이름을 유지하면서 구조를 간소화한다는 점에서 두 접근 방식은 서로 다른 단계의 추상화를 제공한다.\nLearningLog: RTL UI Test Refactoring with a Helper Function (초보자 워킹 노트) 1. 무엇이 헷갈렸나 오늘 강사님의 시연을 보고 드는 첫 번째 생각은 **“이게 다를까?”**였습니다.\n어제는 test.each()를 사용해 테스트 데이터만 행으로 묶고, 반복되는 render와 userEvent 같은 코드는 그대로 두는 방식으로 학습했습니다. 그런데 오늘은 아예 그 반복되는 UI 동작 자체를 함수로 뽑아버리셨죠.\n“어차피 test.each()로 데이터를 통합하면 더 깔끔한데, 왜 굳이 helper function을 만들어서 각 테스트마다 코드를 다시 짜야 하지?“라는 의문이 들었습니다. 특히 test.each() 방식이 코드 양도 적고 추가하기도 편해 보여서, 강사님의 방식이 오히려 ‘원시적’인 느낌까지 들었습니다.\n또 하나 혼란스러웠던 점은 **“어디까지가 추상화이고, 어디부터가 중복 제거인가”**였습니다. helper function을 만들면 분명 코드 양은 줄어들지만, 정작 테스트 코드를 읽었을 때 ‘이게 무슨 테스트지?‘를 파악하는 데 더 시간이 걸리는 것 같았습니다.\n2. 정리된 이해 결국 오늘 배운 핵심은 **“반복되는 코드에서 고정되는 동작과 바뀌는 데이터를 분리하는 것”**이라는 점입니다.\n반복 발견: 사칙연산 테스트 네 개는 ‘렌더링 → 값 입력 → 연산자 선택 → 버튼 클릭 → 결과 확인’이라는 흐름이 완전히 똑같았습니다. 공통 동작 추출: 이 흐름을 calcTestUI(val1, val2, operVal, answer) 함수로 캡슐화했습니다. parameter 전달: 바뀌는 네 숫자와 연산 기호만 인자로 넘기고, 나머지는 함수 내부에서 처리하게 만든 것이 핵심입니다. 그리고 강사님께서 강조하신 점은, test.each()와 이 방식은 상대적인 대상이 아니라, 다른 단계의 추상화라는 점이었습니다.\n강사님 방식 (Helper Function): 각 테스트 케이스 이름을 유지하면서, ‘어떻게 테스트하는가(UI 조작 흐름)‘를 함수로 캡슐화한 것. test.each() 방식: 2. Express 서버 구동과 라우팅의 원리 이해하기 무엇을 배웠나 코드 강조 색상이 실제 실행 여부를 보장하지 않는다는 점을 깨닫고, 문법적 시각적 효과에 의존하면 안 된다는 교훈을 얻었다. Express 서버는 app.listen() 이후 요청을 지속적으로 대기하는 ‘유지 상태’가 핵심 개념임을 이해했다. 이러한 혼란을 해소함으로써 서버와 일반 스크립트의 실행 차이점을 명확히 구분할 수 있게 되었다.\n헷갈렸던 점 코드 색깔이 예쁘게 보여도 문법 강조는 실행 보장이 아니므로 실제 동작 여부를 반드시 확인해야 한다. Express 서버는 app.listen() 이후 요청을 계속 기다리는 ‘대기 상태’가 되는데, 이는 일반 스크립트 종료와 달라 진입장벽으로 느껴졌다. 이러한 혼란을 해소하니 서버는 끝나는 것이 아니라 지속적으로 동작하며 클라이언트의 신호를 감시하는 과정이라는 사실이 명확해졌다.\n정리된 이해 Express 서버는 요청을 지속적으로 기다리는 ‘대기 상태’의 프로세스이며, 문법 강조 기능은 코드의 실행 여부를 보장하지 않는다는 점을 명확히 인지해야 한다.\nconst express = require('express'); const app = express(); app.get('/', (req, res) =\u003e { res.send('Hello World!'); }); app.listen(3000, () =\u003e { console.log('Server is running on port 3000'); }); 3. Express 경로와 HTTP 메서드의 조합 이해하기 무엇을 배웠나 Express 라우팅은 URL 경로와 HTTP 메서드의 조합으로 결정됩니다. app.get()는 GET 요청, app.post()는 POST 요청에만 해당 경로를 매칭시킵니다. 404 에러는 서버가 꺼진 것이 아니라, 요청한 method와 path를 조합한 라우트를 찾지 못해 발생하는 것입니다. Router 분리는 처리 로직을 분리하여 파일 구조를 깔끔하게 유지하는 방법입니다.\n헷갈렸던 점 브라우저에 주소를 입력했을 때 서버가 꺼진 줄 알았지만, 실제로는 정의된 경로가 없어서 404 에러가 뜬 것이었습니다. Express에서 라우팅은 URL 경로와 HTTP 메서드(GET, POST 등)의 조합으로 결정되며, 브라우저는 기본적으로 GET 요청을 보내지만 서버 측에서는 해당 메서드를 explicit하게 선언해주어야 route가 매칭된다는 점이 처음에는 직관적이지 않았습니다. 404 에러는 서버 자체가 죽은 것이 아니라, 요청한 method와 path를 조합한 라우트를 찾지 못해 발생하는 것이니 안심하고 디버깅할 수 있습니다.\n정리된 이해 Express 라우팅은 URL 경로와 HTTP 메서드의 조합으로 결정된다. 브라우저는 기본적으로 GET 요청을 보내지만, 서버 측에서 해당 메서드를 명시적으로 선언해야 route가 매칭된다. 404 에러는 서버가 죽은 것이 아니라, 요청한 method와 path를 조합한 라우트를 찾지 못해 발생하는 것이다.\nconst express = require('express'); const app = express(); // GET 요청일 때 '/hello' 경로 매칭 app.get('/hello', (req, res) =\u003e { res.send('Hello, this is a GET request!'); }); // POST 요청일 때 '/hello' 경로 매칭 app.post('/hello', (req, res) =\u003e { res.send('Hello, this is a POST request!'); }); 총평 오늘 오전 전체에서 배운 것 UI 테스트 리팩토링에서는 반복되는 흐름을 함수로 캡슐화하여 고정된 동작과 변하는 데이터를 분리함으로써 코드의 가독성과 유지보수성을 높이는 방법을 배웠습니다.\nExpress 서버 구동에 있어 app.listen() 이후 요청을 지속적으로 대기하는 ‘유지 상태’가 핵심임을 이해했으며, 라우팅은 URL 경로와 HTTP 메서드의 조합으로 결정된다는 점을 명확히 했습니다.\n다음에 조심할 것 UI 테스트 시 고정된 동작과 변하는 데이터를 명확히 분리하여 인자로 전달해야 코드 유지보수가 용이하다. Express 서버는 app.listen() 이후 요청을 지속적으로 대기하는 ‘유지 상태’가 핵심 개념이며, 문법 강조 색상에 현혹되지 말고 실제 실행 흐름을 이해해야 한다. 라우팅은 URL 경로와 HTTP 메서드의 조합으로 결정되며, 404 에러는 서버 종료가 아니라 해당 method-path 조합의 라우트를 찾지 못해 발생함을 인지해야 한다. 다음 복습 주제 다음에 복습할 주제 Express 라우팅에서 next() 미들웨어를 활용한 요청 흐름 제어를 심층적으로 이해하는 것이 중요합니다. 경로 핸들러 간의 호출 순서와 에러 처리를 위한 next(err) 사용법을 명확히 하여, 예상치 못한 404 에러나 로직 누락을 방지하는 능력을 키워야 합니다. 또한, 라우터 분리 시 모듈 간 통신 방식과 미들웨어의 적용 범위(scope)를 정확히 파악하여 프로젝트 규모가 커졌을 때도 구조를 유지보수하기 좋은 아키텍처를 설계할 수 있도록 복습해야 합니다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "923",
+  "inLanguage": "en",
+  "datePublished": "2026-08-27T00:00:00Z",
+  "dateModified": "2026-08-27T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-08-27-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/life/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/ai-research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오늘 오전, UI 테스트 리팩토링과 Express 서버 라우팅 원리를 정리했습니다. helper function을 활용해 테스트 케이스의 고유 이름을 유지하면서 반복되는 흐름을 캡슐화하는 방법을 배웠고, 문법 강조에 의존하지 않고 서버의 &#39;대기 상태&#39; 개념을 명확히 이해하여 스크립트와 서버 실행의 차이를 구분할 수 있게 되었습니다. 특히 URL 경로와 HTTP 메서드의 조합으로 라우팅이 결정되며, 404 에러는 경로가 없다는 뜻임을 깨닫고 Router 분리를 통해 로직을 분리하는 중요성을 확인했습니다.
+    </h1>
+    <div class="post-description">
+      2026-08-27 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-08-27 00:00:00 +0000 UTC'>2026년 8월 27일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-rtl-ui-test-refactoring-with-helper-function">RTL UI Test Refactoring with Helper Function</a></li>
+</ol>
+</li>
+<li>
+<ol>
+<li><a href="#1-%EB%AC%B4%EC%97%87%EC%9D%B4-%ED%97%B7%EA%B0%88%EB%A0%B8%EB%82%98">무엇이 헷갈렸나</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%A0%95%EB%A6%AC%EB%90%9C-%EC%9D%B4%ED%95%B4">정리된 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-express-%EC%84%9C%EB%B2%84-%EA%B5%AC%EB%8F%99%EA%B3%BC-%EB%9D%BC%EC%9A%B0%ED%8C%85%EC%9D%98-%EC%9B%90%EB%A6%AC-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">Express 서버 구동과 라우팅의 원리 이해하기</a></li>
+</ol>
+</li>
+</ul>
+<h2 id="1-rtl-ui-test-refactoring-with-helper-function">1. RTL UI Test Refactoring with Helper Function<a hidden class="anchor" aria-hidden="true" href="#1-rtl-ui-test-refactoring-with-helper-function">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>오늘은 반복되는 UI 테스트 흐름을 함수로 캡슐화하는 방법을 배웠습니다. <code>test.each()</code>가 데이터 통합에 유리한 반면, helper function을 사용하면 각 테스트 케이스의 고유 이름을 유지하면서 &lsquo;어떻게 테스트하는か&rsquo;를 추상화할 수 있다는 점을 이해했습니다. 무엇보다도 고정되는 동작과 바뀌는 데이터를 분리하여 인자로 전달하는 것이 코드의 가독성과 유지보수성을 높이는 핵심이라는 점을 명확히 했습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>test.each() 방식이 코드 양을 줄여주는 것처럼 보여도, 실제 UI 동작 흐름 자체를 캡슐화하는 것과는 목적이 달랐습니다.</p>
+<p>helper function을 만들면 테스트 케이스마다 코드를 다시 짜야 해서 번거로워 보였지만, 이는 &lsquo;어떻게 테스트하는가(UI 조작 흐름)&lsquo;를 함수로 추상화한 것이고, test.each()는 단순히 데이터만 통합한 것에 불과했습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>반복되는 UI 테스트 흐름을 하나의 함수로 캡슐화하여, 공통된 동작은 숨기고 변하는 데이터(값과 연산자)만 인자로 전달함으로써 코드의 중복을 효과적으로 제거할 수 있다. <code>test.each()</code>가 테스트 데이터를 통합하는 반면, 헬퍼 함수는 &lsquo;어떻게 테스트하는か(UI 조작 흐름)&rsquo; 자체를 추상화하여 테스트 케이스 이름을 유지하면서 구조를 간소화한다는 점에서 두 접근 방식은 서로 다른 단계의 추상화를 제공한다.</p>
+<h1 id="learninglog-rtl-ui-test-refactoring-with-a-helper-function-초보자-워킹-노트">LearningLog: RTL UI Test Refactoring with a Helper Function (초보자 워킹 노트)<a hidden class="anchor" aria-hidden="true" href="#learninglog-rtl-ui-test-refactoring-with-a-helper-function-초보자-워킹-노트">#</a></h1>
+<h2 id="1-무엇이-헷갈렸나">1. 무엇이 헷갈렸나<a hidden class="anchor" aria-hidden="true" href="#1-무엇이-헷갈렸나">#</a></h2>
+<p>오늘 강사님의 시연을 보고 드는 첫 번째 생각은 **&ldquo;이게 다를까?&rdquo;**였습니다.</p>
+<p>어제는 <code>test.each()</code>를 사용해 테스트 데이터만 행으로 묶고, 반복되는 <code>render</code>와 <code>userEvent</code> 같은 코드는 그대로 두는 방식으로 학습했습니다. 그런데 오늘은 아예 그 반복되는 UI 동작 자체를 함수로 뽑아버리셨죠.</p>
+<p>&ldquo;어차피 test.each()로 데이터를 통합하면 더 깔끔한데, 왜 굳이 helper function을 만들어서 각 테스트마다 코드를 다시 짜야 하지?&ldquo;라는 의문이 들었습니다. 특히 <code>test.each()</code> 방식이 코드 양도 적고 추가하기도 편해 보여서, 강사님의 방식이 오히려 &lsquo;원시적&rsquo;인 느낌까지 들었습니다.</p>
+<p>또 하나 혼란스러웠던 점은 **&ldquo;어디까지가 추상화이고, 어디부터가 중복 제거인가&rdquo;**였습니다. helper function을 만들면 분명 코드 양은 줄어들지만, 정작 테스트 코드를 읽었을 때 &lsquo;이게 무슨 테스트지?&lsquo;를 파악하는 데 더 시간이 걸리는 것 같았습니다.</p>
+<h2 id="2-정리된-이해">2. 정리된 이해<a hidden class="anchor" aria-hidden="true" href="#2-정리된-이해">#</a></h2>
+<p>결국 오늘 배운 핵심은 **&ldquo;반복되는 코드에서 고정되는 동작과 바뀌는 데이터를 분리하는 것&rdquo;**이라는 점입니다.</p>
+<ul>
+<li><strong>반복 발견</strong>: 사칙연산 테스트 네 개는 &lsquo;렌더링 → 값 입력 → 연산자 선택 → 버튼 클릭 → 결과 확인&rsquo;이라는 흐름이 완전히 똑같았습니다.</li>
+<li><strong>공통 동작 추출</strong>: 이 흐름을 <code>calcTestUI(val1, val2, operVal, answer)</code> 함수로 캡슐화했습니다.</li>
+<li><strong>parameter 전달</strong>: 바뀌는 네 숫자와 연산 기호만 인자로 넘기고, 나머지는 함수 내부에서 처리하게 만든 것이 핵심입니다.</li>
+</ul>
+<p>그리고 강사님께서 강조하신 점은, <code>test.each()</code>와 이 방식은 <strong>상대적인 대상이 아니라, 다른 단계의 추상화</strong>라는 점이었습니다.</p>
+<ul>
+<li><strong>강사님 방식 (Helper Function)</strong>: 각 테스트 케이스 이름을 유지하면서, &lsquo;어떻게 테스트하는가(UI 조작 흐름)&lsquo;를 함수로 캡슐화한 것.</li>
+<li><strong><code>test.each()</code> 방식</strong>:</li>
+</ul>
+<h2 id="2-express-서버-구동과-라우팅의-원리-이해하기">2. Express 서버 구동과 라우팅의 원리 이해하기<a hidden class="anchor" aria-hidden="true" href="#2-express-서버-구동과-라우팅의-원리-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>코드 강조 색상이 실제 실행 여부를 보장하지 않는다는 점을 깨닫고, 문법적 시각적 효과에 의존하면 안 된다는 교훈을 얻었다. Express 서버는 <code>app.listen()</code> 이후 요청을 지속적으로 대기하는 &lsquo;유지 상태&rsquo;가 핵심 개념임을 이해했다. 이러한 혼란을 해소함으로써 서버와 일반 스크립트의 실행 차이점을 명확히 구분할 수 있게 되었다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>코드 색깔이 예쁘게 보여도 문법 강조는 실행 보장이 아니므로 실제 동작 여부를 반드시 확인해야 한다. Express 서버는 <code>app.listen()</code> 이후 요청을 계속 기다리는 &lsquo;대기 상태&rsquo;가 되는데, 이는 일반 스크립트 종료와 달라 진입장벽으로 느껴졌다. 이러한 혼란을 해소하니 서버는 끝나는 것이 아니라 지속적으로 동작하며 클라이언트의 신호를 감시하는 과정이라는 사실이 명확해졌다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>Express 서버는 요청을 지속적으로 기다리는 &lsquo;대기 상태&rsquo;의 프로세스이며, 문법 강조 기능은 코드의 실행 여부를 보장하지 않는다는 점을 명확히 인지해야 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">express</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;express&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">app</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">express</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#39;/&#39;</span>, (<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">send</span>(<span style="color:#e6db74">&#39;Hello World!&#39;</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">listen</span>(<span style="color:#ae81ff">3000</span>, () =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;Server is running on port 3000&#39;</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h2 id="3-express-경로와-http-메서드의-조합-이해하기">3. Express 경로와 HTTP 메서드의 조합 이해하기<a hidden class="anchor" aria-hidden="true" href="#3-express-경로와-http-메서드의-조합-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>Express 라우팅은 URL 경로와 HTTP 메서드의 조합으로 결정됩니다. <code>app.get()</code>는 GET 요청, <code>app.post()</code>는 POST 요청에만 해당 경로를 매칭시킵니다. 404 에러는 서버가 꺼진 것이 아니라, 요청한 method와 path를 조합한 라우트를 찾지 못해 발생하는 것입니다. Router 분리는 처리 로직을 분리하여 파일 구조를 깔끔하게 유지하는 방법입니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>브라우저에 주소를 입력했을 때 서버가 꺼진 줄 알았지만, 실제로는 정의된 경로가 없어서 404 에러가 뜬 것이었습니다. Express에서 라우팅은 URL 경로와 HTTP 메서드(GET, POST 등)의 조합으로 결정되며, 브라우저는 기본적으로 GET 요청을 보내지만 서버 측에서는 해당 메서드를 explicit하게 선언해주어야 route가 매칭된다는 점이 처음에는 직관적이지 않았습니다. 404 에러는 서버 자체가 죽은 것이 아니라, 요청한 method와 path를 조합한 라우트를 찾지 못해 발생하는 것이니 안심하고 디버깅할 수 있습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>Express 라우팅은 URL 경로와 HTTP 메서드의 조합으로 결정된다. 브라우저는 기본적으로 GET 요청을 보내지만, 서버 측에서 해당 메서드를 명시적으로 선언해야 route가 매칭된다. 404 에러는 서버가 죽은 것이 아니라, 요청한 method와 path를 조합한 라우트를 찾지 못해 발생하는 것이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">express</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;express&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">app</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">express</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// GET 요청일 때 &#39;/hello&#39; 경로 매칭
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#39;/hello&#39;</span>, (<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">send</span>(<span style="color:#e6db74">&#39;Hello, this is a GET request!&#39;</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// POST 요청일 때 &#39;/hello&#39; 경로 매칭
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">post</span>(<span style="color:#e6db74">&#39;/hello&#39;</span>, (<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">send</span>(<span style="color:#e6db74">&#39;Hello, this is a POST request!&#39;</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>UI 테스트 리팩토링에서는 반복되는 흐름을 함수로 캡슐화하여 고정된 동작과 변하는 데이터를 분리함으로써 코드의 가독성과 유지보수성을 높이는 방법을 배웠습니다.</p>
+<p>Express 서버 구동에 있어 <code>app.listen()</code> 이후 요청을 지속적으로 대기하는 &lsquo;유지 상태&rsquo;가 핵심임을 이해했으며, 라우팅은 URL 경로와 HTTP 메서드의 조합으로 결정된다는 점을 명확히 했습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<ul>
+<li>UI 테스트 시 고정된 동작과 변하는 데이터를 명확히 분리하여 인자로 전달해야 코드 유지보수가 용이하다.</li>
+<li>Express 서버는 <code>app.listen()</code> 이후 요청을 지속적으로 대기하는 &lsquo;유지 상태&rsquo;가 핵심 개념이며, 문법 강조 색상에 현혹되지 말고 실제 실행 흐름을 이해해야 한다.</li>
+<li>라우팅은 URL 경로와 HTTP 메서드의 조합으로 결정되며, 404 에러는 서버 종료가 아니라 해당 method-path 조합의 라우트를 찾지 못해 발생함을 인지해야 한다.</li>
+</ul>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<h3 id="다음에-복습할-주제">다음에 복습할 주제<a hidden class="anchor" aria-hidden="true" href="#다음에-복습할-주제">#</a></h3>
+<p>Express 라우팅에서 <code>next()</code> 미들웨어를 활용한 요청 흐름 제어를 심층적으로 이해하는 것이 중요합니다. 경로 핸들러 간의 호출 순서와 에러 처리를 위한 <code>next(err)</code> 사용법을 명확히 하여, 예상치 못한 404 에러나 로직 누락을 방지하는 능력을 키워야 합니다. 또한, 라우터 분리 시 모듈 간 통신 방식과 미들웨어의 적용 범위(scope)를 정확히 파악하여 프로젝트 규모가 커졌을 때도 구조를 유지보수하기 좋은 아키텍처를 설계할 수 있도록 복습해야 합니다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://Han-think.github.io/learning/2026-08-27-pm-daily/">
+    <span class="title">Next »</span>
+    <span>오늘 오후, 데이터 흐름과 상태 관리 그리고 환경 설정 해결까지 다양한 주제를 정리했습니다. URL 경로와 쿼리, 본문의 위치를 명확히 구분하고 미들웨어의 필수적인 역할을 이해하여 데이터를 안전하게 추출하는 방법을 익혔습니다. NoSQL과 Vector DB에서 데이터의 최신성과 신뢰도를 보장하는 &#39;상태 관리&#39;의 중요성을 깨닫고, 정합성 유지와 모델의 창작 능력 사이의 미묘한 균형을 조절하는 기준을 세웠습니다. 또한 Windows의 Smart App Control로 인해 막혔던 MongoDB 실행을 해결하며 프로그램 실행 정책의 작동 원리를 확인했습니다. ES6 문법을 복습하며 `let`과 `const`, 화살표 함수 등 더 간결하고 효율적인 코드 작성 방법을 정리했고, 비동기 패턴에서 `await`와 `Promise.all`의 차이점을 명확히 이해하여 순차 처리와 병렬 처리의 핵심 원리를 짚었습니다. 마지막으로 CommonJS 모듈의 export와 require 동작원리를 되짚으며 import 구문을 간소화하는 방법을 정리했습니다.</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
