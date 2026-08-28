@@ -6,8 +6,24 @@
     <description>Recent content in Learning on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Thu, 27 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 28 Aug 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/categories/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>오늘 오후, 회원 CRUD 패턴을 완성하며 라우터-모델-DB 흐름의 일체감을 체득했습니다. JWT 인증에서 `return` 제어 소홀 시 발생하는 중복 응급 상황을 경계하고, Express 프로젝트 구조를 &#39;역할&#39;이 아닌 &#39;위치&#39; 관점으로 재정립했습니다. 개인 웹서비스 프로젝트의 첫걸음으로 API 통합의 중요성을 확인했으며, Next.js와 Express 연동을 통해 백엔드·프론트엔드의 HTTP 계약 경험을 쌓았습니다.</title>
+      <link>https://Han-think.github.io/learning/2026-08-28-pm-daily/</link>
+      <pubDate>Fri, 28 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-28-pm-daily/</guid>
+      <description>2026-08-28 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>오늘은 MongoDB와 Express가 데이터를 주고받는 연결 흐름을 이해하는 데 집중했습니다. 데이터가 즉시 보이지 않는 현상은 DB 연결 자체가 아닌, Schema나 Model 설정 단계가 완료되지 않아서 발생한다는 점을 명확히 했습니다. 특히 HTTP 요청이 Router를 거쳐 Mongoose 모델을 호출한 뒤 `create()` 메서드로 실제 document가 저장되는 전층 구조를 파악하는 것이 중요했습니다.
+Mongoose Schema는 MongoDB 위에 놓인 애플리케이션 규칙이며, 데이터베이스의 유연함과 스키마 정의의 목적을 명확히 구분할 수 있었습니다. 특히 `required`, `trim` 같은 옵션들이 DB 레벨에서 적용되는 것이 아니라 Mongoose가 데이터를 관리하는 방식임을 이해하는 데 집중했습니다. 이를 통해 Model이 CRUD 메서드를 제공하며 실제 DB 작업을 수행하는 인터페이스 역할을 한다는 점도 확실히 grasp하게 되었습니다.
+핵심은 HTTP 메서드와 라우팅 경로의 조합이었으며, 404 에러는 DB 코드가 실행되기 전 라우팅 단계에서 발생한다는 사실을 깨닫고 트러블슈팅 효율을 높였습니다. POST 요청을 보낼 때 `app.use`의 prefix와 `router.post`의 path가 합쳐져 최종 URL이 결정된다는 점을 명확히 이해하게 되었습니다. 서버가 죽었다고 생각했던 &#39;Cannot POST&#39; 에러는 실제로는 해당 경로에 POST 메서드를 처리하는 라우트가 정의되지 않아 발생한 &#39;길 찾기 실패&#39; 상황이었음을 깨닫았습니다. 404 에러가 나면 HTTP Method, app.use prefix, router path 세 가지를 순차적으로 확인하여 원인을 파악해야 한다는 점도 중요한 정리 포인트로 남겼습니다.</title>
+      <link>https://Han-think.github.io/learning/2026-08-28-am-daily/</link>
+      <pubDate>Fri, 28 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-28-am-daily/</guid>
+      <description>2026-08-28 오전 학습 정리</description>
+    </item>
     <item>
       <title>오늘 오전, UI 테스트 리팩토링과 Express 서버 라우팅 원리를 정리했습니다. helper function을 활용해 테스트 케이스의 고유 이름을 유지하면서 반복되는 흐름을 캡슐화하는 방법을 배웠고, 문법 강조에 의존하지 않고 서버의 &#39;대기 상태&#39; 개념을 명확히 이해하여 스크립트와 서버 실행의 차이를 구분할 수 있게 되었습니다. 특히 URL 경로와 HTTP 메서드의 조합으로 라우팅이 결정되며, 404 에러는 경로가 없다는 뜻임을 깨닫고 Router 분리를 통해 로직을 분리하는 중요성을 확인했습니다.</title>
       <link>https://Han-think.github.io/learning/2026-08-27-am-daily/</link>

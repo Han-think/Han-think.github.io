@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오늘은 MongoDB와 Express가 데이터를 주고받는 연결 흐름을 이해하는 데 집중했습니다. 데이터가 즉시 보이지 않는 현상은 DB 연결 자체가 아닌, Schema나 Model 설정 단계가 완료되지 않아서 발생한다는 점을 명확히 했습니다. 특히 HTTP 요청이 Router를 거쳐 Mongoose 모델을 호출한 뒤 `create()` 메서드로 실제 document가 저장되는 전층 구조를 파악하는 것이 중요했습니다.
+Mongoose Schema는 MongoDB 위에 놓인 애플리케이션 규칙이며, 데이터베이스의 유연함과 스키마 정의의 목적을 명확히 구분할 수 있었습니다. 특히 `required`, `trim` 같은 옵션들이 DB 레벨에서 적용되는 것이 아니라 Mongoose가 데이터를 관리하는 방식임을 이해하는 데 집중했습니다. 이를 통해 Model이 CRUD 메서드를 제공하며 실제 DB 작업을 수행하는 인터페이스 역할을 한다는 점도 확실히 grasp하게 되었습니다.
+핵심은 HTTP 메서드와 라우팅 경로의 조합이었으며, 404 에러는 DB 코드가 실행되기 전 라우팅 단계에서 발생한다는 사실을 깨닫고 트러블슈팅 효율을 높였습니다. POST 요청을 보낼 때 `app.use`의 prefix와 `router.post`의 path가 합쳐져 최종 URL이 결정된다는 점을 명확히 이해하게 되었습니다. 서버가 죽었다고 생각했던 &#39;Cannot POST&#39; 에러는 실제로는 해당 경로에 POST 메서드를 처리하는 라우트가 정의되지 않아 발생한 &#39;길 찾기 실패&#39; 상황이었음을 깨닫았습니다. 404 에러가 나면 HTTP Method, app.use prefix, router path 세 가지를 순차적으로 확인하여 원인을 파악해야 한다는 점도 중요한 정리 포인트로 남겼습니다. | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-08-28 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-08-28-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-08-28-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function () {
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-08-28-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오늘은 MongoDB와 Express가 데이터를 주고받는 연결 흐름을 이해하는 데 집중했습니다. 데이터가 즉시 보이지 않는 현상은 DB 연결 자체가 아닌, Schema나 Model 설정 단계가 완료되지 않아서 발생한다는 점을 명확히 했습니다. 특히 HTTP 요청이 Router를 거쳐 Mongoose 모델을 호출한 뒤 `create()` 메서드로 실제 document가 저장되는 전층 구조를 파악하는 것이 중요했습니다.
+Mongoose Schema는 MongoDB 위에 놓인 애플리케이션 규칙이며, 데이터베이스의 유연함과 스키마 정의의 목적을 명확히 구분할 수 있었습니다. 특히 `required`, `trim` 같은 옵션들이 DB 레벨에서 적용되는 것이 아니라 Mongoose가 데이터를 관리하는 방식임을 이해하는 데 집중했습니다. 이를 통해 Model이 CRUD 메서드를 제공하며 실제 DB 작업을 수행하는 인터페이스 역할을 한다는 점도 확실히 grasp하게 되었습니다.
+핵심은 HTTP 메서드와 라우팅 경로의 조합이었으며, 404 에러는 DB 코드가 실행되기 전 라우팅 단계에서 발생한다는 사실을 깨닫고 트러블슈팅 효율을 높였습니다. POST 요청을 보낼 때 `app.use`의 prefix와 `router.post`의 path가 합쳐져 최종 URL이 결정된다는 점을 명확히 이해하게 되었습니다. 서버가 죽었다고 생각했던 &#39;Cannot POST&#39; 에러는 실제로는 해당 경로에 POST 메서드를 처리하는 라우트가 정의되지 않아 발생한 &#39;길 찾기 실패&#39; 상황이었음을 깨닫았습니다. 404 에러가 나면 HTTP Method, app.use prefix, router path 세 가지를 순차적으로 확인하여 원인을 파악해야 한다는 점도 중요한 정리 포인트로 남겼습니다.">
+  <meta property="og:description" content="2026-08-28 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-08-28T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-08-28T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오늘은 MongoDB와 Express가 데이터를 주고받는 연결 흐름을 이해하는 데 집중했습니다. 데이터가 즉시 보이지 않는 현상은 DB 연결 자체가 아닌, Schema나 Model 설정 단계가 완료되지 않아서 발생한다는 점을 명확히 했습니다. 특히 HTTP 요청이 Router를 거쳐 Mongoose 모델을 호출한 뒤 `create()` 메서드로 실제 document가 저장되는 전층 구조를 파악하는 것이 중요했습니다.
+Mongoose Schema는 MongoDB 위에 놓인 애플리케이션 규칙이며, 데이터베이스의 유연함과 스키마 정의의 목적을 명확히 구분할 수 있었습니다. 특히 `required`, `trim` 같은 옵션들이 DB 레벨에서 적용되는 것이 아니라 Mongoose가 데이터를 관리하는 방식임을 이해하는 데 집중했습니다. 이를 통해 Model이 CRUD 메서드를 제공하며 실제 DB 작업을 수행하는 인터페이스 역할을 한다는 점도 확실히 grasp하게 되었습니다.
+핵심은 HTTP 메서드와 라우팅 경로의 조합이었으며, 404 에러는 DB 코드가 실행되기 전 라우팅 단계에서 발생한다는 사실을 깨닫고 트러블슈팅 효율을 높였습니다. POST 요청을 보낼 때 `app.use`의 prefix와 `router.post`의 path가 합쳐져 최종 URL이 결정된다는 점을 명확히 이해하게 되었습니다. 서버가 죽었다고 생각했던 &#39;Cannot POST&#39; 에러는 실제로는 해당 경로에 POST 메서드를 처리하는 라우트가 정의되지 않아 발생한 &#39;길 찾기 실패&#39; 상황이었음을 깨닫았습니다. 404 에러가 나면 HTTP Method, app.use prefix, router path 세 가지를 순차적으로 확인하여 원인을 파악해야 한다는 점도 중요한 정리 포인트로 남겼습니다.">
+  <meta name="twitter:description" content="2026-08-28 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오늘은 MongoDB와 Express가 데이터를 주고받는 연결 흐름을 이해하는 데 집중했습니다. 데이터가 즉시 보이지 않는 현상은 DB 연결 자체가 아닌, Schema나 Model 설정 단계가 완료되지 않아서 발생한다는 점을 명확히 했습니다. 특히 HTTP 요청이 Router를 거쳐 Mongoose 모델을 호출한 뒤 `create()` 메서드로 실제 document가 저장되는 전층 구조를 파악하는 것이 중요했습니다.\nMongoose Schema는 MongoDB 위에 놓인 애플리케이션 규칙이며, 데이터베이스의 유연함과 스키마 정의의 목적을 명확히 구분할 수 있었습니다. 특히 `required`, `trim` 같은 옵션들이 DB 레벨에서 적용되는 것이 아니라 Mongoose가 데이터를 관리하는 방식임을 이해하는 데 집중했습니다. 이를 통해 Model이 CRUD 메서드를 제공하며 실제 DB 작업을 수행하는 인터페이스 역할을 한다는 점도 확실히 grasp하게 되었습니다.\n핵심은 HTTP 메서드와 라우팅 경로의 조합이었으며, 404 에러는 DB 코드가 실행되기 전 라우팅 단계에서 발생한다는 사실을 깨닫고 트러블슈팅 효율을 높였습니다. POST 요청을 보낼 때 `app.use`의 prefix와 `router.post`의 path가 합쳐져 최종 URL이 결정된다는 점을 명확히 이해하게 되었습니다. 서버가 죽었다고 생각했던 'Cannot POST' 에러는 실제로는 해당 경로에 POST 메서드를 처리하는 라우트가 정의되지 않아 발생한 '길 찾기 실패' 상황이었음을 깨닫았습니다. 404 에러가 나면 HTTP Method, app.use prefix, router path 세 가지를 순차적으로 확인하여 원인을 파악해야 한다는 점도 중요한 정리 포인트로 남겼습니다.",
+      "item": "https://Han-think.github.io/learning/2026-08-28-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오늘은 MongoDB와 Express가 데이터를 주고받는 연결 흐름을 이해하는 데 집중했습니다. 데이터가 즉시 보이지 않는 현상은 DB 연결 자체가 아닌, Schema나 Model 설정 단계가 완료되지 않아서 발생한다는 점을 명확히 했습니다. 특히 HTTP 요청이 Router를 거쳐 Mongoose 모델을 호출한 뒤 `create()` 메서드로 실제 document가 저장되는 전층 구조를 파악하는 것이 중요했습니다.\nMongoose Schema는 MongoDB 위에 놓인 애플리케이션 규칙이며, 데이터베이스의 유연함과 스키마 정의의 목적을 명확히 구분할 수 있었습니다. 특히 `required`, `trim` 같은 옵션들이 DB 레벨에서 적용되는 것이 아니라 Mongoose가 데이터를 관리하는 방식임을 이해하는 데 집중했습니다. 이를 통해 Model이 CRUD 메서드를 제공하며 실제 DB 작업을 수행하는 인터페이스 역할을 한다는 점도 확실히 grasp하게 되었습니다.\n핵심은 HTTP 메서드와 라우팅 경로의 조합이었으며, 404 에러는 DB 코드가 실행되기 전 라우팅 단계에서 발생한다는 사실을 깨닫고 트러블슈팅 효율을 높였습니다. POST 요청을 보낼 때 `app.use`의 prefix와 `router.post`의 path가 합쳐져 최종 URL이 결정된다는 점을 명확히 이해하게 되었습니다. 서버가 죽었다고 생각했던 'Cannot POST' 에러는 실제로는 해당 경로에 POST 메서드를 처리하는 라우트가 정의되지 않아 발생한 '길 찾기 실패' 상황이었음을 깨닫았습니다. 404 에러가 나면 HTTP Method, app.use prefix, router path 세 가지를 순차적으로 확인하여 원인을 파악해야 한다는 점도 중요한 정리 포인트로 남겼습니다.",
+  "name": "오늘은 MongoDB와 Express가 데이터를 주고받는 연결 흐름을 이해하는 데 집중했습니다. 데이터가 즉시 보이지 않는 현상은 DB 연결 자체가 아닌, Schema나 Model 설정 단계가 완료되지 않아서 발생한다는 점을 명확히 했습니다. 특히 HTTP 요청이 Router를 거쳐 Mongoose 모델을 호출한 뒤 \u0060create()\u0060 메서드로 실제 document가 저장되는 전층 구조를 파악하는 것이 중요했습니다.\nMongoose Schema는 MongoDB 위에 놓인 애플리케이션 규칙이며, 데이터베이스의 유연함과 스키마 정의의 목적을 명확히 구분할 수 있었습니다. 특히 \u0060required\u0060, \u0060trim\u0060 같은 옵션들이 DB 레벨에서 적용되는 것이 아니라 Mongoose가 데이터를 관리하는 방식임을 이해하는 데 집중했습니다. 이를 통해 Model이 CRUD 메서드를 제공하며 실제 DB 작업을 수행하는 인터페이스 역할을 한다는 점도 확실히 grasp하게 되었습니다.\n핵심은 HTTP 메서드와 라우팅 경로의 조합이었으며, 404 에러는 DB 코드가 실행되기 전 라우팅 단계에서 발생한다는 사실을 깨닫고 트러블슈팅 효율을 높였습니다. POST 요청을 보낼 때 \u0060app.use\u0060의 prefix와 \u0060router.post\u0060의 path가 합쳐져 최종 URL이 결정된다는 점을 명확히 이해하게 되었습니다. 서버가 죽었다고 생각했던 \u0027Cannot POST\u0027 에러는 실제로는 해당 경로에 POST 메서드를 처리하는 라우트가 정의되지 않아 발생한 \u0027길 찾기 실패\u0027 상황이었음을 깨닫았습니다. 404 에러가 나면 HTTP Method, app.use prefix, router path 세 가지를 순차적으로 확인하여 원인을 파악해야 한다는 점도 중요한 정리 포인트로 남겼습니다.",
+  "description": "2026-08-28 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 HTTP 요청이 MongoDB에 저장되는 전층 연결 구조 Mongoose Schema와 Model 옵션 이해하기 회원가입 POST와 라우팅 오류 해결하기 HTTP 라우트와 테스트 파일 조합 이해하기 총평 1. HTTP 요청이 MongoDB에 저장되는 전층 연결 구조 무엇을 배웠나 오늘은 MongoDB와 Express가 데이터를 주고받는 연결 흐름을 이해하는 데 집중했습니다. 데이터가 즉시 보이지 않는 현상은 DB 연결 자체가 아닌, Schema나 Model 설정 단계가 완료되지 않아서 발생한다는 점을 명확히 했습니다. 특히 HTTP 요청이 Router를 거쳐 Mongoose 모델을 호출한 뒤 create() 메서드로 실제 document가 저장되는 전층 구조를 파악하는 것이 중요했습니다.\n헷갈렸던 점 가장 큰 혼란은 **‘데이터가 즉시 보이지 않는다’**는 점이었습니다. MongoDB Compass를 켜고 데이터를 확인했는데 화면에 아무것도 없으면, “아, DB 연결이 안 된 거구나\"라고 직관적으로 생각하기 쉽습니다. 하지만 실제로는 DB 연결 자체가 정상인데도, Schema 정의나 Model 생성 단계가 아직 완료되지 않아 document가 저장되지 않은 경우였죠.\n또 하나의 혼란 요소는 파일 간의 역할 분담이었습니다. db.js, app.js, model.js, router.js 등 여러 파일이 짧은 시간 안에 등장하고 변하면서, “지금 우리는 어떤 단계에 있는지”, “다음 단계는 무엇인지\"를 놓치기 쉽웠습니다. 특히 강사님의 빠른 진행 속도 속에서 현재 어느 층(level)에 있는지 파악하는 것이 어려웠습니다.\n오늘의 핵심은 **‘HTTP 요청이 어떻게 MongoDB에 데이터로 저장되는지’**의 전층 연결 구조였습니다. 단순히 DB를 연결하는 것을 넘어, Express라는 웹 서버 프레임워크와 Mongoose라는 ODM(Object Data Modeling) 라이브러리가 어떻게 협업하는지를 이해하는 것이 중요했습니다.\n정리된 흐름은 이렇습니다.\nHTTP 요청 도착 (Client → Browser/Postman 등) Express 처리 (app.js에서 라우팅 설정) Router 분기 (member_router.js에서 API 경로 담당) Mongoose 모델 호출 (Schema에 따라 데이터 구조 정의) MongoDB 저장 (Model.create() 메서드 실행 후 실제 document 생성) 특히 “Schema를 정의했다고 곧바로 document가 저장되는 것은 아니다\"라는 점이 중요했습니다. Schema는 ‘규칙(Blueprint)‘이고, 실제로 데이터를 넣는 행위는 Model.create()를 호출했을 때 일어나는 일입니다.\n정리된 이해 HTTP 요청을 통해 Express와 Mongoose가 협업하여 MongoDB에 데이터를 저장하는 과정은, Schema 정의 후 Model.create()를 호출해야 비로소 document가 생성된다는 점에서 단순한 연결이 아닌 구조적 이해가 필요합니다. 특히 라우터와 모델 단계를 거치며 데이터가 어떻게 흐르는지 파악하는 것이 중요하며, DB 접속 성공 여부와 관계없이 Schema 및 Model 설정 완료 여부가 데이터 저장의 핵심 열쇠가 됩니다.\n// db.js - MongoDB 연결 설정 const mongoose = require('mongoose'); mongoose.connect('mongodb://localhost:27017/yeardream') .then(() =\u003e console.log('MongoDB connected...')) .catch(err =\u003e console.log(err)); // 연결 이벤트 리스너 const db = mongoose.connection; db.once('open', () =\u003e console.log('DB connected')); db.on('error', (err) =\u003e console.log('DB error:', err)); 2. Mongoose Schema와 Model 옵션 이해하기 무엇을 배웠나 Mongoose Schema는 MongoDB 위에 놓인 애플리케이션 규칙이며, 데이터베이스의 유연함과 스키마 정의의 목적을 명확히 구분할 수 있었다. 특히 required, trim 같은 옵션들이 DB 레벨에서 적용되는 것이 아니라 Mongoose가 데이터를 관리하는 방식임을 이해하는 데 집중했다. 이를 통해 Model이 CRUD 메서드를 제공하며 실제 DB 작업을 수행하는 인터페이스 역할을 한다는 점도 확실히 grasp하게 되었다.\n헷갈렸던 점 Mongoose Schema는 MongoDB 자체의 유연함을 유지하면서, 애플리케이션 레벨에서 데이터의 구조와 규칙을 정의하는 ‘계약서’ 역할을 한다는 점이 가장 명확해졌다. 특히 required, type 같은 옵션들이 DB 강제력이 아닌 Mongoose가 데이터를 검증하고 변환하는 로직임을 깨닫고 이해하는 데 시간이 걸렸다. 결국 Schema는 MongoDB라는 ‘통’ 안에 들어갈 데이터의 규격을 정해주는 규칙 책이며, Model은 그 규격에 따라 실제 CRUD 작업을 수행하는 인터페이스라는 구분이 무엇보다 중요했다.\n정리된 이해 Mongoose Schema는 MongoDB라는 유연한 데이터베이스 위에 애플리케이션 레벨에서 데이터를 관리하기 위한 규칙과 인터페이스를 정의하는 것이다. MongoDB가 문서 저장 기반을 제공한다면, Mongoose는 스키마를 통해 필드 타입, 필수 여부, 기본값 등 비즈니스 로직을 제어한다. 결국 Schema는 DB 자체의 유연성을 해치지 않으면서도 개발자가 데이터 구조와 동작을 체계적으로 통제할 수 있게 해주는 도구다.\nconst mongoose = require('mongoose'); const userSchema = new mongoose.Schema({ username: { type: String, required: true, trim: true, minlength: 2, maxlength: 10 }, email: { type: String, required: true, unique: true } }); const User = mongoose.model('User', userSchema); 3. 회원가입 POST와 라우팅 오류 해결하기 무엇을 배웠나 핵심은 HTTP 메서드와 라우팅 경로의 조합이었으며, 404 에러는 DB 코드가 실행되기 전 라우팅 단계에서 발생한다는 사실을 깨닫고 트러블슈팅 효율을 높였습니다.\n헷갈렸던 점 가장 큰 혼란은 “DB 문제인가, 라우팅 문제인가” 하는 점이었습니다. 데이터가 안 보인다고 MongoDB나 Mongoose Schema 쪽에 문제가 있다고 의심했지만, 실제 발생한 에러는 404 Cannot POST /member/였습니다.\n핵심은 HTTP Method와 Route의 조합이었습니다. 단순히 /member/만 호출하거나 라우팅 구조를 정확히 파악하지 못해 404 에러가 발생한 줄 알았던 것이 가장 큰 오점이었습니다.\n정리된 이해 HTTP 요청이 Router에 도달하지 못해 발생한 404 에러는, DB 코드 실행 전 단계에서 라우팅 구조를 점검해야 함을 의미한다. 실제 endpoint는 /member/join로 조합되어야 하므로, app.js와 member_router.js의 경로 설정이 정확히 일치하는지 확인하는 것이 가장 효율적인 트러블슈팅 방법이다.\n// member_router.js const express = require('express'); const router = express.Router(); const Member = require('../model'); router.post('/join', async (req, res) =\u003e { try { const { id, pw, name, phone } = req.body; // DB에 회원 정보 저장 await Member.create({ id, pw, name, phone }); res.status(201).json({ message: '가입 성공', user: { id, name } }); } catch (error) { console.error('회원 가입 오류:', error); res.status(500).json({ message: '서버 내부 오류' }); } }); module.exports = router; 4. HTTP 라우트와 테스트 파일 조합 이해하기 무엇을 배웠나 POST 요청을 보낼 때 app.use의 prefix와 router.post의 path가 합쳐져 최종 URL이 결정된다는 점을 명확히 이해하게 되었습니다. 서버가 죽었다고 생각했던 ‘Cannot POST’ 에러는 실제로는 해당 경로에 POST 메서드를 처리하는 라우트가 정의되지 않아 발생한 ‘길 찾기 실패’ 상황이었음을 깨닫았습니다. 404 에러가 나면 HTTP Method, app.use prefix, router path 세 가지를 순차적으로 확인하여 원인을 파악해야 한다는 점도 중요한 정리 포인트로 남겼습니다.\n헷갈렸던 점 처음에는 에러 메시지 자체에만 집중하다가, 그 의미를 제대로 해석하지 못했습니다.\nCannot POST /member/ 이 문구를 보고 저는 서버가 죽거나 DB 연결에 문제가 생긴 줄 알았습니다. ‘POST 요청을 처리할 수 없다’는 말이니 인프라 문제인 줄 알고 panic 상태였죠. 하지만 실제로는 “해당 경로에서 POST 메서드를 처리하는 라우트가 정의되어 있지 않다\"는 뜻이었습니다. 서버는 살아있는데, 요청한 조합(메서드 + URL)이 맞지 않아서 생긴 ‘길 찾기 실패’ 상황이었던 거죠.\n또 하나의 헷갈림 포인트는 app.use('/member', router)와 router.post('/join')가 합쳐지는 과정이었습니다. prefix와 path가 어떻게 합쳐져 최종 URL이 되는지, 그리고 test.http 파일에서 실제로 어떤 요청을 보내야 하는지 감이 안 잡혔습니다.\n가장 중요한 공식은 이겁니다.\napp.use(prefix, router) + router.METHOD(path) = METHOD prefix+path\n쉽게 말해, 앱 전체의 접두사(예: /member)와 라우터 안쪽의 구체적인 경로(예: /join)가 합쳐져 최종 URL이 만들어집니다.\n그래서 다음과 같은 매칭이 성립합니다.\nPOST /member/join ✅ (성공) POST /member/ ❌ (실패 - router에 /join이 없음) 404 에러가 나면 우선순위로 비교해봐야 할 세 가지가 있습니다.\nHTTP Method (GET인지 POST인지 확인) app.use prefix (URL의 시작 부분이 맞는가?) router path (나머지 경로가 라우터 안에 정의되어 있는가?) 정리된 이해 핵심은 app.use(prefix, router)와 router.METHOD(path)가 합쳐져 최종 URL이 만들어지는 공식입니다. 서버 에러가 아니라 ‘경로 조합 불일치’ 문제임을 먼저 확인해야 합니다. 404 에러 발생 시 HTTP Method, app.use prefix, router path 세 가지를 순서대로 검증해야 합니다.\n핵심 정리: 라우트 조합 공식 app.use(prefix, router) + router.METHOD(path) = METHOD prefix+path\n매칭 예시:\nPOST /member/join ✅ (성공) POST /member/ ❌ (실패 - router에 /join이 없음) 404 에러 시 확인 순서:\nHTTP Method (GET인지 POST인지 확인) app.use prefix (URL의 시작 부분이 맞는가?) router path (나머지 경로가 라우터 안에 정의되어 있는가?) 총평 오늘 오전 전체에서 배운 것 오늘은 MongoDB와 Express 간의 데이터 연결 흐름을 이해하는 데 집중했습니다. 특히 HTTP 요청이 Router를 거쳐 Mongoose 모델을 호출해 데이터를 저장하는 전층 구조를 파악하여, Schema나 Model 설정 누락으로 인한 데이터 미보임 현상을 해결할 수 있게 되었습니다. 또한 라우팅 경로와 HTTP 메서드의 조합이 중요하다는 점을 깨닫고, ‘Cannot POST’ 에러가 실제 DB 오류가 아닌 경로 정의 부족에서 비롯된 것임을 정확히 이해하게 되어 트러블슈팅 효율이 크게 높아졌습니다.\n다음에 조심할 것 Mongoose 스키마 옵션은 DB 레벨에서 적용되는 것이 아니라 Mongoose가 데이터를 관리하는 방식임을 기억해야 한다.\nHTTP 요청이 Router를 거쳐 Model을 호출하는 전층 구조를 정확히 이해하고, 라우팅 경로와 메서드 조합에 오류가 없는지 꼼꼼히 확인해야 한다.\n다음 복습 주제 Mongoose 모델 생성 시기와 데이터 저장 메서드에 대해 다시 정리한다. create() 메서드를 사용하기 전에 반드시 model 객체가 유효하게 초기화되어 있는지 확인하고, 스키마 옵션이 실제 DB 레벨에서 적용되는 것이 아님을 명확히 하여 불필요한 디버깅을 줄이는 방법을 익힐 것이다.\n라우팅 경로와 HTTP 메서드의 조합에 대한 이해를 심화시킨다. app.use()의 prefix와 router.post()의 path가 어떻게 최종 URL을 결정하는지, 그리고 404 에러 발생 시 Method, Prefix, Path 세 가지 요소를 체계적으로 점검하여 라우트 설정을 검증하는 습관을 들일 것이다.\n데이터베이스 연결 상태와 실제 데이터 저장의 차이에 대해 복습한다. DB 연결 자체가 끊어지지 않았음에도 데이터가 저장되지 않는 현상의 원인을 Schema/Model 설정 미완료에서 찾았듯, 모델 생성 과정의 필수 단계를 거치지 않았을 때 발생하는 오류를 예방하고, 요청 흐름을 정확히 추적하는 능력을 키울 것이다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1301",
+  "inLanguage": "en",
+  "datePublished": "2026-08-28T00:00:00Z",
+  "dateModified": "2026-08-28T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-08-28-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/life/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/ai-research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오늘은 MongoDB와 Express가 데이터를 주고받는 연결 흐름을 이해하는 데 집중했습니다. 데이터가 즉시 보이지 않는 현상은 DB 연결 자체가 아닌, Schema나 Model 설정 단계가 완료되지 않아서 발생한다는 점을 명확히 했습니다. 특히 HTTP 요청이 Router를 거쳐 Mongoose 모델을 호출한 뒤 `create()` 메서드로 실제 document가 저장되는 전층 구조를 파악하는 것이 중요했습니다.
+Mongoose Schema는 MongoDB 위에 놓인 애플리케이션 규칙이며, 데이터베이스의 유연함과 스키마 정의의 목적을 명확히 구분할 수 있었습니다. 특히 `required`, `trim` 같은 옵션들이 DB 레벨에서 적용되는 것이 아니라 Mongoose가 데이터를 관리하는 방식임을 이해하는 데 집중했습니다. 이를 통해 Model이 CRUD 메서드를 제공하며 실제 DB 작업을 수행하는 인터페이스 역할을 한다는 점도 확실히 grasp하게 되었습니다.
+핵심은 HTTP 메서드와 라우팅 경로의 조합이었으며, 404 에러는 DB 코드가 실행되기 전 라우팅 단계에서 발생한다는 사실을 깨닫고 트러블슈팅 효율을 높였습니다. POST 요청을 보낼 때 `app.use`의 prefix와 `router.post`의 path가 합쳐져 최종 URL이 결정된다는 점을 명확히 이해하게 되었습니다. 서버가 죽었다고 생각했던 &#39;Cannot POST&#39; 에러는 실제로는 해당 경로에 POST 메서드를 처리하는 라우트가 정의되지 않아 발생한 &#39;길 찾기 실패&#39; 상황이었음을 깨닫았습니다. 404 에러가 나면 HTTP Method, app.use prefix, router path 세 가지를 순차적으로 확인하여 원인을 파악해야 한다는 점도 중요한 정리 포인트로 남겼습니다.
+    </h1>
+    <div class="post-description">
+      2026-08-28 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-08-28 00:00:00 +0000 UTC'>2026년 8월 28일</span>&nbsp;·&nbsp;<span>7 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-http-%EC%9A%94%EC%B2%AD%EC%9D%B4-mongodb%EC%97%90-%EC%A0%80%EC%9E%A5%EB%90%98%EB%8A%94-%EC%A0%84%EC%B8%B5-%EC%97%B0%EA%B2%B0-%EA%B5%AC%EC%A1%B0">HTTP 요청이 MongoDB에 저장되는 전층 연결 구조</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-mongoose-schema%EC%99%80-model-%EC%98%B5%EC%85%98-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">Mongoose Schema와 Model 옵션 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85-post%EC%99%80-%EB%9D%BC%EC%9A%B0%ED%8C%85-%EC%98%A4%EB%A5%98-%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0">회원가입 POST와 라우팅 오류 해결하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-http-%EB%9D%BC%EC%9A%B0%ED%8A%B8%EC%99%80-%ED%85%8C%EC%8A%A4%ED%8A%B8-%ED%8C%8C%EC%9D%BC-%EC%A1%B0%ED%95%A9-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">HTTP 라우트와 테스트 파일 조합 이해하기</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-http-요청이-mongodb에-저장되는-전층-연결-구조">1. HTTP 요청이 MongoDB에 저장되는 전층 연결 구조<a hidden class="anchor" aria-hidden="true" href="#1-http-요청이-mongodb에-저장되는-전층-연결-구조">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>오늘은 MongoDB와 Express가 데이터를 주고받는 연결 흐름을 이해하는 데 집중했습니다. 데이터가 즉시 보이지 않는 현상은 DB 연결 자체가 아닌, Schema나 Model 설정 단계가 완료되지 않아서 발생한다는 점을 명확히 했습니다. 특히 HTTP 요청이 Router를 거쳐 Mongoose 모델을 호출한 뒤 <code>create()</code> 메서드로 실제 document가 저장되는 전층 구조를 파악하는 것이 중요했습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>가장 큰 혼란은 **&lsquo;데이터가 즉시 보이지 않는다&rsquo;**는 점이었습니다. MongoDB Compass를 켜고 데이터를 확인했는데 화면에 아무것도 없으면, &ldquo;아, DB 연결이 안 된 거구나&quot;라고 직관적으로 생각하기 쉽습니다. 하지만 실제로는 DB 연결 자체가 정상인데도, Schema 정의나 Model 생성 단계가 아직 완료되지 않아 document가 저장되지 않은 경우였죠.</p>
+<p>또 하나의 혼란 요소는 <strong>파일 간의 역할 분담</strong>이었습니다. <code>db.js</code>, <code>app.js</code>, <code>model.js</code>, <code>router.js</code> 등 여러 파일이 짧은 시간 안에 등장하고 변하면서, &ldquo;지금 우리는 어떤 단계에 있는지&rdquo;, &ldquo;다음 단계는 무엇인지&quot;를 놓치기 쉽웠습니다. 특히 강사님의 빠른 진행 속도 속에서 현재 어느 층(level)에 있는지 파악하는 것이 어려웠습니다.</p>
+<p>오늘의 핵심은 **&lsquo;HTTP 요청이 어떻게 MongoDB에 데이터로 저장되는지&rsquo;**의 전층 연결 구조였습니다. 단순히 DB를 연결하는 것을 넘어, Express라는 웹 서버 프레임워크와 Mongoose라는 ODM(Object Data Modeling) 라이브러리가 어떻게 협업하는지를 이해하는 것이 중요했습니다.</p>
+<p>정리된 흐름은 이렇습니다.</p>
+<ol>
+<li><strong>HTTP 요청 도착</strong> (Client → Browser/Postman 등)</li>
+<li><strong>Express 처리</strong> (<code>app.js</code>에서 라우팅 설정)</li>
+<li><strong>Router 분기</strong> (<code>member_router.js</code>에서 API 경로 담당)</li>
+<li><strong>Mongoose 모델 호출</strong> (Schema에 따라 데이터 구조 정의)</li>
+<li><strong>MongoDB 저장</strong> (<code>Model.create()</code> 메서드 실행 후 실제 document 생성)</li>
+</ol>
+<p>특히 &ldquo;Schema를 정의했다고 곧바로 document가 저장되는 것은 아니다&quot;라는 점이 중요했습니다. Schema는 &lsquo;규칙(Blueprint)&lsquo;이고, 실제로 데이터를 넣는 행위는 <code>Model.create()</code>를 호출했을 때 일어나는 일입니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>HTTP 요청을 통해 Express와 Mongoose가 협업하여 MongoDB에 데이터를 저장하는 과정은, Schema 정의 후 <code>Model.create()</code>를 호출해야 비로소 document가 생성된다는 점에서 단순한 연결이 아닌 구조적 이해가 필요합니다. 특히 라우터와 모델 단계를 거치며 데이터가 어떻게 흐르는지 파악하는 것이 중요하며, DB 접속 성공 여부와 관계없이 Schema 및 Model 설정 완료 여부가 데이터 저장의 핵심 열쇠가 됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// db.js - MongoDB 연결 설정
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">mongoose</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;mongoose&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">mongoose</span>.<span style="color:#a6e22e">connect</span>(<span style="color:#e6db74">&#39;mongodb://localhost:27017/yeardream&#39;</span>)
+</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">then</span>(() =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;MongoDB connected...&#39;</span>))
+</span></span><span style="display:flex;"><span>  .<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">err</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">err</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 연결 이벤트 리스너
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">db</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">mongoose</span>.<span style="color:#a6e22e">connection</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">once</span>(<span style="color:#e6db74">&#39;open&#39;</span>, () =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;DB connected&#39;</span>));
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#39;error&#39;</span>, (<span style="color:#a6e22e">err</span>) =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;DB error:&#39;</span>, <span style="color:#a6e22e">err</span>));
+</span></span></code></pre></div><h2 id="2-mongoose-schema와-model-옵션-이해하기">2. Mongoose Schema와 Model 옵션 이해하기<a hidden class="anchor" aria-hidden="true" href="#2-mongoose-schema와-model-옵션-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>Mongoose Schema는 MongoDB 위에 놓인 애플리케이션 규칙이며, 데이터베이스의 유연함과 스키마 정의의 목적을 명확히 구분할 수 있었다. 특히 <code>required</code>, <code>trim</code> 같은 옵션들이 DB 레벨에서 적용되는 것이 아니라 Mongoose가 데이터를 관리하는 방식임을 이해하는 데 집중했다. 이를 통해 Model이 CRUD 메서드를 제공하며 실제 DB 작업을 수행하는 인터페이스 역할을 한다는 점도 확실히 grasp하게 되었다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>Mongoose Schema는 MongoDB 자체의 유연함을 유지하면서, 애플리케이션 레벨에서 데이터의 구조와 규칙을 정의하는 &lsquo;계약서&rsquo; 역할을 한다는 점이 가장 명확해졌다. 특히 <code>required</code>, <code>type</code> 같은 옵션들이 DB 강제력이 아닌 Mongoose가 데이터를 검증하고 변환하는 로직임을 깨닫고 이해하는 데 시간이 걸렸다. 결국 Schema는 MongoDB라는 &lsquo;통&rsquo; 안에 들어갈 데이터의 규격을 정해주는 규칙 책이며, Model은 그 규격에 따라 실제 CRUD 작업을 수행하는 인터페이스라는 구분이 무엇보다 중요했다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>Mongoose Schema는 MongoDB라는 유연한 데이터베이스 위에 애플리케이션 레벨에서 데이터를 관리하기 위한 규칙과 인터페이스를 정의하는 것이다. MongoDB가 문서 저장 기반을 제공한다면, Mongoose는 스키마를 통해 필드 타입, 필수 여부, 기본값 등 비즈니스 로직을 제어한다. 결국 Schema는 DB 자체의 유연성을 해치지 않으면서도 개발자가 데이터 구조와 동작을 체계적으로 통제할 수 있게 해주는 도구다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">mongoose</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;mongoose&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">userSchema</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">mongoose</span>.<span style="color:#a6e22e">Schema</span>({
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">username</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> String,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">required</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">trim</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">minlength</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">maxlength</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">email</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> String,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">required</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">unique</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">User</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">mongoose</span>.<span style="color:#a6e22e">model</span>(<span style="color:#e6db74">&#39;User&#39;</span>, <span style="color:#a6e22e">userSchema</span>);
+</span></span></code></pre></div><h2 id="3-회원가입-post와-라우팅-오류-해결하기">3. 회원가입 POST와 라우팅 오류 해결하기<a hidden class="anchor" aria-hidden="true" href="#3-회원가입-post와-라우팅-오류-해결하기">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>핵심은 HTTP 메서드와 라우팅 경로의 조합이었으며, 404 에러는 DB 코드가 실행되기 전 라우팅 단계에서 발생한다는 사실을 깨닫고 트러블슈팅 효율을 높였습니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>가장 큰 혼란은 <strong>&ldquo;DB 문제인가, 라우팅 문제인가&rdquo;</strong> 하는 점이었습니다. 데이터가 안 보인다고 MongoDB나 Mongoose Schema 쪽에 문제가 있다고 의심했지만, 실제 발생한 에러는 <code>404 Cannot POST /member/</code>였습니다.</p>
+<p>핵심은 <strong>HTTP Method와 Route의 조합</strong>이었습니다. 단순히 <code>/member/</code>만 호출하거나 라우팅 구조를 정확히 파악하지 못해 404 에러가 발생한 줄 알았던 것이 가장 큰 오점이었습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>HTTP 요청이 Router에 도달하지 못해 발생한 404 에러는, DB 코드 실행 전 단계에서 라우팅 구조를 점검해야 함을 의미한다. 실제 endpoint는 <code>/member/join</code>로 조합되어야 하므로, <code>app.js</code>와 <code>member_router.js</code>의 경로 설정이 정확히 일치하는지 확인하는 것이 가장 효율적인 트러블슈팅 방법이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// member_router.js
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">express</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;express&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">router</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">express</span>.<span style="color:#a6e22e">Router</span>();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Member</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;../model&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">post</span>(<span style="color:#e6db74">&#39;/join&#39;</span>, <span style="color:#66d9ef">async</span> (<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">pw</span>, <span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">phone</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">body</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// DB에 회원 정보 저장
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">Member</span>.<span style="color:#a6e22e">create</span>({ <span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">pw</span>, <span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">phone</span> });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">status</span>(<span style="color:#ae81ff">201</span>).<span style="color:#a6e22e">json</span>({ <span style="color:#a6e22e">message</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;가입 성공&#39;</span>, <span style="color:#a6e22e">user</span><span style="color:#f92672">:</span> { <span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">name</span> } });
+</span></span><span style="display:flex;"><span>  } <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">error</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>(<span style="color:#e6db74">&#39;회원 가입 오류:&#39;</span>, <span style="color:#a6e22e">error</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">status</span>(<span style="color:#ae81ff">500</span>).<span style="color:#a6e22e">json</span>({ <span style="color:#a6e22e">message</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;서버 내부 오류&#39;</span> });
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">router</span>;
+</span></span></code></pre></div><h2 id="4-http-라우트와-테스트-파일-조합-이해하기">4. HTTP 라우트와 테스트 파일 조합 이해하기<a hidden class="anchor" aria-hidden="true" href="#4-http-라우트와-테스트-파일-조합-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>POST 요청을 보낼 때 <code>app.use</code>의 prefix와 <code>router.post</code>의 path가 합쳐져 최종 URL이 결정된다는 점을 명확히 이해하게 되었습니다. 서버가 죽었다고 생각했던 &lsquo;Cannot POST&rsquo; 에러는 실제로는 해당 경로에 POST 메서드를 처리하는 라우트가 정의되지 않아 발생한 &lsquo;길 찾기 실패&rsquo; 상황이었음을 깨닫았습니다. 404 에러가 나면 HTTP Method, app.use prefix, router path 세 가지를 순차적으로 확인하여 원인을 파악해야 한다는 점도 중요한 정리 포인트로 남겼습니다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>처음에는 에러 메시지 자체에만 집중하다가, 그 의미를 제대로 해석하지 못했습니다.</p>
+<pre tabindex="0"><code>Cannot POST /member/
+</code></pre><p>이 문구를 보고 저는 서버가 죽거나 DB 연결에 문제가 생긴 줄 알았습니다. &lsquo;POST 요청을 처리할 수 없다&rsquo;는 말이니 인프라 문제인 줄 알고 panic 상태였죠. 하지만 실제로는 &ldquo;해당 경로에서 POST 메서드를 처리하는 라우트가 정의되어 있지 않다&quot;는 뜻이었습니다. 서버는 살아있는데, 요청한 조합(메서드 + URL)이 맞지 않아서 생긴 &lsquo;길 찾기 실패&rsquo; 상황이었던 거죠.</p>
+<p>또 하나의 헷갈림 포인트는 <code>app.use('/member', router)</code>와 <code>router.post('/join')</code>가 합쳐지는 과정이었습니다. prefix와 path가 어떻게 합쳐져 최종 URL이 되는지, 그리고 test.http 파일에서 실제로 어떤 요청을 보내야 하는지 감이 안 잡혔습니다.</p>
+<p>가장 중요한 공식은 이겁니다.</p>
+<blockquote>
+<p><strong>app.use(prefix, router) + router.METHOD(path) = METHOD prefix+path</strong></p>
+</blockquote>
+<p>쉽게 말해, 앱 전체의 접두사(예: <code>/member</code>)와 라우터 안쪽의 구체적인 경로(예: <code>/join</code>)가 합쳐져 최종 URL이 만들어집니다.</p>
+<p>그래서 다음과 같은 매칭이 성립합니다.</p>
+<ul>
+<li><code>POST /member/join</code> ✅ (성공)</li>
+<li><code>POST /member/</code> ❌ (실패 - router에 <code>/join</code>이 없음)</li>
+</ul>
+<p>404 에러가 나면 우선순위로 비교해봐야 할 세 가지가 있습니다.</p>
+<ol>
+<li><strong>HTTP Method</strong> (GET인지 POST인지 확인)</li>
+<li><strong>app.use prefix</strong> (URL의 시작 부분이 맞는가?)</li>
+<li><strong>router path</strong> (나머지 경로가 라우터 안에 정의되어 있는가?)</li>
+</ol>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>핵심은 <code>app.use(prefix, router)</code>와 <code>router.METHOD(path)</code>가 합쳐져 최종 URL이 만들어지는 공식입니다. 서버 에러가 아니라 &lsquo;경로 조합 불일치&rsquo; 문제임을 먼저 확인해야 합니다. 404 에러 발생 시 HTTP Method, app.use prefix, router path 세 가지를 순서대로 검증해야 합니다.</p>
+<h3 id="핵심-정리-라우트-조합-공식">핵심 정리: 라우트 조합 공식<a hidden class="anchor" aria-hidden="true" href="#핵심-정리-라우트-조합-공식">#</a></h3>
+<blockquote>
+<p><strong>app.use(prefix, router) + router.METHOD(path) = METHOD prefix+path</strong></p>
+</blockquote>
+<p><strong>매칭 예시:</strong></p>
+<ul>
+<li><code>POST /member/join</code> ✅ (성공)</li>
+<li><code>POST /member/</code> ❌ (실패 - router에 <code>/join</code>이 없음)</li>
+</ul>
+<p><strong>404 에러 시 확인 순서:</strong></p>
+<ol>
+<li><strong>HTTP Method</strong> (GET인지 POST인지 확인)</li>
+<li><strong>app.use prefix</strong> (URL의 시작 부분이 맞는가?)</li>
+<li><strong>router path</strong> (나머지 경로가 라우터 안에 정의되어 있는가?)</li>
+</ol>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>오늘은 MongoDB와 Express 간의 데이터 연결 흐름을 이해하는 데 집중했습니다. 특히 HTTP 요청이 Router를 거쳐 Mongoose 모델을 호출해 데이터를 저장하는 전층 구조를 파악하여, Schema나 Model 설정 누락으로 인한 데이터 미보임 현상을 해결할 수 있게 되었습니다. 또한 라우팅 경로와 HTTP 메서드의 조합이 중요하다는 점을 깨닫고, &lsquo;Cannot POST&rsquo; 에러가 실제 DB 오류가 아닌 경로 정의 부족에서 비롯된 것임을 정확히 이해하게 되어 트러블슈팅 효율이 크게 높아졌습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>Mongoose 스키마 옵션은 DB 레벨에서 적용되는 것이 아니라 Mongoose가 데이터를 관리하는 방식임을 기억해야 한다.</p>
+<p>HTTP 요청이 Router를 거쳐 Model을 호출하는 전층 구조를 정확히 이해하고, 라우팅 경로와 메서드 조합에 오류가 없는지 꼼꼼히 확인해야 한다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<ol>
+<li>
+<p><strong>Mongoose 모델 생성 시기와 데이터 저장 메서드</strong>에 대해 다시 정리한다. <code>create()</code> 메서드를 사용하기 전에 반드시 <code>model</code> 객체가 유효하게 초기화되어 있는지 확인하고, 스키마 옵션이 실제 DB 레벨에서 적용되는 것이 아님을 명확히 하여 불필요한 디버깅을 줄이는 방법을 익힐 것이다.</p>
+</li>
+<li>
+<p><strong>라우팅 경로와 HTTP 메서드의 조합</strong>에 대한 이해를 심화시킨다. <code>app.use()</code>의 prefix와 <code>router.post()</code>의 path가 어떻게 최종 URL을 결정하는지, 그리고 404 에러 발생 시 Method, Prefix, Path 세 가지 요소를 체계적으로 점검하여 라우트 설정을 검증하는 습관을 들일 것이다.</p>
+</li>
+<li>
+<p><strong>데이터베이스 연결 상태와 실제 데이터 저장의 차이</strong>에 대해 복습한다. DB 연결 자체가 끊어지지 않았음에도 데이터가 저장되지 않는 현상의 원인을 Schema/Model 설정 미완료에서 찾았듯, 모델 생성 과정의 필수 단계를 거치지 않았을 때 발생하는 오류를 예방하고, 요청 흐름을 정확히 추적하는 능력을 키울 것이다.</p>
+</li>
+</ol>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-08-28-pm-daily/">
+    <span class="title">« Prev</span>
+    <span>오늘 오후, 회원 CRUD 패턴을 완성하며 라우터-모델-DB 흐름의 일체감을 체득했습니다. JWT 인증에서 `return` 제어 소홀 시 발생하는 중복 응급 상황을 경계하고, Express 프로젝트 구조를 &#39;역할&#39;이 아닌 &#39;위치&#39; 관점으로 재정립했습니다. 개인 웹서비스 프로젝트의 첫걸음으로 API 통합의 중요성을 확인했으며, Next.js와 Express 연동을 통해 백엔드·프론트엔드의 HTTP 계약 경험을 쌓았습니다.</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-08-27-am-daily/">
+    <span class="title">Next »</span>
+    <span>오늘 오전, UI 테스트 리팩토링과 Express 서버 라우팅 원리를 정리했습니다. helper function을 활용해 테스트 케이스의 고유 이름을 유지하면서 반복되는 흐름을 캡슐화하는 방법을 배웠고, 문법 강조에 의존하지 않고 서버의 &#39;대기 상태&#39; 개념을 명확히 이해하여 스크립트와 서버 실행의 차이를 구분할 수 있게 되었습니다. 특히 URL 경로와 HTTP 메서드의 조합으로 라우팅이 결정되며, 404 에러는 경로가 없다는 뜻임을 깨닫고 Router 분리를 통해 로직을 분리하는 중요성을 확인했습니다.</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
