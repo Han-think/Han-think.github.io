@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Ai-Research on Han-think Blog</title>
+    <link>https://Han-think.github.io/categories/ai-research/</link>
+    <description>Recent content in Ai-Research on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Tue, 01 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/categories/ai-research/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2026-09-01 주간 AI 브리핑</title>
+      <link>https://Han-think.github.io/research/weekly-ai-2026-09-01/</link>
+      <pubDate>Tue, 01 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/research/weekly-ai-2026-09-01/</guid>
+      <description>로컬 LLM 운영·에이전트·오픈소스 실행 관점으로 정리한 주간 AI 리서치 브리핑</description>
+    </item>
+  </channel>
+</rss>

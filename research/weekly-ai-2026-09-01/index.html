@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>2026-09-01 주간 AI 브리핑 | Han-think Blog</title>
+<meta name="keywords" content="weekly, ai, local-llm, llm-serving, agent, open-source, github, huggingface">
+<meta name="description" content="로컬 LLM 운영·에이전트·오픈소스 실행 관점으로 정리한 주간 AI 리서치 브리핑">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/research/weekly-ai-2026-09-01/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/research/weekly-ai-2026-09-01/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function () {
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/research/weekly-ai-2026-09-01/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="2026-09-01 주간 AI 브리핑">
+  <meta property="og:description" content="로컬 LLM 운영·에이전트·오픈소스 실행 관점으로 정리한 주간 AI 리서치 브리핑">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="research">
+    <meta property="article:published_time" content="2026-09-01T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-09-01T00:00:00+00:00">
+    <meta property="article:tag" content="Weekly">
+    <meta property="article:tag" content="Ai">
+    <meta property="article:tag" content="Local-Llm">
+    <meta property="article:tag" content="Llm-Serving">
+    <meta property="article:tag" content="Agent">
+    <meta property="article:tag" content="Open-Source">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="2026-09-01 주간 AI 브리핑">
+  <meta name="twitter:description" content="로컬 LLM 운영·에이전트·오픈소스 실행 관점으로 정리한 주간 AI 리서치 브리핑">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Researches",
+      "item": "https://Han-think.github.io/research/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "2026-09-01 주간 AI 브리핑",
+      "item": "https://Han-think.github.io/research/weekly-ai-2026-09-01/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "2026-09-01 주간 AI 브리핑",
+  "name": "2026-09-01 주간 AI 브리핑",
+  "description": "로컬 LLM 운영·에이전트·오픈소스 실행 관점으로 정리한 주간 AI 리서치 브리핑",
+  "keywords": [
+    "weekly", "ai", "local-llm", "llm-serving", "agent", "open-source", "github", "huggingface"
+  ],
+  "articleBody": "목차 이번 주 한눈에 보기 로컬 LLM 운영 관점 에이전트·모델·구성 요소 GitHub·Hugging Face 오픈소스 자료별 핵심 재현 가능한 최소 실험 한계와 확인할 점 원문 출처 이번 주 한눈에 보기 감시와 검증 체계: CrossAudit(자동 연구 파이프라인 감시 프로토콜)와 AIMC(인간 중심 시각화 분석)가 LLM 자율 연구의 신뢰성·재현성을 높이는 흐름으로 주목. 스킬 진화와 메모리 관리: reSolve(Surrogate-Guided Solve-and-Reproduce) 등, 에이전트 기술의 재현성과 메모리 효율을 다루는 연구가 다수 게시. 오픈소스 런타임·양자화: Ollama 가격 정책 변경과 multi-vector embedding 학습 가이드 등, 실제 운영에 가까운 실용성 소재가 포함. 로컬 LLM 운영 관점 Ollama 가격 정책 투명화 (No.10): Pro/Max/Team 플랜이 토큰당 과금 방식으로 전환되었으며, 사용량은 각 플랜에 포함된다고 함. 기존의 불투명한 패키지 요금제에서 벗어나 실제 사용량 기반 정산으로 이동한 점은 로컬·온프레미스 운영자 입장에서 비용 예측의 기준점이 될 수 있음. multi-vector embedding 학습 가이드 (No.8): Sentence Transformers를 활용한 다중 벡터 모델 학습 및 파인튜닝 방법론이 소개됨. 검색 기반 파이프라인(RAG 등)을 운영하는 경우 인덱스 구조와 임베딩 차원 설정에 참고할 거리. Ollama, LM Studio 등 런타임 동향: 가격 정책 변경과 함께 실제 배포/운영 시 토큰 비용 산정의 투명성이 높아짐에 따라, 로컬 모델 서빙 인프라 구축 시 클라우드와 온프레미스 비용을 어떻게 비교·결합할지가 운영 이슈로 대두됨. 에이전트·모델·구성 요소 CrossAudit (No.1): “자기 논문 채점” 문제를 해결하기 위해, 각 단계마다 다른 벤더의 에이전트가 감사를 수행하고 결과물을 git 커밋 형태로 기록하는 방식. LLM 기반 연구 파이프라인에서 리뷰어 편향·블라인 스팟을 완화하려는 시도로, 에이전트 간 검증·감독 구조와 연결됨. AutoScientist-Quant (No.2): 정량 투자 연구를 ‘예산 할당형 탐색 문제’로 프레임워크화한 접근. 컨트롤러가 예산, 노드 확장, 모델 선택 등을 라운드별로 결정하며, 라이브러리·모델 튜닝을 자동화해 가설에서 배포 전략까지 연결함. reSolve (No.3): 작업별 오라클이 있는 루프 내에서 스킬을 진화시키는 프레임워크. ‘solve-and-reproduce’ 프로토콜을 통해 인터랙티브 해결과 독립적인 재실행을 분리하고, 서베이어(verifier) 가이드 빔 서치를 수행해 약한 모델에서도 기술이 재현되도록 설계됨. InternReviewer/InternAdvocate (No.5): 동료 검토·반박 전문 에이전트를 위한 RL 프레임워크. 참조 기반 의미 정합성, 구조적 준수, 인용 검증 등 다차원 보상 시스템을 통해 주관적 판단을 배제하려 함. TPvG (No.14): LLM의 도덕적 결정을 한-shot에서 순차 피드백 방식으로 확장한 벤치마크. 수신자 피드백이 모델 응답에 이질적인 영향을 미치는 양상을 규명. GitHub·Hugging Face 오픈소스 CDEP Agent (No.4): 기상 데이터와 실제 재해 보도(US Drought Monitor, NOAA 등)를 연계해 복합 재난 사건을 추적하는 LLM 에이전트 프레임워크. 기후·재해 도메인에서 메타데이터와 텍스트 증거를 연결하는 오픈소스 에이전트 사례. RegDivergence-101 (No.9): FDA·EMA 가이드라인을 비교해 ‘일치/차이/침묵’으로 분류하는 LLM 벤치마크. 다국가 규제 대응을 위한 프롬프트 설계와 라벨링 기준이 공개됨. Block users from security advisories (No.6): GitHub가 보안 advisory 페이지에서 직접 사용자를 차단할 수 있는 기능을 출시. 오픈소스 프로젝트 유지보수에서의 모더레이션 도구로 활용 가능. 자료별 핵심 번호 제목 확인 가능한 핵심 [1] CrossAudit 각 작업 증분에 대해 다른 벤더 에이전트가 룰북에 따라 감사를 수행하고, 판결·이의제기·판정을 git 커밋으로 기록하는 감사 프로토콜 구조 [2] AutoScientist-Quant 예산 기반 라운드 결정 방식으로 검색·라이브러리·모델 선택을 자동화해 가설→전략 파이프라인을 연결하는 자기 진화형 연구 에이전트 [3] reSolve solve-and-reproduce 프로토콜로 기술 진화를 분리하고, 서베이어 가이드 빔 서치를 통해 약한 모델에서도 재현 가능한 스킬을 구축하는 프레임워크 [4] CDEP Agent 기상학적 복합 재난 사건(CDEP)을 감지해 실제 홍보·문서 증거와 연계 auditing 하는 LLM 에이전트 프레임워크 [5] InternReviewer/InternAdvocate scholarly 콘텐츠 생성을 위한 agentic RL 시스템. 참조 기반 의미 정합성, 구조적 준수, 인용 교차 검증 등 다차원 보상 체계 [6] Block users from security advisories GitHub advisory 페이지에서 직접 사용자 차단 가능하게 한 기능 (운영/모더레이션 도구) [7] AIMC AI 과학자의 연구 산출물에 대해 semantic embedding, 약점 추출, temporal analysis 등을 통해 인간이 oversight 하기 위한 시각화 프레임워크 [8] multi-vector embedding 학습 Sentence Transformers를 활용한 다중 벡터 임베딩 모델 학습·파인튜닝 가이드라인 [9] RegDivergence-101 cross-jurisdiction regulatory divergence detection 벤치마크. FDA/EMA 가이드라인을 AGREE/DIVERGE/SILENT로 분류 [10] Ollama 가격 정책 Pro/Max/Team 플랜이 토큰당 과금 방식으로 전환되었으며 사용량이 플랜에 포함됨 [11] Open ASR Leaderboard Global South 첫 번째 글로벌 사우스 언어가 추가된 ASR 리더보드 업데이트 [12] RENDER LLM 메모리/RAG 평가 시 reader-facing artifact를 제어하는 벤치마크. 대화 내용은 고정하고 입력 형태(요약·타이핑 기록 등)를 변수화 [13] Granite 4.2 LLMs IBM의 그라나이트 모델 최신 버전 아키텍처 및 훈련 방법 소개 [14] TPvG 한-shot에서 순차 피드백까지 도덕적 결정 형식을 확장한 벤치마크. 수신자 피드백이 모델 응답에 미치는 이질적 효과 규명 [15] MedTVL 시계열, 시각, 언어 삼모달 융합 아키텍처를 도입한 의료 시간 시리즈 분류 모델 [16] SHAPE of CoT 수학적 해석(대수·기하 등)과 액션(간단히 하기·역추적 등)을 분석해 CoT 소인 구조를 규찰하는 프레임워크 [17] Signal in the Noise OCR 잔재 등이_downstream classifier 성능을 저하시키는 것을 방지하는 감시 레이어. 불확실 시 편집을 포기하는 ‘do-no-harm’ 철학 적용 [18] Statutory AI 법적 규범을 AI 정렬 프레임워크에 통합한 접근. 인간-authored legal corpus를 헌법으로 활용해 AI가 자율 비판·수정 가능하게 함 재현 가능한 최소 실험 Ollama 플랜별 토큰 비용 산출 실험: 로컬에서 사용하는 모델의 일일/월간 토큰 수를 추산하고, Ollama Pro/Max 플랜에 포함된 한도 내에서 실제 비용이 어떻게 달라지는지 간단히 계산해 보기. multi-vector embedding 인덱스 비교: Sentence Transformers로 multi-vector 모델을 소량(예: 100건)의 문서에 대해 학습시킨 뒤, 기존 dense retrieval와 검색 recall/latency를 비교해 보기. CrossAudit 프로토콜 수동 시뮬레이션: 실제 연구 파이프라인을 실행하지 않고, 가상의 두 단계 작업에 대해 “다른 벤더(또는 다른 설정)의 에이전트가 동일한 입력에 대해 다른 판단을 내리는지\"를 텍스트로 시뮬레이션 해 보기. 한계와 확인할 점 Ollama 가격 정책: 실제 사용 패턴에 따라 플랜별 포함 토큰을 초과하면 추가 비용이 발생하는지, 기존 플랜과의 마이그레이션 가이드는 공식 문서에 명시되어 있는지 확인이 필요함. CrossAudit 등 에이전트 감시 체계: 실제 운영 파이프라인에 적용하기 위해서는 평가 모델의 벤더 제한·가용성, 감사 룰북의 작성이라는 현실적 장벽이 존재함. 논문에서 제시한 ‘다른 벤더’ 구현 가능성은 별도 검증 필요. multi-vector embedding 학습: 소개된 방법론은 일반적인 검색 작업에 최적화되어 있을 수 있으며, 특정 도메인(코드·법률 등)에서는 성능 차이가 발생할 수 있음. 직접 benchmarking이 권장됨. RegDivergence-101: SILENT 라벨이 방향성을 가지며(FDA vs EMA), 실제 적용 시 관할별 세부 가이드라인과의 일치 여부가 추가로 검증되어야 함. RL 기반 에이전트 훈련(InternReviewer 등): RL 파라미터 설정과 보상 함수 설계에 따라 수렴 행동이 크게 달라질 수 있어, 하이퍼파라미터 민감도에 대한 주의가 필요함. 원문 출처 CrossAudit: A Git-Native, Cross-Vendor Audit Loop for Agentic Science — arXiv cs.AI, 2026-09-01, 관련도 6 AutoScientist-Quant: Self-Evolving Coding Agents for Automatic Research in Quantitative Investment — arXiv cs.AI, 2026-09-01, 관련도 4 Self-Evolving Skills via Surrogate-Guided Solve-and-Reproduce — arXiv cs.AI, 2026-09-01, 관련도 3 CDEP Agent: Connecting Meteorologically Detected Temporal Compound Events to Real-World Documentary Evidence — arXiv cs.AI, 2026-09-01, 관련도 3 InternReviewer \u0026 InternAdvocate: Objective Reward and Evaluation for Agentic Reinforcement Learning in Peer Review and Rebuttal — arXiv cs.AI, 2026-09-01, 관련도 3 Block users directly from security advisories — GitHub Changelog, 2026-08-26, 관련도 3 AI Scientist Mission Control (AIMC): Visual Analytics for Human Oversight of Autonomous Scientific Discovery — arXiv cs.AI, 2026-09-01, 관련도 2 Training and Finetuning Multi-Vector Embedding Models with Sentence Transformers — Hugging Face Blog, 2026-08-26, 관련도 2 RegDivergence-101: An LLM Benchmark for Cross-Jurisdiction Regulatory Contradiction Detection in Life Sciences — arXiv cs.AI, 2026-09-01, 관련도 1 Ollama’s transparent pricing — Ollama Blog, 2026-08-31, 관련도 1 The Open ASR Leaderboard Adds Its First Global South Language — Hugging Face Blog, 2026-08-28, 관련도 1 RENDER: Controlling Reader-Facing Evidence in LLM Memory Evaluation — arXiv cs.AI, 2026-08-27, 관련도 1 Granite 4.2 LLMs: How They’re Built — Hugging Face Blog, 2026-08-26, 관련도 1 TPvG: A Moral Decision Framework for Large Language Models from One-Shot to Sequential Feedback — arXiv cs.AI, 2026-09-01, 관련도 0 MedTVL: Harnessing Vision and Language for Medical Time Series Classification — arXiv cs.AI, 2026-09-01, 관련도 0 SHAPE of Chain-of-Thought in Math Reasoning — arXiv cs.AI, 2026-09-01, 관련도 0 The Signal in the Noise: An Auditable Reliability Layer for Biomedical Text Classification — arXiv cs.AI, 2026-09-01, 관련도 0 Statutory AI: Aligning Large Language Models With Legal Norms — arXiv cs.AI, 2026-09-01, 관련도 0 ",
+  "wordCount" : "1194",
+  "inLanguage": "en",
+  "datePublished": "2026-09-01T00:00:00Z",
+  "dateModified": "2026-09-01T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/research/weekly-ai-2026-09-01/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/life/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/ai-research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      2026-09-01 주간 AI 브리핑
+    </h1>
+    <div class="post-description">
+      로컬 LLM 운영·에이전트·오픈소스 실행 관점으로 정리한 주간 AI 리서치 브리핑
+    </div>
+    <div class="post-meta">
+
+<span title='2026-09-01 00:00:00 +0000 UTC'>2026년 9월 1일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li><a href="#%EC%9D%B4%EB%B2%88-%EC%A3%BC-%ED%95%9C%EB%88%88%EC%97%90-%EB%B3%B4%EA%B8%B0">이번 주 한눈에 보기</a></li>
+<li><a href="#%EB%A1%9C%EC%BB%AC-llm-%EC%9A%B4%EC%98%81-%EA%B4%80%EC%A0%90">로컬 LLM 운영 관점</a></li>
+<li><a href="#%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8%EB%AA%A8%EB%8D%B8%EA%B5%AC%EC%84%B1-%EC%9A%94%EC%86%8C">에이전트·모델·구성 요소</a></li>
+<li><a href="#githubhugging-face-%EC%98%A4%ED%94%88%EC%86%8C%EC%8A%A4">GitHub·Hugging Face 오픈소스</a></li>
+<li><a href="#%EC%9E%90%EB%A3%8C%EB%B3%84-%ED%95%B5%EC%8B%AC">자료별 핵심</a></li>
+<li><a href="#%EC%9E%AC%ED%98%84-%EA%B0%80%EB%8A%A5%ED%95%9C-%EC%B5%9C%EC%86%8C-%EC%8B%A4%ED%97%98">재현 가능한 최소 실험</a></li>
+<li><a href="#%ED%95%9C%EA%B3%84%EC%99%80-%ED%99%95%EC%9D%B8%ED%95%A0-%EC%A0%90">한계와 확인할 점</a></li>
+<li><a href="#%EC%9B%90%EB%AC%B8-%EC%B6%9C%EC%B2%98">원문 출처</a></li>
+</ul>
+<h2 id="이번-주-한눈에-보기">이번 주 한눈에 보기<a hidden class="anchor" aria-hidden="true" href="#이번-주-한눈에-보기">#</a></h2>
+<ul>
+<li><strong>감시와 검증 체계</strong>: CrossAudit(자동 연구 파이프라인 감시 프로토콜)와 AIMC(인간 중심 시각화 분석)가 LLM 자율 연구의 신뢰성·재현성을 높이는 흐름으로 주목.</li>
+<li><strong>스킬 진화와 메모리 관리</strong>: reSolve(Surrogate-Guided Solve-and-Reproduce) 등, 에이전트 기술의 재현성과 메모리 효율을 다루는 연구가 다수 게시.</li>
+<li><strong>오픈소스 런타임·양자화</strong>: Ollama 가격 정책 변경과 multi-vector embedding 학습 가이드 등, 실제 운영에 가까운 실용성 소재가 포함.</li>
+</ul>
+<h2 id="로컬-llm-운영-관점">로컬 LLM 운영 관점<a hidden class="anchor" aria-hidden="true" href="#로컬-llm-운영-관점">#</a></h2>
+<ul>
+<li><strong>Ollama 가격 정책 투명화 (No.10)</strong>: Pro/Max/Team 플랜이 토큰당 과금 방식으로 전환되었으며, 사용량은 각 플랜에 포함된다고 함. 기존의 불투명한 패키지 요금제에서 벗어나 실제 사용량 기반 정산으로 이동한 점은 로컬·온프레미스 운영자 입장에서 비용 예측의 기준점이 될 수 있음.</li>
+<li><strong>multi-vector embedding 학습 가이드 (No.8)</strong>: Sentence Transformers를 활용한 다중 벡터 모델 학습 및 파인튜닝 방법론이 소개됨. 검색 기반 파이프라인(RAG 등)을 운영하는 경우 인덱스 구조와 임베딩 차원 설정에 참고할 거리.</li>
+<li><strong>Ollama, LM Studio 등 런타임 동향</strong>: 가격 정책 변경과 함께 실제 배포/운영 시 토큰 비용 산정의 투명성이 높아짐에 따라, 로컬 모델 서빙 인프라 구축 시 클라우드와 온프레미스 비용을 어떻게 비교·결합할지가 운영 이슈로 대두됨.</li>
+</ul>
+<h2 id="에이전트모델구성-요소">에이전트·모델·구성 요소<a hidden class="anchor" aria-hidden="true" href="#에이전트모델구성-요소">#</a></h2>
+<ul>
+<li><strong>CrossAudit (No.1)</strong>: &ldquo;자기 논문 채점&rdquo; 문제를 해결하기 위해, 각 단계마다 다른 벤더의 에이전트가 감사를 수행하고 결과물을 git 커밋 형태로 기록하는 방식. LLM 기반 연구 파이프라인에서 리뷰어 편향·블라인 스팟을 완화하려는 시도로, <strong>에이전트 간 검증·감독 구조</strong>와 연결됨.</li>
+<li><strong>AutoScientist-Quant (No.2)</strong>: 정량 투자 연구를 &lsquo;예산 할당형 탐색 문제&rsquo;로 프레임워크화한 접근. 컨트롤러가 예산, 노드 확장, 모델 선택 등을 라운드별로 결정하며, 라이브러리·모델 튜닝을 자동화해 가설에서 배포 전략까지 연결함.</li>
+<li><strong>reSolve (No.3)</strong>: 작업별 오라클이 있는 루프 내에서 스킬을 진화시키는 프레임워크. &lsquo;solve-and-reproduce&rsquo; 프로토콜을 통해 인터랙티브 해결과 독립적인 재실행을 분리하고, 서베이어(verifier) 가이드 빔 서치를 수행해 약한 모델에서도 기술이 재현되도록 설계됨.</li>
+<li><strong>InternReviewer/InternAdvocate (No.5)</strong>: 동료 검토·반박 전문 에이전트를 위한 RL 프레임워크. 참조 기반 의미 정합성, 구조적 준수, 인용 검증 등 다차원 보상 시스템을 통해 주관적 판단을 배제하려 함.</li>
+<li><strong>TPvG (No.14)</strong>: LLM의 도덕적 결정을 한-shot에서 순차 피드백 방식으로 확장한 벤치마크. 수신자 피드백이 모델 응답에 이질적인 영향을 미치는 양상을 규명.</li>
+</ul>
+<h2 id="githubhugging-face-오픈소스">GitHub·Hugging Face 오픈소스<a hidden class="anchor" aria-hidden="true" href="#githubhugging-face-오픈소스">#</a></h2>
+<ul>
+<li><strong>CDEP Agent (No.4)</strong>: 기상 데이터와 실제 재해 보도(US Drought Monitor, NOAA 등)를 연계해 복합 재난 사건을 추적하는 LLM 에이전트 프레임워크. 기후·재해 도메인에서 메타데이터와 텍스트 증거를 연결하는 오픈소스 에이전트 사례.</li>
+<li><strong>RegDivergence-101 (No.9)</strong>: FDA·EMA 가이드라인을 비교해 &lsquo;일치/차이/침묵&rsquo;으로 분류하는 LLM 벤치마크. 다국가 규제 대응을 위한 프롬프트 설계와 라벨링 기준이 공개됨.</li>
+<li><strong>Block users from security advisories (No.6)</strong>: GitHub가 보안 advisory 페이지에서 직접 사용자를 차단할 수 있는 기능을 출시. 오픈소스 프로젝트 유지보수에서의 모더레이션 도구로 활용 가능.</li>
+</ul>
+<h2 id="자료별-핵심">자료별 핵심<a hidden class="anchor" aria-hidden="true" href="#자료별-핵심">#</a></h2>
+<table>
+	<thead>
+			<tr>
+					<th>번호</th>
+					<th>제목</th>
+					<th>확인 가능한 핵심</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>[1]</td>
+					<td>CrossAudit</td>
+					<td>각 작업 증분에 대해 다른 벤더 에이전트가 룰북에 따라 감사를 수행하고, 판결·이의제기·판정을 git 커밋으로 기록하는 감사 프로토콜 구조</td>
+			</tr>
+			<tr>
+					<td>[2]</td>
+					<td>AutoScientist-Quant</td>
+					<td>예산 기반 라운드 결정 방식으로 검색·라이브러리·모델 선택을 자동화해 가설→전략 파이프라인을 연결하는 자기 진화형 연구 에이전트</td>
+			</tr>
+			<tr>
+					<td>[3]</td>
+					<td>reSolve</td>
+					<td>solve-and-reproduce 프로토콜로 기술 진화를 분리하고, 서베이어 가이드 빔 서치를 통해 약한 모델에서도 재현 가능한 스킬을 구축하는 프레임워크</td>
+			</tr>
+			<tr>
+					<td>[4]</td>
+					<td>CDEP Agent</td>
+					<td>기상학적 복합 재난 사건(CDEP)을 감지해 실제 홍보·문서 증거와 연계 auditing 하는 LLM 에이전트 프레임워크</td>
+			</tr>
+			<tr>
+					<td>[5]</td>
+					<td>InternReviewer/InternAdvocate</td>
+					<td>scholarly 콘텐츠 생성을 위한 agentic RL 시스템. 참조 기반 의미 정합성, 구조적 준수, 인용 교차 검증 등 다차원 보상 체계</td>
+			</tr>
+			<tr>
+					<td>[6]</td>
+					<td>Block users from security advisories</td>
+					<td>GitHub advisory 페이지에서 직접 사용자 차단 가능하게 한 기능 (운영/모더레이션 도구)</td>
+			</tr>
+			<tr>
+					<td>[7]</td>
+					<td>AIMC</td>
+					<td>AI 과학자의 연구 산출물에 대해 semantic embedding, 약점 추출, temporal analysis 등을 통해 인간이 oversight 하기 위한 시각화 프레임워크</td>
+			</tr>
+			<tr>
+					<td>[8]</td>
+					<td>multi-vector embedding 학습</td>
+					<td>Sentence Transformers를 활용한 다중 벡터 임베딩 모델 학습·파인튜닝 가이드라인</td>
+			</tr>
+			<tr>
+					<td>[9]</td>
+					<td>RegDivergence-101</td>
+					<td>cross-jurisdiction regulatory divergence detection 벤치마크. FDA/EMA 가이드라인을 AGREE/DIVERGE/SILENT로 분류</td>
+			</tr>
+			<tr>
+					<td>[10]</td>
+					<td>Ollama 가격 정책</td>
+					<td>Pro/Max/Team 플랜이 토큰당 과금 방식으로 전환되었으며 사용량이 플랜에 포함됨</td>
+			</tr>
+			<tr>
+					<td>[11]</td>
+					<td>Open ASR Leaderboard Global South</td>
+					<td>첫 번째 글로벌 사우스 언어가 추가된 ASR 리더보드 업데이트</td>
+			</tr>
+			<tr>
+					<td>[12]</td>
+					<td>RENDER</td>
+					<td>LLM 메모리/RAG 평가 시 reader-facing artifact를 제어하는 벤치마크. 대화 내용은 고정하고 입력 형태(요약·타이핑 기록 등)를 변수화</td>
+			</tr>
+			<tr>
+					<td>[13]</td>
+					<td>Granite 4.2 LLMs</td>
+					<td>IBM의 그라나이트 모델 최신 버전 아키텍처 및 훈련 방법 소개</td>
+			</tr>
+			<tr>
+					<td>[14]</td>
+					<td>TPvG</td>
+					<td>한-shot에서 순차 피드백까지 도덕적 결정 형식을 확장한 벤치마크. 수신자 피드백이 모델 응답에 미치는 이질적 효과 규명</td>
+			</tr>
+			<tr>
+					<td>[15]</td>
+					<td>MedTVL</td>
+					<td>시계열, 시각, 언어 삼모달 융합 아키텍처를 도입한 의료 시간 시리즈 분류 모델</td>
+			</tr>
+			<tr>
+					<td>[16]</td>
+					<td>SHAPE of CoT</td>
+					<td>수학적 해석(대수·기하 등)과 액션(간단히 하기·역추적 등)을 분석해 CoT 소인 구조를 규찰하는 프레임워크</td>
+			</tr>
+			<tr>
+					<td>[17]</td>
+					<td>Signal in the Noise</td>
+					<td>OCR 잔재 등이_downstream classifier 성능을 저하시키는 것을 방지하는 감시 레이어. 불확실 시 편집을 포기하는 &lsquo;do-no-harm&rsquo; 철학 적용</td>
+			</tr>
+			<tr>
+					<td>[18]</td>
+					<td>Statutory AI</td>
+					<td>법적 규범을 AI 정렬 프레임워크에 통합한 접근. 인간-authored legal corpus를 헌법으로 활용해 AI가 자율 비판·수정 가능하게 함</td>
+			</tr>
+	</tbody>
+</table>
+<h2 id="재현-가능한-최소-실험">재현 가능한 최소 실험<a hidden class="anchor" aria-hidden="true" href="#재현-가능한-최소-실험">#</a></h2>
+<ol>
+<li><strong>Ollama 플랜별 토큰 비용 산출 실험</strong>: 로컬에서 사용하는 모델의 일일/월간 토큰 수를 추산하고, Ollama Pro/Max 플랜에 포함된 한도 내에서 실제 비용이 어떻게 달라지는지 간단히 계산해 보기.</li>
+<li><strong>multi-vector embedding 인덱스 비교</strong>: Sentence Transformers로 multi-vector 모델을 소량(예: 100건)의 문서에 대해 학습시킨 뒤, 기존 dense retrieval와 검색 recall/latency를 비교해 보기.</li>
+<li><strong>CrossAudit 프로토콜 수동 시뮬레이션</strong>: 실제 연구 파이프라인을 실행하지 않고, 가상의 두 단계 작업에 대해 &ldquo;다른 벤더(또는 다른 설정)의 에이전트가 동일한 입력에 대해 다른 판단을 내리는지&quot;를 텍스트로 시뮬레이션 해 보기.</li>
+</ol>
+<h2 id="한계와-확인할-점">한계와 확인할 점<a hidden class="anchor" aria-hidden="true" href="#한계와-확인할-점">#</a></h2>
+<ul>
+<li><strong>Ollama 가격 정책</strong>: 실제 사용 패턴에 따라 플랜별 포함 토큰을 초과하면 추가 비용이 발생하는지, 기존 플랜과의 마이그레이션 가이드는 공식 문서에 명시되어 있는지 확인이 필요함.</li>
+<li><strong>CrossAudit 등 에이전트 감시 체계</strong>: 실제 운영 파이프라인에 적용하기 위해서는 평가 모델의 벤더 제한·가용성, 감사 룰북의 작성이라는 현실적 장벽이 존재함. 논문에서 제시한 &lsquo;다른 벤더&rsquo; 구현 가능성은 별도 검증 필요.</li>
+<li><strong>multi-vector embedding 학습</strong>: 소개된 방법론은 일반적인 검색 작업에 최적화되어 있을 수 있으며, 특정 도메인(코드·법률 등)에서는 성능 차이가 발생할 수 있음. 직접 benchmarking이 권장됨.</li>
+<li><strong>RegDivergence-101</strong>: SILENT 라벨이 방향성을 가지며(FDA vs EMA), 실제 적용 시 관할별 세부 가이드라인과의 일치 여부가 추가로 검증되어야 함.</li>
+<li><strong>RL 기반 에이전트 훈련</strong>(InternReviewer 등): RL 파라미터 설정과 보상 함수 설계에 따라 수렴 행동이 크게 달라질 수 있어, 하이퍼파라미터 민감도에 대한 주의가 필요함.</li>
+</ul>
+<h2 id="원문-출처">원문 출처<a hidden class="anchor" aria-hidden="true" href="#원문-출처">#</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/2608.28631">CrossAudit: A Git-Native, Cross-Vendor Audit Loop for Agentic Science</a> — arXiv cs.AI, 2026-09-01, 관련도 6</li>
+<li><a href="https://arxiv.org/abs/2608.28632">AutoScientist-Quant: Self-Evolving Coding Agents for Automatic Research in Quantitative Investment</a> — arXiv cs.AI, 2026-09-01, 관련도 4</li>
+<li><a href="https://arxiv.org/abs/2608.28638">Self-Evolving Skills via Surrogate-Guided Solve-and-Reproduce</a> — arXiv cs.AI, 2026-09-01, 관련도 3</li>
+<li><a href="https://arxiv.org/abs/2608.28628">CDEP Agent: Connecting Meteorologically Detected Temporal Compound Events to Real-World Documentary Evidence</a> — arXiv cs.AI, 2026-09-01, 관련도 3</li>
+<li><a href="https://arxiv.org/abs/2608.28612">InternReviewer &amp; InternAdvocate: Objective Reward and Evaluation for Agentic Reinforcement Learning in Peer Review and Rebuttal</a> — arXiv cs.AI, 2026-09-01, 관련도 3</li>
+<li><a href="https://github.blog/changelog/2026-08-25-block-users-directly-from-security-advisories">Block users directly from security advisories</a> — GitHub Changelog, 2026-08-26, 관련도 3</li>
+<li><a href="https://arxiv.org/abs/2608.28637">AI Scientist Mission Control (AIMC): Visual Analytics for Human Oversight of Autonomous Scientific Discovery</a> — arXiv cs.AI, 2026-09-01, 관련도 2</li>
+<li><a href="https://huggingface.co/blog/train-multi-vector-encoder">Training and Finetuning Multi-Vector Embedding Models with Sentence Transformers</a> — Hugging Face Blog, 2026-08-26, 관련도 2</li>
+<li><a href="https://arxiv.org/abs/2608.28607">RegDivergence-101: An LLM Benchmark for Cross-Jurisdiction Regulatory Contradiction Detection in Life Sciences</a> — arXiv cs.AI, 2026-09-01, 관련도 1</li>
+<li><a href="https://ollama.com/blog/transparent-pricing">Ollama&rsquo;s transparent pricing</a> — Ollama Blog, 2026-08-31, 관련도 1</li>
+<li><a href="https://huggingface.co/blog/open-asr-leaderboard-global-south">The Open ASR Leaderboard Adds Its First Global South Language</a> — Hugging Face Blog, 2026-08-28, 관련도 1</li>
+<li><a href="https://arxiv.org/abs/2608.23568">RENDER: Controlling Reader-Facing Evidence in LLM Memory Evaluation</a> — arXiv cs.AI, 2026-08-27, 관련도 1</li>
+<li><a href="https://huggingface.co/blog/ibm-granite/granite-4-2">Granite 4.2 LLMs: How They&rsquo;re Built</a> — Hugging Face Blog, 2026-08-26, 관련도 1</li>
+<li><a href="https://arxiv.org/abs/2608.28610">TPvG: A Moral Decision Framework for Large Language Models from One-Shot to Sequential Feedback</a> — arXiv cs.AI, 2026-09-01, 관련도 0</li>
+<li><a href="https://arxiv.org/abs/2608.28605">MedTVL: Harnessing Vision and Language for Medical Time Series Classification</a> — arXiv cs.AI, 2026-09-01, 관련도 0</li>
+<li><a href="https://arxiv.org/abs/2608.28600">SHAPE of Chain-of-Thought in Math Reasoning</a> — arXiv cs.AI, 2026-09-01, 관련도 0</li>
+<li><a href="https://arxiv.org/abs/2608.28595">The Signal in the Noise: An Auditable Reliability Layer for Biomedical Text Classification</a> — arXiv cs.AI, 2026-09-01, 관련도 0</li>
+<li><a href="https://arxiv.org/abs/2608.28593">Statutory AI: Aligning Large Language Models With Legal Norms</a> — arXiv cs.AI, 2026-09-01, 관련도 0</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/weekly/">Weekly</a></li>
+      <li><a href="https://Han-think.github.io/tags/ai/">Ai</a></li>
+      <li><a href="https://Han-think.github.io/tags/local-llm/">Local-Llm</a></li>
+      <li><a href="https://Han-think.github.io/tags/llm-serving/">Llm-Serving</a></li>
+      <li><a href="https://Han-think.github.io/tags/agent/">Agent</a></li>
+      <li><a href="https://Han-think.github.io/tags/open-source/">Open-Source</a></li>
+      <li><a href="https://Han-think.github.io/tags/github/">Github</a></li>
+      <li><a href="https://Han-think.github.io/tags/huggingface/">Huggingface</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
