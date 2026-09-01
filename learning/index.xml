@@ -6,8 +6,36 @@
     <description>Recent content in 학습 기록 on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Fri, 28 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 01 Sep 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>오늘 오후, 모든 요소의 동시 실행이 왜 필요한지 체감한 날이었다.</title>
+      <link>https://Han-think.github.io/learning/2026-09-01-pm-daily/</link>
+      <pubDate>Tue, 01 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-01-pm-daily/</guid>
+      <description>2026-09-01 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>프론트엔드와 백엔드의 물리적 분리, 그리고 포트 번호에 따른 서버 통신의 필수성</title>
+      <link>https://Han-think.github.io/learning/2026-09-01-am-daily/</link>
+      <pubDate>Tue, 01 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-01-am-daily/</guid>
+      <description>2026-09-01 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>Express 기반 백엔드 구조에서 요청 흐름과 식별자 구분하기</title>
+      <link>https://Han-think.github.io/learning/2026-08-31-am-daily/</link>
+      <pubDate>Mon, 31 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-31-am-daily/</guid>
+      <description>2026-08-31 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>오늘 오후, express-08-board 통합 분석을 통해 MongoDB와 JWT가 어우러지는 구조를 명확히 이해했습니다. 특히 mongoose-sequence를 통한 버전 관리의 중요성을 새롭게 인식했고, sort와 skip/limit을 활용한 페이지네이션 및 findOneAndUpdate로 조회수를 동시 증가시키는 실전 코드를 적용해봤습니다. 이미지 업로드 여정에서 multer를 사용해 파일을 서버에 물리적으로 보관하는 구조를 설계했으며, 쿼리 필터와 $inc 연산자를 활용해 기분과 좋아요 수 기능을 구현하는 방법을 구체화했습니다. 페이지네이션 UI 흐름에서는 skip/limit만으로는 부족하다는 사실을 깨닫고, totalPages를 기준으로 [다음]·[끝] 버튼의 활성화 여부를 결정하는 3층 구조의 로직을 이해하게 되었습니다. 또한 LearningLog는 &#39;이해 변화&#39; 기록 공간이고 Project는 실행 가능한 코드라는 점을 명확히 구분하여, 내가 배운 기술인지 학습 기록인지 실행 코드인지를 스스로 판단하며 폴더 역할을 정확히 분리할 수 있게 된 소중한 시간이었습니다.</title>
+      <link>https://Han-think.github.io/learning/2026-08-31-pm-daily/</link>
+      <pubDate>Mon, 31 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-08-31-pm-daily/</guid>
+      <description>2026-08-31 오후 학습 정리</description>
+    </item>
     <item>
       <title>오늘 오후, 회원 CRUD 패턴을 완성하며 라우터-모델-DB 흐름의 일체감을 체득했습니다. JWT 인증에서 `return` 제어 소홀 시 발생하는 중복 응급 상황을 경계하고, Express 프로젝트 구조를 &#39;역할&#39;이 아닌 &#39;위치&#39; 관점으로 재정립했습니다. 개인 웹서비스 프로젝트의 첫걸음으로 API 통합의 중요성을 확인했으며, Next.js와 Express 연동을 통해 백엔드·프론트엔드의 HTTP 계약 경험을 쌓았습니다.</title>
       <link>https://Han-think.github.io/learning/2026-08-28-pm-daily/</link>
