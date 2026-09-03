@@ -6,8 +6,29 @@
     <description>Recent content in 학습 기록 on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Tue, 01 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 03 Sep 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>오늘 오전, XPU 환경 Gemma 2 구동과 답변 추출 기법에 대해 정리했습니다.</title>
+      <link>https://Han-think.github.io/learning/2026-09-03-am-daily/</link>
+      <pubDate>Thu, 03 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-03-am-daily/</guid>
+      <description>2026-09-03 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>로컬 LLM 환경 구축을 위한 Hugging Face 핵심 개념 정리: 모델 구조와 도구, sharding과 device placement 구분, Transformers와 Datasets 역할 분리, 그리고 실전 모델 선택 기준</title>
+      <link>https://Han-think.github.io/learning/2026-09-02-am-daily/</link>
+      <pubDate>Wed, 02 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-02-am-daily/</guid>
+      <description>2026-09-02 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>오늘 오후, 토큰이 단어가 아닌 subword로 나뉘는 과정을 통해 &#39;단어=토큰&#39;이라는 직관적 기대가 무너지는 경험을 했다. PAD와 EOS의 역할 차이를 명확히 이해했으며, XPU 환경에서 장치 전환과 score 해석의 오해를 바로잡았다. FastAPI와 Jinja2의 목적 구분, 그리고 Gemma 모델 로드를 위한 XPU 최적화 설정까지, 실습을 통해 하드웨어와의 직접적인 상호작용 중요성을 확인하는 알찬 시간이 되었다.</title>
+      <link>https://Han-think.github.io/learning/2026-09-02-pm-daily/</link>
+      <pubDate>Wed, 02 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-02-pm-daily/</guid>
+      <description>2026-09-02 오후 학습 정리</description>
+    </item>
     <item>
       <title>오늘 오후, 모든 요소의 동시 실행이 왜 필요한지 체감한 날이었다.</title>
       <link>https://Han-think.github.io/learning/2026-09-01-pm-daily/</link>

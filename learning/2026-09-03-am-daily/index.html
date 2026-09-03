@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오늘 오전, XPU 환경 Gemma 2 구동과 답변 추출 기법에 대해 정리했습니다. | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-09-03 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-09-03-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-09-03-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function () {
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-09-03-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오늘 오전, XPU 환경 Gemma 2 구동과 답변 추출 기법에 대해 정리했습니다.">
+  <meta property="og:description" content="2026-09-03 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-09-03T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-09-03T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오늘 오전, XPU 환경 Gemma 2 구동과 답변 추출 기법에 대해 정리했습니다.">
+  <meta name="twitter:description" content="2026-09-03 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오늘 오전, XPU 환경 Gemma 2 구동과 답변 추출 기법에 대해 정리했습니다.",
+      "item": "https://Han-think.github.io/learning/2026-09-03-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오늘 오전, XPU 환경 Gemma 2 구동과 답변 추출 기법에 대해 정리했습니다.",
+  "name": "오늘 오전, XPU 환경 Gemma 2 구동과 답변 추출 기법에 대해 정리했습니다.",
+  "description": "2026-09-03 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 Gemma 2 Intel XPU 장치 이동 및 temperature 파라미터 정리 입력과 답변을 분리하는 slicing 과정 no_grad와 Sampling 파라미터의 연결 이해 Hugging Face 모델 파일 구조와 샤딩 이해하기 KoBART XPU 파이프라인 이해하기 총평 1. Gemma 2 Intel XPU 장치 이동 및 temperature 파라미터 정리 무엇을 배웠나 강사님의 CUDA 코드를 그대로 따라 하려다가 장치 관리와 파라미터 용도에 대한 이해 부족으로 혼란을 겪었다. device_map=\"auto\"는 XPU 환경에서는 자동 분산이 아닌 model.to(\"xpu\")를 통한 명시적 이동이 필요했으며, temperature는 모델 생성 옵션임이 확인되었다. 결국 최소한의 수정만으로도 XPU에서 Gemma 2를 성공적으로 구동할 수 있었다.\n헷갈렸던 점 CUDA 코드를 그대로 따라 하려다가 XPU 환경과의 호환성 차이로 막막함을 느꼈다. 특히 device_map=\"auto\" 옵션이 XPU에서도 유효한지, 그리고 temperature가 파이썬 임포트인지 생성 파라미터인지가 명확하지 않아 혼란스러웠다. 강사님의 CUDA 흐름을 유지하면서 model.to(\"xpu\")로 장치를 명시적으로 이동시키고, temperature가 generate() 함수 옵션임을 파악했다.\n정리된 이해 XPU 환경에서는 model.to(\"xpu\")를 통해 모델과 텐서를 명시적으로 같은 장치에 올리는 것이 핵심이며, temperature는 generate() 함수 내부의 생성 파라미터로서 답변의 일관성이나 다양성을 조절하는 역할을 한다.\n# 장치 이동 전략: 모델을 Intel XPU에 명시적으로 올리는 방식 model.to(\"xpu\") # generate 시 temperature 파라미터 사용 예시 outputs = model.generate( **inputs, max_new_tokens=256, temperature=0.7, do_sample=True ) 2. 입력과 답변을 분리하는 slicing 과정 무엇을 배웠나 생성된 전체 결과에서 입력 프롬프트를 잘라내어 답변을 추출하는 것은 모델이 답변만 생성한 것이 아니라, post-processing 과정을 통해 가능하다는 점을 깨달았습니다. shape[1]을 활용해 입력 토큰의 길이를 정확히 파악하면, 생성 결과의 경계를 명확히 구분할 수 있습니다. 또한 skip_special_tokens=True 옵션은 decode 과정에서 불필요한 특수 문자를 제거하여 가독성 높은 문자열로 변환하는 역할을 한다는 점을 이해했습니다.\n헷갈렸던 점 처음에는 model.generate()가 답변을 생성하는 것인지, 아니면 전체 출력을 반환하는지 구분하지 못해 혼란스러웠습니다. 특히 outputs[0]에서 입력 토큰을 제거하고 답변만 slice하는 과정이 모델의 동작 방식 변화인지, 단순히 결과물의 전처리인지를 파악하기 어려웠습니다. 또한 skip_special_tokens=True가 토큰 ID를 문자열로 변환하는 과정인지, 아니면 답변을 걸러내는 필터 역할인지 initially 명확하지 않았습니다.\n정리된 이해 model.generate()는 모델이 답변을 생성하는 단계이며, outputs[0]은 입력 토큰과 생성된 답변 토큰이 결합된 전체 결과입니다. 따라서 “답변만 출력한다\"는 것은 모델의 출력을 직접 수정하는 것이 아니라, input_length를 기준으로 outputs[0][input_length:]로 입력을 잘라내고, 남은 토큰을 tokenizer.decode()로 문자열 변환하는 전처리 과정입니다.\n# 토크나이저를 통해 PyTorch Tensor 형태로 입력 받기 inputs = tokenizer( prompt, return_tensors=\"pt\" ) # 현재 입력 토큰의 길이 구하기 (shape 활용) input_length = inputs[\"input_ids\"].shape[1] # 모델 생성 실행 outputs = model.generate(**generate_kwargs) # 생성된 전체 결과에서 입력 프롬프트를 잘라내고 답변 부분만 선택 answer_tokens = outputs[0][input_length:] # 선택된 token ID를 사람이 읽을 수 있는 문자열로 변환 answer_text = tokenizer.decode(answer_tokens, skip_special_tokens=True) 3. no_grad와 Sampling 파라미터의 연결 이해 무엇을 배웠나 torch.no_grad()는 가중치를 사용하지 않는다는 뜻이 아니라, 추론 과정에서 불필요한 그래디언트 계산을 막아 메모리 효율을 높이는 역할을 한다는 점을 명확히 이해할 수 있었다. 또한 temperature가 확률 분포의 날카로움을 조절하여 무작위성과 정답 사이의 균형을 맞춘다는 구체적인 원리를 통해, 파라미터가 모델 행동에 미치는 영향을 직관적으로 파악할 수 있게 되었다. 마지막으로 generate 메서드에서 이러한 sampling 파라미터를 함께 설정하는 것이 어떻게 효율적인 텍스트 생성을 가능하게 하는지 실전 예시를 통해 확인할 수 있었다.\n헷갈렸던 점 torch.no_grad()는 가중치 자체를 끄는 것이 아니라, 그 파라미터를 업데이트하는 그래디언트 계산을 추적하지 않음을 의미합니다. temperature는 토큰 확률 분포의 날카로움을 조절하여 무작위성과 정답 사이의 균형을 맞추는 값이며, 높을수록 창의적이고 낮아질수록 정확해지는 효과가 있습니다.\n정리된 이해 torch.no_grad()는 가중치를 사용하지 않는다는 뜻이 아니라, 추론 과정에서 불필요한 그래디언트 계산을 차단해 메모리 절약과 속도 향상을 이뤄낸다. temperature는 토큰 확률 분포의 날카로움을 조절하는 값으로, 높일수록 무작위성이 증가하고 낮출수록 정답에 가까워지는 결과를 낳는다. 따라서 추론 시에는 no_grad와 함께 temperature, do_sample 등 sampling 파라미터를 적절히 설정해 모델의 생성 성능을 최적화해야 한다.\n# 추론 시 불필요한 그래프 생성을 막는 경우 with torch.no_grad(): outputs = model.generate( **inputs, max_new_tokens=256, temperature=0.7, do_sample=True ) 4. Hugging Face 모델 파일 구조와 샤딩 이해하기 무엇을 배웠나 Sharding은 거대한 가중치 파일을 여러 조각으로 나누어 저장하는 방식이며, index.json는 각 shard가 어디에 있는지 매핑해주는 안내서입니다. Model Parallelism은 나뉘어진 shard를 실제 연산을 위해 서로 다른 장치에 배치하는 것이고, device_map=\"auto\"는 이 과정에서 모델 레이어를 자동으로 GPU에 분배해주는 기능입니다.\n헷갈렸던 점 처음에는 safetensors 파일이 단순히 여러 개로 쪼개진 저장 방식인지, 샤딩이 연산 분산 개념인지 구분하기 어려웠습니다. 특히 device_map=\"auto\"가 단순한 장치 선택 설정이 아니라 모델 레이어 배치까지 관여한다는 사실을 알게 되어 전체적인 실행 흐름을 파악하는 데 혼란을 겪었습니다. 핵심은 거대한 가중치를 여러 조각으로 나누는 저장 구조(Sharding)와 실제 연산을 위해 파라미터를 GPU에 분배하는 연산 방식(Model Parallelism)을 분리하여 이해해야 한다는 점이 가장 크게 와닿았습니다.\n정리된 이해 Sharding은 거대한 가중치 파일을 여러 조각으로 나누어 저장하는 방식이며, index.json는 각 shard가 어디에 있는지, 어떤 키를 가지고 있는지를 매핑해주는 안내서 역할을 합니다. 반면 Model Parallelism은 이미 나뉘어진 shard들을 실제 연산을 위해 서로 다른 장치(GPU 등)에 배치하는 것이고, device_map=\"auto\"는 이 과정에서 모델의 레이어와 파라미터를 자동으로 GPU에 분배해주는 지능형 매핑 기능입니다.\nfrom transformers import AutoModelForCausalLM, AutoTokenizer # 모델과 토크나이저 로딩 (sharding 구조 이해) model = AutoModelForCausalLM.from_pretrained( \"meta-llama/Llama-3.2-1B\", low_cpu_mem_usage=True, device_map=\"auto\" ) 5. KoBART XPU 파이프라인 이해하기 무엇을 배웠나 pipeline()가 토크나이저, 모델 추론, 디코딩 과정을 자동으로 연결해 주는 고수준 API라는 점을 명확히 이해하게 되었습니다. torch.distributed.pipelining.pipeline과 같은 저수준 분산 엔진과의 이름 혼동을 피하기 위해 용도를 정확히 구분하는 연습을 했습니다. 입력 길이와 max_length, max_new_tokens 파라미터 간의 상호작용과 우선순위를 파악하여 경고를 효과적으로 해결하는 방법을 배웠습니다.\n헷갈렸던 점 Hugging Face 공식 pipeline API와 PyTorch 분산 훈련용 torch.distributed.pipelining.pipeline은 이름만 같을 뿐 용도가 완전히 달라서 혼동되기 쉽습니다.\n입력 문장이 42토큰뿐인데 max_length=60을 주니 “입력이 최대 길이를 초과한다\"는 경고가 뜬 뒤, 모델 기본값인 max_new_tokens=256과 충돌나서 어느 파라미터가 우선되는지 파악하는 데 시간이 걸렸습니다.\n정리된 이해 pipeline()는 토크나이저, 모델 추론, 디코딩 과정을 자동으로 연결해 주는 고수준 API이며, Intel XPU 환경에서는 device=\"xpu\" 문자열을 직접 지정하여 하드웨어를 정확히 제어할 수 있다.\nfrom transformers import pipeline summ = pipeline( task=\"summarization\", model=\"EbanLee/kobart-summary-v3\", device=\"xpu\" ) result = summ(\"짧은 입력 문장\", max_length=60) print(result[0][\"summary_text\"]) 총평 오늘 오전 전체에서 배운 것 Gemma 2 XPU 구동을 위해 device_map=\"auto\" 대신 명시적 이동과 파라미터 조정이 필요하다는 점을 확인했으며, 생성된 결과에서 입력 프롬프트를 잘라내어 답변을 추출하는 slicing 과정과 temperature 같은 sampling 파라미터가 확률 분포를 조절하여 텍스트 생성을 제어한다는 원리를 이해했다.\n다음에 조심할 것 XPU 환경에서는 device_map=\"auto\" 대신 명시적인 model.to(\"xpu\") 이동이 필수적이며, temperature는 모델 생성 옵션임을 반드시 확인해야 한다.\n생성된 결과에서 답변을 추출할 때는 입력 프롬프트의 토큰 길이를 정확히 파악한 뒤 slicing 해야 하며, decode 시 skip_special_tokens=True 옵션을 활용해 가독성을 높여야 한다.\n다음 복습 주제 다음에 복습할 주제 XPU 환경에서 device_map=\"auto\" 대신 명시적인 model.to(\"xpu\") 이동이 필수적임을 재확인하고, 토크나이저와 모델 출력을 분리할 때 shape[1]을 활용해 입력 프롬프트 길이를 정확히 파악하는 slicing 기법을 심화 학습한다. 또한 temperature 파라미터가 확률 분포의 날카로움을 조절하여 무작위성과 정답 사이의 균형을 어떻게 맞추는지에 대한 수학적 원리를 복습하고, torch.no_grad()가 그래디언트 계산 억제를 통해 메모리 효율을 높이는 핵심 역할을 하는지 검증한다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1034",
+  "inLanguage": "en",
+  "datePublished": "2026-09-03T00:00:00Z",
+  "dateModified": "2026-09-03T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-09-03-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/life/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/ai-research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오늘 오전, XPU 환경 Gemma 2 구동과 답변 추출 기법에 대해 정리했습니다.
+    </h1>
+    <div class="post-description">
+      2026-09-03 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-09-03 00:00:00 +0000 UTC'>2026년 9월 3일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-gemma-2-intel-xpu-%EC%9E%A5%EC%B9%98-%EC%9D%B4%EB%8F%99-%EB%B0%8F-temperature-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0-%EC%A0%95%EB%A6%AC">Gemma 2 Intel XPU 장치 이동 및 temperature 파라미터 정리</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%9E%85%EB%A0%A5%EA%B3%BC-%EB%8B%B5%EB%B3%80%EC%9D%84-%EB%B6%84%EB%A6%AC%ED%95%98%EB%8A%94-slicing-%EA%B3%BC%EC%A0%95">입력과 답변을 분리하는 slicing 과정</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-nograd%EC%99%80-sampling-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0%EC%9D%98-%EC%97%B0%EA%B2%B0-%EC%9D%B4%ED%95%B4">no_grad와 Sampling 파라미터의 연결 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-hugging-face-%EB%AA%A8%EB%8D%B8-%ED%8C%8C%EC%9D%BC-%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%83%A4%EB%94%A9-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">Hugging Face 모델 파일 구조와 샤딩 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-kobart-xpu-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">KoBART XPU 파이프라인 이해하기</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-gemma-2-intel-xpu-장치-이동-및-temperature-파라미터-정리">1. Gemma 2 Intel XPU 장치 이동 및 temperature 파라미터 정리<a hidden class="anchor" aria-hidden="true" href="#1-gemma-2-intel-xpu-장치-이동-및-temperature-파라미터-정리">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>강사님의 CUDA 코드를 그대로 따라 하려다가 장치 관리와 파라미터 용도에 대한 이해 부족으로 혼란을 겪었다. <code>device_map=&quot;auto&quot;</code>는 XPU 환경에서는 자동 분산이 아닌 <code>model.to(&quot;xpu&quot;)</code>를 통한 명시적 이동이 필요했으며, <code>temperature</code>는 모델 생성 옵션임이 확인되었다. 결국 최소한의 수정만으로도 XPU에서 Gemma 2를 성공적으로 구동할 수 있었다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>CUDA 코드를 그대로 따라 하려다가 XPU 환경과의 호환성 차이로 막막함을 느꼈다. 특히 <code>device_map=&quot;auto&quot;</code> 옵션이 XPU에서도 유효한지, 그리고 <code>temperature</code>가 파이썬 임포트인지 생성 파라미터인지가 명확하지 않아 혼란스러웠다. 강사님의 CUDA 흐름을 유지하면서 <code>model.to(&quot;xpu&quot;)</code>로 장치를 명시적으로 이동시키고, <code>temperature</code>가 <code>generate()</code> 함수 옵션임을 파악했다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>XPU 환경에서는 <code>model.to(&quot;xpu&quot;)</code>를 통해 모델과 텐서를 명시적으로 같은 장치에 올리는 것이 핵심이며, <code>temperature</code>는 <code>generate()</code> 함수 내부의 생성 파라미터로서 답변의 일관성이나 다양성을 조절하는 역할을 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 장치 이동 전략: 모델을 Intel XPU에 명시적으로 올리는 방식</span>
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>to(<span style="color:#e6db74">&#34;xpu&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># generate 시 temperature 파라미터 사용 예시</span>
+</span></span><span style="display:flex;"><span>outputs <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>generate(
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">**</span>inputs,
+</span></span><span style="display:flex;"><span>    max_new_tokens<span style="color:#f92672">=</span><span style="color:#ae81ff">256</span>,
+</span></span><span style="display:flex;"><span>    temperature<span style="color:#f92672">=</span><span style="color:#ae81ff">0.7</span>,
+</span></span><span style="display:flex;"><span>    do_sample<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><h2 id="2-입력과-답변을-분리하는-slicing-과정">2. 입력과 답변을 분리하는 slicing 과정<a hidden class="anchor" aria-hidden="true" href="#2-입력과-답변을-분리하는-slicing-과정">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>생성된 전체 결과에서 입력 프롬프트를 잘라내어 답변을 추출하는 것은 모델이 답변만 생성한 것이 아니라, post-processing 과정을 통해 가능하다는 점을 깨달았습니다. <code>shape[1]</code>을 활용해 입력 토큰의 길이를 정확히 파악하면, 생성 결과의 경계를 명확히 구분할 수 있습니다. 또한 <code>skip_special_tokens=True</code> 옵션은 decode 과정에서 불필요한 특수 문자를 제거하여 가독성 높은 문자열로 변환하는 역할을 한다는 점을 이해했습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음에는 <code>model.generate()</code>가 답변을 생성하는 것인지, 아니면 전체 출력을 반환하는지 구분하지 못해 혼란스러웠습니다. 특히 <code>outputs[0]</code>에서 입력 토큰을 제거하고 답변만 slice하는 과정이 모델의 동작 방식 변화인지, 단순히 결과물의 전처리인지를 파악하기 어려웠습니다. 또한 <code>skip_special_tokens=True</code>가 토큰 ID를 문자열로 변환하는 과정인지, 아니면 답변을 걸러내는 필터 역할인지 initially 명확하지 않았습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p><code>model.generate()</code>는 모델이 답변을 생성하는 단계이며, <code>outputs[0]</code>은 입력 토큰과 생성된 답변 토큰이 결합된 전체 결과입니다. 따라서 &ldquo;답변만 출력한다&quot;는 것은 모델의 출력을 직접 수정하는 것이 아니라, <code>input_length</code>를 기준으로 <code>outputs[0][input_length:]</code>로 입력을 잘라내고, 남은 토큰을 <code>tokenizer.decode()</code>로 문자열 변환하는 전처리 과정입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 토크나이저를 통해 PyTorch Tensor 형태로 입력 받기</span>
+</span></span><span style="display:flex;"><span>inputs <span style="color:#f92672">=</span> tokenizer(
+</span></span><span style="display:flex;"><span>    prompt,
+</span></span><span style="display:flex;"><span>    return_tensors<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pt&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 현재 입력 토큰의 길이 구하기 (shape 활용)</span>
+</span></span><span style="display:flex;"><span>input_length <span style="color:#f92672">=</span> inputs[<span style="color:#e6db74">&#34;input_ids&#34;</span>]<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 모델 생성 실행</span>
+</span></span><span style="display:flex;"><span>outputs <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>generate(<span style="color:#f92672">**</span>generate_kwargs)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 생성된 전체 결과에서 입력 프롬프트를 잘라내고 답변 부분만 선택</span>
+</span></span><span style="display:flex;"><span>answer_tokens <span style="color:#f92672">=</span> outputs[<span style="color:#ae81ff">0</span>][input_length:]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 선택된 token ID를 사람이 읽을 수 있는 문자열로 변환</span>
+</span></span><span style="display:flex;"><span>answer_text <span style="color:#f92672">=</span> tokenizer<span style="color:#f92672">.</span>decode(answer_tokens, skip_special_tokens<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span></code></pre></div><h2 id="3-no_grad와-sampling-파라미터의-연결-이해">3. no_grad와 Sampling 파라미터의 연결 이해<a hidden class="anchor" aria-hidden="true" href="#3-no_grad와-sampling-파라미터의-연결-이해">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p><code>torch.no_grad()</code>는 가중치를 사용하지 않는다는 뜻이 아니라, 추론 과정에서 불필요한 그래디언트 계산을 막아 메모리 효율을 높이는 역할을 한다는 점을 명확히 이해할 수 있었다. 또한 <code>temperature</code>가 확률 분포의 날카로움을 조절하여 무작위성과 정답 사이의 균형을 맞춘다는 구체적인 원리를 통해, 파라미터가 모델 행동에 미치는 영향을 직관적으로 파악할 수 있게 되었다. 마지막으로 <code>generate</code> 메서드에서 이러한 sampling 파라미터를 함께 설정하는 것이 어떻게 효율적인 텍스트 생성을 가능하게 하는지 실전 예시를 통해 확인할 수 있었다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p><code>torch.no_grad()</code>는 가중치 자체를 끄는 것이 아니라, 그 파라미터를 업데이트하는 그래디언트 계산을 추적하지 않음을 의미합니다. <code>temperature</code>는 토큰 확률 분포의 날카로움을 조절하여 무작위성과 정답 사이의 균형을 맞추는 값이며, 높을수록 창의적이고 낮아질수록 정확해지는 효과가 있습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p><code>torch.no_grad()</code>는 가중치를 사용하지 않는다는 뜻이 아니라, 추론 과정에서 불필요한 그래디언트 계산을 차단해 메모리 절약과 속도 향상을 이뤄낸다. <code>temperature</code>는 토큰 확률 분포의 날카로움을 조절하는 값으로, 높일수록 무작위성이 증가하고 낮출수록 정답에 가까워지는 결과를 낳는다. 따라서 추론 시에는 <code>no_grad</code>와 함께 <code>temperature</code>, <code>do_sample</code> 등 sampling 파라미터를 적절히 설정해 모델의 생성 성능을 최적화해야 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 추론 시 불필요한 그래프 생성을 막는 경우</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">with</span> torch<span style="color:#f92672">.</span>no_grad():
+</span></span><span style="display:flex;"><span>    outputs <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>generate(
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">**</span>inputs,
+</span></span><span style="display:flex;"><span>        max_new_tokens<span style="color:#f92672">=</span><span style="color:#ae81ff">256</span>,
+</span></span><span style="display:flex;"><span>        temperature<span style="color:#f92672">=</span><span style="color:#ae81ff">0.7</span>,
+</span></span><span style="display:flex;"><span>        do_sample<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span></code></pre></div><h2 id="4-hugging-face-모델-파일-구조와-샤딩-이해하기">4. Hugging Face 모델 파일 구조와 샤딩 이해하기<a hidden class="anchor" aria-hidden="true" href="#4-hugging-face-모델-파일-구조와-샤딩-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>Sharding은 거대한 가중치 파일을 여러 조각으로 나누어 저장하는 방식이며, <code>index.json</code>는 각 shard가 어디에 있는지 매핑해주는 안내서입니다. Model Parallelism은 나뉘어진 shard를 실제 연산을 위해 서로 다른 장치에 배치하는 것이고, <code>device_map=&quot;auto&quot;</code>는 이 과정에서 모델 레이어를 자동으로 GPU에 분배해주는 기능입니다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>처음에는 <code>safetensors</code> 파일이 단순히 여러 개로 쪼개진 저장 방식인지, 샤딩이 연산 분산 개념인지 구분하기 어려웠습니다. 특히 <code>device_map=&quot;auto&quot;</code>가 단순한 장치 선택 설정이 아니라 모델 레이어 배치까지 관여한다는 사실을 알게 되어 전체적인 실행 흐름을 파악하는 데 혼란을 겪었습니다. 핵심은 거대한 가중치를 여러 조각으로 나누는 저장 구조(Sharding)와 실제 연산을 위해 파라미터를 GPU에 분배하는 연산 방식(Model Parallelism)을 분리하여 이해해야 한다는 점이 가장 크게 와닿았습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>Sharding은 거대한 가중치 파일을 여러 조각으로 나누어 저장하는 방식이며, <code>index.json</code>는 각 shard가 어디에 있는지, 어떤 키를 가지고 있는지를 매핑해주는 안내서 역할을 합니다. 반면 Model Parallelism은 이미 나뉘어진 shard들을 실제 연산을 위해 서로 다른 장치(GPU 등)에 배치하는 것이고, <code>device_map=&quot;auto&quot;</code>는 이 과정에서 모델의 레이어와 파라미터를 자동으로 GPU에 분배해주는 지능형 매핑 기능입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> AutoModelForCausalLM, AutoTokenizer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 모델과 토크나이저 로딩 (sharding 구조 이해)</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> AutoModelForCausalLM<span style="color:#f92672">.</span>from_pretrained(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;meta-llama/Llama-3.2-1B&#34;</span>,
+</span></span><span style="display:flex;"><span>    low_cpu_mem_usage<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    device_map<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;auto&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><h2 id="5-kobart-xpu-파이프라인-이해하기">5. KoBART XPU 파이프라인 이해하기<a hidden class="anchor" aria-hidden="true" href="#5-kobart-xpu-파이프라인-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p><code>pipeline()</code>가 토크나이저, 모델 추론, 디코딩 과정을 자동으로 연결해 주는 고수준 API라는 점을 명확히 이해하게 되었습니다. <code>torch.distributed.pipelining.pipeline</code>과 같은 저수준 분산 엔진과의 이름 혼동을 피하기 위해 용도를 정확히 구분하는 연습을 했습니다. 입력 길이와 <code>max_length</code>, <code>max_new_tokens</code> 파라미터 간의 상호작용과 우선순위를 파악하여 경고를 효과적으로 해결하는 방법을 배웠습니다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>Hugging Face 공식 <code>pipeline</code> API와 PyTorch 분산 훈련용 <code>torch.distributed.pipelining.pipeline</code>은 이름만 같을 뿐 용도가 완전히 달라서 혼동되기 쉽습니다.</p>
+<p>입력 문장이 42토큰뿐인데 <code>max_length=60</code>을 주니 &ldquo;입력이 최대 길이를 초과한다&quot;는 경고가 뜬 뒤, 모델 기본값인 <code>max_new_tokens=256</code>과 충돌나서 어느 파라미터가 우선되는지 파악하는 데 시간이 걸렸습니다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p><code>pipeline()</code>는 토크나이저, 모델 추론, 디코딩 과정을 자동으로 연결해 주는 고수준 API이며, Intel XPU 환경에서는 <code>device=&quot;xpu&quot;</code> 문자열을 직접 지정하여 하드웨어를 정확히 제어할 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> pipeline
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>summ <span style="color:#f92672">=</span> pipeline(
+</span></span><span style="display:flex;"><span>    task<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;summarization&#34;</span>,
+</span></span><span style="display:flex;"><span>    model<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;EbanLee/kobart-summary-v3&#34;</span>,
+</span></span><span style="display:flex;"><span>    device<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;xpu&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>result <span style="color:#f92672">=</span> summ(<span style="color:#e6db74">&#34;짧은 입력 문장&#34;</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">60</span>)
+</span></span><span style="display:flex;"><span>print(result[<span style="color:#ae81ff">0</span>][<span style="color:#e6db74">&#34;summary_text&#34;</span>])
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>Gemma 2 XPU 구동을 위해 <code>device_map=&quot;auto&quot;</code> 대신 명시적 이동과 파라미터 조정이 필요하다는 점을 확인했으며, 생성된 결과에서 입력 프롬프트를 잘라내어 답변을 추출하는 slicing 과정과 <code>temperature</code> 같은 sampling 파라미터가 확률 분포를 조절하여 텍스트 생성을 제어한다는 원리를 이해했다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>XPU 환경에서는 <code>device_map=&quot;auto&quot;</code> 대신 명시적인 <code>model.to(&quot;xpu&quot;)</code> 이동이 필수적이며, <code>temperature</code>는 모델 생성 옵션임을 반드시 확인해야 한다.</p>
+<p>생성된 결과에서 답변을 추출할 때는 입력 프롬프트의 토큰 길이를 정확히 파악한 뒤 slicing 해야 하며, decode 시 <code>skip_special_tokens=True</code> 옵션을 활용해 가독성을 높여야 한다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<h3 id="다음에-복습할-주제">다음에 복습할 주제<a hidden class="anchor" aria-hidden="true" href="#다음에-복습할-주제">#</a></h3>
+<p>XPU 환경에서 <code>device_map=&quot;auto&quot;</code> 대신 명시적인 <code>model.to(&quot;xpu&quot;)</code> 이동이 필수적임을 재확인하고, 토크나이저와 모델 출력을 분리할 때 <code>shape[1]</code>을 활용해 입력 프롬프트 길이를 정확히 파악하는 slicing 기법을 심화 학습한다. 또한 <code>temperature</code> 파라미터가 확률 분포의 날카로움을 조절하여 무작위성과 정답 사이의 균형을 어떻게 맞추는지에 대한 수학적 원리를 복습하고, <code>torch.no_grad()</code>가 그래디언트 계산 억제를 통해 메모리 효율을 높이는 핵심 역할을 하는지 검증한다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://Han-think.github.io/learning/2026-09-02-am-daily/">
+    <span class="title">Next »</span>
+    <span>로컬 LLM 환경 구축을 위한 Hugging Face 핵심 개념 정리: 모델 구조와 도구, sharding과 device placement 구분, Transformers와 Datasets 역할 분리, 그리고 실전 모델 선택 기준</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

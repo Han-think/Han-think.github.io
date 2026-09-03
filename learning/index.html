@@ -215,6 +215,51 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">오늘 오전, XPU 환경 Gemma 2 구동과 답변 추출 기법에 대해 정리했습니다.
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 Gemma 2 Intel XPU 장치 이동 및 temperature 파라미터 정리 입력과 답변을 분리하는 slicing 과정 no_grad와 Sampling 파라미터의 연결 이해 Hugging Face 모델 파일 구조와 샤딩 이해하기 KoBART XPU 파이프라인 이해하기 총평 1. Gemma 2 Intel XPU 장치 이동 및 temperature 파라미터 정리 무엇을 배웠나 강사님의 CUDA 코드를 그대로 따라 하려다가 장치 관리와 파라미터 용도에 대한 이해 부족으로 혼란을 겪었다. device_map=&#34;auto&#34;는 XPU 환경에서는 자동 분산이 아닌 model.to(&#34;xpu&#34;)를 통한 명시적 이동이 필요했으며, temperature는 모델 생성 옵션임이 확인되었다. 결국 최소한의 수정만으로도 XPU에서 Gemma 2를 성공적으로 구동할 수 있었다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-03 00:00:00 +0000 UTC'>2026년 9월 3일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오늘 오전, XPU 환경 Gemma 2 구동과 답변 추출 기법에 대해 정리했습니다." href="https://Han-think.github.io/learning/2026-09-03-am-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">로컬 LLM 환경 구축을 위한 Hugging Face 핵심 개념 정리: 모델 구조와 도구, sharding과 device placement 구분, Transformers와 Datasets 역할 분리, 그리고 실전 모델 선택 기준
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 로컬 LLM 관점의 Hugging Face 생태계 이해 모델 파일의 저장과 실행 환경 설정 구분하기 Transformers와 Datasets의 역할 분리하기 API와 로컬 실행, 모델 선택의 실제 기준 총평 1. 로컬 LLM 관점의 Hugging Face 생태계 이해 무엇을 배웠나 강의를 통해 모델의 ‘원본 구조’와 로컬 실행 도구의 역할을 명확히 구분할 수 있었습니다. Hugging Face는 모델의 표준과 라이선스를 이해하는 입구이며, GGUF나 Ollama는 개인 장비에서 효율적으로 구동하기 위한 실무 도구입니다. 이 두 방식은 경쟁이 아닌, 원본 생태계 이해 후 도구를 선택하는 흐름으로 접근해야 합니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-02 00:00:00 +0000 UTC'>2026년 9월 2일</span>&nbsp;·&nbsp;<span>7 min</span></footer>
+  <a class="entry-link" aria-label="post link to 로컬 LLM 환경 구축을 위한 Hugging Face 핵심 개념 정리: 모델 구조와 도구, sharding과 device placement 구분, Transformers와 Datasets 역할 분리, 그리고 실전 모델 선택 기준" href="https://Han-think.github.io/learning/2026-09-02-am-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">오늘 오후, 토큰이 단어가 아닌 subword로 나뉘는 과정을 통해 &#39;단어=토큰&#39;이라는 직관적 기대가 무너지는 경험을 했다. PAD와 EOS의 역할 차이를 명확히 이해했으며, XPU 환경에서 장치 전환과 score 해석의 오해를 바로잡았다. FastAPI와 Jinja2의 목적 구분, 그리고 Gemma 모델 로드를 위한 XPU 최적화 설정까지, 실습을 통해 하드웨어와의 직접적인 상호작용 중요성을 확인하는 알찬 시간이 되었다.
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 토크나이저, ‘단어’를 넘어 ‘subword’로 쪼개다 Padding과 EOS의 차이점 이해하기 XPU 환경 감성분석 실습 및 오해 정리 FastAPI와 Jinja2: 역할과 템플릿의 구분 Intel XPU로 Gemma 2 2B IT 모델 준비하기 총평 1. 토크나이저, ‘단어’를 넘어 ‘subword’로 쪼개다 무엇을 배웠나 토크나이저가 ‘단어’ 단위로 텍스트를 자르는 것이 아니라, 사전에 등록된 규칙에 따라 **subword(부분 단어)**로 쪼개서 ID로 변환한다는 점을 명확히 인식하게 되었다. 특히 한글 단어와 조사·어미가 ##으로 시작하는 subword로 분리되는 모습이나, 슬래시(/)까지 토큰의 일부가 되어버리는 사례를 보며 ‘토큰 = 단어’라는 직관적인 기대가 무너지는 과정이 가장 인상 깊었다. 또한 encode() 함수를 통해 토큰 ID 앞에 ``나 뒤에 `
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-02 00:00:00 +0000 UTC'>2026년 9월 2일</span>&nbsp;·&nbsp;<span>7 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오늘 오후, 토큰이 단어가 아닌 subword로 나뉘는 과정을 통해 &#39;단어=토큰&#39;이라는 직관적 기대가 무너지는 경험을 했다. PAD와 EOS의 역할 차이를 명확히 이해했으며, XPU 환경에서 장치 전환과 score 해석의 오해를 바로잡았다. FastAPI와 Jinja2의 목적 구분, 그리고 Gemma 모델 로드를 위한 XPU 최적화 설정까지, 실습을 통해 하드웨어와의 직접적인 상호작용 중요성을 확인하는 알찬 시간이 되었다." href="https://Han-think.github.io/learning/2026-09-02-pm-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">오늘 오후, 모든 요소의 동시 실행이 왜 필요한지 체감한 날이었다.
     </h2>
   </header>
@@ -321,51 +366,6 @@ Mongoose Schema는 MongoDB 위에 놓인 애플리케이션 규칙이며, 데이
 
 <span title='2026-08-27 00:00:00 +0000 UTC'>2026년 8월 27일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
   <a class="entry-link" aria-label="post link to 오늘 오전, UI 테스트 리팩토링과 Express 서버 라우팅 원리를 정리했습니다. helper function을 활용해 테스트 케이스의 고유 이름을 유지하면서 반복되는 흐름을 캡슐화하는 방법을 배웠고, 문법 강조에 의존하지 않고 서버의 &#39;대기 상태&#39; 개념을 명확히 이해하여 스크립트와 서버 실행의 차이를 구분할 수 있게 되었습니다. 특히 URL 경로와 HTTP 메서드의 조합으로 라우팅이 결정되며, 404 에러는 경로가 없다는 뜻임을 깨닫고 Router 분리를 통해 로직을 분리하는 중요성을 확인했습니다." href="https://Han-think.github.io/learning/2026-08-27-am-daily/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오늘 오후, 데이터 흐름과 상태 관리 그리고 환경 설정 해결까지 다양한 주제를 정리했습니다. URL 경로와 쿼리, 본문의 위치를 명확히 구분하고 미들웨어의 필수적인 역할을 이해하여 데이터를 안전하게 추출하는 방법을 익혔습니다. NoSQL과 Vector DB에서 데이터의 최신성과 신뢰도를 보장하는 &#39;상태 관리&#39;의 중요성을 깨닫고, 정합성 유지와 모델의 창작 능력 사이의 미묘한 균형을 조절하는 기준을 세웠습니다. 또한 Windows의 Smart App Control로 인해 막혔던 MongoDB 실행을 해결하며 프로그램 실행 정책의 작동 원리를 확인했습니다. ES6 문법을 복습하며 `let`과 `const`, 화살표 함수 등 더 간결하고 효율적인 코드 작성 방법을 정리했고, 비동기 패턴에서 `await`와 `Promise.all`의 차이점을 명확히 이해하여 순차 처리와 병렬 처리의 핵심 원리를 짚었습니다. 마지막으로 CommonJS 모듈의 export와 require 동작원리를 되짚으며 import 구문을 간소화하는 방법을 정리했습니다.
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 Express 요청 데이터와 Middleware 이해하기 [워킹노트] NoSQL CAP Sharding Vector Graph DB, State Control Layer의 필요성 상태 관리와 정합성의 미묘한 균형 Smart App Control에 의해 차단된 MongoDB 실행 파일 해결 과정 ES6 핵심 문법, 헷갈림과 정리의 시간 비동기 패턴 이해를 위한 핵심 정리: callback, promise, async/await, Promise.all commonjs-module-export와-require의-이해 총평 1. Express 요청 데이터와 Middleware 이해하기 무엇을 배웠나 URL 경로, 쿼리 문자열, 요청 본문이 각각 어떤 위치에서 데이터를 받는지 명확히 구분할 수 있게 되었다. 특히 req.body 사용 전 반드시 거쳐야 할 미들웨어의 역할을 이해하여 데이터가 전달되지 않는 문제를 해결하는 데 도움이 되었다. next()를 통해 미들웨이드의 흐름을 제어한다는 개념은 라우트 처리 순서를 디버깅하는 핵심적인 기준점이 되었다. 이제 URL 구조와 데이터 형태에 따라 적절한 속성을 선택해 요청값을 안전하게 추출할 수 있게 되었다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-08-27 00:00:00 +0000 UTC'>2026년 8월 27일</span>&nbsp;·&nbsp;<span>9 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오늘 오후, 데이터 흐름과 상태 관리 그리고 환경 설정 해결까지 다양한 주제를 정리했습니다. URL 경로와 쿼리, 본문의 위치를 명확히 구분하고 미들웨어의 필수적인 역할을 이해하여 데이터를 안전하게 추출하는 방법을 익혔습니다. NoSQL과 Vector DB에서 데이터의 최신성과 신뢰도를 보장하는 &#39;상태 관리&#39;의 중요성을 깨닫고, 정합성 유지와 모델의 창작 능력 사이의 미묘한 균형을 조절하는 기준을 세웠습니다. 또한 Windows의 Smart App Control로 인해 막혔던 MongoDB 실행을 해결하며 프로그램 실행 정책의 작동 원리를 확인했습니다. ES6 문법을 복습하며 `let`과 `const`, 화살표 함수 등 더 간결하고 효율적인 코드 작성 방법을 정리했고, 비동기 패턴에서 `await`와 `Promise.all`의 차이점을 명확히 이해하여 순차 처리와 병렬 처리의 핵심 원리를 짚었습니다. 마지막으로 CommonJS 모듈의 export와 require 동작원리를 되짚으며 import 구문을 간소화하는 방법을 정리했습니다." href="https://Han-think.github.io/learning/2026-08-27-pm-daily/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오늘 오후, Jest 설정과 testable code의 경계에서 테스트 실행 순서의 중요성을 확인하고, RTL UI 테스트에서 `test.each()`를 활용해 반복되는 코드를 효율적으로 압축하는 방법을 실험했습니다.
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 Jest 설정과 testable code의 경계에서 RTL UI 테스트 파라미터화 실험: 행동과 데이터의 분리 무엇이 헷갈렸나 (Confusion) 정리된 이해 (Organized Understanding) 실습 예시 (Practice Example) 총평 1. Jest 설정과 testable code의 경계에서 무엇을 배웠나 Jest 설정 단계에서 발생하는 import 오류는 테스트 로직보다 앞단의 실행 환경 문제였으며, 설정이 올바르면 테스트가 정상적으로 실행되는 것을 확인할 수 있었다. 테스트 실패는 한 번에 해결되지 않고 설정 → import → render → assertion 순서로 단계를 나누어 점검해야 한다. UI 내부의 계산 로직을 별도 module로 분리하면 테스트 작성은 물론 코드 재사용성도 크게 높아진다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-08-26 00:00:00 +0000 UTC'>2026년 8월 26일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오늘 오후, Jest 설정과 testable code의 경계에서 테스트 실행 순서의 중요성을 확인하고, RTL UI 테스트에서 `test.each()`를 활용해 반복되는 코드를 효율적으로 압축하는 방법을 실험했습니다." href="https://Han-think.github.io/learning/2026-08-26-pm-daily/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오전 학습 요약: Redux 상태 흐름 이해하기와 Git 핵심 개념 정리
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 Redux 상태 흐름 이해하기: 컴포넌트→요청→dispatch→reducer→store→렌더링 Git의 핵심 흐름과 개념을 정리한 글입니다. 총평 1. Redux 상태 흐름 이해하기: 컴포넌트→요청→dispatch→reducer→store→렌더링 무엇을 배웠나 Redux를 처음 접할 때 가장 큰 혼란은 ‘데이터 흐름’을 이해하지 못해 각 라이브러리의 역할이 겹치는 것처럼 보였던 점입니다. 핵심적으로 Reducer는 HTTP 요청을 실행하는 곳이 아니라, 이미 도착한 데이터를 State에 반영하는 규칙이라는 점을 깨닫고 구조가 명확해졌습니다. 특히 페이지네이션 같은 경우 page 번호 변경이 트리거가 되어 결과가 Store에 반영되어 UI가 업데이트되는 흐름으로 이해했습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-08-26 00:00:00 +0000 UTC'>2026년 8월 26일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오전 학습 요약: Redux 상태 흐름 이해하기와 Git 핵심 개념 정리" href="https://Han-think.github.io/learning/2026-08-26-am-daily/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
