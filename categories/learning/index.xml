@@ -16,6 +16,13 @@
       <description>2026-09-03 오전 학습 정리</description>
     </item>
     <item>
+      <title>오늘 오후, 모델 배치와 장치 할당의 명확한 구분, AutoClass가 주는 자동화의 편리함, 그리고 로지트 확률 해석의 중요성을 정리했습니다. 특히 attention_mask 같은 용어가 가진 위치적 의미와 GGUF·HF 모델 간의 Task 추상화 차이를 이해하며, 개념이 단순한 정의를 넘어 흐름 속에 있음을 새롭게 인식한 소중한 시간이었습니다.</title>
+      <link>https://Han-think.github.io/learning/2026-09-03-pm-daily/</link>
+      <pubDate>Thu, 03 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-03-pm-daily/</guid>
+      <description>2026-09-03 오후 학습 정리</description>
+    </item>
+    <item>
       <title>로컬 LLM 환경 구축을 위한 Hugging Face 핵심 개념 정리: 모델 구조와 도구, sharding과 device placement 구분, Transformers와 Datasets 역할 분리, 그리고 실전 모델 선택 기준</title>
       <link>https://Han-think.github.io/learning/2026-09-02-am-daily/</link>
       <pubDate>Wed, 02 Sep 2026 00:00:00 +0000</pubDate>

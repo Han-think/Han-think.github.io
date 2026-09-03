@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오늘 오후, 모델 배치와 장치 할당의 명확한 구분, AutoClass가 주는 자동화의 편리함, 그리고 로지트 확률 해석의 중요성을 정리했습니다. 특히 attention_mask 같은 용어가 가진 위치적 의미와 GGUF·HF 모델 간의 Task 추상화 차이를 이해하며, 개념이 단순한 정의를 넘어 흐름 속에 있음을 새롭게 인식한 소중한 시간이었습니다. | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-09-03 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-09-03-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-09-03-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function () {
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-09-03-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오늘 오후, 모델 배치와 장치 할당의 명확한 구분, AutoClass가 주는 자동화의 편리함, 그리고 로지트 확률 해석의 중요성을 정리했습니다. 특히 attention_mask 같은 용어가 가진 위치적 의미와 GGUF·HF 모델 간의 Task 추상화 차이를 이해하며, 개념이 단순한 정의를 넘어 흐름 속에 있음을 새롭게 인식한 소중한 시간이었습니다.">
+  <meta property="og:description" content="2026-09-03 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-09-03T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-09-03T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오늘 오후, 모델 배치와 장치 할당의 명확한 구분, AutoClass가 주는 자동화의 편리함, 그리고 로지트 확률 해석의 중요성을 정리했습니다. 특히 attention_mask 같은 용어가 가진 위치적 의미와 GGUF·HF 모델 간의 Task 추상화 차이를 이해하며, 개념이 단순한 정의를 넘어 흐름 속에 있음을 새롭게 인식한 소중한 시간이었습니다.">
+  <meta name="twitter:description" content="2026-09-03 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오늘 오후, 모델 배치와 장치 할당의 명확한 구분, AutoClass가 주는 자동화의 편리함, 그리고 로지트 확률 해석의 중요성을 정리했습니다. 특히 attention_mask 같은 용어가 가진 위치적 의미와 GGUF·HF 모델 간의 Task 추상화 차이를 이해하며, 개념이 단순한 정의를 넘어 흐름 속에 있음을 새롭게 인식한 소중한 시간이었습니다.",
+      "item": "https://Han-think.github.io/learning/2026-09-03-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오늘 오후, 모델 배치와 장치 할당의 명확한 구분, AutoClass가 주는 자동화의 편리함, 그리고 로지트 확률 해석의 중요성을 정리했습니다. 특히 attention_mask 같은 용어가 가진 위치적 의미와 GGUF·HF 모델 간의 Task 추상화 차이를 이해하며, 개념이 단순한 정의를 넘어 흐름 속에 있음을 새롭게 인식한 소중한 시간이었습니다.",
+  "name": "오늘 오후, 모델 배치와 장치 할당의 명확한 구분, AutoClass가 주는 자동화의 편리함, 그리고 로지트 확률 해석의 중요성을 정리했습니다. 특히 attention_mask 같은 용어가 가진 위치적 의미와 GGUF·HF 모델 간의 Task 추상화 차이를 이해하며, 개념이 단순한 정의를 넘어 흐름 속에 있음을 새롭게 인식한 소중한 시간이었습니다.",
+  "description": "2026-09-03 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 pipeline 생성형 모델 실습과 XPU 장치 설정 오해 정리 AutoClass, Task 결정과 클래스 자동 매핑 [워킹노트] 로지트와 소프트맥스로 확률 읽기: 모델의 원시 점수 해석하기 용어 계층으로 개념 정립하기 GGUF와 HF 모델, ‘Task’ 구분은 추상화 계층 차이 BERT hidden state와 토큰 표현의 이해 총평 1. pipeline 생성형 모델 실습과 XPU 장치 설정 오해 정리 무엇을 배웠나 device_map와 device 지정은 모델 파라미터 배치 방식과 실행 장치 고정 방식이라는 점에서 명확히 구분된다. Task 선언은 모델이 기대하는 입력 형태를 결정하며, 실제 사용 파라미터는 그 위에 추가적인 제어층으로 작동한다. max_new_tokens는 답변의 질을 보장하는 값이 아니라, 모델이 생성할 수 있는 최대 토큰 수라는 상한선이라는 점을 이해했다.\n헷갈렸던 점 device_map=\"auto\"는 모델 파라미터를 자동 분산 배치하는 기능이고, device=\"xpu\"는 pipeline 실행 자체를 특정 장치에 고정시키는 방식이라는 점이었다.\n작성된 코드에 task=\"text-classification\"라고 명시되어 있었음에도 불구하고, 내부에서는 max_new_tokens 등 생성형 파라미터를 사용해 텍스트를 계속 생성하는 모순된 설정에 혼란이 왔다.\nmax_new_tokens는 모델의 지능을 높이는 값이 아니라, 답변의 질이 비례해서 향상되지 않을 수 있는 생성 상한선이라는 점을 명확히 했다.\n정리된 이해 device_map=\"auto\"는 모델 파라미터를 자동으로 분산 배치하는 기능이며, device=\"xpu\"는 pipeline 실행 자체를 특정 장치에 고정시키는 방식이다. Task 선언은 모델이 기대하는 입력 형태를 결정하며, 실제 사용 파라미터는 그 위에 추가적인 제어층을 제공한다. max_new_tokens는 답변의 질을 높이는 값이 아니라, 모델의 생성 범위를 제한하거나 확장하는 상한선일 뿐 내용의 품질과 반드시 비례하지 않는다.\n# device_map vs device 지정의 차이 예시 from transformers import AutoModelForCausalLM, AutoTokenizer model_id = \"meta-llama/Llama-3.2-1B\" # 1) device_map=\"auto\": 모델 파라미터를 자동으로 배치 (멀티 GPU/CPU 지원) model_auto = AutoModelForCausalLM.from_pretrained( model_id, device_map=\"auto\" ) # 2) device=\"xpu\": pipeline 실행을 XPU 장치에 고정 from transformers import pipeline generator = pipeline( \"text-generation\", model=model_auto, # device_map이 적용된 모델 device=\"xpu\" # 실행 장치를 XPU로 고정 ) # 결과 생성 outputs = generator( \"Once upon a time\", max_new_tokens=50, temperature=0.7 ) print(outputs[0][\"generated_text\"]) 2. AutoClass, Task 결정과 클래스 자동 매핑 무엇을 배웠나 AutoClass는 모델 이름 뒤에 붙은 For... 부분을 보고 해당 Task에 맞는 head가 연결된 구체적인 클래스를 자동으로 선택해주는 추상화 레이어다. 단순히 모델을 로드하는 것을 넘어, AutoModelForSequenceClassification처럼 Task 수행을 위한 구조를 미리 결정해준다. 가장 중요한 점은 AutoClass가 작업을 스스로 결정하는 것이 아니라, 사용자가 Task를 지정하면 그에 맞는 적절한 클래스를 찾아준다는 것이다. 이를 통해 pipeline()나 프롬프트 기반 방식과 구분되며, 표를 보며 XXXX가 어떤 Task를 위한지 먼저 파악하는 습관이 중요하다.\n헷갈렸던 점 처음에는 모델 이름이 ‘LM’이면 언어 모델, ‘Classification’이면 분류 모델이라는 식으로 단순하게 외우려 했으나, 실제로는 AutoClass가 checkpoint와 config 정보를 보고 해당 모델에 맞는 Task 클래스를 자동으로 연결해주는 추상화 레이어라는 점을 이해하는 데 시간이 걸렸다. 또한 pipeline() 함수와 AutoClass, 그리고 Task-specific 모델이 각각 다른 추상화 계층에서 동작한다는 사실을 구분하지 못해 혼란스러웠으나, “내가 Task를 결정하면 AutoClass가 적절한 클래스를 찾아준다\"는 점에 초점을 맞춰 정리가 되었다.\n정리된 이해 AutoClass는 모델 이름에 붙은 For... 접미사를 통해 해당 모델이 수행하는 Task를 자동으로 식별하고, 그에 맞는 Head(머리) 구조를 연결해주는 추상화 계층이다. 단순히 모델을 로드하는 것을 넘어, 사용자가 특정 Task를 지정하면 AutoClass가 해당 Task에 최적화된 클래스를 찾아주어 코딩 편의성을 높여준다. 따라서 AutoClass는 AI가 데이터를 자동으로 분류하는 기능이 아니라, Task와 모델 구조를 연결해주는 다리 역할임을 이해해야 한다.\n# 1. 텍스트 분류를 위한 AutoModelForSequenceClassification 사용 from transformers import AutoModelForSequenceClassification, AutoTokenizer checkpoint = \"skt/kobert-base-v1\" tokenizer = AutoTokenizer.from_pretrained(checkpoint) model = AutoModelForSequenceClassification.from_pretrained(checkpoint) # 입력 문장 분류 inputs = tokenizer(\"이 영화는 정말 재미있었습니다!\", return_tensors=\"pt\") outputs = model(**inputs) 3. [워킹노트] 로지트와 소프트맥스로 확률 읽기: 모델의 원시 점수 해석하기 무엇을 배웠나 로지트는 모델이 각 클래스에 부여하는 raw score이며, 이를 그대로 확률로 해석하면 안 된다는 점을 처음으로 이해했습니다. softmax 함수는 이러한 로지트를 정규화하여 0과 1 사이의 유효한 확률 분포로 변환해 주는 핵심적인 과정임을 깨달았습니다. 또한 인덱스 번호만으로는 클래스의 의미를 파악하기 어렵기 때문에, 사전에 제공되는 id2label 매핑 정보를 반드시 확인해야 한다는 점을 학습했습니다. 마지막으로 모델 출력 시 float16 정밀도 문제로 인해 확률값이 1.0으로 표시될 수 있으니, 이는 완벽한 확신보다는 높은 가능성을 의미한다는 사실을 인지하게 되었습니다.\n헷갈렸던 점 로지트를 그대로 보면 확률이 아니라 raw 점수라는 점이 가장 먼저 와닿았습니다. softmax가 로지트를 합이 1이 되는 확률 분포로 변환해주는 과정이 핵심이라는 걸 깨닫고 나서야 숫자의 의미가 명확해졌습니다. 마지막으로 float16 정밀도 문제로 인해 화면에 보이는 1.0 같은 값이 실제 확신도를 정확히 반영하지는 않는다는 점을 확인했습니다.\n정리된 이해 로지트는 모델이 각 클래스에 대해 내놓는 raw score이며, 그대로 확률로 해석하면 안 된다. 소프트맥스는 이 로지트를 class별 확률 분포 형태로 변환해 주는 함수다. 따라서 model.predict() 등을 통해 최종적으로 확인하는 수치는 softmax를 거친 확률 값임을 명심해야 한다.\n# Logits (Raw Scores) logits = [-4.0508, 4.4102] # Softmax 변환 (Probability Distribution) import torch.nn.functional as F probs = F.softmax(torch.tensor(logits), dim=0) print(f\"Logits: {logits}\") print(f\"Probabilities: {probs}\") # 출력 예시: # Logits: [-4.0508, 4.4102] # Probabilities: tensor([0.0137, 0.9863]) # index 1이 압도적으로 높음 # 확률을 라벨로 변환 (예시) labels = [\"NEGATIVE\", \"POSITIVE\"] predicted_label = labels[torch.argmax(probs).item()] print(f\"Predicted: {predicted_label}\") 4. 용어 계층으로 개념 정립하기 무엇을 배웠나 오늘은 용어가 가진 ‘위치’와 ‘역할’을 구분하는 것이 핵심임을 깨달았다. 단순히 정의를 외우는 것보다, 각 개념이 모델 입력, 예측 결과, 시스템 전체 흐름 중 어디에 속하는지 파악하는 것이 중요했다. 특히 attention_mask는 실제 입력을 가리는 마스크 역할을 한다는 점을 명확히 이해하게 되었다.\n헷갈렸던 점 용어가 비슷해서 헷갈렸지만, 실제로는 ‘입력 제어’, ‘결과 통합’, ‘시스템 관리’라는 완전히 다른 계층에서 작동한다는 점을 명확히 구분하지 못해 혼란스러웠다. 특히 attention_mask가 단순히 padding을 막는 것이 아니라, 모델이 어디까지를 참고해야 하는지 결정하는 가이드 역할을 한다는 사실을 모르고 있었다. ensemble과 orchestration이 모두 ‘여러 것들을 다루는 것’이라는 점만 보고 비슷하게 느껴져, 각각이 모델 내부인지 시스템 전체인지의 경계가 불분명했다.\n정리된 이해 오늘 느낀 가장 큰 혼란은 attention과 attention_mask, ensemble과 orchestration 같은 용어들이 겹쳐 보여서 개념을 구분하기 어려웠다는 점이었습니다. 핵심적인 이해는 각 용어가 작동하는 **계층(Layer)**가 다르다는 점입니다. attention_mask는 모델 입력 내부의 위치를 제어하는 텐서 계층이고, ensemble은 여러 모델의 예측을 모아 정확도를 높이는 모델 계층이며, orchestration은 시스템 전체의 실행 흐름을 관리하는 워크플로우 계층이라는 점입니다.\n# attention_mask: Tensor/Input 계층 - 실제 입력 범위 지정 tensor([[1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]) 5. GGUF와 HF 모델, ‘Task’ 구분은 추상화 계층 차이 무엇을 배웠나 GGUF 모델은 Python 클래스 지정 없이 런타임이 메타데이터를 통해 자동으로 로드되며, 멀티모달 입력은 별도 인코더와 프로젝터를 거쳐 언어 모델에 전달된다. 반면 Hugging Face Transformers는 사용자가 직접 Task에 맞는 AutoModelForXXX 클래스를 선택해야 한다. 이러한 차이는 모델 포맷과 런타임 인터페이스의 추상화 수준 차이에서 비롯된 것이다.\n헷갈렸던 점 처음에는 GGUF 모델에 Task 클래스 지정 과정이 없어서 ‘Task 구분이 없는 것 아닌가’라는 의문이 들었습니다. 하지만 핵심은 구분 자체가 없는 것이 아니라, Hugging Face와 달리 런타인이 메타데이터를 기반으로 자동 라우팅한다는 점입니다. 또한 멀티모달 입력이나 분류 작업 가능 여부도 아키텍처와 런타임 지원 여부에 따라 달라진다는 점을 명확히 했습니다.\n정리된 이해 GGUF 모델은 Hugging Face Transformers와 달리 사용자가 직접 Task 클래스를 지정하지 않고, 런타임이 메타데이터를 기반으로 자동으로 적합한 구현 방식을 로드한다는 점이 핵심입니다. 멀티모달 모델의 경우 이미지와 텍스트가 별도 인코더를 거쳐 프로젝터를 통해 언어 모델에 입력되며, 이는 아키텍처와 런타임이 지원해야 하는 기능입니다. 따라서 범용 생성 LLM도 가능하지만, 전용 분류 모델이 필요한 이유는 Task별로 최적화된 헤드 구조와 추상화 계층의 차이 때문입니다.\n# Hugging Face Transformers 방식 (Task 직접 지정) from transformers import AutoModelForSequenceClassification model = AutoModelForSequenceClassification.from_pretrained(\"skt/kobert-base-v1\") # classification head를 통해 label/logits/probability 출력 # GGUF 런타임 방식 (자동 라우팅) # python 코드에서 AutoModelForCausalLM을 직접 호출하지 않음 # llama.cpp runtime이 model metadata를 보고 적절한 방식으로 로드 및 실행 6. BERT hidden state와 토큰 표현의 이해 무엇을 배웠나 나는 model이라는 변수명에 토크나이저 객체를 할당하는 실수를 범해, 모델 호출 시 오류가 발생했던 경험을 했다. 또한 input_ids[0]에서 [0]이 배치 내 첫 번째 문장을 의미한다는 점을 명확히 이해하게 되었다. 마지막으로 768차원 벡터가 단어의 고정적인 의미보다는 현재 문맥을 반영한 동적 표현임을 파악했다.\n헷갈렸던 점 model이라는 변수명에 토크나이저 객체를 할당해버려, 모델 호출 시 오류가 발생했던 점. [0] 인덱스가 배치 내 첫 번째 문장을 의미하는지 vocabluary ID를 의미하는지 momentarily 혼동했던 점. 768차원 벡터가 단어의 고정적인 의미를 담고 있는지, 현재 문맥을 반영한 표현인지 구분이 필요했던 점. 정리된 이해 BERT 모델에 토큰 ID와 어텐션 마스크를 입력하면, 배치 크기 × 시퀀스 길이 × 768 차원의 last_hidden_state가 반환된다. 이 768차원 벡터는 단어의 고정적인 의미가 아니라, 현재 문맥을 반영한 토큰별 표현임을 명확히 이해해야 한다. variable naming error와 같은 사소한 실수에도 모델 실행에 치명적인 영향을 미칠 수 있음을 인지하고 코드를 신중하게 작성하는 습관을 기르는 것이 중요하다.\n# 토크나이저와 모델을 별도 변수로 명확히 분리 from transformers import AutoTokenizer, AutoModel tokenizer = AutoTokenizer.from_pretrained(\"bert-base-uncased\") model = AutoModel.from_pretrained(\"bert-base-uncased\") # ✓ model 변수에 실제 모델 할당 text = \"Hello, my dog is cute\" inputs = tokenizer(text, return_tensors=\"pt\") # 모델 추론 (이제 model이 실제 BERT 모델을 의미함) outputs = model(**inputs) # last_hidden_state는 [batch_size, sequence_length, hidden_dim] 형태 last_hidden_state = outputs.last_hidden_state # 배치 내 첫 번째 문장의 토큰 벡터 예시 (index 0은 [CLS] 토큰) first_token_vector = last_hidden_state[0][0] # shape: torch.Size([768]) 총평 오늘 오후 전체에서 배운 것 오늘은 모델 파라미터 배치 방식(device_map)과 실행 장치 고정 방식(device 지정)의 명확한 구분, 그리고 AutoClass가 Task에 맞는 클래스를 자동 매핑해주는 추상화 레이어의 역할을 이해했다. 또한 로지트를 확률로 변환하는 softmax의 과정과 id2label 매핑 확인의 중요성, 그리고 모델 입력에서 attention_mask가 실제 입력을 가리는 마스크 역할을 한다는 점도 명확히 했다.\n다음에 조심할 것 device_map과 device 지정은 모델 파라미터 배치와 실행 장치 고정이라는 개념적 차이를 명확히 구분하여, 불필요한 오류를 방지할 것. AutoClass 활용 시 Task를 먼저 정의하고 그에 맞는 클래스를 자동 매핑받도록 습관화하여, 실수 확률을 낮출 것. 모델 출력값(로지트/확률)을 해석할 때 id2label 매핑 정보와 float16 정밀도 한계를 항상 확인하여, 정확한 클래스 판단을 내릴 것. 다음 복습 주제 AutoClass와 Task 자동 매핑: AutoClass가 단순히 모델을 로드하는 것을 넘어, 사용자가 지정한 Task에 맞는 For... 클래스를 찾아주는 추상화 레이어임을 재확인하고, 실제 파이프라인이나 프롬프트 방식과의 차이를 명확히 이해하기. 로지트와 확률 변환 과정: softmax 함수를 통해 로지트를 유효한 확률 분포로 정규화하는 원리를 복습하고, id2label 매핑 정보와 float16 정밀도 문제로 인한 확률 값 해석 시 주의점을 다시 점검한다. 용어의 위치와 역할 구분: attention_mask와 같은 용어가 모델 입력, 예측 결과, 시스템 흐름 중 어디에 해당하는지 파악하여 개념 간의 혼동을 방지하고, 정확한 의미를 적용할 수 있도록 정리한다. 🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1546",
+  "inLanguage": "en",
+  "datePublished": "2026-09-03T00:00:00Z",
+  "dateModified": "2026-09-03T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-09-03-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/life/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/ai-research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오늘 오후, 모델 배치와 장치 할당의 명확한 구분, AutoClass가 주는 자동화의 편리함, 그리고 로지트 확률 해석의 중요성을 정리했습니다. 특히 attention_mask 같은 용어가 가진 위치적 의미와 GGUF·HF 모델 간의 Task 추상화 차이를 이해하며, 개념이 단순한 정의를 넘어 흐름 속에 있음을 새롭게 인식한 소중한 시간이었습니다.
+    </h1>
+    <div class="post-description">
+      2026-09-03 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-09-03 00:00:00 +0000 UTC'>2026년 9월 3일</span>&nbsp;·&nbsp;<span>8 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-pipeline-%EC%83%9D%EC%84%B1%ED%98%95-%EB%AA%A8%EB%8D%B8-%EC%8B%A4%EC%8A%B5%EA%B3%BC-xpu-%EC%9E%A5%EC%B9%98-%EC%84%A4%EC%A0%95-%EC%98%A4%ED%95%B4-%EC%A0%95%EB%A6%AC">pipeline 생성형 모델 실습과 XPU 장치 설정 오해 정리</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-autoclass-task-%EA%B2%B0%EC%A0%95%EA%B3%BC-%ED%81%B4%EB%9E%98%EC%8A%A4-%EC%9E%90%EB%8F%99-%EB%A7%A4%ED%95%91">AutoClass, Task 결정과 클래스 자동 매핑</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%9B%8C%ED%82%B9%EB%85%B8%ED%8A%B8-%EB%A1%9C%EC%A7%80%ED%8A%B8%EC%99%80-%EC%86%8C%ED%94%84%ED%8A%B8%EB%A7%A5%EC%8A%A4%EB%A1%9C-%ED%99%95%EB%A5%A0-%EC%9D%BD%EA%B8%B0-%EB%AA%A8%EB%8D%B8%EC%9D%98-%EC%9B%90%EC%8B%9C-%EC%A0%90%EC%88%98-%ED%95%B4%EC%84%9D%ED%95%98%EA%B8%B0">[워킹노트] 로지트와 소프트맥스로 확률 읽기: 모델의 원시 점수 해석하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EC%9A%A9%EC%96%B4-%EA%B3%84%EC%B8%B5%EC%9C%BC%EB%A1%9C-%EA%B0%9C%EB%85%90-%EC%A0%95%EB%A6%BD%ED%95%98%EA%B8%B0">용어 계층으로 개념 정립하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-gguf%EC%99%80-hf-%EB%AA%A8%EB%8D%B8-task-%EA%B5%AC%EB%B6%84%EC%9D%80-%EC%B6%94%EC%83%81%ED%99%94-%EA%B3%84%EC%B8%B5-%EC%B0%A8%EC%9D%B4">GGUF와 HF 모델, &lsquo;Task&rsquo; 구분은 추상화 계층 차이</a></li>
+</ol>
+</li>
+<li>
+<ol start="6">
+<li><a href="#6-bert-hidden-state%EC%99%80-%ED%86%A0%ED%81%B0-%ED%91%9C%ED%98%84%EC%9D%98-%EC%9D%B4%ED%95%B4">BERT hidden state와 토큰 표현의 이해</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-pipeline-생성형-모델-실습과-xpu-장치-설정-오해-정리">1. pipeline 생성형 모델 실습과 XPU 장치 설정 오해 정리<a hidden class="anchor" aria-hidden="true" href="#1-pipeline-생성형-모델-실습과-xpu-장치-설정-오해-정리">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>device_map와 device 지정은 모델 파라미터 배치 방식과 실행 장치 고정 방식이라는 점에서 명확히 구분된다. Task 선언은 모델이 기대하는 입력 형태를 결정하며, 실제 사용 파라미터는 그 위에 추가적인 제어층으로 작동한다. max_new_tokens는 답변의 질을 보장하는 값이 아니라, 모델이 생성할 수 있는 최대 토큰 수라는 상한선이라는 점을 이해했다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p><code>device_map=&quot;auto&quot;</code>는 모델 파라미터를 자동 분산 배치하는 기능이고, <code>device=&quot;xpu&quot;</code>는 pipeline 실행 자체를 특정 장치에 고정시키는 방식이라는 점이었다.</p>
+<p>작성된 코드에 <code>task=&quot;text-classification&quot;</code>라고 명시되어 있었음에도 불구하고, 내부에서는 <code>max_new_tokens</code> 등 생성형 파라미터를 사용해 텍스트를 계속 생성하는 모순된 설정에 혼란이 왔다.</p>
+<p><code>max_new_tokens</code>는 모델의 지능을 높이는 값이 아니라, 답변의 질이 비례해서 향상되지 않을 수 있는 <strong>생성 상한선</strong>이라는 점을 명확히 했다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p><code>device_map=&quot;auto&quot;</code>는 모델 파라미터를 자동으로 분산 배치하는 기능이며, <code>device=&quot;xpu&quot;</code>는 pipeline 실행 자체를 특정 장치에 고정시키는 방식이다. Task 선언은 모델이 기대하는 입력 형태를 결정하며, 실제 사용 파라미터는 그 위에 추가적인 제어층을 제공한다. <code>max_new_tokens</code>는 답변의 질을 높이는 값이 아니라, 모델의 생성 범위를 제한하거나 확장하는 상한선일 뿐 내용의 품질과 반드시 비례하지 않는다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># device_map vs device 지정의 차이 예시</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> AutoModelForCausalLM, AutoTokenizer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model_id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;meta-llama/Llama-3.2-1B&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1) device_map=&#34;auto&#34;: 모델 파라미터를 자동으로 배치 (멀티 GPU/CPU 지원)</span>
+</span></span><span style="display:flex;"><span>model_auto <span style="color:#f92672">=</span> AutoModelForCausalLM<span style="color:#f92672">.</span>from_pretrained(
+</span></span><span style="display:flex;"><span>    model_id,
+</span></span><span style="display:flex;"><span>    device_map<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;auto&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2) device=&#34;xpu&#34;: pipeline 실행을 XPU 장치에 고정</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> pipeline
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>generator <span style="color:#f92672">=</span> pipeline(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;text-generation&#34;</span>,
+</span></span><span style="display:flex;"><span>    model<span style="color:#f92672">=</span>model_auto,  <span style="color:#75715e"># device_map이 적용된 모델</span>
+</span></span><span style="display:flex;"><span>    device<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;xpu&#34;</span>       <span style="color:#75715e"># 실행 장치를 XPU로 고정</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 결과 생성</span>
+</span></span><span style="display:flex;"><span>outputs <span style="color:#f92672">=</span> generator(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Once upon a time&#34;</span>,
+</span></span><span style="display:flex;"><span>    max_new_tokens<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>,
+</span></span><span style="display:flex;"><span>    temperature<span style="color:#f92672">=</span><span style="color:#ae81ff">0.7</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>print(outputs[<span style="color:#ae81ff">0</span>][<span style="color:#e6db74">&#34;generated_text&#34;</span>])
+</span></span></code></pre></div><h2 id="2-autoclass-task-결정과-클래스-자동-매핑">2. AutoClass, Task 결정과 클래스 자동 매핑<a hidden class="anchor" aria-hidden="true" href="#2-autoclass-task-결정과-클래스-자동-매핑">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>AutoClass는 모델 이름 뒤에 붙은 <code>For...</code> 부분을 보고 해당 Task에 맞는 head가 연결된 구체적인 클래스를 자동으로 선택해주는 추상화 레이어다. 단순히 모델을 로드하는 것을 넘어, <code>AutoModelForSequenceClassification</code>처럼 Task 수행을 위한 구조를 미리 결정해준다. 가장 중요한 점은 AutoClass가 작업을 스스로 결정하는 것이 아니라, 사용자가 Task를 지정하면 그에 맞는 적절한 클래스를 찾아준다는 것이다. 이를 통해 <code>pipeline()</code>나 프롬프트 기반 방식과 구분되며, 표를 보며 <code>XXXX</code>가 어떤 Task를 위한지 먼저 파악하는 습관이 중요하다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음에는 모델 이름이 &lsquo;LM&rsquo;이면 언어 모델, &lsquo;Classification&rsquo;이면 분류 모델이라는 식으로 단순하게 외우려 했으나, 실제로는 <code>AutoClass</code>가 checkpoint와 config 정보를 보고 해당 모델에 맞는 Task 클래스를 자동으로 연결해주는 추상화 레이어라는 점을 이해하는 데 시간이 걸렸다. 또한 <code>pipeline()</code> 함수와 AutoClass, 그리고 Task-specific 모델이 각각 다른 추상화 계층에서 동작한다는 사실을 구분하지 못해 혼란스러웠으나, &ldquo;내가 Task를 결정하면 AutoClass가 적절한 클래스를 찾아준다&quot;는 점에 초점을 맞춰 정리가 되었다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>AutoClass는 모델 이름에 붙은 <code>For...</code> 접미사를 통해 해당 모델이 수행하는 Task를 자동으로 식별하고, 그에 맞는 Head(머리) 구조를 연결해주는 추상화 계층이다. 단순히 모델을 로드하는 것을 넘어, 사용자가 특정 Task를 지정하면 AutoClass가 해당 Task에 최적화된 클래스를 찾아주어 코딩 편의성을 높여준다. 따라서 AutoClass는 AI가 데이터를 자동으로 분류하는 기능이 아니라, Task와 모델 구조를 연결해주는 다리 역할임을 이해해야 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 1. 텍스트 분류를 위한 AutoModelForSequenceClassification 사용</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> AutoModelForSequenceClassification, AutoTokenizer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>checkpoint <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;skt/kobert-base-v1&#34;</span>
+</span></span><span style="display:flex;"><span>tokenizer <span style="color:#f92672">=</span> AutoTokenizer<span style="color:#f92672">.</span>from_pretrained(checkpoint)
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> AutoModelForSequenceClassification<span style="color:#f92672">.</span>from_pretrained(checkpoint)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 입력 문장 분류</span>
+</span></span><span style="display:flex;"><span>inputs <span style="color:#f92672">=</span> tokenizer(<span style="color:#e6db74">&#34;이 영화는 정말 재미있었습니다!&#34;</span>, return_tensors<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pt&#34;</span>)
+</span></span><span style="display:flex;"><span>outputs <span style="color:#f92672">=</span> model(<span style="color:#f92672">**</span>inputs)
+</span></span></code></pre></div><h2 id="3-워킹노트-로지트와-소프트맥스로-확률-읽기-모델의-원시-점수-해석하기">3. [워킹노트] 로지트와 소프트맥스로 확률 읽기: 모델의 원시 점수 해석하기<a hidden class="anchor" aria-hidden="true" href="#3-워킹노트-로지트와-소프트맥스로-확률-읽기-모델의-원시-점수-해석하기">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>로지트는 모델이 각 클래스에 부여하는 raw score이며, 이를 그대로 확률로 해석하면 안 된다는 점을 처음으로 이해했습니다. softmax 함수는 이러한 로지트를 정규화하여 0과 1 사이의 유효한 확률 분포로 변환해 주는 핵심적인 과정임을 깨달았습니다. 또한 인덱스 번호만으로는 클래스의 의미를 파악하기 어렵기 때문에, 사전에 제공되는 id2label 매핑 정보를 반드시 확인해야 한다는 점을 학습했습니다. 마지막으로 모델 출력 시 float16 정밀도 문제로 인해 확률값이 1.0으로 표시될 수 있으니, 이는 완벽한 확신보다는 높은 가능성을 의미한다는 사실을 인지하게 되었습니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>로지트를 그대로 보면 확률이 아니라 raw 점수라는 점이 가장 먼저 와닿았습니다.
+softmax가 로지트를 합이 1이 되는 확률 분포로 변환해주는 과정이 핵심이라는 걸 깨닫고 나서야 숫자의 의미가 명확해졌습니다.
+마지막으로 <code>float16</code> 정밀도 문제로 인해 화면에 보이는 <code>1.0</code> 같은 값이 실제 확신도를 정확히 반영하지는 않는다는 점을 확인했습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>로지트는 모델이 각 클래스에 대해 내놓는 raw score이며, 그대로 확률로 해석하면 안 된다. 소프트맥스는 이 로지트를 class별 확률 분포 형태로 변환해 주는 함수다. 따라서 <code>model.predict()</code> 등을 통해 최종적으로 확인하는 수치는 softmax를 거친 확률 값임을 명심해야 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Logits (Raw Scores)</span>
+</span></span><span style="display:flex;"><span>logits <span style="color:#f92672">=</span> [<span style="color:#f92672">-</span><span style="color:#ae81ff">4.0508</span>, <span style="color:#ae81ff">4.4102</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Softmax 변환 (Probability Distribution)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch.nn.functional <span style="color:#66d9ef">as</span> F
+</span></span><span style="display:flex;"><span>probs <span style="color:#f92672">=</span> F<span style="color:#f92672">.</span>softmax(torch<span style="color:#f92672">.</span>tensor(logits), dim<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Logits: </span><span style="color:#e6db74">{</span>logits<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Probabilities: </span><span style="color:#e6db74">{</span>probs<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 출력 예시:</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Logits: [-4.0508, 4.4102]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Probabilities: tensor([0.0137, 0.9863])  # index 1이 압도적으로 높음</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 확률을 라벨로 변환 (예시)</span>
+</span></span><span style="display:flex;"><span>labels <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;NEGATIVE&#34;</span>, <span style="color:#e6db74">&#34;POSITIVE&#34;</span>]
+</span></span><span style="display:flex;"><span>predicted_label <span style="color:#f92672">=</span> labels[torch<span style="color:#f92672">.</span>argmax(probs)<span style="color:#f92672">.</span>item()]
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Predicted: </span><span style="color:#e6db74">{</span>predicted_label<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><h2 id="4-용어-계층으로-개념-정립하기">4. 용어 계층으로 개념 정립하기<a hidden class="anchor" aria-hidden="true" href="#4-용어-계층으로-개념-정립하기">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>오늘은 용어가 가진 &lsquo;위치&rsquo;와 &lsquo;역할&rsquo;을 구분하는 것이 핵심임을 깨달았다. 단순히 정의를 외우는 것보다, 각 개념이 모델 입력, 예측 결과, 시스템 전체 흐름 중 어디에 속하는지 파악하는 것이 중요했다. 특히 <code>attention_mask</code>는 실제 입력을 가리는 마스크 역할을 한다는 점을 명확히 이해하게 되었다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>용어가 비슷해서 헷갈렸지만, 실제로는 &lsquo;입력 제어&rsquo;, &lsquo;결과 통합&rsquo;, &lsquo;시스템 관리&rsquo;라는 완전히 다른 계층에서 작동한다는 점을 명확히 구분하지 못해 혼란스러웠다. 특히 attention_mask가 단순히 padding을 막는 것이 아니라, 모델이 어디까지를 참고해야 하는지 결정하는 가이드 역할을 한다는 사실을 모르고 있었다. ensemble과 orchestration이 모두 &lsquo;여러 것들을 다루는 것&rsquo;이라는 점만 보고 비슷하게 느껴져, 각각이 모델 내부인지 시스템 전체인지의 경계가 불분명했다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>오늘 느낀 가장 큰 혼란은 <code>attention</code>과 <code>attention_mask</code>, <code>ensemble</code>과 <code>orchestration</code> 같은 용어들이 겹쳐 보여서 개념을 구분하기 어려웠다는 점이었습니다. 핵심적인 이해는 각 용어가 작동하는 **계층(Layer)**가 다르다는 점입니다. <code>attention_mask</code>는 모델 입력 내부의 위치를 제어하는 텐서 계층이고, <code>ensemble</code>은 여러 모델의 예측을 모아 정확도를 높이는 모델 계층이며, <code>orchestration</code>은 시스템 전체의 실행 흐름을 관리하는 워크플로우 계층이라는 점입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># attention_mask: Tensor/Input 계층 - 실제 입력 범위 지정</span>
+</span></span><span style="display:flex;"><span>tensor([[<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>]])
+</span></span></code></pre></div><h2 id="5-gguf와-hf-모델-task-구분은-추상화-계층-차이">5. GGUF와 HF 모델, &lsquo;Task&rsquo; 구분은 추상화 계층 차이<a hidden class="anchor" aria-hidden="true" href="#5-gguf와-hf-모델-task-구분은-추상화-계층-차이">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>GGUF 모델은 Python 클래스 지정 없이 런타임이 메타데이터를 통해 자동으로 로드되며, 멀티모달 입력은 별도 인코더와 프로젝터를 거쳐 언어 모델에 전달된다. 반면 Hugging Face Transformers는 사용자가 직접 Task에 맞는 <code>AutoModelForXXX</code> 클래스를 선택해야 한다. 이러한 차이는 모델 포맷과 런타임 인터페이스의 추상화 수준 차이에서 비롯된 것이다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>처음에는 GGUF 모델에 Task 클래스 지정 과정이 없어서 &lsquo;Task 구분이 없는 것 아닌가&rsquo;라는 의문이 들었습니다. 하지만 핵심은 구분 자체가 없는 것이 아니라, Hugging Face와 달리 런타인이 메타데이터를 기반으로 자동 라우팅한다는 점입니다. 또한 멀티모달 입력이나 분류 작업 가능 여부도 아키텍처와 런타임 지원 여부에 따라 달라진다는 점을 명확히 했습니다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>GGUF 모델은 Hugging Face Transformers와 달리 사용자가 직접 Task 클래스를 지정하지 않고, 런타임이 메타데이터를 기반으로 자동으로 적합한 구현 방식을 로드한다는 점이 핵심입니다. 멀티모달 모델의 경우 이미지와 텍스트가 별도 인코더를 거쳐 프로젝터를 통해 언어 모델에 입력되며, 이는 아키텍처와 런타임이 지원해야 하는 기능입니다. 따라서 범용 생성 LLM도 가능하지만, 전용 분류 모델이 필요한 이유는 Task별로 최적화된 헤드 구조와 추상화 계층의 차이 때문입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Hugging Face Transformers 방식 (Task 직접 지정)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> AutoModelForSequenceClassification
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> AutoModelForSequenceClassification<span style="color:#f92672">.</span>from_pretrained(<span style="color:#e6db74">&#34;skt/kobert-base-v1&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># classification head를 통해 label/logits/probability 출력</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># GGUF 런타임 방식 (자동 라우팅)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># python 코드에서 AutoModelForCausalLM을 직접 호출하지 않음</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># llama.cpp runtime이 model metadata를 보고 적절한 방식으로 로드 및 실행</span>
+</span></span></code></pre></div><h2 id="6-bert-hidden-state와-토큰-표현의-이해">6. BERT hidden state와 토큰 표현의 이해<a hidden class="anchor" aria-hidden="true" href="#6-bert-hidden-state와-토큰-표현의-이해">#</a></h2>
+<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
+<p>나는 <code>model</code>이라는 변수명에 토크나이저 객체를 할당하는 실수를 범해, 모델 호출 시 오류가 발생했던 경험을 했다. 또한 <code>input_ids[0]</code>에서 <code>[0]</code>이 배치 내 첫 번째 문장을 의미한다는 점을 명확히 이해하게 되었다. 마지막으로 768차원 벡터가 단어의 고정적인 의미보다는 현재 문맥을 반영한 동적 표현임을 파악했다.</p>
+<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
+<ol>
+<li><code>model</code>이라는 변수명에 토크나이저 객체를 할당해버려, 모델 호출 시 오류가 발생했던 점.</li>
+<li><code>[0]</code> 인덱스가 배치 내 첫 번째 문장을 의미하는지 vocabluary ID를 의미하는지 momentarily 혼동했던 점.</li>
+<li>768차원 벡터가 단어의 고정적인 의미를 담고 있는지, 현재 문맥을 반영한 표현인지 구분이 필요했던 점.</li>
+</ol>
+<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
+<p>BERT 모델에 토큰 ID와 어텐션 마스크를 입력하면, 배치 크기 × 시퀀스 길이 × 768 차원의 <code>last_hidden_state</code>가 반환된다. 이 768차원 벡터는 단어의 고정적인 의미가 아니라, 현재 문맥을 반영한 토큰별 표현임을 명확히 이해해야 한다. variable naming error와 같은 사소한 실수에도 모델 실행에 치명적인 영향을 미칠 수 있음을 인지하고 코드를 신중하게 작성하는 습관을 기르는 것이 중요하다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 토크나이저와 모델을 별도 변수로 명확히 분리</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> AutoTokenizer, AutoModel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>tokenizer <span style="color:#f92672">=</span> AutoTokenizer<span style="color:#f92672">.</span>from_pretrained(<span style="color:#e6db74">&#34;bert-base-uncased&#34;</span>)
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> AutoModel<span style="color:#f92672">.</span>from_pretrained(<span style="color:#e6db74">&#34;bert-base-uncased&#34;</span>)  <span style="color:#75715e"># ✓ model 변수에 실제 모델 할당</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Hello, my dog is cute&#34;</span>
+</span></span><span style="display:flex;"><span>inputs <span style="color:#f92672">=</span> tokenizer(text, return_tensors<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pt&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 모델 추론 (이제 model이 실제 BERT 모델을 의미함)</span>
+</span></span><span style="display:flex;"><span>outputs <span style="color:#f92672">=</span> model(<span style="color:#f92672">**</span>inputs)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># last_hidden_state는 [batch_size, sequence_length, hidden_dim] 형태</span>
+</span></span><span style="display:flex;"><span>last_hidden_state <span style="color:#f92672">=</span> outputs<span style="color:#f92672">.</span>last_hidden_state
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 배치 내 첫 번째 문장의 토큰 벡터 예시 (index 0은 [CLS] 토큰)</span>
+</span></span><span style="display:flex;"><span>first_token_vector <span style="color:#f92672">=</span> last_hidden_state[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>]  <span style="color:#75715e"># shape: torch.Size([768])</span>
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>오늘은 모델 파라미터 배치 방식(device_map)과 실행 장치 고정 방식(device 지정)의 명확한 구분, 그리고 AutoClass가 Task에 맞는 클래스를 자동 매핑해주는 추상화 레이어의 역할을 이해했다. 또한 로지트를 확률로 변환하는 softmax의 과정과 id2label 매핑 확인의 중요성, 그리고 모델 입력에서 attention_mask가 실제 입력을 가리는 마스크 역할을 한다는 점도 명확히 했다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<ul>
+<li><code>device_map</code>과 <code>device 지정</code>은 모델 파라미터 배치와 실행 장치 고정이라는 개념적 차이를 명확히 구분하여, 불필요한 오류를 방지할 것.</li>
+<li>AutoClass 활용 시 Task를 먼저 정의하고 그에 맞는 클래스를 자동 매핑받도록 습관화하여, 실수 확률을 낮출 것.</li>
+<li>모델 출력값(로지트/확률)을 해석할 때 <code>id2label</code> 매핑 정보와 float16 정밀도 한계를 항상 확인하여, 정확한 클래스 판단을 내릴 것.</li>
+</ul>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<ul>
+<li><strong>AutoClass와 Task 자동 매핑</strong>: AutoClass가 단순히 모델을 로드하는 것을 넘어, 사용자가 지정한 Task에 맞는 <code>For...</code> 클래스를 찾아주는 추상화 레이어임을 재확인하고, 실제 파이프라인이나 프롬프트 방식과의 차이를 명확히 이해하기.</li>
+<li><strong>로지트와 확률 변환 과정</strong>: softmax 함수를 통해 로지트를 유효한 확률 분포로 정규화하는 원리를 복습하고, <code>id2label</code> 매핑 정보와 float16 정밀도 문제로 인한 확률 값 해석 시 주의점을 다시 점검한다.</li>
+<li><strong>용어의 위치와 역할 구분</strong>: <code>attention_mask</code>와 같은 용어가 모델 입력, 예측 결과, 시스템 흐름 중 어디에 해당하는지 파악하여 개념 간의 혼동을 방지하고, 정확한 의미를 적용할 수 있도록 정리한다.</li>
+</ul>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-09-03-am-daily/">
+    <span class="title">« Prev</span>
+    <span>오늘 오전, XPU 환경 Gemma 2 구동과 답변 추출 기법에 대해 정리했습니다.</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-09-02-am-daily/">
+    <span class="title">Next »</span>
+    <span>로컬 LLM 환경 구축을 위한 Hugging Face 핵심 개념 정리: 모델 구조와 도구, sharding과 device placement 구분, Transformers와 Datasets 역할 분리, 그리고 실전 모델 선택 기준</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
