@@ -215,6 +215,42 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">XPU 호환성 오해와 라이브러리 버전 충돌 정리 프롬프트 구조화와 steps·네거티브 프롬프트 활용법, Ollama Windows 설치 시 모델 저장소 분리 방법 및 Vulkan 감지와 GPU 오프로드의 실제 한계 파악
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 XPU 호환성과 라이브러리 버전 충돌 극복기 프롬프트 구조화와 steps 활용법, 네거티브 프롬프트의 필요성 Ollama Windows 설치와 모델 저장소 분리 🟡 초보자 시점, 학습자의 혼란 📌 정리된 이해 🛠️ 실습 예시 Vulkan 감지와 실제 GPU 오프로드의 간극 총평 1. XPU 호환성과 라이브러리 버전 충돌 극복기 무엇을 배웠나 처음에는 XPU 호환성 문제라고 생각했으나, 실제로는 diffusers, transformers, huggingface-hub 라이브러리 간의 버전 불일치로 인한 dependency conflict였습니다. 텍스트 생성보다 이미지 생성이 환경 궁합에 민감하므로, XPU 사용 시 기존 성공했던 설정이나 버전을 그대로 유지하는 것이 가장 중요하다는 점을 깨달았습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-04 00:00:00 +0000 UTC'>2026년 9월 4일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to XPU 호환성 오해와 라이브러리 버전 충돌 정리 프롬프트 구조화와 steps·네거티브 프롬프트 활용법, Ollama Windows 설치 시 모델 저장소 분리 방법 및 Vulkan 감지와 GPU 오프로드의 실제 한계 파악" href="https://Han-think.github.io/learning/2026-09-04-pm-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">오늘 오전, AutoTokenizer와 AutoModel 직접 연결 이해하기: `pipeline()`는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, 두 방식은 wrapper와 그 내부의 부품 관계에 있으며 특수 하드웨어 환경에서는 직접 연결 방식을 통해 backend와의 인터페이스를 잡아주는 과정이 필수적이다.
+Qwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리: TextStreamer를 사용하려면 단순히 클래스를 생성하는 것만으로는 충분하지 않으며, generate() 메서드에 인자로 전달해야 실시간 토큰 출력이 가능하다.
+핵심적인 학습 포인트는 프롬프트를 message 리스트 형태로 구조화한 뒤 apply_chat_template()을 호출하여 모델이 기대하는 대화 형식으로 변환한 다음, tokenizer에 입력해야 한다는 점이다. chat template가 적용되지 않은 상태로 tokenizer에 직접 입력을 하면 모델이 예상하지 못한 형식을 받게 되어 오류가 발생할 수 있다.
+SDPA와 EAGR 속도 비교 실험 (XPU 환경): SDPA와 EAGER 속도 차이를 단순히 실행 결과로 비교하면 안 되며, XPU 환경에서는 첫 실행 시 하드웨어 초기화 비용이 섞이기 때문에 warm-up 과정을 반드시 거쳐야 정확한 측정이 가능하다. 또한 CUDA용 `torch.cuda.synchronize()` 대신 XPU 환경에 맞게 `torch.xpu.synchronize()`를 사용해야 하며, 내 하드웨어 백엔드에 맞는 최적의 구현체를 직접 측정하여 검증하는 것이 이론을 외우는 것보다 훨씬 실용적이다.
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 AutoTokenizer와 AutoModel 직접 연결 이해하기 핵심 내용 코드 예시: AutoTokenizer &#43; AutoModelForCausalLM 직접 연결 코드 근거 Qwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리 SDPA와 EAGER 속도 비교 실험 (XPU 환경) 총평 1. AutoTokenizer와 AutoModel 직접 연결 이해하기 무엇을 배웠나 pipeline()는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, AutoTokenizer와 AutoModelForCausalLM을 직접 연결하면 device 설정나 dtype 제어 등 모델의 세부 파라미터를 자유롭게 관리할 수 있다. 두 방식은 wrapper와 그 내부의 부품 관계에 있으며, 특수 하드웨어 환경에서는 직접 연결 방식을 통해 backend와의 인터페이스를 잡아주는 과정이 필수적이다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-04 00:00:00 +0000 UTC'>2026년 9월 4일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오늘 오전, AutoTokenizer와 AutoModel 직접 연결 이해하기: `pipeline()`는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, 두 방식은 wrapper와 그 내부의 부품 관계에 있으며 특수 하드웨어 환경에서는 직접 연결 방식을 통해 backend와의 인터페이스를 잡아주는 과정이 필수적이다.
+Qwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리: TextStreamer를 사용하려면 단순히 클래스를 생성하는 것만으로는 충분하지 않으며, generate() 메서드에 인자로 전달해야 실시간 토큰 출력이 가능하다.
+핵심적인 학습 포인트는 프롬프트를 message 리스트 형태로 구조화한 뒤 apply_chat_template()을 호출하여 모델이 기대하는 대화 형식으로 변환한 다음, tokenizer에 입력해야 한다는 점이다. chat template가 적용되지 않은 상태로 tokenizer에 직접 입력을 하면 모델이 예상하지 못한 형식을 받게 되어 오류가 발생할 수 있다.
+SDPA와 EAGR 속도 비교 실험 (XPU 환경): SDPA와 EAGER 속도 차이를 단순히 실행 결과로 비교하면 안 되며, XPU 환경에서는 첫 실행 시 하드웨어 초기화 비용이 섞이기 때문에 warm-up 과정을 반드시 거쳐야 정확한 측정이 가능하다. 또한 CUDA용 `torch.cuda.synchronize()` 대신 XPU 환경에 맞게 `torch.xpu.synchronize()`를 사용해야 하며, 내 하드웨어 백엔드에 맞는 최적의 구현체를 직접 측정하여 검증하는 것이 이론을 외우는 것보다 훨씬 실용적이다." href="https://Han-think.github.io/learning/2026-09-04-am-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">오늘 오전, XPU 환경 Gemma 2 구동과 답변 추출 기법에 대해 정리했습니다.
     </h2>
   </header>
@@ -332,40 +368,6 @@
 
 <span title='2026-08-31 00:00:00 +0000 UTC'>2026년 8월 31일</span>&nbsp;·&nbsp;<span>7 min</span></footer>
   <a class="entry-link" aria-label="post link to 오늘 오후, express-08-board 통합 분석을 통해 MongoDB와 JWT가 어우러지는 구조를 명확히 이해했습니다. 특히 mongoose-sequence를 통한 버전 관리의 중요성을 새롭게 인식했고, sort와 skip/limit을 활용한 페이지네이션 및 findOneAndUpdate로 조회수를 동시 증가시키는 실전 코드를 적용해봤습니다. 이미지 업로드 여정에서 multer를 사용해 파일을 서버에 물리적으로 보관하는 구조를 설계했으며, 쿼리 필터와 $inc 연산자를 활용해 기분과 좋아요 수 기능을 구현하는 방법을 구체화했습니다. 페이지네이션 UI 흐름에서는 skip/limit만으로는 부족하다는 사실을 깨닫고, totalPages를 기준으로 [다음]·[끝] 버튼의 활성화 여부를 결정하는 3층 구조의 로직을 이해하게 되었습니다. 또한 LearningLog는 &#39;이해 변화&#39; 기록 공간이고 Project는 실행 가능한 코드라는 점을 명확히 구분하여, 내가 배운 기술인지 학습 기록인지 실행 코드인지를 스스로 판단하며 폴더 역할을 정확히 분리할 수 있게 된 소중한 시간이었습니다." href="https://Han-think.github.io/learning/2026-08-31-pm-daily/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오늘 오후, 회원 CRUD 패턴을 완성하며 라우터-모델-DB 흐름의 일체감을 체득했습니다. JWT 인증에서 `return` 제어 소홀 시 발생하는 중복 응급 상황을 경계하고, Express 프로젝트 구조를 &#39;역할&#39;이 아닌 &#39;위치&#39; 관점으로 재정립했습니다. 개인 웹서비스 프로젝트의 첫걸음으로 API 통합의 중요성을 확인했으며, Next.js와 Express 연동을 통해 백엔드·프론트엔드의 HTTP 계약 경험을 쌓았습니다.
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 회원 CRUD 패턴 통찰과 적용 과정 JWT 인증 흐름과 return 제어의 중요성 Express 프로젝트 구조 이해하기 개인 웹서비스 프로젝트 1일차 서버 구현 준비 (초보자 워킹 노트) 서버 실행 및 MongoDB 연결 확인 기본적인 GET/POST API 테스트 (회원가입 모델) 회원가입 API 라우터 라우터 통합 및 미들웨어 설정 1. 회원 CRUD 패턴 통찰과 적용 과정 무엇을 배웠나 오늘 드디어 회원 CRUD 기능을 모두 완성했습니다. 그동안 각 기능이 독립된 것처럼 느껴졌지만, 알고 보니 모두 같은 Router → Model → DB 흐름 안에서 동작한다는 점을 깨닫고 이해가 깊어졌습니다. 이제 Create, Read, Update, Delete의 패턴을 익혀서 실무에서 바로 적용할 수 있게 되었습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-08-28 00:00:00 +0000 UTC'>2026년 8월 28일</span>&nbsp;·&nbsp;<span>10 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오늘 오후, 회원 CRUD 패턴을 완성하며 라우터-모델-DB 흐름의 일체감을 체득했습니다. JWT 인증에서 `return` 제어 소홀 시 발생하는 중복 응급 상황을 경계하고, Express 프로젝트 구조를 &#39;역할&#39;이 아닌 &#39;위치&#39; 관점으로 재정립했습니다. 개인 웹서비스 프로젝트의 첫걸음으로 API 통합의 중요성을 확인했으며, Next.js와 Express 연동을 통해 백엔드·프론트엔드의 HTTP 계약 경험을 쌓았습니다." href="https://Han-think.github.io/learning/2026-08-28-pm-daily/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오늘은 MongoDB와 Express가 데이터를 주고받는 연결 흐름을 이해하는 데 집중했습니다. 데이터가 즉시 보이지 않는 현상은 DB 연결 자체가 아닌, Schema나 Model 설정 단계가 완료되지 않아서 발생한다는 점을 명확히 했습니다. 특히 HTTP 요청이 Router를 거쳐 Mongoose 모델을 호출한 뒤 `create()` 메서드로 실제 document가 저장되는 전층 구조를 파악하는 것이 중요했습니다.
-Mongoose Schema는 MongoDB 위에 놓인 애플리케이션 규칙이며, 데이터베이스의 유연함과 스키마 정의의 목적을 명확히 구분할 수 있었습니다. 특히 `required`, `trim` 같은 옵션들이 DB 레벨에서 적용되는 것이 아니라 Mongoose가 데이터를 관리하는 방식임을 이해하는 데 집중했습니다. 이를 통해 Model이 CRUD 메서드를 제공하며 실제 DB 작업을 수행하는 인터페이스 역할을 한다는 점도 확실히 grasp하게 되었습니다.
-핵심은 HTTP 메서드와 라우팅 경로의 조합이었으며, 404 에러는 DB 코드가 실행되기 전 라우팅 단계에서 발생한다는 사실을 깨닫고 트러블슈팅 효율을 높였습니다. POST 요청을 보낼 때 `app.use`의 prefix와 `router.post`의 path가 합쳐져 최종 URL이 결정된다는 점을 명확히 이해하게 되었습니다. 서버가 죽었다고 생각했던 &#39;Cannot POST&#39; 에러는 실제로는 해당 경로에 POST 메서드를 처리하는 라우트가 정의되지 않아 발생한 &#39;길 찾기 실패&#39; 상황이었음을 깨닫았습니다. 404 에러가 나면 HTTP Method, app.use prefix, router path 세 가지를 순차적으로 확인하여 원인을 파악해야 한다는 점도 중요한 정리 포인트로 남겼습니다.
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 HTTP 요청이 MongoDB에 저장되는 전층 연결 구조 Mongoose Schema와 Model 옵션 이해하기 회원가입 POST와 라우팅 오류 해결하기 HTTP 라우트와 테스트 파일 조합 이해하기 총평 1. HTTP 요청이 MongoDB에 저장되는 전층 연결 구조 무엇을 배웠나 오늘은 MongoDB와 Express가 데이터를 주고받는 연결 흐름을 이해하는 데 집중했습니다. 데이터가 즉시 보이지 않는 현상은 DB 연결 자체가 아닌, Schema나 Model 설정 단계가 완료되지 않아서 발생한다는 점을 명확히 했습니다. 특히 HTTP 요청이 Router를 거쳐 Mongoose 모델을 호출한 뒤 create() 메서드로 실제 document가 저장되는 전층 구조를 파악하는 것이 중요했습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-08-28 00:00:00 +0000 UTC'>2026년 8월 28일</span>&nbsp;·&nbsp;<span>7 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오늘은 MongoDB와 Express가 데이터를 주고받는 연결 흐름을 이해하는 데 집중했습니다. 데이터가 즉시 보이지 않는 현상은 DB 연결 자체가 아닌, Schema나 Model 설정 단계가 완료되지 않아서 발생한다는 점을 명확히 했습니다. 특히 HTTP 요청이 Router를 거쳐 Mongoose 모델을 호출한 뒤 `create()` 메서드로 실제 document가 저장되는 전층 구조를 파악하는 것이 중요했습니다.
-Mongoose Schema는 MongoDB 위에 놓인 애플리케이션 규칙이며, 데이터베이스의 유연함과 스키마 정의의 목적을 명확히 구분할 수 있었습니다. 특히 `required`, `trim` 같은 옵션들이 DB 레벨에서 적용되는 것이 아니라 Mongoose가 데이터를 관리하는 방식임을 이해하는 데 집중했습니다. 이를 통해 Model이 CRUD 메서드를 제공하며 실제 DB 작업을 수행하는 인터페이스 역할을 한다는 점도 확실히 grasp하게 되었습니다.
-핵심은 HTTP 메서드와 라우팅 경로의 조합이었으며, 404 에러는 DB 코드가 실행되기 전 라우팅 단계에서 발생한다는 사실을 깨닫고 트러블슈팅 효율을 높였습니다. POST 요청을 보낼 때 `app.use`의 prefix와 `router.post`의 path가 합쳐져 최종 URL이 결정된다는 점을 명확히 이해하게 되었습니다. 서버가 죽었다고 생각했던 &#39;Cannot POST&#39; 에러는 실제로는 해당 경로에 POST 메서드를 처리하는 라우트가 정의되지 않아 발생한 &#39;길 찾기 실패&#39; 상황이었음을 깨닫았습니다. 404 에러가 나면 HTTP Method, app.use prefix, router path 세 가지를 순차적으로 확인하여 원인을 파악해야 한다는 점도 중요한 정리 포인트로 남겼습니다." href="https://Han-think.github.io/learning/2026-08-28-am-daily/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

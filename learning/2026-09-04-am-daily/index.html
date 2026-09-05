@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오늘 오전, AutoTokenizer와 AutoModel 직접 연결 이해하기: `pipeline()`는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, 두 방식은 wrapper와 그 내부의 부품 관계에 있으며 특수 하드웨어 환경에서는 직접 연결 방식을 통해 backend와의 인터페이스를 잡아주는 과정이 필수적이다.
+Qwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리: TextStreamer를 사용하려면 단순히 클래스를 생성하는 것만으로는 충분하지 않으며, generate() 메서드에 인자로 전달해야 실시간 토큰 출력이 가능하다.
+핵심적인 학습 포인트는 프롬프트를 message 리스트 형태로 구조화한 뒤 apply_chat_template()을 호출하여 모델이 기대하는 대화 형식으로 변환한 다음, tokenizer에 입력해야 한다는 점이다. chat template가 적용되지 않은 상태로 tokenizer에 직접 입력을 하면 모델이 예상하지 못한 형식을 받게 되어 오류가 발생할 수 있다.
+SDPA와 EAGR 속도 비교 실험 (XPU 환경): SDPA와 EAGER 속도 차이를 단순히 실행 결과로 비교하면 안 되며, XPU 환경에서는 첫 실행 시 하드웨어 초기화 비용이 섞이기 때문에 warm-up 과정을 반드시 거쳐야 정확한 측정이 가능하다. 또한 CUDA용 `torch.cuda.synchronize()` 대신 XPU 환경에 맞게 `torch.xpu.synchronize()`를 사용해야 하며, 내 하드웨어 백엔드에 맞는 최적의 구현체를 직접 측정하여 검증하는 것이 이론을 외우는 것보다 훨씬 실용적이다. | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-09-04 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-09-04-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-09-04-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function () {
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-09-04-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오늘 오전, AutoTokenizer와 AutoModel 직접 연결 이해하기: `pipeline()`는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, 두 방식은 wrapper와 그 내부의 부품 관계에 있으며 특수 하드웨어 환경에서는 직접 연결 방식을 통해 backend와의 인터페이스를 잡아주는 과정이 필수적이다.
+Qwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리: TextStreamer를 사용하려면 단순히 클래스를 생성하는 것만으로는 충분하지 않으며, generate() 메서드에 인자로 전달해야 실시간 토큰 출력이 가능하다.
+핵심적인 학습 포인트는 프롬프트를 message 리스트 형태로 구조화한 뒤 apply_chat_template()을 호출하여 모델이 기대하는 대화 형식으로 변환한 다음, tokenizer에 입력해야 한다는 점이다. chat template가 적용되지 않은 상태로 tokenizer에 직접 입력을 하면 모델이 예상하지 못한 형식을 받게 되어 오류가 발생할 수 있다.
+SDPA와 EAGR 속도 비교 실험 (XPU 환경): SDPA와 EAGER 속도 차이를 단순히 실행 결과로 비교하면 안 되며, XPU 환경에서는 첫 실행 시 하드웨어 초기화 비용이 섞이기 때문에 warm-up 과정을 반드시 거쳐야 정확한 측정이 가능하다. 또한 CUDA용 `torch.cuda.synchronize()` 대신 XPU 환경에 맞게 `torch.xpu.synchronize()`를 사용해야 하며, 내 하드웨어 백엔드에 맞는 최적의 구현체를 직접 측정하여 검증하는 것이 이론을 외우는 것보다 훨씬 실용적이다.">
+  <meta property="og:description" content="2026-09-04 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-09-04T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-09-04T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오늘 오전, AutoTokenizer와 AutoModel 직접 연결 이해하기: `pipeline()`는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, 두 방식은 wrapper와 그 내부의 부품 관계에 있으며 특수 하드웨어 환경에서는 직접 연결 방식을 통해 backend와의 인터페이스를 잡아주는 과정이 필수적이다.
+Qwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리: TextStreamer를 사용하려면 단순히 클래스를 생성하는 것만으로는 충분하지 않으며, generate() 메서드에 인자로 전달해야 실시간 토큰 출력이 가능하다.
+핵심적인 학습 포인트는 프롬프트를 message 리스트 형태로 구조화한 뒤 apply_chat_template()을 호출하여 모델이 기대하는 대화 형식으로 변환한 다음, tokenizer에 입력해야 한다는 점이다. chat template가 적용되지 않은 상태로 tokenizer에 직접 입력을 하면 모델이 예상하지 못한 형식을 받게 되어 오류가 발생할 수 있다.
+SDPA와 EAGR 속도 비교 실험 (XPU 환경): SDPA와 EAGER 속도 차이를 단순히 실행 결과로 비교하면 안 되며, XPU 환경에서는 첫 실행 시 하드웨어 초기화 비용이 섞이기 때문에 warm-up 과정을 반드시 거쳐야 정확한 측정이 가능하다. 또한 CUDA용 `torch.cuda.synchronize()` 대신 XPU 환경에 맞게 `torch.xpu.synchronize()`를 사용해야 하며, 내 하드웨어 백엔드에 맞는 최적의 구현체를 직접 측정하여 검증하는 것이 이론을 외우는 것보다 훨씬 실용적이다.">
+  <meta name="twitter:description" content="2026-09-04 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오늘 오전, AutoTokenizer와 AutoModel 직접 연결 이해하기: `pipeline()`는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, 두 방식은 wrapper와 그 내부의 부품 관계에 있으며 특수 하드웨어 환경에서는 직접 연결 방식을 통해 backend와의 인터페이스를 잡아주는 과정이 필수적이다.\nQwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리: TextStreamer를 사용하려면 단순히 클래스를 생성하는 것만으로는 충분하지 않으며, generate() 메서드에 인자로 전달해야 실시간 토큰 출력이 가능하다.\n핵심적인 학습 포인트는 프롬프트를 message 리스트 형태로 구조화한 뒤 apply_chat_template()을 호출하여 모델이 기대하는 대화 형식으로 변환한 다음, tokenizer에 입력해야 한다는 점이다. chat template가 적용되지 않은 상태로 tokenizer에 직접 입력을 하면 모델이 예상하지 못한 형식을 받게 되어 오류가 발생할 수 있다.\nSDPA와 EAGR 속도 비교 실험 (XPU 환경): SDPA와 EAGER 속도 차이를 단순히 실행 결과로 비교하면 안 되며, XPU 환경에서는 첫 실행 시 하드웨어 초기화 비용이 섞이기 때문에 warm-up 과정을 반드시 거쳐야 정확한 측정이 가능하다. 또한 CUDA용 `torch.cuda.synchronize()` 대신 XPU 환경에 맞게 `torch.xpu.synchronize()`를 사용해야 하며, 내 하드웨어 백엔드에 맞는 최적의 구현체를 직접 측정하여 검증하는 것이 이론을 외우는 것보다 훨씬 실용적이다.",
+      "item": "https://Han-think.github.io/learning/2026-09-04-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오늘 오전, AutoTokenizer와 AutoModel 직접 연결 이해하기: `pipeline()`는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, 두 방식은 wrapper와 그 내부의 부품 관계에 있으며 특수 하드웨어 환경에서는 직접 연결 방식을 통해 backend와의 인터페이스를 잡아주는 과정이 필수적이다.\nQwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리: TextStreamer를 사용하려면 단순히 클래스를 생성하는 것만으로는 충분하지 않으며, generate() 메서드에 인자로 전달해야 실시간 토큰 출력이 가능하다.\n핵심적인 학습 포인트는 프롬프트를 message 리스트 형태로 구조화한 뒤 apply_chat_template()을 호출하여 모델이 기대하는 대화 형식으로 변환한 다음, tokenizer에 입력해야 한다는 점이다. chat template가 적용되지 않은 상태로 tokenizer에 직접 입력을 하면 모델이 예상하지 못한 형식을 받게 되어 오류가 발생할 수 있다.\nSDPA와 EAGR 속도 비교 실험 (XPU 환경): SDPA와 EAGER 속도 차이를 단순히 실행 결과로 비교하면 안 되며, XPU 환경에서는 첫 실행 시 하드웨어 초기화 비용이 섞이기 때문에 warm-up 과정을 반드시 거쳐야 정확한 측정이 가능하다. 또한 CUDA용 `torch.cuda.synchronize()` 대신 XPU 환경에 맞게 `torch.xpu.synchronize()`를 사용해야 하며, 내 하드웨어 백엔드에 맞는 최적의 구현체를 직접 측정하여 검증하는 것이 이론을 외우는 것보다 훨씬 실용적이다.",
+  "name": "오늘 오전, AutoTokenizer와 AutoModel 직접 연결 이해하기: \u0060pipeline()\u0060는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, 두 방식은 wrapper와 그 내부의 부품 관계에 있으며 특수 하드웨어 환경에서는 직접 연결 방식을 통해 backend와의 인터페이스를 잡아주는 과정이 필수적이다.\nQwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리: TextStreamer를 사용하려면 단순히 클래스를 생성하는 것만으로는 충분하지 않으며, generate() 메서드에 인자로 전달해야 실시간 토큰 출력이 가능하다.\n핵심적인 학습 포인트는 프롬프트를 message 리스트 형태로 구조화한 뒤 apply_chat_template()을 호출하여 모델이 기대하는 대화 형식으로 변환한 다음, tokenizer에 입력해야 한다는 점이다. chat template가 적용되지 않은 상태로 tokenizer에 직접 입력을 하면 모델이 예상하지 못한 형식을 받게 되어 오류가 발생할 수 있다.\nSDPA와 EAGR 속도 비교 실험 (XPU 환경): SDPA와 EAGER 속도 차이를 단순히 실행 결과로 비교하면 안 되며, XPU 환경에서는 첫 실행 시 하드웨어 초기화 비용이 섞이기 때문에 warm-up 과정을 반드시 거쳐야 정확한 측정이 가능하다. 또한 CUDA용 \u0060torch.cuda.synchronize()\u0060 대신 XPU 환경에 맞게 \u0060torch.xpu.synchronize()\u0060를 사용해야 하며, 내 하드웨어 백엔드에 맞는 최적의 구현체를 직접 측정하여 검증하는 것이 이론을 외우는 것보다 훨씬 실용적이다.",
+  "description": "2026-09-04 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 AutoTokenizer와 AutoModel 직접 연결 이해하기 핵심 내용 코드 예시: AutoTokenizer + AutoModelForCausalLM 직접 연결 코드 근거 Qwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리 SDPA와 EAGER 속도 비교 실험 (XPU 환경) 총평 1. AutoTokenizer와 AutoModel 직접 연결 이해하기 무엇을 배웠나 pipeline()는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, AutoTokenizer와 AutoModelForCausalLM을 직접 연결하면 device 설정나 dtype 제어 등 모델의 세부 파라미터를 자유롭게 관리할 수 있다. 두 방식은 wrapper와 그 내부의 부품 관계에 있으며, 특수 하드웨어 환경에서는 직접 연결 방식을 통해 backend와의 인터페이스를 잡아주는 과정이 필수적이다.\n헷갈렸던 점 처음에는 pipeline()가 모든 과정을 자동으로 처리한다고 생각하여, 직접 AutoTokenizer와 AutoModelForCausalLM을 연결할 때 단계가 복잡하게 느껴졌습니다. 특히 텐서 디바이스 이동과 attention mask 생성 등 세부적인 메커니즘이 pipeline() 내부에서 숨겨져 있어 코드를 작성할 진입점이 막막했습니다.\n혼란을 겪은 후, 두 방식의 역할 분담이 명확해졌습니다. pipeline()는 전처리부터 후처리까지 자동으로 처리하는 ‘올인원’ 인터페이스이며, AutoTokenizer와 AutoModelForCausalLM은 device 설정나 dtype 제어 등 모델 세부 파라미터를 직접 관리해야 할 때 필요한 ‘직접 연결’ 방식입니다. 결국 pipeline()는 wrapper이고 AutoModel은 그 안의 부품이라고 이해하게 되었습니다.\n정리된 이해 pipeline()는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, AutoTokenizer와 AutoModelForCausalLM을 직접 연결하면 device 설정 및 dtype 제어 등 모델 세부 파라미터를 사용자가 직접 관리할 수 있다.\n🟢 2. 정리된 이해 (Corrected Understanding) 핵심 내용 pipeline()는 빠른 프로토타입 작성과 일반적인 추론에 최적화된 ‘올인원’ 인터페이스입니다. 전처리부터 후처리까지 자동으로 처리해 주므로, 모델의 동작 원리에 깊게 관여하지 않고도 결과를 빠르게 얻을 수 있습니다.\n반면 AutoTokenizer + AutoModelForCausalLM는 device 설정, dtype 제어, attention 구현 등 모델의 세부 파라미터를 직접 관리해야 할 때 필요한 ‘직접 연결’ 방식입니다. Intel XPU나 특정 하드웨어 환경에서 최적화를 수행할 때는 이 방식을 통해 backend와의 인터페이스를 직접 잡아줘야 합니다.\n결국 pipeline()는 wrapper이고, AutoModel은 그 안의 부품이라고 이해하면 됩니다. 특수 백엔드를 쓸 때는 wrapper를 벗겨내고 내부 stage를 직접 만져주는 과정이 필수적이죠.\n🟠 3. 실습 예시 (Personal Interpretation \u0026 Example) 코드 예시: AutoTokenizer + AutoModelForCausalLM 직접 연결 from transformers import AutoTokenizer, AutoModelForCausalLM import torch # 1. 모델과 토크나이저 로드 model_name = \"meta-llama/Llama-3.2-1B-Instruct\" tokenizer = AutoTokenizer.from_pretrained(model_name) model = AutoModelForCausalLM.from_pretrained( model_name, torch_dtype=\"auto\", # 자동 dtype 설정 (float16 등) ) # 2. 입력 텍스트 토크나이징 (입력 전처리) inputs = tokenizer(\"Hello, my name is\", return_tensors=\"pt\") # 3. 텐서를 모델이 있는 디바이스(device)로 이동 inputs = {k: v.to(model.device) for k, v in inputs.items()} # 4. 모델을 통한 텍스트 생성 (핵심 추론 과정) # generate 메서드는 attention mask를 내부적으로 처리합니다. generated_ids = model.generate(**inputs, max_new_tokens=50) # 5. generated IDs를 텍스트로 디코딩 (출력 후처리) output_text = tokenizer.decode(generated_ids[0], skip_special_tokens=True) print(output_text) 코드 근거 AutoTokenizer.from_pretrained: 모델과 동일한 토크나이저를 로드하여 텍스트를 ID 시퀀스로 변환합니다. (note_date: 2026-09-04, model: nvidia-nemotron-3.5-lightning-30b-a3b) return_tensors=\"pt\": PyTorch 텐서 형태로 반환하여 downstream 연산에 바로 사용 가능하게 합니다. model.generate(): Causal LM 추론의 핵심 함수로, 입력된 토큰을 기반으로 다음 토큰을 자동 반복 생성합니다. attention mask는 모델 내부에서 inputs_embeds나 position_ids를 바탕으로 자동 생성되어 **inputs와 함께 전달됩니다. tokenizer.decode(): 모델이 출력한 token ID 시퀀스를 사람이 읽을 수 있는 문자열로 변환합니다. skip_special_tokens=True로 special tokens (BOS/EOS 등)은 제거하고 실제 의미 있는 텍스트만 추출합니다. 위 내용은 학습 노트 SRC-20260905-001의 3. 실습 예시 섹션을 요약한 것입니다.\n2. Qwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리 무엇을 배웠나 TextStreamer를 사용하려면 단순히 클래스를 생성하는 것만으로는 충분하지 않으며, generate() 메서드에 인자로 전달해야 실시간 토큰 출력이 가능하다.\n핵심적인 학습 포인트는 프롬프트를 message 리스트 형태로 구조화한 뒤 apply_chat_template()을 호출하여 모델이 기대하는 대화 형식으로 변환한 다음, tokenizer에 입력해야 한다는 점이다. chat template가 적용되지 않은 상태로 tokenizer에 직접 입력을 하면 모델이 예상하지 못한 형식을 받게 되어 오류가 발생할 수 있다.\n헷갈렸던 점 TextStreamer를 별도로 생성해두는 것만으로는 실시간 출력이 되지 않으며, 반드시 generate() 함수에 인자로 전달되어야 토큰이 스트리밍된다.\n특히 chat template가 적용된 message 리스트를 tokenizer에 직접 입력하면 모델이 기대하지 못한 형식의 입력을 받게 되어 오류가 발생할 수 있다.\n정리된 이해 TextStreamer는 generate() 함수에 인자로 전달될 때만 토큰을 실시간으로 출력하며, 단순히 클래스를 생성해두는 것만으로는 효과가 없다. 핵심은 프롬프트를 메시지 리스트로 구조화한 뒤 apply_chat_template()를 호출하여 모델이 기대하는 대화 형식으로 변환한 후 토크나이저에 입력하는 것이다.\nfrom transformers import AutoModelForCausalLM, AutoTokenizer, TextStreamer import torch model_id = \"Qwen/Qwen2.5-7B-Instruct\" # 1. 모델과 토크나이저 로드 model = AutoModelForCausalLM.from_pretrained(model_id, dtype=torch.bfloat16) model = model.to(\"xpu\") tokenizer = AutoTokenizer.from_pretrained(model_id) # 2. chat 구조 생성 및 template 적용 messages = [ {\"role\": \"system\", \"content\": \"You are a helpful assistant.\"}, {\"role\": \"user\", \"content\": \"Hello!\"} ] prompt = tokenizer.apply_chat_template(messages, tokenize=False) # 3. 토큰화 및 XPU로 이동 inputs = tokenizer(prompt).to(model.device) # 4. TextStreamer 생성 및 generate 실행 streamer = TextStreamer(tokenizer, skip_prompt=True, skip_special_tokens=True) _ = model.generate(**inputs, streamer=streamer) 3. SDPA와 EAGER 속도 비교 실험 (XPU 환경) 무엇을 배웠나 SDPA와 EAGER 속도 차이를 단순히 실행 결과로 비교하면 안 되며, XPU 환경에서는 첫 실행 시 하드웨어 초기화 비용이 섞이기 때문에 warm-up 과정을 반드시 거쳐야 정확한 측정이 가능하다. 또한 CUDA용 torch.cuda.synchronize() 대신 XPU 환경에 맞게 torch.xpu.synchronize()를 사용해야 하며, 내 하드웨어 백엔드에 맞는 최적의 구현체를 직접 측정하여 검증하는 것이 이론을 외우는 것보다 훨씬 실용적이다.\n헷갈렸던 점 첫 실행 결과가 실제 속도와 다르다는 점에 당황했으며, XPU 환경에서 synchronize 함수를 어떻게 호출해야 할지 막막했습니다. 단순히 숫자 비교를 넘어 하드웨어별 최적화된 파이프라인의 차이를 이해하는 데 집중해야 했습니다.\n정리된 이해 SDPA와 EAGER는 하드웨어 초기화 비용과 커널 준비 시간 차이로 인해 첫 실행 결과가 실제 속도와 다를 수 있으므로, 반복 실험 후 평균을 내어 검증하는 과정이 필수적입니다. 특히 XPU 환경에서는 torch.cuda.synchronize() 대신 torch.xpu.synchronize()를 사용해야 정확한 성능 측정이 가능합니다. 결국 중요한 것은 특정 하드웨어에 최적화된 구현체를 직접 측정하여 검증하는 실용적인 접근입니다.\nfrom transformers import AutoModelForCausalLM, AutoTokenizer import torch # Qwen2.5-1.5B-Instruct 모델 로드 (XPU 환경용) model = AutoModelForCausalLM.from_pretrained( \"Qwen/Qwen2.5-1.5B-Instruct\", device_map=\"xpu\", # Intel XPU 지정 attn_implementation=\"sdpa\" # sdpa로 설정 후 측정 ) tokenizer = AutoTokenizer.from_pretrained(\"Qwen/Qwen2.5-1.5B-Instruct\") # 입력 토큰 생성 (실제 실험에서는 여기에 warm-up 및 측정이 수행됨) 총평 오늘 오전 전체에서 배운 것 AutoTokenizer와 AutoModel 직접 연결은 device 설정 등 모델 파라미터를 자유롭게 제어할 수 있어 편리하며, Qwen XPU 실행 시 TextStreamer 사용을 위해서는 generate() 메서드에 인자로 반드시 전달해야 한다. 또한 XPU 환경에서 속도 측정을 할 때는 warm-up 과정을 거쳐야 하고 torch.xpu.synchronize()를 사용해야 정확한 비교가 가능하다.\n다음에 조심할 것 torch.xpu.synchronize()를 정확히 호출하여 XPU 환경의 동기화 비용을 반드시 보정해야 정확한 속도 측정이 가능하다. generate() 메서드에 TextStreamer 인자를 직접 전달하지 않으면 실시간 토큰 출력이 작동하지 않으므로, 파이프라인 구성 시 이 점을 간과하지 않도록 주의해야 한다. 첫 실행 전 warm-up 과정을 거치지 않고 단순 비교를 진행하면 하드웨어 초기화 오차가 섞여 SDPA와 EAGER의 실제 성능 차이를 정확히 판단할 수 없다. 다음 복습 주제 다음에 복습할 주제는 다음과 같습니다.\nDirect model connection vs pipeline wrapper: AutoTokenizer와 AutoModelForCausalLM을 직접 연결하면 device 설정이나 dtype 제어 등 모델의 세부 파라미터를 자유롭게 관리할 수 있다는 점, 그리고 특수 하드웨어 환경에서는 backend와의 인터페이스를 잡아주는 과정이 필수적이라는 점을 재확인하고 싶습니다.\nTextStreamer와 Chat Template 적용: generate() 메서드에 인자로 TextStreamer 클래스를 반드시 전달해야만 실시간 토큰 출력이 가능하다는 점, 그리고 프롬프트를 message 리스트 형태로 구조화한 뒤 apply_chat_template()을 호출하여 모델이 기대하는 대화 형식으로 변환한 다음 입력해야 오류를 방지할 수 있다는 점을 다시 정리하고 싶습니다.\nXPU 환경 속도 측정 기법: SDPA와 EAGER의 속도 차이를 비교할 때, XPU 환경에서는 첫 실행 시 하드웨어 초기화 비용이 섞이기 때문에 warm-up 과정을 반드시 거쳐야 정확한 측정이 가능하며, torch.xpu.synchronize()를 사용해야 한다는 점을 실습을 통해 재검증하고 싶습니다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1122",
+  "inLanguage": "en",
+  "datePublished": "2026-09-04T00:00:00Z",
+  "dateModified": "2026-09-04T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-09-04-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/life/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/ai-research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오늘 오전, AutoTokenizer와 AutoModel 직접 연결 이해하기: `pipeline()`는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, 두 방식은 wrapper와 그 내부의 부품 관계에 있으며 특수 하드웨어 환경에서는 직접 연결 방식을 통해 backend와의 인터페이스를 잡아주는 과정이 필수적이다.
+Qwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리: TextStreamer를 사용하려면 단순히 클래스를 생성하는 것만으로는 충분하지 않으며, generate() 메서드에 인자로 전달해야 실시간 토큰 출력이 가능하다.
+핵심적인 학습 포인트는 프롬프트를 message 리스트 형태로 구조화한 뒤 apply_chat_template()을 호출하여 모델이 기대하는 대화 형식으로 변환한 다음, tokenizer에 입력해야 한다는 점이다. chat template가 적용되지 않은 상태로 tokenizer에 직접 입력을 하면 모델이 예상하지 못한 형식을 받게 되어 오류가 발생할 수 있다.
+SDPA와 EAGR 속도 비교 실험 (XPU 환경): SDPA와 EAGER 속도 차이를 단순히 실행 결과로 비교하면 안 되며, XPU 환경에서는 첫 실행 시 하드웨어 초기화 비용이 섞이기 때문에 warm-up 과정을 반드시 거쳐야 정확한 측정이 가능하다. 또한 CUDA용 `torch.cuda.synchronize()` 대신 XPU 환경에 맞게 `torch.xpu.synchronize()`를 사용해야 하며, 내 하드웨어 백엔드에 맞는 최적의 구현체를 직접 측정하여 검증하는 것이 이론을 외우는 것보다 훨씬 실용적이다.
+    </h1>
+    <div class="post-description">
+      2026-09-04 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-09-04 00:00:00 +0000 UTC'>2026년 9월 4일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-autotokenizer%EC%99%80-automodel-%EC%A7%81%EC%A0%91-%EC%97%B0%EA%B2%B0-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">AutoTokenizer와 AutoModel 직접 연결 이해하기</a></li>
+</ol>
+</li>
+<li><a href="#%ED%95%B5%EC%8B%AC-%EB%82%B4%EC%9A%A9">핵심 내용</a></li>
+<li><a href="#%EC%BD%94%EB%93%9C-%EC%98%88%EC%8B%9C-autotokenizer-automodelforcausallm-%EC%A7%81%EC%A0%91-%EC%97%B0%EA%B2%B0">코드 예시: AutoTokenizer + AutoModelForCausalLM 직접 연결</a></li>
+<li><a href="#%EC%BD%94%EB%93%9C-%EA%B7%BC%EA%B1%B0">코드 근거</a></li>
+<li>
+<ol start="2">
+<li><a href="#2-qwen-xpu-%EC%8B%A4%ED%96%89-%EC%8B%9C-textstreamerchat-template-%ED%95%B5%EC%8B%AC-%EC%A0%95%EB%A6%AC">Qwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-sdpa%EC%99%80-eager-%EC%86%8D%EB%8F%84-%EB%B9%84%EA%B5%90-%EC%8B%A4%ED%97%98-xpu-%ED%99%98%EA%B2%BD">SDPA와 EAGER 속도 비교 실험 (XPU 환경)</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-autotokenizer와-automodel-직접-연결-이해하기">1. AutoTokenizer와 AutoModel 직접 연결 이해하기<a hidden class="anchor" aria-hidden="true" href="#1-autotokenizer와-automodel-직접-연결-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p><code>pipeline()</code>는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, <code>AutoTokenizer</code>와 <code>AutoModelForCausalLM</code>을 직접 연결하면 device 설정나 dtype 제어 등 모델의 세부 파라미터를 자유롭게 관리할 수 있다. 두 방식은 wrapper와 그 내부의 부품 관계에 있으며, 특수 하드웨어 환경에서는 직접 연결 방식을 통해 backend와의 인터페이스를 잡아주는 과정이 필수적이다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>처음에는 <code>pipeline()</code>가 모든 과정을 자동으로 처리한다고 생각하여, 직접 <code>AutoTokenizer</code>와 <code>AutoModelForCausalLM</code>을 연결할 때 단계가 복잡하게 느껴졌습니다. 특히 텐서 디바이스 이동과 attention mask 생성 등 세부적인 메커니즘이 <code>pipeline()</code> 내부에서 숨겨져 있어 코드를 작성할 진입점이 막막했습니다.</p>
+<p>혼란을 겪은 후, 두 방식의 역할 분담이 명확해졌습니다. <code>pipeline()</code>는 전처리부터 후처리까지 자동으로 처리하는 &lsquo;올인원&rsquo; 인터페이스이며, <code>AutoTokenizer</code>와 <code>AutoModelForCausalLM</code>은 device 설정나 dtype 제어 등 모델 세부 파라미터를 직접 관리해야 할 때 필요한 &lsquo;직접 연결&rsquo; 방식입니다. 결국 <code>pipeline()</code>는 wrapper이고 <code>AutoModel</code>은 그 안의 부품이라고 이해하게 되었습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p><code>pipeline()</code>는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, <code>AutoTokenizer</code>와 <code>AutoModelForCausalLM</code>을 직접 연결하면 device 설정 및 dtype 제어 등 모델 세부 파라미터를 사용자가 직접 관리할 수 있다.</p>
+<h1 id="-2-정리된-이해-corrected-understanding">🟢 2. 정리된 이해 (Corrected Understanding)<a hidden class="anchor" aria-hidden="true" href="#-2-정리된-이해-corrected-understanding">#</a></h1>
+<h2 id="핵심-내용">핵심 내용<a hidden class="anchor" aria-hidden="true" href="#핵심-내용">#</a></h2>
+<p><code>pipeline()</code>는 빠른 프로토타입 작성과 일반적인 추론에 최적화된 &lsquo;올인원&rsquo; 인터페이스입니다. 전처리부터 후처리까지 자동으로 처리해 주므로, 모델의 동작 원리에 깊게 관여하지 않고도 결과를 빠르게 얻을 수 있습니다.</p>
+<p>반면 <code>AutoTokenizer + AutoModelForCausalLM</code>는 device 설정, dtype 제어, attention 구현 등 모델의 세부 파라미터를 직접 관리해야 할 때 필요한 &lsquo;직접 연결&rsquo; 방식입니다. Intel XPU나 특정 하드웨어 환경에서 최적화를 수행할 때는 이 방식을 통해 backend와의 인터페이스를 직접 잡아줘야 합니다.</p>
+<p>결국 <code>pipeline()</code>는 wrapper이고, <code>AutoModel</code>은 그 안의 부품이라고 이해하면 됩니다. 특수 백엔드를 쓸 때는 wrapper를 벗겨내고 내부 stage를 직접 만져주는 과정이 필수적이죠.</p>
+<h1 id="-3-실습-예시-personal-interpretation--example">🟠 3. 실습 예시 (Personal Interpretation &amp; Example)<a hidden class="anchor" aria-hidden="true" href="#-3-실습-예시-personal-interpretation--example">#</a></h1>
+<h2 id="코드-예시-autotokenizer--automodelforcausallm-직접-연결">코드 예시: AutoTokenizer + AutoModelForCausalLM 직접 연결<a hidden class="anchor" aria-hidden="true" href="#코드-예시-autotokenizer--automodelforcausallm-직접-연결">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> AutoTokenizer, AutoModelForCausalLM
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. 모델과 토크나이저 로드</span>
+</span></span><span style="display:flex;"><span>model_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;meta-llama/Llama-3.2-1B-Instruct&#34;</span>
+</span></span><span style="display:flex;"><span>tokenizer <span style="color:#f92672">=</span> AutoTokenizer<span style="color:#f92672">.</span>from_pretrained(model_name)
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> AutoModelForCausalLM<span style="color:#f92672">.</span>from_pretrained(
+</span></span><span style="display:flex;"><span>    model_name,
+</span></span><span style="display:flex;"><span>    torch_dtype<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;auto&#34;</span>,  <span style="color:#75715e"># 자동 dtype 설정 (float16 등)</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. 입력 텍스트 토크나이징 (입력 전처리)</span>
+</span></span><span style="display:flex;"><span>inputs <span style="color:#f92672">=</span> tokenizer(<span style="color:#e6db74">&#34;Hello, my name is&#34;</span>, return_tensors<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pt&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. 텐서를 모델이 있는 디바이스(device)로 이동</span>
+</span></span><span style="display:flex;"><span>inputs <span style="color:#f92672">=</span> {k: v<span style="color:#f92672">.</span>to(model<span style="color:#f92672">.</span>device) <span style="color:#66d9ef">for</span> k, v <span style="color:#f92672">in</span> inputs<span style="color:#f92672">.</span>items()}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. 모델을 통한 텍스트 생성 (핵심 추론 과정)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># generate 메서드는 attention mask를 내부적으로 처리합니다.</span>
+</span></span><span style="display:flex;"><span>generated_ids <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>generate(<span style="color:#f92672">**</span>inputs, max_new_tokens<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 5. generated IDs를 텍스트로 디코딩 (출력 후처리)</span>
+</span></span><span style="display:flex;"><span>output_text <span style="color:#f92672">=</span> tokenizer<span style="color:#f92672">.</span>decode(generated_ids[<span style="color:#ae81ff">0</span>], skip_special_tokens<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(output_text)
+</span></span></code></pre></div><h2 id="코드-근거">코드 근거<a hidden class="anchor" aria-hidden="true" href="#코드-근거">#</a></h2>
+<ul>
+<li><strong><code>AutoTokenizer.from_pretrained</code></strong>: 모델과 동일한 토크나이저를 로드하여 텍스트를 ID 시퀀스로 변환합니다. (<code>note_date: 2026-09-04</code>, <code>model: nvidia-nemotron-3.5-lightning-30b-a3b</code>)</li>
+<li><strong><code>return_tensors=&quot;pt&quot;</code></strong>: PyTorch 텐서 형태로 반환하여 downstream 연산에 바로 사용 가능하게 합니다.</li>
+<li><strong><code>model.generate()</code></strong>: Causal LM 추론의 핵심 함수로, 입력된 토큰을 기반으로 다음 토큰을 자동 반복 생성합니다. attention mask는 모델 내부에서 inputs_embeds나 position_ids를 바탕으로 자동 생성되어 <code>**inputs</code>와 함께 전달됩니다.</li>
+<li><strong><code>tokenizer.decode()</code></strong>: 모델이 출력한 token ID 시퀀스를 사람이 읽을 수 있는 문자열로 변환합니다. <code>skip_special_tokens=True</code>로 special tokens (BOS/EOS 등)은 제거하고 실제 의미 있는 텍스트만 추출합니다.</li>
+</ul>
+<p><em>위 내용은 학습 노트 SRC-20260905-001의 3. 실습 예시 섹션을 요약한 것입니다.</em></p>
+<h2 id="2-qwen-xpu-실행-시-textstreamerchat-template-핵심-정리">2. Qwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리<a hidden class="anchor" aria-hidden="true" href="#2-qwen-xpu-실행-시-textstreamerchat-template-핵심-정리">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>TextStreamer를 사용하려면 단순히 클래스를 생성하는 것만으로는 충분하지 않으며, generate() 메서드에 인자로 전달해야 실시간 토큰 출력이 가능하다.</p>
+<p>핵심적인 학습 포인트는 프롬프트를 message 리스트 형태로 구조화한 뒤 apply_chat_template()을 호출하여 모델이 기대하는 대화 형식으로 변환한 다음, tokenizer에 입력해야 한다는 점이다. chat template가 적용되지 않은 상태로 tokenizer에 직접 입력을 하면 모델이 예상하지 못한 형식을 받게 되어 오류가 발생할 수 있다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>TextStreamer를 별도로 생성해두는 것만으로는 실시간 출력이 되지 않으며, 반드시 generate() 함수에 인자로 전달되어야 토큰이 스트리밍된다.</p>
+<p>특히 chat template가 적용된 message 리스트를 tokenizer에 직접 입력하면 모델이 기대하지 못한 형식의 입력을 받게 되어 오류가 발생할 수 있다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>TextStreamer는 <code>generate()</code> 함수에 인자로 전달될 때만 토큰을 실시간으로 출력하며, 단순히 클래스를 생성해두는 것만으로는 효과가 없다. 핵심은 프롬프트를 메시지 리스트로 구조화한 뒤 <code>apply_chat_template()</code>를 호출하여 모델이 기대하는 대화 형식으로 변환한 후 토크나이저에 입력하는 것이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> AutoModelForCausalLM, AutoTokenizer, TextStreamer
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model_id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Qwen/Qwen2.5-7B-Instruct&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. 모델과 토크나이저 로드</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> AutoModelForCausalLM<span style="color:#f92672">.</span>from_pretrained(model_id, dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>bfloat16)
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>to(<span style="color:#e6db74">&#34;xpu&#34;</span>)
+</span></span><span style="display:flex;"><span>tokenizer <span style="color:#f92672">=</span> AutoTokenizer<span style="color:#f92672">.</span>from_pretrained(model_id)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. chat 구조 생성 및 template 적용</span>
+</span></span><span style="display:flex;"><span>messages <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    {<span style="color:#e6db74">&#34;role&#34;</span>: <span style="color:#e6db74">&#34;system&#34;</span>, <span style="color:#e6db74">&#34;content&#34;</span>: <span style="color:#e6db74">&#34;You are a helpful assistant.&#34;</span>},
+</span></span><span style="display:flex;"><span>    {<span style="color:#e6db74">&#34;role&#34;</span>: <span style="color:#e6db74">&#34;user&#34;</span>, <span style="color:#e6db74">&#34;content&#34;</span>: <span style="color:#e6db74">&#34;Hello!&#34;</span>}
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>prompt <span style="color:#f92672">=</span> tokenizer<span style="color:#f92672">.</span>apply_chat_template(messages, tokenize<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. 토큰화 및 XPU로 이동</span>
+</span></span><span style="display:flex;"><span>inputs <span style="color:#f92672">=</span> tokenizer(prompt)<span style="color:#f92672">.</span>to(model<span style="color:#f92672">.</span>device)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. TextStreamer 생성 및 generate 실행</span>
+</span></span><span style="display:flex;"><span>streamer <span style="color:#f92672">=</span> TextStreamer(tokenizer, skip_prompt<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, skip_special_tokens<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>_ <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>generate(<span style="color:#f92672">**</span>inputs, streamer<span style="color:#f92672">=</span>streamer)
+</span></span></code></pre></div><h2 id="3-sdpa와-eager-속도-비교-실험-xpu-환경">3. SDPA와 EAGER 속도 비교 실험 (XPU 환경)<a hidden class="anchor" aria-hidden="true" href="#3-sdpa와-eager-속도-비교-실험-xpu-환경">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>SDPA와 EAGER 속도 차이를 단순히 실행 결과로 비교하면 안 되며, XPU 환경에서는 첫 실행 시 하드웨어 초기화 비용이 섞이기 때문에 warm-up 과정을 반드시 거쳐야 정확한 측정이 가능하다. 또한 CUDA용 <code>torch.cuda.synchronize()</code> 대신 XPU 환경에 맞게 <code>torch.xpu.synchronize()</code>를 사용해야 하며, 내 하드웨어 백엔드에 맞는 최적의 구현체를 직접 측정하여 검증하는 것이 이론을 외우는 것보다 훨씬 실용적이다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>첫 실행 결과가 실제 속도와 다르다는 점에 당황했으며, XPU 환경에서 synchronize 함수를 어떻게 호출해야 할지 막막했습니다. 단순히 숫자 비교를 넘어 하드웨어별 최적화된 파이프라인의 차이를 이해하는 데 집중해야 했습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>SDPA와 EAGER는 하드웨어 초기화 비용과 커널 준비 시간 차이로 인해 첫 실행 결과가 실제 속도와 다를 수 있으므로, 반복 실험 후 평균을 내어 검증하는 과정이 필수적입니다. 특히 XPU 환경에서는 <code>torch.cuda.synchronize()</code> 대신 <code>torch.xpu.synchronize()</code>를 사용해야 정확한 성능 측정이 가능합니다. 결국 중요한 것은 특정 하드웨어에 최적화된 구현체를 직접 측정하여 검증하는 실용적인 접근입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> AutoModelForCausalLM, AutoTokenizer
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Qwen2.5-1.5B-Instruct 모델 로드 (XPU 환경용)</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> AutoModelForCausalLM<span style="color:#f92672">.</span>from_pretrained(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Qwen/Qwen2.5-1.5B-Instruct&#34;</span>,
+</span></span><span style="display:flex;"><span>    device_map<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;xpu&#34;</span>,  <span style="color:#75715e"># Intel XPU 지정</span>
+</span></span><span style="display:flex;"><span>    attn_implementation<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sdpa&#34;</span>  <span style="color:#75715e"># sdpa로 설정 후 측정</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>tokenizer <span style="color:#f92672">=</span> AutoTokenizer<span style="color:#f92672">.</span>from_pretrained(<span style="color:#e6db74">&#34;Qwen/Qwen2.5-1.5B-Instruct&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 입력 토큰 생성 (실제 실험에서는 여기에 warm-up 및 측정이 수행됨)</span>
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>AutoTokenizer와 AutoModel 직접 연결은 device 설정 등 모델 파라미터를 자유롭게 제어할 수 있어 편리하며, Qwen XPU 실행 시 TextStreamer 사용을 위해서는 generate() 메서드에 인자로 반드시 전달해야 한다. 또한 XPU 환경에서 속도 측정을 할 때는 warm-up 과정을 거쳐야 하고 torch.xpu.synchronize()를 사용해야 정확한 비교가 가능하다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<ul>
+<li><code>torch.xpu.synchronize()</code>를 정확히 호출하여 XPU 환경의 동기화 비용을 반드시 보정해야 정확한 속도 측정이 가능하다.</li>
+<li>generate() 메서드에 TextStreamer 인자를 직접 전달하지 않으면 실시간 토큰 출력이 작동하지 않으므로, 파이프라인 구성 시 이 점을 간과하지 않도록 주의해야 한다.</li>
+<li>첫 실행 전 warm-up 과정을 거치지 않고 단순 비교를 진행하면 하드웨어 초기화 오차가 섞여 SDPA와 EAGER의 실제 성능 차이를 정확히 판단할 수 없다.</li>
+</ul>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>다음에 복습할 주제는 다음과 같습니다.</p>
+<ol>
+<li>
+<p><strong>Direct model connection vs pipeline wrapper</strong>: <code>AutoTokenizer</code>와 <code>AutoModelForCausalLM</code>을 직접 연결하면 device 설정이나 dtype 제어 등 모델의 세부 파라미터를 자유롭게 관리할 수 있다는 점, 그리고 특수 하드웨어 환경에서는 backend와의 인터페이스를 잡아주는 과정이 필수적이라는 점을 재확인하고 싶습니다.</p>
+</li>
+<li>
+<p><strong>TextStreamer와 Chat Template 적용</strong>: <code>generate()</code> 메서드에 인자로 TextStreamer 클래스를 반드시 전달해야만 실시간 토큰 출력이 가능하다는 점, 그리고 프롬프트를 message 리스트 형태로 구조화한 뒤 <code>apply_chat_template()</code>을 호출하여 모델이 기대하는 대화 형식으로 변환한 다음 입력해야 오류를 방지할 수 있다는 점을 다시 정리하고 싶습니다.</p>
+</li>
+<li>
+<p><strong>XPU 환경 속도 측정 기법</strong>: SDPA와 EAGER의 속도 차이를 비교할 때, XPU 환경에서는 첫 실행 시 하드웨어 초기화 비용이 섞이기 때문에 warm-up 과정을 반드시 거쳐야 정확한 측정이 가능하며, <code>torch.xpu.synchronize()</code>를 사용해야 한다는 점을 실습을 통해 재검증하고 싶습니다.</p>
+</li>
+</ol>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-09-04-pm-daily/">
+    <span class="title">« Prev</span>
+    <span>XPU 호환성 오해와 라이브러리 버전 충돌 정리 프롬프트 구조화와 steps·네거티브 프롬프트 활용법, Ollama Windows 설치 시 모델 저장소 분리 방법 및 Vulkan 감지와 GPU 오프로드의 실제 한계 파악</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-09-03-am-daily/">
+    <span class="title">Next »</span>
+    <span>오늘 오전, XPU 환경 Gemma 2 구동과 답변 추출 기법에 대해 정리했습니다.</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

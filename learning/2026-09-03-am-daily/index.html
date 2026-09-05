@@ -396,6 +396,13 @@ This post was created collaboratively by AI and the blog owner.</p>
     <ul class="post-tags">
     </ul>
 <nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-09-04-am-daily/">
+    <span class="title">« Prev</span>
+    <span>오늘 오전, AutoTokenizer와 AutoModel 직접 연결 이해하기: `pipeline()`는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, 두 방식은 wrapper와 그 내부의 부품 관계에 있으며 특수 하드웨어 환경에서는 직접 연결 방식을 통해 backend와의 인터페이스를 잡아주는 과정이 필수적이다.
+Qwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리: TextStreamer를 사용하려면 단순히 클래스를 생성하는 것만으로는 충분하지 않으며, generate() 메서드에 인자로 전달해야 실시간 토큰 출력이 가능하다.
+핵심적인 학습 포인트는 프롬프트를 message 리스트 형태로 구조화한 뒤 apply_chat_template()을 호출하여 모델이 기대하는 대화 형식으로 변환한 다음, tokenizer에 입력해야 한다는 점이다. chat template가 적용되지 않은 상태로 tokenizer에 직접 입력을 하면 모델이 예상하지 못한 형식을 받게 되어 오류가 발생할 수 있다.
+SDPA와 EAGR 속도 비교 실험 (XPU 환경): SDPA와 EAGER 속도 차이를 단순히 실행 결과로 비교하면 안 되며, XPU 환경에서는 첫 실행 시 하드웨어 초기화 비용이 섞이기 때문에 warm-up 과정을 반드시 거쳐야 정확한 측정이 가능하다. 또한 CUDA용 `torch.cuda.synchronize()` 대신 XPU 환경에 맞게 `torch.xpu.synchronize()`를 사용해야 하며, 내 하드웨어 백엔드에 맞는 최적의 구현체를 직접 측정하여 검증하는 것이 이론을 외우는 것보다 훨씬 실용적이다.</span>
+  </a>
   <a class="next" href="https://Han-think.github.io/learning/2026-09-03-pm-daily/">
     <span class="title">Next »</span>
     <span>오늘 오후, 모델 배치와 장치 할당의 명확한 구분, AutoClass가 주는 자동화의 편리함, 그리고 로지트 확률 해석의 중요성을 정리했습니다. 특히 attention_mask 같은 용어가 가진 위치적 의미와 GGUF·HF 모델 간의 Task 추상화 차이를 이해하며, 개념이 단순한 정의를 넘어 흐름 속에 있음을 새롭게 인식한 소중한 시간이었습니다.</span>
