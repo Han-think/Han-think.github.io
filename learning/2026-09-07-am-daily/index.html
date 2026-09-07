@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>backbone이 만든 벡터를 가공하는 head의 역할과 [CLS] 토큰을 통한 문장 의미 추출, 그리고 softmax가 정답 확률을 높여주지 않는다는 사실 등 모델 구조와 학습 과정의 본질을 정리했습니다. | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-09-07 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-09-07-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-09-07-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function () {
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-09-07-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="backbone이 만든 벡터를 가공하는 head의 역할과 [CLS] 토큰을 통한 문장 의미 추출, 그리고 softmax가 정답 확률을 높여주지 않는다는 사실 등 모델 구조와 학습 과정의 본질을 정리했습니다.">
+  <meta property="og:description" content="2026-09-07 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-09-07T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-09-07T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="backbone이 만든 벡터를 가공하는 head의 역할과 [CLS] 토큰을 통한 문장 의미 추출, 그리고 softmax가 정답 확률을 높여주지 않는다는 사실 등 모델 구조와 학습 과정의 본질을 정리했습니다.">
+  <meta name="twitter:description" content="2026-09-07 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "backbone이 만든 벡터를 가공하는 head의 역할과 [CLS] 토큰을 통한 문장 의미 추출, 그리고 softmax가 정답 확률을 높여주지 않는다는 사실 등 모델 구조와 학습 과정의 본질을 정리했습니다.",
+      "item": "https://Han-think.github.io/learning/2026-09-07-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "backbone이 만든 벡터를 가공하는 head의 역할과 [CLS] 토큰을 통한 문장 의미 추출, 그리고 softmax가 정답 확률을 높여주지 않는다는 사실 등 모델 구조와 학습 과정의 본질을 정리했습니다.",
+  "name": "backbone이 만든 벡터를 가공하는 head의 역할과 [CLS] 토큰을 통한 문장 의미 추출, 그리고 softmax가 정답 확률을 높여주지 않는다는 사실 등 모델 구조와 학습 과정의 본질을 정리했습니다.",
+  "description": "2026-09-07 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 custom model head와 backbone의 역할 분담 and [CLS] 벡터 흐름 이해 config로 정의한 라벨의 의미와 학습 과정 구분 Softmax와 확률의 오해, 그리고 모델의 한계 앙상블 기법의 이해: Soft Voting과 Weighted Average 총평 1. custom model head와 backbone의 역할 분담 and [CLS] 벡터 흐름 이해 무엇을 배웠나 처음에는 pipeline() 한 줄이 어떻게 동작하는지 막막했지만, 모델 내부 구조를 분해해 보니 Head는 단순히 붙이는 것이 아니라 Backbone이 만든 벡터를 가공하는 공정이라는 점을 깨닫게 되었다. 특히 [CLS] 토큰을 통해 문장 전체의 의미를 대표하는 벡터로 추출하는 과정이 핵심임을 이해하게 되었고, 코드 한 줄 안에 숨겨진 데이터 흐름을 정확히 파악할 수 있게 되어 모델 구조에 대한 감이 잡혔다.\n헷갈렸던 점 Head는 단순히 모델 위에 얹히는 부품이 아니라, Backbone이 만든 벡터를 가공하여 최종 결과를 도출하는 별도의 처리 공정이다. return self.custom_head(cls_vec) 한 줄 안에는 데이터가 Backbone을 통과한 후 Head로 이동하는 흐름과 결과 반환이라는 두 단계가 압축되어 있어, 데이터의 이동 경로가 불명확했다. 모델 구조를 이해하려면 Backbone이 원재료를 가공하는 ‘공장 본체’이고, Head는 최종 상품을 만들어내는 ‘마지막 공정’으로 구분하여 생각하는 것이 정확하다. 정리된 이해 Backbone은 입력 텍스트를 특징 벡터로 가공하는 공장이며, Head는 그 벡터를 바탕으로 최종 분류 결과를 도출해내는 마지막 공정이다. Backbone이 만든 대표 벡터([CLS] 토큰)를 Head에 전달해야만 사용자 정의 로직에 따라 정확한 결과가 출력된다.\n# [CLS] 토큰 추출 및 Custom Head 통과 흐름 (코드 기반) # 1. Backbone을 통한 특징 벡터 추출 # last_hidden_state shape: (batch_size, sequence_length, hidden_dim) last_hidden_state = backbone(input_ids=input_ids, attention_mask=attention_mask).last_hidden_state # 2. [CLS] 토큰의 마지막 히든스테이트만 추출하여 문장 전체 벡터로 활용 # [:, 0, :]는 시퀀스의 첫 번째 토큰([CLS])을 의미합니다. cls_vec = last_hidden_state[:, 0, :] # 3. Custom Head를 통과시켜 최종 분류 결과(Logits) 도출 output = custom_head(cls_vec) 2. config로 정의한 라벨의 의미와 학습 과정 구분 무엇을 배웠나 config 설정을 통해 모델의 출력 구조를 정의하는 것과, 실제 가중치를 조정하며 학습하는 과정은 별개라는 점을 명확히 이해할 수 있었습니다. 특히 num_labels와 id2label이 모델 내부 지식 습득을 자동으로 유도하지는 않으며, 단순히 결과 해석을 위한 규격만 설정한다는 사실을 깨닫고 코딩 시 자동완성 오류에 휘말리지 않고 정확한 용어를 사용하는 중요성을 느꼈습니다.\n헷갈렸던 점 config 설정을 바꾸는 것만으로 모델이 긍정과 부정 개념을 저절로 습득하는 것처럼 느껴져서, 설정과 학습의 경계를 구분하기 어려웠습니다.\n또 자동완성 기능에 의존하다가 input_ides, max_lengeth 등 의도치 않은 오타가 코드 실행에 방해가 되어, 정확한 용어 사용의 중요성을 실감했습니다.\n핵심은 ‘규격 정의’와 ‘학습 과정’을 분리하는 것입니다. config.num_labels = 2는 모델 출력 레이어의 스펙을 정하는 것이고, 실제 학습은 문장을 보고 가중치를 조정하여 긍정과 부정을 구분하는 별도 과정이기 때문입니다.\n정리된 이해 config는 모델이 긍정과 부정이라는 개념을 스스로 학습하게 하는 것이 아니라, 출력 레이어가 2개라는 규격(스펙)을 정의하고 각 숫자가 NEG와 POS 중 무엇을 의미하는지 이름표를 붙이는 역할입니다. 실제 학습은 문장을 보고 가중치를 조정하여 긍정과 부정의 차이를 구분하는 별도 과정이며, config 설정을 했다고 모델이 즉시 지식을 습득하는 것은 아닙니다.\n# 1. config에 라벨 규격 정의 config.num_labels = 2 config.id2label = {0: \"NEG\", 1: \"POS\"} config.label2id = {\"NEG\": 0, \"POS\": 1} config.problem_type = \"single_label_classification\" # 2. Head 레이어는 config와 연결 nn.Linear 3. Softmax와 확률의 오해, 그리고 모델의 한계 무엇을 배웠나 Softmax는 모델이 이미 학습한 점수의 질을 확률 형태로 변환할 뿐, 정답 확률을 높여주지는 않는다는 점을 깨달았다. 특히 logits가 거의 비슷할 때 argmax 결과가 달라 보여도, 실제 점수 차이가 크지 않다는 사실을 통해 Softmax의 본질을 정확히 이해할 수 있었다. 모델이 아직 NEG와 POS를 구분할 패턴을 학습하지 못했다면, 아무리 헤드를 조정해도 Softmax는 단순히 점수를 재분배하는 수준에 그칠 것임을 깨닫게 되었다.\n헷갈렸던 점 Softmax는 모델이 이미 결정한 점수를 확률 형태로 변환할 뿐, 정답을 맞히게 만들어주지 않는다는 점을 깨달았습니다. 특히 두 문장의 점수가 51:49로 엎치락뒤치락하자, 모델이 잘못 판단한 줄 알았지만 실제로는 학습된 패턴의 차이였습니다. 결국 argmax가 선택한 라벨이 정답인지는 logits의 격차에 달려 있으며, Softmax는 그 결과를 해석하는 도구일 뿐 결정적인 요인이 되지 않습니다.\n정리된 이해 Softmax는 모델이 이미 결정한 점수(logits)를 0~1 사이의 확률 형태로 변환할 뿐, 점수의 질 자체를 높여주거나 정답을 보정해주는 함수가 아니다. 따라서 Softmax를 통과한 확률 값이 5:5 수준이라도, 해당 클래스가 실제로는 더 높은 점수를 받았음을 의미하며 argmax 결과가 틀린 경우 모델의 학습 부족으로 인한 분류 오류임을 이해해야 한다.\n# Softmax 적용 전의 원시 점수 (Logits) logits = torch.tensor([[0.1, -0.2]]) # 예: NEG와 POS에 대한 원시 점수 # Softmax를 통과하여 확률로 변환 probabilities = torch.nn.functional.softmax(logits, dim=1) # 가장 높은 점수를 가진 클래스 선택 (ArgMax) predicted_class_id = torch.argmax(probabilities, dim=1).item() print(f\"Logits: {logits.tolist()}\") print(f\"Probabilities: {probabilities.tolist()}\") print(f\"Predicted Class ID: {predicted_class_id}\") # 결과: 0 또는 1 4. 앙상블 기법의 이해: Soft Voting과 Weighted Average 무엇을 배웠나 Soft Voting은 모든 모델을 동등하게 취급해 점수를 평균내는 방식이며, Weighted Average는 신뢰도에 따라 가중치를 부여해 결과에 반영한다는 점이 가장 큰 차이점이다. 특히 가중치의 기준을 어디에 두느냐가 결과의 정확도를 결정짓는 핵심 열쇠라는 점을 깨닫고, 단순히 다수결이 아님을 명확히 이해하게 되었다. 아직 모델 간의 우열을 객관적으로 판단하는 기준이 부족해 가중치 부여에 시행착오를 겪을 수 있지만, 신뢰도 조절의 중요성을 깊이 새긴 계기가 되었다.\n헷갈렸던 점 Soft Voting은 모델들이 모두 틀려도 평균값이 도출된다는 점에서 단순한 다수결과 다르며, Weighted Average는 신뢰도에 따른 가중치 부여가 결과에 직접적인 영향을 미쳐 어떤 모델을 우대할지가 관건임을 깨달았다.\n정리된 이해 Soft Voting은 모든 모델을 동등하게 취급해 점수를 평균내는 방식이며, Weighted Average는 신뢰도에 따라 가중치를 부여해 각 모델의 기여도를 다르게 반영하는 방법이다.\n# Soft Voting: 모든 모델을 동등하게 평균내는 방식 soft_voting_result = (pred_1 + pred_2 + pred_3) / 3 # Weighted Average: 신뢰도(가중치)가 다른 모델들의 점수를 비율에 맞게 가산하는 방식 weighted_avg_result = (pred_1 * w_1 + pred_2 * w_2 + pred_3 * w_3) / (w_1 + w_2 + w_3) 총평 오늘 오전 전체에서 배운 것 [CLS] 토큰을 통한 문장 의미 추출과 Backbone이 만든 벡터를 가공하는 Head의 역할 분담을 명확히 이해했으며, num_labels 설정은 결과 해석을 위한 규격일 뿐 자동 학습을 유도하지 않는다는 점을 깨닫고 용어 사용에 신중하게 임하게 되었다. 또한 Softmax가 점수 재분배 수준임을 인지하고, 모델이 아직 구분 패턴을 학습하지 못했다면 헤드 조정만으로는 한계가 있음을 깨닫고 신뢰도를 고려한 가중치 조절의 중요성을 새롭게 인식하였다.\n다음에 조심할 것 [CLS] 벡터 추출 과정을 단순 연결이 아닌, 백본이 만든 특징을 가공하는 핵심 단계로 인식하고 코드 흐름을 정확히 따라가야겠다. num_labels나 id2label 설정이 모델 학습 자체를 자동으로 보장하지 않는다는 점을 명확히 인지하여, 라벨 정의와 학습 파라미터 설정을 별개로 관리해야 한다. Softmax가 점수를 재분배하는 역할임을 기억하고, 아직 패턴을 학습하지 못한 모델에 헤드만 의존하면 한계에 부딪힐 수 있음을 인지해 데이터 품질과 모델의 학습 상태를 먼저 점검해야겠다. 다음 복습 주제 Backbone과 Head의 데이터 흐름 재정리: [CLS] 벡터가 어떻게 Backbone에서 추출되어 Head로 전달되는지, 그리고 Head 내부에서 어떤 연산을 거쳐 최종 출력이 만들어지는지 전체적인 파이프라인 시각화를 통해 다시 한번 점검한다.\n라벨 매핑과 모델 학습의 관계 이해: num_labels나 id2label 설정이 모델의 실제 학습 능력에 직접적인 영향을 미치지 않는다는 점을 명확히 인지하고, 라벨 정의는 결과 해석을 위한 사후 작업임을 확실히 하여 코딩 시 혼동을 피하는 습관을 기른다.\nSoftmax와 확률 해석의 정확성: Softmax가 점수를 재분배하는 과정임을 인식하고, 모델이 아직 학습하지 못한 클래스 간의 구분이 확실하지 않을 경우 argmax 결과가 달라 보여도 실제 점수 차이가 미미할 수 있음을 감안하여 확률 값을 맹신하지 않고 신중하게 해석하는 안목을 기른다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1100",
+  "inLanguage": "en",
+  "datePublished": "2026-09-07T00:00:00Z",
+  "dateModified": "2026-09-07T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-09-07-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/life/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/ai-research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      backbone이 만든 벡터를 가공하는 head의 역할과 [CLS] 토큰을 통한 문장 의미 추출, 그리고 softmax가 정답 확률을 높여주지 않는다는 사실 등 모델 구조와 학습 과정의 본질을 정리했습니다.
+    </h1>
+    <div class="post-description">
+      2026-09-07 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-09-07 00:00:00 +0000 UTC'>2026년 9월 7일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-custom-model-head%EC%99%80-backbone%EC%9D%98-%EC%97%AD%ED%95%A0-%EB%B6%84%EB%8B%B4-and-cls-%EB%B2%A1%ED%84%B0-%ED%9D%90%EB%A6%84-%EC%9D%B4%ED%95%B4">custom model head와 backbone의 역할 분담 and [CLS] 벡터 흐름 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-config%EB%A1%9C-%EC%A0%95%EC%9D%98%ED%95%9C-%EB%9D%BC%EB%B2%A8%EC%9D%98-%EC%9D%98%EB%AF%B8%EC%99%80-%ED%95%99%EC%8A%B5-%EA%B3%BC%EC%A0%95-%EA%B5%AC%EB%B6%84">config로 정의한 라벨의 의미와 학습 과정 구분</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-softmax%EC%99%80-%ED%99%95%EB%A5%A0%EC%9D%98-%EC%98%A4%ED%95%B4-%EA%B7%B8%EB%A6%AC%EA%B3%A0-%EB%AA%A8%EB%8D%B8%EC%9D%98-%ED%95%9C%EA%B3%84">Softmax와 확률의 오해, 그리고 모델의 한계</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EC%95%99%EC%83%81%EB%B8%94-%EA%B8%B0%EB%B2%95%EC%9D%98-%EC%9D%B4%ED%95%B4-soft-voting%EA%B3%BC-weighted-average">앙상블 기법의 이해: Soft Voting과 Weighted Average</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-custom-model-head와-backbone의-역할-분담-and-cls-벡터-흐름-이해">1. custom model head와 backbone의 역할 분담 and [CLS] 벡터 흐름 이해<a hidden class="anchor" aria-hidden="true" href="#1-custom-model-head와-backbone의-역할-분담-and-cls-벡터-흐름-이해">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>처음에는 <code>pipeline()</code> 한 줄이 어떻게 동작하는지 막막했지만, 모델 내부 구조를 분해해 보니 Head는 단순히 붙이는 것이 아니라 Backbone이 만든 벡터를 가공하는 공정이라는 점을 깨닫게 되었다. 특히 <code>[CLS]</code> 토큰을 통해 문장 전체의 의미를 대표하는 벡터로 추출하는 과정이 핵심임을 이해하게 되었고, 코드 한 줄 안에 숨겨진 데이터 흐름을 정확히 파악할 수 있게 되어 모델 구조에 대한 감이 잡혔다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<ol>
+<li>Head는 단순히 모델 위에 얹히는 부품이 아니라, Backbone이 만든 벡터를 가공하여 최종 결과를 도출하는 별도의 처리 공정이다.</li>
+<li><code>return self.custom_head(cls_vec)</code> 한 줄 안에는 데이터가 Backbone을 통과한 후 Head로 이동하는 흐름과 결과 반환이라는 두 단계가 압축되어 있어, 데이터의 이동 경로가 불명확했다.</li>
+<li>모델 구조를 이해하려면 Backbone이 원재료를 가공하는 &lsquo;공장 본체&rsquo;이고, Head는 최종 상품을 만들어내는 &lsquo;마지막 공정&rsquo;으로 구분하여 생각하는 것이 정확하다.</li>
+</ol>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>Backbone은 입력 텍스트를 특징 벡터로 가공하는 공장이며, Head는 그 벡터를 바탕으로 최종 분류 결과를 도출해내는 마지막 공정이다. Backbone이 만든 대표 벡터([CLS] 토큰)를 Head에 전달해야만 사용자 정의 로직에 따라 정확한 결과가 출력된다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># [CLS] 토큰 추출 및 Custom Head 통과 흐름 (코드 기반)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. Backbone을 통한 특징 벡터 추출</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># last_hidden_state shape: (batch_size, sequence_length, hidden_dim)</span>
+</span></span><span style="display:flex;"><span>last_hidden_state <span style="color:#f92672">=</span> backbone(input_ids<span style="color:#f92672">=</span>input_ids, attention_mask<span style="color:#f92672">=</span>attention_mask)<span style="color:#f92672">.</span>last_hidden_state
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. [CLS] 토큰의 마지막 히든스테이트만 추출하여 문장 전체 벡터로 활용</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># [:, 0, :]는 시퀀스의 첫 번째 토큰([CLS])을 의미합니다.</span>
+</span></span><span style="display:flex;"><span>cls_vec <span style="color:#f92672">=</span> last_hidden_state[:, <span style="color:#ae81ff">0</span>, :]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. Custom Head를 통과시켜 최종 분류 결과(Logits) 도출</span>
+</span></span><span style="display:flex;"><span>output <span style="color:#f92672">=</span> custom_head(cls_vec)
+</span></span></code></pre></div><h2 id="2-config로-정의한-라벨의-의미와-학습-과정-구분">2. config로 정의한 라벨의 의미와 학습 과정 구분<a hidden class="anchor" aria-hidden="true" href="#2-config로-정의한-라벨의-의미와-학습-과정-구분">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>config 설정을 통해 모델의 출력 구조를 정의하는 것과, 실제 가중치를 조정하며 학습하는 과정은 별개라는 점을 명확히 이해할 수 있었습니다. 특히 <code>num_labels</code>와 <code>id2label</code>이 모델 내부 지식 습득을 자동으로 유도하지는 않으며, 단순히 결과 해석을 위한 규격만 설정한다는 사실을 깨닫고 코딩 시 자동완성 오류에 휘말리지 않고 정확한 용어를 사용하는 중요성을 느꼈습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>config 설정을 바꾸는 것만으로 모델이 긍정과 부정 개념을 저절로 습득하는 것처럼 느껴져서, 설정과 학습의 경계를 구분하기 어려웠습니다.</p>
+<p>또 자동완성 기능에 의존하다가 <code>input_ides</code>, <code>max_lengeth</code> 등 의도치 않은 오타가 코드 실행에 방해가 되어, 정확한 용어 사용의 중요성을 실감했습니다.</p>
+<p>핵심은 &lsquo;규격 정의&rsquo;와 &lsquo;학습 과정&rsquo;을 분리하는 것입니다. <code>config.num_labels = 2</code>는 모델 출력 레이어의 스펙을 정하는 것이고, 실제 학습은 문장을 보고 가중치를 조정하여 긍정과 부정을 구분하는 별도 과정이기 때문입니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>config는 모델이 긍정과 부정이라는 개념을 스스로 학습하게 하는 것이 아니라, <strong>출력 레이어가 2개라는 규격(스펙)을 정의하고 각 숫자가 NEG와 POS 중 무엇을 의미하는지 이름표를 붙이는 역할</strong>입니다. 실제 학습은 문장을 보고 가중치를 조정하여 긍정과 부정의 차이를 구분하는 별도 과정이며, config 설정을 했다고 모델이 즉시 지식을 습득하는 것은 아닙니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 1. config에 라벨 규격 정의</span>
+</span></span><span style="display:flex;"><span>config<span style="color:#f92672">.</span>num_labels <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>config<span style="color:#f92672">.</span>id2label <span style="color:#f92672">=</span> {<span style="color:#ae81ff">0</span>: <span style="color:#e6db74">&#34;NEG&#34;</span>, <span style="color:#ae81ff">1</span>: <span style="color:#e6db74">&#34;POS&#34;</span>}
+</span></span><span style="display:flex;"><span>config<span style="color:#f92672">.</span>label2id <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;NEG&#34;</span>: <span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#34;POS&#34;</span>: <span style="color:#ae81ff">1</span>}
+</span></span><span style="display:flex;"><span>config<span style="color:#f92672">.</span>problem_type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;single_label_classification&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. Head 레이어는 config와 연결</span>
+</span></span><span style="display:flex;"><span>nn<span style="color:#f92672">.</span>Linear
+</span></span></code></pre></div><h2 id="3-softmax와-확률의-오해-그리고-모델의-한계">3. Softmax와 확률의 오해, 그리고 모델의 한계<a hidden class="anchor" aria-hidden="true" href="#3-softmax와-확률의-오해-그리고-모델의-한계">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>Softmax는 모델이 이미 학습한 점수의 질을 확률 형태로 변환할 뿐, 정답 확률을 높여주지는 않는다는 점을 깨달았다. 특히 logits가 거의 비슷할 때 <code>argmax</code> 결과가 달라 보여도, 실제 점수 차이가 크지 않다는 사실을 통해 Softmax의 본질을 정확히 이해할 수 있었다. 모델이 아직 NEG와 POS를 구분할 패턴을 학습하지 못했다면, 아무리 헤드를 조정해도 Softmax는 단순히 점수를 재분배하는 수준에 그칠 것임을 깨닫게 되었다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>Softmax는 모델이 이미 결정한 점수를 확률 형태로 변환할 뿐, 정답을 맞히게 만들어주지 않는다는 점을 깨달았습니다. 특히 두 문장의 점수가 51:49로 엎치락뒤치락하자, 모델이 잘못 판단한 줄 알았지만 실제로는 학습된 패턴의 차이였습니다. 결국 <code>argmax</code>가 선택한 라벨이 정답인지는 logits의 격차에 달려 있으며, Softmax는 그 결과를 해석하는 도구일 뿐 결정적인 요인이 되지 않습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>Softmax는 모델이 이미 결정한 점수(logits)를 0~1 사이의 확률 형태로 변환할 뿐, 점수의 질 자체를 높여주거나 정답을 보정해주는 함수가 아니다. 따라서 Softmax를 통과한 확률 값이 5:5 수준이라도, 해당 클래스가 실제로는 더 높은 점수를 받았음을 의미하며 <code>argmax</code> 결과가 틀린 경우 모델의 학습 부족으로 인한 분류 오류임을 이해해야 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Softmax 적용 전의 원시 점수 (Logits)</span>
+</span></span><span style="display:flex;"><span>logits <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor([[<span style="color:#ae81ff">0.1</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.2</span>]])  <span style="color:#75715e"># 예: NEG와 POS에 대한 원시 점수</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Softmax를 통과하여 확률로 변환</span>
+</span></span><span style="display:flex;"><span>probabilities <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>nn<span style="color:#f92672">.</span>functional<span style="color:#f92672">.</span>softmax(logits, dim<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 가장 높은 점수를 가진 클래스 선택 (ArgMax)</span>
+</span></span><span style="display:flex;"><span>predicted_class_id <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>argmax(probabilities, dim<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">.</span>item()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Logits: </span><span style="color:#e6db74">{</span>logits<span style="color:#f92672">.</span>tolist()<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Probabilities: </span><span style="color:#e6db74">{</span>probabilities<span style="color:#f92672">.</span>tolist()<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Predicted Class ID: </span><span style="color:#e6db74">{</span>predicted_class_id<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)  <span style="color:#75715e"># 결과: 0 또는 1</span>
+</span></span></code></pre></div><h2 id="4-앙상블-기법의-이해-soft-voting과-weighted-average">4. 앙상블 기법의 이해: Soft Voting과 Weighted Average<a hidden class="anchor" aria-hidden="true" href="#4-앙상블-기법의-이해-soft-voting과-weighted-average">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>Soft Voting은 모든 모델을 동등하게 취급해 점수를 평균내는 방식이며, Weighted Average는 신뢰도에 따라 가중치를 부여해 결과에 반영한다는 점이 가장 큰 차이점이다. 특히 가중치의 기준을 어디에 두느냐가 결과의 정확도를 결정짓는 핵심 열쇠라는 점을 깨닫고, 단순히 다수결이 아님을 명확히 이해하게 되었다. 아직 모델 간의 우열을 객관적으로 판단하는 기준이 부족해 가중치 부여에 시행착오를 겪을 수 있지만, 신뢰도 조절의 중요성을 깊이 새긴 계기가 되었다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>Soft Voting은 모델들이 모두 틀려도 평균값이 도출된다는 점에서 단순한 다수결과 다르며, Weighted Average는 신뢰도에 따른 가중치 부여가 결과에 직접적인 영향을 미쳐 어떤 모델을 우대할지가 관건임을 깨달았다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>Soft Voting은 모든 모델을 동등하게 취급해 점수를 평균내는 방식이며, Weighted Average는 신뢰도에 따라 가중치를 부여해 각 모델의 기여도를 다르게 반영하는 방법이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Soft Voting: 모든 모델을 동등하게 평균내는 방식</span>
+</span></span><span style="display:flex;"><span>soft_voting_result <span style="color:#f92672">=</span> (pred_1 <span style="color:#f92672">+</span> pred_2 <span style="color:#f92672">+</span> pred_3) <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Weighted Average: 신뢰도(가중치)가 다른 모델들의 점수를 비율에 맞게 가산하는 방식</span>
+</span></span><span style="display:flex;"><span>weighted_avg_result <span style="color:#f92672">=</span> (pred_1 <span style="color:#f92672">*</span> w_1 <span style="color:#f92672">+</span> pred_2 <span style="color:#f92672">*</span> w_2 <span style="color:#f92672">+</span> pred_3 <span style="color:#f92672">*</span> w_3) <span style="color:#f92672">/</span> (w_1 <span style="color:#f92672">+</span> w_2 <span style="color:#f92672">+</span> w_3)
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>[CLS] 토큰을 통한 문장 의미 추출과 Backbone이 만든 벡터를 가공하는 Head의 역할 분담을 명확히 이해했으며, <code>num_labels</code> 설정은 결과 해석을 위한 규격일 뿐 자동 학습을 유도하지 않는다는 점을 깨닫고 용어 사용에 신중하게 임하게 되었다. 또한 Softmax가 점수 재분배 수준임을 인지하고, 모델이 아직 구분 패턴을 학습하지 못했다면 헤드 조정만으로는 한계가 있음을 깨닫고 신뢰도를 고려한 가중치 조절의 중요성을 새롭게 인식하였다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<ul>
+<li><strong>[CLS] 벡터 추출 과정</strong>을 단순 연결이 아닌, 백본이 만든 특징을 가공하는 핵심 단계로 인식하고 코드 흐름을 정확히 따라가야겠다.</li>
+<li><code>num_labels</code>나 <code>id2label</code> 설정이 모델 학습 자체를 자동으로 보장하지 않는다는 점을 명확히 인지하여, 라벨 정의와 학습 파라미터 설정을 별개로 관리해야 한다.</li>
+<li>Softmax가 점수를 재분배하는 역할임을 기억하고, 아직 패턴을 학습하지 못한 모델에 헤드만 의존하면 한계에 부딪힐 수 있음을 인지해 데이터 품질과 모델의 학습 상태를 먼저 점검해야겠다.</li>
+</ul>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<ol>
+<li>
+<p><strong>Backbone과 Head의 데이터 흐름 재정리</strong>: <code>[CLS]</code> 벡터가 어떻게 Backbone에서 추출되어 Head로 전달되는지, 그리고 Head 내부에서 어떤 연산을 거쳐 최종 출력이 만들어지는지 전체적인 파이프라인 시각화를 통해 다시 한번 점검한다.</p>
+</li>
+<li>
+<p><strong>라벨 매핑과 모델 학습의 관계 이해</strong>: <code>num_labels</code>나 <code>id2label</code> 설정이 모델의 실제 학습 능력에 직접적인 영향을 미치지 않는다는 점을 명확히 인지하고, 라벨 정의는 결과 해석을 위한 사후 작업임을 확실히 하여 코딩 시 혼동을 피하는 습관을 기른다.</p>
+</li>
+<li>
+<p><strong>Softmax와 확률 해석의 정확성</strong>: Softmax가 점수를 재분배하는 과정임을 인식하고, 모델이 아직 학습하지 못한 클래스 간의 구분이 확실하지 않을 경우 <code>argmax</code> 결과가 달라 보여도 실제 점수 차이가 미미할 수 있음을 감안하여 확률 값을 맹신하지 않고 신중하게 해석하는 안목을 기른다.</p>
+</li>
+</ol>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://Han-think.github.io/learning/2026-09-07-pm-daily/">
+    <span class="title">Next »</span>
+    <span>오늘 오후, 멀티태스크와 앙상블의 Loss 구분 및 XPU 역할 분리 확인
+IMDB 전처리 길이 오해 수정과 `push_to_hub` 권한 인증 실전 경험
+SQuAD Exact Match와 F1 Score의 본질적 차이 이해
+PM_06 프로젝트에서 Datasets의 메트릭 보존 중요성 깨닫기</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

@@ -6,8 +6,25 @@
     <description>Recent content in Learning on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Fri, 04 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 07 Sep 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/categories/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>backbone이 만든 벡터를 가공하는 head의 역할과 [CLS] 토큰을 통한 문장 의미 추출, 그리고 softmax가 정답 확률을 높여주지 않는다는 사실 등 모델 구조와 학습 과정의 본질을 정리했습니다.</title>
+      <link>https://Han-think.github.io/learning/2026-09-07-am-daily/</link>
+      <pubDate>Mon, 07 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-07-am-daily/</guid>
+      <description>2026-09-07 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>오늘 오후, 멀티태스크와 앙상블의 Loss 구분 및 XPU 역할 분리 확인
+IMDB 전처리 길이 오해 수정과 `push_to_hub` 권한 인증 실전 경험
+SQuAD Exact Match와 F1 Score의 본질적 차이 이해
+PM_06 프로젝트에서 Datasets의 메트릭 보존 중요성 깨닫기</title>
+      <link>https://Han-think.github.io/learning/2026-09-07-pm-daily/</link>
+      <pubDate>Mon, 07 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-07-pm-daily/</guid>
+      <description>2026-09-07 오후 학습 정리</description>
+    </item>
     <item>
       <title>XPU 호환성 오해와 라이브러리 버전 충돌 정리 프롬프트 구조화와 steps·네거티브 프롬프트 활용법, Ollama Windows 설치 시 모델 저장소 분리 방법 및 Vulkan 감지와 GPU 오프로드의 실제 한계 파악</title>
       <link>https://Han-think.github.io/learning/2026-09-04-pm-daily/</link>
