@@ -6,8 +6,22 @@
     <description>Recent content in Learning on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Mon, 07 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 08 Sep 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/categories/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>오전 학습 | 학습 안정성 디버깁: axis·dim 차이와 gradient 분석</title>
+      <link>https://Han-think.github.io/learning/2026-09-08-am-daily/</link>
+      <pubDate>Tue, 08 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-08-am-daily/</guid>
+      <description>2026-09-08 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>오후 학습 | FastAPI 인스턴스 생성과 Uvicorn 역할 구분</title>
+      <link>https://Han-think.github.io/learning/2026-09-08-pm-daily/</link>
+      <pubDate>Tue, 08 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-08-pm-daily/</guid>
+      <description>2026-09-08 오후 학습 정리</description>
+    </item>
     <item>
       <title>backbone이 만든 벡터를 가공하는 head의 역할과 [CLS] 토큰을 통한 문장 의미 추출, 그리고 softmax가 정답 확률을 높여주지 않는다는 사실 등 모델 구조와 학습 과정의 본질을 정리했습니다.</title>
       <link>https://Han-think.github.io/learning/2026-09-07-am-daily/</link>

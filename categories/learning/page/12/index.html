@@ -195,6 +195,38 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">UNION ALL부터 재귀 CTE까지, SQL 결과표를 조립하는 방식
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 1. 집합 연산자: SELECT 결과표끼리 계산하기 2. 문제본 기준 집합 연산 복습: UNION부터 EXCEPT까지 3. UNION ALL 리포트: 장르별 통계와 전체합계 붙이기 4. WITH RECURSIVE: 직원 조직도 펼치기 5. 테이블 역할표와 별칭: FROM/JOIN부터 읽기 총평 1. 집합 연산자: SELECT 결과표끼리 계산하기 무엇을 배웠나 오후 수업은 SQL 집합 연산자에서 시작했다. 집합 연산자는 원본 테이블을 물리적으로 합치는 것이 아니라, 각각의 SELECT가 만든 결과표끼리 계산하는 방식이다.
+UNION = 두 결과표를 합치고 중복 제거 UNION ALL = 두 결과표를 중복 제거 없이 아래로 붙임 INTERSECT = 두 결과표에 모두 있는 행만 남김 EXCEPT = 첫 번째 결과표에서 두 번째 결과표를 뺌 공통 규칙은 다음과 같다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-10 00:00:00 +0000 UTC'>2026년 6월 10일</span>&nbsp;·&nbsp;<span>7 min</span></footer>
+  <a class="entry-link" aria-label="post link to UNION ALL부터 재귀 CTE까지, SQL 결과표를 조립하는 방식" href="https://Han-think.github.io/learning/2026-06-10-pm-sql-set-operators-recursive-cte/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">am-01-sql-groupby-having
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 그룹화 기준 핵심 키워드 HAVING 역할 문제 분해 총평 1. 그룹화 기준 왜 이걸 보게 됐나 데이터를 효율적으로 분석하고 통찰력을 얻기 위해, 단순히 나열된 정보를 넘어 의미 있는 그룹으로 묶어서 분석하는 것이 필요했어. 예를 들어, 여러 국가의 고객 정보를 다룰 때, 국가별로 고객 수를 파악하거나 특정 조건을 만족하는 국가만 분석하는 게 중요했지. 그래서 데이터를 묶는 기준을 정하는 ‘그룹화 기준’ 개념을 배우게 됐어.
+내가 헷갈린 지점 처음에 테이블 전체를 훑어보면서 어떤 컬럼을 기준으로 묶어야 할지 판단하는게 어려웠어. 단순히 ‘어떤 컬럼을 묶느냐’ 뿐 아니라, 묶어서 무엇을 계산할지에 대한 고민이 동시에 필요하다는 점을 간과했지. 테이블의 전체적인 구조와 필요한 결과값을 고려해서 컬럼을 선택해야 한다는 것을 놓쳤던 것 같아.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to am-01-sql-groupby-having" href="https://Han-think.github.io/learning/am-01-sql-groupby-having/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">am-02-sql-join-alias-erd
     </h2>
   </header>
@@ -315,37 +347,6 @@
 
 <span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
   <a class="entry-link" aria-label="post link to pm-03-join-vs-subquery-choice" href="https://Han-think.github.io/learning/pm-03-join-vs-subquery-choice/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">pm-04-subquery-learning-friction
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 메인쿼리 접근 방식 테이블 및 컬럼 연결 서브쿼리 접근법 서브쿼리 반환 값 총평 1. 메인쿼리 접근 방식 왜 이걸 보게 됐나 처음에는 문제를 풀 때 자연스럽게 단서를 찾고 해결해 나가는 방식에 익숙했기에, 서브쿼리를 사용할 때 메인 쿼리부터 접근해야 한다는 개념이 굉장히 어색하고 거꾸로 느껴졌습니다. 특히 서브쿼리의 결과값을 미리 넣는 듯한 느낌 때문에, 문제 해결의 논리적 흐름을 파악하기 어려웠던 거죠. 그래서 이 접근 방식을 이해하게 되면서 쿼리 작성 과정의 흐름을 잡을 수 있었습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
-  <a class="entry-link" aria-label="post link to pm-04-subquery-learning-friction" href="https://Han-think.github.io/learning/pm-04-subquery-learning-friction/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">pm-05-erd-reading-training
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 테이블 관계 프라이머리 키 포린 키 조인 총평 1. 테이블 관계 왜 이걸 보게 됐나 데이터를 효과적으로 관리하고 분석하기 위해서는 데이터가 어떻게 저장되고 연결되는지 이해하는 것이 필수적이었어요. ERD는 이 데이터 구조를 시각적으로 보여주기 때문에, 복잡한 데이터베이스 쿼리를 작성하거나 데이터 모델을 설계할 때 필요한 중요한 도구라는 것을 알게 됐습니다. 덕분에 데이터가 어떻게 연결되는지 파악하고 필요한 정보를 정확하게 가져오는 쿼리를 만들 수 있게 될 것 같습니다.
-내가 헷갈린 지점 처음에는 테이블들을 단순히 나열된 목록으로 생각해서 테이블 간의 관계가 어떻게 연결되는지 파악하는 데 어려움을 겪었습니다. 테이블을 부품으로 생각하라는 비유 때문에 오히려 더 복잡하게 느껴졌고, Primary Key나 Foreign Key가 어떤 역할을 하는지 명확히 이해하지 못했습니다. 테이블 간의 연결이 회로도처럼 복잡하게 얽혀 있다는 점을 깨닫고, 각 연결고리가 의미하는 바를 하나씩 파악해야 할 필요성을 느꼈습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
-  <a class="entry-link" aria-label="post link to pm-05-erd-reading-training" href="https://Han-think.github.io/learning/pm-05-erd-reading-training/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
