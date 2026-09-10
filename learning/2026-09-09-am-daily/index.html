@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오전 학습 | URL 매핑과 파라미터, 비동기 통신의 핵심 차이 정리 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-09-09 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-09-09-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-09-09-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function () {
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-09-09-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오전 학습 | URL 매핑과 파라미터, 비동기 통신의 핵심 차이 정리">
+  <meta property="og:description" content="2026-09-09 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-09-09T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-09-09T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오전 학습 | URL 매핑과 파라미터, 비동기 통신의 핵심 차이 정리">
+  <meta name="twitter:description" content="2026-09-09 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오전 학습 | URL 매핑과 파라미터, 비동기 통신의 핵심 차이 정리",
+      "item": "https://Han-think.github.io/learning/2026-09-09-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오전 학습 | URL 매핑과 파라미터, 비동기 통신의 핵심 차이 정리",
+  "name": "오전 학습 | URL 매핑과 파라미터, 비동기 통신의 핵심 차이 정리",
+  "description": "2026-09-09 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 URL 경로와 실제 폴더의 연결 (mapping) FastAPI 파라미터와 계산기 실습 (초보자 워킹 노트) AJAX와 비동기 통신의 핵심 차이점 Cookie와 Session, 서버와 클라이언트 사이의 신뢰할러운 상태 유지 전략 mount와 redirect의 역할 구분 총평 1. URL 경로와 실제 폴더의 연결 (mapping) 무엇을 배웠나 FastAPI에서 URL 요청이 어떻게 처리되는지, 그리고 mount가 어떤 역할을 하는지 정립했습니다. Route는 특정 URL 경로에 접속했을 때 실행될 Python 함수를 연결하는 논리적 연결고리이고, Mount는 URL 공간과 서버 내부의 리소스를 매핑해주는 물리적/공간적 연결 고리입니다. 특히 mount는 브라우저가 폴더로 이동한다는 직관적인 표현보다, URL 공간과 실제 파일 시스템을 연결한다는 개념이 구조를 바꿀 때도 덜 헷갈리는 정확한 이해를 돕습니다.\n헷갈렸던 점 URL 경로와 실제 폴더 구조가 자동으로 연결된다고 오해했습니다. /view라는 주소를 치면 view 폴더로 이동하는 마법 같은 동작이 일어날 것이라 생각했습니다. 하지만 핵심은 URL 문자열과 실제 디렉터리 경로를 개발자가 직접 매핑(mapping)해야 한다는 점이었습니다.\n정리된 이해 FastAPI에서 URL 요청은 @app.get() 같은 라우팅을 통해 특정 경로에 연결된 Python 함수를 실행하는 방식으로 처리되며, mount는 브라우저가 실제 폴더로 이동하는 것이 아니라 URL 공간과 서버 내부의 리소스를 직접 매핑해주는 역할을 한다. 즉, 라우팅은 논리적인 주소-함수 연결이고 마운트는 물리적인 URL 접두사와 디렉터리 경로를 연결하는 작업이다.\nfrom fastapi import FastAPI from fastapi.staticfiles import StaticFiles app = FastAPI() # 1. Route: URL 경로와 Python 함수를 연결 @app.get(\"/\") def read_root(): return {\"message\": \"Hello World\"} # 2. Mount: URL prefix와 실제 폴더 경로를 연결 (매핑) # /static URL로 접속 시, 서버 내부의 'view' 폴더 파일을 제공함 app.mount(\"/static\", StaticFiles(directory=\"view\"), name=\"static\") 2. FastAPI 파라미터와 계산기 실습 (초보자 워킹 노트) 무엇을 배웠나 URL 경로와 API 기능은 별개이며, 쿼리 파라미터는 같은 키를 여러 번 전달할 수 있다. FastAPI에서 함수 인자 이름과 타입 힌트만으로도 요청값을 직접 받을 수 있다는 점이 핵심이었다. 또한 /calc가 HTML 화면이 아니라 계산 로직을 처리하는 API 기능임을 구분하는 것이 중요하다.\n헷갈렸던 점 처음 /calc라는 단어를 보았을 때, 이것이 endpoint 이름인지 전체 프로그램 폴더명인지 구분하는 데 시간이 걸렸습니다. 또한 Query parameter가 URL에 그대로 노출된다는 점과 같은 key를 여러 번 전달할 수 있다는 사실이 초보자에게는 낯설었습니다. FastAPI에서 함수 파라미터의 이름과 타입 힌트만으로 쿼리 파라미터를 직접 받을 수 있다는 점이 인상 깊었으며, /calc가 HTML 화면이 아니라 계산 로직을 처리하는 API 기능이라는 점을 구분하는 것이 중요했습니다.\n정리된 이해 FastAPI에서 Request는 클라이언트가 보낸 요청 전체를 의미하며, Parameter는 URL에 포함된 Path parameter와 Query string으로 구분됩니다. 특히 함수 파라미터 이름과 타입 힌트만으로 쿼리 파라미터를 직접 받을 수 있어 라우팅 설계 시 ‘URL = 페이지’라는 개념을 넘어 API 기능의 분리 필요성을 명확히 인식하게 되었습니다.\n@app.get(\"/items\") def read_name(skip: int, limit: int): return {\"skip\": skip, \"limit\": limit} URL: /items?skip=10\u0026limit=20\n@app.get(\"/items/id/{item_id}\") def read_id(item_id: str): return {\"item_id\": item_id} URL: /items/id/10\n3. AJAX와 비동기 통신의 핵심 차이점 무엇을 배웠나 오늘은 ‘동기’와 ‘비동기’가 단순히 기술 용어로만 느껴졌던 제 인식을 완전히 바꿔놓았습니다. 특히 계산기 예제에서 time.sleep(5) 동안 브라우저가 멈추는 경험을 통해, 비동기가 사용자 경험을 지키는 핵심 기술임을 직관적으로 체감할 수 있었습니다. 그리고 AJAX와 Axios를 통해 페이지 새로고침 없이 서버와 데이터를 주고받을 수 있다는 점, 그리고 Python의 async def가 서버 내부 효율성을 높이는 것과는 별개로 Client-side 통신과는 다른 개념임을 명확히 구분하게 되었습니다.\n헷갈렸던 점 오늘 ‘비동기’라는 용어가 Python 서버 내부 처리 모델과 JavaScript 클라이언트 통신 방식을 뒤섞여 이해하기 어려웠습니다. 특히 계산기 예제에서 time.sleep(5)가 실행되었을 때 브라우저가 얼어붙는 경험을 통해, 동기가 사용자에게 미치는 직접적인 차단 효과를 실감할 수 있었습니다. 결국 AJAX와 Axios는 서버 응답을 기다리는 동안 화면이 멈추지 않게 해주는 Client-side 기술이며, Python의 async def는 서버가 요청을 효율적으로 처리하게 해주는 Server-side 모델이라는 점을 명확히 구분해야 한다는 점이 가장 중요했습니다.\n정리된 이해 AJAX와 Axios는 서버 응답을 기다리는 동안 화면이 멈추지 않게 해주는 클라이언트 측 통신 기술이며, Python의 async def는 서버 내부에서 여러 요청을 효율적으로 처리하는 모델이다. 이 둘은 연결되어 있지만 목적이 다르므로 혼동해서는 안 된다.\nfunction ajaxSend() { let val = $('input[name=\"msg\"]').val(); axios.get('/send?msg=' + val) .then(function(res) { console.log(res.data); }); } 4. Cookie와 Session, 서버와 클라이언트 사이의 신뢰할러운 상태 유지 전략 무엇을 배웠나 처음에는 Cookie와 Session이 왜 따로 존재하는지 의아해했지만, 실제로는 Session ID를 전달하는 통로로서 Cookie가 작동한다는 사실을 깨닫고 이해가 깊어졌다. 특히 서버 측에서 세션 데이터를 관리하면서 클라이언트에는 식별자만 남기는 구조임을 명확히 했다. 이를 통해 HTTP의 비연결성 특성을 유지하면서 사용자 상태를 지속적으로 관리할 수 있다는 점이 인상적이었다.\n헷갈렸던 점 처음에는 SessionMiddleware 코드 속에서 세션 정보가 클라이언트와 서버 양쪽에 동시에 존재하는 것처럼 보여서, 정확히 어디에 데이터가 저장되는지 구분이 안 되었습니다. 또한 강의에서는 “Cookie는 Client, Session은 Server\"라고 하지만, 실제로는 세션을 식별하는 ID가 Cookie에 담겨 전달된다는 점에서 두 개념이 완전히 분리되어 있지 않고 상호 연관되어 있다는 점이 가장 큰 혼란 포인트였습니다.\n정리된 이해 Cookie는 브라우저에 저장되어 요청 시 자동으로 서버로 전달되며, Session은 서버 측에서 사용자의 연속된 요청을 하나의 덩어리로 묶어 관리하는 방식이다. 실제 구현에서는 세션을 식별하기 위한 키인 Session ID가 Cookie에 담겨 브라우저를 이동하며, 서버는 이 ID를 통해 해당 세션 데이터를 조회한다. 따라서 Cookie와 Session은 독립적인 개념이 아니라, Session ID를 전달하는 통로로서 Cookie가 Session과 밀접하게 연관되어 작동한다는 점을 이해해야 한다.\nfrom fastapi import FastAPI, Request, Response from fastapi.responses import HTMLResponse from starlette.middleware.sessions import SessionMiddleware app = FastAPI() # 세션 미들웨어 설정 (세션 ID를 쿠키에 저장하도록 함) app.add_middleware(SessionMiddleware, secret_key=\"super-secret-key\") @app.get(\"/\") async def home(request: Request): # 현재 세션에 loginId가 있으면 로그인된 상태로 간주 login_id = request.session.get(\"loginId\", None) if login_id: message = f\"안녕하세요, {login_id}님!\" else: message = \"로그인이 필요합니다.\" # 로그인 페이지로 리디렉션하거나 로그인 폼 제공 (생략) # HTMLResponse를 통해 간단한 화면 반환 return HTMLResponse(content=f\"{message}\", status_code=200) @app.get(\"/login/{user_id}\") async def login(user_id: str, request: Request): # 로그인 처리: 세션에 user_id 저장 request.session[\"loginId\"] = user_id # 응답 헤더에 Set-Cookie가 자동으로 포함되어 브라우저에 Session ID 쿠키 저장됨 return {\"msg\": f\"{user_id}님 환영합니다!\"} 5. mount와 redirect의 역할 구분 무엇을 배웠나 mount는 서버가 URL 경로를 실제 파일 폴더에 연결하는 역할을 하고, redirect는 브라우저가 새로운 주소를 요청하도록 유도하는 동작이라는 점을 명확히 구분했다. 특히 ‘누가 다음 행동을 수행하느냐’에 초점을 맞추면 mount는 서버, redirect는 브라우저라는 주체가 뚜렷해져 헷갈림을 줄일 수 있었다. 이를 통해 URL 매핑과 실제 이동 요청의 차이를 정확하게 이해할 수 있게 되었다.\n헷갈렸던 점 처음에는 mount와 redirect가 모두 ‘이동’이라는 단어 때문에 역할이 비슷하게 느껴졌다. 특히 강사님의 설명에서 /view를 폴더 이동 명령어처럼 들으며 두 개념을 혼동했다. 하지만 코드를 직접 보며 동작 주체를 명확히 나누니, mount는 서버가 연결 관계를 맺는 것이고 redirect는 브라우저가 다시 요청하는 것임을 정확히 구분할 수 있게 되었다.\n정리된 이해 mount는 서버가 URL 경로를 실제 파일 시스템 폴더에 연결하는 역할을 하고, redirect는 브라우저가 새로운 주소를 요청하도록 응답 헤드를 보내는 동작이다. 즉, mount는 서버 측의 ‘연결 설정’이고 redirect는 클라이언트 측의 ‘재요청 유도’다.\n# mount: URL 네임스페이스를 리소스에 연결 (서버 내부 동작) app.mount('/view', StaticFiles(directory='view')) # redirect: 브라우저에게 새로운 Location 요청을 보내는 응답 (브라우저 동작) @app.get(\"/\") def main(): return RedirectResponse('/view/index.html') 총평 오늘 오전 전체에서 배운 것 URL 경로와 실제 폴더를 연결하는 mount는 서버 내부의 리소스를 URL 공간에 매핑해주는 물리적 연결고리이며, Route는 특정 URL에 실행될 Python 함수를 논리적으로 연결하는 역할을 한다. 쿼리 파라미터 전달과 함수 인자 타입 힌트만으로 값을 받을 수 있는 FastAPI의 특징을 통해, API 기능과 HTML 화면 처리를 명확히 구분하는 것이 중요하다. 또한 동기 통신 중 브라우저가 멈추는 경험을 통해 비동기가 사용자 경험을 보호하는 핵심 기술임을 직관적으로 체감했으며, Cookie가 Session ID를 전달하는 통로 역할을 하여 서버가 세션 데이터를 관리하면서 HTTP의 비연결성 특성을 유지할 수 있다는 점도 핵심 정리다.\n다음에 조심할 것 URL 경로와 실제 폴더 연결 시 mount가 단순히 ‘이동’ 개념이 아니라 ‘매핑’임을 명확히 인식하고, redirect와의 역할 주체 차이를 재확인해야 한다. 비동기 통신에서 브라우저가 멈추지 않도록 하는 것이 핵심 목표임을 기억하며, async def의 서버 효율화 효과와 클라이언트 통신 목적구를 분리해서 공부해야 한다. Cookie가 Session ID를 전달하는 통로 역할을 한다는 점을 기반으로, 서버 측 세션 관리 전략이 HTTP 비연결성의 한계를 어떻게 극복하는지 지속적으로 점검해야 한다. 다음 복습 주제 오늘 학습한 핵심 개념들이 머릿속에 정리가 되었지만, 아직 실전 적용이 불안정한 부분들이 있습니다.\n첫째, mount와 redirect의 역할 구분이 여전히 헷갈릴 때가 있는데, URL 경로 매핑과 브라우저 이동 요청이라는 기술적 차이는 알겠으나, 실제 프로젝트에서 어떤 상황에서 어떤 기능을 써야 하는지 감이 안 잡힙니다. 특히 라우팅 설정 시 mount를 쓸지, redirect를 쓸지 결정하는 기준가 구체적으로 연습해보고 싶습니다.\n둘째, 비동기 통신(AJAX/Axios)과 서버 측 async/await의 경계가 아직 명확하지 않습니다. 클라이언트에서 페이지 새로고침 없이 데이터를 주고받는 것과 서버 내부 효율성을 높이는 것은 별개라는 점은 이해했지만, 이 두 가지를 프로젝트 코드에서 어떻게 조합하고 관리해야 하는지 감이 안 잡힙니다.\n셋째, 계산기 API 실습 때 쿼리 파라미터 전달 방식과 path parameter의 차이를 확실히 구분하는 연습이 필요합니다. 같은 키를 여러 번 보낼 수 있다는 점이나, 인자 이름만으로 값을 받는 FastAPI의 특징을 실제 함수 설계에 적용했을 때 어떤 이득이 있는지 시나리오별로 정리해보고 싶습니다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1332",
+  "inLanguage": "en",
+  "datePublished": "2026-09-09T00:00:00Z",
+  "dateModified": "2026-09-09T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-09-09-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/life/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/ai-research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오전 학습 | URL 매핑과 파라미터, 비동기 통신의 핵심 차이 정리
+    </h1>
+    <div class="post-description">
+      2026-09-09 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-09-09 00:00:00 +0000 UTC'>2026년 9월 9일</span>&nbsp;·&nbsp;<span>7 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-url-%EA%B2%BD%EB%A1%9C%EC%99%80-%EC%8B%A4%EC%A0%9C-%ED%8F%B4%EB%8D%94%EC%9D%98-%EC%97%B0%EA%B2%B0-mapping">URL 경로와 실제 폴더의 연결 (mapping)</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-fastapi-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0%EC%99%80-%EA%B3%84%EC%82%B0%EA%B8%B0-%EC%8B%A4%EC%8A%B5-%EC%B4%88%EB%B3%B4%EC%9E%90-%EC%9B%8C%ED%82%B9-%EB%85%B8%ED%8A%B8">FastAPI 파라미터와 계산기 실습 (초보자 워킹 노트)</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-ajax%EC%99%80-%EB%B9%84%EB%8F%99%EA%B8%B0-%ED%86%B5%EC%8B%A0%EC%9D%98-%ED%95%B5%EC%8B%AC-%EC%B0%A8%EC%9D%B4%EC%A0%90">AJAX와 비동기 통신의 핵심 차이점</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-cookie%EC%99%80-session-%EC%84%9C%EB%B2%84%EC%99%80-%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8-%EC%82%AC%EC%9D%B4%EC%9D%98-%EC%8B%A0%EB%A2%B0%ED%95%A0%EB%9F%AC%EC%9A%B4-%EC%83%81%ED%83%9C-%EC%9C%A0%EC%A7%80-%EC%A0%84%EB%9E%B5">Cookie와 Session, 서버와 클라이언트 사이의 신뢰할러운 상태 유지 전략</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-mount%EC%99%80-redirect%EC%9D%98-%EC%97%AD%ED%95%A0-%EA%B5%AC%EB%B6%84">mount와 redirect의 역할 구분</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-url-경로와-실제-폴더의-연결-mapping">1. URL 경로와 실제 폴더의 연결 (mapping)<a hidden class="anchor" aria-hidden="true" href="#1-url-경로와-실제-폴더의-연결-mapping">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>FastAPI에서 URL 요청이 어떻게 처리되는지, 그리고 <code>mount</code>가 어떤 역할을 하는지 정립했습니다. Route는 특정 URL 경로에 접속했을 때 실행될 Python 함수를 연결하는 논리적 연결고리이고, Mount는 URL 공간과 서버 내부의 리소스를 매핑해주는 물리적/공간적 연결 고리입니다. 특히 <code>mount</code>는 브라우저가 폴더로 이동한다는 직관적인 표현보다, URL 공간과 실제 파일 시스템을 연결한다는 개념이 구조를 바꿀 때도 덜 헷갈리는 정확한 이해를 돕습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>URL 경로와 실제 폴더 구조가 자동으로 연결된다고 오해했습니다. <code>/view</code>라는 주소를 치면 view 폴더로 이동하는 마법 같은 동작이 일어날 것이라 생각했습니다. 하지만 핵심은 URL 문자열과 실제 디렉터리 경로를 개발자가 직접 매핑(mapping)해야 한다는 점이었습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>FastAPI에서 URL 요청은 <code>@app.get()</code> 같은 라우팅을 통해 특정 경로에 연결된 Python 함수를 실행하는 방식으로 처리되며, <code>mount</code>는 브라우저가 실제 폴더로 이동하는 것이 아니라 URL 공간과 서버 내부의 리소스를 직접 매핑해주는 역할을 한다. 즉, 라우팅은 논리적인 주소-함수 연결이고 마운트는 물리적인 URL 접두사와 디렉터리 경로를 연결하는 작업이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi.staticfiles <span style="color:#f92672">import</span> StaticFiles
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> FastAPI()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. Route: URL 경로와 Python 함수를 연결</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">read_root</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Hello World&#34;</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. Mount: URL prefix와 실제 폴더 경로를 연결 (매핑)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># /static URL로 접속 시, 서버 내부의 &#39;view&#39; 폴더 파일을 제공함</span>
+</span></span><span style="display:flex;"><span>app<span style="color:#f92672">.</span>mount(<span style="color:#e6db74">&#34;/static&#34;</span>, StaticFiles(directory<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;view&#34;</span>), name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;static&#34;</span>)
+</span></span></code></pre></div><h2 id="2-fastapi-파라미터와-계산기-실습-초보자-워킹-노트">2. FastAPI 파라미터와 계산기 실습 (초보자 워킹 노트)<a hidden class="anchor" aria-hidden="true" href="#2-fastapi-파라미터와-계산기-실습-초보자-워킹-노트">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>URL 경로와 API 기능은 별개이며, 쿼리 파라미터는 같은 키를 여러 번 전달할 수 있다. FastAPI에서 함수 인자 이름과 타입 힌트만으로도 요청값을 직접 받을 수 있다는 점이 핵심이었다. 또한 <code>/calc</code>가 HTML 화면이 아니라 계산 로직을 처리하는 API 기능임을 구분하는 것이 중요하다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음 <code>/calc</code>라는 단어를 보았을 때, 이것이 endpoint 이름인지 전체 프로그램 폴더명인지 구분하는 데 시간이 걸렸습니다. 또한 Query parameter가 URL에 그대로 노출된다는 점과 같은 key를 여러 번 전달할 수 있다는 사실이 초보자에게는 낯설었습니다. FastAPI에서 함수 파라미터의 이름과 타입 힌트만으로 쿼리 파라미터를 직접 받을 수 있다는 점이 인상 깊었으며, <code>/calc</code>가 HTML 화면이 아니라 계산 로직을 처리하는 API 기능이라는 점을 구분하는 것이 중요했습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>FastAPI에서 Request는 클라이언트가 보낸 요청 전체를 의미하며, Parameter는 URL에 포함된 Path parameter와 Query string으로 구분됩니다. 특히 함수 파라미터 이름과 타입 힌트만으로 쿼리 파라미터를 직접 받을 수 있어 라우팅 설계 시 &lsquo;URL = 페이지&rsquo;라는 개념을 넘어 API 기능의 분리 필요성을 명확히 인식하게 되었습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/items&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">read_name</span>(skip: int, limit: int):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;skip&#34;</span>: skip, <span style="color:#e6db74">&#34;limit&#34;</span>: limit}
+</span></span></code></pre></div><p>URL: <code>/items?skip=10&amp;limit=20</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/items/id/</span><span style="color:#e6db74">{item_id}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">read_id</span>(item_id: str):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;item_id&#34;</span>: item_id}
+</span></span></code></pre></div><p>URL: <code>/items/id/10</code></p>
+<h2 id="3-ajax와-비동기-통신의-핵심-차이점">3. AJAX와 비동기 통신의 핵심 차이점<a hidden class="anchor" aria-hidden="true" href="#3-ajax와-비동기-통신의-핵심-차이점">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>오늘은 &lsquo;동기&rsquo;와 &lsquo;비동기&rsquo;가 단순히 기술 용어로만 느껴졌던 제 인식을 완전히 바꿔놓았습니다. 특히 계산기 예제에서 <code>time.sleep(5)</code> 동안 브라우저가 멈추는 경험을 통해, 비동기가 사용자 경험을 지키는 핵심 기술임을 직관적으로 체감할 수 있었습니다. 그리고 AJAX와 Axios를 통해 페이지 새로고침 없이 서버와 데이터를 주고받을 수 있다는 점, 그리고 Python의 <code>async def</code>가 서버 내부 효율성을 높이는 것과는 별개로 Client-side 통신과는 다른 개념임을 명확히 구분하게 되었습니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>오늘 &lsquo;비동기&rsquo;라는 용어가 Python 서버 내부 처리 모델과 JavaScript 클라이언트 통신 방식을 뒤섞여 이해하기 어려웠습니다. 특히 계산기 예제에서 <code>time.sleep(5)</code>가 실행되었을 때 브라우저가 얼어붙는 경험을 통해, 동기가 사용자에게 미치는 직접적인 차단 효과를 실감할 수 있었습니다. 결국 AJAX와 Axios는 서버 응답을 기다리는 동안 화면이 멈추지 않게 해주는 Client-side 기술이며, Python의 <code>async def</code>는 서버가 요청을 효율적으로 처리하게 해주는 Server-side 모델이라는 점을 명확히 구분해야 한다는 점이 가장 중요했습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>AJAX와 Axios는 서버 응답을 기다리는 동안 화면이 멈추지 않게 해주는 클라이언트 측 통신 기술이며, Python의 <code>async def</code>는 서버 내부에서 여러 요청을 효율적으로 처리하는 모델이다. 이 둘은 연결되어 있지만 목적이 다르므로 혼동해서는 안 된다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">ajaxSend</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">val</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;input[name=&#34;msg&#34;]&#39;</span>).<span style="color:#a6e22e">val</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">axios</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#39;/send?msg=&#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">val</span>)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">then</span>(<span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">res</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">data</span>);
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="4-cookie와-session-서버와-클라이언트-사이의-신뢰할러운-상태-유지-전략">4. Cookie와 Session, 서버와 클라이언트 사이의 신뢰할러운 상태 유지 전략<a hidden class="anchor" aria-hidden="true" href="#4-cookie와-session-서버와-클라이언트-사이의-신뢰할러운-상태-유지-전략">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>처음에는 Cookie와 Session이 왜 따로 존재하는지 의아해했지만, 실제로는 Session ID를 전달하는 통로로서 Cookie가 작동한다는 사실을 깨닫고 이해가 깊어졌다. 특히 서버 측에서 세션 데이터를 관리하면서 클라이언트에는 식별자만 남기는 구조임을 명확히 했다. 이를 통해 HTTP의 비연결성 특성을 유지하면서 사용자 상태를 지속적으로 관리할 수 있다는 점이 인상적이었다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>처음에는 <code>SessionMiddleware</code> 코드 속에서 세션 정보가 클라이언트와 서버 양쪽에 동시에 존재하는 것처럼 보여서, 정확히 어디에 데이터가 저장되는지 구분이 안 되었습니다. 또한 강의에서는 &ldquo;Cookie는 Client, Session은 Server&quot;라고 하지만, 실제로는 세션을 식별하는 ID가 Cookie에 담겨 전달된다는 점에서 두 개념이 완전히 분리되어 있지 않고 상호 연관되어 있다는 점이 가장 큰 혼란 포인트였습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>Cookie는 브라우저에 저장되어 요청 시 자동으로 서버로 전달되며, Session은 서버 측에서 사용자의 연속된 요청을 하나의 덩어리로 묶어 관리하는 방식이다. 실제 구현에서는 세션을 식별하기 위한 키인 Session ID가 Cookie에 담겨 브라우저를 이동하며, 서버는 이 ID를 통해 해당 세션 데이터를 조회한다. 따라서 Cookie와 Session은 독립적인 개념이 아니라, Session ID를 전달하는 통로로서 Cookie가 Session과 밀접하게 연관되어 작동한다는 점을 이해해야 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI, Request, Response
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi.responses <span style="color:#f92672">import</span> HTMLResponse
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> starlette.middleware.sessions <span style="color:#f92672">import</span> SessionMiddleware
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> FastAPI()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 세션 미들웨어 설정 (세션 ID를 쿠키에 저장하도록 함)</span>
+</span></span><span style="display:flex;"><span>app<span style="color:#f92672">.</span>add_middleware(SessionMiddleware, secret_key<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;super-secret-key&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">home</span>(request: Request):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 현재 세션에 loginId가 있으면 로그인된 상태로 간주</span>
+</span></span><span style="display:flex;"><span>    login_id <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;loginId&#34;</span>, <span style="color:#66d9ef">None</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> login_id:
+</span></span><span style="display:flex;"><span>        message <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;안녕하세요, </span><span style="color:#e6db74">{</span>login_id<span style="color:#e6db74">}</span><span style="color:#e6db74">님!&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;로그인이 필요합니다.&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 로그인 페이지로 리디렉션하거나 로그인 폼 제공 (생략)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># HTMLResponse를 통해 간단한 화면 반환</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> HTMLResponse(content<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;&lt;h1&gt;</span><span style="color:#e6db74">{</span>message<span style="color:#e6db74">}</span><span style="color:#e6db74">&lt;/h1&gt;&#34;</span>, status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">200</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/login/</span><span style="color:#e6db74">{user_id}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">login</span>(user_id: str, request: Request):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 로그인 처리: 세션에 user_id 저장</span>
+</span></span><span style="display:flex;"><span>    request<span style="color:#f92672">.</span>session[<span style="color:#e6db74">&#34;loginId&#34;</span>] <span style="color:#f92672">=</span> user_id
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 응답 헤더에 Set-Cookie가 자동으로 포함되어 브라우저에 Session ID 쿠키 저장됨</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;msg&#34;</span>: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>user_id<span style="color:#e6db74">}</span><span style="color:#e6db74">님 환영합니다!&#34;</span>}
+</span></span></code></pre></div><h2 id="5-mount와-redirect의-역할-구분">5. mount와 redirect의 역할 구분<a hidden class="anchor" aria-hidden="true" href="#5-mount와-redirect의-역할-구분">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p><code>mount</code>는 서버가 URL 경로를 실제 파일 폴더에 연결하는 역할을 하고, <code>redirect</code>는 브라우저가 새로운 주소를 요청하도록 유도하는 동작이라는 점을 명확히 구분했다. 특히 &lsquo;누가 다음 행동을 수행하느냐&rsquo;에 초점을 맞추면 mount는 서버, redirect는 브라우저라는 주체가 뚜렷해져 헷갈림을 줄일 수 있었다. 이를 통해 URL 매핑과 실제 이동 요청의 차이를 정확하게 이해할 수 있게 되었다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>처음에는 <code>mount</code>와 <code>redirect</code>가 모두 &lsquo;이동&rsquo;이라는 단어 때문에 역할이 비슷하게 느껴졌다. 특히 강사님의 설명에서 <code>/view</code>를 폴더 이동 명령어처럼 들으며 두 개념을 혼동했다. 하지만 코드를 직접 보며 동작 주체를 명확히 나누니, <code>mount</code>는 서버가 연결 관계를 맺는 것이고 <code>redirect</code>는 브라우저가 다시 요청하는 것임을 정확히 구분할 수 있게 되었다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p><code>mount</code>는 서버가 URL 경로를 실제 파일 시스템 폴더에 연결하는 역할을 하고, <code>redirect</code>는 브라우저가 새로운 주소를 요청하도록 응답 헤드를 보내는 동작이다. 즉, <code>mount</code>는 서버 측의 &lsquo;연결 설정&rsquo;이고 <code>redirect</code>는 클라이언트 측의 &lsquo;재요청 유도&rsquo;다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># mount: URL 네임스페이스를 리소스에 연결 (서버 내부 동작)</span>
+</span></span><span style="display:flex;"><span>app<span style="color:#f92672">.</span>mount(<span style="color:#e6db74">&#39;/view&#39;</span>, StaticFiles(directory<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;view&#39;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># redirect: 브라우저에게 새로운 Location 요청을 보내는 응답 (브라우저 동작)</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> RedirectResponse(<span style="color:#e6db74">&#39;/view/index.html&#39;</span>)
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>URL 경로와 실제 폴더를 연결하는 <code>mount</code>는 서버 내부의 리소스를 URL 공간에 매핑해주는 물리적 연결고리이며, Route는 특정 URL에 실행될 Python 함수를 논리적으로 연결하는 역할을 한다. 쿼리 파라미터 전달과 함수 인자 타입 힌트만으로 값을 받을 수 있는 FastAPI의 특징을 통해, API 기능과 HTML 화면 처리를 명확히 구분하는 것이 중요하다. 또한 동기 통신 중 브라우저가 멈추는 경험을 통해 비동기가 사용자 경험을 보호하는 핵심 기술임을 직관적으로 체감했으며, Cookie가 Session ID를 전달하는 통로 역할을 하여 서버가 세션 데이터를 관리하면서 HTTP의 비연결성 특성을 유지할 수 있다는 점도 핵심 정리다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<ul>
+<li>URL 경로와 실제 폴더 연결 시 <code>mount</code>가 단순히 &lsquo;이동&rsquo; 개념이 아니라 &lsquo;매핑&rsquo;임을 명확히 인식하고, redirect와의 역할 주체 차이를 재확인해야 한다.</li>
+<li>비동기 통신에서 브라우저가 멈추지 않도록 하는 것이 핵심 목표임을 기억하며, <code>async def</code>의 서버 효율화 효과와 클라이언트 통신 목적구를 분리해서 공부해야 한다.</li>
+<li>Cookie가 Session ID를 전달하는 통로 역할을 한다는 점을 기반으로, 서버 측 세션 관리 전략이 HTTP 비연결성의 한계를 어떻게 극복하는지 지속적으로 점검해야 한다.</li>
+</ul>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>오늘 학습한 핵심 개념들이 머릿속에 정리가 되었지만, 아직 실전 적용이 불안정한 부분들이 있습니다.</p>
+<p>첫째, <code>mount</code>와 <code>redirect</code>의 역할 구분이 여전히 헷갈릴 때가 있는데, URL 경로 매핑과 브라우저 이동 요청이라는 기술적 차이는 알겠으나, 실제 프로젝트에서 어떤 상황에서 어떤 기능을 써야 하는지 감이 안 잡힙니다. 특히 라우팅 설정 시 mount를 쓸지, redirect를 쓸지 결정하는 기준가 구체적으로 연습해보고 싶습니다.</p>
+<p>둘째, 비동기 통신(AJAX/Axios)과 서버 측 <code>async/await</code>의 경계가 아직 명확하지 않습니다. 클라이언트에서 페이지 새로고침 없이 데이터를 주고받는 것과 서버 내부 효율성을 높이는 것은 별개라는 점은 이해했지만, 이 두 가지를 프로젝트 코드에서 어떻게 조합하고 관리해야 하는지 감이 안 잡힙니다.</p>
+<p>셋째, 계산기 API 실습 때 쿼리 파라미터 전달 방식과 path parameter의 차이를 확실히 구분하는 연습이 필요합니다. 같은 키를 여러 번 보낼 수 있다는 점이나, 인자 이름만으로 값을 받는 FastAPI의 특징을 실제 함수 설계에 적용했을 때 어떤 이득이 있는지 시나리오별로 정리해보고 싶습니다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-09-10-pm-daily/">
+    <span class="title">« Prev</span>
+    <span>오후 학습 | LangChain과 LM Studio를 활용한 LLM 오케스트레이션 입문</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-09-09-pm-daily/">
+    <span class="title">Next »</span>
+    <span>오후 학습 | 확장자 점 처리와 APScheduler 제어, LangChain 구조 이해</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

@@ -245,6 +245,21 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">오전 학습 | URL 매핑과 파라미터, 비동기 통신의 핵심 차이 정리
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 URL 경로와 실제 폴더의 연결 (mapping) FastAPI 파라미터와 계산기 실습 (초보자 워킹 노트) AJAX와 비동기 통신의 핵심 차이점 Cookie와 Session, 서버와 클라이언트 사이의 신뢰할러운 상태 유지 전략 mount와 redirect의 역할 구분 총평 1. URL 경로와 실제 폴더의 연결 (mapping) 무엇을 배웠나 FastAPI에서 URL 요청이 어떻게 처리되는지, 그리고 mount가 어떤 역할을 하는지 정립했습니다. Route는 특정 URL 경로에 접속했을 때 실행될 Python 함수를 연결하는 논리적 연결고리이고, Mount는 URL 공간과 서버 내부의 리소스를 매핑해주는 물리적/공간적 연결 고리입니다. 특히 mount는 브라우저가 폴더로 이동한다는 직관적인 표현보다, URL 공간과 실제 파일 시스템을 연결한다는 개념이 구조를 바꿀 때도 덜 헷갈리는 정확한 이해를 돕습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-09 00:00:00 +0000 UTC'>2026년 9월 9일</span>&nbsp;·&nbsp;<span>7 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오전 학습 | URL 매핑과 파라미터, 비동기 통신의 핵심 차이 정리" href="https://Han-think.github.io/learning/2026-09-09-am-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">오후 학습 | 확장자 점 처리와 APScheduler 제어, LangChain 구조 이해
     </h2>
   </header>
@@ -358,21 +373,6 @@ SDPA와 EAGR 속도 비교 실험 (XPU 환경): SDPA와 EAGER 속도 차이를 �
 Qwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리: TextStreamer를 사용하려면 단순히 클래스를 생성하는 것만으로는 충분하지 않으며, generate() 메서드에 인자로 전달해야 실시간 토큰 출력이 가능하다.
 핵심적인 학습 포인트는 프롬프트를 message 리스트 형태로 구조화한 뒤 apply_chat_template()을 호출하여 모델이 기대하는 대화 형식으로 변환한 다음, tokenizer에 입력해야 한다는 점이다. chat template가 적용되지 않은 상태로 tokenizer에 직접 입력을 하면 모델이 예상하지 못한 형식을 받게 되어 오류가 발생할 수 있다.
 SDPA와 EAGR 속도 비교 실험 (XPU 환경): SDPA와 EAGER 속도 차이를 단순히 실행 결과로 비교하면 안 되며, XPU 환경에서는 첫 실행 시 하드웨어 초기화 비용이 섞이기 때문에 warm-up 과정을 반드시 거쳐야 정확한 측정이 가능하다. 또한 CUDA용 `torch.cuda.synchronize()` 대신 XPU 환경에 맞게 `torch.xpu.synchronize()`를 사용해야 하며, 내 하드웨어 백엔드에 맞는 최적의 구현체를 직접 측정하여 검증하는 것이 이론을 외우는 것보다 훨씬 실용적이다." href="https://Han-think.github.io/learning/2026-09-04-am-daily/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오늘 오전, XPU 환경 Gemma 2 구동과 답변 추출 기법에 대해 정리했습니다.
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 Gemma 2 Intel XPU 장치 이동 및 temperature 파라미터 정리 입력과 답변을 분리하는 slicing 과정 no_grad와 Sampling 파라미터의 연결 이해 Hugging Face 모델 파일 구조와 샤딩 이해하기 KoBART XPU 파이프라인 이해하기 총평 1. Gemma 2 Intel XPU 장치 이동 및 temperature 파라미터 정리 무엇을 배웠나 강사님의 CUDA 코드를 그대로 따라 하려다가 장치 관리와 파라미터 용도에 대한 이해 부족으로 혼란을 겪었다. device_map=&#34;auto&#34;는 XPU 환경에서는 자동 분산이 아닌 model.to(&#34;xpu&#34;)를 통한 명시적 이동이 필요했으며, temperature는 모델 생성 옵션임이 확인되었다. 결국 최소한의 수정만으로도 XPU에서 Gemma 2를 성공적으로 구동할 수 있었다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-03 00:00:00 +0000 UTC'>2026년 9월 3일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오늘 오전, XPU 환경 Gemma 2 구동과 답변 추출 기법에 대해 정리했습니다." href="https://Han-think.github.io/learning/2026-09-03-am-daily/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

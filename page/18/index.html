@@ -205,6 +205,23 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">fstring-gugudan-and-output-formatting
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 f-string 삽입 쉼표 방식 출력 포맷팅 기호 사용 코드 가독성 향상 총평 1. f-string 삽입 왜 이걸 보게 됐나 f-string의 직관적인 사용법과 기존 .format() 메소드와의 차이점 이해하기 위해 초기 혼란을 겪었습니다. 특히 변수 삽입과 포맷팅 기호의 적용 방법에 대한 명확한 이해가 필요했습니다.
+내가 헷갈린 지점 처음에는 쉼표 방식과 f-string의 차이점과 각각의 적절한 사용 시기를 명확히 파악하지 못했습니다. 또한, :.2f, :2d와 같은 포맷팅 기호의 구체적인 사용법에 대해 혼란스러웠습니다.
+시도한 코드 / 예시 # 구구단 출력 예시 (f-string) number = 3 for i in range(1, 11): line = f&#39;{number} x {i} = {number * i}&#39; print(line) # 소수점 포맷팅 예시 average = 87.666666 print(f&#39;평균: {average:.2f}&#39;) # 자리수 맞춤 예시 dan = 3 for i in range(1, 11): print(f&#39;{dan} x {i} = {dan * i:2d}&#39;) 결과와 해석 3 x 1 = 3 3 x 2 = 6 3 x 3 = 9 3 x 4 = 12 3 x 5 = 15 3 x 6 = 18 3 x 7 = 21 3 x 8 = 24 3 x 9 = 27 3 x 10 = 30 평균: 87.67 3 x 1 = 3 3 x 2 = 6 3 x 3 = 9 3 x 4 = 12 3 x 5 = 15 3 x 6 = 18 3 x 7 = 21 3 x 8 = 24 3 x 9 = 27 3 x 10 = 30 정리된 이해 f-string을 통해 코드의 가독성을 향상시키고 복잡한 문자열 포맷팅을 간편하게 처리할 수 있음을 이해했습니다. 쉼표 방식과 비교했을 때, f-string은 변수 삽입과 다양한 포맷팅 옵션을 제공하여 더 유연하고 효율적인 문자열 생성을 가능하게 합니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to fstring-gugudan-and-output-formatting" href="https://Han-think.github.io/learning/fstring-gugudan-and-output-formatting/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">git-bash-markdown-vi
     </h2>
   </header>
@@ -346,22 +363,6 @@
 
 <span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
   <a class="entry-link" aria-label="post link to python-modules-entrypoint-docstring" href="https://Han-think.github.io/learning/python-modules-entrypoint-docstring/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">python-scope-global-shadowing
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 스코프 이해 Shadowing global 키워드 지역 변수 총평 1. 스코프 이해 왜 이걸 보게 됐나 초보 학습자로서 전역 변수의 수정 방법과 스코프 이해 부족으로 인해 UnboundLocalError 오류를 경험하며 혼란을 겪었습니다. 이를 통해 변수의 스코프와 global 키워드의 중요성을 깊이 이해하게 되었습니다.
-내가 헷갈린 지점 전역 변수 count를 함수 내에서 직접 수정하려고 했을 때 발생한 UnboundLocalError 오류 메시지와 그 원인을 이해하는 데 어려움을 겪었습니다. 특히 함수 내에서 변수를 수정할 때 global 키워드의 필요성을 깨달았습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-02 00:00:00 +0000 UTC'>2026년 6월 2일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
-  <a class="entry-link" aria-label="post link to python-scope-global-shadowing" href="https://Han-think.github.io/learning/python-scope-global-shadowing/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
