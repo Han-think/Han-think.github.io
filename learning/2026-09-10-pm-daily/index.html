@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오후 학습 | LangChain과 LM Studio를 활용한 LLM 오케스트레이션 입문 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-09-10 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-09-10-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-09-10-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function () {
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-09-10-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오후 학습 | LangChain과 LM Studio를 활용한 LLM 오케스트레이션 입문">
+  <meta property="og:description" content="2026-09-10 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-09-10T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-09-10T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오후 학습 | LangChain과 LM Studio를 활용한 LLM 오케스트레이션 입문">
+  <meta name="twitter:description" content="2026-09-10 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오후 학습 | LangChain과 LM Studio를 활용한 LLM 오케스트레이션 입문",
+      "item": "https://Han-think.github.io/learning/2026-09-10-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오후 학습 | LangChain과 LM Studio를 활용한 LLM 오케스트레이션 입문",
+  "name": "오후 학습 | LangChain과 LM Studio를 활용한 LLM 오케스트레이션 입문",
+  "description": "2026-09-10 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 LangChain과 Ollama로 구현한 챗 스트리밍 흐름 LM Studio 환경에 맞춘 LangChain 적응기 tool 함수 로직 수정 및 agent pipeline 완성하기 에이전트 구조와 실행 흐름의 이해 총평 1. LangChain과 Ollama로 구현한 챗 스트리밍 흐름 무엇을 배웠나 LangChain은 단순한 CLI 도구가 아니라 LLM을 연결해 실제 애플리케이션을 구성하는 오케스트레이션 프레임워크이며, chain.stream()과 StreamingResponse는 LLM의 chunk 생성 과정과 HTTP 전송 계층으로 구분된다. 또한 ChatPromptTemplate을 사용해 시스템 프롬프트와 대화 이력을 관리하고, LCEL 문법인 prompt | model을 활용하면 체인을 간결하게 구성할 수 있다.\n헷갈렸던 점 LangChain이 단순한 CLI 도구인지 오케스트레이션 레이어인지 구분하지 못해 혼란스러웠습니다. 특히 chain.stream()과 StreamingResponse가 LLM 내부 처리와 HTTP 전송 계층이라는 점에서 개념이 혼동되었습니다.\n정리된 이해 LangChain은 CLI 도구가 아니라 LLM 기반 애플리케이션을 구성하는 오케스트레이션 프레임워크이며, chain.stream()과 StreamingResponse는 LLM의 chunk 생성 과정과 HTTP 전송 계층으로 구분된다.\n# FastAPI 메인 파일에서 라우팅 설정 @app.post(\"/ask/chat\") def ask_chat(info: Dict[str, str]): # generator 함수의 출력을 StreamingResponse로 감싸서 전송 return StreamingResponse( chat_answer(info[\"q\"]), media_type=\"text/plain\" ) 2. LM Studio 환경에 맞춘 LangChain 적응기 무엇을 배웠나 LangChain 코드를 그대로 따라 하면 ChatOllama 같은 특정 라이브러리 함수에 의존하게 되어 환경이 다르면 수업 내용을 놓칠까 봐 걱정했습니다. 하지만 공통 구조인 프롬프트와 체인은 동일하며, 실제 모델 호출 부분만 Provider별로 다를 뿐이라는 점을 명확히 구분할 수 있었습니다. 결국 저는 LangChain의 ChatOpenAI를 사용해 OpenAI 호환 인터페이스를 통해 LM Studio에 접속하는 방식으로 변환했습니다.\n헷갈렸던 점 처음에는 ChatOllama 같은 특정 라이브러리 함수에 의존하는 것처럼 보여서, LM Studio 환경에서 핵심 내용을 놓치지 않을까 걱정했습니다. 하지만 수업을 통해 공통 구조(prompt, history 등)와 Provider별 차이점(실제 모델 호출 부분)을 명확히 구분할 수 있게 되었습니다. 결국 강사님의 흐름보다 제 작업 환경에 더 부합하는 방식으로 재구성하며, Provider layer를 직접 조절할 수 있는 유연함을 얻었습니다.\n정리된 이해 LangChain의 ChatOpenAI 모듈을 사용하면 Ollama 코드와 유사한 흐름을 유지하면서 LM Studio 환경에 맞게 모델을 로딩할 수 있어, Provider layer를 직접 조작하지 않고도 기존 학습 내용을 빠르게 적용할 수 있다. 핵심적인 LLM 상호작용 구조인 프롬프트, 히스토리, 체인, 스트리밍 등은 공급자 변경과 무관하게 동일하게 유지되며, 저는 OpenAI-compatible 어댑터를 통해 LM Studio와 연결하는 방식을 선택해 유연성을 확보했습니다.\nfrom langchain_openai import ChatOpenAI # LM Studio가 기본적으로 제공하는 로컬 주소와 API 키를 사용합니다. model = ChatOpenAI( base_url=\"http://localhost:1234/v1\", model_name=\"local-model\", # LM Studio에서 사용하는 모델 이름 temperature=0.7 ) 3. tool 함수 로직 수정 및 agent pipeline 완성하기 무엇을 배웠나 tool 함수가 단순히 a * b로 구현된 것을 보고 처음에는 오타라고 생각했으나, 실제 코드베이스에 그대로 존재한다는 사실에 당황했다. 이는 tool이 올바르게 작동하지 않으면 agent가 신뢰할 수 있는 결과를 도출할 수 없다는 점을 깨닫게 해주었다. 가장 시급한 과제는 덧셈, 뺄셈, 나눗셈 연산 로직을 수정하여 tool의 기능을 정상화하는 것이다.\n헷갈렸던 점 가장 큰 혼란은 tool 함수들의 구현 오류였습니다.\n수업 시간에 multiply 함수가 a * b인 것은 이해가 갔지만, 나머지 세 함수까지 전부 같은 코드를 쓰고 있는 것을 보고 **“이건 분명 오타나 임시 작성일 거야”**라고 생각했습니다. 하지만 실제 Git repository 상태를 확인하니까 실제로 그런 코드가 존재해서 당황했습니다. “강사님이 의도적으로 문제를 남겨둔 건가? 아니면 아직 완성되지 않은 초안인가?“라는 질문이 들었고, source code만으로는 확인이 불가능해서 답답함을 느꼈습니다. tool이 제대로 작동하지 않으면 agent가 올바른 결과를 내놓을 수 없는데, 어떻게 학습해야 할지 막막했죠.\n핵심 학습 포인트\n가장 중요한 것은 tool 함수 자체의 코드보다, 다음과 같은 agent loop입니다.\nLLM이 tool을 선택 → argument 생성 → tool 실행 → result를 다시 LLM이 사용 → final answer 정리된 이해 tool 함수가 올바르게 구현되지 않으면 agent가 원하는 결과를 도출할 수 없다는 점을 뼈저리게 느꼈습니다. 특히 plus, minus, divide 함수까지 전부 a * b로 작성된 것을 보고 코드 검증의 중요성을 절실히 체감했습니다. 다음 단계에서는 실제 연산 로직을 수정하고, tool이 정상적으로 호출되는지 확인하며 agent loop가 어떻게 동작하는지 직접 검증해보는 것이 시급한 과제입니다.\n# tool 함수 수정 전 (오류 포함) def plus(a, b): return a * b # 오류: 더하기를 곱셈 def minus(a, b): return a * b # 오류: 빼기를 곱셈 def divide(a, b): return a * b # 오류: 나누기를 곱셈 # tool 함수 수정 후 (정상) def plus(a, b): return a + b # 덧셈 연산으로 수정 def minus(a, b): return a - b # 뺄셈 연산으로 수정 def divide(a, b): if b == 0: raise ZeroDivisionError(\"0으로는 나눌 수 없습니다.\") return a / b # 나눗셈 연산으로 수정 4. 에이전트 구조와 실행 흐름의 이해 무엇을 배웠나 에이전트의 핵심은 특정 LLM 공급자에 국한되지 않고, 모델·도구·에이전트·실행이라는 네 가지 층으로 구성된다는 점을 명확히 했습니다. 강사님의 빠른 피드백 방식과 구조적인 분리를 통해 ‘계약(contract)‘을 이해하는 것이 무엇보다 중요하다는 사실을 깨달았습니다. 이를 기반으로 실제 환경에서 제공자별 세부 설정을 유연하게 적용할 수 있는 설계 역량이 필요하다고 느꼈습니다.\n헷갈렸던 점 에이전트 구현에서 가장 큰 혼란은 **‘도구와 모델의 경계’**와 **‘실행 흐름’**에 있었습니다. 특히 LM Studio나 OpenAI 호환 API를 사용하려 할 때, 기존 강사님 방식과의 연동이 원본을 망가뜨릴까 봐 불안했습니다. 또한 ChatOllama와 @tool 연결 뒤에는 model object, tool 정의, prompt instruction라는 각각의 계약이 있지만, 이들이 메모리 위에서 어떻게 상호작용하는지 감 잡기 어려웠습니다.\n두 번째로, create_agent()를 정확히 어떻게 호출해야 하는지와 인자로 무엇을 넘겨줘야 하는지에 대한 버전 의존적인 부분이 있어 실습 중 오류가 날까 봐 긴장되었습니다.\n정리된 이해 에이전트 시스템은 ‘모델’, ‘도구’, ‘실행’이라는 네 가지 핵심 층(layer)으로 구성되며, 각 층 사이의 계약(contract)을 이해하는 것이 가장 중요합니다. 특정 LLM 공급자(Ollama/OpenAI)에 얽매이지 않고 이 구조를 유연하게 분리하면 다양한 환경에 맞춰 에이전트를 완성할 수 있습니다.\n# Cleaner Approach: Agent Architecture Structure from typing import List, Optional from abc import ABC, abstractmethod class ModelInterface(ABC): \"\"\"Abstract base for model providers (Ollama, OpenAI, etc.)\"\"\" @abstractmethod def generate(self, prompt: str, tools: Optional[List] = None) -\u003e str: pass class ToolDefinition: \"\"\"Encapsulates tool metadata and execution logic\"\"\" def __init__(self, name: str, description: str, func): self.name = name self.description = description self.func = func class AgentService: \"\"\"Core agent orchestration logic\"\"\" def __init__(self, model: ModelInterface, tools: List[ToolDefinition]): self.model = model self.tools = {t.name: t for t in tools} def execute(self, user_input: str) -\u003e str: # 1. Prepare prompt with tool instructions tool_instructions = \"\\n\".join( f\"{t.name}: {t.description}\" for t in self.tools.values() ) full_prompt = f\"{tool_instructions}\\nUser: {user_input}\" # 2. Generate response from model response = self.model.generate(full_prompt, list(self.tools.values())) # 3. Execute if tool call detected if response.startswith(\"Tool:\"): tool_name = response.split(\":\")[1].strip() tool = self.tools.get(tool_name) if tool: result = tool.func() return f\"Result: {result}\" return response # Usage Example if __name__ == \"__main__\": # Mock model implementation class OllamaModel(ModelInterface): def generate(self, prompt, tools=None): # In real usage: returns LLM output potentially with tool calls return \"Tool: calculator\" # Simulated tool call # Define tools def calculate(): return \"42\" calc_tool = ToolDefinition( name=\"calculator\", description=\"Performs mathematical calculations\", func=calculate ) # Initialize and run model = OllamaModel() agent = AgentService(model, [calc_tool]) result = agent.execute(\"What is 6*7?\") print(result) # Output: Result: 42 총평 오늘 오후 전체에서 배운 것 LangChain은 LLM 연결 및 애플리케이션 오케스트레이션을 위한 프레임워크이며, ChatPromptTemplate과 StreamingResponse를 활용해 프롬프트 관리와 스트리밍 전송 계층을 분리할 수 있다. 또한 tool의 로직 수정 없이 agent가 신뢰할 수 있는 결과를 도출하지 못한다는 점을 깨닫고, 덧셈·뺄셈·나눗셈 연산 기능을 정상화하여 pipeline을 완성하는 것이 시급한 과제였다.\n다음에 조심할 것 다음에는 tool 함수 로직이 실제 비즈니스 요구사항을 충실히 반영하는지 반드시 검증한 뒤 agent pipeline에 적용해야겠다. 또한 provider별 모델 호출 인터페이스를 추상화해 LangChain 코드를 환경 변경 없이 유연하게 재구성할 수 있도록 설계하는 습관을 들일 것이다. 마지막으로 에이전트 실행 전 각 tool의 연산 로직이 올바르게 동작하는지 단위 테스트를 수행하여 신뢰성을 확보하는 과정을 반드시 거칠 계획이다.\n다음 복습 주제 다음에 복습할 주제는 다음과 같습니다.\ntool 함수의 연산 로직을 덧셈, 뺄셈, 나눗셈으로 수정하여 agent pipeline이 신뢰성 있게 동작하도록 정상화하는 것입니다. 또한, LangChain의 프롬프트와 체인 구조는 환경과 무관하게 공통적으로 적용되며, 실제 모델 호출 부분만 Provider별로 다르게 설계할 수 있는 유연성을 확보한 점도 다시 한번 정리해 보고자 합니다. 마지막으로, 에이전트의 네 가지 핵심 층(모델·도구·에이전트·실행) 구조와 ‘계약(contract)’ 개념을 명확히 이해하여, 다양한 LLM 공급자를 유연하게 연결할 수 있는 설계 역량을 키우는 것이 목표입니다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1226",
+  "inLanguage": "en",
+  "datePublished": "2026-09-10T00:00:00Z",
+  "dateModified": "2026-09-10T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-09-10-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/life/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/ai-research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오후 학습 | LangChain과 LM Studio를 활용한 LLM 오케스트레이션 입문
+    </h1>
+    <div class="post-description">
+      2026-09-10 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-09-10 00:00:00 +0000 UTC'>2026년 9월 10일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-langchain%EA%B3%BC-ollama%EB%A1%9C-%EA%B5%AC%ED%98%84%ED%95%9C-%EC%B1%97-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%ED%9D%90%EB%A6%84">LangChain과 Ollama로 구현한 챗 스트리밍 흐름</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-lm-studio-%ED%99%98%EA%B2%BD%EC%97%90-%EB%A7%9E%EC%B6%98-langchain-%EC%A0%81%EC%9D%91%EA%B8%B0">LM Studio 환경에 맞춘 LangChain 적응기</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-tool-%ED%95%A8%EC%88%98-%EB%A1%9C%EC%A7%81-%EC%88%98%EC%A0%95-%EB%B0%8F-agent-pipeline-%EC%99%84%EC%84%B1%ED%95%98%EA%B8%B0">tool 함수 로직 수정 및 agent pipeline 완성하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%8B%A4%ED%96%89-%ED%9D%90%EB%A6%84%EC%9D%98-%EC%9D%B4%ED%95%B4">에이전트 구조와 실행 흐름의 이해</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-langchain과-ollama로-구현한-챗-스트리밍-흐름">1. LangChain과 Ollama로 구현한 챗 스트리밍 흐름<a hidden class="anchor" aria-hidden="true" href="#1-langchain과-ollama로-구현한-챗-스트리밍-흐름">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>LangChain은 단순한 CLI 도구가 아니라 LLM을 연결해 실제 애플리케이션을 구성하는 오케스트레이션 프레임워크이며, <code>chain.stream()</code>과 <code>StreamingResponse</code>는 LLM의 chunk 생성 과정과 HTTP 전송 계층으로 구분된다. 또한 ChatPromptTemplate을 사용해 시스템 프롬프트와 대화 이력을 관리하고, LCEL 문법인 <code>prompt | model</code>을 활용하면 체인을 간결하게 구성할 수 있다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>LangChain이 단순한 CLI 도구인지 오케스트레이션 레이어인지 구분하지 못해 혼란스러웠습니다.
+특히 <code>chain.stream()</code>과 <code>StreamingResponse</code>가 LLM 내부 처리와 HTTP 전송 계층이라는 점에서 개념이 혼동되었습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>LangChain은 CLI 도구가 아니라 LLM 기반 애플리케이션을 구성하는 오케스트레이션 프레임워크이며, <code>chain.stream()</code>과 <code>StreamingResponse</code>는 LLM의 chunk 생성 과정과 HTTP 전송 계층으로 구분된다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># FastAPI 메인 파일에서 라우팅 설정</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.post</span>(<span style="color:#e6db74">&#34;/ask/chat&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">ask_chat</span>(info: Dict[str, str]):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># generator 함수의 출력을 StreamingResponse로 감싸서 전송</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> StreamingResponse(
+</span></span><span style="display:flex;"><span>        chat_answer(info[<span style="color:#e6db74">&#34;q&#34;</span>]),
+</span></span><span style="display:flex;"><span>        media_type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/plain&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span></code></pre></div><h2 id="2-lm-studio-환경에-맞춘-langchain-적응기">2. LM Studio 환경에 맞춘 LangChain 적응기<a hidden class="anchor" aria-hidden="true" href="#2-lm-studio-환경에-맞춘-langchain-적응기">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>LangChain 코드를 그대로 따라 하면 <code>ChatOllama</code> 같은 특정 라이브러리 함수에 의존하게 되어 환경이 다르면 수업 내용을 놓칠까 봐 걱정했습니다. 하지만 공통 구조인 프롬프트와 체인은 동일하며, 실제 모델 호출 부분만 Provider별로 다를 뿐이라는 점을 명확히 구분할 수 있었습니다. 결국 저는 LangChain의 <code>ChatOpenAI</code>를 사용해 OpenAI 호환 인터페이스를 통해 LM Studio에 접속하는 방식으로 변환했습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음에는 <code>ChatOllama</code> 같은 특정 라이브러리 함수에 의존하는 것처럼 보여서, LM Studio 환경에서 핵심 내용을 놓치지 않을까 걱정했습니다. 하지만 수업을 통해 <strong>공통 구조</strong>(prompt, history 등)와 <strong>Provider별 차이점</strong>(실제 모델 호출 부분)을 명확히 구분할 수 있게 되었습니다. 결국 강사님의 흐름보다 제 작업 환경에 더 부합하는 방식으로 재구성하며, Provider layer를 직접 조절할 수 있는 유연함을 얻었습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>LangChain의 <code>ChatOpenAI</code> 모듈을 사용하면 Ollama 코드와 유사한 흐름을 유지하면서 LM Studio 환경에 맞게 모델을 로딩할 수 있어, Provider layer를 직접 조작하지 않고도 기존 학습 내용을 빠르게 적용할 수 있다. 핵심적인 LLM 상호작용 구조인 프롬프트, 히스토리, 체인, 스트리밍 등은 공급자 변경과 무관하게 동일하게 유지되며, 저는 OpenAI-compatible 어댑터를 통해 LM Studio와 연결하는 방식을 선택해 유연성을 확보했습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> langchain_openai <span style="color:#f92672">import</span> ChatOpenAI
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># LM Studio가 기본적으로 제공하는 로컬 주소와 API 키를 사용합니다.</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> ChatOpenAI(
+</span></span><span style="display:flex;"><span>    base_url<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://localhost:1234/v1&#34;</span>,
+</span></span><span style="display:flex;"><span>    model_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;local-model&#34;</span>,  <span style="color:#75715e"># LM Studio에서 사용하는 모델 이름</span>
+</span></span><span style="display:flex;"><span>    temperature<span style="color:#f92672">=</span><span style="color:#ae81ff">0.7</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><h2 id="3-tool-함수-로직-수정-및-agent-pipeline-완성하기">3. tool 함수 로직 수정 및 agent pipeline 완성하기<a hidden class="anchor" aria-hidden="true" href="#3-tool-함수-로직-수정-및-agent-pipeline-완성하기">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>tool 함수가 단순히 <code>a * b</code>로 구현된 것을 보고 처음에는 오타라고 생각했으나, 실제 코드베이스에 그대로 존재한다는 사실에 당황했다. 이는 tool이 올바르게 작동하지 않으면 agent가 신뢰할 수 있는 결과를 도출할 수 없다는 점을 깨닫게 해주었다. 가장 시급한 과제는 덧셈, 뺄셈, 나눗셈 연산 로직을 수정하여 tool의 기능을 정상화하는 것이다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>가장 큰 혼란은 <strong>tool 함수들의 구현 오류</strong>였습니다.</p>
+<p>수업 시간에 <code>multiply</code> 함수가 <code>a * b</code>인 것은 이해가 갔지만, 나머지 세 함수까지 전부 같은 코드를 쓰고 있는 것을 보고 **&ldquo;이건 분명 오타나 임시 작성일 거야&rdquo;**라고 생각했습니다. 하지만 실제 Git repository 상태를 확인하니까 실제로 그런 코드가 존재해서 당황했습니다. &ldquo;강사님이 의도적으로 문제를 남겨둔 건가? 아니면 아직 완성되지 않은 초안인가?&ldquo;라는 질문이 들었고, source code만으로는 확인이 불가능해서 답답함을 느꼈습니다. tool이 제대로 작동하지 않으면 agent가 올바른 결과를 내놓을 수 없는데, 어떻게 학습해야 할지 막막했죠.</p>
+<p><strong>핵심 학습 포인트</strong></p>
+<p>가장 중요한 것은 tool 함수 자체의 코드보다, 다음과 같은 <strong>agent loop</strong>입니다.</p>
+<pre tabindex="0"><code>LLM이 tool을 선택 → argument 생성 → tool 실행 → result를 다시 LLM이 사용 → final answer
+</code></pre><h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>tool 함수가 올바르게 구현되지 않으면 agent가 원하는 결과를 도출할 수 없다는 점을 뼈저리게 느꼈습니다. 특히 <code>plus</code>, <code>minus</code>, <code>divide</code> 함수까지 전부 <code>a * b</code>로 작성된 것을 보고 코드 검증의 중요성을 절실히 체감했습니다. 다음 단계에서는 실제 연산 로직을 수정하고, tool이 정상적으로 호출되는지 확인하며 agent loop가 어떻게 동작하는지 직접 검증해보는 것이 시급한 과제입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># tool 함수 수정 전 (오류 포함)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">plus</span>(a, b):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> a <span style="color:#f92672">*</span> b  <span style="color:#75715e"># 오류: 더하기를 곱셈</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">minus</span>(a, b):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> a <span style="color:#f92672">*</span> b  <span style="color:#75715e"># 오류: 빼기를 곱셈</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">divide</span>(a, b):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> a <span style="color:#f92672">*</span> b  <span style="color:#75715e"># 오류: 나누기를 곱셈</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># tool 함수 수정 후 (정상)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">plus</span>(a, b):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> a <span style="color:#f92672">+</span> b  <span style="color:#75715e"># 덧셈 연산으로 수정</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">minus</span>(a, b):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> a <span style="color:#f92672">-</span> b  <span style="color:#75715e"># 뺄셈 연산으로 수정</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">divide</span>(a, b):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> b <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">ZeroDivisionError</span>(<span style="color:#e6db74">&#34;0으로는 나눌 수 없습니다.&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> a <span style="color:#f92672">/</span> b  <span style="color:#75715e"># 나눗셈 연산으로 수정</span>
+</span></span></code></pre></div><h2 id="4-에이전트-구조와-실행-흐름의-이해">4. 에이전트 구조와 실행 흐름의 이해<a hidden class="anchor" aria-hidden="true" href="#4-에이전트-구조와-실행-흐름의-이해">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>에이전트의 핵심은 특정 LLM 공급자에 국한되지 않고, 모델·도구·에이전트·실행이라는 네 가지 층으로 구성된다는 점을 명확히 했습니다. 강사님의 빠른 피드백 방식과 구조적인 분리를 통해 &lsquo;계약(contract)&lsquo;을 이해하는 것이 무엇보다 중요하다는 사실을 깨달았습니다. 이를 기반으로 실제 환경에서 제공자별 세부 설정을 유연하게 적용할 수 있는 설계 역량이 필요하다고 느꼈습니다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>에이전트 구현에서 가장 큰 혼란은 **&lsquo;도구와 모델의 경계&rsquo;**와 **&lsquo;실행 흐름&rsquo;**에 있었습니다. 특히 <code>LM Studio</code>나 <code>OpenAI 호환 API</code>를 사용하려 할 때, 기존 강사님 방식과의 연동이 원본을 망가뜨릴까 봐 불안했습니다. 또한 <code>ChatOllama</code>와 <code>@tool</code> 연결 뒤에는 <code>model object</code>, <code>tool 정의</code>, <code>prompt instruction</code>라는 각각의 계약이 있지만, 이들이 메모리 위에서 어떻게 상호작용하는지 감 잡기 어려웠습니다.</p>
+<p>두 번째로, <code>create_agent()</code>를 정확히 어떻게 호출해야 하는지와 인자로 무엇을 넘겨줘야 하는지에 대한 버전 의존적인 부분이 있어 실습 중 오류가 날까 봐 긴장되었습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>에이전트 시스템은 &lsquo;모델&rsquo;, &lsquo;도구&rsquo;, &lsquo;실행&rsquo;이라는 네 가지 핵심 층(layer)으로 구성되며, 각 층 사이의 계약(contract)을 이해하는 것이 가장 중요합니다. 특정 LLM 공급자(Ollama/OpenAI)에 얽매이지 않고 이 구조를 유연하게 분리하면 다양한 환경에 맞춰 에이전트를 완성할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Cleaner Approach: Agent Architecture Structure</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> List, Optional
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> abc <span style="color:#f92672">import</span> ABC, abstractmethod
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ModelInterface</span>(ABC):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Abstract base for model providers (Ollama, OpenAI, etc.)&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@abstractmethod</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate</span>(self, prompt: str, tools: Optional[List] <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ToolDefinition</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Encapsulates tool metadata and execution logic&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, name: str, description: str, func):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>name <span style="color:#f92672">=</span> name
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>description <span style="color:#f92672">=</span> description
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>func <span style="color:#f92672">=</span> func
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AgentService</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Core agent orchestration logic&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, model: ModelInterface, tools: List[ToolDefinition]):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>model <span style="color:#f92672">=</span> model
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>tools <span style="color:#f92672">=</span> {t<span style="color:#f92672">.</span>name: t <span style="color:#66d9ef">for</span> t <span style="color:#f92672">in</span> tools}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">execute</span>(self, user_input: str) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 1. Prepare prompt with tool instructions</span>
+</span></span><span style="display:flex;"><span>        tool_instructions <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>join(
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>t<span style="color:#f92672">.</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>t<span style="color:#f92672">.</span>description<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> t <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>tools<span style="color:#f92672">.</span>values()
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        full_prompt <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>tool_instructions<span style="color:#e6db74">}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">User: </span><span style="color:#e6db74">{</span>user_input<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 2. Generate response from model</span>
+</span></span><span style="display:flex;"><span>        response <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>model<span style="color:#f92672">.</span>generate(full_prompt, list(self<span style="color:#f92672">.</span>tools<span style="color:#f92672">.</span>values()))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 3. Execute if tool call detected</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> response<span style="color:#f92672">.</span>startswith(<span style="color:#e6db74">&#34;Tool:&#34;</span>):
+</span></span><span style="display:flex;"><span>            tool_name <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;:&#34;</span>)[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>strip()
+</span></span><span style="display:flex;"><span>            tool <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>tools<span style="color:#f92672">.</span>get(tool_name)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> tool:
+</span></span><span style="display:flex;"><span>                result <span style="color:#f92672">=</span> tool<span style="color:#f92672">.</span>func()
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Result: </span><span style="color:#e6db74">{</span>result<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> response
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Usage Example</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Mock model implementation</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OllamaModel</span>(ModelInterface):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate</span>(self, prompt, tools<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># In real usage: returns LLM output potentially with tool calls</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Tool: calculator&#34;</span>  <span style="color:#75715e"># Simulated tool call</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Define tools</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">calculate</span>():
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;42&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    calc_tool <span style="color:#f92672">=</span> ToolDefinition(
+</span></span><span style="display:flex;"><span>        name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;calculator&#34;</span>,
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Performs mathematical calculations&#34;</span>,
+</span></span><span style="display:flex;"><span>        func<span style="color:#f92672">=</span>calculate
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Initialize and run</span>
+</span></span><span style="display:flex;"><span>    model <span style="color:#f92672">=</span> OllamaModel()
+</span></span><span style="display:flex;"><span>    agent <span style="color:#f92672">=</span> AgentService(model, [calc_tool])
+</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> agent<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#34;What is 6*7?&#34;</span>)
+</span></span><span style="display:flex;"><span>    print(result)  <span style="color:#75715e"># Output: Result: 42</span>
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>LangChain은 LLM 연결 및 애플리케이션 오케스트레이션을 위한 프레임워크이며, <code>ChatPromptTemplate</code>과 <code>StreamingResponse</code>를 활용해 프롬프트 관리와 스트리밍 전송 계층을 분리할 수 있다. 또한 tool의 로직 수정 없이 agent가 신뢰할 수 있는 결과를 도출하지 못한다는 점을 깨닫고, 덧셈·뺄셈·나눗셈 연산 기능을 정상화하여 pipeline을 완성하는 것이 시급한 과제였다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>다음에는 tool 함수 로직이 실제 비즈니스 요구사항을 충실히 반영하는지 반드시 검증한 뒤 agent pipeline에 적용해야겠다. 또한 provider별 모델 호출 인터페이스를 추상화해 LangChain 코드를 환경 변경 없이 유연하게 재구성할 수 있도록 설계하는 습관을 들일 것이다. 마지막으로 에이전트 실행 전 각 tool의 연산 로직이 올바르게 동작하는지 단위 테스트를 수행하여 신뢰성을 확보하는 과정을 반드시 거칠 계획이다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>다음에 복습할 주제는 다음과 같습니다.</p>
+<p>tool 함수의 연산 로직을 덧셈, 뺄셈, 나눗셈으로 수정하여 agent pipeline이 신뢰성 있게 동작하도록 정상화하는 것입니다. 또한, LangChain의 프롬프트와 체인 구조는 환경과 무관하게 공통적으로 적용되며, 실제 모델 호출 부분만 Provider별로 다르게 설계할 수 있는 유연성을 확보한 점도 다시 한번 정리해 보고자 합니다. 마지막으로, 에이전트의 네 가지 핵심 층(모델·도구·에이전트·실행) 구조와 &lsquo;계약(contract)&rsquo; 개념을 명확히 이해하여, 다양한 LLM 공급자를 유연하게 연결할 수 있는 설계 역량을 키우는 것이 목표입니다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-09-10-am-daily/">
+    <span class="title">« Prev</span>
+    <span>오전 학습 | HTTP 요청 구조와 함수 인자로 동적 응답 생성하기</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-09-08-am-daily/">
+    <span class="title">Next »</span>
+    <span>오전 학습 | 학습 안정성 디버깁: axis·dim 차이와 gradient 분석</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
