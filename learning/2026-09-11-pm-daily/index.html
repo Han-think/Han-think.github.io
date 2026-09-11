@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오후 학습 | stream_mode 변경 시 파서 재구성 필요와 일관된 normalization layer | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-09-11 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-09-11-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-09-11-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function () {
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-09-11-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오후 학습 | stream_mode 변경 시 파서 재구성 필요와 일관된 normalization layer">
+  <meta property="og:description" content="2026-09-11 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-09-11T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-09-11T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오후 학습 | stream_mode 변경 시 파서 재구성 필요와 일관된 normalization layer">
+  <meta name="twitter:description" content="2026-09-11 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오후 학습 | stream_mode 변경 시 파서 재구성 필요와 일관된 normalization layer",
+      "item": "https://Han-think.github.io/learning/2026-09-11-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오후 학습 | stream_mode 변경 시 파서 재구성 필요와 일관된 normalization layer",
+  "name": "오후 학습 | stream_mode 변경 시 파서 재구성 필요와 일관된 normalization layer",
+  "description": "2026-09-11 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 stream_mode 변경 시 chunk 구조와 파서 재구성 필요 에이전트 툴 인터페이스와 모듈성: 일관된 구조와 내부 구현 교체ability Transformers Pipeline과 ViT 이미지 분류 실습 정리 업로드 후 분류와 정리: 임시 파일 관리 전략 Intel Arc/XPU 환경으로 이어가는 오후 수업 요약 총평 1. stream_mode 변경 시 chunk 구조와 파서 재구성 필요 무엇을 배웠나 stream_mode 옵션을 변경하면 데이터의 청크 구조가 완전히 달라지므로, 단순히 옵션 하나만 바꾸는 것이 아니라 그에 맞는 파서 로직도 함께 재구성해야 한다.\nmode를 선택할 때 중요한 것은 ‘어떤 모드를 쓸 것인가’가 아니라, 해당 mode에 맞춰 데이터를 어떻게 정규화하고 변환할 것인지가 핵심 설계 포인트가 된다. raw event를 UI로 전달하기 전, 일관된 형태(text/tool_call 등)로 정제하는 normalization layer를 두는 것이 유지보수에 훨씬 유리하다.\n헷갈렸던 점 stream_mode 옵션을 변경하면 데이터 구조가 완전히 달라져서 파싱 로직까지 재구성해야 한다는 점이 가장 큰 혼란이었습니다. 단순히 streaming 기능 제공 여부가 아니라, mode에 따라 chunk의 포맷과 내부가 다르기 때문에 코드 전체를 다시 짜야 했습니다. 따라서 프로젝트에서는 옵션 선택 자체보다, 각 mode에 맞춰 데이터를 정규화하는 설계가 핵심입니다.\n정리된 이해 stream_mode 옵션을 변경하면 데이터 구조가 완전히 달라지므로, 단순히 옵션 하나만 바꾸는 것이 아니라 그에 맞는 chunk parser와 정규화 로직도 함께 재구성해야 한다. mode에 맞춰 데이터를 통일된 형태로 변환해주는 normalization layer를 두는 것이 유지보수에 훨씬 유리하다.\n# stream_mode=\"updates\" 모드에서 반환되는 chunk 구조 예시 # 주요 단계 종료 시점마다 결과가 반환되며, model.messages 형태로 중첩됨 chunk = { \"model\": { \"messages\": [...] # message 리스트가 모델 내부 상태와 함께 묶림 } } # stream_mode=\"messages\" 모드에서 반환되는 chunk 구조 예시 # message 단위로 세밀하게 스트리밍되며, chunk[0] 형태로 직접 접근 가능 chunk = [ {\"role\": \"assistant\", \"content\": \"안녕하세요...\"}, {\"role\": \"assistant\", \"content\": \"어떻게 도와드릴까요?\"} ] 2. 에이전트 툴 인터페이스와 모듈성: 일관된 구조와 내부 구현 교체ability 무엇을 배웠나 오늘은 툴 인터페이스의 일관성과 내부 구현의 교체 가능성을 중심으로 배웠습니다. 어떤 툴 이름이 실시간성을 암시하더라도, 모든 도구는 Agent → tool 선택 → Python 함수 실행이라는 동일한 흐름을 따른다는 점이 핵심입니다. 또한, 툴 인터페이스는 유지하면서 내부 구현을 더미에서 실제 API로 교체하는 방식이 이상적인 모듈 구조라고 판단했습니다.\n헷갈렸던 점 함수명만 보고 실제 API가 연결된 줄 알았는데, 날씨와 주식 툴은 가짜 문자열을 반환하는 mock이어서 ‘보이는 것과 다른 실체’에 혼란을 느꼈다. 또한 툴 인터페이스는 유지하면서 내부 구현을 교체할 수 있다는 점에서, “보는 사람은 실시간 데이터처럼 느끼게 하되 안에서는 더미를 쓰는 것\"이 이상적인 구조라는 점을 이해하게 되었다.\n정리된 이해 툴 인터페이스의 일관성을 유지하면서 내부 구현을 mock에서 실제 API로 교체하는 것이 모듈성의 핵심이며, 툴 이름은 실시간성을 암시하지만 실제 동작은 내부 로직에 따라 달라질 수 있음을 이해해야 한다.\n# Tool Interface Consistency Example def check_weather(city: str) -\u003e str: \"\"\"날씨 조회 툴 (내부 구현은 mock 또는 실제 API 연동 가능)\"\"\" # 실제 서비스에서는 requests 라이브러리로 외부 API 호출 # 여기서는 예시를 위해 더미 데이터 반환 return f\"{city}의 날씨: 맑음, 25도\" def check_stock(ticker: str) -\u003e str: \"\"\"주식 조회 툴\"\"\" # 실제 서비스에서는 yfinance 또는 키움증권 API 호출 return f\"{ticker} 현재가: 10,000원\" def now_date() -\u003e str: \"\"\"현재 날짜/시간 툴 (실제 datetime.now() 직접 호출)\"\"\" from datetime import datetime return datetime.now().strftime(\"%Y-%m-%d %H:%M:%S\") # 사용 예시 if __name__ == \"__main__\": print(check_weather(\"서울\")) print(check_stock(\"005930\")) print(now_date()) 3. Transformers Pipeline과 ViT 이미지 분류 실습 정리 무엇을 배웠나 Transformers Pipeline은 모델 로드와 전처리 과정을 자동화해주는 하이레벨 API라는 점을 명확히 이해하게 되었다. LangChain과 달리 이미지 분류 자체는 Pipeline이 담당하며, LangChain은 복잡한 워크플로우를 구성할 때 사용되는 오케스트레이션 툴이라는 구분도 잡혔다. 또한 CUDA 명령어가 자신의 Intel Arc 환경과 맞지 않아 환경 설정에 신중을 기해야 한다는 점을 깨닫고 실습에 임했다. 이러한 이해를 바탕으로 실제 코드 실행 시 전처리 과정과 모델 입력 형태에 더 집중할 수 있게 되었다.\n헷갈렸던 점 가장 큰 혼란은 ‘CUDA 환경 설정’과 ‘도구 사용법’이 뒤섞여 있었다는 점입니다. Intel Arc를 사용하는 제 환경에서는 제공된 CUDA 명령어가 맞지 않아 “반드시 따라 해야 하는 건가?“라는 불안감이 들었고, 폴더 경로가 LangChain이었기에 LangChain을 이용한 이미지 분류를 배우는 줄 알았으나 실제로는 transformers.pipeline()을 직접 사용하는 순수 실습이었다는 점이 initially 이해되지 않았습니다.\n정리된 이해 Transformers Pipeline은 모델 추론을 위한 하이레벨 API로, 전처리와 후처리를 자동화해 빠르게 결과를 얻는 데 적합하다. LangChain Agent는 복잡한 워크플로우를 조율하는 오케스트레이션 툴이며, 이미지 분류 자체는 Pipeline이 담당한다. 하드웨어 환경에 따라 CUDA 대신 XPU나 다른 백엔드를 사용해야 하므로, 설치 명령어는 자신의 그래픽 카드 사양에 맞게 조정해야 한다.\n# Transformers Pipeline을 이용한 간단한 Image Classification 예시 from transformers import pipeline # 비전 모델 로드 (자동으로 전처리 및 후처리 수행) classifier = pipeline(\"image-classification\", model=\"google/vit-base-patch16-224\") # 이미지 파일 경로 또는 URL 입력 image_path = \"example.jpg\" # 분류 실행 (결과 자동 정렬 및 확률 반환) results = classifier(image_path) # 상위 5개 결과 출력 for result in results[:5]: print(f\"Label: {result['label']}, Score: {result['score']:.4f}\") 4. 업로드 후 분류와 정리: 임시 파일 관리 전략 무엇을 배웠나 업로드된 파일을 임시 저장했다가 분석 후 삭제하는 방식은, AI 인퍼런스 서비스에서 메모리나 디스크 자원을 효율적으로 관리하고 사용자 업로드 이미지가 영구히 남지 않도록 보안성을 확보하기 위한 필수 과정이다. 단순히 파일을 지우는 것을 넘어, shutil.copyfileobj()를 활용해 메모리 버퍼에 임시로 저장한 뒤 os.remove()로 정리하는 코드 흐름을 이해하여 ‘일시적 처리’와 ‘영구 보관’의 개념을 명확히 구분할 수 있게 되었다. 특히 분류 결과를 보존하면서도 원본 파일을 즉시 삭제하는 구조가, 분석 목적이 달성된 후 시스템을 깨끗이 정비하는 핵심 로직임을 깨닫았다.\n헷갈렸던 점 업로드된 파일을 바로 지우는 행위가 ‘저장했다가 지우는’ 것처럼 느껴져서, 왜 굳이 임시 파일 생성 과정을 거치는지 의아했습니다. 또한 분류 결과를 보존하면서 원본 파일은 삭제하는 방식이, 결과물과 입력 데이터의 관리 주체가 달라 혼란스러웠습니다.\n정리된 이해 업로드된 파일을 영구 보관하는 것이 목적이 아니라, AI 분석을 위한 일시적인 처리 수단으로 사용한다는 점이 핵심입니다. 분석이 완료된 후에는 디스크 점유를 막고 민감한 정보가 남지 않도록 즉시 삭제하는 것이 필수적입니다. 따라서 파일 관리는 ‘저장’이 아닌 ‘자원 회수와 보안’의 과정으로 접근해야 합니다.\n# FastAPI 이미지 업로드 → 분류 → 임시파일 삭제 (핵심 로직) from fastapi import FastAPI, UploadFile, File import shutil import os app = FastAPI() @app.post(\"/upload-and-classify/\") async def upload_and_classify(file: UploadFile = File(...)): # 1. 업로드된 파일을 임시 경로에 저장 (디스크 I/O 발생) # 'temp_image.jpg' 같은 고유한 파일명으로 저장해야 충돌 방지 temp_file_path = f\"temp_{file.filename}\" with open(temp_file_path, \"wb\") as buffer: shutil.copyfileobj(file.file, buffer) # 2. 분류 모델 추론 실행 (여기서 AI 처리가 일어남) # classify_result = model.predict(temp_file_path) # result_label = \"cat\" # 예시 결과 # [학습 포인트] 분류 결과를 보존하거나 화면에 표시한 후, # 원본 업로드 파일을 즉시 삭제하여 메모리/디스크 자원 회수 및 보안 유지 # 3. 임시 파일 삭제 (핵심 단계) if os.path.exists(temp_file_path): os.remove(temp_file_path) return {\"filename\": file.filename, \"status\": \"processed and deleted\"} 5. Intel Arc/XPU 환경으로 이어가는 오후 수업 요약 무엇을 배웠나 오늘 수업은 ‘환경 이식’에 대한 이해를 높여주는 계기가 되었습니다. 단순히 코드를 따라 치는 것이 아니라, 애플리케이션 로직과 프레임워크 어댑터, 런타임을 구분하여 교체해야 한다는 점이 핵심 insight였습니다. 특히 ChatOllama나 CUDA 코드를 내 환경에 맞게 수정하는 과정 자체가 학습의 일부가 된다는 점을 깨닫고 실무 적용에 대한 자신감이 생겼습니다.\n헷갈렸던 점 강의에서 제시한 ChatOllama나 CUDA 코드를 내 환경에 그대로 적용하려다 보니, 어떤 부분을 수정해야 할지 막막하고 시행착오가 많았다.\n핵심은 ‘애플리케이션 로직’은 수업의 의도를 따라가는 것이 빠르지만, ‘프레임워크 어댑터’와 ‘런타임/하드웨어’ 부분은 내 환경에 맞게 교체해야 한다는 점이었다. 특히 ChatOllama 같은 인터페이스를 다른 것으로 대체하는 것이 단순히 코드를 고치는 것을 넘어, 어떤 레이어를 건드려야 하는지 구분하는 안목이 필요하다는 점이 가장 큰 혼란 포인트였다.\n정리된 이해 오늘은 ‘환경 이식’이라는 주제로 수업을 들었습니다. 핵심은 애플리케이션 로직을 그대로 유지하면서, 프레임워크 어댑터와 런타임/하드웨어 레이어만 내 환경에 맞게 교체하면 된다는 점이었습니다. 특히 ChatOllama 같은 인터페이스를 교체하는 것이 중요한 중간 다리 역할을 한다는 점을 깨닫고 실습 예시를 통해 3층 구조를 머릿속에 그렸습니다.\n[오전: Ollama → LM Studio] ↓ (환경 교체) [오후: CUDA 예제 → Intel Arc/XPU 관점] ↓ (3층 구조 적용) [내 프로젝트: Application logic 고정] ↑ [내 프로젝트: Framework adapter 교체 (ChatOllama 등)] ↑ [내 프로젝트: Runtime Adapter 교체 (XPU/CUDA)] 총평 오늘 오후 전체에서 배운 것 오늘은 stream_mode 변경 시 청크 구조와 파서 로직이 함께 재구성되어야 한다는 점, 그리고 mode 선택보다는 그에 맞는 데이터 정규화 설계가 핵심임을 배웠습니다. 또한 툴 인터페이스의 일관성을 유지하면서 내부 구현을 교체 가능한 모듈 구조로 설계하는 것이 중요하다는 점을 명확히 했습니다. 마지막으로 Transformers Pipeline의 자동화 기능과 Intel Arc 환경에서 CUDA 호환성 문제를 해결하기 위한 환경 설정의 필요성을 실감했습니다.\n다음에 조심할 것 오늘은 stream_mode 변경 시 chunk 구조와 파서 로직이 함께 재구성돼야 한다는 점을 뼈저리게 느꼈다. mode 선택 자체보다 해당 모드에 맞춰 데이터를 어떻게 정규화하고 변환할지가 핵심 설계 포인트라는 사실도 새롭게 정리했다.\n특히 툴 인터페이스의 일관성과 내부 구현의 교체 가능성을 중점적으로 학습했는데, 모든 도구가 동일한 흐름(agent → tool 선택 → python 함수 실행)을 따른다는 점과, 인터페이스는 유지하면서 실제 API로 교체하는 모듈 구조가 이상적이라는 점을 명확히 했다.\n다음 복습 주제 오늘 배운 핵심 내용은 다음과 같습니다.\nstream_mode 옵션을 변경할 때는 단순히 설정값 하나만 수정하는 것이 아니라, 그에 맞는 청크 구조와 파서 로직을 함께 재구성해야 한다는 점입니다. mode 선택의 핵심은 ‘어떤 모드를 쓸 것인가’가 아니라, 해당 모드에 맞춰 데이터를 어떻게 정규화하고 변환할 것인지가 설계의 핵심 포인트가 되어야 합니다.\n툴 인터페이스의 일관성과 내부 구현의 교체 가능성에 대해 배웠습니다. 어떤 툴 이름이 실시간성을 암시하더라도, 모든 도구는 Agent → tool 선택 → Python 함수 실행이라는 동일한 흐름을 따른다는 점이 핵심이며, 툴 인터페이스는 유지하면서 내부 구현을 더미에서 실제 API로 교체하는 방식이 이상적인 모듈 구조라고 판단했습니다.\nTransformers Pipeline은 모델 로드와 전처리 과정을 자동화해주는 하이레벨 API라는 점을 명확히 이해하게 되었습니다. LangChain과 달리 이미지 분류 자체는 Pipeline이 담당하며, LangChain은 복잡한 워크플로우를 구성할 때 사용되는 오케스트레이션 툴이라는 구분도 잡았습니다. 또한 CUDA 명령어가 Intel Arc 환경과 맞지 않아 환경 설정에 신중을 기해야 한다는 점을 깨닫고 실습에 임했습니다.\n업로드된 파일을 임시 저장했다가 분석 후 삭제하는 방식은 AI 인퍼런스 서비스에서 메모리나 디스크 자원을 효율적으로 관리하고 보안성을 확보하기 위한 필수 과정입니다. 단순히 파일을 지우는 것을 넘어, shutil.copyfileobj()를 활용해 메모리 버퍼에 임시로 저장한 뒤 os.remove()로 정리하는 코드 흐름을 이해하여 ‘일시적 처리’와 ‘영구 보관’의 개념을 명확히 구분할 수 있게 되었습니다.\n오늘 수업은 ‘환경 이식’에 대한 이해를 높여주는 계기가 되었습니다. 단순히 코드를 따라 치는 것이 아니라, 애플리케이션 로직과 프레임워크 어댑터, 런타임을 구분하여 교체해야 한다는 점이 핵심 insight였습니다. ChatOllama나 CUDA 코드를 내 환경에 맞게 수정하는 과정 자체가 학습의 일부가 된다는 점을 깨닫고 실무 적용에 대한 자신감이 생겼습니다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1574",
+  "inLanguage": "en",
+  "datePublished": "2026-09-11T00:00:00Z",
+  "dateModified": "2026-09-11T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-09-11-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/life/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/ai-research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오후 학습 | stream_mode 변경 시 파서 재구성 필요와 일관된 normalization layer
+    </h1>
+    <div class="post-description">
+      2026-09-11 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-09-11 00:00:00 +0000 UTC'>2026년 9월 11일</span>&nbsp;·&nbsp;<span>8 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-streammode-%EB%B3%80%EA%B2%BD-%EC%8B%9C-chunk-%EA%B5%AC%EC%A1%B0%EC%99%80-%ED%8C%8C%EC%84%9C-%EC%9E%AC%EA%B5%AC%EC%84%B1-%ED%95%84%EC%9A%94">stream_mode 변경 시 chunk 구조와 파서 재구성 필요</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%ED%88%B4-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4%EC%99%80-%EB%AA%A8%EB%93%88%EC%84%B1-%EC%9D%BC%EA%B4%80%EB%90%9C-%EA%B5%AC%EC%A1%B0%EC%99%80-%EB%82%B4%EB%B6%80-%EA%B5%AC%ED%98%84-%EA%B5%90%EC%B2%B4ability">에이전트 툴 인터페이스와 모듈성: 일관된 구조와 내부 구현 교체ability</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-transformers-pipeline%EA%B3%BC-vit-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%B6%84%EB%A5%98-%EC%8B%A4%EC%8A%B5-%EC%A0%95%EB%A6%AC">Transformers Pipeline과 ViT 이미지 분류 실습 정리</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EC%97%85%EB%A1%9C%EB%93%9C-%ED%9B%84-%EB%B6%84%EB%A5%98%EC%99%80-%EC%A0%95%EB%A6%AC-%EC%9E%84%EC%8B%9C-%ED%8C%8C%EC%9D%BC-%EA%B4%80%EB%A6%AC-%EC%A0%84%EB%9E%B5">업로드 후 분류와 정리: 임시 파일 관리 전략</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-intel-arcxpu-%ED%99%98%EA%B2%BD%EC%9C%BC%EB%A1%9C-%EC%9D%B4%EC%96%B4%EA%B0%80%EB%8A%94-%EC%98%A4%ED%9B%84-%EC%88%98%EC%97%85-%EC%9A%94%EC%95%BD">Intel Arc/XPU 환경으로 이어가는 오후 수업 요약</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-stream_mode-변경-시-chunk-구조와-파서-재구성-필요">1. stream_mode 변경 시 chunk 구조와 파서 재구성 필요<a hidden class="anchor" aria-hidden="true" href="#1-stream_mode-변경-시-chunk-구조와-파서-재구성-필요">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>stream_mode 옵션을 변경하면 데이터의 청크 구조가 완전히 달라지므로, 단순히 옵션 하나만 바꾸는 것이 아니라 그에 맞는 파서 로직도 함께 재구성해야 한다.</p>
+<p>mode를 선택할 때 중요한 것은 &lsquo;어떤 모드를 쓸 것인가&rsquo;가 아니라, 해당 mode에 맞춰 데이터를 어떻게 정규화하고 변환할 것인지가 핵심 설계 포인트가 된다. raw event를 UI로 전달하기 전, 일관된 형태(text/tool_call 등)로 정제하는 normalization layer를 두는 것이 유지보수에 훨씬 유리하다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>stream_mode 옵션을 변경하면 데이터 구조가 완전히 달라져서 파싱 로직까지 재구성해야 한다는 점이 가장 큰 혼란이었습니다. 단순히 streaming 기능 제공 여부가 아니라, mode에 따라 chunk의 포맷과 내부가 다르기 때문에 코드 전체를 다시 짜야 했습니다. 따라서 프로젝트에서는 옵션 선택 자체보다, 각 mode에 맞춰 데이터를 정규화하는 설계가 핵심입니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>stream_mode 옵션을 변경하면 데이터 구조가 완전히 달라지므로, 단순히 옵션 하나만 바꾸는 것이 아니라 그에 맞는 chunk parser와 정규화 로직도 함께 재구성해야 한다. mode에 맞춰 데이터를 통일된 형태로 변환해주는 normalization layer를 두는 것이 유지보수에 훨씬 유리하다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># stream_mode=&#34;updates&#34; 모드에서 반환되는 chunk 구조 예시</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 주요 단계 종료 시점마다 결과가 반환되며, model.messages 형태로 중첩됨</span>
+</span></span><span style="display:flex;"><span>chunk <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;model&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;messages&#34;</span>: [<span style="color:#f92672">...</span>]  <span style="color:#75715e"># message 리스트가 모델 내부 상태와 함께 묶림</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># stream_mode=&#34;messages&#34; 모드에서 반환되는 chunk 구조 예시</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># message 단위로 세밀하게 스트리밍되며, chunk[0] 형태로 직접 접근 가능</span>
+</span></span><span style="display:flex;"><span>chunk <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    {<span style="color:#e6db74">&#34;role&#34;</span>: <span style="color:#e6db74">&#34;assistant&#34;</span>, <span style="color:#e6db74">&#34;content&#34;</span>: <span style="color:#e6db74">&#34;안녕하세요...&#34;</span>},
+</span></span><span style="display:flex;"><span>    {<span style="color:#e6db74">&#34;role&#34;</span>: <span style="color:#e6db74">&#34;assistant&#34;</span>, <span style="color:#e6db74">&#34;content&#34;</span>: <span style="color:#e6db74">&#34;어떻게 도와드릴까요?&#34;</span>}
+</span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div><h2 id="2-에이전트-툴-인터페이스와-모듈성-일관된-구조와-내부-구현-교체ability">2. 에이전트 툴 인터페이스와 모듈성: 일관된 구조와 내부 구현 교체ability<a hidden class="anchor" aria-hidden="true" href="#2-에이전트-툴-인터페이스와-모듈성-일관된-구조와-내부-구현-교체ability">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>오늘은 툴 인터페이스의 일관성과 내부 구현의 교체 가능성을 중심으로 배웠습니다. 어떤 툴 이름이 실시간성을 암시하더라도, 모든 도구는 Agent → tool 선택 → Python 함수 실행이라는 동일한 흐름을 따른다는 점이 핵심입니다. 또한, 툴 인터페이스는 유지하면서 내부 구현을 더미에서 실제 API로 교체하는 방식이 이상적인 모듈 구조라고 판단했습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>함수명만 보고 실제 API가 연결된 줄 알았는데, 날씨와 주식 툴은 가짜 문자열을 반환하는 mock이어서 &lsquo;보이는 것과 다른 실체&rsquo;에 혼란을 느꼈다. 또한 툴 인터페이스는 유지하면서 내부 구현을 교체할 수 있다는 점에서, &ldquo;보는 사람은 실시간 데이터처럼 느끼게 하되 안에서는 더미를 쓰는 것&quot;이 이상적인 구조라는 점을 이해하게 되었다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>툴 인터페이스의 일관성을 유지하면서 내부 구현을 <code>mock</code>에서 실제 API로 교체하는 것이 모듈성의 핵심이며, 툴 이름은 실시간성을 암시하지만 실제 동작은 내부 로직에 따라 달라질 수 있음을 이해해야 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Tool Interface Consistency Example</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_weather</span>(city: str) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;날씨 조회 툴 (내부 구현은 mock 또는 실제 API 연동 가능)&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 실제 서비스에서는 requests 라이브러리로 외부 API 호출</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 여기서는 예시를 위해 더미 데이터 반환</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>city<span style="color:#e6db74">}</span><span style="color:#e6db74">의 날씨: 맑음, 25도&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_stock</span>(ticker: str) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;주식 조회 툴&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 실제 서비스에서는 yfinance 또는 키움증권 API 호출</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>ticker<span style="color:#e6db74">}</span><span style="color:#e6db74"> 현재가: 10,000원&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">now_date</span>() <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;현재 날짜/시간 툴 (실제 datetime.now() 직접 호출)&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> datetime<span style="color:#f92672">.</span>now()<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#34;%Y-%m-</span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> %H:%M:%S&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 사용 예시</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    print(check_weather(<span style="color:#e6db74">&#34;서울&#34;</span>))
+</span></span><span style="display:flex;"><span>    print(check_stock(<span style="color:#e6db74">&#34;005930&#34;</span>))
+</span></span><span style="display:flex;"><span>    print(now_date())
+</span></span></code></pre></div><h2 id="3-transformers-pipeline과-vit-이미지-분류-실습-정리">3. Transformers Pipeline과 ViT 이미지 분류 실습 정리<a hidden class="anchor" aria-hidden="true" href="#3-transformers-pipeline과-vit-이미지-분류-실습-정리">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>Transformers Pipeline은 모델 로드와 전처리 과정을 자동화해주는 하이레벨 API라는 점을 명확히 이해하게 되었다. LangChain과 달리 이미지 분류 자체는 Pipeline이 담당하며, LangChain은 복잡한 워크플로우를 구성할 때 사용되는 오케스트레이션 툴이라는 구분도 잡혔다. 또한 CUDA 명령어가 자신의 Intel Arc 환경과 맞지 않아 환경 설정에 신중을 기해야 한다는 점을 깨닫고 실습에 임했다. 이러한 이해를 바탕으로 실제 코드 실행 시 전처리 과정과 모델 입력 형태에 더 집중할 수 있게 되었다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>가장 큰 혼란은 <strong>&lsquo;CUDA 환경 설정&rsquo;과 &lsquo;도구 사용법&rsquo;이 뒤섞여 있었다</strong>는 점입니다. Intel Arc를 사용하는 제 환경에서는 제공된 CUDA 명령어가 맞지 않아 &ldquo;반드시 따라 해야 하는 건가?&ldquo;라는 불안감이 들었고, 폴더 경로가 LangChain이었기에 LangChain을 이용한 이미지 분류를 배우는 줄 알았으나 실제로는 <code>transformers.pipeline()</code>을 직접 사용하는 순수 실습이었다는 점이 initially 이해되지 않았습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>Transformers Pipeline은 모델 추론을 위한 하이레벨 API로, 전처리와 후처리를 자동화해 빠르게 결과를 얻는 데 적합하다. LangChain Agent는 복잡한 워크플로우를 조율하는 오케스트레이션 툴이며, 이미지 분류 자체는 Pipeline이 담당한다. 하드웨어 환경에 따라 CUDA 대신 XPU나 다른 백엔드를 사용해야 하므로, 설치 명령어는 자신의 그래픽 카드 사양에 맞게 조정해야 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Transformers Pipeline을 이용한 간단한 Image Classification 예시</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> pipeline
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 비전 모델 로드 (자동으로 전처리 및 후처리 수행)</span>
+</span></span><span style="display:flex;"><span>classifier <span style="color:#f92672">=</span> pipeline(<span style="color:#e6db74">&#34;image-classification&#34;</span>, model<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;google/vit-base-patch16-224&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 이미지 파일 경로 또는 URL 입력</span>
+</span></span><span style="display:flex;"><span>image_path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;example.jpg&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 분류 실행 (결과 자동 정렬 및 확률 반환)</span>
+</span></span><span style="display:flex;"><span>results <span style="color:#f92672">=</span> classifier(image_path)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 상위 5개 결과 출력</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> result <span style="color:#f92672">in</span> results[:<span style="color:#ae81ff">5</span>]:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Label: </span><span style="color:#e6db74">{</span>result[<span style="color:#e6db74">&#39;label&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">, Score: </span><span style="color:#e6db74">{</span>result[<span style="color:#e6db74">&#39;score&#39;</span>]<span style="color:#e6db74">:</span><span style="color:#e6db74">.4f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><h2 id="4-업로드-후-분류와-정리-임시-파일-관리-전략">4. 업로드 후 분류와 정리: 임시 파일 관리 전략<a hidden class="anchor" aria-hidden="true" href="#4-업로드-후-분류와-정리-임시-파일-관리-전략">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>업로드된 파일을 임시 저장했다가 분석 후 삭제하는 방식은, AI 인퍼런스 서비스에서 메모리나 디스크 자원을 효율적으로 관리하고 사용자 업로드 이미지가 영구히 남지 않도록 보안성을 확보하기 위한 필수 과정이다. 단순히 파일을 지우는 것을 넘어, <code>shutil.copyfileobj()</code>를 활용해 메모리 버퍼에 임시로 저장한 뒤 <code>os.remove()</code>로 정리하는 코드 흐름을 이해하여 &lsquo;일시적 처리&rsquo;와 &lsquo;영구 보관&rsquo;의 개념을 명확히 구분할 수 있게 되었다. 특히 분류 결과를 보존하면서도 원본 파일을 즉시 삭제하는 구조가, 분석 목적이 달성된 후 시스템을 깨끗이 정비하는 핵심 로직임을 깨닫았다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>업로드된 파일을 바로 지우는 행위가 &lsquo;저장했다가 지우는&rsquo; 것처럼 느껴져서, 왜 굳이 임시 파일 생성 과정을 거치는지 의아했습니다. 또한 분류 결과를 보존하면서 원본 파일은 삭제하는 방식이, 결과물과 입력 데이터의 관리 주체가 달라 혼란스러웠습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>업로드된 파일을 영구 보관하는 것이 목적이 아니라, AI 분석을 위한 일시적인 처리 수단으로 사용한다는 점이 핵심입니다. 분석이 완료된 후에는 디스크 점유를 막고 민감한 정보가 남지 않도록 즉시 삭제하는 것이 필수적입니다. 따라서 파일 관리는 &lsquo;저장&rsquo;이 아닌 &lsquo;자원 회수와 보안&rsquo;의 과정으로 접근해야 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># FastAPI 이미지 업로드 → 분류 → 임시파일 삭제 (핵심 로직)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI, UploadFile, File
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> shutil
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> FastAPI()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.post</span>(<span style="color:#e6db74">&#34;/upload-and-classify/&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">upload_and_classify</span>(file: UploadFile <span style="color:#f92672">=</span> File(<span style="color:#f92672">...</span>)):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 1. 업로드된 파일을 임시 경로에 저장 (디스크 I/O 발생)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># &#39;temp_image.jpg&#39; 같은 고유한 파일명으로 저장해야 충돌 방지</span>
+</span></span><span style="display:flex;"><span>    temp_file_path <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;temp_</span><span style="color:#e6db74">{</span>file<span style="color:#f92672">.</span>filename<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> open(temp_file_path, <span style="color:#e6db74">&#34;wb&#34;</span>) <span style="color:#66d9ef">as</span> buffer:
+</span></span><span style="display:flex;"><span>        shutil<span style="color:#f92672">.</span>copyfileobj(file<span style="color:#f92672">.</span>file, buffer)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 2. 분류 모델 추론 실행 (여기서 AI 처리가 일어남)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># classify_result = model.predict(temp_file_path)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># result_label = &#34;cat&#34; # 예시 결과</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># [학습 포인트] 분류 결과를 보존하거나 화면에 표시한 후,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 원본 업로드 파일을 즉시 삭제하여 메모리/디스크 자원 회수 및 보안 유지</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 3. 임시 파일 삭제 (핵심 단계)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>exists(temp_file_path):
+</span></span><span style="display:flex;"><span>        os<span style="color:#f92672">.</span>remove(temp_file_path)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;filename&#34;</span>: file<span style="color:#f92672">.</span>filename, <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;processed and deleted&#34;</span>}
+</span></span></code></pre></div><h2 id="5-intel-arcxpu-환경으로-이어가는-오후-수업-요약">5. Intel Arc/XPU 환경으로 이어가는 오후 수업 요약<a hidden class="anchor" aria-hidden="true" href="#5-intel-arcxpu-환경으로-이어가는-오후-수업-요약">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>오늘 수업은 &lsquo;환경 이식&rsquo;에 대한 이해를 높여주는 계기가 되었습니다. 단순히 코드를 따라 치는 것이 아니라, 애플리케이션 로직과 프레임워크 어댑터, 런타임을 구분하여 교체해야 한다는 점이 핵심 insight였습니다. 특히 ChatOllama나 CUDA 코드를 내 환경에 맞게 수정하는 과정 자체가 학습의 일부가 된다는 점을 깨닫고 실무 적용에 대한 자신감이 생겼습니다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>강의에서 제시한 <code>ChatOllama</code>나 CUDA 코드를 내 환경에 그대로 적용하려다 보니, 어떤 부분을 수정해야 할지 막막하고 시행착오가 많았다.</p>
+<p>핵심은 &lsquo;애플리케이션 로직&rsquo;은 수업의 의도를 따라가는 것이 빠르지만, &lsquo;프레임워크 어댑터&rsquo;와 &lsquo;런타임/하드웨어&rsquo; 부분은 내 환경에 맞게 교체해야 한다는 점이었다. 특히 <code>ChatOllama</code> 같은 인터페이스를 다른 것으로 대체하는 것이 단순히 코드를 고치는 것을 넘어, 어떤 레이어를 건드려야 하는지 구분하는 안목이 필요하다는 점이 가장 큰 혼란 포인트였다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>오늘은 &lsquo;환경 이식&rsquo;이라는 주제로 수업을 들었습니다. 핵심은 애플리케이션 로직을 그대로 유지하면서, 프레임워크 어댑터와 런타임/하드웨어 레이어만 내 환경에 맞게 교체하면 된다는 점이었습니다. 특히 ChatOllama 같은 인터페이스를 교체하는 것이 중요한 중간 다리 역할을 한다는 점을 깨닫고 실습 예시를 통해 3층 구조를 머릿속에 그렸습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[오전: Ollama → LM Studio]
+</span></span><span style="display:flex;"><span>    ↓ (환경 교체)
+</span></span><span style="display:flex;"><span>[오후: CUDA 예제 → Intel Arc/XPU 관점]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ↓ (3층 구조 적용)
+</span></span><span style="display:flex;"><span>[내 프로젝트: Application logic 고정]
+</span></span><span style="display:flex;"><span>        ↑
+</span></span><span style="display:flex;"><span>[내 프로젝트: Framework adapter 교체 (ChatOllama 등)]
+</span></span><span style="display:flex;"><span>        ↑
+</span></span><span style="display:flex;"><span>[내 프로젝트: Runtime Adapter 교체 (XPU/CUDA)]
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>오늘은 stream_mode 변경 시 청크 구조와 파서 로직이 함께 재구성되어야 한다는 점, 그리고 mode 선택보다는 그에 맞는 데이터 정규화 설계가 핵심임을 배웠습니다. 또한 툴 인터페이스의 일관성을 유지하면서 내부 구현을 교체 가능한 모듈 구조로 설계하는 것이 중요하다는 점을 명확히 했습니다. 마지막으로 Transformers Pipeline의 자동화 기능과 Intel Arc 환경에서 CUDA 호환성 문제를 해결하기 위한 환경 설정의 필요성을 실감했습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>오늘은 stream_mode 변경 시 chunk 구조와 파서 로직이 함께 재구성돼야 한다는 점을 뼈저리게 느꼈다. mode 선택 자체보다 해당 모드에 맞춰 데이터를 어떻게 정규화하고 변환할지가 핵심 설계 포인트라는 사실도 새롭게 정리했다.</p>
+<p>특히 툴 인터페이스의 일관성과 내부 구현의 교체 가능성을 중점적으로 학습했는데, 모든 도구가 동일한 흐름(agent → tool 선택 → python 함수 실행)을 따른다는 점과, 인터페이스는 유지하면서 실제 API로 교체하는 모듈 구조가 이상적이라는 점을 명확히 했다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>오늘 배운 핵심 내용은 다음과 같습니다.</p>
+<p>stream_mode 옵션을 변경할 때는 단순히 설정값 하나만 수정하는 것이 아니라, 그에 맞는 청크 구조와 파서 로직을 함께 재구성해야 한다는 점입니다. mode 선택의 핵심은 &lsquo;어떤 모드를 쓸 것인가&rsquo;가 아니라, 해당 모드에 맞춰 데이터를 어떻게 정규화하고 변환할 것인지가 설계의 핵심 포인트가 되어야 합니다.</p>
+<p>툴 인터페이스의 일관성과 내부 구현의 교체 가능성에 대해 배웠습니다. 어떤 툴 이름이 실시간성을 암시하더라도, 모든 도구는 Agent → tool 선택 → Python 함수 실행이라는 동일한 흐름을 따른다는 점이 핵심이며, 툴 인터페이스는 유지하면서 내부 구현을 더미에서 실제 API로 교체하는 방식이 이상적인 모듈 구조라고 판단했습니다.</p>
+<p>Transformers Pipeline은 모델 로드와 전처리 과정을 자동화해주는 하이레벨 API라는 점을 명확히 이해하게 되었습니다. LangChain과 달리 이미지 분류 자체는 Pipeline이 담당하며, LangChain은 복잡한 워크플로우를 구성할 때 사용되는 오케스트레이션 툴이라는 구분도 잡았습니다. 또한 CUDA 명령어가 Intel Arc 환경과 맞지 않아 환경 설정에 신중을 기해야 한다는 점을 깨닫고 실습에 임했습니다.</p>
+<p>업로드된 파일을 임시 저장했다가 분석 후 삭제하는 방식은 AI 인퍼런스 서비스에서 메모리나 디스크 자원을 효율적으로 관리하고 보안성을 확보하기 위한 필수 과정입니다. 단순히 파일을 지우는 것을 넘어, <code>shutil.copyfileobj()</code>를 활용해 메모리 버퍼에 임시로 저장한 뒤 <code>os.remove()</code>로 정리하는 코드 흐름을 이해하여 &lsquo;일시적 처리&rsquo;와 &lsquo;영구 보관&rsquo;의 개념을 명확히 구분할 수 있게 되었습니다.</p>
+<p>오늘 수업은 &lsquo;환경 이식&rsquo;에 대한 이해를 높여주는 계기가 되었습니다. 단순히 코드를 따라 치는 것이 아니라, 애플리케이션 로직과 프레임워크 어댑터, 런타임을 구분하여 교체해야 한다는 점이 핵심 insight였습니다. ChatOllama나 CUDA 코드를 내 환경에 맞게 수정하는 과정 자체가 학습의 일부가 된다는 점을 깨닫고 실무 적용에 대한 자신감이 생겼습니다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-09-11-am-daily/">
+    <span class="title">« Prev</span>
+    <span>오전 학습 | LLM 판단과 Tool 실행, FastAPI 스트리밍 연결</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-09-10-am-daily/">
+    <span class="title">Next »</span>
+    <span>오전 학습 | HTTP 요청 구조와 함수 인자로 동적 응답 생성하기</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

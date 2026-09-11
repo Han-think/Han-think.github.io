@@ -6,8 +6,22 @@
     <description>Recent content on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Thu, 10 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 11 Sep 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>오전 학습 | LLM 판단과 Tool 실행, FastAPI 스트리밍 연결</title>
+      <link>https://Han-think.github.io/learning/2026-09-11-am-daily/</link>
+      <pubDate>Fri, 11 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-11-am-daily/</guid>
+      <description>2026-09-11 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>오후 학습 | stream_mode 변경 시 파서 재구성 필요와 일관된 normalization layer</title>
+      <link>https://Han-think.github.io/learning/2026-09-11-pm-daily/</link>
+      <pubDate>Fri, 11 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-11-pm-daily/</guid>
+      <description>2026-09-11 오후 학습 정리</description>
+    </item>
     <item>
       <title>오전 학습 | HTTP 요청 구조와 함수 인자로 동적 응답 생성하기</title>
       <link>https://Han-think.github.io/learning/2026-09-10-am-daily/</link>

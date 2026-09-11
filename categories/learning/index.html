@@ -195,6 +195,36 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">오전 학습 | LLM 판단과 Tool 실행, FastAPI 스트리밍 연결
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 LangChain Agent의 도구 판단 및 인자 구성 과정 LLM Agent와 Tool의 역할 분리를 통한 FastAPI 웹 서비스 구축 lmstudio agent service adaptation 이해하기 LLM 스트리밍과 HTTP 연결 고리 이해하기 총평 1. LangChain Agent의 도구 판단 및 인자 구성 과정 무엇을 배웠나 LangChain Agent는 LLM이 질문의 의도를 파악해 적절한 도구를 선택하고 인자를 구성하는 ‘판단력 있는 실행자’ 역할을 수행합니다. 핵심은 LLM이 도구 사용을 결정하고, 실제 연산이나 검색 등 구체적인 작업은 Tool이 담당한다는 책임 분담 구조입니다. 오늘 혼란스러웠던 함수 구현 오류와 흐름의 주체 전환을 이해하며, LLM과 Tool이 협업하는 시나리오를 자연스럽게 파악할 수 있었습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-11 00:00:00 +0000 UTC'>2026년 9월 11일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오전 학습 | LLM 판단과 Tool 실행, FastAPI 스트리밍 연결" href="https://Han-think.github.io/learning/2026-09-11-am-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">오후 학습 | stream_mode 변경 시 파서 재구성 필요와 일관된 normalization layer
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 stream_mode 변경 시 chunk 구조와 파서 재구성 필요 에이전트 툴 인터페이스와 모듈성: 일관된 구조와 내부 구현 교체ability Transformers Pipeline과 ViT 이미지 분류 실습 정리 업로드 후 분류와 정리: 임시 파일 관리 전략 Intel Arc/XPU 환경으로 이어가는 오후 수업 요약 총평 1. stream_mode 변경 시 chunk 구조와 파서 재구성 필요 무엇을 배웠나 stream_mode 옵션을 변경하면 데이터의 청크 구조가 완전히 달라지므로, 단순히 옵션 하나만 바꾸는 것이 아니라 그에 맞는 파서 로직도 함께 재구성해야 한다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-11 00:00:00 +0000 UTC'>2026년 9월 11일</span>&nbsp;·&nbsp;<span>8 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오후 학습 | stream_mode 변경 시 파서 재구성 필요와 일관된 normalization layer" href="https://Han-think.github.io/learning/2026-09-11-pm-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">오전 학습 | HTTP 요청 구조와 함수 인자로 동적 응답 생성하기
     </h2>
   </header>
@@ -317,42 +347,6 @@ PM_06 프로젝트에서 Datasets의 메트릭 보존 중요성 깨닫기
 IMDB 전처리 길이 오해 수정과 `push_to_hub` 권한 인증 실전 경험
 SQuAD Exact Match와 F1 Score의 본질적 차이 이해
 PM_06 프로젝트에서 Datasets의 메트릭 보존 중요성 깨닫기" href="https://Han-think.github.io/learning/2026-09-07-pm-daily/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">XPU 호환성 오해와 라이브러리 버전 충돌 정리 프롬프트 구조화와 steps·네거티브 프롬프트 활용법, Ollama Windows 설치 시 모델 저장소 분리 방법 및 Vulkan 감지와 GPU 오프로드의 실제 한계 파악
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 XPU 호환성과 라이브러리 버전 충돌 극복기 프롬프트 구조화와 steps 활용법, 네거티브 프롬프트의 필요성 Ollama Windows 설치와 모델 저장소 분리 🟡 초보자 시점, 학습자의 혼란 📌 정리된 이해 🛠️ 실습 예시 Vulkan 감지와 실제 GPU 오프로드의 간극 총평 1. XPU 호환성과 라이브러리 버전 충돌 극복기 무엇을 배웠나 처음에는 XPU 호환성 문제라고 생각했으나, 실제로는 diffusers, transformers, huggingface-hub 라이브러리 간의 버전 불일치로 인한 dependency conflict였습니다. 텍스트 생성보다 이미지 생성이 환경 궁합에 민감하므로, XPU 사용 시 기존 성공했던 설정이나 버전을 그대로 유지하는 것이 가장 중요하다는 점을 깨달았습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-04 00:00:00 +0000 UTC'>2026년 9월 4일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
-  <a class="entry-link" aria-label="post link to XPU 호환성 오해와 라이브러리 버전 충돌 정리 프롬프트 구조화와 steps·네거티브 프롬프트 활용법, Ollama Windows 설치 시 모델 저장소 분리 방법 및 Vulkan 감지와 GPU 오프로드의 실제 한계 파악" href="https://Han-think.github.io/learning/2026-09-04-pm-daily/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오늘 오전, AutoTokenizer와 AutoModel 직접 연결 이해하기: `pipeline()`는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, 두 방식은 wrapper와 그 내부의 부품 관계에 있으며 특수 하드웨어 환경에서는 직접 연결 방식을 통해 backend와의 인터페이스를 잡아주는 과정이 필수적이다.
-Qwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리: TextStreamer를 사용하려면 단순히 클래스를 생성하는 것만으로는 충분하지 않으며, generate() 메서드에 인자로 전달해야 실시간 토큰 출력이 가능하다.
-핵심적인 학습 포인트는 프롬프트를 message 리스트 형태로 구조화한 뒤 apply_chat_template()을 호출하여 모델이 기대하는 대화 형식으로 변환한 다음, tokenizer에 입력해야 한다는 점이다. chat template가 적용되지 않은 상태로 tokenizer에 직접 입력을 하면 모델이 예상하지 못한 형식을 받게 되어 오류가 발생할 수 있다.
-SDPA와 EAGR 속도 비교 실험 (XPU 환경): SDPA와 EAGER 속도 차이를 단순히 실행 결과로 비교하면 안 되며, XPU 환경에서는 첫 실행 시 하드웨어 초기화 비용이 섞이기 때문에 warm-up 과정을 반드시 거쳐야 정확한 측정이 가능하다. 또한 CUDA용 `torch.cuda.synchronize()` 대신 XPU 환경에 맞게 `torch.xpu.synchronize()`를 사용해야 하며, 내 하드웨어 백엔드에 맞는 최적의 구현체를 직접 측정하여 검증하는 것이 이론을 외우는 것보다 훨씬 실용적이다.
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 AutoTokenizer와 AutoModel 직접 연결 이해하기 핵심 내용 코드 예시: AutoTokenizer &#43; AutoModelForCausalLM 직접 연결 코드 근거 Qwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리 SDPA와 EAGER 속도 비교 실험 (XPU 환경) 총평 1. AutoTokenizer와 AutoModel 직접 연결 이해하기 무엇을 배웠나 pipeline()는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, AutoTokenizer와 AutoModelForCausalLM을 직접 연결하면 device 설정나 dtype 제어 등 모델의 세부 파라미터를 자유롭게 관리할 수 있다. 두 방식은 wrapper와 그 내부의 부품 관계에 있으며, 특수 하드웨어 환경에서는 직접 연결 방식을 통해 backend와의 인터페이스를 잡아주는 과정이 필수적이다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-04 00:00:00 +0000 UTC'>2026년 9월 4일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오늘 오전, AutoTokenizer와 AutoModel 직접 연결 이해하기: `pipeline()`는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, 두 방식은 wrapper와 그 내부의 부품 관계에 있으며 특수 하드웨어 환경에서는 직접 연결 방식을 통해 backend와의 인터페이스를 잡아주는 과정이 필수적이다.
-Qwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리: TextStreamer를 사용하려면 단순히 클래스를 생성하는 것만으로는 충분하지 않으며, generate() 메서드에 인자로 전달해야 실시간 토큰 출력이 가능하다.
-핵심적인 학습 포인트는 프롬프트를 message 리스트 형태로 구조화한 뒤 apply_chat_template()을 호출하여 모델이 기대하는 대화 형식으로 변환한 다음, tokenizer에 입력해야 한다는 점이다. chat template가 적용되지 않은 상태로 tokenizer에 직접 입력을 하면 모델이 예상하지 못한 형식을 받게 되어 오류가 발생할 수 있다.
-SDPA와 EAGR 속도 비교 실험 (XPU 환경): SDPA와 EAGER 속도 차이를 단순히 실행 결과로 비교하면 안 되며, XPU 환경에서는 첫 실행 시 하드웨어 초기화 비용이 섞이기 때문에 warm-up 과정을 반드시 거쳐야 정확한 측정이 가능하다. 또한 CUDA용 `torch.cuda.synchronize()` 대신 XPU 환경에 맞게 `torch.xpu.synchronize()`를 사용해야 하며, 내 하드웨어 백엔드에 맞는 최적의 구현체를 직접 측정하여 검증하는 것이 이론을 외우는 것보다 훨씬 실용적이다." href="https://Han-think.github.io/learning/2026-09-04-am-daily/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

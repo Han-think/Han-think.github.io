@@ -205,6 +205,37 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 윈도우 함수로 비율과 구간 나누기 ROLLUP, CUBE, GROUPING SETS 차이 이해하기 SQLite에서 UNION ALL로 집계 함수 흉내내기 ClassicModels ERD로 매출 순위 쿼리 읽기 CURRENT ROW로 월별 누적 매출 계산하기 LAG와 LEAD로 전월 대비 변화 읽기 SQL 학습 범위와 프롬프트 정리하기 고급 서브쿼리 유형 분류하기 서브쿼리 반환 형태와 연산자 이해하기 스칼라 서브쿼리와 DUAL 개념 이해하기 VIEW 개념과 실습 흐름 정리하기 JOIN, 서브쿼리, VIEW 퀴즈 통합 복습하기 총평 1. 윈도우 함수로 비율과 구간 나누기 무엇을 배웠나 오늘 학습을 통해 윈도우 함수 내에서 비율 계산, 누적 분포, 구간 나누기와 관련된 키워드들의 역할을 명확히 이해하게 되었다. 특히 NTILE 함수를 통해 데이터를 구간으로 나누는 개념을 익혔고, ROUND 함수가 단순히 반올림하는 것이 아니라 결과를 원하는 자릿수까지 조정하는 역할을 한다는 것을 알게 되었다. GROUP BY, SUM, AVG, COUNT, OVER, AS 등 다양한 키워드들의 활용법도 함께 학습했다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-12 00:00:00 +0000 UTC'>2026년 6월 12일</span>&nbsp;·&nbsp;<span>12 min</span></footer>
+  <a class="entry-link" aria-label="post link to SQL 핵심 개념 마스터: 윈도우 함수부터 시계열 분석, 뷰 활용까지" href="https://Han-think.github.io/learning/2026-06-12-pm-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">daily-index-v2
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 GROUP BY와 HAVING JOIN과 서브쿼리 집합 연산자 데이터 병합 총평 1. GROUP BY와 HAVING 왜 이걸 보게 됐나 데이터 분석 프로젝트를 진행하다 보면, 특정 기준에 따라 데이터를 묶어서 통계를 내고, 그 결과에 대한 추가적인 필터링이 필요할 때가 많았어. 예를 들어, 지역별 매출액을 분석하거나, 특정 조건을 만족하는 그룹만 추출해야 하는 상황이었지. 그래서 GROUP BY와 HAVING 구문을 통해 데이터 그룹화 및 조건 필터링 방법을 배우게 되었어.
+내가 헷갈린 지점 처음에는 GROUP BY 뒤에 바로 집계 함수를 사용하는 것이 가능한가에 대한 명확한 그림이 잡히지 않았고, HAVING절이 어떤 기준으로 집계된 결과에 조건을 걸어주는 것인지 감이 잘 안왔다. HAVING 절이 WHERE 절과 어떻게 다른지, 언제 어떤 상황에서 사용해야 하는지 혼동스러웠다. 그룹화된 데이터에 대한 필터링이 HAVING 절에서 이루어지는구나를 깨달으면서 좀 더 이해가 되기 시작했다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-11 00:00:00 +0000 UTC'>2026년 6월 11일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to daily-index-v2" href="https://Han-think.github.io/learning/daily-index-v2/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">SQL JOIN, 서브쿼리, 뷰, PL/SQL, 윈도우 함수 학습 정리
     </h2>
   </header>
@@ -326,36 +357,6 @@ UNION = 두 결과표를 합치고 중복 제거 UNION ALL = 두 결과표를 �
 
 <span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
   <a class="entry-link" aria-label="post link to am-03-sql-join-problem-solving" href="https://Han-think.github.io/learning/am-03-sql-join-problem-solving/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">erd-crows-foot-chinook
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 ERD 구조 카디널리티 Crow’s Foot 표기법 외래키 총평 1. ERD 구조 왜 이걸 보게 됐나 데이터베이스 모델링을 통해 효율적인 데이터 저장 및 관리를 할 수 있도록 ERD는 필수적인 도구인데, 실제 서비스에서 데이터를 어떻게 연결하고 표현해야 할지 몰라서 처음에는 감이 잘 안 잡혔어. 특히 다양한 테이블 간의 관계를 시각적으로 보여주는 ERD 구조를 이해해야 데이터를 정확하게 표현하고 쿼리할 수 있다는 것을 깨달았어. 그래서 ERD를 제대로 익히고 Crow’s Foot 표기법을 통해 관계를 명확하게 표현할 수 있게 되었어.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
-  <a class="entry-link" aria-label="post link to erd-crows-foot-chinook" href="https://Han-think.github.io/learning/erd-crows-foot-chinook/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">hallucination-symbolic-control
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 할루시네이션 제어 출력 제어 검증 제어 실패 제어 총평 1. 할루시네이션 제어 왜 이걸 보게 됐나 처음에는 모델의 답변이 항상 정확할 거라는 막연한 기대를 했었는데, 실제 사용하면서 모델이 사실과 다른 내용을 자신감 있게 말하는 할루시네이션 현상을 목격하게 됐어. 특히 사용자에게 신뢰감을 주는 답변 속에 오류가 숨겨져 있을 때 위험하다는 걸 깨달으면서, 이 문제를 해결하고 모델의 신뢰도를 높이기 위해 할루시네이션 제어 방법을 배우게 됐어. 이제는 단순히 오류를 막는 게 아니라, 모델의 답변을 효과적으로 관리하는 방법을 익혀야 한다는 것을 알게 됐지.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-06-09 00:00:00 +0000 UTC'>2026년 6월 9일</span>&nbsp;·&nbsp;<span>7 min</span></footer>
-  <a class="entry-link" aria-label="post link to hallucination-symbolic-control" href="https://Han-think.github.io/learning/hallucination-symbolic-control/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
