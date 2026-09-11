@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Openvino | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/tags/openvino/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://Han-think.github.io/tags/openvino/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/tags/openvino/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function () {
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/tags/openvino/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="Openvino">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="website">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Openvino">
+
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/life/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/ai-research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header">
+  <h1>
+    Openvino
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">2026-09-11 Intel XPU 주간 리포트
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>주간 리서치 브리핑: Intel XPU/Arc &#43; PyTorch &#43; Hugging Face Transformers 목차 이번 주 핵심 요약 실무 검증된 개선 초기·추정 단계 연구 호환성·성능·메모리 영향 모델 호환성 관찰 GitHub·Hugging Face에서 확인할 것 설치·실행 신뢰성 이번 주 재현 실험 내 환경 영향 위험 메모 학습 노트 이번 주 결론 다음 주 관찰 목록 판정의 한계와 다음 확인 KEEP TRY IGNORE WATCH KEEP / TRY / IGNORE / WATCH 목록 자동 적용 완료 (본문 내용과 일치하는 항목만 추출) 원문 출처 이번 주 핵심 요약 Optimum Intel 1.20.0 출시: xpu 백엔드 지원이 공식 포함되어 PyTorch XPU 실행 경로가 크게 확장되었으나, Arc GPU 지원은 여전히 제한적임. PyTorch 2.6.0&#43; nightly: xpu 관련 빌드 변화가 있었으나, Arc GPU(opencl) 기반 실행에 대한 공식 호환성 선언이 부족한 상태임. Hugging Face Transformers 최신 버전: XPU 토크나이저 및 모델 로딩 파이프라인 업데이트가 있었으나, 실제 xpu 장치에서의 device_map=&#34;auto&#34; 동작 여부는 추가 검증 필요. 실무 검증된 개선 [검증됨] Optimum Intel 1.20.0: optimum.intel 패키지에 xpu 지원 관련 코드 및 문서가 공식 merged되었습니다. PyTorch XPU 실행 시 from optimum.intel import ... 경로 사용이 가능해졌으나, 실제 장치 테스트는 제한적임. [검증됨] PyTorch 2.6.0 안정판 출시: xpu 관련 내부 변경사항이 포함되었으나, Arc GPU(opencl 기반) 지원은 community 레벨이며, 공식 문서에 Arc 명시가 없는 상태입니다. 초기·추정 단계 연구 [초기] torch.compile &#43; XPU: PyTorch 2.x의 torch.compile이 xpu 백엔드와 상호작용할 경우 속도 향상 또는 오류 발생 가능성이 언급된_initial PR들이 있으나, 재현 가능한 벤치마크는 현재 제공되지 않았습니다. [확인 필요] Arc GPU OneAPI 드라이버: Intel Arc GPU에서 PyTorch를 구동하기 위한 oneAPI 드라이버 버전과 PyTorch wheel 호환성에 대한 이슈가 GitHub에 다수 열려 있으나, 아직 공식적인 해결안이나 릴리스는 없습니다. 호환성·성능·메모리 영향 PyTorch XPU: torch.cuda.is_available() 대신 torch.xpu.is_available()를 사용해야 하며, device=&#34;xpu&#34; 인자 전달이 필수적임. Arc GPU의 경우 opencl 기반 포트가 별도 필요하며, 현재 PyTorch 공식 wheel에서는 기본 지원되지 않을 수 있음. 메모리 관리: XPU 위에서의 텐서 할당 및 캐시 플러시는 CPU 기반 PyTorch와 패턴이 다를 수 있습니다. torch.cuda.empty_cache()에 해당하는 XPU 전용 정리 함수는 현재 확인된 바가 limited합니다. 모델 호환성 관찰 모델 유형 XPU 가능성 메모리 예상 현재 상태 테스트 가치 Time Series (Granite PatchTST-FM-r2) indirect (Hugging Face 호스팅) N/A Practically Tested 낮음 (XPU 직접 실행 아님) Vision/Language Transformers conditional (Optimum Intel 경로) 높음 (16GB 이상 권장) 초기 / 확인 필요 높음 (Optimum Intel 경로 시도 예정) 로컬 양자화 모델 가능하지만 코드 수정 필요 변동 큼 초기 중간 (IPEX/QNN 연계 검증 필요) GitHub·Hugging Face에서 확인할 것 optimum/intel 저장소: xpu 관련 milestone 및 release notes 확인 (https://github.com/huggingface/optimum-intel) PyTorch XPU 이슈: pytorch/pytorch 라벨 xpu 관련 이슈 검색 (https://github.com/pytorch/pytorch/issues?q=xpu&#43;is%3Aissue) Arc GPU 호환성 이슈: intel/opencl 또는 PyTorch 커뮤니티 포럼 스레드 확인 설치·실행 신뢰성 Driver: Intel 그래픽 드라이버 버전 27.21.10.xx 이상 권장 (Arc GPU용). 미준수 시 PyTorch XPU/init 실패 가능성. Python/PyTorch wheel: torch==2.6.0 공식 릴리스 기준 xpu 지원이 강화되었으나, pip install torch 시 opencl 기반 Arc 지원 여부는 플랫폼별 wheel 가용성에 따라 달라짐. Windows/WSL: WSL2 환경에서의 XPU 직접 지원은 제한적이며, native Linux 환경에서 테스트하는 것을 권장합니다. 이번 주 재현 실험 실험 1: Optimum Intel 경로 모델 로딩
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-11 00:00:00 +0000 UTC'>2026년 9월 11일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to 2026-09-11 Intel XPU 주간 리포트" href="https://Han-think.github.io/research/weekly-ai-2026-09-11/"></a>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

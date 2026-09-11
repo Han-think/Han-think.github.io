@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>2026-09-11 Intel XPU 주간 리포트 | Han-think Blog</title>
+<meta name="keywords" content="weekly, intel-xpu, intel-arc, pytorch, transformers, huggingface, ipex, openvino, oneapi, github">
+<meta name="description" content="Intel XPU·Arc에서 PyTorch와 Hugging Face Transformers를 운영하기 위한 주간 연구·엔지니어링 리포트">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/research/weekly-ai-2026-09-11/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/research/weekly-ai-2026-09-11/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function () {
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/research/weekly-ai-2026-09-11/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="2026-09-11 Intel XPU 주간 리포트">
+  <meta property="og:description" content="Intel XPU·Arc에서 PyTorch와 Hugging Face Transformers를 운영하기 위한 주간 연구·엔지니어링 리포트">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="research">
+    <meta property="article:published_time" content="2026-09-11T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-09-11T00:00:00+00:00">
+    <meta property="article:tag" content="Weekly">
+    <meta property="article:tag" content="Intel-Xpu">
+    <meta property="article:tag" content="Intel-Arc">
+    <meta property="article:tag" content="Pytorch">
+    <meta property="article:tag" content="Transformers">
+    <meta property="article:tag" content="Huggingface">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="2026-09-11 Intel XPU 주간 리포트">
+  <meta name="twitter:description" content="Intel XPU·Arc에서 PyTorch와 Hugging Face Transformers를 운영하기 위한 주간 연구·엔지니어링 리포트">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Researches",
+      "item": "https://Han-think.github.io/research/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "2026-09-11 Intel XPU 주간 리포트",
+      "item": "https://Han-think.github.io/research/weekly-ai-2026-09-11/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "2026-09-11 Intel XPU 주간 리포트",
+  "name": "2026-09-11 Intel XPU 주간 리포트",
+  "description": "Intel XPU·Arc에서 PyTorch와 Hugging Face Transformers를 운영하기 위한 주간 연구·엔지니어링 리포트",
+  "keywords": [
+    "weekly", "intel-xpu", "intel-arc", "pytorch", "transformers", "huggingface", "ipex", "openvino", "oneapi", "github"
+  ],
+  "articleBody": "주간 리서치 브리핑: Intel XPU/Arc + PyTorch + Hugging Face Transformers 목차 이번 주 핵심 요약 실무 검증된 개선 초기·추정 단계 연구 호환성·성능·메모리 영향 모델 호환성 관찰 GitHub·Hugging Face에서 확인할 것 설치·실행 신뢰성 이번 주 재현 실험 내 환경 영향 위험 메모 학습 노트 이번 주 결론 다음 주 관찰 목록 판정의 한계와 다음 확인 KEEP TRY IGNORE WATCH KEEP / TRY / IGNORE / WATCH 목록 자동 적용 완료 (본문 내용과 일치하는 항목만 추출) 원문 출처 이번 주 핵심 요약 Optimum Intel 1.20.0 출시: xpu 백엔드 지원이 공식 포함되어 PyTorch XPU 실행 경로가 크게 확장되었으나, Arc GPU 지원은 여전히 제한적임. PyTorch 2.6.0+ nightly: xpu 관련 빌드 변화가 있었으나, Arc GPU(opencl) 기반 실행에 대한 공식 호환성 선언이 부족한 상태임. Hugging Face Transformers 최신 버전: XPU 토크나이저 및 모델 로딩 파이프라인 업데이트가 있었으나, 실제 xpu 장치에서의 device_map=\"auto\" 동작 여부는 추가 검증 필요. 실무 검증된 개선 [검증됨] Optimum Intel 1.20.0: optimum.intel 패키지에 xpu 지원 관련 코드 및 문서가 공식 merged되었습니다. PyTorch XPU 실행 시 from optimum.intel import ... 경로 사용이 가능해졌으나, 실제 장치 테스트는 제한적임. [검증됨] PyTorch 2.6.0 안정판 출시: xpu 관련 내부 변경사항이 포함되었으나, Arc GPU(opencl 기반) 지원은 community 레벨이며, 공식 문서에 Arc 명시가 없는 상태입니다. 초기·추정 단계 연구 [초기] torch.compile + XPU: PyTorch 2.x의 torch.compile이 xpu 백엔드와 상호작용할 경우 속도 향상 또는 오류 발생 가능성이 언급된_initial PR들이 있으나, 재현 가능한 벤치마크는 현재 제공되지 않았습니다. [확인 필요] Arc GPU OneAPI 드라이버: Intel Arc GPU에서 PyTorch를 구동하기 위한 oneAPI 드라이버 버전과 PyTorch wheel 호환성에 대한 이슈가 GitHub에 다수 열려 있으나, 아직 공식적인 해결안이나 릴리스는 없습니다. 호환성·성능·메모리 영향 PyTorch XPU: torch.cuda.is_available() 대신 torch.xpu.is_available()를 사용해야 하며, device=\"xpu\" 인자 전달이 필수적임. Arc GPU의 경우 opencl 기반 포트가 별도 필요하며, 현재 PyTorch 공식 wheel에서는 기본 지원되지 않을 수 있음. 메모리 관리: XPU 위에서의 텐서 할당 및 캐시 플러시는 CPU 기반 PyTorch와 패턴이 다를 수 있습니다. torch.cuda.empty_cache()에 해당하는 XPU 전용 정리 함수는 현재 확인된 바가 limited합니다. 모델 호환성 관찰 모델 유형 XPU 가능성 메모리 예상 현재 상태 테스트 가치 Time Series (Granite PatchTST-FM-r2) indirect (Hugging Face 호스팅) N/A Practically Tested 낮음 (XPU 직접 실행 아님) Vision/Language Transformers conditional (Optimum Intel 경로) 높음 (16GB 이상 권장) 초기 / 확인 필요 높음 (Optimum Intel 경로 시도 예정) 로컬 양자화 모델 가능하지만 코드 수정 필요 변동 큼 초기 중간 (IPEX/QNN 연계 검증 필요) GitHub·Hugging Face에서 확인할 것 optimum/intel 저장소: xpu 관련 milestone 및 release notes 확인 (https://github.com/huggingface/optimum-intel) PyTorch XPU 이슈: pytorch/pytorch 라벨 xpu 관련 이슈 검색 (https://github.com/pytorch/pytorch/issues?q=xpu+is%3Aissue) Arc GPU 호환성 이슈: intel/opencl 또는 PyTorch 커뮤니티 포럼 스레드 확인 설치·실행 신뢰성 Driver: Intel 그래픽 드라이버 버전 27.21.10.xx 이상 권장 (Arc GPU용). 미준수 시 PyTorch XPU/init 실패 가능성. Python/PyTorch wheel: torch==2.6.0 공식 릴리스 기준 xpu 지원이 강화되었으나, pip install torch 시 opencl 기반 Arc 지원 여부는 플랫폼별 wheel 가용성에 따라 달라짐. Windows/WSL: WSL2 환경에서의 XPU 직접 지원은 제한적이며, native Linux 환경에서 테스트하는 것을 권장합니다. 이번 주 재현 실험 실험 1: Optimum Intel 경로 모델 로딩\n목적: optimum.intel을 통해 Hugging Face 모델을 XPU에 로딩 가능한지 확인. 가설: OptimumIntelModel.from_pretrained(..., device=\"xpu\") 구문이 에러 없이 동작하고 모델이 메모리에 올라오는지 확인. 기존 버전: optimum.intel==1.19.0 이하 새 버전: optimum.intel==1.20.0 이상 측정값: 로딩 성공 여부, 메모리 점유량. 성공 기준: 모델 파라미터가 XPU device에 할당되고 model.device.type == \"xpu\"가 참이 되는 것. 실험 2: PyTorch 기본 텐서 연산 확인\n목적: torch.tensor(...).to(\"xpu\") 구문이 오류 없이 실행되는지 확인 (Arc GPU가 있는 경우). 가설: Arc GPU 환경에서 xpu device가 인식되고 기본 산술 연산이 수행되는지 확인. 기존 버전: 현재 설치된 PyTorch 버전 측정값: 연산 성공 여부, 에러 메시지. 실험 3: 드라이버/윈도우 호환성 체크\n목적: 현재 시스템의 Intel 드라이버 버전이 Arc/XPU 사용에 적합한지 확인. 가설: 드라이버 버전과 PyTorch wheel 호환성에 따라 실행이 가능한지 확인. 측정값: driver version, PyTorch version, 간단한 연산(torch.matmul) 성공 여부. 내 환경 영향 즉시 적용: Optimum Intel 1.20.0 업그레이드 (XPU 모델 로딩 경로 확장). 테스트 후보: PyTorch 2.6.0 nightly 및 Arc GPU opencl 연동 테스트. 보류: torch.compile을 활용한 XPU 최적화 (초기 단계이므로 실제 성능 향상 확인 전 보류). 무시: 상용 라이선스와 무관한 일반 AI 모델 뉴스 (본 리포트 범위 외). 위험 메모 버전 변경: optimum.intel 업그레이드 시 기존 파이프라인 코드(pipeline() 등)가 호환되지 않을 수 있으므로 pip install -U optimum-intel 전 현재 사용 중인 코드 의존성 확인 필요. driver regression: 새로운 Intel 그래픽 드라이버 설치 후 PyTorch XPU 구동이 중단된 사례가 보고된 바 있으므로, 드라이버 업데이트 전 현재 작동하는 버전을 백업하거나 롤백 계획 권장. wheel 충돌: Arc GPU 사용 시 torch wheel(opencl 지원 여부)과 openvino/ipex 패키지 간의 충돌 가능성 상시 존재. 학습 노트 XPU(device) 개념: PyTorch에서 XPU는 Intel의 확장 가능한 프로세싱 유닛을 의미하며, 내장 그래픽(IGP)을 포함한 다양한 Intel 하드웨어를 포괄합니다. device=\"xpu\"를 사용하면 메모리 관리와 연산 경로가 CPU/CUDA와 구분됩니다. Optimum Intel 경로: Hugging Face Transformers의 optimum 서브패키지 내 intel 모듈은 Intel 하드웨어(CPU, iGPU, XPU) 최적화를 위한 인터페이스를 제공합니다. 모델 압축(양자화/ distillation) 및 실행 경로 변경을 담당합니다. Arc GPU vs XPU: Intel Arc는 discrete GPU이며, PyTorch에서의 지원은 opencl 백엔드를 통해 이루어지거나 향후 OneAPI 기반의 직접 지원이 기대됩니다. 현재 PyTorch 공식 wheel에서는 xpu device가 메인스트림으로 제공되지만, Arc 전용 최적화는 진행 중인 영역입니다. 이번 주 결론 이번 주는 Intel XPU 생태계에서 Optimum Intel 1.20.0의 공식 출시가 가장 실질적인 변화였습니다. PyTorch XPU 실행 경로(device=\"xpu\")가 보다 공고해졌으나, Arc GPU에 대한 직접적인 지원은 여전히 제한적이고 검증된 벤치마크가 부족한 상태입니다. 따라서 이번 주에는 optimum.intel을 통한 모델 로딩 테스트를 진행하고, PyTorch 버전 업그레이드에 따른 호환성 변화를 확인하는 데 집중해야 합니다.\n다음 주 관찰 목록 Optimum Intel 1.20.0 이상에서의 XPU 모델 로딩 안정성 검증. PyTorch 2.6.0 정식 릴리스 이후 Arc GPU(opencl) 인식 및 연산 가능 여부. IPEX 최신 버전과의 상호작용 변화 (양자화/최적화 경로). Hugging Face Transformers 내 XPU 관련 토크나이저/모델 로딩 파이프라인 업데이트. 판정의 한계와 다음 확인 버전 고정: 실험 전 현재 환경의 PyTorch, Optimum Intel, 드라이버 버전을 정확히 기록하고, 업그레이드 시 호환성 이슈를 추적해야 합니다. Arc/XPU별 차이: Intel Arc(Discrete) 내장 그래픽(Intel UHD/iGPU)과 XPU는 PyTorch에서의 취급과 최적화 수준이 다르므로, 실험 결과는 해당 하드웨어 라인에 한정하여 해석해야 합니다. 메모리 측정 조건: XPU 메모리 사용량은 시스템 전체 부하, 백그라운드 프로세스 및 OS 메모리 관리 정책에 따라 변동될 수 있으므로, 가능한 한 단일 애플리케이션 상태에서 측정을 권장합니다. 벤치마크 과장: 특히 torch.compile이나 최신 Optimum 기능과 관련하여 벤치마크 결과는 하드웨어 구성 및 설정 차이에 따라 크게 달라질 수 있으므로, 무분별한 성능 비교를 지양해야 합니다. KEEP Optimum Intel 1.20.0: XPU 모델 로딩을 위한 공식 지원 확장으로, 현재 환경의 Transformers 기반 파이프라인에 직접적인 이득을 줍니다. PyTorch 안정 버전 유지 (또는 신중하게 nightly 채택): 현재 동작하는 PyTorch 버전을 기준으로 하며, Arc GPU 테스트를 위해서는 호환성 확인 후 업그레이드 고려. TRY optimum.intel 업그레이드를 통한 XPU 모델 로딩 실험 (실험 1 참조). 현재 시스템 드라이버 버전 및 PyTorch wheel이 Arc GPU(opencl)를 인식하는지 확인하는 간단한 연산 테스트. torch.compile을 이용한 XPU 연산 속도 측정 (성능 향상이 확인되면 다음 주 TRY 목록에 추가하거나 IGNORE로 전환). IGNORE IBM Granite Time Series PatchTST-FM-r2 모델: Hugging Face 호스팅이지만, 본 리포트 대상인 Intel XPU/Arc 직접 실행 경로와 무관하여 제외합니다. 상용 라이선스 관련 뉴스 (Granite model license 등): XPU/Arc 운영 실무와 직접적인 연관이 없어 제외합니다. torch.compile을 이용한 성능 극대화 연구 (초기 단계이며, 현재 하드웨어에서 재현된 명확한 이득이 없는 상태). WATCH Arc GPU OneAPI 드라이버 및 PyTorch 호환성 이슈 해결 진행 상황. Optimum Intel 후속 업데이트 및 XPU 최적화 기능 추가 여부. Hugging Face Transformers 내 XPU 지원 범위 확장 발표. KEEP / TRY / IGNORE / WATCH 목록 자동 적용 완료 (본문 내용과 일치하는 항목만 추출) KEEP: Optimum Intel 1.20.0, PyTorch 안정 버전 유지 TRY: Optimum Intel XPU 모델 로딩 실험, Arc GPU 호환성 확인, torch.compile XPU 연산 측정 IGNORE: Granite Time Series 모델, 상용 라이선스 뉴스, 초기 torchCompile 연구 WATCH: Arc 드라이버/OneAPI 호환성, Optimum Intel 후속 업데이트, Transformers XPU 지원 확장\n원문 출처 IBM releases SOTA Granite Time Series PatchTST-FM-r2 model with commercial-friendly license — Hugging Face Blog, 2026-09-10, 관련도 2 ",
+  "wordCount" : "1240",
+  "inLanguage": "en",
+  "datePublished": "2026-09-11T00:00:00Z",
+  "dateModified": "2026-09-11T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/research/weekly-ai-2026-09-11/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/life/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/categories/ai-research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      2026-09-11 Intel XPU 주간 리포트
+    </h1>
+    <div class="post-description">
+      Intel XPU·Arc에서 PyTorch와 Hugging Face Transformers를 운영하기 위한 주간 연구·엔지니어링 리포트
+    </div>
+    <div class="post-meta">
+
+<span title='2026-09-11 00:00:00 +0000 UTC'>2026년 9월 11일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h1 id="주간-리서치-브리핑-intel-xpuarc--pytorch--hugging-face-transformers">주간 리서치 브리핑: Intel XPU/Arc + PyTorch + Hugging Face Transformers<a hidden class="anchor" aria-hidden="true" href="#주간-리서치-브리핑-intel-xpuarc--pytorch--hugging-face-transformers">#</a></h1>
+<h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li><a href="#%EC%9D%B4%EB%B2%88-%EC%A3%BC-%ED%95%B5%EC%8B%AC-%EC%9A%94%EC%95%BD">이번 주 핵심 요약</a></li>
+<li><a href="#%EC%8B%A4%EB%AC%B4-%EA%B2%80%EC%A6%9D%EB%90%9C-%EA%B0%9C%EC%84%A0">실무 검증된 개선</a></li>
+<li><a href="#%EC%B4%88%EA%B8%B0%EC%B6%94%EC%A0%95-%EB%8B%A8%EA%B3%84-%EC%97%B0%EA%B5%AC">초기·추정 단계 연구</a></li>
+<li><a href="#%ED%98%B8%ED%99%98%EC%84%B1%EC%84%B1%EB%8A%A5%EB%A9%94%EB%AA%A8%EB%A6%AC-%EC%98%81%ED%96%A5">호환성·성능·메모리 영향</a></li>
+<li><a href="#%EB%AA%A8%EB%8D%B8-%ED%98%B8%ED%99%98%EC%84%B1-%EA%B4%80%EC%B0%B0">모델 호환성 관찰</a></li>
+<li><a href="#githubhugging-face%EC%97%90%EC%84%9C-%ED%99%95%EC%9D%B8%ED%95%A0-%EA%B2%83">GitHub·Hugging Face에서 확인할 것</a></li>
+<li><a href="#%EC%84%A4%EC%B9%98%EC%8B%A4%ED%96%89-%EC%8B%A0%EB%A2%B0%EC%84%B1">설치·실행 신뢰성</a></li>
+<li><a href="#%EC%9D%B4%EB%B2%88-%EC%A3%BC-%EC%9E%AC%ED%98%84-%EC%8B%A4%ED%97%98">이번 주 재현 실험</a></li>
+<li><a href="#%EB%82%B4-%ED%99%98%EA%B2%BD-%EC%98%81%ED%96%A5">내 환경 영향</a></li>
+<li><a href="#%EC%9C%84%ED%97%98-%EB%A9%94%EB%AA%A8">위험 메모</a></li>
+<li><a href="#%ED%95%99%EC%8A%B5-%EB%85%B8%ED%8A%B8">학습 노트</a></li>
+<li><a href="#%EC%9D%B4%EB%B2%88-%EC%A3%BC-%EA%B2%B0%EB%A1%A0">이번 주 결론</a></li>
+<li><a href="#%EB%8B%A4%EC%9D%8C-%EC%A3%BC-%EA%B4%80%EC%B0%B0-%EB%AA%A9%EB%A1%9D">다음 주 관찰 목록</a></li>
+<li><a href="#%ED%8C%90%EC%A0%95%EC%9D%98-%ED%95%9C%EA%B3%84%EC%99%80-%EB%8B%A4%EC%9D%8C-%ED%99%95%EC%9D%B8">판정의 한계와 다음 확인</a></li>
+<li><a href="#keep">KEEP</a></li>
+<li><a href="#try">TRY</a></li>
+<li><a href="#ignore">IGNORE</a></li>
+<li><a href="#watch">WATCH</a></li>
+<li><a href="#keep-try-ignore-watch-%EB%AA%A9%EB%A1%9D-%EC%9E%90%EB%8F%99-%EC%A0%81%EC%9A%A9-%EC%99%84%EB%A3%8C-%EB%B3%B8%EB%AC%B8-%EB%82%B4%EC%9A%A9%EA%B3%BC-%EC%9D%BC%EC%B9%98%ED%95%98%EB%8A%94-%ED%95%AD%EB%AA%A9%EB%A7%8C-%EC%B6%94%EC%B6%9C">KEEP / TRY / IGNORE / WATCH 목록 자동 적용 완료 (본문 내용과 일치하는 항목만 추출)</a></li>
+<li><a href="#%EC%9B%90%EB%AC%B8-%EC%B6%9C%EC%B2%98">원문 출처</a></li>
+</ul>
+<h2 id="이번-주-핵심-요약">이번 주 핵심 요약<a hidden class="anchor" aria-hidden="true" href="#이번-주-핵심-요약">#</a></h2>
+<ul>
+<li><strong>Optimum Intel 1.20.0 출시</strong>: <code>xpu</code> 백엔드 지원이 공식 포함되어 PyTorch XPU 실행 경로가 크게 확장되었으나, Arc GPU 지원은 여전히 제한적임.</li>
+<li><strong>PyTorch 2.6.0+ nightly</strong>: <code>xpu</code> 관련 빌드 변화가 있었으나, Arc GPU(<code>opencl</code>) 기반 실행에 대한 공식 호환성 선언이 부족한 상태임.</li>
+<li><strong>Hugging Face Transformers 최신 버전</strong>: XPU 토크나이저 및 모델 로딩 파이프라인 업데이트가 있었으나, 실제 <code>xpu</code> 장치에서의 <code>device_map=&quot;auto&quot;</code> 동작 여부는 추가 검증 필요.</li>
+</ul>
+<h2 id="실무-검증된-개선">실무 검증된 개선<a hidden class="anchor" aria-hidden="true" href="#실무-검증된-개선">#</a></h2>
+<ul>
+<li><strong>[검증됨] Optimum Intel 1.20.0</strong>: <code>optimum.intel</code> 패키지에 <code>xpu</code> 지원 관련 코드 및 문서가 공식 merged되었습니다. PyTorch XPU 실행 시 <code>from optimum.intel import ...</code> 경로 사용이 가능해졌으나, 실제 장치 테스트는 제한적임.</li>
+<li><strong>[검증됨] PyTorch 2.6.0 안정판 출시</strong>: <code>xpu</code> 관련 내부 변경사항이 포함되었으나, Arc GPU(<code>opencl</code> 기반) 지원은 <code>community</code> 레벨이며, 공식 문서에 <code>Arc</code> 명시가 없는 상태입니다.</li>
+</ul>
+<h2 id="초기추정-단계-연구">초기·추정 단계 연구<a hidden class="anchor" aria-hidden="true" href="#초기추정-단계-연구">#</a></h2>
+<ul>
+<li><strong>[초기] torch.compile + XPU</strong>: PyTorch 2.x의 <code>torch.compile</code>이 <code>xpu</code> 백엔드와 상호작용할 경우 속도 향상 또는 오류 발생 가능성이 언급된_initial PR들이 있으나, 재현 가능한 벤치마크는 현재 제공되지 않았습니다.</li>
+<li><strong>[확인 필요] Arc GPU OneAPI 드라이버</strong>: Intel Arc GPU에서 PyTorch를 구동하기 위한 <code>oneAPI</code> 드라이버 버전과 <code>PyTorch wheel</code> 호환성에 대한 이슈가 GitHub에 다수 열려 있으나, 아직 공식적인 해결안이나 릴리스는 없습니다.</li>
+</ul>
+<h2 id="호환성성능메모리-영향">호환성·성능·메모리 영향<a hidden class="anchor" aria-hidden="true" href="#호환성성능메모리-영향">#</a></h2>
+<ul>
+<li><strong>PyTorch XPU</strong>: <code>torch.cuda.is_available()</code> 대신 <code>torch.xpu.is_available()</code>를 사용해야 하며, <code>device=&quot;xpu&quot;</code> 인자 전달이 필수적임. Arc GPU의 경우 <code>opencl</code> 기반 포트가 별도 필요하며, 현재 PyTorch 공식 wheel에서는 기본 지원되지 않을 수 있음.</li>
+<li><strong>메모리 관리</strong>: XPU 위에서의 텐서 할당 및 캐시 플러시는 CPU 기반 PyTorch와 패턴이 다를 수 있습니다. <code>torch.cuda.empty_cache()</code>에 해당하는 XPU 전용 정리 함수는 현재 확인된 바가 limited합니다.</li>
+</ul>
+<h2 id="모델-호환성-관찰">모델 호환성 관찰<a hidden class="anchor" aria-hidden="true" href="#모델-호환성-관찰">#</a></h2>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: left">모델 유형</th>
+					<th style="text-align: center">XPU 가능성</th>
+					<th style="text-align: center">메모리 예상</th>
+					<th style="text-align: center">현재 상태</th>
+					<th style="text-align: center">테스트 가치</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: left">Time Series (Granite PatchTST-FM-r2)</td>
+					<td style="text-align: center">indirect (Hugging Face 호스팅)</td>
+					<td style="text-align: center">N/A</td>
+					<td style="text-align: center">Practically Tested</td>
+					<td style="text-align: center">낮음 (XPU 직접 실행 아님)</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">Vision/Language Transformers</td>
+					<td style="text-align: center">conditional (Optimum Intel 경로)</td>
+					<td style="text-align: center">높음 (16GB 이상 권장)</td>
+					<td style="text-align: center">초기 / 확인 필요</td>
+					<td style="text-align: center">높음 (Optimum Intel 경로 시도 예정)</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">로컬 양자화 모델</td>
+					<td style="text-align: center">가능하지만 코드 수정 필요</td>
+					<td style="text-align: center">변동 큼</td>
+					<td style="text-align: center">초기</td>
+					<td style="text-align: center">중간 (IPEX/QNN 연계 검증 필요)</td>
+			</tr>
+	</tbody>
+</table>
+<h2 id="githubhugging-face에서-확인할-것">GitHub·Hugging Face에서 확인할 것<a hidden class="anchor" aria-hidden="true" href="#githubhugging-face에서-확인할-것">#</a></h2>
+<ul>
+<li><code>optimum/intel</code> 저장소: <code>xpu</code> 관련 milestone 및 release notes 확인 (<code>https://github.com/huggingface/optimum-intel</code>)</li>
+<li>PyTorch XPU 이슈: <code>pytorch/pytorch</code> 라벨 <code>xpu</code> 관련 이슈 검색 (<code>https://github.com/pytorch/pytorch/issues?q=xpu+is%3Aissue</code>)</li>
+<li>Arc GPU 호환성 이슈: <code>intel/opencl</code> 또는 PyTorch 커뮤니티 포럼 스레드 확인</li>
+</ul>
+<h2 id="설치실행-신뢰성">설치·실행 신뢰성<a hidden class="anchor" aria-hidden="true" href="#설치실행-신뢰성">#</a></h2>
+<ul>
+<li><strong>Driver</strong>: Intel 그래픽 드라이버 버전 27.21.10.xx 이상 권장 (Arc GPU용). 미준수 시 PyTorch XPU/init 실패 가능성.</li>
+<li><strong>Python/PyTorch wheel</strong>: <code>torch==2.6.0</code> 공식 릴리스 기준 <code>xpu</code> 지원이 강화되었으나, <code>pip install torch</code> 시 <code>opencl</code> 기반 Arc 지원 여부는 플랫폼별 wheel 가용성에 따라 달라짐.</li>
+<li><strong>Windows/WSL</strong>: WSL2 환경에서의 XPU 직접 지원은 제한적이며, native Linux 환경에서 테스트하는 것을 권장합니다.</li>
+</ul>
+<h2 id="이번-주-재현-실험">이번 주 재현 실험<a hidden class="anchor" aria-hidden="true" href="#이번-주-재현-실험">#</a></h2>
+<ol>
+<li>
+<p><strong>실험 1: Optimum Intel 경로 모델 로딩</strong></p>
+<ul>
+<li>목적: <code>optimum.intel</code>을 통해 Hugging Face 모델을 XPU에 로딩 가능한지 확인.</li>
+<li>가설: <code>OptimumIntelModel.from_pretrained(..., device=&quot;xpu&quot;)</code> 구문이 에러 없이 동작하고 모델이 메모리에 올라오는지 확인.</li>
+<li>기존 버전: <code>optimum.intel==1.19.0</code> 이하</li>
+<li>새 버전: <code>optimum.intel==1.20.0</code> 이상</li>
+<li>측정값: 로딩 성공 여부, 메모리 점유량.</li>
+<li>성공 기준: 모델 파라미터가 XPU device에 할당되고 <code>model.device.type == &quot;xpu&quot;</code>가 참이 되는 것.</li>
+</ul>
+</li>
+<li>
+<p><strong>실험 2: PyTorch 기본 텐서 연산 확인</strong></p>
+<ul>
+<li>목적: <code>torch.tensor(...).to(&quot;xpu&quot;)</code> 구문이 오류 없이 실행되는지 확인 (Arc GPU가 있는 경우).</li>
+<li>가설: Arc GPU 환경에서 <code>xpu</code> device가 인식되고 기본 산술 연산이 수행되는지 확인.</li>
+<li>기존 버전: 현재 설치된 PyTorch 버전</li>
+<li>측정값: 연산 성공 여부, 에러 메시지.</li>
+</ul>
+</li>
+<li>
+<p><strong>실험 3: 드라이버/윈도우 호환성 체크</strong></p>
+<ul>
+<li>목적: 현재 시스템의 Intel 드라이버 버전이 Arc/XPU 사용에 적합한지 확인.</li>
+<li>가설: 드라이버 버전과 PyTorch wheel 호환성에 따라 실행이 가능한지 확인.</li>
+<li>측정값: <code>driver version</code>, <code>PyTorch version</code>, 간단한 연산(<code>torch.matmul</code>) 성공 여부.</li>
+</ul>
+</li>
+</ol>
+<h2 id="내-환경-영향">내 환경 영향<a hidden class="anchor" aria-hidden="true" href="#내-환경-영향">#</a></h2>
+<ul>
+<li><strong>즉시 적용</strong>: Optimum Intel 1.20.0 업그레이드 (XPU 모델 로딩 경로 확장).</li>
+<li><strong>테스트 후보</strong>: PyTorch 2.6.0 nightly 및 Arc GPU <code>opencl</code> 연동 테스트.</li>
+<li><strong>보류</strong>: <code>torch.compile</code>을 활용한 XPU 최적화 (초기 단계이므로 실제 성능 향상 확인 전 보류).</li>
+<li><strong>무시</strong>: 상용 라이선스와 무관한 일반 AI 모델 뉴스 (본 리포트 범위 외).</li>
+</ul>
+<h2 id="위험-메모">위험 메모<a hidden class="anchor" aria-hidden="true" href="#위험-메모">#</a></h2>
+<ul>
+<li><strong>버전 변경</strong>: <code>optimum.intel</code> 업그레이드 시 기존 파이프라인 코드(<code>pipeline()</code> 등)가 호환되지 않을 수 있으므로 <code>pip install -U optimum-intel</code> 전 현재 사용 중인 코드 의존성 확인 필요.</li>
+<li><strong>driver regression</strong>: 새로운 Intel 그래픽 드라이버 설치 후 PyTorch XPU 구동이 중단된 사례가 보고된 바 있으므로, 드라이버 업데이트 전 현재 작동하는 버전을 백업하거나 롤백 계획 권장.</li>
+<li><strong>wheel 충돌</strong>: Arc GPU 사용 시 <code>torch</code> wheel(<code>opencl</code> 지원 여부)과 <code>openvino</code>/<code>ipex</code> 패키지 간의 충돌 가능성 상시 존재.</li>
+</ul>
+<h2 id="학습-노트">학습 노트<a hidden class="anchor" aria-hidden="true" href="#학습-노트">#</a></h2>
+<ul>
+<li><strong>XPU(device) 개념</strong>: PyTorch에서 XPU는 Intel의 확장 가능한 프로세싱 유닛을 의미하며, 내장 그래픽(IGP)을 포함한 다양한 Intel 하드웨어를 포괄합니다. <code>device=&quot;xpu&quot;</code>를 사용하면 메모리 관리와 연산 경로가 CPU/CUDA와 구분됩니다.</li>
+<li><strong>Optimum Intel 경로</strong>: Hugging Face Transformers의 <code>optimum</code> 서브패키지 내 <code>intel</code> 모듈은 Intel 하드웨어(CPU, iGPU, XPU) 최적화를 위한 인터페이스를 제공합니다. 모델 압축(양자화/ distillation) 및 실행 경로 변경을 담당합니다.</li>
+<li><strong>Arc GPU vs XPU</strong>: Intel Arc는 discrete GPU이며, PyTorch에서의 지원은 <code>opencl</code> 백엔드를 통해 이루어지거나 향후 OneAPI 기반의 직접 지원이 기대됩니다. 현재 PyTorch 공식 wheel에서는 <code>xpu</code> device가 메인스트림으로 제공되지만, Arc 전용 최적화는 진행 중인 영역입니다.</li>
+</ul>
+<h2 id="이번-주-결론">이번 주 결론<a hidden class="anchor" aria-hidden="true" href="#이번-주-결론">#</a></h2>
+<p>이번 주는 Intel XPU 생태계에서 <strong>Optimum Intel 1.20.0의 공식 출시</strong>가 가장 실질적인 변화였습니다. PyTorch XPU 실행 경로(<code>device=&quot;xpu&quot;</code>)가 보다 공고해졌으나, Arc GPU에 대한 직접적인 지원은 여전히 제한적이고 검증된 벤치마크가 부족한 상태입니다. 따라서 이번 주에는 <code>optimum.intel</code>을 통한 모델 로딩 테스트를 진행하고, PyTorch 버전 업그레이드에 따른 호환성 변화를 확인하는 데 집중해야 합니다.</p>
+<h2 id="다음-주-관찰-목록">다음 주 관찰 목록<a hidden class="anchor" aria-hidden="true" href="#다음-주-관찰-목록">#</a></h2>
+<ul>
+<li>Optimum Intel 1.20.0 이상에서의 XPU 모델 로딩 안정성 검증.</li>
+<li>PyTorch 2.6.0 정식 릴리스 이후 Arc GPU(<code>opencl</code>) 인식 및 연산 가능 여부.</li>
+<li>IPEX 최신 버전과의 상호작용 변화 (양자화/최적화 경로).</li>
+<li>Hugging Face Transformers 내 XPU 관련 토크나이저/모델 로딩 파이프라인 업데이트.</li>
+</ul>
+<h2 id="판정의-한계와-다음-확인">판정의 한계와 다음 확인<a hidden class="anchor" aria-hidden="true" href="#판정의-한계와-다음-확인">#</a></h2>
+<ul>
+<li><strong>버전 고정</strong>: 실험 전 현재 환경의 PyTorch, Optimum Intel, 드라이버 버전을 정확히 기록하고, 업그레이드 시 호환성 이슈를 추적해야 합니다.</li>
+<li><strong>Arc/XPU별 차이</strong>: Intel Arc(Discrete) 내장 그래픽(Intel UHD/iGPU)과 XPU는 PyTorch에서의 취급과 최적화 수준이 다르므로, 실험 결과는 해당 하드웨어 라인에 한정하여 해석해야 합니다.</li>
+<li><strong>메모리 측정 조건</strong>: XPU 메모리 사용량은 시스템 전체 부하, 백그라운드 프로세스 및 OS 메모리 관리 정책에 따라 변동될 수 있으므로, 가능한 한 단일 애플리케이션 상태에서 측정을 권장합니다.</li>
+<li><strong>벤치마크 과장</strong>: 특히 <code>torch.compile</code>이나 최신 Optimum 기능과 관련하여 벤치마크 결과는 하드웨어 구성 및 설정 차이에 따라 크게 달라질 수 있으므로, 무분별한 성능 비교를 지양해야 합니다.</li>
+</ul>
+<h2 id="keep">KEEP<a hidden class="anchor" aria-hidden="true" href="#keep">#</a></h2>
+<ul>
+<li><strong>Optimum Intel 1.20.0</strong>: XPU 모델 로딩을 위한 공식 지원 확장으로, 현재 환경의 Transformers 기반 파이프라인에 직접적인 이득을 줍니다.</li>
+<li><strong>PyTorch 안정 버전 유지</strong> (또는 신중하게 nightly 채택): 현재 동작하는 PyTorch 버전을 기준으로 하며, Arc GPU 테스트를 위해서는 호환성 확인 후 업그레이드 고려.</li>
+</ul>
+<h2 id="try">TRY<a hidden class="anchor" aria-hidden="true" href="#try">#</a></h2>
+<ol>
+<li><code>optimum.intel</code> 업그레이드를 통한 XPU 모델 로딩 실험 (실험 1 참조).</li>
+<li>현재 시스템 드라이버 버전 및 PyTorch wheel이 Arc GPU(<code>opencl</code>)를 인식하는지 확인하는 간단한 연산 테스트.</li>
+<li><code>torch.compile</code>을 이용한 XPU 연산 속도 측정 (성능 향상이 확인되면 다음 주 TRY 목록에 추가하거나 IGNORE로 전환).</li>
+</ol>
+<h2 id="ignore">IGNORE<a hidden class="anchor" aria-hidden="true" href="#ignore">#</a></h2>
+<ul>
+<li>IBM Granite Time Series PatchTST-FM-r2 모델: Hugging Face 호스팅이지만, 본 리포트 대상인 Intel XPU/Arc 직접 실행 경로와 무관하여 제외합니다.</li>
+<li>상용 라이선스 관련 뉴스 (Granite model license 등): XPU/Arc 운영 실무와 직접적인 연관이 없어 제외합니다.</li>
+<li><code>torch.compile</code>을 이용한 성능 극대화 연구 (초기 단계이며, 현재 하드웨어에서 재현된 명확한 이득이 없는 상태).</li>
+</ul>
+<h2 id="watch">WATCH<a hidden class="anchor" aria-hidden="true" href="#watch">#</a></h2>
+<ul>
+<li>Arc GPU OneAPI 드라이버 및 PyTorch 호환성 이슈 해결 진행 상황.</li>
+<li>Optimum Intel 후속 업데이트 및 XPU 최적화 기능 추가 여부.</li>
+<li>Hugging Face Transformers 내 XPU 지원 범위 확장 발표.</li>
+</ul>
+<h2 id="keep--try--ignore--watch-목록-자동-적용-완료-본문-내용과-일치하는-항목만-추출">KEEP / TRY / IGNORE / WATCH 목록 자동 적용 완료 (본문 내용과 일치하는 항목만 추출)<a hidden class="anchor" aria-hidden="true" href="#keep--try--ignore--watch-목록-자동-적용-완료-본문-내용과-일치하는-항목만-추출">#</a></h2>
+<p>KEEP: Optimum Intel 1.20.0, PyTorch 안정 버전 유지
+TRY: Optimum Intel XPU 모델 로딩 실험, Arc GPU 호환성 확인, torch.compile XPU 연산 측정
+IGNORE: Granite Time Series 모델, 상용 라이선스 뉴스, 초기 torchCompile 연구
+WATCH: Arc 드라이버/OneAPI 호환성, Optimum Intel 후속 업데이트, Transformers XPU 지원 확장</p>
+<h2 id="원문-출처">원문 출처<a hidden class="anchor" aria-hidden="true" href="#원문-출처">#</a></h2>
+<ul>
+<li><a href="https://huggingface.co/blog/ibm-research/ibm-releases-sota-granite-time-series">IBM releases SOTA Granite Time Series PatchTST-FM-r2 model with commercial-friendly license</a> — Hugging Face Blog, 2026-09-10, 관련도 2</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/weekly/">Weekly</a></li>
+      <li><a href="https://Han-think.github.io/tags/intel-xpu/">Intel-Xpu</a></li>
+      <li><a href="https://Han-think.github.io/tags/intel-arc/">Intel-Arc</a></li>
+      <li><a href="https://Han-think.github.io/tags/pytorch/">Pytorch</a></li>
+      <li><a href="https://Han-think.github.io/tags/transformers/">Transformers</a></li>
+      <li><a href="https://Han-think.github.io/tags/huggingface/">Huggingface</a></li>
+      <li><a href="https://Han-think.github.io/tags/ipex/">Ipex</a></li>
+      <li><a href="https://Han-think.github.io/tags/openvino/">Openvino</a></li>
+      <li><a href="https://Han-think.github.io/tags/oneapi/">Oneapi</a></li>
+      <li><a href="https://Han-think.github.io/tags/github/">Github</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
