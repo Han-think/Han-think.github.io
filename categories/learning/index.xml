@@ -6,8 +6,22 @@
     <description>Recent content in Learning on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Fri, 11 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 14 Sep 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/categories/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>오전 학습 | LLM 스트리밍 구조와 GPU 실행 경로 이해</title>
+      <link>https://Han-think.github.io/learning/2026-09-14-am-daily/</link>
+      <pubDate>Mon, 14 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-14-am-daily/</guid>
+      <description>2026-09-14 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>오후 학습 | 멀티모달 입력 파이프라인 통합의 핵심</title>
+      <link>https://Han-think.github.io/learning/2026-09-14-pm-daily/</link>
+      <pubDate>Mon, 14 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-14-pm-daily/</guid>
+      <description>2026-09-14 오후 학습 정리</description>
+    </item>
     <item>
       <title>오전 학습 | LLM 판단과 Tool 실행, FastAPI 스트리밍 연결</title>
       <link>https://Han-think.github.io/learning/2026-09-11-am-daily/</link>
