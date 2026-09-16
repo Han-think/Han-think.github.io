@@ -6,8 +6,22 @@
     <description>Recent content on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Mon, 14 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 15 Sep 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>오전 학습 | LangGraph 핵심 구조와 워크플로우 설계에 대한 이해</title>
+      <link>https://Han-think.github.io/learning/2026-09-15-am-daily/</link>
+      <pubDate>Tue, 15 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-15-am-daily/</guid>
+      <description>2026-09-15 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>오후 학습 | Conditional Edge와 LangGraph 구조, 인프라 개념까지 오늘의 핵심 정리</title>
+      <link>https://Han-think.github.io/learning/2026-09-15-pm-daily/</link>
+      <pubDate>Tue, 15 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-15-pm-daily/</guid>
+      <description>2026-09-15 오후 학습 정리</description>
+    </item>
     <item>
       <title>오전 학습 | LLM 스트리밍 구조와 GPU 실행 경로 이해</title>
       <link>https://Han-think.github.io/learning/2026-09-14-am-daily/</link>

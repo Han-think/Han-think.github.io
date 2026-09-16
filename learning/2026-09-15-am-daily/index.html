@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오전 학습 | LangGraph 핵심 구조와 워크플로우 설계에 대한 이해 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-09-15 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-09-15-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-09-15-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function () {
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-09-15-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오전 학습 | LangGraph 핵심 구조와 워크플로우 설계에 대한 이해">
+  <meta property="og:description" content="2026-09-15 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-09-15T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-09-15T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오전 학습 | LangGraph 핵심 구조와 워크플로우 설계에 대한 이해">
+  <meta name="twitter:description" content="2026-09-15 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오전 학습 | LangGraph 핵심 구조와 워크플로우 설계에 대한 이해",
+      "item": "https://Han-think.github.io/learning/2026-09-15-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오전 학습 | LangGraph 핵심 구조와 워크플로우 설계에 대한 이해",
+  "name": "오전 학습 | LangGraph 핵심 구조와 워크플로우 설계에 대한 이해",
+  "description": "2026-09-15 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 LangGraph 핵심 구조와 기존 지식 연결하기 LangGraph 업데이트 스트리밍 이해하기 (초보자 워킹 노트) 총평 1. LangGraph 핵심 구조와 기존 지식 연결하기 무엇을 배웠나 LangGraph는 ‘어떤 모델을 쓸지’가 아니라 ‘작업 순서를 어떻게 흐르게 할 것인가’에 초점을 맞춘 프레임워크다. 핵심 요소인 State, Node, Edge는 기존의 pipeline이나 state 개념과 구조적으로 매우 유사해 빠르게 적응할 수 있었다. 특히 환경 설정 차이에도 불구하고 모델 백엔드가 바뀌어도 기본 구조가 동일하다는 사실은 큰 안도감이 되었다. 이러한 이해를 바탕으로 실제 워크플로우를 코드로 설계하는 데 자신감을 갖게 되었다.\n헷갈렸던 점 LangGraph를 처음 접했을 때 가장 큰 혼란은 환경 설정 차이였다. 시연된 Ollama 예제와 내 LM Studio 환경이 달라 코드 수정에 애를 먹었지만, 결국 모델 백엔드가 달라도 기본 구조는 동일하다는 사실을 깨닫고 안도했다.\n가장 중요한 깨달음은 LangGraph의 핵심 that **“어디에 어떤 모델을 쓸지”**가 아니라 **“어떤 순서로 작업을 흐르게 할 것인가”**에 있다는 점이다. 기존에 쓰던 pipeline, state, gate 개념과 매우 비슷해 새롭고 어려운 기술로 느껴졌지만, 워크플로우를 코드로 명시적으로 설계하는 방식이라는 점에서 익숙한 사고방식과 크게 다르지 않아 빠르게 적응할 수 있었다.\n정리된 이해 LangGraph는 기존 파이프라인 개념과 크게 다르지 않은 ‘노드와 엣지로 흐름을 설계하는 프레임워크’다. 핵심은 모델 선택이 아니라 데이터가 어떤 순서로 이동할지를 정의하는 데 있다. 특히 State, Node, Edge는 기존의 상태 관리, 작업 함수, 연결 고리 개념과 직접적으로 대응되어 학습 곡선이 완만했다.\n# State 정의: 세 단계의 데이터를 담는 그릇 from typing import TypedDict class SimpleState(TypedDict): ori_query: str # Node (작업 함수): 실제 일을 처리하는 함수 def refiner(state: SimpleState) -\u003e SimpleState: \"\"\"입력된 질문을 정제하는 노드\"\"\" print(f\"정제 전 질문: {state['ori_query']}\") # 가공 로직 예시 refined = state['ori_query'].strip().upper() return {\"refined_query\": refined} def generator(state: SimpleState) -\u003e SimpleState: \"\"\"정제된 질문을 바탕으로 답변을 생성하는 노드\"\"\" print(f\"생성 중... 질문: {state['refined_query']}\") # 가공 로직 예시 response = f\"답변: {state['refined_query']}에 대한 처리 완료\" return {\"response\": response} # Edge (이동 경로): 노드 사이의 연결 고리 from langgraph.graph import StateGraph, START, END # 그래프 객체 생성 workflow = StateGraph(SimpleState) # 노드 추가 workflow.add_node(\"refiner\", refiner) workflow.add_node(\"generator\", generator) # Edge 정의: 흐름 순서 설정 # START → refiner → generator → END workflow.add_edge(START, \"refiner\") workflow.add_edge(\"refiner\", \"generator\") workflow.add_edge(\"generator\", END) # 그래프 컴파일 (실행 가능 상태로 변환) app = workflow.compile() 2. LangGraph 업데이트 스트리밍 이해하기 (초보자 워킹 노트) 무엇을 배웠나 LangGraph의 stream() 메서드는 LLM 토큰 생성 속도와는 무관하게, 그래프 내 각 노드별 State 변화를 단계별로 추적하는 기능임을 명확히 이해했습니다. 특히 stream_mode=\"updates\"를 사용하면 전체 흐름을 한눈에 파악할 수 있으며, 최종 결과뿐만 아니라 중간 과정의 데이터 변동까지 실시간으로 확인할 수 있어 디버깅과 학습에 매우 유용하다는 점을 깨달았습니다.\n헷갈렸던 점 stream() 메서드를 보고 즉시 LLM이 토큰을 실시간으로 내보내는 과정으로 착각했습니다.\n결국 stream()과 LLM의 토큰 스트리밍은 완전히 별개의 개념이며, LangGraph에서는 State 업데이트를 단계별로 관찰하는 것이 주된 목적입니다.\n정리된 이해 LangGraph에서 stream()은 LLM이 토큰을 실시간으로 내보내는 과정과 완전히 별개의 개념입니다.\nstream_mode=\"updates\"는 그래프 전체 흐름(입력 → 리파이너 → 제너레이터 → 종료)을 한 눈에 파악할 수 있게 해주며, 최종 결과물만 확인하는 invoke()와 달리 각 노드에서의 State 변화를 실시간으로 추적할 수 있다는 점이 가장 큰 장점입니다.\n# stream_mode=\"updates\"를 사용한 실행 for node in app.stream({\"ori_query\": query}, stream_mode=\"updates\"): for name, val in node.items(): print(f\"{name}: {val}\") 실행된 흐름은 다음과 같았습니다.\n입력 → refiner 실행 → refined_query 갱신 → generator 실행 → response 갱 총평 오늘 오전 전체에서 배운 것 LangGraph는 모델 선택보다는 작업 흐름(State, Node, Edge)을 정의하는 프레임워크라는 점을 깨닫고, 기존 pipeline 개념과 구조적 유사성을 빠르게 익힐 수 있었다. 또한 stream() 메서드를 통해 LLM 토큰 생성 속도와 무관하게 각 노드의 State 변화를 단계별로 실시간으로 추적할 수 있으며, updates 모드를 사용하면 중간 과정까지 파악하여 디버깅에 큰 도움이 된다는 점을 학습했다.\n다음에 조심할 것 LangGraph의 핵심 구조를 이해하는 과정에서 State와 Node, Edge가 기존 pipeline과 유사하다는 점을 확인했지만, 실제 코드 작성 시 환경 설정이나 데이터 흐름 세부 사항에서 미세한 차이로 인해 시행착오를 겪을 수 있으므로 꼼꼼히 검증해야겠다.\n특히 stream() 메서드의 업데이트 모드를 활용할 때, 토큰 생성 속도와 무관하게 노드별 State 변화만을 정확히 추적하는 것이 중요하며, 이를 통해 중간 과정의 데이터 변동까지 실시간으로 확인하지 않으면 디버깅이 어려워질 수 있으니 흐름을 놓치지 않도록 주의해야겠다.\n다음 복습 주제 LangGraph의 핵심 구조(State, Node, Edge)를 활용해 실무 워크플로우를 직접 설계해보고 싶다. stream() 메서드의 업데이트 모드 기능을 통해 중간 과정 데이터를 추적하는 방법을 실제 프로젝트에 적용해 보고 싶다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "673",
+  "inLanguage": "en",
+  "datePublished": "2026-09-15T00:00:00Z",
+  "dateModified": "2026-09-15T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-09-15-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오전 학습 | LangGraph 핵심 구조와 워크플로우 설계에 대한 이해
+    </h1>
+    <div class="post-description">
+      2026-09-15 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-09-15 00:00:00 +0000 UTC'>2026년 9월 15일</span>&nbsp;·&nbsp;<span>4 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-langgraph-%ED%95%B5%EC%8B%AC-%EA%B5%AC%EC%A1%B0%EC%99%80-%EA%B8%B0%EC%A1%B4-%EC%A7%80%EC%8B%9D-%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0">LangGraph 핵심 구조와 기존 지식 연결하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-langgraph-%EC%97%85%EB%8D%B0%EC%9D%B4%ED%8A%B8-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0-%EC%B4%88%EB%B3%B4%EC%9E%90-%EC%9B%8C%ED%82%B9-%EB%85%B8%ED%8A%B8">LangGraph 업데이트 스트리밍 이해하기 (초보자 워킹 노트)</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-langgraph-핵심-구조와-기존-지식-연결하기">1. LangGraph 핵심 구조와 기존 지식 연결하기<a hidden class="anchor" aria-hidden="true" href="#1-langgraph-핵심-구조와-기존-지식-연결하기">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>LangGraph는 &lsquo;어떤 모델을 쓸지&rsquo;가 아니라 &lsquo;작업 순서를 어떻게 흐르게 할 것인가&rsquo;에 초점을 맞춘 프레임워크다. 핵심 요소인 State, Node, Edge는 기존의 pipeline이나 state 개념과 구조적으로 매우 유사해 빠르게 적응할 수 있었다. 특히 환경 설정 차이에도 불구하고 모델 백엔드가 바뀌어도 기본 구조가 동일하다는 사실은 큰 안도감이 되었다. 이러한 이해를 바탕으로 실제 워크플로우를 코드로 설계하는 데 자신감을 갖게 되었다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>LangGraph를 처음 접했을 때 가장 큰 혼란은 환경 설정 차이였다. 시연된 Ollama 예제와 내 LM Studio 환경이 달라 코드 수정에 애를 먹었지만, 결국 모델 백엔드가 달라도 기본 구조는 동일하다는 사실을 깨닫고 안도했다.</p>
+<p>가장 중요한 깨달음은 LangGraph의 핵심 that **&ldquo;어디에 어떤 모델을 쓸지&rdquo;**가 아니라 **&ldquo;어떤 순서로 작업을 흐르게 할 것인가&rdquo;**에 있다는 점이다. 기존에 쓰던 pipeline, state, gate 개념과 매우 비슷해 새롭고 어려운 기술로 느껴졌지만, 워크플로우를 코드로 명시적으로 설계하는 방식이라는 점에서 익숙한 사고방식과 크게 다르지 않아 빠르게 적응할 수 있었다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>LangGraph는 기존 파이프라인 개념과 크게 다르지 않은 &lsquo;노드와 엣지로 흐름을 설계하는 프레임워크&rsquo;다. 핵심은 모델 선택이 아니라 데이터가 어떤 순서로 이동할지를 정의하는 데 있다. 특히 State, Node, Edge는 기존의 상태 관리, 작업 함수, 연결 고리 개념과 직접적으로 대응되어 학습 곡선이 완만했다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># State 정의: 세 단계의 데이터를 담는 그릇</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> TypedDict
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleState</span>(TypedDict):
+</span></span><span style="display:flex;"><span>    ori_query: str
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Node (작업 함수): 실제 일을 처리하는 함수</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">refiner</span>(state: SimpleState) <span style="color:#f92672">-&gt;</span> SimpleState:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;입력된 질문을 정제하는 노드&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;정제 전 질문: </span><span style="color:#e6db74">{</span>state[<span style="color:#e6db74">&#39;ori_query&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 가공 로직 예시</span>
+</span></span><span style="display:flex;"><span>    refined <span style="color:#f92672">=</span> state[<span style="color:#e6db74">&#39;ori_query&#39;</span>]<span style="color:#f92672">.</span>strip()<span style="color:#f92672">.</span>upper()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;refined_query&#34;</span>: refined}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generator</span>(state: SimpleState) <span style="color:#f92672">-&gt;</span> SimpleState:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;정제된 질문을 바탕으로 답변을 생성하는 노드&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;생성 중... 질문: </span><span style="color:#e6db74">{</span>state[<span style="color:#e6db74">&#39;refined_query&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 가공 로직 예시</span>
+</span></span><span style="display:flex;"><span>    response <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;답변: </span><span style="color:#e6db74">{</span>state[<span style="color:#e6db74">&#39;refined_query&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">에 대한 처리 완료&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;response&#34;</span>: response}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Edge (이동 경로): 노드 사이의 연결 고리</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> langgraph.graph <span style="color:#f92672">import</span> StateGraph, START, END
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 그래프 객체 생성</span>
+</span></span><span style="display:flex;"><span>workflow <span style="color:#f92672">=</span> StateGraph(SimpleState)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 노드 추가</span>
+</span></span><span style="display:flex;"><span>workflow<span style="color:#f92672">.</span>add_node(<span style="color:#e6db74">&#34;refiner&#34;</span>, refiner)
+</span></span><span style="display:flex;"><span>workflow<span style="color:#f92672">.</span>add_node(<span style="color:#e6db74">&#34;generator&#34;</span>, generator)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Edge 정의: 흐름 순서 설정</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># START → refiner → generator → END</span>
+</span></span><span style="display:flex;"><span>workflow<span style="color:#f92672">.</span>add_edge(START, <span style="color:#e6db74">&#34;refiner&#34;</span>)
+</span></span><span style="display:flex;"><span>workflow<span style="color:#f92672">.</span>add_edge(<span style="color:#e6db74">&#34;refiner&#34;</span>, <span style="color:#e6db74">&#34;generator&#34;</span>)
+</span></span><span style="display:flex;"><span>workflow<span style="color:#f92672">.</span>add_edge(<span style="color:#e6db74">&#34;generator&#34;</span>, END)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 그래프 컴파일 (실행 가능 상태로 변환)</span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> workflow<span style="color:#f92672">.</span>compile()
+</span></span></code></pre></div><h2 id="2-langgraph-업데이트-스트리밍-이해하기-초보자-워킹-노트">2. LangGraph 업데이트 스트리밍 이해하기 (초보자 워킹 노트)<a hidden class="anchor" aria-hidden="true" href="#2-langgraph-업데이트-스트리밍-이해하기-초보자-워킹-노트">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>LangGraph의 <code>stream()</code> 메서드는 LLM 토큰 생성 속도와는 무관하게, 그래프 내 각 노드별 State 변화를 단계별로 추적하는 기능임을 명확히 이해했습니다. 특히 <code>stream_mode=&quot;updates&quot;</code>를 사용하면 전체 흐름을 한눈에 파악할 수 있으며, 최종 결과뿐만 아니라 중간 과정의 데이터 변동까지 실시간으로 확인할 수 있어 디버깅과 학습에 매우 유용하다는 점을 깨달았습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p><code>stream()</code> 메서드를 보고 즉시 LLM이 토큰을 실시간으로 내보내는 과정으로 착각했습니다.</p>
+<p>결국 <code>stream()</code>과 LLM의 토큰 스트리밍은 완전히 별개의 개념이며, LangGraph에서는 State 업데이트를 단계별로 관찰하는 것이 주된 목적입니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>LangGraph에서 <code>stream()</code>은 LLM이 토큰을 실시간으로 내보내는 과정과 완전히 별개의 개념입니다.</p>
+<p><code>stream_mode=&quot;updates&quot;</code>는 그래프 전체 흐름(입력 → 리파이너 → 제너레이터 → 종료)을 한 눈에 파악할 수 있게 해주며, 최종 결과물만 확인하는 <code>invoke()</code>와 달리 각 노드에서의 State 변화를 실시간으로 추적할 수 있다는 점이 가장 큰 장점입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># stream_mode=&#34;updates&#34;를 사용한 실행</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> node <span style="color:#f92672">in</span> app<span style="color:#f92672">.</span>stream({<span style="color:#e6db74">&#34;ori_query&#34;</span>: query}, stream_mode<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;updates&#34;</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> name, val <span style="color:#f92672">in</span> node<span style="color:#f92672">.</span>items():
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>val<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><p>실행된 흐름은 다음과 같았습니다.</p>
+<pre tabindex="0"><code>입력
+→ refiner 실행
+→ refined_query 갱신
+→ generator 실행
+→ response 갱
+</code></pre><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>LangGraph는 모델 선택보다는 작업 흐름(State, Node, Edge)을 정의하는 프레임워크라는 점을 깨닫고, 기존 pipeline 개념과 구조적 유사성을 빠르게 익힐 수 있었다. 또한 <code>stream()</code> 메서드를 통해 LLM 토큰 생성 속도와 무관하게 각 노드의 State 변화를 단계별로 실시간으로 추적할 수 있으며, <code>updates</code> 모드를 사용하면 중간 과정까지 파악하여 디버깅에 큰 도움이 된다는 점을 학습했다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>LangGraph의 핵심 구조를 이해하는 과정에서 State와 Node, Edge가 기존 pipeline과 유사하다는 점을 확인했지만, 실제 코드 작성 시 환경 설정이나 데이터 흐름 세부 사항에서 미세한 차이로 인해 시행착오를 겪을 수 있으므로 꼼꼼히 검증해야겠다.</p>
+<p>특히 <code>stream()</code> 메서드의 업데이트 모드를 활용할 때, 토큰 생성 속도와 무관하게 노드별 State 변화만을 정확히 추적하는 것이 중요하며, 이를 통해 중간 과정의 데이터 변동까지 실시간으로 확인하지 않으면 디버깅이 어려워질 수 있으니 흐름을 놓치지 않도록 주의해야겠다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>LangGraph의 핵심 구조(State, Node, Edge)를 활용해 실무 워크플로우를 직접 설계해보고 싶다.
+<code>stream()</code> 메서드의 업데이트 모드 기능을 통해 중간 과정 데이터를 추적하는 방법을 실제 프로젝트에 적용해 보고 싶다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://Han-think.github.io/learning/2026-09-15-pm-daily/">
+    <span class="title">Next »</span>
+    <span>오후 학습 | Conditional Edge와 LangGraph 구조, 인프라 개념까지 오늘의 핵심 정리</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

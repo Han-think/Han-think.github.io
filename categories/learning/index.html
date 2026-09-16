@@ -169,12 +169,12 @@
                 </a>
             </li>
             <li>
-                <a href="https://Han-think.github.io/categories/life/" title="개인 기록">
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
                     <span>개인 기록</span>
                 </a>
             </li>
             <li>
-                <a href="https://Han-think.github.io/categories/ai-research/" title="AI 자료">
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
                     <span>AI 자료</span>
                 </a>
             </li>
@@ -192,6 +192,36 @@
     Learning
   </h1>
 </header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">오전 학습 | LangGraph 핵심 구조와 워크플로우 설계에 대한 이해
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 LangGraph 핵심 구조와 기존 지식 연결하기 LangGraph 업데이트 스트리밍 이해하기 (초보자 워킹 노트) 총평 1. LangGraph 핵심 구조와 기존 지식 연결하기 무엇을 배웠나 LangGraph는 ‘어떤 모델을 쓸지’가 아니라 ‘작업 순서를 어떻게 흐르게 할 것인가’에 초점을 맞춘 프레임워크다. 핵심 요소인 State, Node, Edge는 기존의 pipeline이나 state 개념과 구조적으로 매우 유사해 빠르게 적응할 수 있었다. 특히 환경 설정 차이에도 불구하고 모델 백엔드가 바뀌어도 기본 구조가 동일하다는 사실은 큰 안도감이 되었다. 이러한 이해를 바탕으로 실제 워크플로우를 코드로 설계하는 데 자신감을 갖게 되었다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-15 00:00:00 +0000 UTC'>2026년 9월 15일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오전 학습 | LangGraph 핵심 구조와 워크플로우 설계에 대한 이해" href="https://Han-think.github.io/learning/2026-09-15-am-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">오후 학습 | Conditional Edge와 LangGraph 구조, 인프라 개념까지 오늘의 핵심 정리
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 Conditional Edge: State와 Router를 거쳐 LLM 출력을 실제 노드로 연결하는 다리 LangGraph Loop·Tool·Human in the Loop 구조 정리 인프라 개념 잡기: 온프레미스·가상화·WSL2 이해하기 총평 1. Conditional Edge: State와 Router를 거쳐 LLM 출력을 실제 노드로 연결하는 다리 무엇을 배웠나 Conditional Edge는 LLM의 출력을 바로 실행하는 것이 아니라, State와 Router를 거쳐 실제 노드를 선택하는 간접적인 파이프라인 구조라는 점을 명확히 이해하게 되었다. 특히 분석 결과를 State에 저장한 뒤, 별도의 라우팅 함수가 키를 반환해야만 해당 노드가 실행된다는 흐름이 핵심이었다. 이를 통해 기존의 게이트나 라우터 개념과 유사하면서도 LangChain 특유의 구조적 장치임을 실감할 수 있었다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-15 00:00:00 +0000 UTC'>2026년 9월 15일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오후 학습 | Conditional Edge와 LangGraph 구조, 인프라 개념까지 오늘의 핵심 정리" href="https://Han-think.github.io/learning/2026-09-15-pm-daily/"></a>
+</article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
@@ -313,36 +343,6 @@
 
 <span title='2026-09-09 00:00:00 +0000 UTC'>2026년 9월 9일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
   <a class="entry-link" aria-label="post link to 오후 학습 | 확장자 점 처리와 APScheduler 제어, LangChain 구조 이해" href="https://Han-think.github.io/learning/2026-09-09-pm-daily/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오전 학습 | 학습 안정성 디버깁: axis·dim 차이와 gradient 분석
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 학습 안정성 디버깁: axis·dim 차이와 gradient 분석 메모리 최적화 옵션별 병목 해결 포인트 정리 양자화와 XPU 디버깅: 실패 원인 추적과 이해 정리 LoRA·증류·양자화: 무엇을 줄이는가 Hugging Face Hub 배포와 Gated 모델 운영 이해하기 총평 1. 학습 안정성 디버깁: axis·dim 차이와 gradient 분석 무엇을 배웠나 axis와 dim이라는 용어 차이로 인한 코드 작성 시 혼란을 해소하고, loss 값만으로는 학습 상태를 판단하기 어렵다는 점을 깨닫게 되었다. 또한 gradient norm과 learning rate를 함께 살펴야 모델의 안정성을 정확히 진단할 수 있다는 탐정적인 접근법이 중요하다는 것을 이해했다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-08 00:00:00 +0000 UTC'>2026년 9월 8일</span>&nbsp;·&nbsp;<span>8 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오전 학습 | 학습 안정성 디버깁: axis·dim 차이와 gradient 분석" href="https://Han-think.github.io/learning/2026-09-08-am-daily/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오후 학습 | FastAPI 인스턴스 생성과 Uvicorn 역할 구분
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 FastAPI 개념 매핑: Express와 클래스 구분하기 Uvicorn과 FastAPI의 역할 구분: 서버와 애플리케이션 파이썬 실행 환경과 uv 설치의 차이점 총평 1. FastAPI 개념 매핑: Express와 클래스 구분하기 무엇을 배웠나 FastAPI는 Express의 const app = express()와 달리 import fastapi만으로는 앱이 생성되지 않는다. 핵심은 fastapi라는 모듈 안에 있는 FastAPI 클래스를 ()로 호출해 인스턴스를 만들어야 한다는 점이다. 또한 자동완성 기능에 속아 app = fastapi처럼 모듈을 변수에 대입하면 오류가 나니, 반드시 클래스 이름을 붙여 인스턴스를 생성해야 한다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-08 00:00:00 +0000 UTC'>2026년 9월 8일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오후 학습 | FastAPI 인스턴스 생성과 Uvicorn 역할 구분" href="https://Han-think.github.io/learning/2026-09-08-pm-daily/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
