@@ -6,8 +6,71 @@
     <description>Recent content in Tags on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Fri, 11 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 15 Sep 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Agent</title>
+      <link>https://Han-think.github.io/tags/agent/</link>
+      <pubDate>Tue, 15 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/agent/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Benchmark</title>
+      <link>https://Han-think.github.io/tags/benchmark/</link>
+      <pubDate>Tue, 15 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/benchmark/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Fine-Tuning</title>
+      <link>https://Han-think.github.io/tags/fine-tuning/</link>
+      <pubDate>Tue, 15 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/fine-tuning/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Hallucination</title>
+      <link>https://Han-think.github.io/tags/hallucination/</link>
+      <pubDate>Tue, 15 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/hallucination/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Intel-Xpu</title>
+      <link>https://Han-think.github.io/tags/intel-xpu/</link>
+      <pubDate>Tue, 15 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/intel-xpu/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>LLM</title>
+      <link>https://Han-think.github.io/tags/llm/</link>
+      <pubDate>Tue, 15 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/llm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Quantization</title>
+      <link>https://Han-think.github.io/tags/quantization/</link>
+      <pubDate>Tue, 15 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/quantization/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rag</title>
+      <link>https://Han-think.github.io/tags/rag/</link>
+      <pubDate>Tue, 15 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/rag/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Weekly</title>
+      <link>https://Han-think.github.io/tags/weekly/</link>
+      <pubDate>Tue, 15 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/weekly/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Github</title>
       <link>https://Han-think.github.io/tags/github/</link>
@@ -27,13 +90,6 @@
       <link>https://Han-think.github.io/tags/intel-arc/</link>
       <pubDate>Fri, 11 Sep 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/intel-arc/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Intel-Xpu</title>
-      <link>https://Han-think.github.io/tags/intel-xpu/</link>
-      <pubDate>Fri, 11 Sep 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/intel-xpu/</guid>
       <description></description>
     </item>
     <item>
@@ -69,20 +125,6 @@
       <link>https://Han-think.github.io/tags/transformers/</link>
       <pubDate>Fri, 11 Sep 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/transformers/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Weekly</title>
-      <link>https://Han-think.github.io/tags/weekly/</link>
-      <pubDate>Fri, 11 Sep 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/weekly/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Agent</title>
-      <link>https://Han-think.github.io/tags/agent/</link>
-      <pubDate>Thu, 03 Sep 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/agent/</guid>
       <description></description>
     </item>
     <item>
@@ -230,13 +272,6 @@
       <link>https://Han-think.github.io/tags/lightgbm/</link>
       <pubDate>Mon, 20 Jul 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/lightgbm/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Llm</title>
-      <link>https://Han-think.github.io/tags/llm/</link>
-      <pubDate>Mon, 20 Jul 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/llm/</guid>
       <description></description>
     </item>
     <item>
@@ -667,7 +702,7 @@
       <description></description>
     </item>
     <item>
-      <title>SQLite</title>
+      <title>Sqlite</title>
       <link>https://Han-think.github.io/tags/sqlite/</link>
       <pubDate>Tue, 23 Jun 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/sqlite/</guid>

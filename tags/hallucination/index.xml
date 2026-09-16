@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Hallucination on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/hallucination/</link>
+    <description>Recent content in Hallucination on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Tue, 15 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/hallucination/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2026-09-15 AI 주간 리서치</title>
+      <link>https://Han-think.github.io/research/weekly-ai-2026-09-15/</link>
+      <pubDate>Tue, 15 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/research/weekly-ai-2026-09-15/</guid>
+      <description>이번 주 AI/LLM 기술 연구를 초보자도 이해할 수 있게 정리한 주간 리서치 브리핑</description>
+    </item>
+  </channel>
+</rss>
