@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>SQLite | Han-think Blog</title>
+<title>Sqlite | Han-think Blog</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -77,8 +77,13 @@
   }());
 
   document.addEventListener('DOMContentLoaded', function () {
-    var button = document.querySelector('[data-scene-toggle]');
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
     if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
     var label = button.querySelector('[data-scene-label]');
     var icon = button.querySelector('.scene-icon');
 
@@ -89,7 +94,10 @@
       if (icon) icon.textContent = cyber ? '⌁' : '☼';
     }
 
-    button.addEventListener('click', function () {
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
       var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
       document.documentElement.dataset.scene = next;
       window.localStorage.setItem('hanthink-scene', next);
@@ -114,12 +122,12 @@
         }
       </script><meta property="og:url" content="https://Han-think.github.io/tags/sqlite/">
   <meta property="og:site_name" content="Han-think Blog">
-  <meta property="og:title" content="SQLite">
+  <meta property="og:title" content="Sqlite">
   <meta property="og:locale" content="ko_KR">
   <meta property="og:type" content="website">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="SQLite">
+  <meta name="twitter:title" content="Sqlite">
 
 </head>
 <body class="list" id="top">
@@ -189,7 +197,7 @@
 <main class="main"> 
 <header class="page-header">
   <h1>
-    SQLite
+    Sqlite
   </h1>
 </header>
 

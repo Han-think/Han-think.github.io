@@ -76,8 +76,13 @@
   }());
 
   document.addEventListener('DOMContentLoaded', function () {
-    var button = document.querySelector('[data-scene-toggle]');
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
     if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
     var label = button.querySelector('[data-scene-label]');
     var icon = button.querySelector('.scene-icon');
 
@@ -88,7 +93,10 @@
       if (icon) icon.textContent = cyber ? '⌁' : '☼';
     }
 
-    button.addEventListener('click', function () {
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
       var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
       document.documentElement.dataset.scene = next;
       window.localStorage.setItem('hanthink-scene', next);
@@ -123,7 +131,7 @@
     <meta property="article:tag" content="Python">
     <meta property="article:tag" content="Pandas">
     <meta property="article:tag" content="Sql">
-    <meta property="article:tag" content="SQLite">
+    <meta property="article:tag" content="Sqlite">
     <meta property="article:tag" content="Statistics">
     <meta property="article:tag" content="Visualization">
 
@@ -1182,7 +1190,7 @@
       <li><a href="https://Han-think.github.io/tags/python/">Python</a></li>
       <li><a href="https://Han-think.github.io/tags/pandas/">Pandas</a></li>
       <li><a href="https://Han-think.github.io/tags/sql/">Sql</a></li>
-      <li><a href="https://Han-think.github.io/tags/sqlite/">SQLite</a></li>
+      <li><a href="https://Han-think.github.io/tags/sqlite/">Sqlite</a></li>
       <li><a href="https://Han-think.github.io/tags/statistics/">Statistics</a></li>
       <li><a href="https://Han-think.github.io/tags/visualization/">Visualization</a></li>
       <li><a href="https://Han-think.github.io/tags/exam-review/">Exam-Review</a></li>

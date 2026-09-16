@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오전 학습 | LangGraph Loop 구조와 LLM 검증 파이프라인 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-09-16 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-09-16-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-09-16-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-09-16-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오전 학습 | LangGraph Loop 구조와 LLM 검증 파이프라인">
+  <meta property="og:description" content="2026-09-16 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-09-16T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-09-16T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오전 학습 | LangGraph Loop 구조와 LLM 검증 파이프라인">
+  <meta name="twitter:description" content="2026-09-16 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오전 학습 | LangGraph Loop 구조와 LLM 검증 파이프라인",
+      "item": "https://Han-think.github.io/learning/2026-09-16-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오전 학습 | LangGraph Loop 구조와 LLM 검증 파이프라인",
+  "name": "오전 학습 | LangGraph Loop 구조와 LLM 검증 파이프라인",
+  "description": "2026-09-16 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 LangGraph Loop: writer와 critic 연결 이해하기 Critic JSON 판정과 결정론적 가드레일: LLM 평가와 Python 검증 결합 1. LangGraph Loop: writer와 critic 연결 이해하기 무엇을 배웠나 LangGraph의 Loop는 단순한 while 반복문이 아니라, State를 유지한 채 Node 간 Edge가 연결된 구조라는 점을 명확히 이해하게 되었습니다. 특히 router가 결정하는 경로에 따라 이전 Node인 writer로 돌아가는 방식이, 일반적인 코드 흐름과 어떻게 다른지 감을 잡는 데 도움이 되었습니다. writer, critic, router의 역할 분담이 명확해지면서 전체 파이프라인 구조가 훨씬 직관적이고 관리하기 쉬워졌다는 느낌을 받았습니다.\n헷갈렸던 점 처음에는 LangGraph의 Loop가 일반적인 while 반복문과 같은 것인지, 아니면 단순히 Node 사이의 연결 고리인지 혼란스러웠습니다. 특히 router가 결정한 경로에 따라 이전 Node인 writer로 다시 돌아가는 방식이 기존 프로그래밍의 흐름과는 다른 구조라서 감 잡는 데 시간이 걸렸습니다. 결국 LangGraph에서의 Loop는 while문처럼 코드를 반복하는 것이 아니라, State를 유지한 채 Edge가 이전 Node를 다시 가리키는 연결 구조임을 이해하게 되었습니다.\n정리된 이해 LangGraph에서의 Loop는 while문과 같은 단순한 반복문이 아니라, State를 유지한 채 Edge가 이전 Node를 다시 가리키는 구조입니다. 핵심은 데이터가 담긴 State가 각 노드를 거칠 때마다 업데이트되며 전달되고, 라우터의 결정에 따라 특정 조건이 충족될 때까지 writer와 critic이 순환한다는 점입니다. 이를 통해 콘텐츠 생성과 검토라는 역할을 명확히 분리하고, 상태 관리의 복잡성을 Edge 연결로 효율적으로 해결할 수 있습니다.\nfrom typing import Literal from langgraph.graph import StateGraph, START, END # 상태 정의 (State의 지속성 확보) class WriteState(dict): topic: str draft: str = \"\" feedback: str = \"\" state: str = \"drafting\" # drafting 또는 reviewing count: int = 0 # 반복 횟수 추적 # 노드 정의 def writer(state: WriteState) -\u003e dict: \"\"\"콘텐츠를 생성합니다.\"\"\" print(f\"[Writer] '{state['topic]}'에 대한 초안을 작성합니다... (count: {state['count']})\") # 간단한 초안 생성 로직 (실제로는 LLM 호출) new_draft = f\"초안: {state['topic']}에 대해 논의해 봅시다.\" return {\"draft\": new_draft, \"count\": state.get(\"count\", 0) + 1} def critic(state: WriteState) -\u003e dict: \"\"\"초안을 검토하고 피드백을 제공합니다.\"\"\" print(f\"[Critic] 초안을 검토합니다...\") # 간단한 피드백 로직 (실제로는 LLM 기반 평가) if \"오류\" in state['topic'] or state['count'] \u003e 2: feedback = \"검토 완료: 개선 필요 없음 또는 최대 반복 횟수 도달.\" return {\"feedback\": feedback, \"state\": \"reviewing\"} else: feedback = \"피드백: 더 자세한 내용이나 수정이 필요할 수 있습니다.\" return {\"feedback\": feedback, \"state\": \"drafting\"} def router(state: WriteState) -\u003e Literal[\"END\", \"writer\"]: \"\"\"다음 단계(END 또는 writer)로 라우팅합니다.\"\"\" print(f\"[Router] 현재 상태: {state['state']}, 반복 횟수: {state['count']}\") # 종료 조건: 긍정적인 피드백이거나 최대 반복 횟수 초과 시 END if state[\"state\"] == \"reviewing\" or state[\"count\"] \u003e= 3: print(\"[Router] 경로: END\") return END else: print(\"[Router] 경로: writer (Loop)\") # Loop를 위해 'writer' 노드로 라우팅 return \"writer\" # 그래프 빌드 workflow = StateGraph(WriteState) # 노드 추가 workflow.add_node(\"writer\", writer) workflow.add_node(\"critic\", critic) # 엣지 추가 (Loop 구조 형성) # START -\u003e writer workflow.add_edge(START, \"writer\") # writer -\u003e critic workflow.add_edge(\"writer\", \"critic\") # critic -\u003e router (conditonal edge 로직 시뮬레이션을 위한 단순 연결) # 여기서는 router 함수의 반환값에 따라 분기됨 workflow.add_conditional_edges( \"critic\", router, { \"writer\": \"writer\", # Loop: critic의 결과가 writer를 가리키면 반복 END: END # 종료 시 END로 이동 } ) app = workflow.compile() # 실행 시뮬레이션 (초기 상태) initial_state = WriteState(topic=\"인공지능의 윤리적 이슈\", count=0) print(\"--- LangGraph Loop 실행 시작 ---\") for output in app.stream(initial_state): print(output) print(\"--- 종료 ---\") 2. Critic JSON 판정과 결정론적 가드레일: LLM 평가와 Python 검증 결합 무엇을 배웠나 LLM의 판단은 창의적이지만 형식 오류를 범할 수 있어, Python 기반의 deterministic guardrail을 결합해 핵심 키워드와 구조를 검증해야 한다. 특히 JSON 파싱 실패 시 무조건 재시도하고, 최대 3회 이내에 해결하지 못하면 종료하는 등 retry 횟수 제한으로 안정성을 확보한다.\n헷갈렸던 점 처음에는 LLM이 스스로 판단해서 끝내면 되지 않을까 싶었는데, 모델이 형식이나 기준을 지키지 못할 위험이 있다는 점이 와닿았습니다. 결국 LLM의 평가와 Python 기반의 검증을 결합해야 하며, 중요한 문구나 구조는 코드가 안전장치처럼 체크하는 것이 가장 안정적이라고 이해했습니다.\n정리된 이해 LLM의 판단은 창의적이지만 형식 오류가 발생할 수 있으므로, Python 기반의 결정론적 검증을 결합해 핵심 키워드와 구조를 반드시 확인해야 한다. 이를 통해 LLM의 평가 결과와 코드의 안전장치를 연계하여 최종 판단을 내리고, 재시도 횟수 제한으로 무한 루프를 방지하는 것이 안정적인 시스템 설계의 핵심이다.\nimport json from typing import TypedDict, Literal # 1. 상태 정의 (State) class State(TypedDict): draft: str # LLM이 생성한 초안 feedback: str # 비평가(Llm)의 피드백 iteration: int # 재시도 횟수 status: Literal[\"working\", \"retry\", \"finish\"] # 현재 상태 # 2. 결정론적 가드레일 (Deterministic Guardrail) def check_keywords(state: State) -\u003e bool: \"\"\" LLM의 피드백이나 초안에 필수 키워드가 포함되어 있는지 Python 코드로 확인. 이 함수가 False를 반환하면 무조건 retry가 발생합니다. \"\"\" # 예시: \"혁신\" 또는 \"미래\"라는 단어가 반드시 들어있어야 함 draft_text = state.get(\"draft\", \"\") feedback_text = state.get(\"feedback\", \"\") # 핵심 검증 로직: 키워드 존재 여부 확인 has_innovation = \"혁신\" in draft_text or \"미래\" in draft_text return has_innovation # 3. 메인 루프 로직 (Critic JSON 판정 및 결정론적 가드레일 적용) def run_critic_loop(initial_draft: str, max_iterations: int = 3) -\u003e State: state = { \"draft\": initial_draft, \"feedback\": \"\", \"iteration\": 0, \"status\": \"working\" } while state[\"status\"] == \"working\" and state[\"iteration\"] \u003c max_iterations: state[\"iteration\"] += 1 # --- LLM 평가 단계 (비판적 사고) --- # 여기서는 가상의 LLM 호출 및 JSON 파싱 결과를 가정합니다. # 실제로는 model.invoke(state[\"draft\"]) 등을 호출합니다. print(f\"--- Iteration {state['iteration']}: LLM evaluating draft ---\") # 시뮬레이션: LLM이 JSON 형식 불량을 일으키거나, 키워드가 없을 수 있음 # 예시 피드백 (실제로는 LLM 출력 파싱) simulated_feedback = \"내용은 좋으나 '혁신'이라는 키워드가 부족합니다.\" state[\"feedback\"] = simulated_feedback # JSON 파싱 실패 시 안전장치 (핵심 로직) try: # 모델이 반환한 텍스트가 JSON 형태라고 가정하고 파싱 시도 # 만약 model output이 유효하지 않은 JSON라면 이 부분에서 예외 발생 parsed_json = json.loads(state[\"draft\"]) except json.JSONDecodeError: print(\"⚠️ JSON 파싱 실패! 형식을 다시 검사합니다.\") state[\"status\"] = \"retry\" continue # 루프의 다음 단계로 넘어가지 않고 retry로 전환 # --- 결정론적 가드레일 적용 --- # LLM의 결과가 even if LLM says PASS, we check the rules. if not check_keywords(state): print(\"⚠️ 키워드 검증 실패 (예: '혁신' 누락). 재시도합니다.\") state[\"status\"] = \"retry\" continue # 모든 조건을 만족하면 종료 print(\"✅ 모든 가드레일을 통과했습니다. 작업을 완료합니다.\") state[\"status\"] = \"finish\" break if state[\"iteration\"] \u003e= max_iterations: state[\"status\"] = \"finish\" print(\"❌ 최대 재시도 횟수 초과로 종료.\") return state # 실행 예시 if __name__ == \"__main__\": # 키워드가 없는 초안으로 시작 (의도적으로 실패 시키기 위함) bad_draft = \"이번 프로젝트는 기존 방식을 유지합니다.\" final_state = run_critic_loop(bad_draft) print(f\"\\n최종 상태: {final_state['status']} (반복 횟수: {final_state['iteration']})\") 3. LangGraph 툴 호출의 3단계 파이프라인: 판단-실행-전달 무엇을 배웠나 LLM은 직접 함수를 실행하는 것이 아니라, 도구가 필요하다고 판단해 요청을 보낸 뒤 별도의 Python 코드가 계산을 수행한 결과를 다시 받아야 합니다. 이 과정 자체가 LLM과 Tool 사이에서 반복되는 순환 구조를 형성하기 때문에, LangGraph에서의 Tool Calling은 하나의 그래프 흐름으로 이해할 수 있습니다.\n헷갈렸던 점 LLM이 직접 함수를 실행하는 것이 아니라, Tool Node라는 별도 파이프라인에서 Python 코드를 수행한다는 점이 가장 큰 혼란이었습니다. 또한 LLM과 도구 사이의 연결고리가 단순히 ‘함수 호출’이 아니라, 결과가 메시지 형태로 다시 전달되는 구조임을 간과하고 있었습니다.\n정리된 이해 LangGraph에서 Tool Calling은 LLM이 직접 함수를 실행하는 것이 아니라, LLM이 도구 사용을 판단하고 별도의 Python 코드가 실제 계산을 수행한 뒤 결과를 전달하는 3단계 파이프라인 구조입니다. Agent가 필요성을 판단하면 Tool Node가 함수를 실행하고, 그 결과는 ToolMessage를 통해 다시 Agent로 돌아와 최종 응답을 생성합니다.\n# LangGraph Tool Calling 흐름 예시 (개념도) from typing import Annotated, Sequence from langgraph.graph import StateGraph, add_messages from langgraph.prebuilt import ToolNode, tools_condition from langchain_core.messages import HumanMessage, AIMessage, ToolMessage from langchain_core.tools import tool # 1. 도구 정의 (Tool) @tool def multiply(x: int, y: int) -\u003e int: \"\"\"두 수를 곱합니다.\"\"\" return x * y # 2. 상태 그래프 정의 # messages 상태는 대화 기록을 관리합니다. State = Annotated[Sequence[BaseMessage], add_messages] graph = StateGraph(State) # 에이전트 노드: LLM이 도구 사용 여부를 판단 def agent(state: State): last_message = state[-1] # LLM이 multiply 툴을 호출하도록 결정한 경우 if \"multiply\" in last_message.content.lower(): return {\"messages\": [ToolMessage(tool=\"multiply\", content=f\"{last_message.content} 계산 요청\")]} else: return {\"messages\": [AIMessage(content=\"계산기가 필요하지 않습니다.\")]} # 그래프에 노드 추가 graph.add_node(\"agent\", agent) # 툴 실행 노드: 실제 Python 함수 실행 graph.add_node(\"multiply_tool\", ToolNode([multiply])) # 엣지(연결선) 정의 # 사용자 입력 -\u003e 에이전트 graph.set_entry_point(\"agent\") # 에이전트 -\u003e 툴 (조건부 엣지, 도구 필요 시) graph.add_conditional_edges( \"agent\", tools_condition, # LLM의 출력에 따라 도구 실행 여부 결정 {\"tools\": \"multiply_tool\", END\": END} ) # 툴 결과 -\u003e 에이전트 (결과가 돌아오면 다시 에이전트가 최종 답변 생성) graph.add_edge(\"multiply_tool\", \"agent\") app = graph.compile() # 3. 실행 시뮬레이션 user_input = \"5 곱하기 3은?\" print(f\"User: {user_input}\") # 그래프 실행 (시뮬레이션을 위해 단순화된 입력 처리) # 실제 LangGraph는 Runnable 방식으로 호출됩니다. messages = [HumanMessage(content=user_input)] output_state = app.invoke({\"messages\": messages}) print(\"\\n--- 최종 결과 ---\") print(output_state[\"messages\"][-1].content) 총평 오늘 오전 전체에서 배운 것 LangGraph Loop는 State를 유지한 채 Node 간 Edge가 연결된 구조이며, router에 의해 결정되는 경로에 따라 이전 Node로 복귀하는 방식이 일반적인 코드 흐름과 다르다. LLM의 판단은 창의적일 수 있어 Python 기반의 deterministic guardrail을 결합해 핵심 키워드와 구조를 검증하고, JSON 파싱 실패 시 최대 3회 이내 재시도 후 종료하여 안정성을 확보한다. 또한 LLM이 직접 함수를 실행하는 것이 아니라 도구 사용을 판단해 요청을 보낸 뒤 별도의 Python 코드가 결과를 반환하는 3단계 파이프라인 구조를 통해 LangGraph에서의 Tool Calling을 하나의 그래프 흐름으로 이해할 수 있었다.\n다음에 조심할 것 LLM의 판단은 창의적이지만 형식 오류를 범할 수 있어, Python 기반의 deterministic guardrail을 결합해 핵심 키워드와 구조를 검증해야 한다. 특히 JSON 파싱 실패 시 무조건 재시도하고, 최대 3회 이내에 해결하지 못하면 종료하는 등 retry 횟수 제한으로 안정성을 확보한다. LangGraph에서의 Tool Calling은 LLM이 도구를 호출하고 결과를 받아오는 판단-실행-전달의 순환 구조를 하나의 그래프 흐름으로 이해해야 하며, 단순한 while 반복문이 아니라 State를 유지한 채 Node 간 Edge가 연결된 구조임을 명심해야 한다.\n다음 복습 주제 LangGraph Loop 구조에서 State 기반 라우팅이 어떻게 반복 제어를 담당하는지, 그리고 LLM의 불확실성을 Python 검증으로 보완하는 안정적인 파이프라인 설계 원리를 중심으로 심화 학습할 계획입니다. 특히 Tool Calling의 판단-실행-전달 흐름이 그래프 내에서의 상태 전파와 어떻게 맞물리는지 구체적인 시나리오를 통해 재정리하겠습니다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1533",
+  "inLanguage": "en",
+  "datePublished": "2026-09-16T00:00:00Z",
+  "dateModified": "2026-09-16T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-09-16-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오전 학습 | LangGraph Loop 구조와 LLM 검증 파이프라인
+    </h1>
+    <div class="post-description">
+      2026-09-16 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-09-16 00:00:00 +0000 UTC'>2026년 9월 16일</span>&nbsp;·&nbsp;<span>8 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-langgraph-loop-writer%EC%99%80-critic-%EC%97%B0%EA%B2%B0-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">LangGraph Loop: writer와 critic 연결 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-critic-json-%ED%8C%90%EC%A0%95%EA%B3%BC-%EA%B2%B0%EC%A0%95%EB%A1%A0%EC%A0%81-%EA%B0%80%EB%93%9C%EB%A0%88%EC%9D%BC-llm-%ED%8F%89%EA%B0%80%EC%99%80-python-%EA%B2%80%EC%A6%9D-%EA%B2%B0%ED%95%A9">Critic JSON 판정과 결정론적 가드레일: LLM 평가와 Python 검증 결합</a></li>
+</ol>
+</li>
+</ul>
+<h2 id="1-langgraph-loop-writer와-critic-연결-이해하기">1. LangGraph Loop: writer와 critic 연결 이해하기<a hidden class="anchor" aria-hidden="true" href="#1-langgraph-loop-writer와-critic-연결-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>LangGraph의 Loop는 단순한 <code>while</code> 반복문이 아니라, State를 유지한 채 Node 간 Edge가 연결된 구조라는 점을 명확히 이해하게 되었습니다. 특히 <code>router</code>가 결정하는 경로에 따라 이전 Node인 <code>writer</code>로 돌아가는 방식이, 일반적인 코드 흐름과 어떻게 다른지 감을 잡는 데 도움이 되었습니다. <code>writer</code>, <code>critic</code>, <code>router</code>의 역할 분담이 명확해지면서 전체 파이프라인 구조가 훨씬 직관적이고 관리하기 쉬워졌다는 느낌을 받았습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>처음에는 LangGraph의 Loop가 일반적인 <code>while</code> 반복문과 같은 것인지, 아니면 단순히 Node 사이의 연결 고리인지 혼란스러웠습니다. 특히 <code>router</code>가 결정한 경로에 따라 이전 Node인 <code>writer</code>로 다시 돌아가는 방식이 기존 프로그래밍의 흐름과는 다른 구조라서 감 잡는 데 시간이 걸렸습니다. 결국 LangGraph에서의 Loop는 <code>while</code>문처럼 코드를 반복하는 것이 아니라, State를 유지한 채 Edge가 이전 Node를 다시 가리키는 연결 구조임을 이해하게 되었습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>LangGraph에서의 Loop는 <code>while</code>문과 같은 단순한 반복문이 아니라, State를 유지한 채 Edge가 이전 Node를 다시 가리키는 구조입니다. 핵심은 데이터가 담긴 State가 각 노드를 거칠 때마다 업데이트되며 전달되고, 라우터의 결정에 따라 특정 조건이 충족될 때까지 writer와 critic이 순환한다는 점입니다. 이를 통해 콘텐츠 생성과 검토라는 역할을 명확히 분리하고, 상태 관리의 복잡성을 Edge 연결로 효율적으로 해결할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Literal
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> langgraph.graph <span style="color:#f92672">import</span> StateGraph, START, END
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 상태 정의 (State의 지속성 확보)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WriteState</span>(dict):
+</span></span><span style="display:flex;"><span>    topic: str
+</span></span><span style="display:flex;"><span>    draft: str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    feedback: str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    state: str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;drafting&#34;</span>  <span style="color:#75715e"># drafting 또는 reviewing</span>
+</span></span><span style="display:flex;"><span>    count: int <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>           <span style="color:#75715e"># 반복 횟수 추적</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 노드 정의</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">writer</span>(state: WriteState) <span style="color:#f92672">-&gt;</span> dict:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;콘텐츠를 생성합니다.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;[Writer] &#39;</span><span style="color:#e6db74">{</span>state[<span style="color:#e6db74">&#39;topic]}&#39;</span>에 대한 초안을 작성합니다<span style="color:#f92672">...</span> (count: {state[<span style="color:#e6db74">&#39;count&#39;</span>]})<span style="color:#e6db74">&#34;)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 간단한 초안 생성 로직 (실제로는 LLM 호출)</span>
+</span></span><span style="display:flex;"><span>    new_draft <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;초안: </span><span style="color:#e6db74">{</span>state[<span style="color:#e6db74">&#39;topic&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">에 대해 논의해 봅시다.&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;draft&#34;</span>: new_draft, <span style="color:#e6db74">&#34;count&#34;</span>: state<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;count&#34;</span>, <span style="color:#ae81ff">0</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">critic</span>(state: WriteState) <span style="color:#f92672">-&gt;</span> dict:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;초안을 검토하고 피드백을 제공합니다.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;[Critic] 초안을 검토합니다...&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 간단한 피드백 로직 (실제로는 LLM 기반 평가)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;오류&#34;</span> <span style="color:#f92672">in</span> state[<span style="color:#e6db74">&#39;topic&#39;</span>] <span style="color:#f92672">or</span> state[<span style="color:#e6db74">&#39;count&#39;</span>] <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">2</span>:
+</span></span><span style="display:flex;"><span>        feedback <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;검토 완료: 개선 필요 없음 또는 최대 반복 횟수 도달.&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;feedback&#34;</span>: feedback, <span style="color:#e6db74">&#34;state&#34;</span>: <span style="color:#e6db74">&#34;reviewing&#34;</span>}
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        feedback <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;피드백: 더 자세한 내용이나 수정이 필요할 수 있습니다.&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;feedback&#34;</span>: feedback, <span style="color:#e6db74">&#34;state&#34;</span>: <span style="color:#e6db74">&#34;drafting&#34;</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">router</span>(state: WriteState) <span style="color:#f92672">-&gt;</span> Literal[<span style="color:#e6db74">&#34;END&#34;</span>, <span style="color:#e6db74">&#34;writer&#34;</span>]:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;다음 단계(END 또는 writer)로 라우팅합니다.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;[Router] 현재 상태: </span><span style="color:#e6db74">{</span>state[<span style="color:#e6db74">&#39;state&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">, 반복 횟수: </span><span style="color:#e6db74">{</span>state[<span style="color:#e6db74">&#39;count&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 종료 조건: 긍정적인 피드백이거나 최대 반복 횟수 초과 시 END</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> state[<span style="color:#e6db74">&#34;state&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;reviewing&#34;</span> <span style="color:#f92672">or</span> state[<span style="color:#e6db74">&#34;count&#34;</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">3</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;[Router] 경로: END&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> END
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;[Router] 경로: writer (Loop)&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Loop를 위해 &#39;writer&#39; 노드로 라우팅</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;writer&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 그래프 빌드</span>
+</span></span><span style="display:flex;"><span>workflow <span style="color:#f92672">=</span> StateGraph(WriteState)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 노드 추가</span>
+</span></span><span style="display:flex;"><span>workflow<span style="color:#f92672">.</span>add_node(<span style="color:#e6db74">&#34;writer&#34;</span>, writer)
+</span></span><span style="display:flex;"><span>workflow<span style="color:#f92672">.</span>add_node(<span style="color:#e6db74">&#34;critic&#34;</span>, critic)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 엣지 추가 (Loop 구조 형성)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># START -&gt; writer</span>
+</span></span><span style="display:flex;"><span>workflow<span style="color:#f92672">.</span>add_edge(START, <span style="color:#e6db74">&#34;writer&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># writer -&gt; critic</span>
+</span></span><span style="display:flex;"><span>workflow<span style="color:#f92672">.</span>add_edge(<span style="color:#e6db74">&#34;writer&#34;</span>, <span style="color:#e6db74">&#34;critic&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># critic -&gt; router (conditonal edge 로직 시뮬레이션을 위한 단순 연결)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 여기서는 router 함수의 반환값에 따라 분기됨</span>
+</span></span><span style="display:flex;"><span>workflow<span style="color:#f92672">.</span>add_conditional_edges(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;critic&#34;</span>,
+</span></span><span style="display:flex;"><span>    router,
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;writer&#34;</span>: <span style="color:#e6db74">&#34;writer&#34;</span>,  <span style="color:#75715e"># Loop: critic의 결과가 writer를 가리키면 반복</span>
+</span></span><span style="display:flex;"><span>        END: END             <span style="color:#75715e"># 종료 시 END로 이동</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> workflow<span style="color:#f92672">.</span>compile()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 실행 시뮬레이션 (초기 상태)</span>
+</span></span><span style="display:flex;"><span>initial_state <span style="color:#f92672">=</span> WriteState(topic<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;인공지능의 윤리적 이슈&#34;</span>, count<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;--- LangGraph Loop 실행 시작 ---&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> output <span style="color:#f92672">in</span> app<span style="color:#f92672">.</span>stream(initial_state):
+</span></span><span style="display:flex;"><span>    print(output)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;--- 종료 ---&#34;</span>)
+</span></span></code></pre></div><h2 id="2-critic-json-판정과-결정론적-가드레일-llm-평가와-python-검증-결합">2. Critic JSON 판정과 결정론적 가드레일: LLM 평가와 Python 검증 결합<a hidden class="anchor" aria-hidden="true" href="#2-critic-json-판정과-결정론적-가드레일-llm-평가와-python-검증-결합">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>LLM의 판단은 창의적이지만 형식 오류를 범할 수 있어, Python 기반의 deterministic guardrail을 결합해 핵심 키워드와 구조를 검증해야 한다. 특히 JSON 파싱 실패 시 무조건 재시도하고, 최대 3회 이내에 해결하지 못하면 종료하는 등 retry 횟수 제한으로 안정성을 확보한다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음에는 LLM이 스스로 판단해서 끝내면 되지 않을까 싶었는데, 모델이 형식이나 기준을 지키지 못할 위험이 있다는 점이 와닿았습니다. 결국 LLM의 평가와 Python 기반의 검증을 결합해야 하며, 중요한 문구나 구조는 코드가 안전장치처럼 체크하는 것이 가장 안정적이라고 이해했습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>LLM의 판단은 창의적이지만 형식 오류가 발생할 수 있으므로, Python 기반의 결정론적 검증을 결합해 핵심 키워드와 구조를 반드시 확인해야 한다. 이를 통해 LLM의 평가 결과와 코드의 안전장치를 연계하여 최종 판단을 내리고, 재시도 횟수 제한으로 무한 루프를 방지하는 것이 안정적인 시스템 설계의 핵심이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> TypedDict, Literal
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. 상태 정의 (State)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">State</span>(TypedDict):
+</span></span><span style="display:flex;"><span>    draft: str  <span style="color:#75715e"># LLM이 생성한 초안</span>
+</span></span><span style="display:flex;"><span>    feedback: str  <span style="color:#75715e"># 비평가(Llm)의 피드백</span>
+</span></span><span style="display:flex;"><span>    iteration: int  <span style="color:#75715e"># 재시도 횟수</span>
+</span></span><span style="display:flex;"><span>    status: Literal[<span style="color:#e6db74">&#34;working&#34;</span>, <span style="color:#e6db74">&#34;retry&#34;</span>, <span style="color:#e6db74">&#34;finish&#34;</span>]  <span style="color:#75715e"># 현재 상태</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. 결정론적 가드레일 (Deterministic Guardrail)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_keywords</span>(state: State) <span style="color:#f92672">-&gt;</span> bool:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    LLM의 피드백이나 초안에 필수 키워드가 포함되어 있는지 Python 코드로 확인.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    이 함수가 False를 반환하면 무조건 retry가 발생합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 예시: &#34;혁신&#34; 또는 &#34;미래&#34;라는 단어가 반드시 들어있어야 함</span>
+</span></span><span style="display:flex;"><span>    draft_text <span style="color:#f92672">=</span> state<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;draft&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>    feedback_text <span style="color:#f92672">=</span> state<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;feedback&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 핵심 검증 로직: 키워드 존재 여부 확인</span>
+</span></span><span style="display:flex;"><span>    has_innovation <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;혁신&#34;</span> <span style="color:#f92672">in</span> draft_text <span style="color:#f92672">or</span> <span style="color:#e6db74">&#34;미래&#34;</span> <span style="color:#f92672">in</span> draft_text
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> has_innovation
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. 메인 루프 로직 (Critic JSON 판정 및 결정론적 가드레일 적용)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">run_critic_loop</span>(initial_draft: str, max_iterations: int <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>) <span style="color:#f92672">-&gt;</span> State:
+</span></span><span style="display:flex;"><span>    state <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;draft&#34;</span>: initial_draft,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;feedback&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;iteration&#34;</span>: <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;working&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> state[<span style="color:#e6db74">&#34;status&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;working&#34;</span> <span style="color:#f92672">and</span> state[<span style="color:#e6db74">&#34;iteration&#34;</span>] <span style="color:#f92672">&lt;</span> max_iterations:
+</span></span><span style="display:flex;"><span>        state[<span style="color:#e6db74">&#34;iteration&#34;</span>] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># --- LLM 평가 단계 (비판적 사고) ---</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 여기서는 가상의 LLM 호출 및 JSON 파싱 결과를 가정합니다.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 실제로는 model.invoke(state[&#34;draft&#34;]) 등을 호출합니다.</span>
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;--- Iteration </span><span style="color:#e6db74">{</span>state[<span style="color:#e6db74">&#39;iteration&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">: LLM evaluating draft ---&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 시뮬레이션: LLM이 JSON 형식 불량을 일으키거나, 키워드가 없을 수 있음</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 예시 피드백 (실제로는 LLM 출력 파싱)</span>
+</span></span><span style="display:flex;"><span>        simulated_feedback <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;내용은 좋으나 &#39;혁신&#39;이라는 키워드가 부족합니다.&#34;</span>
+</span></span><span style="display:flex;"><span>        state[<span style="color:#e6db74">&#34;feedback&#34;</span>] <span style="color:#f92672">=</span> simulated_feedback
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># JSON 파싱 실패 시 안전장치 (핵심 로직)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># 모델이 반환한 텍스트가 JSON 형태라고 가정하고 파싱 시도</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># 만약 model output이 유효하지 않은 JSON라면 이 부분에서 예외 발생</span>
+</span></span><span style="display:flex;"><span>            parsed_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(state[<span style="color:#e6db74">&#34;draft&#34;</span>])
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> json<span style="color:#f92672">.</span>JSONDecodeError:
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">&#34;⚠️ JSON 파싱 실패! 형식을 다시 검사합니다.&#34;</span>)
+</span></span><span style="display:flex;"><span>            state[<span style="color:#e6db74">&#34;status&#34;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;retry&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span> <span style="color:#75715e"># 루프의 다음 단계로 넘어가지 않고 retry로 전환</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># --- 결정론적 가드레일 적용 ---</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># LLM의 결과가 even if LLM says PASS, we check the rules.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> check_keywords(state):
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">&#34;⚠️ 키워드 검증 실패 (예: &#39;혁신&#39; 누락). 재시도합니다.&#34;</span>)
+</span></span><span style="display:flex;"><span>            state[<span style="color:#e6db74">&#34;status&#34;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;retry&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 모든 조건을 만족하면 종료</span>
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;✅ 모든 가드레일을 통과했습니다. 작업을 완료합니다.&#34;</span>)
+</span></span><span style="display:flex;"><span>        state[<span style="color:#e6db74">&#34;status&#34;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;finish&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> state[<span style="color:#e6db74">&#34;iteration&#34;</span>] <span style="color:#f92672">&gt;=</span> max_iterations:
+</span></span><span style="display:flex;"><span>        state[<span style="color:#e6db74">&#34;status&#34;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;finish&#34;</span>
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;❌ 최대 재시도 횟수 초과로 종료.&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> state
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 실행 예시</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 키워드가 없는 초안으로 시작 (의도적으로 실패 시키기 위함)</span>
+</span></span><span style="display:flex;"><span>    bad_draft <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;이번 프로젝트는 기존 방식을 유지합니다.&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    final_state <span style="color:#f92672">=</span> run_critic_loop(bad_draft)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">최종 상태: </span><span style="color:#e6db74">{</span>final_state[<span style="color:#e6db74">&#39;status&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74"> (반복 횟수: </span><span style="color:#e6db74">{</span>final_state[<span style="color:#e6db74">&#39;iteration&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">)&#34;</span>)
+</span></span></code></pre></div><h2 id="3-langgraph-툴-호출의-3단계-파이프라인-판단-실행-전달">3. LangGraph 툴 호출의 3단계 파이프라인: 판단-실행-전달<a hidden class="anchor" aria-hidden="true" href="#3-langgraph-툴-호출의-3단계-파이프라인-판단-실행-전달">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>LLM은 직접 함수를 실행하는 것이 아니라, 도구가 필요하다고 판단해 요청을 보낸 뒤 별도의 Python 코드가 계산을 수행한 결과를 다시 받아야 합니다. 이 과정 자체가 LLM과 Tool 사이에서 반복되는 순환 구조를 형성하기 때문에, LangGraph에서의 Tool Calling은 하나의 그래프 흐름으로 이해할 수 있습니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>LLM이 직접 함수를 실행하는 것이 아니라, Tool Node라는 별도 파이프라인에서 Python 코드를 수행한다는 점이 가장 큰 혼란이었습니다. 또한 LLM과 도구 사이의 연결고리가 단순히 &lsquo;함수 호출&rsquo;이 아니라, 결과가 메시지 형태로 다시 전달되는 구조임을 간과하고 있었습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>LangGraph에서 Tool Calling은 LLM이 직접 함수를 실행하는 것이 아니라, LLM이 도구 사용을 판단하고 별도의 Python 코드가 실제 계산을 수행한 뒤 결과를 전달하는 3단계 파이프라인 구조입니다. Agent가 필요성을 판단하면 Tool Node가 함수를 실행하고, 그 결과는 ToolMessage를 통해 다시 Agent로 돌아와 최종 응답을 생성합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># LangGraph Tool Calling 흐름 예시 (개념도)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Annotated, Sequence
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> langgraph.graph <span style="color:#f92672">import</span> StateGraph, add_messages
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> langgraph.prebuilt <span style="color:#f92672">import</span> ToolNode, tools_condition
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> langchain_core.messages <span style="color:#f92672">import</span> HumanMessage, AIMessage, ToolMessage
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> langchain_core.tools <span style="color:#f92672">import</span> tool
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. 도구 정의 (Tool)</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@tool</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">multiply</span>(x: int, y: int) <span style="color:#f92672">-&gt;</span> int:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;두 수를 곱합니다.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> x <span style="color:#f92672">*</span> y
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. 상태 그래프 정의</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># messages 상태는 대화 기록을 관리합니다.</span>
+</span></span><span style="display:flex;"><span>State <span style="color:#f92672">=</span> Annotated[Sequence[BaseMessage], add_messages]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>graph <span style="color:#f92672">=</span> StateGraph(State)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 에이전트 노드: LLM이 도구 사용 여부를 판단</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">agent</span>(state: State):
+</span></span><span style="display:flex;"><span>    last_message <span style="color:#f92672">=</span> state[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># LLM이 multiply 툴을 호출하도록 결정한 경우</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;multiply&#34;</span> <span style="color:#f92672">in</span> last_message<span style="color:#f92672">.</span>content<span style="color:#f92672">.</span>lower():
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;messages&#34;</span>: [ToolMessage(tool<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;multiply&#34;</span>, content<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>last_message<span style="color:#f92672">.</span>content<span style="color:#e6db74">}</span><span style="color:#e6db74"> 계산 요청&#34;</span>)]}
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;messages&#34;</span>: [AIMessage(content<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;계산기가 필요하지 않습니다.&#34;</span>)]}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 그래프에 노드 추가</span>
+</span></span><span style="display:flex;"><span>graph<span style="color:#f92672">.</span>add_node(<span style="color:#e6db74">&#34;agent&#34;</span>, agent)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 툴 실행 노드: 실제 Python 함수 실행</span>
+</span></span><span style="display:flex;"><span>graph<span style="color:#f92672">.</span>add_node(<span style="color:#e6db74">&#34;multiply_tool&#34;</span>, ToolNode([multiply]))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 엣지(연결선) 정의</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 사용자 입력 -&gt; 에이전트</span>
+</span></span><span style="display:flex;"><span>graph<span style="color:#f92672">.</span>set_entry_point(<span style="color:#e6db74">&#34;agent&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 에이전트 -&gt; 툴 (조건부 엣지, 도구 필요 시)</span>
+</span></span><span style="display:flex;"><span>graph<span style="color:#f92672">.</span>add_conditional_edges(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;agent&#34;</span>,
+</span></span><span style="display:flex;"><span>    tools_condition,  <span style="color:#75715e"># LLM의 출력에 따라 도구 실행 여부 결정</span>
+</span></span><span style="display:flex;"><span>    {<span style="color:#e6db74">&#34;tools&#34;</span>: <span style="color:#e6db74">&#34;multiply_tool&#34;</span>, END<span style="color:#e6db74">&#34;: END}</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 툴 결과 -&gt; 에이전트 (결과가 돌아오면 다시 에이전트가 최종 답변 생성)</span>
+</span></span><span style="display:flex;"><span>graph<span style="color:#f92672">.</span>add_edge(<span style="color:#e6db74">&#34;multiply_tool&#34;</span>, <span style="color:#e6db74">&#34;agent&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> graph<span style="color:#f92672">.</span>compile()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. 실행 시뮬레이션</span>
+</span></span><span style="display:flex;"><span>user_input <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;5 곱하기 3은?&#34;</span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;User: </span><span style="color:#e6db74">{</span>user_input<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 그래프 실행 (시뮬레이션을 위해 단순화된 입력 처리)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 실제 LangGraph는 Runnable 방식으로 호출됩니다.</span>
+</span></span><span style="display:flex;"><span>messages <span style="color:#f92672">=</span> [HumanMessage(content<span style="color:#f92672">=</span>user_input)]
+</span></span><span style="display:flex;"><span>output_state <span style="color:#f92672">=</span> app<span style="color:#f92672">.</span>invoke({<span style="color:#e6db74">&#34;messages&#34;</span>: messages})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">--- 최종 결과 ---&#34;</span>)
+</span></span><span style="display:flex;"><span>print(output_state[<span style="color:#e6db74">&#34;messages&#34;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>content)
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>LangGraph Loop는 State를 유지한 채 Node 간 Edge가 연결된 구조이며, router에 의해 결정되는 경로에 따라 이전 Node로 복귀하는 방식이 일반적인 코드 흐름과 다르다. LLM의 판단은 창의적일 수 있어 Python 기반의 deterministic guardrail을 결합해 핵심 키워드와 구조를 검증하고, JSON 파싱 실패 시 최대 3회 이내 재시도 후 종료하여 안정성을 확보한다. 또한 LLM이 직접 함수를 실행하는 것이 아니라 도구 사용을 판단해 요청을 보낸 뒤 별도의 Python 코드가 결과를 반환하는 3단계 파이프라인 구조를 통해 LangGraph에서의 Tool Calling을 하나의 그래프 흐름으로 이해할 수 있었다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>LLM의 판단은 창의적이지만 형식 오류를 범할 수 있어, Python 기반의 deterministic guardrail을 결합해 핵심 키워드와 구조를 검증해야 한다. 특히 JSON 파싱 실패 시 무조건 재시도하고, 최대 3회 이내에 해결하지 못하면 종료하는 등 retry 횟수 제한으로 안정성을 확보한다. LangGraph에서의 Tool Calling은 LLM이 도구를 호출하고 결과를 받아오는 판단-실행-전달의 순환 구조를 하나의 그래프 흐름으로 이해해야 하며, 단순한 <code>while</code> 반복문이 아니라 State를 유지한 채 Node 간 Edge가 연결된 구조임을 명심해야 한다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>LangGraph Loop 구조에서 State 기반 라우팅이 어떻게 반복 제어를 담당하는지, 그리고 LLM의 불확실성을 Python 검증으로 보완하는 안정적인 파이프라인 설계 원리를 중심으로 심화 학습할 계획입니다. 특히 Tool Calling의 판단-실행-전달 흐름이 그래프 내에서의 상태 전파와 어떻게 맞물리는지 구체적인 시나리오를 통해 재정리하겠습니다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://Han-think.github.io/learning/2026-09-16-pm-daily/">
+    <span class="title">Next »</span>
+    <span>오후 학습 | 상태 보존과 재개를 통한 AI-사람 협업 흐름</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
