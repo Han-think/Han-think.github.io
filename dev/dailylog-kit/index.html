@@ -111,13 +111,8 @@ DailyLog Kit은 블로그 발행 안전장치가 필요한 글을 다루지 않�
   }());
 
   document.addEventListener('DOMContentLoaded', function () {
-    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    var button = document.querySelector('[data-scene-toggle]');
     if (!button) return;
-    button.classList.add('scene-toggle-header');
-    button.removeAttribute('accesskey');
-    button.removeAttribute('title');
-    button.setAttribute('aria-label', '장면 전환');
-    button.innerHTML = '<span class="scene-icon" aria-hidden="true">☼</span><span data-scene-label>대청마루</span>';
     var label = button.querySelector('[data-scene-label]');
     var icon = button.querySelector('.scene-icon');
 
@@ -128,10 +123,7 @@ DailyLog Kit은 블로그 발행 안전장치가 필요한 글을 다루지 않�
       if (icon) icon.textContent = cyber ? '⌁' : '☼';
     }
 
-    button.addEventListener('click', function (event) {
-      if (button.id === 'theme-toggle') {
-        event.stopImmediatePropagation();
-      }
+    button.addEventListener('click', function () {
       var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
       document.documentElement.dataset.scene = next;
       window.localStorage.setItem('hanthink-scene', next);
