@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오후 학습 | 오후에 배운 FastAPI와 Ollama, MariaDB 핵심 정리 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-09-17 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-09-17-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-09-17-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-09-17-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오후 학습 | 오후에 배운 FastAPI와 Ollama, MariaDB 핵심 정리">
+  <meta property="og:description" content="2026-09-17 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-09-17T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-09-17T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오후 학습 | 오후에 배운 FastAPI와 Ollama, MariaDB 핵심 정리">
+  <meta name="twitter:description" content="2026-09-17 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오후 학습 | 오후에 배운 FastAPI와 Ollama, MariaDB 핵심 정리",
+      "item": "https://Han-think.github.io/learning/2026-09-17-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오후 학습 | 오후에 배운 FastAPI와 Ollama, MariaDB 핵심 정리",
+  "name": "오후 학습 | 오후에 배운 FastAPI와 Ollama, MariaDB 핵심 정리",
+  "description": "2026-09-17 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 FastAPI 백그라운드 실행 시 주의사항 ollama 모델 저장소 디스크 관리하기 Ollama 네트워크 설정과 LangChain 연결: 0.0.0.0의 의미와 보안 이해 MariaDB 서버 관리와 데이터 조작의 경계, 그리고 ‘%‘의 의미 EC2 라이프사이클과 DBeaver 원격 접속 이해하기 총평 1. FastAPI 백그라운드 실행 시 주의사항 무엇을 배웠나 nohup, --workers, 로그 리다이렉션 등 각 옵션의 역할과 순서를 명확히 이해할 수 있었다. 특히 nohup 뒤에 오는 [1]이 PID가 아니라 작업 번호임을 구분하지 못해 발생할 수 있는 위험성을 깨닫고, 실제 서비스 시작 여부를 확인하는 과정을 소홀히 하면 안 된다는 점을 중요하게 느꼈다.\n헷갈렸던 점 nohup 뒤에 오는 [1]은 프로세스 ID가 아니라 작업 번호라는 점, 그리고 이 숫자를 기준으로 다른 프로세스를 제어하려다 실수로 중단시킬 위험이 있다는 점이 가장 큰 혼란이었다.\n터미널에 [1] PID가 뜨는 순간을 ‘서버 실행 완료’로 오해하기 쉽지만, 실제로는 로그 파일 확인이 필요한 다음 단계가 남아있으며, 이 시점에서 안일하게 넘어가면 실행 실패를 나중에야 발견할 수 있다.\n--workers 옵션 앞에 반드시 -- 기호를 붙여야 하며, 이를 생생히 실수했던 경험을 통해 옵션 서식의 중요성을 뼈저리게 느꼈다.\n정리된 이해 nohup, --workers, 로그 리다이렉션, 그리고 \u0026는 각각 서버 안정성, 처리량, 오류 확인, 백그라운드 실행이라는 명확한 목적을 가진 옵션이며, [1] PID가 뜨는 것은 프로세스 생성일 뿐 실제 서비스 시작 여부를 보장하지 않는다. 따라서 명령어 실행 직후 로그를 반드시 확인하여 성공 여부를 검증하는 과정이 필수적이다.\nnohup uvicorn app:app --workers 2 \u003e uvicorn.log 2\u003e\u00261 \u0026 2. ollama 모델 저장소 디스크 관리하기 무엇을 배웠나 ollama 모델을 설치하면서 단순히 용량 부족이 아니라 인ode 제한까지 확인해야 한다는 점을 깨달았다. manifest와 blob, partial 파일이 분리되어 관리된다는 사실을 이해하고 시스템 관리의 핵심을 배웠다. 특히 digest 값으로 다운로드 완료 여부를 검증하는 과정이 중요하다고 느꼈다. 이러한 파일 시스템 지식은 LLM 운영에 필수적인 기초가 되었다.\n헷갈렸던 점 ollama list 명령어로 모델이 보이지 않아서 데이터도 사라진 줄 알았는데, 실제로는 수 기가바이트 규모의 blob 파일이 시스템에 남아 있어 당황했다. 또한 no space left on device 에러가 뜰 때 단순히 디스크 용량 부족으로만 생각하다가, df -i 명령어를 통해 인ode(파일 개수 제한)까지 확인해야 한다는 사실을 깨닫고 복합적인 관리 방법을 배워야 했다.\n정리된 이해 Linux 기반 LLM 운영에서 모델 관리는 파일 시스템 관리와 불가분의 관계에 있다. ollama list 명령어로 모델이 보이지 않더라도, 실제 데이터인 blob 파일이 남아 있는 것은 매니페스트가 삭제되지 않았거나 임시 파트가 정리되지 않아서다. 특히 디스크 용량과 인ode는 별개의 자원이므로 한쪽이 꽉 차도 다른 쪽에 여유가 있을 수 있어, df -i 명령어를 통해 파일 개수 제한까지 꼼꼼히 확인하는 것이 중요하다.\n# ollama 모델 목록 확인 (매니페스트 확인) ollama list # 남아있는 blob 파일 강제 삭제 (디스크 공간 확보) docker system prune -a --volumes # 인ode(파일 수) 확인 후 정리 df -i 3. Ollama 네트워크 설정과 LangChain 연결: 0.0.0.0의 의미와 보안 이해 무엇을 배웠나 OLLAMA_HOST 설정은 네트워크 바인딩 범위를 결정하며, 실제 보안은 별도의 Security Group이 담당한다는 사실을 명확히 이해했습니다. localhost와 0.0.0.0의 차이를 구분하고, 같은 인스턴스 내에서는 localhost만으로도 충분하다는 점을 깨닫게 되었습니다. 모델 서버와 앱 코드가 독립된 레이어에 존재하므로 서비스를 교체하거나 재구성할 때 유연하게 대처할 수 있다는 점도 중요한 깨달음이었습니다.\n헷갈렸던 점 0.0.0.0 설정이 서버 전체를 외부에 노출하는 것처럼 보여 불안했지만, 실제로는 네트워크 인터페이스의 범위만을 결정할 뿐 보안은 별도의 방화벽인 Security Group이 담당한다는 점을 이해했습니다. 또한 localhost와 0.0.0.0, 그리고 Security Group이 각각 독립된 역할을 수행하며 앱의 접근을 제어한다는 사실에 큰 깨달음을 얻었습니다.\n정리된 이해 네트워크 바인딩(0.0.0.0 vs localhost)과 보안(Security Group)의 역할을 명확히 구분하는 것이 핵심입니다. OLLAMA_HOST 설정은 통신 범위를 결정하며, 실제 외부 접근을 제어하는 것은 별도의 방화벽 시스템입니다. 이를 통해 앱 코드 삭제 시 모델 서버가 독립적으로 유지될 수 있음을 이해했습니다.\n# Ollama 네트워크 설정 예시 (초보자 워킹 노트 기준) import os # 127.0.0.1: 로컬 호스트만 허용 (보안성 높음, 외부 접속 차단) # OLLAMA_HOST=127.0.0.1 # 0.0.0.0: 모든 네트워크 인터페이스에서 요청 수신 (외부 접근 가능) # OLLAMA_HOST=0.0.0.0 4. MariaDB 서버 관리와 데이터 조작의 경계, 그리고 ‘%‘의 의미 무엇을 배웠나 오늘은 데이터 조작 명령어와 서버 관리 명령어가 섞여 있어 어떤 영역을 다루고 있는지 구분하는 데 혼란이 있었다. 특히 'web_user'@'%'에서 %가 모든 호스트를 의미한다는 점을 이해했지만, 실무에서는 보안 위험을 고려해 구체적인 IP 제한이 필요하다고 생각했다. 이를 통해 데이터 조작과 사용자 권한 관리는 완전히 다른 영역이며, 안전한 설정을 위해 세부적인 제어가 중요하다는 점을 새겼다.\n헷갈렸던 점 SELECT/INSERT/UPDATE/DELETE는 테이블 내 데이터를 조작하는 것이고, CREATE USER/GRANT는 DB 서버 자체를 관리하는 명령어라는 점이었다.\n특히 'web_user'@'%'에서 %가 모든 호스트에서의 접속을 의미한다는 사실은 이해했지만, 실무에서는 보안 위험이 있으므로 구체적인 IP 제한으로 수정해야 한다는 점을 새롭게 인식했다.\n정리된 이해 오늘은 데이터 조작 명령어와 서버 관리 명령어가 섞여 있어 DB 다루는 영역과 시스템 관리하는 영역을 구분하는 것이 무엇보다 중요하다는 것을 깨달았다. 특히 CREATE USER와 GRANT는 DB 자체를 제어하는 권한 부여 과정이며, 'web_user'@'%'의 %는 모든 호스트에서 접속을 허용한다는 의미이지만 보안상 위험할 수 있어 구체적인 IP 제한이 필요하다고 생각했다.\n-- 1. 데이터 조작 (DML) SELECT * FROM users; INSERT INTO users (name, email) VALUES ('홍길동', 'hong@example.com'); UPDATE users SET status = 'active' WHERE id = 1; DELETE FROM users WHERE id = 2; -- 2. 사용자 및 권한 관리 (DDL/권한 부여) CREATE USER 'web_user'@'%' IDENTIFIED BY 'password'; GRANT ALL PRIVILEGES ON database_name.* TO 'web_user'@'%'; FLUSH PRIVILEGES; 5. EC2 라이프사이클과 DBeaver 원격 접속 이해하기 무엇을 배웠나 EC2 인스턴스에 Uvicorn, Ollama, MariaDB 등 다양한 서비스가 동시에 실행될 때, 각 프로그램이 서버·런타임·DB 프로그램이라는 역할 분담을 명확히 이해하는 것이 중요합니다. 또한 EC2의 Stop과 Terminate는 단순히 전원을 끄거나 지우는 것을 넘어, EBS 저장소와 Public IPv4 주소에 미치는 영향을 정확히 인지해야 합니다. Stop 시에는 EBS와 설정 환경이 보존되지만 IP가 재부팅될 때마다 변경될 수 있어 접속 주소를 다시 확인해야 하는 번거로움이 있습니다.\n헷갈렸던 점 EC2 인스턴스에 FastAPI, Ollama, MariaDB 등 다양한 서비스가 동시에 설치될 때, 각 프로그램이 ‘서버’ 개념으로 겹쳐 보여 어떤 역할을 하는지 감이 잡히지 않았다.\n또 Stop과 Terminate의 차이를 단순히 ‘끄기/지우기’로만 생각하다가, EBS 저장소와 Public IPv4 주소가 어떻게 보존되거나 소멸되는지 이해하지 못해 접속 주소를 다시 설정해야 하는 번거로움을 예측할 수 없었다.\n정리된 이해 EC2 인스턴스 중지 시 EBS 스토리지와 설정 환경은 보존되지만 공용 IP가 재할당되어 접속 주소가 변경될 수 있음을 이해해야 한다. FastAPI의 Uvicorn, LLM 실행용 Ollama, 데이터베이스 서버인 MariaDB는 각각 독립적인 역할을 수행하며, DBeaver 같은 GUI 툴을 사용해 원격 DB에 접속하는 것이 일반적이다.\n# EC2 lifecycle 핵심 정리 (노트 기반) 1. Stop vs Terminate 구분 Stop (일시 중지) Terminate (종료/삭제) 인스턴스 상태 일시 정지 (중지된 상태로 유지) 영구 삭제 (실제 서버 종료) EBS(디스크) 유지 (데이터 보존) 삭제 (데이터 소멸 가능성) Public IPv4 주소 해제/재할당 가능 (중지 후 재시작 시 IP가 바뀔 수 있음) 영구 소실 비용 스토리지 비용만 발생 비용 정지 2. 서비스 역할 분담 Uvicorn: FastAPI 애플리케이션을 구동하는 서버 프로그램 Ollama: LLM(대형 언어 모델)을 실행하고 관리하는 런타임 환경 MariaDB: 데이터를 저장하고 관리하는 DB 서버 프로그램 DBeaver: 사용자가 원격 DB에 접속하기 위한 GUI 클라이언트 툴 3. EC2 접속 시 고려사항 Stop 후 IP가 변경될 수 있으므로, DBeaver 등 GUI 툴로 DB에 접속할 때는 Host 주소를 다시 확인해야 함.\n총평 오늘 오후 전체에서 배운 것 오늘은 시스템 구성 요소별 역할 분담과 설정 파라미터의 의미를 정확히 이해하는 것이 중요함을 느꼈다. 특히 네트워크 바인딩, 디스크 인ode 관리, 그리고 서비스 종료 시 데이터 보존 여부 등 세부적인 옵션들이 실제 운영 환경에 미치는 영향을 구분하는 데 집중했다. 이러한 기초 지식은 서비스의 안정성과 보안을 확보하기 위한 필수적인 판단 기준이 되었다.\n다음에 조심할 것 오늘 학습한 내용을 바탕으로 다음에 주의할 점은 다음과 같다.\nFastAPI 배포 시 nohup 뒤에 붙는 [1]이 PID가 아닌 작업 번호임을 반드시 확인하여, 실수로 프로세스를 종료하거나 충돌이 발생하지 않도록 해야 한다. Ollama 모델 관리는 디스크 용량뿐만 아니라 inode 제한을 사전에 체크하고, digest 값을 통해 데이터 무결성을 검증하는 등 파일 시스템 관리에 신경 써야 한다. 네트워크 설정 시 0.0.0.0과 localhost의 차이를 명확히 구분하고, 실제 서비스 보안은 Security Group 설정을 통해 관리해야 하며, 접속 주소 변경 가능성에 대비해 주기적으로 확인하는 습관을 들여야 한다. 다음 복습 주제 서비스 배포 시 네트워크 보안과 접속 주소 관리: 0.0.0.0 바인딩 시 발생할 수 있는 외부 노출 위험을 인지하고, 실제 서비스 접근에 필요한 Security Group 설정과 EC2 재부팅 시 변동될 수 있는 Public IPv4 주소를 주기적으로 확인하는 습관을 들인다.\n데이터베이스 권한 설계와 시스템 관리 경계: '%' 와일드카드의 편의성과 보안 위험 사이의 균형을 이해하고, 실제 운영 환경에서는 구체적인 IP 제한을 적용한 사용자 계정을 생성하는 등 세밀한 권한 관리의 중요성을 재확인한다.\n컨테이너 및 가상화 환경에서의 파일 시스템과 스토리지 관리: Ollama 모델 파일의 구조(manifest, blob 등)와 Inode 제한 문제를 통해, 서비스 운영 시 디스크 용량뿐만 아니라 인ode 사용량을 모니터링하고, EBS 스냅샷이나 스토리지 정책이 서비스의 재구성 및 복구에 미치는 영향을 파악한다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1333",
+  "inLanguage": "en",
+  "datePublished": "2026-09-17T00:00:00Z",
+  "dateModified": "2026-09-17T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-09-17-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오후 학습 | 오후에 배운 FastAPI와 Ollama, MariaDB 핵심 정리
+    </h1>
+    <div class="post-description">
+      2026-09-17 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-09-17 00:00:00 +0000 UTC'>2026년 9월 17일</span>&nbsp;·&nbsp;<span>7 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-fastapi-%EB%B0%B1%EA%B7%B8%EB%9D%BC%EC%9A%B4%EB%93%9C-%EC%8B%A4%ED%96%89-%EC%8B%9C-%EC%A3%BC%EC%9D%98%EC%82%AC%ED%95%AD">FastAPI 백그라운드 실행 시 주의사항</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-ollama-%EB%AA%A8%EB%8D%B8-%EC%A0%80%EC%9E%A5%EC%86%8C-%EB%94%94%EC%8A%A4%ED%81%AC-%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0">ollama 모델 저장소 디스크 관리하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-ollama-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EC%84%A4%EC%A0%95%EA%B3%BC-langchain-%EC%97%B0%EA%B2%B0-0000%EC%9D%98-%EC%9D%98%EB%AF%B8%EC%99%80-%EB%B3%B4%EC%95%88-%EC%9D%B4%ED%95%B4">Ollama 네트워크 설정과 LangChain 연결: 0.0.0.0의 의미와 보안 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-mariadb-%EC%84%9C%EB%B2%84-%EA%B4%80%EB%A6%AC%EC%99%80-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A1%B0%EC%9E%91%EC%9D%98-%EA%B2%BD%EA%B3%84-%EA%B7%B8%EB%A6%AC%EA%B3%A0-%EC%9D%98-%EC%9D%98%EB%AF%B8">MariaDB 서버 관리와 데이터 조작의 경계, 그리고 &lsquo;%&lsquo;의 의미</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-ec2-%EB%9D%BC%EC%9D%B4%ED%94%84%EC%82%AC%EC%9D%B4%ED%81%B4%EA%B3%BC-dbeaver-%EC%9B%90%EA%B2%A9-%EC%A0%91%EC%86%8D-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">EC2 라이프사이클과 DBeaver 원격 접속 이해하기</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-fastapi-백그라운드-실행-시-주의사항">1. FastAPI 백그라운드 실행 시 주의사항<a hidden class="anchor" aria-hidden="true" href="#1-fastapi-백그라운드-실행-시-주의사항">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p><code>nohup</code>, <code>--workers</code>, 로그 리다이렉션 등 각 옵션의 역할과 순서를 명확히 이해할 수 있었다. 특히 <code>nohup</code> 뒤에 오는 <code>[1]</code>이 PID가 아니라 작업 번호임을 구분하지 못해 발생할 수 있는 위험성을 깨닫고, 실제 서비스 시작 여부를 확인하는 과정을 소홀히 하면 안 된다는 점을 중요하게 느꼈다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p><code>nohup</code> 뒤에 오는 <code>[1]</code>은 프로세스 ID가 아니라 작업 번호라는 점, 그리고 이 숫자를 기준으로 다른 프로세스를 제어하려다 실수로 중단시킬 위험이 있다는 점이 가장 큰 혼란이었다.</p>
+<p>터미널에 <code>[1] PID</code>가 뜨는 순간을 &lsquo;서버 실행 완료&rsquo;로 오해하기 쉽지만, 실제로는 로그 파일 확인이 필요한 다음 단계가 남아있으며, 이 시점에서 안일하게 넘어가면 실행 실패를 나중에야 발견할 수 있다.</p>
+<p><code>--workers</code> 옵션 앞에 반드시 <code>--</code> 기호를 붙여야 하며, 이를 생생히 실수했던 경험을 통해 옵션 서식의 중요성을 뼈저리게 느꼈다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p><code>nohup</code>, <code>--workers</code>, 로그 리다이렉션, 그리고 <code>&amp;</code>는 각각 서버 안정성, 처리량, 오류 확인, 백그라운드 실행이라는 명확한 목적을 가진 옵션이며, <code>[1] PID</code>가 뜨는 것은 프로세스 생성일 뿐 실제 서비스 시작 여부를 보장하지 않는다. 따라서 명령어 실행 직후 로그를 반드시 확인하여 성공 여부를 검증하는 과정이 필수적이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nohup uvicorn app:app --workers <span style="color:#ae81ff">2</span> &gt; uvicorn.log 2&gt;&amp;<span style="color:#ae81ff">1</span> &amp;
+</span></span></code></pre></div><h2 id="2-ollama-모델-저장소-디스크-관리하기">2. ollama 모델 저장소 디스크 관리하기<a hidden class="anchor" aria-hidden="true" href="#2-ollama-모델-저장소-디스크-관리하기">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>ollama 모델을 설치하면서 단순히 용량 부족이 아니라 인ode 제한까지 확인해야 한다는 점을 깨달았다. manifest와 blob, partial 파일이 분리되어 관리된다는 사실을 이해하고 시스템 관리의 핵심을 배웠다. 특히 digest 값으로 다운로드 완료 여부를 검증하는 과정이 중요하다고 느꼈다. 이러한 파일 시스템 지식은 LLM 운영에 필수적인 기초가 되었다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p><code>ollama list</code> 명령어로 모델이 보이지 않아서 데이터도 사라진 줄 알았는데, 실제로는 수 기가바이트 규모의 <code>blob</code> 파일이 시스템에 남아 있어 당황했다. 또한 <code>no space left on device</code> 에러가 뜰 때 단순히 디스크 용량 부족으로만 생각하다가, <code>df -i</code> 명령어를 통해 인ode(파일 개수 제한)까지 확인해야 한다는 사실을 깨닫고 복합적인 관리 방법을 배워야 했다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>Linux 기반 LLM 운영에서 모델 관리는 파일 시스템 관리와 불가분의 관계에 있다. <code>ollama list</code> 명령어로 모델이 보이지 않더라도, 실제 데이터인 blob 파일이 남아 있는 것은 매니페스트가 삭제되지 않았거나 임시 파트가 정리되지 않아서다. 특히 디스크 용량과 인ode는 별개의 자원이므로 한쪽이 꽉 차도 다른 쪽에 여유가 있을 수 있어, <code>df -i</code> 명령어를 통해 파일 개수 제한까지 꼼꼼히 확인하는 것이 중요하다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># ollama 모델 목록 확인 (매니페스트 확인)</span>
+</span></span><span style="display:flex;"><span>ollama list
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 남아있는 blob 파일 강제 삭제 (디스크 공간 확보)</span>
+</span></span><span style="display:flex;"><span>docker system prune -a --volumes
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 인ode(파일 수) 확인 후 정리</span>
+</span></span><span style="display:flex;"><span>df -i
+</span></span></code></pre></div><h2 id="3-ollama-네트워크-설정과-langchain-연결-0000의-의미와-보안-이해">3. Ollama 네트워크 설정과 LangChain 연결: 0.0.0.0의 의미와 보안 이해<a hidden class="anchor" aria-hidden="true" href="#3-ollama-네트워크-설정과-langchain-연결-0000의-의미와-보안-이해">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>OLLAMA_HOST 설정은 네트워크 바인딩 범위를 결정하며, 실제 보안은 별도의 Security Group이 담당한다는 사실을 명확히 이해했습니다. localhost와 0.0.0.0의 차이를 구분하고, 같은 인스턴스 내에서는 localhost만으로도 충분하다는 점을 깨닫게 되었습니다. 모델 서버와 앱 코드가 독립된 레이어에 존재하므로 서비스를 교체하거나 재구성할 때 유연하게 대처할 수 있다는 점도 중요한 깨달음이었습니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p><code>0.0.0.0</code> 설정이 서버 전체를 외부에 노출하는 것처럼 보여 불안했지만, 실제로는 네트워크 인터페이스의 범위만을 결정할 뿐 보안은 별도의 방화벽인 Security Group이 담당한다는 점을 이해했습니다. 또한 <code>localhost</code>와 <code>0.0.0.0</code>, 그리고 Security Group이 각각 독립된 역할을 수행하며 앱의 접근을 제어한다는 사실에 큰 깨달음을 얻었습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>네트워크 바인딩(<code>0.0.0.0</code> vs <code>localhost</code>)과 보안(Security Group)의 역할을 명확히 구분하는 것이 핵심입니다. <code>OLLAMA_HOST</code> 설정은 통신 범위를 결정하며, 실제 외부 접근을 제어하는 것은 별도의 방화벽 시스템입니다. 이를 통해 앱 코드 삭제 시 모델 서버가 독립적으로 유지될 수 있음을 이해했습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Ollama 네트워크 설정 예시 (초보자 워킹 노트 기준)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 127.0.0.1: 로컬 호스트만 허용 (보안성 높음, 외부 접속 차단)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># OLLAMA_HOST=127.0.0.1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 0.0.0.0: 모든 네트워크 인터페이스에서 요청 수신 (외부 접근 가능)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># OLLAMA_HOST=0.0.0.0</span>
+</span></span></code></pre></div><h2 id="4-mariadb-서버-관리와-데이터-조작의-경계-그리고-의-의미">4. MariaDB 서버 관리와 데이터 조작의 경계, 그리고 &lsquo;%&lsquo;의 의미<a hidden class="anchor" aria-hidden="true" href="#4-mariadb-서버-관리와-데이터-조작의-경계-그리고-의-의미">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>오늘은 데이터 조작 명령어와 서버 관리 명령어가 섞여 있어 어떤 영역을 다루고 있는지 구분하는 데 혼란이 있었다. 특히 <code>'web_user'@'%'</code>에서 <code>%</code>가 모든 호스트를 의미한다는 점을 이해했지만, 실무에서는 보안 위험을 고려해 구체적인 IP 제한이 필요하다고 생각했다. 이를 통해 데이터 조작과 사용자 권한 관리는 완전히 다른 영역이며, 안전한 설정을 위해 세부적인 제어가 중요하다는 점을 새겼다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>SELECT/INSERT/UPDATE/DELETE는 테이블 내 데이터를 조작하는 것이고, CREATE USER/GRANT는 DB 서버 자체를 관리하는 명령어라는 점이었다.</p>
+<p>특히 <code>'web_user'@'%'</code>에서 <code>%</code>가 모든 호스트에서의 접속을 의미한다는 사실은 이해했지만, 실무에서는 보안 위험이 있으므로 구체적인 IP 제한으로 수정해야 한다는 점을 새롭게 인식했다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>오늘은 데이터 조작 명령어와 서버 관리 명령어가 섞여 있어 DB 다루는 영역과 시스템 관리하는 영역을 구분하는 것이 무엇보다 중요하다는 것을 깨달았다. 특히 <code>CREATE USER</code>와 <code>GRANT</code>는 DB 자체를 제어하는 권한 부여 과정이며, <code>'web_user'@'%'</code>의 <code>%</code>는 모든 호스트에서 접속을 허용한다는 의미이지만 보안상 위험할 수 있어 구체적인 IP 제한이 필요하다고 생각했다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 1. 데이터 조작 (DML)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> users;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> users (name, email) <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;홍길동&#39;</span>, <span style="color:#e6db74">&#39;hong@example.com&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">UPDATE</span> users <span style="color:#66d9ef">SET</span> status <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;active&#39;</span> <span style="color:#66d9ef">WHERE</span> id <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">DELETE</span> <span style="color:#66d9ef">FROM</span> users <span style="color:#66d9ef">WHERE</span> id <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 2. 사용자 및 권한 관리 (DDL/권한 부여)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">USER</span> <span style="color:#e6db74">&#39;web_user&#39;</span><span style="color:#f92672">@</span><span style="color:#e6db74">&#39;%&#39;</span> IDENTIFIED <span style="color:#66d9ef">BY</span> <span style="color:#e6db74">&#39;password&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">GRANT</span> <span style="color:#66d9ef">ALL</span> <span style="color:#66d9ef">PRIVILEGES</span> <span style="color:#66d9ef">ON</span> database_name.<span style="color:#f92672">*</span> <span style="color:#66d9ef">TO</span> <span style="color:#e6db74">&#39;web_user&#39;</span><span style="color:#f92672">@</span><span style="color:#e6db74">&#39;%&#39;</span>;
+</span></span><span style="display:flex;"><span>FLUSH <span style="color:#66d9ef">PRIVILEGES</span>;
+</span></span></code></pre></div><h2 id="5-ec2-라이프사이클과-dbeaver-원격-접속-이해하기">5. EC2 라이프사이클과 DBeaver 원격 접속 이해하기<a hidden class="anchor" aria-hidden="true" href="#5-ec2-라이프사이클과-dbeaver-원격-접속-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>EC2 인스턴스에 Uvicorn, Ollama, MariaDB 등 다양한 서비스가 동시에 실행될 때, 각 프로그램이 서버·런타임·DB 프로그램이라는 역할 분담을 명확히 이해하는 것이 중요합니다. 또한 EC2의 Stop과 Terminate는 단순히 전원을 끄거나 지우는 것을 넘어, EBS 저장소와 Public IPv4 주소에 미치는 영향을 정확히 인지해야 합니다. Stop 시에는 EBS와 설정 환경이 보존되지만 IP가 재부팅될 때마다 변경될 수 있어 접속 주소를 다시 확인해야 하는 번거로움이 있습니다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>EC2 인스턴스에 FastAPI, Ollama, MariaDB 등 다양한 서비스가 동시에 설치될 때, 각 프로그램이 &lsquo;서버&rsquo; 개념으로 겹쳐 보여 어떤 역할을 하는지 감이 잡히지 않았다.</p>
+<p>또 Stop과 Terminate의 차이를 단순히 &lsquo;끄기/지우기&rsquo;로만 생각하다가, EBS 저장소와 Public IPv4 주소가 어떻게 보존되거나 소멸되는지 이해하지 못해 접속 주소를 다시 설정해야 하는 번거로움을 예측할 수 없었다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>EC2 인스턴스 중지 시 EBS 스토리지와 설정 환경은 보존되지만 공용 IP가 재할당되어 접속 주소가 변경될 수 있음을 이해해야 한다. FastAPI의 Uvicorn, LLM 실행용 Ollama, 데이터베이스 서버인 MariaDB는 각각 독립적인 역할을 수행하며, DBeaver 같은 GUI 툴을 사용해 원격 DB에 접속하는 것이 일반적이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span># EC2 lifecycle 핵심 정리 (노트 기반)
+</span></span></code></pre></div><h2 id="1-stop-vs-terminate">1. Stop vs Terminate<a hidden class="anchor" aria-hidden="true" href="#1-stop-vs-terminate">#</a></h2>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: center">구분</th>
+					<th style="text-align: center">Stop (일시 중지)</th>
+					<th style="text-align: center">Terminate (종료/삭제)</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center"><strong>인스턴스 상태</strong></td>
+					<td style="text-align: center">일시 정지 (중지된 상태로 유지)</td>
+					<td style="text-align: center">영구 삭제 (실제 서버 종료)</td>
+			</tr>
+			<tr>
+					<td style="text-align: center"><strong>EBS(디스크)</strong></td>
+					<td style="text-align: center"><strong>유지</strong> (데이터 보존)</td>
+					<td style="text-align: center"><strong>삭제</strong> (데이터 소멸 가능성)</td>
+			</tr>
+			<tr>
+					<td style="text-align: center"><strong>Public IPv4 주소</strong></td>
+					<td style="text-align: center"><strong>해제/재할당 가능</strong> (중지 후 재시작 시 IP가 바뀔 수 있음)</td>
+					<td style="text-align: center">영구 소실</td>
+			</tr>
+			<tr>
+					<td style="text-align: center"><strong>비용</strong></td>
+					<td style="text-align: center">스토리지 비용만 발생</td>
+					<td style="text-align: center">비용 정지</td>
+			</tr>
+	</tbody>
+</table>
+<h2 id="2-서비스-역할-분담">2. 서비스 역할 분담<a hidden class="anchor" aria-hidden="true" href="#2-서비스-역할-분담">#</a></h2>
+<ul>
+<li><strong>Uvicorn</strong>: FastAPI 애플리케이션을 구동하는 서버 프로그램</li>
+<li><strong>Ollama</strong>: LLM(대형 언어 모델)을 실행하고 관리하는 런타임 환경</li>
+<li><strong>MariaDB</strong>: 데이터를 저장하고 관리하는 DB 서버 프로그램</li>
+<li><strong>DBeaver</strong>: 사용자가 원격 DB에 접속하기 위한 GUI 클라이언트 툴</li>
+</ul>
+<h2 id="3-ec2-접속-시-고려사항">3. EC2 접속 시 고려사항<a hidden class="anchor" aria-hidden="true" href="#3-ec2-접속-시-고려사항">#</a></h2>
+<p>Stop 후 IP가 변경될 수 있으므로, DBeaver 등 GUI 툴로 DB에 접속할 때는 Host 주소를 다시 확인해야 함.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>오늘은 시스템 구성 요소별 역할 분담과 설정 파라미터의 의미를 정확히 이해하는 것이 중요함을 느꼈다. 특히 네트워크 바인딩, 디스크 인ode 관리, 그리고 서비스 종료 시 데이터 보존 여부 등 세부적인 옵션들이 실제 운영 환경에 미치는 영향을 구분하는 데 집중했다. 이러한 기초 지식은 서비스의 안정성과 보안을 확보하기 위한 필수적인 판단 기준이 되었다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>오늘 학습한 내용을 바탕으로 다음에 주의할 점은 다음과 같다.</p>
+<ol>
+<li>FastAPI 배포 시 <code>nohup</code> 뒤에 붙는 <code>[1]</code>이 PID가 아닌 작업 번호임을 반드시 확인하여, 실수로 프로세스를 종료하거나 충돌이 발생하지 않도록 해야 한다.</li>
+<li>Ollama 모델 관리는 디스크 용량뿐만 아니라 inode 제한을 사전에 체크하고, digest 값을 통해 데이터 무결성을 검증하는 등 파일 시스템 관리에 신경 써야 한다.</li>
+<li>네트워크 설정 시 <code>0.0.0.0</code>과 <code>localhost</code>의 차이를 명확히 구분하고, 실제 서비스 보안은 Security Group 설정을 통해 관리해야 하며, 접속 주소 변경 가능성에 대비해 주기적으로 확인하는 습관을 들여야 한다.</li>
+</ol>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<ol>
+<li>
+<p><strong>서비스 배포 시 네트워크 보안과 접속 주소 관리</strong>: <code>0.0.0.0</code> 바인딩 시 발생할 수 있는 외부 노출 위험을 인지하고, 실제 서비스 접근에 필요한 Security Group 설정과 EC2 재부팅 시 변동될 수 있는 Public IPv4 주소를 주기적으로 확인하는 습관을 들인다.</p>
+</li>
+<li>
+<p><strong>데이터베이스 권한 설계와 시스템 관리 경계</strong>: <code>'%'</code> 와일드카드의 편의성과 보안 위험 사이의 균형을 이해하고, 실제 운영 환경에서는 구체적인 IP 제한을 적용한 사용자 계정을 생성하는 등 세밀한 권한 관리의 중요성을 재확인한다.</p>
+</li>
+<li>
+<p><strong>컨테이너 및 가상화 환경에서의 파일 시스템과 스토리지 관리</strong>: Ollama 모델 파일의 구조(manifest, blob 등)와 Inode 제한 문제를 통해, 서비스 운영 시 디스크 용량뿐만 아니라 인ode 사용량을 모니터링하고, EBS 스냅샷이나 스토리지 정책이 서비스의 재구성 및 복구에 미치는 영향을 파악한다.</p>
+</li>
+</ol>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-09-17-am-daily/">
+    <span class="title">« Prev</span>
+    <span>오전 학습 | AWS EC2와 Linux OS 개념 분리하기</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-09-16-am-daily/">
+    <span class="title">Next »</span>
+    <span>오전 학습 | LangGraph Loop 구조와 LLM 검증 파이프라인</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

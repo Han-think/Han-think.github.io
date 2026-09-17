@@ -6,8 +6,22 @@
     <description>Recent content in 학습 기록 on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Wed, 16 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 17 Sep 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>오전 학습 | AWS EC2와 Linux OS 개념 분리하기</title>
+      <link>https://Han-think.github.io/learning/2026-09-17-am-daily/</link>
+      <pubDate>Thu, 17 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-17-am-daily/</guid>
+      <description>2026-09-17 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>오후 학습 | 오후에 배운 FastAPI와 Ollama, MariaDB 핵심 정리</title>
+      <link>https://Han-think.github.io/learning/2026-09-17-pm-daily/</link>
+      <pubDate>Thu, 17 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-17-pm-daily/</guid>
+      <description>2026-09-17 오후 학습 정리</description>
+    </item>
     <item>
       <title>오전 학습 | LangGraph Loop 구조와 LLM 검증 파이프라인</title>
       <link>https://Han-think.github.io/learning/2026-09-16-am-daily/</link>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오전 학습 | AWS EC2와 Linux OS 개념 분리하기 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-09-17 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-09-17-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-09-17-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-09-17-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오전 학습 | AWS EC2와 Linux OS 개념 분리하기">
+  <meta property="og:description" content="2026-09-17 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-09-17T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-09-17T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오전 학습 | AWS EC2와 Linux OS 개념 분리하기">
+  <meta name="twitter:description" content="2026-09-17 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오전 학습 | AWS EC2와 Linux OS 개념 분리하기",
+      "item": "https://Han-think.github.io/learning/2026-09-17-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오전 학습 | AWS EC2와 Linux OS 개념 분리하기",
+  "name": "오전 학습 | AWS EC2와 Linux OS 개념 분리하기",
+  "description": "2026-09-17 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 AWS EC2와 Linux OS 개념 분리하기 EC2 Python 가상환경 FastAPI 실행 정리 🔍 무엇이 헷갈렸나 (What Confused Me) 📌 정리된 이해 (Corrected Understanding) 🛠️ 실습 예시 (Practice Example) 총평 1. AWS EC2와 Linux OS 개념 분리하기 무엇을 배웠나 AWS 인프라와 Linux OS를 ‘어디에 있는가’ 기준으로 분리하여 개념을 정리할 수 있었습니다. 특히 EC2, Security Group, Storage 등 인프라 요소와 yum, timedatectl 같은 OS 명령어를 명확히 구분하니 흐름이 이해되었습니다. 이를 통해 서버 생성 후 OS 준비, 그리고 애플리케이션 실행이라는 순서대로 학습 진행 방향이 잡혔습니다.\n헷갈렸던 점 AWS 인프라와 Linux OS가 섞여 보여서, 명령어가 어디서 실행되는지 분간이 안 됐습니다.\n특히 yum upgrade 같은 명령어가 EC2 서버 위에서 실행되는 것인지, 로컬 컴퓨터에서 실행하는 것인지 구분이 되지 않아 막막했습니다. Security Group나 Storage 용어 앞에서 “네트워크 문제인가, 하드디스크 문제인가” 하며 Linux 공부를 해야 할지 인프라 설정을 해야 할지 혼란스러웠습니다.\n결국 서버를 켜는 것과 OS를 다루는 과정이 동시에 진행되는 느낌이라, ‘어디에 있는 것인가’에 초점을 맞춰 개념을 분리해야 했습니다.\n정리된 이해 AWS EC2는 ‘서버 하드웨어’를, Linux OS는 그 안에 설치된 ‘소프트웨어 환경’으로 구분하여 생각해야 한다. Security Group 같은 보안 설정은 서버 자체의 문제이며, yum 같은 명령어는 OS 내부에서 실행되는 작업이다. 결국 서버를 생성한 뒤 OS를 준비하고 그 위에 애플리케이션을 올리는 순서로 흐름을 이해하면 된다.\nsudo yum upgrade -y 2. EC2 Python 가상환경 FastAPI 실행 정리 무엇을 배웠나 리눅스 명령어는 시스템 전체를 관리하는 OS 레벨 도구이며, 파이썬 관련 툴은 격리된 애플리케이션 레벨에서 동작한다는 점이 명확해졌다. 특히 yum으로 리눅스에 Python을 설치한 뒤, venv로 환경을 격리시켜 pip나 uv로 라이브러리를 관리하는 이중 구조를 이해하게 되었다. 이를 통해 서버 구성 시 OS 레벨과 애플리케이션 레벨의 역할을 분리하여 사고할 수 있게 되었다.\n헷갈렸던 점 리눅스 명령어와 파이썬 패키지 관리자가 모두 ‘설치’라는 점에서 역할 구분이 어려웠고, venv로 만든 가상환경을 source로 활성화하는 리눅스 환경의 동작 원리가 감이 안 잡혔다.\n정리된 이해 리눅스 명령어는 시스템 전체를 관리하는 OS 레벨 도구이며, yum은 리눅스 자체 패키지를 설치하고 python3.x는 런타임을 실행한다. 반면 venv, pip, uv 등은 Python 애플리케이션 내부를 격리하여 라이브러리를 관리하는 Python 레벨의 도구이다. 따라서 서버에 Python을 설치한 뒤 가상환경을 생성하고 패키지를 설치하는 순서대로 진행하면 된다.\nEC2에 Python 가상환경과 FastAPI 실행 기반 만들기 🔍 무엇이 헷갈렸나 (What Confused Me) 처음에는 yum, pip, uv, venv가 모두 “설치\"와 “환경” 관련 도구인 것처럼 느껴졌다. 특히 리눅스 명령어(yum)와 파이썬 패키지 관리자(pip, uv)의 경계가 모호했다. 서버에 무언가를 설치한다는 점에서 비슷하게 느껴져서, 각각이 어떤 계층(OS 레벨 vs Python 레벨)에서 작동하는지 구분하기 어려웠다. 또한 venv로 가상환경을 만든 후 source로 활성화시키는 과정이 리눅스 환경에서 어떻게 동작하는지 감이 안 잡혔다.\n📌 정리된 이해 (Corrected Understanding) 명령어/용어 역할 계층 pwd / ls / mkdir / cd Linux 파일 및 디렉터리 탐색 및 생성 OS 레벨 yum Linux 시스템 전체 패키지 설치 (OS 관리) OS 레벨 python3.14 Python 런타임 실행 환경 OS 레벨 venv Python 격리된 가상환경 생성 Python 애플리케이션 레벨 pip / uv Python 패키지 다운로드 및 설치 Python 애플리케이션 레벨 FastAPI Web API 프레임워크 (코드 로직) 애플리케이션 레벨 uvicorn ASGI 서버 (실제 요청 처리) 인프라 레벨 핵심은 **“리눅스는 시스템 전체를 관리하고, Python은 격리된 환경 안에서 패키지를 관리한다”**는 점이다. yum으로 리눅스에 Python 자체를 설치하고, 그 안에서도 venv로 환경을 격리시킨 뒤 pip나 uv로 필요한 라이브러리를 채우는 구조다.\n🛠️ 실습 예시 (Practice Example) # 1. 리눅스 기본 이동 및 폴더 생성 pwd ls - mkdir fastapi_project cd fastapi_project # 2. Python 가상환경 생성 및 활성화 python3 -m venv .venv source .venv/bin/activate # 3. 패키지 설치 (uv 사용 예시) uv pip install fastapi uvicorn # 4. 간단한 FastAPI 앱 생성 후 실행 cat \u003e main.py \u003c\u003c 'EOF' from fastapi import FastAPI app = FastAPI() @app.get(\"/\") def read_root(): return {\"message\": \"Hello World\"} EOF uvicorn main:app --host 0.0.0.0 --port 8000 총평 오늘 오전 전체에서 배운 것 AWS EC2와 Linux OS를 ‘위치’ 기준으로 분리하여 인프라 요소와 OS 명령어를 명확히 구분했다. 이를 통해 서버 생성 후 OS 준비, 애플리케이션 실행이라는 자연스러운 학습 흐름을 잡을 수 있었다. 특히 리눅스 시스템 관리 도구와 파이썬 가상환경의 이중 구조를 이해하여, 서버 구성 시 OS 레벨과 애플리케이션 레벨의 역할을 분리해 사고할 수 있게 되었다.\n다음에 조심할 것 리눅스 명령어와 파이썬 툴을 구분하지 않고 섞어 사용하면 서버 구성에 오류가 발생할 수 있으므로, 항상 ‘OS 레벨’과 ‘애플리케이션 레벨’의 경계를 명확히 인지해야 한다.\nEC2 생성 후 OS 설치와 환경 설정 단계를 건너뛰고 바로 애플리케이션을 실행하려 하면 의존성 문제로 인해 서비스가 정상 동작하지 않을 수 있으므로, 반드시 yum으로 시스템 환경을 먼저 준비한 뒤 venv 등으로 격리된 공간에서 개발해야 한다.\n다음 복습 주제 리눅스 OS 레벨과 파이썬 가상환경 등 애플리케이션 레벨의 역할 분리를 명확히 이해한 만큼, 실제 서버 운영 시 이 두 영역이 어떻게 상호작용하는지 심화 학습하고 싶습니다.\n특히 yum으로 시스템 전체에 Python을 설치한 뒤, 왜 굳이 venv나 uv 같은 가상환경 도구가 필요한지 그 필요성과 동작 원리를 심층적으로 파악하여, 서버 구성 시 발생할 수 있는 의존성 충돌 문제를 효과적으로 해결하는 방법을 익히고 싶습니다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "777",
+  "inLanguage": "en",
+  "datePublished": "2026-09-17T00:00:00Z",
+  "dateModified": "2026-09-17T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-09-17-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오전 학습 | AWS EC2와 Linux OS 개념 분리하기
+    </h1>
+    <div class="post-description">
+      2026-09-17 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-09-17 00:00:00 +0000 UTC'>2026년 9월 17일</span>&nbsp;·&nbsp;<span>4 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-aws-ec2%EC%99%80-linux-os-%EA%B0%9C%EB%85%90-%EB%B6%84%EB%A6%AC%ED%95%98%EA%B8%B0">AWS EC2와 Linux OS 개념 분리하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-ec2-python-%EA%B0%80%EC%83%81%ED%99%98%EA%B2%BD-fastapi-%EC%8B%A4%ED%96%89-%EC%A0%95%EB%A6%AC">EC2 Python 가상환경 FastAPI 실행 정리</a></li>
+</ol>
+</li>
+<li><a href="#%EB%AC%B4%EC%97%87%EC%9D%B4-%ED%97%B7%EA%B0%88%EB%A0%B8%EB%82%98-what-confused-me">🔍 무엇이 헷갈렸나 (What Confused Me)</a></li>
+<li><a href="#%EC%A0%95%EB%A6%AC%EB%90%9C-%EC%9D%B4%ED%95%B4-corrected-understanding">📌 정리된 이해 (Corrected Understanding)</a></li>
+<li><a href="#%EC%8B%A4%EC%8A%B5-%EC%98%88%EC%8B%9C-practice-example">🛠️ 실습 예시 (Practice Example)</a></li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-aws-ec2와-linux-os-개념-분리하기">1. AWS EC2와 Linux OS 개념 분리하기<a hidden class="anchor" aria-hidden="true" href="#1-aws-ec2와-linux-os-개념-분리하기">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>AWS 인프라와 Linux OS를 &lsquo;어디에 있는가&rsquo; 기준으로 분리하여 개념을 정리할 수 있었습니다. 특히 EC2, Security Group, Storage 등 인프라 요소와 yum, timedatectl 같은 OS 명령어를 명확히 구분하니 흐름이 이해되었습니다. 이를 통해 서버 생성 후 OS 준비, 그리고 애플리케이션 실행이라는 순서대로 학습 진행 방향이 잡혔습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>AWS 인프라와 Linux OS가 섞여 보여서, 명령어가 어디서 실행되는지 분간이 안 됐습니다.</p>
+<p>특히 <code>yum upgrade</code> 같은 명령어가 EC2 서버 위에서 실행되는 것인지, 로컬 컴퓨터에서 실행하는 것인지 구분이 되지 않아 막막했습니다. Security Group나 Storage 용어 앞에서 &ldquo;네트워크 문제인가, 하드디스크 문제인가&rdquo; 하며 Linux 공부를 해야 할지 인프라 설정을 해야 할지 혼란스러웠습니다.</p>
+<p>결국 서버를 켜는 것과 OS를 다루는 과정이 동시에 진행되는 느낌이라, &lsquo;어디에 있는 것인가&rsquo;에 초점을 맞춰 개념을 분리해야 했습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>AWS EC2는 &lsquo;서버 하드웨어&rsquo;를, Linux OS는 그 안에 설치된 &lsquo;소프트웨어 환경&rsquo;으로 구분하여 생각해야 한다. Security Group 같은 보안 설정은 서버 자체의 문제이며, yum 같은 명령어는 OS 내부에서 실행되는 작업이다. 결국 서버를 생성한 뒤 OS를 준비하고 그 위에 애플리케이션을 올리는 순서로 흐름을 이해하면 된다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo yum upgrade -y
+</span></span></code></pre></div><h2 id="2-ec2-python-가상환경-fastapi-실행-정리">2. EC2 Python 가상환경 FastAPI 실행 정리<a hidden class="anchor" aria-hidden="true" href="#2-ec2-python-가상환경-fastapi-실행-정리">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>리눅스 명령어는 시스템 전체를 관리하는 OS 레벨 도구이며, 파이썬 관련 툴은 격리된 애플리케이션 레벨에서 동작한다는 점이 명확해졌다. 특히 <code>yum</code>으로 리눅스에 Python을 설치한 뒤, <code>venv</code>로 환경을 격리시켜 <code>pip</code>나 <code>uv</code>로 라이브러리를 관리하는 이중 구조를 이해하게 되었다. 이를 통해 서버 구성 시 OS 레벨과 애플리케이션 레벨의 역할을 분리하여 사고할 수 있게 되었다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>리눅스 명령어와 파이썬 패키지 관리자가 모두 &lsquo;설치&rsquo;라는 점에서 역할 구분이 어려웠고, <code>venv</code>로 만든 가상환경을 <code>source</code>로 활성화하는 리눅스 환경의 동작 원리가 감이 안 잡혔다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>리눅스 명령어는 시스템 전체를 관리하는 OS 레벨 도구이며, <code>yum</code>은 리눅스 자체 패키지를 설치하고 <code>python3.x</code>는 런타임을 실행한다. 반면 <code>venv</code>, <code>pip</code>, <code>uv</code> 등은 Python 애플리케이션 내부를 격리하여 라이브러리를 관리하는 Python 레벨의 도구이다. 따라서 서버에 Python을 설치한 뒤 가상환경을 생성하고 패키지를 설치하는 순서대로 진행하면 된다.</p>
+<h1 id="ec2에-python-가상환경과-fastapi-실행-기반-만들기">EC2에 Python 가상환경과 FastAPI 실행 기반 만들기<a hidden class="anchor" aria-hidden="true" href="#ec2에-python-가상환경과-fastapi-실행-기반-만들기">#</a></h1>
+<h2 id="-무엇이-헷갈렸나-what-confused-me">🔍 무엇이 헷갈렸나 (What Confused Me)<a hidden class="anchor" aria-hidden="true" href="#-무엇이-헷갈렸나-what-confused-me">#</a></h2>
+<p>처음에는 <code>yum</code>, <code>pip</code>, <code>uv</code>, <code>venv</code>가 모두 &ldquo;설치&quot;와 &ldquo;환경&rdquo; 관련 도구인 것처럼 느껴졌다. 특히 리눅스 명령어(<code>yum</code>)와 파이썬 패키지 관리자(<code>pip</code>, <code>uv</code>)의 경계가 모호했다. 서버에 무언가를 설치한다는 점에서 비슷하게 느껴져서, 각각이 어떤 계층(OS 레벨 vs Python 레벨)에서 작동하는지 구분하기 어려웠다. 또한 <code>venv</code>로 가상환경을 만든 후 <code>source</code>로 활성화시키는 과정이 리눅스 환경에서 어떻게 동작하는지 감이 안 잡혔다.</p>
+<h2 id="-정리된-이해-corrected-understanding">📌 정리된 이해 (Corrected Understanding)<a hidden class="anchor" aria-hidden="true" href="#-정리된-이해-corrected-understanding">#</a></h2>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: left">명령어/용어</th>
+					<th style="text-align: left">역할</th>
+					<th style="text-align: left">계층</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: left"><strong>pwd / ls / mkdir / cd</strong></td>
+					<td style="text-align: left">Linux 파일 및 디렉터리 탐색 및 생성</td>
+					<td style="text-align: left">OS 레벨</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>yum</strong></td>
+					<td style="text-align: left">Linux 시스템 전체 패키지 설치 (OS 관리)</td>
+					<td style="text-align: left">OS 레벨</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>python3.14</strong></td>
+					<td style="text-align: left">Python 런타임 실행 환경</td>
+					<td style="text-align: left">OS 레벨</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>venv</strong></td>
+					<td style="text-align: left">Python 격리된 가상환경 생성</td>
+					<td style="text-align: left">Python 애플리케이션 레벨</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>pip / uv</strong></td>
+					<td style="text-align: left">Python 패키지 다운로드 및 설치</td>
+					<td style="text-align: left">Python 애플리케이션 레벨</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>FastAPI</strong></td>
+					<td style="text-align: left">Web API 프레임워크 (코드 로직)</td>
+					<td style="text-align: left">애플리케이션 레벨</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>uvicorn</strong></td>
+					<td style="text-align: left">ASGI 서버 (실제 요청 처리)</td>
+					<td style="text-align: left">인프라 레벨</td>
+			</tr>
+	</tbody>
+</table>
+<p>핵심은 **&ldquo;리눅스는 시스템 전체를 관리하고, Python은 격리된 환경 안에서 패키지를 관리한다&rdquo;**는 점이다. <code>yum</code>으로 리눅스에 Python 자체를 설치하고, 그 안에서도 <code>venv</code>로 환경을 격리시킨 뒤 <code>pip</code>나 <code>uv</code>로 필요한 라이브러리를 채우는 구조다.</p>
+<h2 id="-실습-예시-practice-example">🛠️ 실습 예시 (Practice Example)<a hidden class="anchor" aria-hidden="true" href="#-실습-예시-practice-example">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 1. 리눅스 기본 이동 및 폴더 생성</span>
+</span></span><span style="display:flex;"><span>pwd
+</span></span><span style="display:flex;"><span>ls -
+</span></span><span style="display:flex;"><span>mkdir fastapi_project
+</span></span><span style="display:flex;"><span>cd fastapi_project
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. Python 가상환경 생성 및 활성화</span>
+</span></span><span style="display:flex;"><span>python3 -m venv .venv
+</span></span><span style="display:flex;"><span>source .venv/bin/activate
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. 패키지 설치 (uv 사용 예시)</span>
+</span></span><span style="display:flex;"><span>uv pip install fastapi uvicorn
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. 간단한 FastAPI 앱 생성 후 실행</span>
+</span></span><span style="display:flex;"><span>cat &gt; main.py <span style="color:#e6db74">&lt;&lt; &#39;EOF&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">from fastapi import FastAPI
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">app = FastAPI()
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">@app.get(&#34;/&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">def read_root():
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    return {&#34;message&#34;: &#34;Hello World&#34;}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>uvicorn main:app --host 0.0.0.0 --port <span style="color:#ae81ff">8000</span>
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>AWS EC2와 Linux OS를 &lsquo;위치&rsquo; 기준으로 분리하여 인프라 요소와 OS 명령어를 명확히 구분했다. 이를 통해 서버 생성 후 OS 준비, 애플리케이션 실행이라는 자연스러운 학습 흐름을 잡을 수 있었다. 특히 리눅스 시스템 관리 도구와 파이썬 가상환경의 이중 구조를 이해하여, 서버 구성 시 OS 레벨과 애플리케이션 레벨의 역할을 분리해 사고할 수 있게 되었다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>리눅스 명령어와 파이썬 툴을 구분하지 않고 섞어 사용하면 서버 구성에 오류가 발생할 수 있으므로, 항상 &lsquo;OS 레벨&rsquo;과 &lsquo;애플리케이션 레벨&rsquo;의 경계를 명확히 인지해야 한다.</p>
+<p>EC2 생성 후 OS 설치와 환경 설정 단계를 건너뛰고 바로 애플리케이션을 실행하려 하면 의존성 문제로 인해 서비스가 정상 동작하지 않을 수 있으므로, 반드시 <code>yum</code>으로 시스템 환경을 먼저 준비한 뒤 <code>venv</code> 등으로 격리된 공간에서 개발해야 한다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>리눅스 OS 레벨과 파이썬 가상환경 등 애플리케이션 레벨의 역할 분리를 명확히 이해한 만큼, 실제 서버 운영 시 이 두 영역이 어떻게 상호작용하는지 심화 학습하고 싶습니다.</p>
+<p>특히 <code>yum</code>으로 시스템 전체에 Python을 설치한 뒤, 왜 굳이 <code>venv</code>나 <code>uv</code> 같은 가상환경 도구가 필요한지 그 필요성과 동작 원리를 심층적으로 파악하여, 서버 구성 시 발생할 수 있는 의존성 충돌 문제를 효과적으로 해결하는 방법을 익히고 싶습니다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://Han-think.github.io/learning/2026-09-17-pm-daily/">
+    <span class="title">Next »</span>
+    <span>오후 학습 | 오후에 배운 FastAPI와 Ollama, MariaDB 핵심 정리</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
