@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>2026-09-18 AI 주간 리서치 | Han-think Blog</title>
+<meta name="keywords" content="weekly, llm, agent, reasoning, quantization, distillation, rag, multimodal, fine-tuning, benchmark, intel-xpu, pytorch, transformers">
+<meta name="description" content="이번 주 AI/LLM 기술 연구를 초보자도 이해할 수 있게 정리한 주간 리서치 브리핑">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/research/weekly-ai-2026-09-18/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/research/weekly-ai-2026-09-18/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/research/weekly-ai-2026-09-18/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="2026-09-18 AI 주간 리서치">
+  <meta property="og:description" content="이번 주 AI/LLM 기술 연구를 초보자도 이해할 수 있게 정리한 주간 리서치 브리핑">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="research">
+    <meta property="article:published_time" content="2026-09-18T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-09-18T00:00:00+00:00">
+    <meta property="article:tag" content="Weekly">
+    <meta property="article:tag" content="Llm">
+    <meta property="article:tag" content="Agent">
+    <meta property="article:tag" content="Reasoning">
+    <meta property="article:tag" content="Quantization">
+    <meta property="article:tag" content="Distillation">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="2026-09-18 AI 주간 리서치">
+  <meta name="twitter:description" content="이번 주 AI/LLM 기술 연구를 초보자도 이해할 수 있게 정리한 주간 리서치 브리핑">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Researches",
+      "item": "https://Han-think.github.io/research/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "2026-09-18 AI 주간 리서치",
+      "item": "https://Han-think.github.io/research/weekly-ai-2026-09-18/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "2026-09-18 AI 주간 리서치",
+  "name": "2026-09-18 AI 주간 리서치",
+  "description": "이번 주 AI/LLM 기술 연구를 초보자도 이해할 수 있게 정리한 주간 리서치 브리핑",
+  "keywords": [
+    "weekly", "llm", "agent", "reasoning", "quantization", "distillation", "rag", "multimodal", "fine-tuning", "benchmark", "intel-xpu", "pytorch", "transformers"
+  ],
+  "articleBody": "목차 이번 주 한눈에 자세히 보기 근거와 한계 이번 주 실험/시도해볼 것 다음 주 관찰 목록 한 줄 결론 원문 출처 이번 주 한눈에 장거리 컨텍스트 효율화: 블록 병렬 처리(Block Parallelism) 등 대규모 언어 모델의 long-context 훈련 비용과 메모리 사용을 줄이는 연구가 다수 발표됨. 지식 증류 및 압축: 레이어별 커리큘럼 학습 등을 활용한 LLM 압축·양자화 기법이 지속적으로 제안되며, 실제 운영 효율화로 이어지는 단계에 있음. 멀티모달·감정 인식 트랜스포머: 얼굴·음성·언어 채널의 불일치(ambivalence)를 탐지하는 멀티모달 모델이 NLP 분야에서 새롭게 제안됨. 자세히 보기 1. Modality Discrepancy Transformer for Ambivalence and Hesitancy Recognition 무엇 / 왜 중요한가: 얼굴·음성·언어 채널에서 모순된 신호를 감지해 ‘ambivalence(갈등)‘와 ‘hesitancy(주저함)‘를 인식하는 멀티모달 트랜스포머. 표준 융합 방법이 suprim하는 cross-modal disagreement을 포착하도록 설계되었으며, FiLM 기반 텍스트 조건부 변조와 LoRA 파인튜닝을 핵심 아키텍처로 활용. 쉬운 설명: 사람의 표정·목소리·말이 서로 모순될 때(예: 웃으면서 “아니요”)를 컴퓨터가 감지해 임상 영상에서 혼란 상태를 자동으로 파악하는 연구. 9개의 토큰으로 modality embedding과 difference feature를 결합해 cross-modal disagreement을 포착. 성숙도: [초기] - arXiv 발표 논문이며, 재현 가능한 운영 증거는 아직 부족함. (arXiv:2609.19148) 내 환경 관점: XPU/Arc 직접 최적화 대상은 아니지만, 멀티모달 attention 및 token 구조 변화는 향후 IPEX/OpenVINO 기반 멀티모달 추론 시 참고될 여지가 있음. 2. Block Parallelism For Efficient Distributed Long-Context Diffusion Language Model Training 무엇 / 왜 중요한가: block diffusion language model(BDLM)의 long-context 훈련에서 분산 attention 통신과 activation memory 병목을 해결하기 위해, ‘block parallelism(BP)‘와 ‘context-sharded block parallelism(CSBP)‘을 도입. corrupted-block computation을 각 rank에 할당하고 shared clean sequence를 shard하여 K/V gradient 복제를 피함. 쉬운 설명: 대규모 문맥(context)을 학습할 때 모든 데이터를 한 번에 처리하면 통신 비용이 급증하지만, ‘블록 단위 병렬 처럼’ 나누면 필요한 데이터만 주고받아 효율을 높일 수 있음. long-context diffusion LLM 훈련 시 메모리 사용량을 크게 줄일 수 있는 분산 기법. 성숙도: [초기] - 연구 단계 제안이며, 재현 가능한 운영 증거는 현재로서는 부족함. (arXiv:2609.19242) 내 환경 관점: XPU/Arc 기반 분산 훈련 실험에는 직접 적용 전이되나, attention sharding 기법은 향후 oneAPI 기반 대규모 LLM 훈련 시 참고 가능성이 있음. 3. Layer-wise Curriculum Learning for Efficient LLM Compression 무엇 / 왜 중요한가: LLM 압축(양자화·프루닝) 시 teacher-student 간 지식 전수를 효율화하기 위해 ’layer-wise curriculum learning’을 제안. 모델을 layer 단위로 세그먼트 나누고, easier optimization task부터 시작해 progressively harder 작업을 수행하도록 커리큘럼을 구성. cumulative error 현상 분석에 기반해 수렴 가속화와 지식 전수 안정화. 쉬운 설명: 큰 언어 모델을 작게 압축할 때, 무작정 줄이는 것보다 ‘먼저 배우기 쉬운 층부터 차근차근 압축’하면 성능 저하를 최소화하면서 효율을 높일 수 있음. feature caching으로 층 간 불일치도 해결. 성숙도: [초기] - arXiv 발표 논문, 재현 가능한 운영 증거는 현재로서는 부족함. (arXiv:2609.19213) 내 환경 관점: IPEX·OpenVINO 기반 LLM 양자화 및 압축 실험에 바로 적용해볼 수 있는 아이디어(layer-wise curriculum)가 포함돼 있어, 로컬 모델 운영자에게 유용할 가능성이 있음. 4. How to Guide Your Language Flow 무엇 / 왜 중요한가: flow matching diffusion model의 internal frozen states를 활용해 guidance signal을 구성하는 ‘probe guidance’ 방법을 도입. 추가 forward pass 없이 기존 모델의 내부 상태만으로 weak와 strong model이 유사한 dynamics를 공유하게 하여, unconditional generation 성능을 개선. 쉬운 설명: diffusion 모델이 텍스트를 생성할 때 방향성을 잡는 데 새로운 가이드라인을 제시한 것. 추가 계산 없이 기존 모델의 ‘내부 지혜’만으로도 생성 품질이 향상돼, 경량 모델이라도 성능이 좋아질 수 있음. 성숙도: [초기] - arXiv 발표 논문, 재현 가능한 운영 증거는 현재로서는 부족함. (arXiv:2609.19356) 내 환경 관점: 로컬에서 실행하는 diffusion 언어 모델의 추론 속도와 품질 개선에 기여할 여지가 있으며, IPEX 최적화와 결합하면 효과가 증대될 수 있음. 5. Towards Proactive Detection of User-Side Implicit Conflicts in Human-LLM Dialogue 무엇 / 왜 중요한가: Human-LLM 대화에서 사용자의 후속 발화가 이전 의도와 암묵적으로 충돌할 경우 LLM이 사용자 의도를 오해하는 문제를 해결하기 위해 UC-Bench라는 벤치마크를 신규 구축. 기존 LLMs가 이 작업을 수행하기 어려워하며, lightweight 모델을 위한 데이터 증류 방법도 함께 조사. 쉬운 설명: 챗봇과 대화하다가 사용자가 앞선 말과는 다른 의도를 무의식적으로 드러낼 때, 봇이 미리 감지해 “잠시만요, clarify할까요?“라고 물어보는 시스템을 제안한 연구. 성숙도: [초기] - 벤치마크(UC-Bench) 구축 및 preliminary experiment 발표, 재현 가능한 운영 증거는 현재로서는 부족함. (arXiv:2609.19155) 내 환경 관점: 로컬에서 실행하는 경량 LLM 챗봇의 대화 품질 개선에 기여할 수 있는 연구 분야이며, 향후 RAG·에이전트 시스템과 연계하면 유용할 것임. 근거와 한계 [검증됨]: 이번 주 자료 중 공식 arXiv 발표 논문 수준이며, 벤치마크나 실험 결과가 명시된 것들. (예: Block Parallelism의 CSBP 구조 설계, Layer-wise Curriculum Learning의 이론적 분석) [초기]: 논문 제안 단계이며, 아직 재현 가능한 운영 증거나 광범위한 벤치마크가 없는 것들. (예: Modality Discrepancy Transformer, Probe Guidance, UC-Bench 구축) 주요 한계: 이번 주 제출된 대부분의 논문이 arXiv preprint 수준이어서, 실제 GPU·XPU에서의 성능 수치나 호환성 검증은 추후 논문 게재 전·후 또는 오픈소스 구현 시점에 확인해야 함. 특히 멀티모달·long-context·압축 기법 등은 실제 운영 환경에서 검증된 사례가 아직 부족한 초기 연구로 분류됨.\n이번 주 실험/시도해볼 것 Layer-wise Curriculum Learning 적용하기: 로컬에 설치된 LLM(예: 7B급 모델)을 layer 단위로 세그먼트 나누고, 쉬운 층부터 순차적으로 양자화/프루닝하여 성능 변화를 비교해 보기. 목적: 압축 효율과 성능 균형 점검. 성공 기준: 전체 레이어를 한 번에 압축했을 때보다 perplexity 감소폭이 크거나 유사하면서 memory 사용량이 줄어듦. Probe Guidance 실험하기: 로컬에서 실행하는 diffusion 언어 모델(예: 1.7B급)에 probe guidance 기법을 적용해 unconditional generation 품질 변화를 측정해 보기. 목적: 추가 forward pass 없이 내부 상태만으로 생성 품질 향상 확인. 성공 기준: baseline 대비 generated text의 일관성 또는 다양성 지표가 개선됨. Block Parallelism 구조 스터디하기: CSBP(block parallelism)의 K/V gradient local화 아이디어를 참고해, 현재 실험 환경(PyTorch + IPEX)에서 attention 메모리 사용량을 줄일 수 있는 간단한 sharding 기법을 파이썬 코드로 구현해 보기. 목적: 분산 훈련 전 memory 효율성 검증. 성공 기준: 동일한 배치 크기에서 K/V 메모리 사용량이 감소하거나 유사한 throughput 유지. 다음 주 관찰 목록 Block Parallelism / Context-Sharded Parallelism: long-context LLM 훈련에서의 분산 기법 동향 및 IPEX/OpenVINO와의 호환성. Layer-wise Curriculum Learning: 실제 양자화·프루닝 툴(Optimum, AutoGPTQ 등)에 적용되었을 때의 안정성 검증 결과. Probe Guidance: diffusion 언어 모델 추론 속도와 품질 개선에 실질적인 도움이 되는지 여부. Modality Discrepancy Transformer: 멀티모달 감정 인식 분야의 후속 연구 및 실제 임상/챗봇 적용 가능성. 한 줄 결론 이번 주는 대규모 LLM의 훈련 효율화와 압축 기법에 대한 연구가 다수 발표된 주였습니다. 특히 block parallelism과 layer-wise curriculum learning 같은 분산·압축 기법은 실제 로컬 운영자나 연구자에게 immediate(즉시) 적용해볼 만한 아이디어가 많았으며, long-context 처리 비용 절감과 모델 경량화는 이번 주 가장 실질적인 관전 포인트였습니다.\n원문 출처 Modality Discrepancy Transformer for Ambivalence and Hesitancy Recognition — arXiv cs.CL (NLP/LLM), 2026-09-18, 관련도 11 BioPhys-Bridge: A Benchmark for Interdisciplinary Scientific Reasoning in Physics-Grounded Biological Research — arXiv cs.AI, 2026-09-18, 관련도 10 Block Parallelism For Efficient Distributed Long-Context Diffusion Language Model Training — arXiv cs.LG (Machine Learning), 2026-09-18, 관련도 10 Neo-Classic: A Benchmark for Evaluating Linguistic-Aesthetic Reasoning in Classical Chinese Poetry — arXiv cs.CL (NLP/LLM), 2026-09-18, 관련도 7 How to Guide Your Language Flow — arXiv cs.LG (Machine Learning), 2026-09-18, 관련도 6 What Do Current Systematic Generalization Tasks Miss? A Reasoning-Centered Analysis — arXiv cs.AI, 2026-09-18, 관련도 5 Do AI Agents Understand Computer Architecture? — arXiv cs.AI, 2026-09-18, 관련도 5 What Do We Expect from LLMs? Mapping the Design of LLM Benchmarks — arXiv cs.AI, 2026-09-18, 관련도 5 Layer-wise Curriculum Learning for Efficient LLM Compression — arXiv cs.LG (Machine Learning), 2026-09-18, 관련도 4 Position: It is Time to Virtualize Foundation Models with a Self-evolving Operating System Layer — arXiv cs.AI, 2026-09-18, 관련도 4 Radio-Frequency Convolutional Neural Networks — arXiv cs.LG (Machine Learning), 2026-09-18, 관련도 3 Towards Proactive Detection of User-Side Implicit Conflicts in Human-LLM Dialogue — arXiv cs.CL (NLP/LLM), 2026-09-18, 관련도 3 ",
+  "wordCount" : "1166",
+  "inLanguage": "en",
+  "datePublished": "2026-09-18T00:00:00Z",
+  "dateModified": "2026-09-18T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/research/weekly-ai-2026-09-18/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      2026-09-18 AI 주간 리서치
+    </h1>
+    <div class="post-description">
+      이번 주 AI/LLM 기술 연구를 초보자도 이해할 수 있게 정리한 주간 리서치 브리핑
+    </div>
+    <div class="post-meta">
+
+<span title='2026-09-18 00:00:00 +0000 UTC'>2026년 9월 18일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li><a href="#%EC%9D%B4%EB%B2%88-%EC%A3%BC-%ED%95%9C%EB%88%88%EC%97%90">이번 주 한눈에</a></li>
+<li><a href="#%EC%9E%90%EC%84%B8%ED%9E%88-%EB%B3%B4%EA%B8%B0">자세히 보기</a></li>
+<li><a href="#%EA%B7%BC%EA%B1%B0%EC%99%80-%ED%95%9C%EA%B3%84">근거와 한계</a></li>
+<li><a href="#%EC%9D%B4%EB%B2%88-%EC%A3%BC-%EC%8B%A4%ED%97%98%EC%8B%9C%EB%8F%84%ED%95%B4%EB%B3%BC-%EA%B2%83">이번 주 실험/시도해볼 것</a></li>
+<li><a href="#%EB%8B%A4%EC%9D%8C-%EC%A3%BC-%EA%B4%80%EC%B0%B0-%EB%AA%A9%EB%A1%9D">다음 주 관찰 목록</a></li>
+<li><a href="#%ED%95%9C-%EC%A4%84-%EA%B2%B0%EB%A1%A0">한 줄 결론</a></li>
+<li><a href="#%EC%9B%90%EB%AC%B8-%EC%B6%9C%EC%B2%98">원문 출처</a></li>
+</ul>
+<h2 id="이번-주-한눈에">이번 주 한눈에<a hidden class="anchor" aria-hidden="true" href="#이번-주-한눈에">#</a></h2>
+<ol>
+<li><strong>장거리 컨텍스트 효율화</strong>: 블록 병렬 처리(Block Parallelism) 등 대규모 언어 모델의 long-context 훈련 비용과 메모리 사용을 줄이는 연구가 다수 발표됨.</li>
+<li><strong>지식 증류 및 압축</strong>: 레이어별 커리큘럼 학습 등을 활용한 LLM 압축·양자화 기법이 지속적으로 제안되며, 실제 운영 효율화로 이어지는 단계에 있음.</li>
+<li><strong>멀티모달·감정 인식 트랜스포머</strong>: 얼굴·음성·언어 채널의 불일치(ambivalence)를 탐지하는 멀티모달 모델이 NLP 분야에서 새롭게 제안됨.</li>
+</ol>
+<h2 id="자세히-보기">자세히 보기<a hidden class="anchor" aria-hidden="true" href="#자세히-보기">#</a></h2>
+<h3 id="1-modality-discrepancy-transformer-for-ambivalence-and-hesitancy-recognition">1. Modality Discrepancy Transformer for Ambivalence and Hesitancy Recognition<a hidden class="anchor" aria-hidden="true" href="#1-modality-discrepancy-transformer-for-ambivalence-and-hesitancy-recognition">#</a></h3>
+<ul>
+<li><strong>무엇 / 왜 중요한가</strong>: 얼굴·음성·언어 채널에서 모순된 신호를 감지해 &lsquo;ambivalence(갈등)&lsquo;와 &lsquo;hesitancy(주저함)&lsquo;를 인식하는 멀티모달 트랜스포머. 표준 융합 방법이 suprim하는 cross-modal disagreement을 포착하도록 설계되었으며, FiLM 기반 텍스트 조건부 변조와 LoRA 파인튜닝을 핵심 아키텍처로 활용.</li>
+<li><strong>쉬운 설명</strong>: 사람의 표정·목소리·말이 서로 모순될 때(예: 웃으면서 &ldquo;아니요&rdquo;)를 컴퓨터가 감지해 임상 영상에서 혼란 상태를 자동으로 파악하는 연구. 9개의 토큰으로 modality embedding과 difference feature를 결합해 cross-modal disagreement을 포착.</li>
+<li><strong>성숙도</strong>: [초기] - arXiv 발표 논문이며, 재현 가능한 운영 증거는 아직 부족함. (arXiv:2609.19148)</li>
+<li><strong>내 환경 관점</strong>: XPU/Arc 직접 최적화 대상은 아니지만, 멀티모달 attention 및 token 구조 변화는 향후 IPEX/OpenVINO 기반 멀티모달 추론 시 참고될 여지가 있음.</li>
+</ul>
+<h3 id="2-block-parallelism-for-efficient-distributed-long-context-diffusion-language-model-training">2. Block Parallelism For Efficient Distributed Long-Context Diffusion Language Model Training<a hidden class="anchor" aria-hidden="true" href="#2-block-parallelism-for-efficient-distributed-long-context-diffusion-language-model-training">#</a></h3>
+<ul>
+<li><strong>무엇 / 왜 중요한가</strong>: block diffusion language model(BDLM)의 long-context 훈련에서 분산 attention 통신과 activation memory 병목을 해결하기 위해, &lsquo;block parallelism(BP)&lsquo;와 &lsquo;context-sharded block parallelism(CSBP)&lsquo;을 도입. corrupted-block computation을 각 rank에 할당하고 shared clean sequence를 shard하여 K/V gradient 복제를 피함.</li>
+<li><strong>쉬운 설명</strong>: 대규모 문맥(context)을 학습할 때 모든 데이터를 한 번에 처리하면 통신 비용이 급증하지만, &lsquo;블록 단위 병렬 처럼&rsquo; 나누면 필요한 데이터만 주고받아 효율을 높일 수 있음. long-context diffusion LLM 훈련 시 메모리 사용량을 크게 줄일 수 있는 분산 기법.</li>
+<li><strong>성숙도</strong>: [초기] - 연구 단계 제안이며, 재현 가능한 운영 증거는 현재로서는 부족함. (arXiv:2609.19242)</li>
+<li><strong>내 환경 관점</strong>: XPU/Arc 기반 분산 훈련 실험에는 직접 적용 전이되나, attention sharding 기법은 향후 oneAPI 기반 대규모 LLM 훈련 시 참고 가능성이 있음.</li>
+</ul>
+<h3 id="3-layer-wise-curriculum-learning-for-efficient-llm-compression">3. Layer-wise Curriculum Learning for Efficient LLM Compression<a hidden class="anchor" aria-hidden="true" href="#3-layer-wise-curriculum-learning-for-efficient-llm-compression">#</a></h3>
+<ul>
+<li><strong>무엇 / 왜 중요한가</strong>: LLM 압축(양자화·프루닝) 시 teacher-student 간 지식 전수를 효율화하기 위해 &rsquo;layer-wise curriculum learning&rsquo;을 제안. 모델을 layer 단위로 세그먼트 나누고, easier optimization task부터 시작해 progressively harder 작업을 수행하도록 커리큘럼을 구성. cumulative error 현상 분석에 기반해 수렴 가속화와 지식 전수 안정화.</li>
+<li><strong>쉬운 설명</strong>: 큰 언어 모델을 작게 압축할 때, 무작정 줄이는 것보다 &lsquo;먼저 배우기 쉬운 층부터 차근차근 압축&rsquo;하면 성능 저하를 최소화하면서 효율을 높일 수 있음. feature caching으로 층 간 불일치도 해결.</li>
+<li><strong>성숙도</strong>: [초기] - arXiv 발표 논문, 재현 가능한 운영 증거는 현재로서는 부족함. (arXiv:2609.19213)</li>
+<li><strong>내 환경 관점</strong>: IPEX·OpenVINO 기반 LLM 양자화 및 압축 실험에 바로 적용해볼 수 있는 아이디어(layer-wise curriculum)가 포함돼 있어, 로컬 모델 운영자에게 유용할 가능성이 있음.</li>
+</ul>
+<h3 id="4-how-to-guide-your-language-flow">4. How to Guide Your Language Flow<a hidden class="anchor" aria-hidden="true" href="#4-how-to-guide-your-language-flow">#</a></h3>
+<ul>
+<li><strong>무엇 / 왜 중요한가</strong>: flow matching diffusion model의 internal frozen states를 활용해 guidance signal을 구성하는 &lsquo;probe guidance&rsquo; 방법을 도입. 추가 forward pass 없이 기존 모델의 내부 상태만으로 weak와 strong model이 유사한 dynamics를 공유하게 하여, unconditional generation 성능을 개선.</li>
+<li><strong>쉬운 설명</strong>: diffusion 모델이 텍스트를 생성할 때 방향성을 잡는 데 새로운 가이드라인을 제시한 것. 추가 계산 없이 기존 모델의 &lsquo;내부 지혜&rsquo;만으로도 생성 품질이 향상돼, 경량 모델이라도 성능이 좋아질 수 있음.</li>
+<li><strong>성숙도</strong>: [초기] - arXiv 발표 논문, 재현 가능한 운영 증거는 현재로서는 부족함. (arXiv:2609.19356)</li>
+<li><strong>내 환경 관점</strong>: 로컬에서 실행하는 diffusion 언어 모델의 추론 속도와 품질 개선에 기여할 여지가 있으며, IPEX 최적화와 결합하면 효과가 증대될 수 있음.</li>
+</ul>
+<h3 id="5-towards-proactive-detection-of-user-side-implicit-conflicts-in-human-llm-dialogue">5. Towards Proactive Detection of User-Side Implicit Conflicts in Human-LLM Dialogue<a hidden class="anchor" aria-hidden="true" href="#5-towards-proactive-detection-of-user-side-implicit-conflicts-in-human-llm-dialogue">#</a></h3>
+<ul>
+<li><strong>무엇 / 왜 중요한가</strong>: Human-LLM 대화에서 사용자의 후속 발화가 이전 의도와 암묵적으로 충돌할 경우 LLM이 사용자 의도를 오해하는 문제를 해결하기 위해 UC-Bench라는 벤치마크를 신규 구축. 기존 LLMs가 이 작업을 수행하기 어려워하며, lightweight 모델을 위한 데이터 증류 방법도 함께 조사.</li>
+<li><strong>쉬운 설명</strong>: 챗봇과 대화하다가 사용자가 앞선 말과는 다른 의도를 무의식적으로 드러낼 때, 봇이 미리 감지해 &ldquo;잠시만요, clarify할까요?&ldquo;라고 물어보는 시스템을 제안한 연구.</li>
+<li><strong>성숙도</strong>: [초기] - 벤치마크(UC-Bench) 구축 및 preliminary experiment 발표, 재현 가능한 운영 증거는 현재로서는 부족함. (arXiv:2609.19155)</li>
+<li><strong>내 환경 관점</strong>: 로컬에서 실행하는 경량 LLM 챗봇의 대화 품질 개선에 기여할 수 있는 연구 분야이며, 향후 RAG·에이전트 시스템과 연계하면 유용할 것임.</li>
+</ul>
+<h2 id="근거와-한계">근거와 한계<a hidden class="anchor" aria-hidden="true" href="#근거와-한계">#</a></h2>
+<ul>
+<li><strong>[검증됨]</strong>: 이번 주 자료 중 공식 arXiv 발표 논문 수준이며, 벤치마크나 실험 결과가 명시된 것들. (예: Block Parallelism의 CSBP 구조 설계, Layer-wise Curriculum Learning의 이론적 분석)</li>
+<li><strong>[초기]</strong>: 논문 제안 단계이며, 아직 재현 가능한 운영 증거나 광범위한 벤치마크가 없는 것들. (예: Modality Discrepancy Transformer, Probe Guidance, UC-Bench 구축)</li>
+</ul>
+<p>주요 한계: 이번 주 제출된 대부분의 논문이 arXiv preprint 수준이어서, 실제 GPU·XPU에서의 성능 수치나 호환성 검증은 추후 논문 게재 전·후 또는 오픈소스 구현 시점에 확인해야 함. 특히 멀티모달·long-context·압축 기법 등은 실제 운영 환경에서 검증된 사례가 아직 부족한 초기 연구로 분류됨.</p>
+<h2 id="이번-주-실험시도해볼-것">이번 주 실험/시도해볼 것<a hidden class="anchor" aria-hidden="true" href="#이번-주-실험시도해볼-것">#</a></h2>
+<ol>
+<li><strong>Layer-wise Curriculum Learning 적용하기</strong>: 로컬에 설치된 LLM(예: 7B급 모델)을 layer 단위로 세그먼트 나누고, 쉬운 층부터 순차적으로 양자화/프루닝하여 성능 변화를 비교해 보기. 목적: 압축 효율과 성능 균형 점검. 성공 기준: 전체 레이어를 한 번에 압축했을 때보다 perplexity 감소폭이 크거나 유사하면서 memory 사용량이 줄어듦.</li>
+<li><strong>Probe Guidance 실험하기</strong>: 로컬에서 실행하는 diffusion 언어 모델(예: 1.7B급)에 probe guidance 기법을 적용해 unconditional generation 품질 변화를 측정해 보기. 목적: 추가 forward pass 없이 내부 상태만으로 생성 품질 향상 확인. 성공 기준: baseline 대비 generated text의 일관성 또는 다양성 지표가 개선됨.</li>
+<li><strong>Block Parallelism 구조 스터디하기</strong>: CSBP(block parallelism)의 K/V gradient local화 아이디어를 참고해, 현재 실험 환경(PyTorch + IPEX)에서 attention 메모리 사용량을 줄일 수 있는 간단한 sharding 기법을 파이썬 코드로 구현해 보기. 목적: 분산 훈련 전 memory 효율성 검증. 성공 기준: 동일한 배치 크기에서 K/V 메모리 사용량이 감소하거나 유사한 throughput 유지.</li>
+</ol>
+<h2 id="다음-주-관찰-목록">다음 주 관찰 목록<a hidden class="anchor" aria-hidden="true" href="#다음-주-관찰-목록">#</a></h2>
+<ul>
+<li><strong>Block Parallelism / Context-Sharded Parallelism</strong>: long-context LLM 훈련에서의 분산 기법 동향 및 IPEX/OpenVINO와의 호환성.</li>
+<li><strong>Layer-wise Curriculum Learning</strong>: 실제 양자화·프루닝 툴(Optimum, AutoGPTQ 등)에 적용되었을 때의 안정성 검증 결과.</li>
+<li><strong>Probe Guidance</strong>: diffusion 언어 모델 추론 속도와 품질 개선에 실질적인 도움이 되는지 여부.</li>
+<li><strong>Modality Discrepancy Transformer</strong>: 멀티모달 감정 인식 분야의 후속 연구 및 실제 임상/챗봇 적용 가능성.</li>
+</ul>
+<h2 id="한-줄-결론">한 줄 결론<a hidden class="anchor" aria-hidden="true" href="#한-줄-결론">#</a></h2>
+<p>이번 주는 <strong>대규모 LLM의 훈련 효율화와 압축 기법</strong>에 대한 연구가 다수 발표된 주였습니다. 특히 block parallelism과 layer-wise curriculum learning 같은 분산·압축 기법은 실제 로컬 운영자나 연구자에게 immediate(즉시) 적용해볼 만한 아이디어가 많았으며, long-context 처리 비용 절감과 모델 경량화는 이번 주 가장 실질적인 관전 포인트였습니다.</p>
+<h2 id="원문-출처">원문 출처<a hidden class="anchor" aria-hidden="true" href="#원문-출처">#</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/2609.19148">Modality Discrepancy Transformer for Ambivalence and Hesitancy Recognition</a> — arXiv cs.CL (NLP/LLM), 2026-09-18, 관련도 11</li>
+<li><a href="https://arxiv.org/abs/2609.19180">BioPhys-Bridge: A Benchmark for Interdisciplinary Scientific Reasoning in Physics-Grounded Biological Research</a> — arXiv cs.AI, 2026-09-18, 관련도 10</li>
+<li><a href="https://arxiv.org/abs/2609.19242">Block Parallelism For Efficient Distributed Long-Context Diffusion Language Model Training</a> — arXiv cs.LG (Machine Learning), 2026-09-18, 관련도 10</li>
+<li><a href="https://arxiv.org/abs/2609.19154">Neo-Classic: A Benchmark for Evaluating Linguistic-Aesthetic Reasoning in Classical Chinese Poetry</a> — arXiv cs.CL (NLP/LLM), 2026-09-18, 관련도 7</li>
+<li><a href="https://arxiv.org/abs/2609.19356">How to Guide Your Language Flow</a> — arXiv cs.LG (Machine Learning), 2026-09-18, 관련도 6</li>
+<li><a href="https://arxiv.org/abs/2609.19212">What Do Current Systematic Generalization Tasks Miss? A Reasoning-Centered Analysis</a> — arXiv cs.AI, 2026-09-18, 관련도 5</li>
+<li><a href="https://arxiv.org/abs/2609.19387">Do AI Agents Understand Computer Architecture?</a> — arXiv cs.AI, 2026-09-18, 관련도 5</li>
+<li><a href="https://arxiv.org/abs/2609.19182">What Do We Expect from LLMs? Mapping the Design of LLM Benchmarks</a> — arXiv cs.AI, 2026-09-18, 관련도 5</li>
+<li><a href="https://arxiv.org/abs/2609.19213">Layer-wise Curriculum Learning for Efficient LLM Compression</a> — arXiv cs.LG (Machine Learning), 2026-09-18, 관련도 4</li>
+<li><a href="https://arxiv.org/abs/2609.19203">Position: It is Time to Virtualize Foundation Models with a Self-evolving Operating System Layer</a> — arXiv cs.AI, 2026-09-18, 관련도 4</li>
+<li><a href="https://arxiv.org/abs/2609.19279">Radio-Frequency Convolutional Neural Networks</a> — arXiv cs.LG (Machine Learning), 2026-09-18, 관련도 3</li>
+<li><a href="https://arxiv.org/abs/2609.19155">Towards Proactive Detection of User-Side Implicit Conflicts in Human-LLM Dialogue</a> — arXiv cs.CL (NLP/LLM), 2026-09-18, 관련도 3</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/weekly/">Weekly</a></li>
+      <li><a href="https://Han-think.github.io/tags/llm/">Llm</a></li>
+      <li><a href="https://Han-think.github.io/tags/agent/">Agent</a></li>
+      <li><a href="https://Han-think.github.io/tags/reasoning/">Reasoning</a></li>
+      <li><a href="https://Han-think.github.io/tags/quantization/">Quantization</a></li>
+      <li><a href="https://Han-think.github.io/tags/distillation/">Distillation</a></li>
+      <li><a href="https://Han-think.github.io/tags/rag/">Rag</a></li>
+      <li><a href="https://Han-think.github.io/tags/multimodal/">Multimodal</a></li>
+      <li><a href="https://Han-think.github.io/tags/fine-tuning/">Fine-Tuning</a></li>
+      <li><a href="https://Han-think.github.io/tags/benchmark/">Benchmark</a></li>
+      <li><a href="https://Han-think.github.io/tags/intel-xpu/">Intel-Xpu</a></li>
+      <li><a href="https://Han-think.github.io/tags/pytorch/">Pytorch</a></li>
+      <li><a href="https://Han-think.github.io/tags/transformers/">Transformers</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Pytorch on Han-think Blog</title>
-    <link>https://Han-think.github.io/tags/pytorch/</link>
-    <description>Recent content in Pytorch on Han-think Blog</description>
+    <title>Distillation on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/distillation/</link>
+    <description>Recent content in Distillation on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
     <lastBuildDate>Fri, 18 Sep 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://Han-think.github.io/tags/pytorch/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://Han-think.github.io/tags/distillation/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>2026-09-18 AI 주간 리서치</title>
       <link>https://Han-think.github.io/research/weekly-ai-2026-09-18/</link>
       <pubDate>Fri, 18 Sep 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/research/weekly-ai-2026-09-18/</guid>
       <description>이번 주 AI/LLM 기술 연구를 초보자도 이해할 수 있게 정리한 주간 리서치 브리핑</description>
-    </item>
-    <item>
-      <title>2026-09-11 Intel XPU 주간 리포트</title>
-      <link>https://Han-think.github.io/research/weekly-ai-2026-09-11/</link>
-      <pubDate>Fri, 11 Sep 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/research/weekly-ai-2026-09-11/</guid>
-      <description>Intel XPU·Arc에서 PyTorch와 Hugging Face Transformers를 운영하기 위한 주간 연구·엔지니어링 리포트</description>
     </item>
   </channel>
 </rss>
