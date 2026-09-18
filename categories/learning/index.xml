@@ -6,8 +6,22 @@
     <description>Recent content in Learning on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Thu, 17 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 18 Sep 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/categories/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>오전 학습 | MariaDB DDL과 utf8mb4 설정 요약</title>
+      <link>https://Han-think.github.io/learning/2026-09-18-am-daily/</link>
+      <pubDate>Fri, 18 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-18-am-daily/</guid>
+      <description>2026-09-18 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>오후 학습 | TRUNCATE와 CONCAT, SQL 조건 검색 핵심 정리</title>
+      <link>https://Han-think.github.io/learning/2026-09-18-pm-daily/</link>
+      <pubDate>Fri, 18 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-18-pm-daily/</guid>
+      <description>2026-09-18 오후 학습 정리</description>
+    </item>
     <item>
       <title>오전 학습 | AWS EC2와 Linux OS 개념 분리하기</title>
       <link>https://Han-think.github.io/learning/2026-09-17-am-daily/</link>

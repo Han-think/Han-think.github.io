@@ -256,6 +256,16 @@
       <ul class="roadmap-post-list">
         <li class="roadmap-post-item">
           <span class="item-dot">◆</span>
+          <a href="https://Han-think.github.io/learning/2026-09-18-am-daily/">오전 학습 | MariaDB DDL과 utf8mb4 설정 요약</a>
+          <time class="item-date">09-18</time>
+        </li>
+        <li class="roadmap-post-item">
+          <span class="item-dot">◆</span>
+          <a href="https://Han-think.github.io/learning/2026-09-18-pm-daily/">오후 학습 | TRUNCATE와 CONCAT, SQL 조건 검색 핵심 정리</a>
+          <time class="item-date">09-18</time>
+        </li>
+        <li class="roadmap-post-item">
+          <span class="item-dot">◆</span>
           <a href="https://Han-think.github.io/learning/2026-09-17-am-daily/">오전 학습 | AWS EC2와 Linux OS 개념 분리하기</a>
           <time class="item-date">09-17</time>
         </li>
@@ -268,16 +278,6 @@
           <span class="item-dot">◆</span>
           <a href="https://Han-think.github.io/learning/2026-09-16-am-daily/">오전 학습 | LangGraph Loop 구조와 LLM 검증 파이프라인</a>
           <time class="item-date">09-16</time>
-        </li>
-        <li class="roadmap-post-item">
-          <span class="item-dot">◆</span>
-          <a href="https://Han-think.github.io/learning/2026-09-16-pm-daily/">오후 학습 | 상태 보존과 재개를 통한 AI-사람 협업 흐름</a>
-          <time class="item-date">09-16</time>
-        </li>
-        <li class="roadmap-post-item">
-          <span class="item-dot">◆</span>
-          <a href="https://Han-think.github.io/learning/2026-09-15-am-daily/">오전 학습 | LangGraph 핵심 구조와 워크플로우 설계에 대한 이해</a>
-          <time class="item-date">09-15</time>
         </li>
       </ul>
       <a href="/learning/" class="roadmap-more-link">학습 보기 →</a>
@@ -321,6 +321,37 @@
   </nav>
 </div>
 
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">오전 학습 | MariaDB DDL과 utf8mb4 설정 요약
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 MariaDB DDL 기본 구조와 실습 정리 MariaDB utf8mb4 문자셋 설정과 한글 저장 오류 해결하기 데이터 입력과 중복 처리: INSERT와 UPSERT EC2 MariaDB 설정과 접속 흐름: 두 영역의 구분 1. MariaDB DDL 기본 구조와 실습 정리 무엇을 배웠나 데이터베이스 구조를 이해하는 핵심은 ‘Database’와 ‘Table’의 관계, 그리고 DESC 명령어로 Column을 확인하는 것입니다. 또한 데이터 타입 선택 시 비즈니스 로직(예: 앞자리 0 유지 등)을 고려해야 한다는 점이 중요했습니다.
+헷갈렸던 점 처음에는 명령어가 너무 많아 각각 외워야 하는 것처럼 느껴졌습니다. 특히 SHOW TABLES와 DESC employees가 비슷하게 보여서 무슨 차이인지 감을 잡기 어려웠습니다. 또 mobile 같은 경우 숫자처럼 보인데 왜 VARCHAR로 저장해야 하는지 처음에는 이해가 안 갔습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-18 00:00:00 +0000 UTC'>2026년 9월 18일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오전 학습 | MariaDB DDL과 utf8mb4 설정 요약" href="https://Han-think.github.io/learning/2026-09-18-am-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">오후 학습 | TRUNCATE와 CONCAT, SQL 조건 검색 핵심 정리
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 CONCAT과 TRUNCATE의 정확한 구분하기 SQL 조건 검색 핵심 요약 그룹화와 통계 필터링의 차이: GROUP BY vs HAVING 트랜잭션과 자동 커밋의 관계 테이블당 1개의 기본키, 컬럼의 자유로운 조합 총평 1. CONCAT과 TRUNCATE의 정확한 구분하기 무엇을 배웠나 SELECT 문을 통해 데이터를 단순히 꺼내는 것을 넘어, 사람이 읽기 쉬운 형태로 가공하는 방법을 배웠다. CONCAT() 함수는 문자열이나 값을 이어 붙여 하나의 문자열로 만드는 반면, TRUNCATE()는 숫자의 소수점 이하를 지정한 자리 수만큼 잘라내는 숫자 함수다. 특히 TRUNCATE()와 테이블을 지우는 TRUNCATE TABLE 명령어는 목적과 대상이 완전히 다르다는 점을 명확히 구분하는 것이 중요하다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-18 00:00:00 +0000 UTC'>2026년 9월 18일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오후 학습 | TRUNCATE와 CONCAT, SQL 조건 검색 핵심 정리" href="https://Han-think.github.io/learning/2026-09-18-pm-daily/"></a>
+</article>
 
 <article class="post-entry"> 
   <header class="entry-header">
@@ -443,36 +474,6 @@
 
 <span title='2026-09-14 00:00:00 +0000 UTC'>2026년 9월 14일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
   <a class="entry-link" aria-label="post link to 오후 학습 | 멀티모달 입력 파이프라인 통합의 핵심" href="https://Han-think.github.io/learning/2026-09-14-pm-daily/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오전 학습 | LLM 판단과 Tool 실행, FastAPI 스트리밍 연결
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 LangChain Agent의 도구 판단 및 인자 구성 과정 LLM Agent와 Tool의 역할 분리를 통한 FastAPI 웹 서비스 구축 lmstudio agent service adaptation 이해하기 LLM 스트리밍과 HTTP 연결 고리 이해하기 총평 1. LangChain Agent의 도구 판단 및 인자 구성 과정 무엇을 배웠나 LangChain Agent는 LLM이 질문의 의도를 파악해 적절한 도구를 선택하고 인자를 구성하는 ‘판단력 있는 실행자’ 역할을 수행합니다. 핵심은 LLM이 도구 사용을 결정하고, 실제 연산이나 검색 등 구체적인 작업은 Tool이 담당한다는 책임 분담 구조입니다. 오늘 혼란스러웠던 함수 구현 오류와 흐름의 주체 전환을 이해하며, LLM과 Tool이 협업하는 시나리오를 자연스럽게 파악할 수 있었습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-11 00:00:00 +0000 UTC'>2026년 9월 11일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오전 학습 | LLM 판단과 Tool 실행, FastAPI 스트리밍 연결" href="https://Han-think.github.io/learning/2026-09-11-am-daily/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오후 학습 | stream_mode 변경 시 파서 재구성 필요와 일관된 normalization layer
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 stream_mode 변경 시 chunk 구조와 파서 재구성 필요 에이전트 툴 인터페이스와 모듈성: 일관된 구조와 내부 구현 교체ability Transformers Pipeline과 ViT 이미지 분류 실습 정리 업로드 후 분류와 정리: 임시 파일 관리 전략 Intel Arc/XPU 환경으로 이어가는 오후 수업 요약 총평 1. stream_mode 변경 시 chunk 구조와 파서 재구성 필요 무엇을 배웠나 stream_mode 옵션을 변경하면 데이터의 청크 구조가 완전히 달라지므로, 단순히 옵션 하나만 바꾸는 것이 아니라 그에 맞는 파서 로직도 함께 재구성해야 한다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-11 00:00:00 +0000 UTC'>2026년 9월 11일</span>&nbsp;·&nbsp;<span>8 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오후 학습 | stream_mode 변경 시 파서 재구성 필요와 일관된 normalization layer" href="https://Han-think.github.io/learning/2026-09-11-pm-daily/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
