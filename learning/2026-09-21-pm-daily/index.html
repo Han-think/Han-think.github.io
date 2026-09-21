@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오후 학습 | 상관 서브쿼리 패턴과 JOIN 전략 이해 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-09-21 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-09-21-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-09-21-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-09-21-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오후 학습 | 상관 서브쿼리 패턴과 JOIN 전략 이해">
+  <meta property="og:description" content="2026-09-21 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-09-21T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-09-21T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오후 학습 | 상관 서브쿼리 패턴과 JOIN 전략 이해">
+  <meta name="twitter:description" content="2026-09-21 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오후 학습 | 상관 서브쿼리 패턴과 JOIN 전략 이해",
+      "item": "https://Han-think.github.io/learning/2026-09-21-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오후 학습 | 상관 서브쿼리 패턴과 JOIN 전략 이해",
+  "name": "오후 학습 | 상관 서브쿼리 패턴과 JOIN 전략 이해",
+  "description": "2026-09-21 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 상관 서브쿼리의 핵심 이해 JOIN 종류별 데이터 유지 전략: INNER·OUTER·CROSS 구분하기 SQL 합집합과 차집합 개념 정리 auto_increment_primary_key의_연관성 총평 1. 상관 서브쿼리의 핵심 이해 무엇을 배웠나 오늘은 dept와 emp 테이블 구조에 익숙해지는 데 집중했다. 특히 문제 5처럼 안쪽 쿼리가 바깥 행의 값을 참조하는 상관 서브쿼리 패턴을 이해하는 것이 가장 중요하다고 느꼈다. ‘값 하나면 =, 여러 개면 IN’이라는 단순한 규칙을 넘어, 쿼리의 의존 관계를 파악하는 사고가 필요하다는 점을 깨달았다.\n헷갈렸던 점 오전에 이어 오후에 sub_query.sql 문제 1~5를 풀었다. 전반적으로 “SELECT로 중간 결과를 먼저 뽑아보는 습관\"은 잡혀 있었는데, 테이블이 dept와 emp로 바뀌니 컬럼 이름과 테이블 관계도 다시 머릿속에 그렸다는 점이 가장 큰 혼란이었다.\n특히 문제 5(부서별 직원 수)가 앞선 문제들과 결이 달랐다. 이전 문제들은 “안쪽 쿼리가 값 하나를 반환하면 =를 쓰고, 여러 개면 IN을 쓴다\"는 식의 패턴 매칭이었는데, 문제 5는 안쪽 쿼리가 바깥쪽 행의 값을 참조하는 구조가 되어버렸다. 어디서부터 손을 대야 할지 막막함을 느꼈다.\n오늘 강사님의 피드백과 직접 실행해보며 확실히 잡힌 키워드들이다. 단일값 서브쿼리는 안쪽 쿼리가 하나의 값만 반환할 때 =를 쓰고, 다중행 서브쿼리는 여러 개의 값을 반환할 때 IN을 사용한다. 상관 서브쿼리의 핵심은 “안쪽 SELECT가 바깥 SELECT의 컬럼을 참조한다\"는 점이며, 이는 매 행마다 다시 실행된다는 생각이 가장 중요하다.\n정리된 이해 서브쿼리는 반환되는 값의 개수에 따라 =나 IN을 사용하며, 안쪽 쿼리가 바깥 쿼리의 컬럼을 참조하는 ‘상관 서브쿼리’는 행마다 재실행된다는 점을 이해해야 한다.\n-- 문제 1: 단일값 서브쿼리 패턴 (안쪽 쿼리가 하나의 값 반환) SELECT empno, ename, sal FROM emp WHERE deptno = ( SELECT deptno FROM dept WHERE dname = 'RESEARCH' ); -- 문제 2: 다중행 서브쿼리 패턴 (안쪽 쿼리가 여러 값 반환) SELECT empno, ename, sal FROM emp WHERE deptno IN ( SELECT deptno FROM dept WHERE loc = 'DALLAS' ); -- 문제 3: 단일값 서브쿼리 패턴 (급여 등급 비교) SELECT empno, ename, sal, grade FROM emp e, salgrade s WHERE e.sal BETWEEN s.losal AND s.hisal AND s.grade = ( SELECT grade FROM salgrade WHERE losal \u003c= 2000 AND hisal \u003e= 2000 ); -- 문제 5: 상관 서브쿼리 패턴 (안쪽 쿼리가 바깥 행의 값을 참조) SELECT e.ename, e.deptno, ( SELECT COUNT(*) FROM emp mgr WHERE mgr.mgr = e.empno ) as sub_staff_count FROM emp e; 2. JOIN 종류별 데이터 유지 전략: INNER·OUTER·CROSS 구분하기 무엇을 배웠나 JOIN을 이해할 때 가장 중요한 첫 단계는 연결 고리(Join Condition)를 먼저 확정하는 것이다. 이 한 줄이 정해지면, 이후 JOIN 종류는 “일치하지 않는 행을 어떻게 처리할 것인가\"의 문제로 단순화된다. 특히 LEFT와 RIGHT OUTER JOIN은 이름만 보고 직관적으로 어떤 데이터가 남는지 파악하기 어려우나, ‘어느 쪽 데이터를 끝까지 유지할 것인가’라는 관점으로 전환하면 이해가 쉬워진다. CROSS JOIN은 조건 없이 모든 조합을 생성하는 Cartesian Product이므로, 실무에서는 자동 연결되는 컬럼이 의도치 않게 늘어나지 않을까 봐 USING이나 NATURAL JOIN 사용에 주의를 기울여야 한다.\n헷갈렸던 점 처음 JOIN을 배울 때와 비슷하게, 새로운 테이블 구조를 마주하니 ‘왼쪽’과 ‘오른쪽’의 기준이 다시 설렜다. 특히 LEFT와 RIGHT OUTER JOIN은 이름만 보고 직관적으로 어떤 데이터가 남는지 파악하기 어려웠다.\n가장 중요한 첫 단계는 **연결 고리(Join Condition)**를 먼저 확정하는 것이다. 이 한 줄이 정해지면, 이후 JOIN 종류는 **“일치하지 않는 행을 어떻게 처리할 것인가”**의 문제로 단순화된다.\n정리된 이해 JOIN 연산은 연결 고리(Join Condition)를 먼저 확정한 뒤, 일치하지 않는 행을 어떻게 처리할 것인가에 따라 종류가 단순화된다. INNER JOIN은 양쪽 테이블에 모두 존재하는 행만 반환하고, LEFT·RIGHT OUTER JOIN은 각각 왼쪽 또는 오른쪽 테이블의 모든 행을 유지한다. CROSS JOIN은 조건 없이 두 테이블의 모든 경우의 수를 조합해 Cartesian Product를 생성한다.\nSELECT e.ename, d.dname FROM emp e JOIN dept d ON e.deptno = d.deptno; SELECT e.ename, d.dname FROM emp e LEFT OUTER JOIN dept d ON e.deptno = d.deptno; SELECT e.ename, d.dname FROM emp e RIGHT OUTER JOIN dept d ON e.deptno = d.deptno; SELECT e.ename, d.dname FROM emp e CROSS JOIN dept d; 3. SQL 합집합과 차집합 개념 정리 무엇을 배웠나 UNION은 SELECT문의 결과를 행 방향으로 이어 붙이는 합집합 연산이며, UNION ALL은 중복을 포함해 더 빠르게 처리할 수 있다. INTERSECT는 두 쿼리 결과에 공통으로 존재하는 값만 추출하는 교집합 연산이다. NOT IN은 첫 번째 결과에서 두 번째 결과에 포함되지 않는 값을 제거하여 차집합을 만드는 방식이다.\n헷갈렸던 점 UNION은 행을 이어 붙이는 수직 결합이고, JOIN은 열을 확장하는 가로 결합이라는 점이 가장 큰 차이였다.\nINTERSECT는 두 결과에 모두 존재하는 값만 남기는 ‘교집합’ 개념이지만, 일반적인 JOIN의 등가조인과 목적이나 구조가 다르다는 점을 명확히 구분해야 했다.\n정리된 이해 UNION은 SELECT문의 결과를 행 방향으로 이어 붙여 세로로 긴 표를 만드는 반면, INTERSECT는 두 결과 집합에 공통으로 존재하는 값만 추출하고, NOT IN은 첫 번째 결과에서 두 번째 결과에 포함되지 않는 값을 제외하여 차집합을 만든다.\n-- UNION: 중복 제거된 합집합 (행 추가) SELECT deptno FROM dept UNION SELECT deptno FROM emp; -- UNION ALL: 중복 포함된 합집합 (빠름) SELECT deptno FROM dept UNION ALL SELECT deptno FROM emp; -- INTERSECT: 교집합 (공통된 값만 남김) SELECT deptno FROM dept INTERSECT SELECT deptno FROM emp; -- NOT IN: 차집합 (첫 번째에서 두 번째에 없는 값 추출) SELECT * FROM emp WHERE deptno NOT IN (SELECT deptno FROM dept); 4. auto_increment_primary_key의_연관성 무엇을 배웠나 AUTO_INCREMENT는 단순히 번호를 자동 생성하는 기능이 아니라, 반드시 PRIMARY KEY와 결합하여 식별자와 자동 증가 기능을 동시에 수행하는 속성입니다. MariaDB에서는 AUTO_INCREMENT 컬럼이 key/index로 지정되어 있어야 정상적으로 작동한다는 점이 초보자에게 반직관적으로 느껴질 수 있습니다. 이를 통해 데이터베이스 구조상 PK와 AI 속성이 결합해야 비로소 자동 번호 생성이 가능하다는 것을 명확히 이해할 수 있었습니다.\n헷갈렸던 점 AUTO_INCREMENT는 단순히 번호를 자동 생성하는 기능이 아니라, PRIMARY KEY와 결합하여 행을 식별하고 값을 자동으로 증가시키는 속성입니다.\nMariaDB에서는 AUTO_INCREMENT 컬럼이 반드시 key/index로 지정되어야 정상적으로 작동하며, 이는 ‘식별자 역할’과 ‘자동 증가 속성’이 동시에 필요하기 때문입니다.\n정리된 이해 AUTO_INCREMENT는 PRIMARY KEY와 결합하여 행을 식별하는 동시에 자동으로 숫자를 생성하는 속성입니다. MariaDB에서는 이 컬럼이 반드시 key/index로 지정되어야 정상적으로 작동합니다. 따라서 테이블 생성 시 PRIMARY KEY AUTO_INCREMENT를 함께 정의하면, 새 데이터가 삽입될 때마다 고유하고 증가하는 번호가 자동으로 할당됩니다.\n-- 1. 테이블 생성 시 AUTO_INCLUDE 설정 (코드에 맞게 수정) CREATE TABLE auto_inc( no INT(10) PRIMARY KEY AUTO_INCREMENT, name VARCHAR(50) ); -- 2. 데이터 삽입 (자동 번호 할당) INSERT INTO auto_inc(name) VALUES('철수'); INSERT INTO auto_inc(name) VALUES('영희'); -- 3. 조회 SELECT * FROM auto_inc; 총평 오늘 오후 전체에서 배운 것 관계형 데이터베이스의 핵심은 단순히 문법을 외우는 것이 아니라, 쿼리 간의 의존 관계와 테이블 구조를 이해하는 사고력에 있음을 깨달았다. JOIN을 배울 때는 연결 조건 하나만 명확히 정해도 종류별 동작 원리가 ‘일치 여부 처리’로 단순화되어 훨씬 직관적으로 다가왔다. 마지막으로 AUTO_INCREMENT가 PRIMARY KEY와 반드시 결합해야 작동한다는 점은, 데이터베이스 설계에서 속성 간의 필수적인 연관성을 다시 한번 확인하게 되는 계기가 되었다.\n다음에 조심할 것 오늘 배운 상관 서브쿼리와 JOIN 전략을 실무에 적용할 때는 ‘값의 개수’와 ‘데이터 유지 방향’을 반드시 확인하는 습관을 들일 것이다. 특히 LEFT OUTER JOIN과 RIGHT OUTER JOIN은 직관적으로 파악하기 어려우니, ‘어느 쪽 데이터를 끝까지 유지할 것인가’를 기준으로 조건을 설정해 실수를 방지해야 한다. 마지막으로 UNION이나 NOT IN 등 집합 연산을 사용할 때는 중복 처리와 포함 여부를 정확히 검증하여 의도치 않은 데이터 누락이 없도록 주의하겠다.\n다음 복습 주제 관련 서브쿼리에서 바깥 행과 안쪽 쿼리의 값 참조 관계를 명확히 파악하는 연습을 더 해야겠다. JOIN 종류별로 ‘어떤 데이터를 유지할 것인가’를 결정하는 Join Condition의 역할과, LEFT/RIGHT OUTER JOIN의 데이터 유지 방향을 시각화하는 훈련이 필요하다. UNION·INTERSECT·NOT IN 등 집합 연산자의 동작 원리와 중복 제거 여부에 따른 성능 차이를 정확히 구분하는 복습이 필요해 보인다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1152",
+  "inLanguage": "en",
+  "datePublished": "2026-09-21T00:00:00Z",
+  "dateModified": "2026-09-21T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-09-21-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오후 학습 | 상관 서브쿼리 패턴과 JOIN 전략 이해
+    </h1>
+    <div class="post-description">
+      2026-09-21 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-09-21 00:00:00 +0000 UTC'>2026년 9월 21일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EC%83%81%EA%B4%80-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC%EC%9D%98-%ED%95%B5%EC%8B%AC-%EC%9D%B4%ED%95%B4">상관 서브쿼리의 핵심 이해</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-join-%EC%A2%85%EB%A5%98%EB%B3%84-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%9C%A0%EC%A7%80-%EC%A0%84%EB%9E%B5-inneroutercross-%EA%B5%AC%EB%B6%84%ED%95%98%EA%B8%B0">JOIN 종류별 데이터 유지 전략: INNER·OUTER·CROSS 구분하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-sql-%ED%95%A9%EC%A7%91%ED%95%A9%EA%B3%BC-%EC%B0%A8%EC%A7%91%ED%95%A9-%EA%B0%9C%EB%85%90-%EC%A0%95%EB%A6%AC">SQL 합집합과 차집합 개념 정리</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-autoincrementprimarykey%EC%9D%98%EC%97%B0%EA%B4%80%EC%84%B1">auto_increment_primary_key의_연관성</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-상관-서브쿼리의-핵심-이해">1. 상관 서브쿼리의 핵심 이해<a hidden class="anchor" aria-hidden="true" href="#1-상관-서브쿼리의-핵심-이해">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>오늘은 <code>dept</code>와 <code>emp</code> 테이블 구조에 익숙해지는 데 집중했다. 특히 문제 5처럼 안쪽 쿼리가 바깥 행의 값을 참조하는 상관 서브쿼리 패턴을 이해하는 것이 가장 중요하다고 느꼈다. &lsquo;값 하나면 =, 여러 개면 IN&rsquo;이라는 단순한 규칙을 넘어, 쿼리의 의존 관계를 파악하는 사고가 필요하다는 점을 깨달았다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>오전에 이어 오후에 <code>sub_query.sql</code> 문제 1~5를 풀었다. 전반적으로 &ldquo;SELECT로 중간 결과를 먼저 뽑아보는 습관&quot;은 잡혀 있었는데, 테이블이 <code>dept</code>와 <code>emp</code>로 바뀌니 컬럼 이름과 테이블 관계도 다시 머릿속에 그렸다는 점이 가장 큰 혼란이었다.</p>
+<p>특히 문제 5(부서별 직원 수)가 앞선 문제들과 결이 달랐다. 이전 문제들은 &ldquo;안쪽 쿼리가 값 하나를 반환하면 =를 쓰고, 여러 개면 IN을 쓴다&quot;는 식의 패턴 매칭이었는데, 문제 5는 안쪽 쿼리가 바깥쪽 행의 값을 참조하는 구조가 되어버렸다. 어디서부터 손을 대야 할지 막막함을 느꼈다.</p>
+<p>오늘 강사님의 피드백과 직접 실행해보며 확실히 잡힌 키워드들이다. 단일값 서브쿼리는 안쪽 쿼리가 하나의 값만 반환할 때 =를 쓰고, 다중행 서브쿼리는 여러 개의 값을 반환할 때 IN을 사용한다. 상관 서브쿼리의 핵심은 &ldquo;안쪽 SELECT가 바깥 SELECT의 컬럼을 참조한다&quot;는 점이며, 이는 매 행마다 다시 실행된다는 생각이 가장 중요하다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>서브쿼리는 반환되는 값의 개수에 따라 <code>=</code>나 <code>IN</code>을 사용하며, 안쪽 쿼리가 바깥 쿼리의 컬럼을 참조하는 &lsquo;상관 서브쿼리&rsquo;는 행마다 재실행된다는 점을 이해해야 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 문제 1: 단일값 서브쿼리 패턴 (안쪽 쿼리가 하나의 값 반환)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> empno, ename, sal
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> emp
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> deptno <span style="color:#f92672">=</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span> deptno
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">FROM</span> dept
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">WHERE</span> dname <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;RESEARCH&#39;</span>
+</span></span><span style="display:flex;"><span>);
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 문제 2: 다중행 서브쿼리 패턴 (안쪽 쿼리가 여러 값 반환)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> empno, ename, sal
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> emp
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> deptno <span style="color:#66d9ef">IN</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span> deptno
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">FROM</span> dept
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">WHERE</span> loc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;DALLAS&#39;</span>
+</span></span><span style="display:flex;"><span>);
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 문제 3: 단일값 서브쿼리 패턴 (급여 등급 비교)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> empno, ename, sal, grade
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> emp e, salgrade s
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> e.sal <span style="color:#66d9ef">BETWEEN</span> s.losal <span style="color:#66d9ef">AND</span> s.hisal
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">AND</span> s.grade <span style="color:#f92672">=</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span> grade
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">FROM</span> salgrade
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">WHERE</span> losal <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">2000</span> <span style="color:#66d9ef">AND</span> hisal <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">2000</span>
+</span></span><span style="display:flex;"><span>);
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 문제 5: 상관 서브쿼리 패턴 (안쪽 쿼리가 바깥 행의 값을 참조)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> e.ename, e.deptno, (
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">COUNT</span>(<span style="color:#f92672">*</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">FROM</span> emp mgr
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">WHERE</span> mgr.mgr <span style="color:#f92672">=</span> e.empno
+</span></span><span style="display:flex;"><span>) <span style="color:#66d9ef">as</span> sub_staff_count
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> emp e;
+</span></span></code></pre></div><h2 id="2-join-종류별-데이터-유지-전략-inneroutercross-구분하기">2. JOIN 종류별 데이터 유지 전략: INNER·OUTER·CROSS 구분하기<a hidden class="anchor" aria-hidden="true" href="#2-join-종류별-데이터-유지-전략-inneroutercross-구분하기">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>JOIN을 이해할 때 가장 중요한 첫 단계는 연결 고리(Join Condition)를 먼저 확정하는 것이다. 이 한 줄이 정해지면, 이후 JOIN 종류는 &ldquo;일치하지 않는 행을 어떻게 처리할 것인가&quot;의 문제로 단순화된다. 특히 LEFT와 RIGHT OUTER JOIN은 이름만 보고 직관적으로 어떤 데이터가 남는지 파악하기 어려우나, &lsquo;어느 쪽 데이터를 끝까지 유지할 것인가&rsquo;라는 관점으로 전환하면 이해가 쉬워진다. CROSS JOIN은 조건 없이 모든 조합을 생성하는 Cartesian Product이므로, 실무에서는 자동 연결되는 컬럼이 의도치 않게 늘어나지 않을까 봐 USING이나 NATURAL JOIN 사용에 주의를 기울여야 한다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음 JOIN을 배울 때와 비슷하게, 새로운 테이블 구조를 마주하니 &lsquo;왼쪽&rsquo;과 &lsquo;오른쪽&rsquo;의 기준이 다시 설렜다. 특히 <code>LEFT</code>와 <code>RIGHT OUTER JOIN</code>은 이름만 보고 직관적으로 어떤 데이터가 남는지 파악하기 어려웠다.</p>
+<p>가장 중요한 첫 단계는 **연결 고리(Join Condition)**를 먼저 확정하는 것이다. 이 한 줄이 정해지면, 이후 JOIN 종류는 **&ldquo;일치하지 않는 행을 어떻게 처리할 것인가&rdquo;**의 문제로 단순화된다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>JOIN 연산은 연결 고리(Join Condition)를 먼저 확정한 뒤, 일치하지 않는 행을 어떻게 처리할 것인가에 따라 종류가 단순화된다. INNER JOIN은 양쪽 테이블에 모두 존재하는 행만 반환하고, LEFT·RIGHT OUTER JOIN은 각각 왼쪽 또는 오른쪽 테이블의 모든 행을 유지한다. CROSS JOIN은 조건 없이 두 테이블의 모든 경우의 수를 조합해 Cartesian Product를 생성한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> e.ename, d.dname
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> emp e <span style="color:#66d9ef">JOIN</span> dept d <span style="color:#66d9ef">ON</span> e.deptno <span style="color:#f92672">=</span> d.deptno;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> e.ename, d.dname
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> emp e <span style="color:#66d9ef">LEFT</span> <span style="color:#66d9ef">OUTER</span> <span style="color:#66d9ef">JOIN</span> dept d <span style="color:#66d9ef">ON</span> e.deptno <span style="color:#f92672">=</span> d.deptno;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> e.ename, d.dname
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> emp e <span style="color:#66d9ef">RIGHT</span> <span style="color:#66d9ef">OUTER</span> <span style="color:#66d9ef">JOIN</span> dept d <span style="color:#66d9ef">ON</span> e.deptno <span style="color:#f92672">=</span> d.deptno;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> e.ename, d.dname
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> emp e <span style="color:#66d9ef">CROSS</span> <span style="color:#66d9ef">JOIN</span> dept d;
+</span></span></code></pre></div><h2 id="3-sql-합집합과-차집합-개념-정리">3. SQL 합집합과 차집합 개념 정리<a hidden class="anchor" aria-hidden="true" href="#3-sql-합집합과-차집합-개념-정리">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>UNION은 SELECT문의 결과를 행 방향으로 이어 붙이는 합집합 연산이며, UNION ALL은 중복을 포함해 더 빠르게 처리할 수 있다. INTERSECT는 두 쿼리 결과에 공통으로 존재하는 값만 추출하는 교집합 연산이다. NOT IN은 첫 번째 결과에서 두 번째 결과에 포함되지 않는 값을 제거하여 차집합을 만드는 방식이다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>UNION은 행을 이어 붙이는 수직 결합이고, JOIN은 열을 확장하는 가로 결합이라는 점이 가장 큰 차이였다.</p>
+<p>INTERSECT는 두 결과에 모두 존재하는 값만 남기는 &lsquo;교집합&rsquo; 개념이지만, 일반적인 JOIN의 등가조인과 목적이나 구조가 다르다는 점을 명확히 구분해야 했다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>UNION은 SELECT문의 결과를 행 방향으로 이어 붙여 세로로 긴 표를 만드는 반면, INTERSECT는 두 결과 집합에 공통으로 존재하는 값만 추출하고, NOT IN은 첫 번째 결과에서 두 번째 결과에 포함되지 않는 값을 제외하여 차집합을 만든다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- UNION: 중복 제거된 합집합 (행 추가)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> deptno <span style="color:#66d9ef">FROM</span> dept
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">UNION</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> deptno <span style="color:#66d9ef">FROM</span> emp;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- UNION ALL: 중복 포함된 합집합 (빠름)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> deptno <span style="color:#66d9ef">FROM</span> dept
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">ALL</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> deptno <span style="color:#66d9ef">FROM</span> emp;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- INTERSECT: 교집합 (공통된 값만 남김)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> deptno <span style="color:#66d9ef">FROM</span> dept
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INTERSECT</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> deptno <span style="color:#66d9ef">FROM</span> emp;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- NOT IN: 차집합 (첫 번째에서 두 번째에 없는 값 추출)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> emp <span style="color:#66d9ef">WHERE</span> deptno <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">IN</span> (<span style="color:#66d9ef">SELECT</span> deptno <span style="color:#66d9ef">FROM</span> dept);
+</span></span></code></pre></div><h2 id="4-auto_increment_primary_key의_연관성">4. auto_increment_primary_key의_연관성<a hidden class="anchor" aria-hidden="true" href="#4-auto_increment_primary_key의_연관성">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>AUTO_INCREMENT는 단순히 번호를 자동 생성하는 기능이 아니라, 반드시 PRIMARY KEY와 결합하여 식별자와 자동 증가 기능을 동시에 수행하는 속성입니다. MariaDB에서는 AUTO_INCREMENT 컬럼이 key/index로 지정되어 있어야 정상적으로 작동한다는 점이 초보자에게 반직관적으로 느껴질 수 있습니다. 이를 통해 데이터베이스 구조상 PK와 AI 속성이 결합해야 비로소 자동 번호 생성이 가능하다는 것을 명확히 이해할 수 있었습니다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>AUTO_INCREMENT는 단순히 번호를 자동 생성하는 기능이 아니라, PRIMARY KEY와 결합하여 행을 식별하고 값을 자동으로 증가시키는 속성입니다.</p>
+<p>MariaDB에서는 AUTO_INCREMENT 컬럼이 반드시 key/index로 지정되어야 정상적으로 작동하며, 이는 &lsquo;식별자 역할&rsquo;과 &lsquo;자동 증가 속성&rsquo;이 동시에 필요하기 때문입니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>AUTO_INCREMENT는 PRIMARY KEY와 결합하여 행을 식별하는 동시에 자동으로 숫자를 생성하는 속성입니다. MariaDB에서는 이 컬럼이 반드시 key/index로 지정되어야 정상적으로 작동합니다. 따라서 테이블 생성 시 PRIMARY KEY AUTO_INCREMENT를 함께 정의하면, 새 데이터가 삽입될 때마다 고유하고 증가하는 번호가 자동으로 할당됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 1. 테이블 생성 시 AUTO_INCLUDE 설정 (코드에 맞게 수정)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> auto_inc(
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">no</span> INT(<span style="color:#ae81ff">10</span>) <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> AUTO_INCREMENT,
+</span></span><span style="display:flex;"><span>    name VARCHAR(<span style="color:#ae81ff">50</span>)
+</span></span><span style="display:flex;"><span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 2. 데이터 삽입 (자동 번호 할당)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> auto_inc(name) <span style="color:#66d9ef">VALUES</span>(<span style="color:#e6db74">&#39;철수&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> auto_inc(name) <span style="color:#66d9ef">VALUES</span>(<span style="color:#e6db74">&#39;영희&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 3. 조회
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> auto_inc;
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>관계형 데이터베이스의 핵심은 단순히 문법을 외우는 것이 아니라, 쿼리 간의 의존 관계와 테이블 구조를 이해하는 사고력에 있음을 깨달았다. JOIN을 배울 때는 연결 조건 하나만 명확히 정해도 종류별 동작 원리가 &lsquo;일치 여부 처리&rsquo;로 단순화되어 훨씬 직관적으로 다가왔다. 마지막으로 AUTO_INCREMENT가 PRIMARY KEY와 반드시 결합해야 작동한다는 점은, 데이터베이스 설계에서 속성 간의 필수적인 연관성을 다시 한번 확인하게 되는 계기가 되었다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>오늘 배운 상관 서브쿼리와 JOIN 전략을 실무에 적용할 때는 &lsquo;값의 개수&rsquo;와 &lsquo;데이터 유지 방향&rsquo;을 반드시 확인하는 습관을 들일 것이다. 특히 LEFT OUTER JOIN과 RIGHT OUTER JOIN은 직관적으로 파악하기 어려우니, &lsquo;어느 쪽 데이터를 끝까지 유지할 것인가&rsquo;를 기준으로 조건을 설정해 실수를 방지해야 한다. 마지막으로 UNION이나 NOT IN 등 집합 연산을 사용할 때는 중복 처리와 포함 여부를 정확히 검증하여 의도치 않은 데이터 누락이 없도록 주의하겠다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>관련 서브쿼리에서 바깥 행과 안쪽 쿼리의 값 참조 관계를 명확히 파악하는 연습을 더 해야겠다. JOIN 종류별로 &lsquo;어떤 데이터를 유지할 것인가&rsquo;를 결정하는 Join Condition의 역할과, LEFT/RIGHT OUTER JOIN의 데이터 유지 방향을 시각화하는 훈련이 필요하다. UNION·INTERSECT·NOT IN 등 집합 연산자의 동작 원리와 중복 제거 여부에 따른 성능 차이를 정확히 구분하는 복습이 필요해 보인다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-09-21-am-daily/">
+    <span class="title">« Prev</span>
+    <span>오전 학습 | PRIMARY KEY와 UPSERT를 통한 데이터 무결성 확보</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-09-18-am-daily/">
+    <span class="title">Next »</span>
+    <span>오전 학습 | MariaDB DDL과 utf8mb4 설정 요약</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

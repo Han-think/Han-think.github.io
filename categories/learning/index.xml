@@ -6,8 +6,22 @@
     <description>Recent content in Learning on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Fri, 18 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 21 Sep 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/categories/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>오전 학습 | PRIMARY KEY와 UPSERT를 통한 데이터 무결성 확보</title>
+      <link>https://Han-think.github.io/learning/2026-09-21-am-daily/</link>
+      <pubDate>Mon, 21 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-21-am-daily/</guid>
+      <description>2026-09-21 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>오후 학습 | 상관 서브쿼리 패턴과 JOIN 전략 이해</title>
+      <link>https://Han-think.github.io/learning/2026-09-21-pm-daily/</link>
+      <pubDate>Mon, 21 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-21-pm-daily/</guid>
+      <description>2026-09-21 오후 학습 정리</description>
+    </item>
     <item>
       <title>오전 학습 | MariaDB DDL과 utf8mb4 설정 요약</title>
       <link>https://Han-think.github.io/learning/2026-09-18-am-daily/</link>

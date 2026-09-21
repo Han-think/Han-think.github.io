@@ -6,8 +6,50 @@
     <description>Recent content in Tags on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Fri, 18 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 20 Sep 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ai-Orchestration</title>
+      <link>https://Han-think.github.io/tags/ai-orchestration/</link>
+      <pubDate>Sun, 20 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/ai-orchestration/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Content-Validation</title>
+      <link>https://Han-think.github.io/tags/content-validation/</link>
+      <pubDate>Sun, 20 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/content-validation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Deterministic-Ai</title>
+      <link>https://Han-think.github.io/tags/deterministic-ai/</link>
+      <pubDate>Sun, 20 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/deterministic-ai/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Local-Llm</title>
+      <link>https://Han-think.github.io/tags/local-llm/</link>
+      <pubDate>Sun, 20 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/local-llm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Python</title>
+      <link>https://Han-think.github.io/tags/python/</link>
+      <pubDate>Sun, 20 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/python/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Synapse</title>
+      <link>https://Han-think.github.io/tags/synapse/</link>
+      <pubDate>Sun, 20 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/synapse/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Agent</title>
       <link>https://Han-think.github.io/tags/agent/</link>
@@ -205,13 +247,6 @@
       <description></description>
     </item>
     <item>
-      <title>Local-Llm</title>
-      <link>https://Han-think.github.io/tags/local-llm/</link>
-      <pubDate>Thu, 03 Sep 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/local-llm/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Open-Source</title>
       <link>https://Han-think.github.io/tags/open-source/</link>
       <pubDate>Thu, 03 Sep 2026 00:00:00 +0000</pubDate>
@@ -317,7 +352,7 @@
       <description></description>
     </item>
     <item>
-      <title>House Prices</title>
+      <title>House-Prices</title>
       <link>https://Han-think.github.io/tags/house-prices/</link>
       <pubDate>Mon, 20 Jul 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/house-prices/</guid>
@@ -751,13 +786,6 @@
       <description></description>
     </item>
     <item>
-      <title>Python</title>
-      <link>https://Han-think.github.io/tags/python/</link>
-      <pubDate>Tue, 23 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/python/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Sql</title>
       <link>https://Han-think.github.io/tags/sql/</link>
       <pubDate>Tue, 23 Jun 2026 00:00:00 +0000</pubDate>
@@ -765,7 +793,7 @@
       <description></description>
     </item>
     <item>
-      <title>SQLite</title>
+      <title>Sqlite</title>
       <link>https://Han-think.github.io/tags/sqlite/</link>
       <pubDate>Tue, 23 Jun 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/sqlite/</guid>

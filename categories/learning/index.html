@@ -203,6 +203,37 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">오전 학습 | PRIMARY KEY와 UPSERT를 통한 데이터 무결성 확보
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 PRIMARY KEY와 UPSERT의 연결 고리 RDBMS 관계와 참조 무결성 이해하기 dept/emp 관계에서 서브쿼리의 핵심: PK-FK 연결 흐름 1. PRIMARY KEY와 UPSERT의 연결 고리 무엇을 배웠나 PRIMARY KEY는 테이블당 하나라는 제약조건을 가지며, 컬럼이 하나뿐일 필요는 없고 여러 컬럼을 조합해 복합키로 설정할 수 있음을 깨달았다. ALTER TABLE 문을 사용해 기존 테이블에 키를 추가하는 과정은 DB 구조에 기능을 부착하는 듯한 낯설음이 있었지만, 문법 자체는 간단했다. UPSERT에서 ON DUPLICATE KEY UPDATE가 PRIMARY KEY가 실제로 설정되어 있어야만 중복 판정과 업데이트가 작동한다는 점을 실감하며, 키가 스위치 역할을 한다는 것을 체감할 수 있었다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-21 00:00:00 +0000 UTC'>2026년 9월 21일</span>&nbsp;·&nbsp;<span>7 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오전 학습 | PRIMARY KEY와 UPSERT를 통한 데이터 무결성 확보" href="https://Han-think.github.io/learning/2026-09-21-am-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">오후 학습 | 상관 서브쿼리 패턴과 JOIN 전략 이해
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 상관 서브쿼리의 핵심 이해 JOIN 종류별 데이터 유지 전략: INNER·OUTER·CROSS 구분하기 SQL 합집합과 차집합 개념 정리 auto_increment_primary_key의_연관성 총평 1. 상관 서브쿼리의 핵심 이해 무엇을 배웠나 오늘은 dept와 emp 테이블 구조에 익숙해지는 데 집중했다. 특히 문제 5처럼 안쪽 쿼리가 바깥 행의 값을 참조하는 상관 서브쿼리 패턴을 이해하는 것이 가장 중요하다고 느꼈다. ‘값 하나면 =, 여러 개면 IN’이라는 단순한 규칙을 넘어, 쿼리의 의존 관계를 파악하는 사고가 필요하다는 점을 깨달았다.
+헷갈렸던 점 오전에 이어 오후에 sub_query.sql 문제 1~5를 풀었다. 전반적으로 “SELECT로 중간 결과를 먼저 뽑아보는 습관&#34;은 잡혀 있었는데, 테이블이 dept와 emp로 바뀌니 컬럼 이름과 테이블 관계도 다시 머릿속에 그렸다는 점이 가장 큰 혼란이었다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-21 00:00:00 +0000 UTC'>2026년 9월 21일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오후 학습 | 상관 서브쿼리 패턴과 JOIN 전략 이해" href="https://Han-think.github.io/learning/2026-09-21-pm-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">오전 학습 | MariaDB DDL과 utf8mb4 설정 요약
     </h2>
   </header>
@@ -321,38 +352,6 @@
 
 <span title='2026-09-15 00:00:00 +0000 UTC'>2026년 9월 15일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
   <a class="entry-link" aria-label="post link to 오후 학습 | Conditional Edge와 LangGraph 구조, 인프라 개념까지 오늘의 핵심 정리" href="https://Han-think.github.io/learning/2026-09-15-pm-daily/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오전 학습 | LLM 스트리밍 구조와 GPU 실행 경로 이해
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 LLM 스트리밍 구조 핵심 개념 정리 GPU 스택 차이와 실행 경로의 오해 FastAPI와 Hugging Face 모델 통합 구조 정리 총평 1. LLM 스트리밍 구조 핵심 개념 정리 무엇을 배웠나 비동기 함수와 제너레이터가 결합된 형태를 이해하는 데 집중했다. async와 await는 I/O 대기 중 흐름을 양보하는 장치이며, yield는 함수를 종료하지 않고 값을 한 조각 뱉고 일시 정지하는 기능이다. 이를 통해 StreamingResponse가 제너레이터가 뿜어낸 조각들을 HTTP 응답으로 감싸주는 구조임을 명확히 파악했다.
-헷갈렸던 점 async, await, yield가 단순히 비동기나 반복과 관련된 키워드인지, 실제로는 I/O 흐름을 양보하고 값을 일시 정지했다가 이어주는 제너레이터의 핵심 기능인지 구분이 안 갔다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-14 00:00:00 +0000 UTC'>2026년 9월 14일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오전 학습 | LLM 스트리밍 구조와 GPU 실행 경로 이해" href="https://Han-think.github.io/learning/2026-09-14-am-daily/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오후 학습 | 멀티모달 입력 파이프라인 통합의 핵심
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 멀티모달 입력 파이프라인 기본 공식 파일 업로드와 FormData 연결 고리 소스코드와 모델 파일의 분리 총평 1. 멀티모달 입력 파이프라인 기본 공식 무엇을 배웠나 멀티모달 모델 입력은 이미지와 텍스트가 별도 경로가 아닌 하나의 메시지 구조로 통합된다는 점이 핵심이었다. processor를 통해 시각 정보와 텍스트가 섞인 텐서 형태로 변환되는 과정을 이해하는 것이 모델 활용의 시작점이다. 특히 프롬프트 길이만큼 잘라내는 후처리 단계는 생성된 답안을 정확히 추출하는 데 필수적이다.
-헷갈렸던 점 처음 멀티모달 모델을 접했을 때, 이미지와 텍스트가 별도의 경로로 전달된다고 생각했던 것이 가장 큰 오해였습니다. 실제로는 이미지가 텍스트와 섞여 하나의 message 안에 담기며, 이를 처리하는 processor 단계가 필수적입니다. 모델에 바로 입력하면 구조를 이해하지 못해 혼란을 겪을 수 있어, 입력 전처리 과정이 얼마나 중요한지 깨닫게 되었습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-14 00:00:00 +0000 UTC'>2026년 9월 14일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오후 학습 | 멀티모달 입력 파이프라인 통합의 핵심" href="https://Han-think.github.io/learning/2026-09-14-pm-daily/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
