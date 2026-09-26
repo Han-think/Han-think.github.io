@@ -3,21 +3,27 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://Han-think.github.io/categories/</loc>
-    <lastmod>2026-09-21T00:00:00+00:00</lastmod>
+    <lastmod>2026-09-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/</loc>
-    <lastmod>2026-09-21T00:00:00+00:00</lastmod>
+    <lastmod>2026-09-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/categories/learning/</loc>
-    <lastmod>2026-09-21T00:00:00+00:00</lastmod>
+    <lastmod>2026-09-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/learning/2026-09-23-am-daily/</loc>
+    <lastmod>2026-09-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/learning/2026-09-23-pm-daily/</loc>
+    <lastmod>2026-09-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/learning/</loc>
+    <lastmod>2026-09-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/learning/2026-09-21-am-daily/</loc>
     <lastmod>2026-09-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/learning/2026-09-21-pm-daily/</loc>
-    <lastmod>2026-09-21T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/learning/</loc>
     <lastmod>2026-09-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/ai-orchestration/</loc>
@@ -29,10 +35,10 @@
     <loc>https://Han-think.github.io/tags/deterministic-ai/</loc>
     <lastmod>2026-09-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://Han-think.github.io/tags/local-llm/</loc>
+    <loc>https://Han-think.github.io/categories/dev/</loc>
     <lastmod>2026-09-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://Han-think.github.io/categories/projects/</loc>
+    <loc>https://Han-think.github.io/tags/local-llm/</loc>
     <lastmod>2026-09-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/python/</loc>
@@ -41,13 +47,13 @@
     <loc>https://Han-think.github.io/tags/synapse/</loc>
     <lastmod>2026-09-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://Han-think.github.io/projects/2026-09-20-synapse-mini-deterministic-ai-structure/</loc>
+    <loc>https://Han-think.github.io/dev/2026-09-20-synapse-mini-deterministic-ai-structure/</loc>
     <lastmod>2026-09-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/</loc>
     <lastmod>2026-09-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://Han-think.github.io/projects/</loc>
+    <loc>https://Han-think.github.io/dev/</loc>
     <lastmod>2026-09-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/research/weekly-ai-2026-09-18/</loc>
@@ -509,6 +515,9 @@
     <loc>https://Han-think.github.io/tags/project/</loc>
     <lastmod>2026-07-20T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://Han-think.github.io/categories/projects/</loc>
+    <lastmod>2026-07-20T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://Han-think.github.io/tags/projects/</loc>
     <lastmod>2026-07-20T00:00:00+00:00</lastmod>
   </url><url>
@@ -531,6 +540,9 @@
     <lastmod>2026-07-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/learning/2026-07-20-pm-daily/</loc>
+    <lastmod>2026-07-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/projects/</loc>
     <lastmod>2026-07-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/data-analysis/</loc>
@@ -587,9 +599,6 @@
     <loc>https://Han-think.github.io/projects/python-package-environment-reference/</loc>
     <lastmod>2026-07-16T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://Han-think.github.io/categories/dev/</loc>
-    <lastmod>2026-07-15T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://Han-think.github.io/tags/experiment-tracking/</loc>
     <lastmod>2026-07-15T00:00:00+00:00</lastmod>
   </url><url>
@@ -624,9 +633,6 @@
     <lastmod>2026-07-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/voice-cloning/</loc>
-    <lastmod>2026-07-15T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/dev/</loc>
     <lastmod>2026-07-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/dev/2026-07-15-tablegame-cloned-tts-01-voice-cache-kit/</loc>

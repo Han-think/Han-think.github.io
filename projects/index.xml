@@ -6,15 +6,8 @@
     <description>Recent content in 프로젝트 on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Sun, 20 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 20 Jul 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/projects/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Synapse mini — AI에게 프로젝트의 구조를 맡기지 않기</title>
-      <link>https://Han-think.github.io/projects/2026-09-20-synapse-mini-deterministic-ai-structure/</link>
-      <pubDate>Sun, 20 Sep 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/projects/2026-09-20-synapse-mini-deterministic-ai-structure/</guid>
-      <description>아이디어를 파일 구조로 바꾸고, 모델의 결과를 쓰기 전에 구조적으로 확인하는 읽기 전용 AI 오케스트레이션 도구를 만들었다.</description>
-    </item>
     <item>
       <title>0.88188에서 0.95005까지, Kaggle 예측 모델을 리듬ON 서비스 제안으로 연결한 기록</title>
       <link>https://Han-think.github.io/projects/2026-07-20-kaggle-s6e7-rhythmon-project-retrospective/</link>
