@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오전 학습 | FastAPI 회원가입 DB 연결 및 INSERT 흐름 정리 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-09-28 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-09-28-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-09-28-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-09-28-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오전 학습 | FastAPI 회원가입 DB 연결 및 INSERT 흐름 정리">
+  <meta property="og:description" content="2026-09-28 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-09-28T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-09-28T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오전 학습 | FastAPI 회원가입 DB 연결 및 INSERT 흐름 정리">
+  <meta name="twitter:description" content="2026-09-28 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오전 학습 | FastAPI 회원가입 DB 연결 및 INSERT 흐름 정리",
+      "item": "https://Han-think.github.io/learning/2026-09-28-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오전 학습 | FastAPI 회원가입 DB 연결 및 INSERT 흐름 정리",
+  "name": "오전 학습 | FastAPI 회원가입 DB 연결 및 INSERT 흐름 정리",
+  "description": "2026-09-28 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 FastAPI 회원가입 DB 연결 및 INSERT 흐름 정리 트랜잭션과 bcrypt 해시 처리 이해하기 bcrypt 비밀번호 검증 흐름 이해하기 프론트엔드 (JavaScript + Axios) 백엔드 (Python + SQLAlchemy + bcrypt) 총평 1. FastAPI 회원가입 DB 연결 및 INSERT 흐름 정리 무엇을 배웠나 FastAPI와 SQLAlchemy를 활용한 DB 연결 흐름을 get_conn() → SQL 작성 → execute() → 결과 fetch 순서로 파악했다. 특히 /overlay와 /join 엔드포인트가 SELECT/INSERT 차이 외에는 구조가 동일하다는 점을 이해하는 것이 핵심이었다. 또한 quote_plus()는 비밀번호 특수문제로 인한 URL 파싱 오류를 방지하기 위한 보안 처리임을 명확히 했다.\n헷갈렸던 점 처음에는 get_conn(), text(), execute() 등 다양한 메서드들이 난무해 전체 흐름이 하나의 연결된 과정인지 개별 기능인지 구분하기 어려웠습니다. 특히 quote_plus 같은 함수가 DB 접속과 무슨 연관이 있는지 의아해했으며, 이것이 실제 접속 실패로 이어질지 몰랐습니다. 가장 큰 혼란은 지난주 병원 일정으로 인해 09_db_conn과 10_member_join 사이의 연결 고리를 놓쳐, 여러 메서드들이 독립적으로 튀어나온 것처럼 느껴졌던 점입니다.\n정리된 이해 FastAPI에서 DB 연결은 get_conn()을 통해 시작되며, 이후 text()로 SQL을 작성하고 execute()로 실행한 뒤 mappings().fetchone() 또는 fetchall()로 결과를 받아오는 표준 흐름을 반복합니다. 특히 /overlay는 중복 체크를 위한 SELECT, /join은 데이터 생성을 위한 INSERT를 수행하지만, 이 두 엔드포인트의 전체적인 요청→응답 경로는 구조적으로 동일합니다. URL 구성 시 비밀번호에 특수문자가 포함될 경우 발생할 수 있는 파싱 오류를 방지하기 위해 quote_plus() 함수가 사용된다는 점도 반드시 기억해야 합니다.\n# FastAPI DB 연결 및 중복 체크 흐름 (SELECT) @app.get(\"/overlay\") def check_overlay(id: str): conn = get_conn() # 1. DB 연결 획득 sql = text(\"SELECT id FROM member WHERE id = :id\") # 2. SQL 작성 (파라미터 바인딩) result = conn.execute(sql, {\"id\": id}).mappings().fetchone() # 3. 실행 및 결과 fetch return {\"exists\": result is not None} # 4. JSON 응답 반환 # FastAPI INSERT 흐름 (가입 처리) @app.get(\"/join\") def join_member(id: str, pwd: str): conn = get_conn() # 1. DB 연결 획득 sql = text(\"INSERT INTO member (id, pwd) VALUES (:id, :pwd)\") # 2. SQL 작성 conn.execute(sql, {\"id\": id, \"pwd\": pwd}) # 3. INSERT 실행 (commit은 별도 또는 세션 종료 시 자동) return {\"message\": \"가입 완료\"} 2. 트랜잭션과 bcrypt 해시 처리 이해하기 무엇을 배웠나 execute()는 SQL 문을 실행하고, commit()으로 변경사항을 DB에 영구 저장하며, rollback()은 오류 발생 시 이전 상태로 되돌리는 것이다. bcrypt는 비밀번호를 해시하여 복구가 불가능하게 만들지만, 로그인 시 입력한 평문과 저장된 해시 값을 비교해 인증을 수행한다. transaction의 commit과 rollback을 통해 데이터 일관성을 유지하고, hash 함수의 특성을 이해함으로써 비밀번호 처리 메커니즘을 정확히 파악할 수 있게 되었다.\n헷갈렸던 점 execute()는 단순히 SQL을 실행하는 것뿐만 아니라, commit()을 통해야 비로소 데이터베이스에 영구적으로 반영된다는 점이었습니다. 또한 bcrypt가 비밀번호를 복호화하여 확인하는 것이 아니라, 입력한 평문과 저장된 해시 값을 비교하는 일방향 함수라는 점에서 처음에는 원문의 재생성 여부가 불투명했습니다.\n정리된 이해 execute()는 SQL 문을 데이터베이스에 실행하는 것이고, commit()을 통해야 비로소 변경 사항이 영구적으로 저장된다. bcrypt는 비밀번호를 복호화할 수 없는 일방향 해시 함수로, 로그인 시 입력한 평문과 저장된 해시 값을 비교하여 인증을 수행한다.\n# 트랜잭션 흐름 예시 (SQLAlchemy 기반) try: # 1. SQL 실행 (INSERT, UPDATE 등) result = conn.execute(sql, info) row = result.rowcount # 2. 성공 여부 확인 후 확정 if row \u003e 0: conn.commit() # 변경사항 DB에 저장 except Exception as e: # 3. 오류 발생 시 롤백 logger.error(e) conn.rollback() finally: # 4. 연결 종료 (필요시) pass # bcrypt 비밀번호 검증 예시 import bcrypt # 회원가입 시: 평문 비밀번호를 해싱하여 저장 hashed_pw = bcrypt.hashpw(plain_password.encode('utf-8'), bcrypt.gensalt()) # DB에 hashed_pw (바이트 형태) 저장 # 로그인 시: 입력된 비밀번호와 stored_hash 비교 if bcrypt.checkpw(input_password.encode('utf-8'), stored_hash): # 인증 성공 pass else: # 인증 실패 pass 3. bcrypt 비밀번호 검증 흐름 이해하기 무엇을 배웠나 회원가입 시 비밀번호를 해시화해 DB에 저장하고, 로그인 단계에서는 사용자가 입력한 평문과 DB에 있는 해시를 비교하여 일치 여부만을 판별한다는 사실을 깨달았다. 처음에는 함수 이름이 달라서 비밀번호 복호화 과정인지 혼란스러웠지만, 서버가 비밀번호를 원래 상태로 되찾는 것이 아니라 단순히 검증하는 역할임을 이해하니 흐름이 단순해졌다.\n헷갈렸던 점 비밀번호를 ‘복호화’하는 게 아니라, 입력값과 DB 해시를 단순히 ‘비교’한다는 점이 가장 혼란스러웠습니다. 회원가입 시 비밀번호를 해시로 변환해 저장한다는 건 알았지만, 로그인 단계에서 왜 또 다른 함수(matches)가 필요한지 감이 안 잡혔습니다.\n정리된 이해 회원가입 시 평문 비밀번호를 해시로 변환해 DB에 저장하고, 로그인은 사용자가 입력한 값을 DB에 있는 해시와 비교해 일치 여부만 판별하는 방식입니다. 서버는 비밀번호를 복호화하거나 원래 상태로 되돌리지 않으며, 단순히 인증 과정을 거쳐 접근을 허가합니다.\n로그인 흐름 핵심 코드 프론트엔드 (JavaScript + Axios) const param = { id: $('input[name=\"id\"]').val(), pw: $('input[name=\"pw\"]').val() }; const { data } = await axios.post('/login', param); 백엔드 (Python + SQLAlchemy + bcrypt) # 1. ID로 사용자 조회 sql = text(\"SELECT pw FROM member WHERE id = :id\") result = conn.execute(sql, {\"id\": user_id}) stored_hash = result.scalar_one_or_none() # 2. 입력된 비밀번호와 DB 해시 비교 if bcrypt.checkpw(user_pw, stored_hash): # 로그인 성공 ... else: # 로그인 실패 ... 총평 오늘 오전 전체에서 배운 것 FastAPI와 SQLAlchemy를 활용한 DB 연결 흐름과 트랜잭션 제어 메커니즘을 정리했다. 특히 비밀번호 보안 처리를 위해 quote_plus()를 사용하고, bcrypt를 통해 해시화된 비밀번호를 검증하는 로직의 차이를 명확히 이해하였다.\n다음에 조심할 것 DB 연결 및 트랜잭션 관리: get_conn()을 통해 DB 세션을 확보한 후, SQL 실행 전 반드시 commit()으로 영구 저장 여부를 확인하고 예외 발생 시 rollback()로 데이터 무결성을 유지하는 흐름을 명확히 해야 한다. 비밀번호 보안 처리: bcrypt를 이용한 해시화와 검증 과정은 복호화가 아닌 일치 여부 판별임을 인지해야 하며, URL 연결 시 특수문제 이슈를 방지하기 위해 quote_plus() 사용을 필수로 체크해야 한다. 엔드포인트 구조 통일성: /overlay(SELECT)와 /join(INSERT)의 코드 구조가 유사하므로, 쿼리 작성 부분만 차별화하여 중복된 흐름을 효율적으로 관리하고 실수 없이 구현하는 습관을 들여야 한다. 다음 복습 주제 FastAPI와 SQLAlchemy를 활용한 CRUD 흐름에서 commit()과 rollback()의 시점 차이점을 확실히 구분하는 것이 중요하다. 특히 트랜잭션 처리 중 예외가 발생했을 때 데이터 무결성을 해치지 않기 위해 rollback()을 언제 호출해야 하는지 연습해 볼 필요가 있다.\n비밀번호 보안과 관련하여 bcrypt와 같은 해시 함수의 원리와 특성을 정확히 이해하는 것이 필요하다. 비밀번호를 평문 상태로 저장하지 않고 해싱하는 과정뿐만 아니라, 로그인 시 입력값과 stored hash를 비교하는 검증 로직이 어떻게 동작하는지 흐름도를 그려보며 숙지해야 한다.\nFastAPI 라우트 설계 시 엔드포인트별로 수행되는 SQL 문의 종류(SELECT vs INSERT 등)와 파라미터 전달 방식을 명확히 구분하는 연습을 해야 한다. 특히 quote_plus()와 같은 인코딩 함수가 URL 파싱 오류를 예방하는 역할을 한다는 점을 실제 코드에서 직접 확인하며 적용해 보는 것이 좋다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "979",
+  "inLanguage": "en",
+  "datePublished": "2026-09-28T00:00:00Z",
+  "dateModified": "2026-09-28T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-09-28-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오전 학습 | FastAPI 회원가입 DB 연결 및 INSERT 흐름 정리
+    </h1>
+    <div class="post-description">
+      2026-09-28 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-09-28 00:00:00 +0000 UTC'>2026년 9월 28일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-fastapi-%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85-db-%EC%97%B0%EA%B2%B0-%EB%B0%8F-insert-%ED%9D%90%EB%A6%84-%EC%A0%95%EB%A6%AC">FastAPI 회원가입 DB 연결 및 INSERT 흐름 정리</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98%EA%B3%BC-bcrypt-%ED%95%B4%EC%8B%9C-%EC%B2%98%EB%A6%AC-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">트랜잭션과 bcrypt 해시 처리 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-bcrypt-%EB%B9%84%EB%B0%80%EB%B2%88%ED%98%B8-%EA%B2%80%EC%A6%9D-%ED%9D%90%EB%A6%84-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">bcrypt 비밀번호 검증 흐름 이해하기</a></li>
+</ol>
+</li>
+<li><a href="#%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-javascript-axios">프론트엔드 (JavaScript + Axios)</a></li>
+<li><a href="#%EB%B0%B1%EC%97%94%EB%93%9C-python-sqlalchemy-bcrypt">백엔드 (Python + SQLAlchemy + bcrypt)</a></li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-fastapi-회원가입-db-연결-및-insert-흐름-정리">1. FastAPI 회원가입 DB 연결 및 INSERT 흐름 정리<a hidden class="anchor" aria-hidden="true" href="#1-fastapi-회원가입-db-연결-및-insert-흐름-정리">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>FastAPI와 SQLAlchemy를 활용한 DB 연결 흐름을 <code>get_conn()</code> → SQL 작성 → <code>execute()</code> → 결과 fetch 순서로 파악했다. 특히 <code>/overlay</code>와 <code>/join</code> 엔드포인트가 SELECT/INSERT 차이 외에는 구조가 동일하다는 점을 이해하는 것이 핵심이었다. 또한 <code>quote_plus()</code>는 비밀번호 특수문제로 인한 URL 파싱 오류를 방지하기 위한 보안 처리임을 명확히 했다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>처음에는 <code>get_conn()</code>, <code>text()</code>, <code>execute()</code> 등 다양한 메서드들이 난무해 전체 흐름이 하나의 연결된 과정인지 개별 기능인지 구분하기 어려웠습니다. 특히 <code>quote_plus</code> 같은 함수가 DB 접속과 무슨 연관이 있는지 의아해했으며, 이것이 실제 접속 실패로 이어질지 몰랐습니다. 가장 큰 혼란은 지난주 병원 일정으로 인해 <code>09_db_conn</code>과 <code>10_member_join</code> 사이의 연결 고리를 놓쳐, 여러 메서드들이 독립적으로 튀어나온 것처럼 느껴졌던 점입니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>FastAPI에서 DB 연결은 <code>get_conn()</code>을 통해 시작되며, 이후 <code>text()</code>로 SQL을 작성하고 <code>execute()</code>로 실행한 뒤 <code>mappings().fetchone()</code> 또는 <code>fetchall()</code>로 결과를 받아오는 표준 흐름을 반복합니다. 특히 <code>/overlay</code>는 중복 체크를 위한 <code>SELECT</code>, <code>/join</code>은 데이터 생성을 위한 <code>INSERT</code>를 수행하지만, 이 두 엔드포인트의 전체적인 요청→응답 경로는 구조적으로 동일합니다. URL 구성 시 비밀번호에 특수문자가 포함될 경우 발생할 수 있는 파싱 오류를 방지하기 위해 <code>quote_plus()</code> 함수가 사용된다는 점도 반드시 기억해야 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># FastAPI DB 연결 및 중복 체크 흐름 (SELECT)</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/overlay&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_overlay</span>(id: str):
+</span></span><span style="display:flex;"><span>    conn <span style="color:#f92672">=</span> get_conn()  <span style="color:#75715e"># 1. DB 연결 획득</span>
+</span></span><span style="display:flex;"><span>    sql <span style="color:#f92672">=</span> text(<span style="color:#e6db74">&#34;SELECT id FROM member WHERE id = :id&#34;</span>)  <span style="color:#75715e"># 2. SQL 작성 (파라미터 바인딩)</span>
+</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> conn<span style="color:#f92672">.</span>execute(sql, {<span style="color:#e6db74">&#34;id&#34;</span>: id})<span style="color:#f92672">.</span>mappings()<span style="color:#f92672">.</span>fetchone()  <span style="color:#75715e"># 3. 실행 및 결과 fetch</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;exists&#34;</span>: result <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span>}  <span style="color:#75715e"># 4. JSON 응답 반환</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># FastAPI INSERT 흐름 (가입 처리)</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/join&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">join_member</span>(id: str, pwd: str):
+</span></span><span style="display:flex;"><span>    conn <span style="color:#f92672">=</span> get_conn()  <span style="color:#75715e"># 1. DB 연결 획득</span>
+</span></span><span style="display:flex;"><span>    sql <span style="color:#f92672">=</span> text(<span style="color:#e6db74">&#34;INSERT INTO member (id, pwd) VALUES (:id, :pwd)&#34;</span>)  <span style="color:#75715e"># 2. SQL 작성</span>
+</span></span><span style="display:flex;"><span>    conn<span style="color:#f92672">.</span>execute(sql, {<span style="color:#e6db74">&#34;id&#34;</span>: id, <span style="color:#e6db74">&#34;pwd&#34;</span>: pwd})  <span style="color:#75715e"># 3. INSERT 실행 (commit은 별도 또는 세션 종료 시 자동)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;가입 완료&#34;</span>}
+</span></span></code></pre></div><h2 id="2-트랜잭션과-bcrypt-해시-처리-이해하기">2. 트랜잭션과 bcrypt 해시 처리 이해하기<a hidden class="anchor" aria-hidden="true" href="#2-트랜잭션과-bcrypt-해시-처리-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>execute()는 SQL 문을 실행하고, commit()으로 변경사항을 DB에 영구 저장하며, rollback()은 오류 발생 시 이전 상태로 되돌리는 것이다. bcrypt는 비밀번호를 해시하여 복구가 불가능하게 만들지만, 로그인 시 입력한 평문과 저장된 해시 값을 비교해 인증을 수행한다. transaction의 commit과 rollback을 통해 데이터 일관성을 유지하고, hash 함수의 특성을 이해함으로써 비밀번호 처리 메커니즘을 정확히 파악할 수 있게 되었다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p><code>execute()</code>는 단순히 SQL을 실행하는 것뿐만 아니라, <code>commit()</code>을 통해야 비로소 데이터베이스에 영구적으로 반영된다는 점이었습니다. 또한 bcrypt가 비밀번호를 복호화하여 확인하는 것이 아니라, 입력한 평문과 저장된 해시 값을 비교하는 일방향 함수라는 점에서 처음에는 원문의 재생성 여부가 불투명했습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p><code>execute()</code>는 SQL 문을 데이터베이스에 실행하는 것이고, <code>commit()</code>을 통해야 비로소 변경 사항이 영구적으로 저장된다. bcrypt는 비밀번호를 복호화할 수 없는 일방향 해시 함수로, 로그인 시 입력한 평문과 저장된 해시 값을 비교하여 인증을 수행한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 트랜잭션 흐름 예시 (SQLAlchemy 기반)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 1. SQL 실행 (INSERT, UPDATE 등)</span>
+</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> conn<span style="color:#f92672">.</span>execute(sql, info)
+</span></span><span style="display:flex;"><span>    row <span style="color:#f92672">=</span> result<span style="color:#f92672">.</span>rowcount
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 2. 성공 여부 확인 후 확정</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> row <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>        conn<span style="color:#f92672">.</span>commit()  <span style="color:#75715e"># 변경사항 DB에 저장</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 3. 오류 발생 시 롤백</span>
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>error(e)
+</span></span><span style="display:flex;"><span>    conn<span style="color:#f92672">.</span>rollback()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">finally</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 4. 연결 종료 (필요시)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># bcrypt 비밀번호 검증 예시</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> bcrypt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 회원가입 시: 평문 비밀번호를 해싱하여 저장</span>
+</span></span><span style="display:flex;"><span>hashed_pw <span style="color:#f92672">=</span> bcrypt<span style="color:#f92672">.</span>hashpw(plain_password<span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#39;utf-8&#39;</span>), bcrypt<span style="color:#f92672">.</span>gensalt())
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># DB에 hashed_pw (바이트 형태) 저장</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 로그인 시: 입력된 비밀번호와 stored_hash 비교</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> bcrypt<span style="color:#f92672">.</span>checkpw(input_password<span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#39;utf-8&#39;</span>), stored_hash):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 인증 성공</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 인증 실패</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span>
+</span></span></code></pre></div><h2 id="3-bcrypt-비밀번호-검증-흐름-이해하기">3. bcrypt 비밀번호 검증 흐름 이해하기<a hidden class="anchor" aria-hidden="true" href="#3-bcrypt-비밀번호-검증-흐름-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>회원가입 시 비밀번호를 해시화해 DB에 저장하고, 로그인 단계에서는 사용자가 입력한 평문과 DB에 있는 해시를 비교하여 일치 여부만을 판별한다는 사실을 깨달았다. 처음에는 함수 이름이 달라서 비밀번호 복호화 과정인지 혼란스러웠지만, 서버가 비밀번호를 원래 상태로 되찾는 것이 아니라 단순히 검증하는 역할임을 이해하니 흐름이 단순해졌다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>비밀번호를 &lsquo;복호화&rsquo;하는 게 아니라, 입력값과 DB 해시를 단순히 &lsquo;비교&rsquo;한다는 점이 가장 혼란스러웠습니다.
+회원가입 시 비밀번호를 해시로 변환해 저장한다는 건 알았지만, 로그인 단계에서 왜 또 다른 함수(<code>matches</code>)가 필요한지 감이 안 잡혔습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>회원가입 시 평문 비밀번호를 해시로 변환해 DB에 저장하고, 로그인은 사용자가 입력한 값을 DB에 있는 해시와 비교해 일치 여부만 판별하는 방식입니다. 서버는 비밀번호를 복호화하거나 원래 상태로 되돌리지 않으며, 단순히 인증 과정을 거쳐 접근을 허가합니다.</p>
+<h1 id="로그인-흐름-핵심-코드">로그인 흐름 핵심 코드<a hidden class="anchor" aria-hidden="true" href="#로그인-흐름-핵심-코드">#</a></h1>
+<h2 id="프론트엔드-javascript--axios">프론트엔드 (JavaScript + Axios)<a hidden class="anchor" aria-hidden="true" href="#프론트엔드-javascript--axios">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">param</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;input[name=&#34;id&#34;]&#39;</span>).<span style="color:#a6e22e">val</span>(),
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">pw</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;input[name=&#34;pw&#34;]&#39;</span>).<span style="color:#a6e22e">val</span>()
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">data</span> } <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">axios</span>.<span style="color:#a6e22e">post</span>(<span style="color:#e6db74">&#39;/login&#39;</span>, <span style="color:#a6e22e">param</span>);
+</span></span></code></pre></div><h2 id="백엔드-python--sqlalchemy--bcrypt">백엔드 (Python + SQLAlchemy + bcrypt)<a hidden class="anchor" aria-hidden="true" href="#백엔드-python--sqlalchemy--bcrypt">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 1. ID로 사용자 조회</span>
+</span></span><span style="display:flex;"><span>sql <span style="color:#f92672">=</span> text(<span style="color:#e6db74">&#34;SELECT pw FROM member WHERE id = :id&#34;</span>)
+</span></span><span style="display:flex;"><span>result <span style="color:#f92672">=</span> conn<span style="color:#f92672">.</span>execute(sql, {<span style="color:#e6db74">&#34;id&#34;</span>: user_id})
+</span></span><span style="display:flex;"><span>stored_hash <span style="color:#f92672">=</span> result<span style="color:#f92672">.</span>scalar_one_or_none()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. 입력된 비밀번호와 DB 해시 비교</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> bcrypt<span style="color:#f92672">.</span>checkpw(user_pw, stored_hash):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 로그인 성공</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 로그인 실패</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>FastAPI와 SQLAlchemy를 활용한 DB 연결 흐름과 트랜잭션 제어 메커니즘을 정리했다. 특히 비밀번호 보안 처리를 위해 <code>quote_plus()</code>를 사용하고, bcrypt를 통해 해시화된 비밀번호를 검증하는 로직의 차이를 명확히 이해하였다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<ol>
+<li><strong>DB 연결 및 트랜잭션 관리</strong>: <code>get_conn()</code>을 통해 DB 세션을 확보한 후, SQL 실행 전 반드시 <code>commit()</code>으로 영구 저장 여부를 확인하고 예외 발생 시 <code>rollback()</code>로 데이터 무결성을 유지하는 흐름을 명확히 해야 한다.</li>
+<li><strong>비밀번호 보안 처리</strong>: bcrypt를 이용한 해시화와 검증 과정은 복호화가 아닌 일치 여부 판별임을 인지해야 하며, URL 연결 시 특수문제 이슈를 방지하기 위해 <code>quote_plus()</code> 사용을 필수로 체크해야 한다.</li>
+<li><strong>엔드포인트 구조 통일성</strong>: <code>/overlay</code>(SELECT)와 <code>/join</code>(INSERT)의 코드 구조가 유사하므로, 쿼리 작성 부분만 차별화하여 중복된 흐름을 효율적으로 관리하고 실수 없이 구현하는 습관을 들여야 한다.</li>
+</ol>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>FastAPI와 SQLAlchemy를 활용한 CRUD 흐름에서 <code>commit()</code>과 <code>rollback()</code>의 시점 차이점을 확실히 구분하는 것이 중요하다. 특히 트랜잭션 처리 중 예외가 발생했을 때 데이터 무결성을 해치지 않기 위해 <code>rollback()</code>을 언제 호출해야 하는지 연습해 볼 필요가 있다.</p>
+<p>비밀번호 보안과 관련하여 bcrypt와 같은 해시 함수의 원리와 특성을 정확히 이해하는 것이 필요하다. 비밀번호를 평문 상태로 저장하지 않고 해싱하는 과정뿐만 아니라, 로그인 시 입력값과 stored hash를 비교하는 검증 로직이 어떻게 동작하는지 흐름도를 그려보며 숙지해야 한다.</p>
+<p>FastAPI 라우트 설계 시 엔드포인트별로 수행되는 SQL 문의 종류(SELECT vs INSERT 등)와 파라미터 전달 방식을 명확히 구분하는 연습을 해야 한다. 특히 <code>quote_plus()</code>와 같은 인코딩 함수가 URL 파싱 오류를 예방하는 역할을 한다는 점을 실제 코드에서 직접 확인하며 적용해 보는 것이 좋다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://Han-think.github.io/learning/2026-09-28-pm-daily/">
+    <span class="title">Next »</span>
+    <span>오후 학습 | JWT 기반 인증과 RAG Vector DB 개념 정리</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

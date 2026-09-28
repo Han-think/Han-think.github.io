@@ -256,6 +256,16 @@
       <ul class="roadmap-post-list">
         <li class="roadmap-post-item">
           <span class="item-dot">◆</span>
+          <a href="https://Han-think.github.io/learning/2026-09-28-am-daily/">오전 학습 | FastAPI 회원가입 DB 연결 및 INSERT 흐름 정리</a>
+          <time class="item-date">09-28</time>
+        </li>
+        <li class="roadmap-post-item">
+          <span class="item-dot">◆</span>
+          <a href="https://Han-think.github.io/learning/2026-09-28-pm-daily/">오후 학습 | JWT 기반 인증과 RAG Vector DB 개념 정리</a>
+          <time class="item-date">09-28</time>
+        </li>
+        <li class="roadmap-post-item">
+          <span class="item-dot">◆</span>
           <a href="https://Han-think.github.io/learning/2026-09-23-am-daily/">오전 학습 | SQL 프롬프트 경계 확인과 employees DB 이력 관리, 팀 이동 사원 ID 추출</a>
           <time class="item-date">09-23</time>
         </li>
@@ -268,16 +278,6 @@
           <span class="item-dot">◆</span>
           <a href="https://Han-think.github.io/learning/2026-09-21-am-daily/">오전 학습 | PRIMARY KEY와 UPSERT를 통한 데이터 무결성 확보</a>
           <time class="item-date">09-21</time>
-        </li>
-        <li class="roadmap-post-item">
-          <span class="item-dot">◆</span>
-          <a href="https://Han-think.github.io/learning/2026-09-21-pm-daily/">오후 학습 | 상관 서브쿼리 패턴과 JOIN 전략 이해</a>
-          <time class="item-date">09-21</time>
-        </li>
-        <li class="roadmap-post-item">
-          <span class="item-dot">◆</span>
-          <a href="https://Han-think.github.io/learning/2026-09-18-am-daily/">오전 학습 | MariaDB DDL과 utf8mb4 설정 요약</a>
-          <time class="item-date">09-18</time>
         </li>
       </ul>
       <a href="/learning/" class="roadmap-more-link">학습 보기 →</a>
@@ -351,6 +351,36 @@
 
 </div>
 
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">오전 학습 | FastAPI 회원가입 DB 연결 및 INSERT 흐름 정리
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 FastAPI 회원가입 DB 연결 및 INSERT 흐름 정리 트랜잭션과 bcrypt 해시 처리 이해하기 bcrypt 비밀번호 검증 흐름 이해하기 프론트엔드 (JavaScript &#43; Axios) 백엔드 (Python &#43; SQLAlchemy &#43; bcrypt) 총평 1. FastAPI 회원가입 DB 연결 및 INSERT 흐름 정리 무엇을 배웠나 FastAPI와 SQLAlchemy를 활용한 DB 연결 흐름을 get_conn() → SQL 작성 → execute() → 결과 fetch 순서로 파악했다. 특히 /overlay와 /join 엔드포인트가 SELECT/INSERT 차이 외에는 구조가 동일하다는 점을 이해하는 것이 핵심이었다. 또한 quote_plus()는 비밀번호 특수문제로 인한 URL 파싱 오류를 방지하기 위한 보안 처리임을 명확히 했다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-28 00:00:00 +0000 UTC'>2026년 9월 28일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오전 학습 | FastAPI 회원가입 DB 연결 및 INSERT 흐름 정리" href="https://Han-think.github.io/learning/2026-09-28-am-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">오후 학습 | JWT 기반 인증과 RAG Vector DB 개념 정리
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 JWT 기반 로그인 인증 연결하기 💻 실습 예시 RAG와 Vector DB, 개념 정리의 핵심 metadata 조건 검색과 upsert 데이터 관리 총평 1. JWT 기반 로그인 인증 연결하기 무엇을 배웠나 JWT는 로그인 자체를 처리하는 것이 아니라, 로그인 후 후속 요청에서 사용자가 인증된 상태임을 증명하기 위한 토큰입니다. 서버는 로그인 직후의 상태를 자동으로 기억하지 않기 때문에, 이후 모든 요청에 token을 Authorization 헤더에 실어 재검증을 받아야 합니다. 실습을 통해 token은 Python으로 secret key로 암호화해 생성하고, 브라우저에서는 sessionStorage에 저장한 뒤 다음 요청 시 header에 실어 보내는 흐름을 확인했습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-28 00:00:00 +0000 UTC'>2026년 9월 28일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오후 학습 | JWT 기반 인증과 RAG Vector DB 개념 정리" href="https://Han-think.github.io/learning/2026-09-28-pm-daily/"></a>
+</article>
 
 <article class="post-entry"> 
   <header class="entry-header">
@@ -473,37 +503,6 @@
 
 <span title='2026-09-17 00:00:00 +0000 UTC'>2026년 9월 17일</span>&nbsp;·&nbsp;<span>7 min</span></footer>
   <a class="entry-link" aria-label="post link to 오후 학습 | 오후에 배운 FastAPI와 Ollama, MariaDB 핵심 정리" href="https://Han-think.github.io/learning/2026-09-17-pm-daily/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오전 학습 | LangGraph Loop 구조와 LLM 검증 파이프라인
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 LangGraph Loop: writer와 critic 연결 이해하기 Critic JSON 판정과 결정론적 가드레일: LLM 평가와 Python 검증 결합 1. LangGraph Loop: writer와 critic 연결 이해하기 무엇을 배웠나 LangGraph의 Loop는 단순한 while 반복문이 아니라, State를 유지한 채 Node 간 Edge가 연결된 구조라는 점을 명확히 이해하게 되었습니다. 특히 router가 결정하는 경로에 따라 이전 Node인 writer로 돌아가는 방식이, 일반적인 코드 흐름과 어떻게 다른지 감을 잡는 데 도움이 되었습니다. writer, critic, router의 역할 분담이 명확해지면서 전체 파이프라인 구조가 훨씬 직관적이고 관리하기 쉬워졌다는 느낌을 받았습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-16 00:00:00 +0000 UTC'>2026년 9월 16일</span>&nbsp;·&nbsp;<span>8 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오전 학습 | LangGraph Loop 구조와 LLM 검증 파이프라인" href="https://Han-think.github.io/learning/2026-09-16-am-daily/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오후 학습 | 상태 보존과 재개를 통한 AI-사람 협업 흐름
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 인터럽트와 메모리: 사람과 AI가 이어주는 흐름 사람이 승인하고 router가 길을 여는 ‘human loop 그래프 재개: update_state와 invoke(None)의 조합 총평 1. 인터럽트와 메모리: 사람과 AI가 이어주는 흐름 무엇을 배웠나 interrupt_after, MemorySaver, thread_id, get_state()가 하나의 흐름 속에서 어떻게 상호작용하는지 이해하게 되었다. 핵심은 상태를 보존하며 멈췄다가 사람 확인 후 다시 실행하는 ‘일시정지 및 재개’ 패턴이다. 이를 통해 그래프 실행 중간에 사람의 개입을 자연스럽게 유도할 수 있게 되었다.
-헷갈렸던 점 가장 큰 혼란은 interrupt_after, MemorySaver, thread_id, get_state() 같은 용어가 각각 독립적인 개념처럼 보여서 전체 흐름을 잡기 어려웠습니다. ‘멈춤(interrupt)‘이라는 행위와 ‘상태 저장(MemorySaver)’, ‘세션 구분(thread_id)’, ‘확인(get_state)‘가 어떻게 맞물려 도는지 감이 안 잡혔습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-16 00:00:00 +0000 UTC'>2026년 9월 16일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오후 학습 | 상태 보존과 재개를 통한 AI-사람 협업 흐름" href="https://Han-think.github.io/learning/2026-09-16-pm-daily/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
