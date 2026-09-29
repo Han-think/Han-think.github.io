@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오전 학습 | 메타데이터로 ChromaDB 조건 검색과 PDF RAG 전처리 이해하기 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-09-29 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-09-29-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-09-29-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-09-29-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오전 학습 | 메타데이터로 ChromaDB 조건 검색과 PDF RAG 전처리 이해하기">
+  <meta property="og:description" content="2026-09-29 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-09-29T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-09-29T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오전 학습 | 메타데이터로 ChromaDB 조건 검색과 PDF RAG 전처리 이해하기">
+  <meta name="twitter:description" content="2026-09-29 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오전 학습 | 메타데이터로 ChromaDB 조건 검색과 PDF RAG 전처리 이해하기",
+      "item": "https://Han-think.github.io/learning/2026-09-29-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오전 학습 | 메타데이터로 ChromaDB 조건 검색과 PDF RAG 전처리 이해하기",
+  "name": "오전 학습 | 메타데이터로 ChromaDB 조건 검색과 PDF RAG 전처리 이해하기",
+  "description": "2026-09-29 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 metadata로 ChromaDB 조건 검색 복습 PDF RAG 파이프라인 전처리 과정 RAG 단계별 이해: 검색·증강·생성 총평 1. metadata로 ChromaDB 조건 검색 복습 무엇을 배웠나 오늘은 metadata를 활용한 검색 조건(where) 사용법을 정리했습니다. 특히 $and, $or 같은 논리 연산자의 차이를 명확히 이해하는 데 집중했습니다. 반복되는 학습 패턴 속에서 ‘넣기’와 ‘찾아내기’ 단계의 목적 차이를 인식할 수 있었습니다.\n헷갈렸던 점 처음에는 metadata를 문서에 붙이는 ‘넣기’ 단계와, 조건을 걸어 검색하는 ‘찾아내기’ 단계를 같은 도구로 사용한다는 점이 직관적이지 않았습니다. 특히 $and와 $or의 차이를 머릿속으로 그리기가 어려웠고, 두 연산자가 단순히 True/False를 판별하는 것이 아니라 문서 전체를 걸러내는 필터 역할을 한다는 점을 명확히 구분하지 못해 혼란스러웠습니다.\n정리된 이해 metadata는 문서에 붙이는 속성이고, where 절은 그 속성을 이용해 검색 범위를 제한하는 필터입니다. $and 연산자는 모든 조건을 동시에 만족해야만 결과가 반환되며, $or 연산자는 조건 중 하나만 충족해도 결과를 포함합니다. 오늘 배운 이 두 가지 개념을 통해 metadata를 활용한 정밀한 데이터 탐색이 가능해졌습니다.\n# 1. 단일 조건 검색 (year \u003e= 2023) res = coll.query( query_texts=[\"공부할 자료\"], n_results=2, where={\"year\": {\"$gte\": 2023}} ) # 2. AND 연산자: 모든 조건을 만족해야 함 # official이면서 python인 문서만 조회 res = coll.query( query_texts=[\"공부할 자료\"], n_results=2, where={\"$and\": [{\"official\": True}, {\"lang\": \"python\"}]} ) # 3. OR 연산자: 어느 하나만 만족하면 됨 # official이 아니거나 beginner 레벨이면 모두 조회 res = coll.query( query_texts=[\"공부할 자료\"], n_results=2, where={\"$or\": [{\"official\": False}, {\"level\": \"beginner\"}]} ) 2. PDF RAG 파이프라인 전처리 과정 무엇을 배웠나 PDF RAG 구현 과정에서 가장 큰 변화는 단순한 텍스트 입력에서 문서 전처리 파이프라인으로의 전환이었다. 특히 tiktoken을 활용한 토큰 길이 측정과 RecursiveCharacterTextSplitter를 통한 청크 분할 과정이 필수적임을 깨달았다. 단순히 DB에 저장하는 것보다, 검색 가능한 적절한 크기로 문서를 쪼개는 전처리 과정이 핵심이었다.\n헷갈렸던 점 가장 큰 혼란은 **“ChromaDB에 저장하는 과정이 반복된다”**는 점이었습니다. 어제는 단순한 문장을 DB에 넣었다면, 오늘은 PDF 전체를 읽고 전처리를 거친 후 저장하게 되었기 때문에, “어제 했던 작업과 오늘 하는 작업이 무엇이 다른가?“라는 의문이 들었습니다.\n특히 PersistentClient와 get_or_create_collection을 사용하는 코드 구조가 반복되어 보여, DB 조작 자체에 익숙해져 있는지, 아니면 문서 전처리 파이프라인에 집중해야 하는지 구분이 안 되었던 순간이 있었습니다. PDF라는 ‘큰 덩어리’를 다루다 보니, chunking 과정까지 포함된 전체 흐름이 한 번에 들어오기엔 양이 많았습니다.\n오늘의 핵심은 **ChromaDB 사용법 자체보다, “긴 문서를 검색 가능한 단위로 쪼개는 전처리 과정”**에 있습니다. PDF라는 큰 덩어리를 다루다 보니, 단순히 DB에 넣는 것을 넘어 텍스트를 적절한 크기로 가공하는 과정이 새로 추가된 것이 중요합니다.\n정리된 이해 오늘의 핵심은 PDF라는 큰 덩어리를 검색 가능한 단위로 가공하는 전처리 과정에 있었습니다. 단순히 DB에 저장하는 것보다, 텍스트를 추출한 뒤 토큰 길이를 측정하고 적절한 크기로 쪼개는 ‘청킹’ 과정이 필수적입니다. 이 과정을 거치지 않으면 LLM이 감당하기 너무 큰 텍스트가 되어 검색 성능이 저하됩니다.\nPDF RAG 실습: 전처리 및 ChromaDB 저장 핵심 코드 오늘 학습한 핵심 흐름은 PDF 텍스트 추출 → 토큰 길이 측정(Chunking) → DB 저장입니다. 아래는 해당 과정의 핵심 코드 예시입니다.\nimport fitz # PyMuPDF import tiktoken from langchain.text_splitter import RecursiveCharacterTextSplitter from langchain.vectorstores import Chroma from langchain.schema import Document # 1. PDF 읽기 및 텍스트 추출 def extract_text_from_pdf(pdf_path): doc = fitz.open(pdf_path) full_text = \"\" for page_num in range(len(doc)): page = doc.load_page(page_num) text = page.get_text(\"text\") full_text += text return full_text # 2. 토큰 길이 측정용 함수 정의 (tiktoken 사용) def num_tokens_from_string(string: str, encoding_name: str = \"cl100k_base\") -\u003e int: \"\"\"텍스트의 토큰 수를 계산합니다.\"\"\" encoding = tiktoken.get_encoding(encoding_name) return len(encoding.encode(string)) # 3. 청킹 (Chunking) 설정 및 실행 def chunk_documents(text, chunk_size=800, chunk_overlap=50): \"\"\" RecursiveCharacterTextSplitter를 사용하여 문서를 적절한 크기로 쪼갭니다. chunk_size: 한 청크의 최대 토큰 수 (예: 800) chunk_overlap: 인접 청크 사이의 겹치는 토큰 수 (예: 50) \"\"\" text_splitter = RecursiveCharacterTextSplitter( chunk_size=chunk_size, chunk_overlap=chunk_overlap, length_function=num_tokens_from_string, # 위에서 정의한 토큰 세는 함수 사용 is_separator_regex=False, ) # Document 객체로 변환 (메타데이터 포함) documents = [Document(page_content=text)] chunks = text_splitter.split_documents(documents) return chunks # 4. ChromaDB에 저장 def save_to_chroma(chunks, persist_directory=\"./chroma_db\"): \"\"\" 쪼개진 청크를 ChromaDB에 업서트(Upsert)합니다. \"\"\" # PersistentClient를 사용하여 기존 DB가 있다면 로드, 없다면 생성 vectordb = Chroma( persist_directory=persist_directory, embedding_function=None, # 실제 프로젝트에서는 HuggingFaceEmbeddings 등 사용 ) # 청크를 DB에 추가 (이미 존재하면 업데이트) # addDocuments는 LangChain의 표준 인터페이스입니다. vectordb.add_documents(chunks) vectordb.persist() print(f\"총 {len(chunks)}개의 청크가 ChromaDB에 저장되었습니다.\") return vectordb # --- 실행 예시 --- if __name__ == \"__main__\": pdf_file = \"example.pdf\" # 1. 텍스트 추출 raw_text = extract_text_from_pdf(pdf_file) # 2. 청킹 수행 (800 토큰 크기, 50 토큰 겹침) document_chunks = chunk_documents(raw_text, chunk_size=800, chunk_overlap=50) # 3. DB 저장 db = save_to_chroma(document_chunks) 3. RAG 단계별 이해: 검색·증강·생성 무엇을 배웠나 RAG 개념을 접하며 검색과 생성의 경계가 모호하다는 점이 가장 어려웠다. ChromaDB에서 검색한 chunk를 프롬프트에 넣는 과정이 ‘검색’인지 ‘문맥 추가’인지 구분하기 힘들었다. 오늘은 Retrieval, Augmentation, Generation의 3단계 구조와 각 단계의 역할을 명확히 이해했다. 특히 num_ctx와 num_predict 옵션을 조정하는 실습을 통해 LLM이 문맥을 얼마나 활용하는지 확인할 수 있었다.\nRAG의 핵심은 검색된 결과를 단순히 붙이는 것이 아니라, 모델이 답변을 생성할 수 있는 ‘유용한 문맥’으로 가공하는 Augmentation 과정에 있다. 이를 통해 LLM의 환각 현상을 줄이고 정확한 답변을 도출할 수 있다는 점이 인상 깊었다.\n헷갈렸던 점 처음 RAG 개념을 접했을 때 가장 막막했던 부분은 ‘검색’과 ‘생성’의 경계가 모호하다는 점이었습니다. 코드 흐름상 query → retrieval → context → prompt → LLL이 반복되다 보니, 이것이 정말 RAG인지 단순한 LLM 질의인지 구분이 안 갔습니다. 특히 ChromaDB에서 검색해온 chunk를 그대로 프롬프트에 넣는 과정이 ‘검색’인지 ‘문맥 추가’인지, 그리고 LLM이 그 문맥을 얼마나 활용하는지가 헷갈렸습니다.\n오늘 학습한 핵심은 RAG의 3단계 구조였습니다. 이전에는 코드 흐름에만 집중했다면, 이제는 각 단계의 역할과 목적을 명확히 구분했습니다. Retrieval는 ChromaDB 같은 벡터 데이터베이스에서 사용자의 질문에 의미적으로 관련된 chunk를 찾아내는 과정이며, Augmentation는 검색된 결과를 LLM이 답변을 생성할 수 있는 유용한 문맥으로 가공하는 과정입니다. Generation은 Retrieval와 Augmentation된 정보를 바탕으로 환각을 줄이고 정확한 답변을 생성해내는 단계입니다.\n정리된 이해 RAG는 검색, 문맥 가공, 답변 생성을 아우르는 3단계 과정입니다. Retrieval 단계에서 ChromaDB를 통해 의미적으로 관련된 청크를 찾고, Augmentation 단계에서 이를 프롬프트에 유용한 문맥으로 추가한 뒤, Generation 단계에서 LLM이 해당 정보를 바탕으로 환각을 최소화한 정확한 답변을 생성합니다.\n📝 학습 요약 Retrieval (검색): ChromaDB 등 벡터 DB에서 질문의 의미를 파악해 관련 청크를 검색하는 과정입니다. Augmentation (증강): 검색된 결과를 LLM이 답변을 생성할 수 있도록 프롬프트에 문맥으로 추가하는 과정입니다. Generation (생성): LLM이 retrieved와 augmented된 정보를 바탕으로 질문에 답변하는 최종 단계입니다. 🛠️ 실습 코드 # 1. 검색 (Retrieval) query = \"RAG의 기본 원리는 무엇인가?\" results = chroma_collection.query( query_texts=[query], n_results=3 # 상위 3개 청크 retrieval ) # 2. 증강 (Augmentation) contexts = results['documents'][0] prompt_template = f\"\"\"질문: {query} 참고 문맥: {contexts} 답변:\"\"\" # 3. 생성 (Generation) response = ollama.generate( model='llama3', prompt=prompt_template, options={ 'num_ctx': 4096, # 컨텍스트 창 크기 조정 'num_predict': 256 # 최대 토큰 수 제한 } ) print(response['response']) # 1. 검색 (Retrieval) query = \"RAG의 핵심 원리는 무엇인가요?\" results = chroma_collection.query( query_texts=[query], n_results=3 # 상위 3개 chunk 검색 ) # results에는 document, metadatas, ids가 포함됨 # 2. 증강 (Augmentation) contexts = results['documents'][0] # 검색된 문서들 추출 prompt_template = f\"\"\"질문: {query} 참고 문맥: {contexts[0]} 위 참고 문맥을 바탕으로 질문에 답해주세요.\"\"\" # 3. 생성 (Generation) response = ollama.generate( model='llama2', prompt=prompt_template, options={ 'num_ctx': 4096, # 컨텍스트 윈도우 크기 조절 'num_predict': 512 # 최대 토큰 수 제한 } ) print(response['response']) 총평 오늘 오전 전체에서 배운 것 오늘은 ChromaDB의 metadata 검색 조건과 $and, $or 같은 논리 연산자의 차이를 명확히 이해하는 데 집중했습니다. 또한 PDF RAG 파이프라인에서 텍스트를 적절한 크기로 쪼개는 전처리 과정, 특히 tiktoken을 통한 토큰 길이 측정과 RecursiveCharacterTextSplitter의 중요성을 깨닫았습니다. 마지막으로 Retrieval, Augmentation, Generation으로 구성된 RAG의 3단계 구조를 이해하며, 검색된 chunk가 단순히 프롬프트에 입력되는 것이 아니라 모델이 답변을 생성할 수 있는 ‘유용한 문맥’으로 가공되는 Augmentation 과정이 LLM의 환각 현상을 줄이는 핵심임을 확인했습니다.\n다음에 조심할 것 오늘은 metadata 검색 조건과 PDF RAG 전처리 파이프라인, 그리고 Retrieval-Augmentation-Generation 단계별 구조를 정리했습니다.\n특히 $and, $or 같은 논리 연산자의 차이를 명확히 이해하고, 단순한 텍스트 입력이 아닌 문서 전처리 과정의 중요성을 깨닫는 좋은 기회였습니다. 다음 학습에는 metadata 검색과 전처리 과정을 실제 적용해보며, 검색된 chunk가 모델에 유용한 문맥으로 전달될 수 있도록 세부 설정을 점검하는 데 집중하겠습니다.\n다음 복습 주제 다음 학습에서는 metadata 검색 시 $and, $or 등 논리 연산자의 조합 패턴을 다양하게 적용해보며, 조건에 맞는 문서를 정확히 필터링하는 실전 감각을 기를 계획이다. 또한 PDF 파이프라인에서 사용한 RecursiveCharacterTextSplitter의 분할 전략이 검색 성능에 미치는 영향을 분석하고, 청크 크기 조정이 Retrieval 단계의 정확도에 어떻게 영향을 주는지 구체적인 실험 결과를 통해 확인해보고자 한다. 마지막으로 RAG 전체 흐름에서 Augmentation 과정의 중요성을 재확인한 뒤, 실제 LLM에게 문맥을 제공할 때 프롬프트 구조를 어떻게 설계하면 모델이 정보를 가장 효율적으로 활용하는지 프롬프트 엔지니어링 관점에서 심화 학습하겠다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1319",
+  "inLanguage": "en",
+  "datePublished": "2026-09-29T00:00:00Z",
+  "dateModified": "2026-09-29T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-09-29-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오전 학습 | 메타데이터로 ChromaDB 조건 검색과 PDF RAG 전처리 이해하기
+    </h1>
+    <div class="post-description">
+      2026-09-29 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-09-29 00:00:00 +0000 UTC'>2026년 9월 29일</span>&nbsp;·&nbsp;<span>7 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-metadata%EB%A1%9C-chromadb-%EC%A1%B0%EA%B1%B4-%EA%B2%80%EC%83%89-%EB%B3%B5%EC%8A%B5">metadata로 ChromaDB 조건 검색 복습</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-pdf-rag-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EC%A0%84%EC%B2%98%EB%A6%AC-%EA%B3%BC%EC%A0%95">PDF RAG 파이프라인 전처리 과정</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-rag-%EB%8B%A8%EA%B3%84%EB%B3%84-%EC%9D%B4%ED%95%B4-%EA%B2%80%EC%83%89%EC%A6%9D%EA%B0%95%EC%83%9D%EC%84%B1">RAG 단계별 이해: 검색·증강·생성</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-metadata로-chromadb-조건-검색-복습">1. metadata로 ChromaDB 조건 검색 복습<a hidden class="anchor" aria-hidden="true" href="#1-metadata로-chromadb-조건-검색-복습">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>오늘은 <code>metadata</code>를 활용한 검색 조건(<code>where</code>) 사용법을 정리했습니다. 특히 <code>$and</code>, <code>$or</code> 같은 논리 연산자의 차이를 명확히 이해하는 데 집중했습니다. 반복되는 학습 패턴 속에서 &lsquo;넣기&rsquo;와 &lsquo;찾아내기&rsquo; 단계의 목적 차이를 인식할 수 있었습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>처음에는 metadata를 문서에 붙이는 &lsquo;넣기&rsquo; 단계와, 조건을 걸어 검색하는 &lsquo;찾아내기&rsquo; 단계를 같은 도구로 사용한다는 점이 직관적이지 않았습니다. 특히 <code>$and</code>와 <code>$or</code>의 차이를 머릿속으로 그리기가 어려웠고, 두 연산자가 단순히 True/False를 판별하는 것이 아니라 문서 전체를 걸러내는 필터 역할을 한다는 점을 명확히 구분하지 못해 혼란스러웠습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>metadata는 문서에 붙이는 속성이고, <code>where</code> 절은 그 속성을 이용해 검색 범위를 제한하는 필터입니다. <code>$and</code> 연산자는 모든 조건을 동시에 만족해야만 결과가 반환되며, <code>$or</code> 연산자는 조건 중 하나만 충족해도 결과를 포함합니다. 오늘 배운 이 두 가지 개념을 통해 metadata를 활용한 정밀한 데이터 탐색이 가능해졌습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 1. 단일 조건 검색 (year &gt;= 2023)</span>
+</span></span><span style="display:flex;"><span>res <span style="color:#f92672">=</span> coll<span style="color:#f92672">.</span>query(
+</span></span><span style="display:flex;"><span>    query_texts<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;공부할 자료&#34;</span>],
+</span></span><span style="display:flex;"><span>    n_results<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>    where<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;year&#34;</span>: {<span style="color:#e6db74">&#34;$gte&#34;</span>: <span style="color:#ae81ff">2023</span>}}
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. AND 연산자: 모든 조건을 만족해야 함</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># official이면서 python인 문서만 조회</span>
+</span></span><span style="display:flex;"><span>res <span style="color:#f92672">=</span> coll<span style="color:#f92672">.</span>query(
+</span></span><span style="display:flex;"><span>    query_texts<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;공부할 자료&#34;</span>],
+</span></span><span style="display:flex;"><span>    n_results<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>    where<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;$and&#34;</span>: [{<span style="color:#e6db74">&#34;official&#34;</span>: <span style="color:#66d9ef">True</span>}, {<span style="color:#e6db74">&#34;lang&#34;</span>: <span style="color:#e6db74">&#34;python&#34;</span>}]}
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. OR 연산자: 어느 하나만 만족하면 됨</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># official이 아니거나 beginner 레벨이면 모두 조회</span>
+</span></span><span style="display:flex;"><span>res <span style="color:#f92672">=</span> coll<span style="color:#f92672">.</span>query(
+</span></span><span style="display:flex;"><span>    query_texts<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;공부할 자료&#34;</span>],
+</span></span><span style="display:flex;"><span>    n_results<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>    where<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;$or&#34;</span>: [{<span style="color:#e6db74">&#34;official&#34;</span>: <span style="color:#66d9ef">False</span>}, {<span style="color:#e6db74">&#34;level&#34;</span>: <span style="color:#e6db74">&#34;beginner&#34;</span>}]}
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><h2 id="2-pdf-rag-파이프라인-전처리-과정">2. PDF RAG 파이프라인 전처리 과정<a hidden class="anchor" aria-hidden="true" href="#2-pdf-rag-파이프라인-전처리-과정">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>PDF RAG 구현 과정에서 가장 큰 변화는 단순한 텍스트 입력에서 문서 전처리 파이프라인으로의 전환이었다. 특히 <code>tiktoken</code>을 활용한 토큰 길이 측정과 <code>RecursiveCharacterTextSplitter</code>를 통한 청크 분할 과정이 필수적임을 깨달았다. 단순히 DB에 저장하는 것보다, 검색 가능한 적절한 크기로 문서를 쪼개는 전처리 과정이 핵심이었다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>가장 큰 혼란은 **&ldquo;ChromaDB에 저장하는 과정이 반복된다&rdquo;**는 점이었습니다. 어제는 단순한 문장을 DB에 넣었다면, 오늘은 PDF 전체를 읽고 전처리를 거친 후 저장하게 되었기 때문에, &ldquo;어제 했던 작업과 오늘 하는 작업이 무엇이 다른가?&ldquo;라는 의문이 들었습니다.</p>
+<p>특히 <code>PersistentClient</code>와 <code>get_or_create_collection</code>을 사용하는 코드 구조가 반복되어 보여, DB 조작 자체에 익숙해져 있는지, 아니면 문서 전처리 파이프라인에 집중해야 하는지 구분이 안 되었던 순간이 있었습니다. PDF라는 &lsquo;큰 덩어리&rsquo;를 다루다 보니, chunking 과정까지 포함된 전체 흐름이 한 번에 들어오기엔 양이 많았습니다.</p>
+<p>오늘의 핵심은 **ChromaDB 사용법 자체보다, &ldquo;긴 문서를 검색 가능한 단위로 쪼개는 전처리 과정&rdquo;**에 있습니다. PDF라는 큰 덩어리를 다루다 보니, 단순히 DB에 넣는 것을 넘어 텍스트를 적절한 크기로 가공하는 과정이 새로 추가된 것이 중요합니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>오늘의 핵심은 PDF라는 큰 덩어리를 검색 가능한 단위로 가공하는 전처리 과정에 있었습니다. 단순히 DB에 저장하는 것보다, 텍스트를 추출한 뒤 토큰 길이를 측정하고 적절한 크기로 쪼개는 &lsquo;청킹&rsquo; 과정이 필수적입니다. 이 과정을 거치지 않으면 LLM이 감당하기 너무 큰 텍스트가 되어 검색 성능이 저하됩니다.</p>
+<h1 id="pdf-rag-실습-전처리-및-chromadb-저장-핵심-코드">PDF RAG 실습: 전처리 및 ChromaDB 저장 핵심 코드<a hidden class="anchor" aria-hidden="true" href="#pdf-rag-실습-전처리-및-chromadb-저장-핵심-코드">#</a></h1>
+<p>오늘 학습한 핵심 흐름은 <strong>PDF 텍스트 추출 → 토큰 길이 측정(Chunking) → DB 저장</strong>입니다. 아래는 해당 과정의 핵심 코드 예시입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> fitz  <span style="color:#75715e"># PyMuPDF</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> tiktoken
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> langchain.text_splitter <span style="color:#f92672">import</span> RecursiveCharacterTextSplitter
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> langchain.vectorstores <span style="color:#f92672">import</span> Chroma
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> langchain.schema <span style="color:#f92672">import</span> Document
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. PDF 읽기 및 텍스트 추출</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">extract_text_from_pdf</span>(pdf_path):
+</span></span><span style="display:flex;"><span>    doc <span style="color:#f92672">=</span> fitz<span style="color:#f92672">.</span>open(pdf_path)
+</span></span><span style="display:flex;"><span>    full_text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> page_num <span style="color:#f92672">in</span> range(len(doc)):
+</span></span><span style="display:flex;"><span>        page <span style="color:#f92672">=</span> doc<span style="color:#f92672">.</span>load_page(page_num)
+</span></span><span style="display:flex;"><span>        text <span style="color:#f92672">=</span> page<span style="color:#f92672">.</span>get_text(<span style="color:#e6db74">&#34;text&#34;</span>)
+</span></span><span style="display:flex;"><span>        full_text <span style="color:#f92672">+=</span> text
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> full_text
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. 토큰 길이 측정용 함수 정의 (tiktoken 사용)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">num_tokens_from_string</span>(string: str, encoding_name: str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;cl100k_base&#34;</span>) <span style="color:#f92672">-&gt;</span> int:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;텍스트의 토큰 수를 계산합니다.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    encoding <span style="color:#f92672">=</span> tiktoken<span style="color:#f92672">.</span>get_encoding(encoding_name)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> len(encoding<span style="color:#f92672">.</span>encode(string))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. 청킹 (Chunking) 설정 및 실행</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">chunk_documents</span>(text, chunk_size<span style="color:#f92672">=</span><span style="color:#ae81ff">800</span>, chunk_overlap<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    RecursiveCharacterTextSplitter를 사용하여 문서를 적절한 크기로 쪼갭니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    chunk_size: 한 청크의 최대 토큰 수 (예: 800)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    chunk_overlap: 인접 청크 사이의 겹치는 토큰 수 (예: 50)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    text_splitter <span style="color:#f92672">=</span> RecursiveCharacterTextSplitter(
+</span></span><span style="display:flex;"><span>        chunk_size<span style="color:#f92672">=</span>chunk_size,
+</span></span><span style="display:flex;"><span>        chunk_overlap<span style="color:#f92672">=</span>chunk_overlap,
+</span></span><span style="display:flex;"><span>        length_function<span style="color:#f92672">=</span>num_tokens_from_string, <span style="color:#75715e"># 위에서 정의한 토큰 세는 함수 사용</span>
+</span></span><span style="display:flex;"><span>        is_separator_regex<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Document 객체로 변환 (메타데이터 포함)</span>
+</span></span><span style="display:flex;"><span>    documents <span style="color:#f92672">=</span> [Document(page_content<span style="color:#f92672">=</span>text)]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    chunks <span style="color:#f92672">=</span> text_splitter<span style="color:#f92672">.</span>split_documents(documents)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> chunks
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. ChromaDB에 저장</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">save_to_chroma</span>(chunks, persist_directory<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;./chroma_db&#34;</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    쪼개진 청크를 ChromaDB에 업서트(Upsert)합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># PersistentClient를 사용하여 기존 DB가 있다면 로드, 없다면 생성</span>
+</span></span><span style="display:flex;"><span>    vectordb <span style="color:#f92672">=</span> Chroma(
+</span></span><span style="display:flex;"><span>        persist_directory<span style="color:#f92672">=</span>persist_directory,
+</span></span><span style="display:flex;"><span>        embedding_function<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, <span style="color:#75715e"># 실제 프로젝트에서는 HuggingFaceEmbeddings 등 사용</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 청크를 DB에 추가 (이미 존재하면 업데이트)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># addDocuments는 LangChain의 표준 인터페이스입니다.</span>
+</span></span><span style="display:flex;"><span>    vectordb<span style="color:#f92672">.</span>add_documents(chunks)
+</span></span><span style="display:flex;"><span>    vectordb<span style="color:#f92672">.</span>persist()
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;총 </span><span style="color:#e6db74">{</span>len(chunks)<span style="color:#e6db74">}</span><span style="color:#e6db74">개의 청크가 ChromaDB에 저장되었습니다.&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> vectordb
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># --- 실행 예시 ---</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    pdf_file <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;example.pdf&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 1. 텍스트 추출</span>
+</span></span><span style="display:flex;"><span>    raw_text <span style="color:#f92672">=</span> extract_text_from_pdf(pdf_file)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 2. 청킹 수행 (800 토큰 크기, 50 토큰 겹침)</span>
+</span></span><span style="display:flex;"><span>    document_chunks <span style="color:#f92672">=</span> chunk_documents(raw_text, chunk_size<span style="color:#f92672">=</span><span style="color:#ae81ff">800</span>, chunk_overlap<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 3. DB 저장</span>
+</span></span><span style="display:flex;"><span>    db <span style="color:#f92672">=</span> save_to_chroma(document_chunks)
+</span></span></code></pre></div><h2 id="3-rag-단계별-이해-검색증강생성">3. RAG 단계별 이해: 검색·증강·생성<a hidden class="anchor" aria-hidden="true" href="#3-rag-단계별-이해-검색증강생성">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>RAG 개념을 접하며 검색과 생성의 경계가 모호하다는 점이 가장 어려웠다. ChromaDB에서 검색한 chunk를 프롬프트에 넣는 과정이 &lsquo;검색&rsquo;인지 &lsquo;문맥 추가&rsquo;인지 구분하기 힘들었다. 오늘은 Retrieval, Augmentation, Generation의 3단계 구조와 각 단계의 역할을 명확히 이해했다. 특히 <code>num_ctx</code>와 <code>num_predict</code> 옵션을 조정하는 실습을 통해 LLM이 문맥을 얼마나 활용하는지 확인할 수 있었다.</p>
+<p>RAG의 핵심은 검색된 결과를 단순히 붙이는 것이 아니라, 모델이 답변을 생성할 수 있는 &lsquo;유용한 문맥&rsquo;으로 가공하는 Augmentation 과정에 있다. 이를 통해 LLM의 환각 현상을 줄이고 정확한 답변을 도출할 수 있다는 점이 인상 깊었다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>처음 RAG 개념을 접했을 때 가장 막막했던 부분은 &lsquo;검색&rsquo;과 &lsquo;생성&rsquo;의 경계가 모호하다는 점이었습니다. 코드 흐름상 <code>query → retrieval → context → prompt → LLL</code>이 반복되다 보니, 이것이 정말 RAG인지 단순한 LLM 질의인지 구분이 안 갔습니다. 특히 ChromaDB에서 검색해온 chunk를 그대로 프롬프트에 넣는 과정이 &lsquo;검색&rsquo;인지 &lsquo;문맥 추가&rsquo;인지, 그리고 LLM이 그 문맥을 얼마나 활용하는지가 헷갈렸습니다.</p>
+<p>오늘 학습한 핵심은 RAG의 3단계 구조였습니다. 이전에는 코드 흐름에만 집중했다면, 이제는 각 단계의 역할과 목적을 명확히 구분했습니다. Retrieval는 ChromaDB 같은 벡터 데이터베이스에서 사용자의 질문에 의미적으로 관련된 chunk를 찾아내는 과정이며, Augmentation는 검색된 결과를 LLM이 답변을 생성할 수 있는 유용한 문맥으로 가공하는 과정입니다. Generation은 Retrieval와 Augmentation된 정보를 바탕으로 환각을 줄이고 정확한 답변을 생성해내는 단계입니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>RAG는 검색, 문맥 가공, 답변 생성을 아우르는 3단계 과정입니다. Retrieval 단계에서 ChromaDB를 통해 의미적으로 관련된 청크를 찾고, Augmentation 단계에서 이를 프롬프트에 유용한 문맥으로 추가한 뒤, Generation 단계에서 LLM이 해당 정보를 바탕으로 환각을 최소화한 정확한 답변을 생성합니다.</p>
+<h3 id="-학습-요약">📝 학습 요약<a hidden class="anchor" aria-hidden="true" href="#-학습-요약">#</a></h3>
+<ol>
+<li><strong>Retrieval (검색):</strong> ChromaDB 등 벡터 DB에서 질문의 의미를 파악해 관련 청크를 검색하는 과정입니다.</li>
+<li><strong>Augmentation (증강):</strong> 검색된 결과를 LLM이 답변을 생성할 수 있도록 프롬프트에 문맥으로 추가하는 과정입니다.</li>
+<li><strong>Generation (생성):</strong> LLM이 retrieved와 augmented된 정보를 바탕으로 질문에 답변하는 최종 단계입니다.</li>
+</ol>
+<h3 id="-실습-코드">🛠️ 실습 코드<a hidden class="anchor" aria-hidden="true" href="#-실습-코드">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 1. 검색 (Retrieval)</span>
+</span></span><span style="display:flex;"><span>query <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;RAG의 기본 원리는 무엇인가?&#34;</span>
+</span></span><span style="display:flex;"><span>results <span style="color:#f92672">=</span> chroma_collection<span style="color:#f92672">.</span>query(
+</span></span><span style="display:flex;"><span>    query_texts<span style="color:#f92672">=</span>[query],
+</span></span><span style="display:flex;"><span>    n_results<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>  <span style="color:#75715e"># 상위 3개 청크 retrieval</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. 증강 (Augmentation)</span>
+</span></span><span style="display:flex;"><span>contexts <span style="color:#f92672">=</span> results[<span style="color:#e6db74">&#39;documents&#39;</span>][<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>prompt_template <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;&#34;&#34;질문: </span><span style="color:#e6db74">{</span>query<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">참고 문맥:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">{</span>contexts<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">답변:&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. 생성 (Generation)</span>
+</span></span><span style="display:flex;"><span>response <span style="color:#f92672">=</span> ollama<span style="color:#f92672">.</span>generate(
+</span></span><span style="display:flex;"><span>    model<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;llama3&#39;</span>,
+</span></span><span style="display:flex;"><span>    prompt<span style="color:#f92672">=</span>prompt_template,
+</span></span><span style="display:flex;"><span>    options<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;num_ctx&#39;</span>: <span style="color:#ae81ff">4096</span>,   <span style="color:#75715e"># 컨텍스트 창 크기 조정</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;num_predict&#39;</span>: <span style="color:#ae81ff">256</span> <span style="color:#75715e"># 최대 토큰 수 제한</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(response[<span style="color:#e6db74">&#39;response&#39;</span>])
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 1. 검색 (Retrieval)</span>
+</span></span><span style="display:flex;"><span>query <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;RAG의 핵심 원리는 무엇인가요?&#34;</span>
+</span></span><span style="display:flex;"><span>results <span style="color:#f92672">=</span> chroma_collection<span style="color:#f92672">.</span>query(
+</span></span><span style="display:flex;"><span>    query_texts<span style="color:#f92672">=</span>[query],
+</span></span><span style="display:flex;"><span>    n_results<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>  <span style="color:#75715e"># 상위 3개 chunk 검색</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># results에는 document, metadatas, ids가 포함됨</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. 증강 (Augmentation)</span>
+</span></span><span style="display:flex;"><span>contexts <span style="color:#f92672">=</span> results[<span style="color:#e6db74">&#39;documents&#39;</span>][<span style="color:#ae81ff">0</span>]  <span style="color:#75715e"># 검색된 문서들 추출</span>
+</span></span><span style="display:flex;"><span>prompt_template <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;&#34;&#34;질문: </span><span style="color:#e6db74">{</span>query<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">참고 문맥:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">{</span>contexts[<span style="color:#ae81ff">0</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">위 참고 문맥을 바탕으로 질문에 답해주세요.&#34;&#34;&#34;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 3. 생성 (Generation)</span>
+</span></span><span style="display:flex;"><span>response <span style="color:#f92672">=</span> ollama<span style="color:#f92672">.</span>generate(
+</span></span><span style="display:flex;"><span>    model<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;llama2&#39;</span>,
+</span></span><span style="display:flex;"><span>    prompt<span style="color:#f92672">=</span>prompt_template,
+</span></span><span style="display:flex;"><span>    options<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;num_ctx&#39;</span>: <span style="color:#ae81ff">4096</span>,   <span style="color:#75715e"># 컨텍스트 윈도우 크기 조절</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;num_predict&#39;</span>: <span style="color:#ae81ff">512</span> <span style="color:#75715e"># 최대 토큰 수 제한</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>print(response[<span style="color:#e6db74">&#39;response&#39;</span>])
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>오늘은 ChromaDB의 <code>metadata</code> 검색 조건과 <code>$and</code>, <code>$or</code> 같은 논리 연산자의 차이를 명확히 이해하는 데 집중했습니다. 또한 PDF RAG 파이프라인에서 텍스트를 적절한 크기로 쪼개는 전처리 과정, 특히 <code>tiktoken</code>을 통한 토큰 길이 측정과 <code>RecursiveCharacterTextSplitter</code>의 중요성을 깨닫았습니다. 마지막으로 Retrieval, Augmentation, Generation으로 구성된 RAG의 3단계 구조를 이해하며, 검색된 chunk가 단순히 프롬프트에 입력되는 것이 아니라 모델이 답변을 생성할 수 있는 &lsquo;유용한 문맥&rsquo;으로 가공되는 Augmentation 과정이 LLM의 환각 현상을 줄이는 핵심임을 확인했습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>오늘은 <code>metadata</code> 검색 조건과 PDF RAG 전처리 파이프라인, 그리고 Retrieval-Augmentation-Generation 단계별 구조를 정리했습니다.</p>
+<p>특히 <code>$and</code>, <code>$or</code> 같은 논리 연산자의 차이를 명확히 이해하고, 단순한 텍스트 입력이 아닌 문서 전처리 과정의 중요성을 깨닫는 좋은 기회였습니다. 다음 학습에는 <code>metadata</code> 검색과 전처리 과정을 실제 적용해보며, 검색된 chunk가 모델에 유용한 문맥으로 전달될 수 있도록 세부 설정을 점검하는 데 집중하겠습니다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>다음 학습에서는 <code>metadata</code> 검색 시 <code>$and</code>, <code>$or</code> 등 논리 연산자의 조합 패턴을 다양하게 적용해보며, 조건에 맞는 문서를 정확히 필터링하는 실전 감각을 기를 계획이다. 또한 PDF 파이프라인에서 사용한 <code>RecursiveCharacterTextSplitter</code>의 분할 전략이 검색 성능에 미치는 영향을 분석하고, 청크 크기 조정이 Retrieval 단계의 정확도에 어떻게 영향을 주는지 구체적인 실험 결과를 통해 확인해보고자 한다. 마지막으로 RAG 전체 흐름에서 Augmentation 과정의 중요성을 재확인한 뒤, 실제 LLM에게 문맥을 제공할 때 프롬프트 구조를 어떻게 설계하면 모델이 정보를 가장 효율적으로 활용하는지 프롬프트 엔지니어링 관점에서 심화 학습하겠다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://Han-think.github.io/learning/2026-09-29-pm-daily/">
+    <span class="title">Next »</span>
+    <span>오후 학습 | PDF RAG 메타데이터 활용과 검색 정밀화</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

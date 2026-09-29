@@ -223,6 +223,36 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">오전 학습 | HTTP 요청 구조와 함수 인자로 동적 응답 생성하기
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 HTTP 요청·응답 구조를 직접 확인한 실습 (초보자 시점) 함수 인자 활용으로 동적 응답 생성하기 가짜 LLM 함수로 실제 Chat API 흐름 준비 (초보자 워킹 노트) 총평 1. HTTP 요청·응답 구조를 직접 확인한 실습 (초보자 시점) 무엇을 배웠나 requests 라이브러리를 사용해 직접 HTTP 요청과 응답을 구현해 보니, 제공된 코드 틀 안에 변수명을 정확히 매핑하는 것이 무엇보다 중요하다는 것을 깨달았습니다. 특히 params=와 json=의 용도 차이를 구분하고, 서버로부터 돌아온 Status Code를 확인하며 실제 통신의 흐름을 실감할 수 있었습니다. 이를 통해 API 호출 시 단순히 부품을 끼우는 것을 넘어, 요청의 의도와 데이터의 위치가 어떻게 서버에 전달되는지 구조적으로 이해하는 계기가 되었습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-10 00:00:00 +0000 UTC'>2026년 9월 10일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오전 학습 | HTTP 요청 구조와 함수 인자로 동적 응답 생성하기" href="https://Han-think.github.io/learning/2026-09-10-am-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">오후 학습 | LangChain과 LM Studio를 활용한 LLM 오케스트레이션 입문
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 LangChain과 Ollama로 구현한 챗 스트리밍 흐름 LM Studio 환경에 맞춘 LangChain 적응기 tool 함수 로직 수정 및 agent pipeline 완성하기 에이전트 구조와 실행 흐름의 이해 총평 1. LangChain과 Ollama로 구현한 챗 스트리밍 흐름 무엇을 배웠나 LangChain은 단순한 CLI 도구가 아니라 LLM을 연결해 실제 애플리케이션을 구성하는 오케스트레이션 프레임워크이며, chain.stream()과 StreamingResponse는 LLM의 chunk 생성 과정과 HTTP 전송 계층으로 구분된다. 또한 ChatPromptTemplate을 사용해 시스템 프롬프트와 대화 이력을 관리하고, LCEL 문법인 prompt | model을 활용하면 체인을 간결하게 구성할 수 있다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-10 00:00:00 +0000 UTC'>2026년 9월 10일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오후 학습 | LangChain과 LM Studio를 활용한 LLM 오케스트레이션 입문" href="https://Han-think.github.io/learning/2026-09-10-pm-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">오전 학습 | URL 매핑과 파라미터, 비동기 통신의 핵심 차이 정리
     </h2>
   </header>
@@ -351,36 +381,6 @@ SDPA와 EAGR 속도 비교 실험 (XPU 환경): SDPA와 EAGER 속도 차이를 �
 Qwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리: TextStreamer를 사용하려면 단순히 클래스를 생성하는 것만으로는 충분하지 않으며, generate() 메서드에 인자로 전달해야 실시간 토큰 출력이 가능하다.
 핵심적인 학습 포인트는 프롬프트를 message 리스트 형태로 구조화한 뒤 apply_chat_template()을 호출하여 모델이 기대하는 대화 형식으로 변환한 다음, tokenizer에 입력해야 한다는 점이다. chat template가 적용되지 않은 상태로 tokenizer에 직접 입력을 하면 모델이 예상하지 못한 형식을 받게 되어 오류가 발생할 수 있다.
 SDPA와 EAGR 속도 비교 실험 (XPU 환경): SDPA와 EAGER 속도 차이를 단순히 실행 결과로 비교하면 안 되며, XPU 환경에서는 첫 실행 시 하드웨어 초기화 비용이 섞이기 때문에 warm-up 과정을 반드시 거쳐야 정확한 측정이 가능하다. 또한 CUDA용 `torch.cuda.synchronize()` 대신 XPU 환경에 맞게 `torch.xpu.synchronize()`를 사용해야 하며, 내 하드웨어 백엔드에 맞는 최적의 구현체를 직접 측정하여 검증하는 것이 이론을 외우는 것보다 훨씬 실용적이다." href="https://Han-think.github.io/learning/2026-09-04-am-daily/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오전 학습 | 오늘 오전, XPU 환경 Gemma 2 구동과 답변 추출 기법에 대해 정리했습니다.
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 Gemma 2 Intel XPU 장치 이동 및 temperature 파라미터 정리 입력과 답변을 분리하는 slicing 과정 no_grad와 Sampling 파라미터의 연결 이해 Hugging Face 모델 파일 구조와 샤딩 이해하기 KoBART XPU 파이프라인 이해하기 총평 1. Gemma 2 Intel XPU 장치 이동 및 temperature 파라미터 정리 무엇을 배웠나 강사님의 CUDA 코드를 그대로 따라 하려다가 장치 관리와 파라미터 용도에 대한 이해 부족으로 혼란을 겪었다. device_map=&#34;auto&#34;는 XPU 환경에서는 자동 분산이 아닌 model.to(&#34;xpu&#34;)를 통한 명시적 이동이 필요했으며, temperature는 모델 생성 옵션임이 확인되었다. 결국 최소한의 수정만으로도 XPU에서 Gemma 2를 성공적으로 구동할 수 있었다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-03 00:00:00 +0000 UTC'>2026년 9월 3일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오전 학습 | 오늘 오전, XPU 환경 Gemma 2 구동과 답변 추출 기법에 대해 정리했습니다." href="https://Han-think.github.io/learning/2026-09-03-am-daily/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오후 학습 | 오늘 오후, 모델 배치와 장치 할당의 명확한 구분, AutoClass가 주는 자동화의 편리함, 그리고 로지트 확률 해석의 중요성을 정리했습니다. 특히 attention_mask 같은 용어가 가진 위치적 의미와 GGUF·HF 모델 간의 Task 추상화 차이를 이해하며, 개념이 단순한 정의를 넘어 흐름 속에 있음을 새롭게 인식한 소중한 시간이었습니다.
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 pipeline 생성형 모델 실습과 XPU 장치 설정 오해 정리 AutoClass, Task 결정과 클래스 자동 매핑 [워킹노트] 로지트와 소프트맥스로 확률 읽기: 모델의 원시 점수 해석하기 용어 계층으로 개념 정립하기 GGUF와 HF 모델, ‘Task’ 구분은 추상화 계층 차이 BERT hidden state와 토큰 표현의 이해 총평 1. pipeline 생성형 모델 실습과 XPU 장치 설정 오해 정리 무엇을 배웠나 device_map와 device 지정은 모델 파라미터 배치 방식과 실행 장치 고정 방식이라는 점에서 명확히 구분된다. Task 선언은 모델이 기대하는 입력 형태를 결정하며, 실제 사용 파라미터는 그 위에 추가적인 제어층으로 작동한다. max_new_tokens는 답변의 질을 보장하는 값이 아니라, 모델이 생성할 수 있는 최대 토큰 수라는 상한선이라는 점을 이해했다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-03 00:00:00 +0000 UTC'>2026년 9월 3일</span>&nbsp;·&nbsp;<span>8 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오후 학습 | 오늘 오후, 모델 배치와 장치 할당의 명확한 구분, AutoClass가 주는 자동화의 편리함, 그리고 로지트 확률 해석의 중요성을 정리했습니다. 특히 attention_mask 같은 용어가 가진 위치적 의미와 GGUF·HF 모델 간의 Task 추상화 차이를 이해하며, 개념이 단순한 정의를 넘어 흐름 속에 있음을 새롭게 인식한 소중한 시간이었습니다." href="https://Han-think.github.io/learning/2026-09-03-pm-daily/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
