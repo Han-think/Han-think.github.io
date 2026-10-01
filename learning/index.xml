@@ -6,8 +6,36 @@
     <description>Recent content in 학습 기록 on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Tue, 29 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 01 Oct 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>오전 학습 | LangGraph 기반 RAG 워크플로우와 엑셀 파이프라인 구축 경험</title>
+      <link>https://Han-think.github.io/learning/2026-10-01-am-daily/</link>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-10-01-am-daily/</guid>
+      <description>2026-10-01 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>오후 학습 | 상태 누적과 체크포인트로 이어주는 대화 흐름</title>
+      <link>https://Han-think.github.io/learning/2026-10-01-pm-daily/</link>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-10-01-pm-daily/</guid>
+      <description>2026-10-01 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>오전 학습 | RAG 서비스 연결과 LLM 코드 생성 파이프라인 정리</title>
+      <link>https://Han-think.github.io/learning/2026-09-30-am-daily/</link>
+      <pubDate>Wed, 30 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-30-am-daily/</guid>
+      <description>2026-09-30 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>오후 학습 | 재사용된 executor로 구현한 LLM 기반 그래프 구조와 라우팅 통합</title>
+      <link>https://Han-think.github.io/learning/2026-09-30-pm-daily/</link>
+      <pubDate>Wed, 30 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-09-30-pm-daily/</guid>
+      <description>2026-09-30 오후 학습 정리</description>
+    </item>
     <item>
       <title>오전 학습 | 메타데이터로 ChromaDB 조건 검색과 PDF RAG 전처리 이해하기</title>
       <link>https://Han-think.github.io/learning/2026-09-29-am-daily/</link>

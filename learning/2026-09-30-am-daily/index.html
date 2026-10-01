@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오전 학습 | RAG 서비스 연결과 LLM 코드 생성 파이프라인 정리 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-09-30 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-09-30-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-09-30-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-09-30-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오전 학습 | RAG 서비스 연결과 LLM 코드 생성 파이프라인 정리">
+  <meta property="og:description" content="2026-09-30 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-09-30T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-09-30T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오전 학습 | RAG 서비스 연결과 LLM 코드 생성 파이프라인 정리">
+  <meta name="twitter:description" content="2026-09-30 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오전 학습 | RAG 서비스 연결과 LLM 코드 생성 파이프라인 정리",
+      "item": "https://Han-think.github.io/learning/2026-09-30-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오전 학습 | RAG 서비스 연결과 LLM 코드 생성 파이프라인 정리",
+  "name": "오전 학습 | RAG 서비스 연결과 LLM 코드 생성 파이프라인 정리",
+  "description": "2026-09-30 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 RAG 웹 서비스 완성: 파일·DB·검색 통합 흐름 LLM을 ‘코드 생성기’로 재정의하기 역할 전환의 핵심 실습 흐름 (강사 예시) 출력 규약 (중요) 파이썬 코드 파이프라인 단계 구분: 질문-원시텍스트-코드-실행결과 총평 1. RAG 웹 서비스 완성: 파일·DB·검색 통합 흐름 무엇을 배웠나 오늘은 RAG 알고리즘 자체를 새로 배우는 것이 아니라, 기존 구성 요소를 웹 서비스 구조로 연결하고 분리하는 과정에 집중했습니다. file_service, rag_service, llm_service 등의 역할 분담을 통해 ‘기존 코드를 이동시킨 것인가?‘라는 경계가 모호했던 부분을 명확히 정리할 수 있었습니다. 특히 PDF 업로드 후 청크 분할과 메타데이터를 활용한 검색 범위 제한이 실제 애플리케이션 구조에서 어떻게 작동하는지 이해하는 것이 핵심이었습니다.\n헷갈렸던 점 RAG 알고리즘 자체를 새로 배우는 것이 아니라, 기존 구성 요소를 웹 서비스 구조로 연결하고 분리하는 과정에서 파일 이동처럼 보여 개념 학습이 혼동되었다.\n특히 main.py, file_service.py, rag_service.py 등 각 파일의 역할 분담과 메타데이터 필터링 방식, 그리고 LLM 출력을 실시간으로 전달하는 스트리밍 응답의 메커니즘이 어떻게 작동하는지 감 잡기 어려웠다.\n정리된 이해 오늘은 RAG 알고리즘 자체를 새로 배우는 것이 아니라, 기존 구성 요소를 FastAPI 웹 서비스 구조에 맞게 연결하고 분리하는 과정이었습니다. 핵심은 PDF 업로드를 통해 청크와 메타데이터를 Chroma 벡터 DB에 저장하고, 사용자 질의 시 subject 메타데이터를 활용해 검색 범위를 제한하는 흐름을 완성한 점이었습니다. 특히 StreamingResponse를 활용한 LLM 출력의 실시간 전송 메커니즘을 이해하며, 계층적 서비스 구조 내에서 각 모듈의 역할이 어떻게 상호작용하는지 명확히 정리할 수 있었습니다.\n# 1. 파일 업로드 및 Chroma DB 저장 (file_service.py 등) def ingest_pdf(file_content, subject): # PDF를 청크(chunk)로 분할하고 메타데이터(subject)와 함께 Chroma에 저장 chunks = split_text(file_content) metadatas = [{\"subject\": subject}] * len(chunks) vectorstore.add_documents(chunks, metadatas=metadatas) # 2. 주제 기반 검색 (rag_service.py 등) def retrieve_docs(query, subject): # subject 메타데이터를 필터로 적용하여 검색 범위 제한 filters = {\"subject\": subject} results = vectorstore.similarity_search(query, filter=filters) return results # 3. 스트리밍 LLM 응답 (llm_service.py 등) def stream_llm_response(messages): # LLM의 출력을 토큰 단위로 실시간 전달 response = llm.stream(messages) for token in response: yield token.content 2. LLM을 ‘코드 생성기’로 재정의하기 무엇을 배웠나 LLM을 단순히 정보를 제공하는 답변기로가 아니라, 데이터 분석을 위한 실행 가능한 Python 코드를 설계하는 프로그램러로 재정의하는 것이 핵심이었다. 특히 질문→코드 생성→Python 실행이라는 새로운 흐름에 적응하면서, LLM이 직접 데이터를 처리하는 것이 아니라 코드를 ‘설계’하는 보조자의 역할을 한다는 점이 가장 크게 와닿았다.\n헷갈렸던 점 LLM이 단순히 질문에 답변하는 ‘지식 전달자’에서, 사용자의 의도를 Python 코드로 번역해주는 ‘프로그램러’로 역할이 전환된 점이 가장 낯설었습니다. 특히 LLM이 생성한 코드를 실행하기 위해 별도의 파서와 실행 환경이 필요하다는 점은, LLM의 출력을 단순히 텍스트로 끝나는 것이 아니라 실제 동작하는 프로그램으로 가공해야 한다는 사실에 적응하는 데 시간이 걸렸습니다.\n정리된 이해 LLM을 ‘답변 생성기’에서 ‘코드 생성기’로 재정의하는 것이 핵심입니다. LLM은 데이터를 직접 분석하는 것이 아니라, Pandas나 Python 문법을 활용해 데이터를 조작할 방법을 설계하는 역할을 수행합니다. 또한, LLM이 반환한 코드를 안전하게 실행하기 위한 경계 설정과 후처리가 필수적임을 명확히 했습니다.\n📌 핵심 요약: LLM을 데이터 분석 ‘코드 생성기’로 재정의 1. 역할 전환의 핵심 기존 RAG 방식: 질문 → LLM → 자연어 답변 (사용자가 직접 읽음) 데이터 분석 워크플로우: 질문 → LLM → Python code → Python 실행 → 결과 (시스템이 처리) LLM은 데이터를 직접 조작하는 것이 아니라, Pandas/python 문법을 활용해 데이터를 조작할 ‘방법(코드)‘을 설계하는 역할을 수행합니다.\n2. 실습 흐름 (강사 예시) CSV 파일을 Pandas DataFrame으로 미리 읽어옵니다. DataFrame의 컬럼 목록과 스키마를 프롬프트에 포함합니다. 사용자의 자연어 질문을 LLM에게 전달하여 Python 코드를 생성하게 합니다. LLM 출력을 마크다운 코드 블록(```python ... ```) 내의 실제 실행 코드로 제한하여 추출 후 실행합니다. 3. 출력 규약 (중요) 강사님의 지시에 따라, LLM이 생성한 코드는 반드시 백틱 3개(```)로 둘러싸인 Python 코드 블록 형태로만 출력해야 합니다. 노트에 코드 근거가 없으면 아무것도 쓰지 않습니다.\n💡 실습 예시 (구조화된 흐름) 전제 조건 CSV 파일이 Pandas DataFrame으로 미리 로드되어 있습니다. DataFrame의 컬럼명과 데이터 타입(스키마)가 프롬프트에 포함됩니다. 1. 프롬프트 구성 (Prompt Engineering) 사용자의 질문은 LLM이 코드를 생성할 수 있도록 구조화된 컨텍스트와 함께 전달되어야 합니다.\n예시 프롬프트:\nYou are a Python data analyst. Your task is to generate Pandas code to answer the user's question based on the provided DataFrame schema and head. DataFrame Schema: - col_a: int - col_b: str - col_c: float User Question: {user_query} 2. 코드 생성 및 출력 규약 LLM은 사용자의 질문에 대응하는 Python 코드를 생성합니다. 출력은 반드시 아래 형식을 따릅니다.\n# LLM이 생성한 실제 실행 코드만 포함 import pandas as pd # 예시 필터링 로직 (실제 질문 내용에 따라 변동) result = df[df['col_a'] \u003e 10] print(result) 3. 후처리 및 실행 LLM의 출력을 StrOutputParser 등을 통해 문자열로 추출합니다. 문자열에서 python 와 사이의 내용을 식별하여 Python 환경에 전달합니다. 추출된 코드를 안전하게 실행(사용자 정의 함수 제한 등)하고 결과를 사용자에게 반환합니다. 작성일: 2026-09-30 모델: nvidia-nemotron-3.5-lightning-30b-a3b\n3. 파이썬 코드 파이프라인 단계 구분: 질문-원시텍스트-코드-실행결과 무엇을 배웠나 LLM이 생성한 텍스트를 실제 Python 코드로 변환하고 실행하여 결과를 받아오는 파이프라인의 핵심은 문자열 형태가 같더라도 그 안에 담긴 의미와 목적에 따라 단계별 역할이 구분된다는 점입니다. 특히 question, raw_llm_output, python_code, tool_output 같은 중간 단계는 형식적으로는 모두 문자열이지만, 코드 포함 여부와 실행 상태에 따라 그 기능이 완전히 다르다는 점을 명확히 이해하는 것이 중요합니다.\n헷갈렸던 점 처음에는 LLM이 생성한 모든 출력이 문자열로 보여서, 현재 단계가 코드 작성 단계인지 결과 확인 단계인지 구분하기 어려웠습니다. 특히 raw_llm_output와 python_code가 모두 텍스트 형태라서, “지금 이 문자열은 실행 가능한 코드인가, 아니면 그냥 설명인가?“라는 혼란이 들곤 했습니다. 하지만 파이프라인 구조를 이해한 후에는, 각 단계가 문자열이라는 동일한 포맷을 공유하면서도 그 안의 의미와 목적(코드 작성 여부, 실행 결과 등)이 완전히 다르다는 점을 명확히 인식할 수 있게 되었습니다.\n정리된 이해 LLM이 생성한 텍스트를 실제 Python 코드로 실행하고, 그 결과를 다시 텍스트로 받아오는 일련의 과정이며, LangChain의 pipe 연산자를 사용해 LLM뿐만 아니라 일반 파이썬 함수도 처리 단계에 연결할 수 있습니다. 질문에서 시작해 원시 텍스트, 추출된 코드, 그리고 실행 결과까지 이어지는 각 단계는 형식은 문자열이지만 그 안의 의미와 목적은 완전히 다르다는 점을 명확히 하는 것이 중요합니다.\n📌 Python Code Extraction \u0026 Execution Pipeline (LLM + LangChain) 🔰 초보자 시점, 학습자의 혼란 처음 이 파이프라인을 마주했을 때 가장 든 생각은 **“모든 게 문자열로 보여서 무슨 단계가 진행되고 있는지 구별이 안 된다”**는 것이었습니다. LLM이 내놓은 답변, 실제 Python 코드, 실행된 결과물까지 모두 str 타입으로 보이니, 현재 어떤 단계의 데이터가 흐르고 있는지 감을 잡기 힘들었죠. 특히 question에서 시작해 raw_llm_output, python_code, tool_output까지 이어지는 흐름을 눈으로 추적하다 보면, “지금 이 문자열은 코드야? 아니면 실행된 결과야?“라는 혼란이 들곤 했습니다.\n📌 정리된 이해 이 pipeline의 핵심은 **“LLM이 생성한 텍스트를 실제 Python 코드로 실행하고, 그 결과를 다시 텍스트로 받아오는 일련의 과정”**입니다. LangChain의 pipe(|) 연산자를 사용하면 LLM뿐만 아니라 일반 파이썬 함수도 processing stage로 연결할 수 있다는 점이 핵심입니다.\n중간 단계들의 역할 구분은 다음과 같습니다.\nquestion: 사용자의 질문이나 프롬프트 raw_llm_output: LLM이 생성한 원시 텍스트 (여기서 코드가 포함될 수 있음) python_code: LLM으로부터 추출된 실제 실행 가능한 Python 코드 문자열 tool_output: exec()를 통해 실행된 후 나오는 결과 (print문의 출력 등) 형식은 모두 문자열이지만, 그 안의 의미와 목적은 완전히 다르다는 점을 명확히 하는 것이 중요합니다.\n💻 실습 예시 가장 기본적인 흐름을 코드로 표현하면 이렇습니다.\nfrom langchain_core.output_parsers import StrOutputParser from langchain_core.prompts import ChatPromptTemplate import io import contextlib # 1. LLM이 코드를 생성한다고 가정 def code_gen(question): # 실제로는 LLM 호출, 여기서는 더미 반환 return f\"print('Hello from AI')\" # 2. Python 코드 파싱 (문자열 그대로 통과하거나 추출하는 과정) parsed_code = code_gen(\"test question\") # 3. 실행 전용 네임스페이스 및 출력 스트림 설정 namespace = {} output_capture = io.StringIO() # 4. 실제 exec()를 통한 코드 실행 with contextlib.redirect_stdout(output_capture): exec(parsed_code, namespace) # 5. 실행 결과 텍스트 추출 tool_output = output_capture.getvalue() print(f\"📤 최종 출력: {tool_output}\") 💡 핵심 요약 question: 사용자 입력 raw_llm_output: LLM이 뱉은 원시 텍스트 (코드 포함 가능) python_code: 실제 실행 가능한 코드 문자열로 추출된 상태 tool_output: exec() 실행을 통해 얻은 결과 텍스트 모든 단계가 str 타입이지만, **“의도된 역할”**에 따라 다음 단계로 넘어가는 전이 과정이 달라진다는 점을 기억해야 합니다.\n총평 오늘 오전 전체에서 배운 것 RAG 웹 서비스 구축 과정에서 기존 코드를 기능별로 재정비하고, PDF 업로드부터 검색까지의 데이터 흐름을 명확히 정리했습니다. 또한 LLM을 단순한 답변 제공자가 아닌, 데이터를 처리하는 Python 코드를 설계하는 ‘프로그래머’로 재정의하며 질문→코드 생성→실행이라는 새로운 파이프라인 구조를 이해하게 되었습니다.\n다음에 조심할 것 RAG 서비스 통합 과정에서 느꼈던 코드 역할의 모호함을 경계 삼아, 앞으로는 file_service, rag_service 등 각 컴포넌트의 책임을 명확히 정의하고 분리하는 습관을 들일 것이다.\nLLM을 단순한 답변기가 아닌 ‘코드 설계자’로 재정의한 만큼, 다음 단계에서는 LLM이 생성한 텍스트가 실제 Python 코드로 실행될 수 있도록 프롬프트와 파이프라인 구조를 더욱 정교하게 검증하는 데 집중할 것이다.\n다음 복습 주제 RAG 웹 서비스 구축 과정에서 file_service, rag_service 등 각 컴포넌트의 역할 분담을 통해 기존 코드의 이동 여부를 명확히 구분하고, 메타데이터를 활용한 검색 범위 제한이 실제 애플리케이션 구조에서 어떻게 작동하는지 이해하는 것이 중요했습니다.\nLLM을 단순히 정보를 제공하는 답변기가 아니라 데이터 분석을 위한 실행 가능한 Python 코드를 설계하는 프로그램러로 재정의하며, 질문→코드 생성→Python 실행이라는 새로운 흐름에 적응해야 합니다. LLM이 직접 데이터를 처리하는 것이 아니라 코드를 ‘설계’하는 보조자의 역할을 한다는 점을 명확히 이해하고, question, raw_llm_output, python_code 등 단계별 문자열의 기능적 차이를 구분하는 연습을 이어가야 합니다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1392",
+  "inLanguage": "en",
+  "datePublished": "2026-09-30T00:00:00Z",
+  "dateModified": "2026-09-30T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-09-30-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오전 학습 | RAG 서비스 연결과 LLM 코드 생성 파이프라인 정리
+    </h1>
+    <div class="post-description">
+      2026-09-30 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-09-30 00:00:00 +0000 UTC'>2026년 9월 30일</span>&nbsp;·&nbsp;<span>7 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-rag-%EC%9B%B9-%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%99%84%EC%84%B1-%ED%8C%8C%EC%9D%BCdb%EA%B2%80%EC%83%89-%ED%86%B5%ED%95%A9-%ED%9D%90%EB%A6%84">RAG 웹 서비스 완성: 파일·DB·검색 통합 흐름</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-llm%EC%9D%84-%EC%BD%94%EB%93%9C-%EC%83%9D%EC%84%B1%EA%B8%B0%EB%A1%9C-%EC%9E%AC%EC%A0%95%EC%9D%98%ED%95%98%EA%B8%B0">LLM을 &lsquo;코드 생성기&rsquo;로 재정의하기</a></li>
+</ol>
+</li>
+<li>
+<ol>
+<li><a href="#1-%EC%97%AD%ED%95%A0-%EC%A0%84%ED%99%98%EC%9D%98-%ED%95%B5%EC%8B%AC">역할 전환의 핵심</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%8B%A4%EC%8A%B5-%ED%9D%90%EB%A6%84-%EA%B0%95%EC%82%AC-%EC%98%88%EC%8B%9C">실습 흐름 (강사 예시)</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%B6%9C%EB%A0%A5-%EA%B7%9C%EC%95%BD-%EC%A4%91%EC%9A%94">출력 규약 (중요)</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%ED%8C%8C%EC%9D%B4%EC%8D%AC-%EC%BD%94%EB%93%9C-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EB%8B%A8%EA%B3%84-%EA%B5%AC%EB%B6%84-%EC%A7%88%EB%AC%B8-%EC%9B%90%EC%8B%9C%ED%85%8D%EC%8A%A4%ED%8A%B8-%EC%BD%94%EB%93%9C-%EC%8B%A4%ED%96%89%EA%B2%B0%EA%B3%BC">파이썬 코드 파이프라인 단계 구분: 질문-원시텍스트-코드-실행결과</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-rag-웹-서비스-완성-파일db검색-통합-흐름">1. RAG 웹 서비스 완성: 파일·DB·검색 통합 흐름<a hidden class="anchor" aria-hidden="true" href="#1-rag-웹-서비스-완성-파일db검색-통합-흐름">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>오늘은 RAG 알고리즘 자체를 새로 배우는 것이 아니라, 기존 구성 요소를 웹 서비스 구조로 연결하고 분리하는 과정에 집중했습니다. <code>file_service</code>, <code>rag_service</code>, <code>llm_service</code> 등의 역할 분담을 통해 &lsquo;기존 코드를 이동시킨 것인가?&lsquo;라는 경계가 모호했던 부분을 명확히 정리할 수 있었습니다. 특히 PDF 업로드 후 청크 분할과 메타데이터를 활용한 검색 범위 제한이 실제 애플리케이션 구조에서 어떻게 작동하는지 이해하는 것이 핵심이었습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>RAG 알고리즘 자체를 새로 배우는 것이 아니라, 기존 구성 요소를 웹 서비스 구조로 연결하고 분리하는 과정에서 파일 이동처럼 보여 개념 학습이 혼동되었다.</p>
+<p>특히 <code>main.py</code>, <code>file_service.py</code>, <code>rag_service.py</code> 등 각 파일의 역할 분담과 메타데이터 필터링 방식, 그리고 LLM 출력을 실시간으로 전달하는 스트리밍 응답의 메커니즘이 어떻게 작동하는지 감 잡기 어려웠다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>오늘은 RAG 알고리즘 자체를 새로 배우는 것이 아니라, 기존 구성 요소를 FastAPI 웹 서비스 구조에 맞게 연결하고 분리하는 과정이었습니다. 핵심은 PDF 업로드를 통해 청크와 메타데이터를 Chroma 벡터 DB에 저장하고, 사용자 질의 시 subject 메타데이터를 활용해 검색 범위를 제한하는 흐름을 완성한 점이었습니다. 특히 <code>StreamingResponse</code>를 활용한 LLM 출력의 실시간 전송 메커니즘을 이해하며, 계층적 서비스 구조 내에서 각 모듈의 역할이 어떻게 상호작용하는지 명확히 정리할 수 있었습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 1. 파일 업로드 및 Chroma DB 저장 (file_service.py 등)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">ingest_pdf</span>(file_content, subject):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># PDF를 청크(chunk)로 분할하고 메타데이터(subject)와 함께 Chroma에 저장</span>
+</span></span><span style="display:flex;"><span>    chunks <span style="color:#f92672">=</span> split_text(file_content)
+</span></span><span style="display:flex;"><span>    metadatas <span style="color:#f92672">=</span> [{<span style="color:#e6db74">&#34;subject&#34;</span>: subject}] <span style="color:#f92672">*</span> len(chunks)
+</span></span><span style="display:flex;"><span>    vectorstore<span style="color:#f92672">.</span>add_documents(chunks, metadatas<span style="color:#f92672">=</span>metadatas)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. 주제 기반 검색 (rag_service.py 등)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">retrieve_docs</span>(query, subject):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># subject 메타데이터를 필터로 적용하여 검색 범위 제한</span>
+</span></span><span style="display:flex;"><span>    filters <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;subject&#34;</span>: subject}
+</span></span><span style="display:flex;"><span>    results <span style="color:#f92672">=</span> vectorstore<span style="color:#f92672">.</span>similarity_search(query, filter<span style="color:#f92672">=</span>filters)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> results
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. 스트리밍 LLM 응답 (llm_service.py 등)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">stream_llm_response</span>(messages):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># LLM의 출력을 토큰 단위로 실시간 전달</span>
+</span></span><span style="display:flex;"><span>    response <span style="color:#f92672">=</span> llm<span style="color:#f92672">.</span>stream(messages)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> token <span style="color:#f92672">in</span> response:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">yield</span> token<span style="color:#f92672">.</span>content
+</span></span></code></pre></div><h2 id="2-llm을-코드-생성기로-재정의하기">2. LLM을 &lsquo;코드 생성기&rsquo;로 재정의하기<a hidden class="anchor" aria-hidden="true" href="#2-llm을-코드-생성기로-재정의하기">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>LLM을 단순히 정보를 제공하는 답변기로가 아니라, 데이터 분석을 위한 실행 가능한 Python 코드를 설계하는 프로그램러로 재정의하는 것이 핵심이었다. 특히 질문→코드 생성→Python 실행이라는 새로운 흐름에 적응하면서, LLM이 직접 데이터를 처리하는 것이 아니라 코드를 &lsquo;설계&rsquo;하는 보조자의 역할을 한다는 점이 가장 크게 와닿았다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>LLM이 단순히 질문에 답변하는 &lsquo;지식 전달자&rsquo;에서, 사용자의 의도를 Python 코드로 번역해주는 &lsquo;프로그램러&rsquo;로 역할이 전환된 점이 가장 낯설었습니다. 특히 LLM이 생성한 코드를 실행하기 위해 별도의 파서와 실행 환경이 필요하다는 점은, LLM의 출력을 단순히 텍스트로 끝나는 것이 아니라 실제 동작하는 프로그램으로 가공해야 한다는 사실에 적응하는 데 시간이 걸렸습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>LLM을 &lsquo;답변 생성기&rsquo;에서 &lsquo;코드 생성기&rsquo;로 재정의하는 것이 핵심입니다. LLM은 데이터를 직접 분석하는 것이 아니라, Pandas나 Python 문법을 활용해 데이터를 조작할 방법을 설계하는 역할을 수행합니다. 또한, LLM이 반환한 코드를 안전하게 실행하기 위한 경계 설정과 후처리가 필수적임을 명확히 했습니다.</p>
+<h1 id="-핵심-요약-llm을-데이터-분석-코드-생성기로-재정의">📌 핵심 요약: LLM을 데이터 분석 &lsquo;코드 생성기&rsquo;로 재정의<a hidden class="anchor" aria-hidden="true" href="#-핵심-요약-llm을-데이터-분석-코드-생성기로-재정의">#</a></h1>
+<h2 id="1-역할-전환의-핵심">1. 역할 전환의 핵심<a hidden class="anchor" aria-hidden="true" href="#1-역할-전환의-핵심">#</a></h2>
+<ul>
+<li><strong>기존 RAG 방식:</strong> <code>질문 → LLM → 자연어 답변</code> (사용자가 직접 읽음)</li>
+<li><strong>데이터 분석 워크플로우:</strong> <code>질문 → LLM → Python code → Python 실행 → 결과</code> (시스템이 처리)</li>
+</ul>
+<p>LLM은 데이터를 직접 조작하는 것이 아니라, <strong>Pandas/python 문법을 활용해 데이터를 조작할 &lsquo;방법(코드)&lsquo;을 설계</strong>하는 역할을 수행합니다.</p>
+<h2 id="2-실습-흐름-강사-예시">2. 실습 흐름 (강사 예시)<a hidden class="anchor" aria-hidden="true" href="#2-실습-흐름-강사-예시">#</a></h2>
+<ol>
+<li>CSV 파일을 Pandas DataFrame으로 미리 읽어옵니다.</li>
+<li>DataFrame의 컬럼 목록과 스키마를 프롬프트에 포함합니다.</li>
+<li>사용자의 자연어 질문을 LLM에게 전달하여 Python 코드를 생성하게 합니다.</li>
+<li><strong>LLM 출력을 마크다운 코드 블록(<code>```python ... ```</code>) 내의 실제 실행 코드로 제한</strong>하여 추출 후 실행합니다.</li>
+</ol>
+<h2 id="3-출력-규약-중요">3. 출력 규약 (중요)<a hidden class="anchor" aria-hidden="true" href="#3-출력-규약-중요">#</a></h2>
+<p>강사님의 지시에 따라, LLM이 생성한 코드는 반드시 <strong>백틱 3개(```)로 둘러싸인 Python 코드 블록</strong> 형태로만 출력해야 합니다. 노트에 코드 근거가 없으면 아무것도 쓰지 않습니다.</p>
+<hr>
+<h1 id="-실습-예시-구조화된-흐름">💡 실습 예시 (구조화된 흐름)<a hidden class="anchor" aria-hidden="true" href="#-실습-예시-구조화된-흐름">#</a></h1>
+<h3 id="전제-조건">전제 조건<a hidden class="anchor" aria-hidden="true" href="#전제-조건">#</a></h3>
+<ul>
+<li>CSV 파일이 Pandas DataFrame으로 미리 로드되어 있습니다.</li>
+<li>DataFrame의 컬럼명과 데이터 타입(스키마)가 프롬프트에 포함됩니다.</li>
+</ul>
+<h3 id="1-프롬프트-구성-prompt-engineering">1. 프롬프트 구성 (Prompt Engineering)<a hidden class="anchor" aria-hidden="true" href="#1-프롬프트-구성-prompt-engineering">#</a></h3>
+<p>사용자의 질문은 LLM이 코드를 생성할 수 있도록 구조화된 컨텍스트와 함께 전달되어야 합니다.</p>
+<p><strong>예시 프롬프트:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>You are a Python data analyst. Your task is to generate Pandas code to answer the user&#39;s question based on the provided DataFrame schema and head.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>DataFrame Schema:
+</span></span><span style="display:flex;"><span>- col_a: int
+</span></span><span style="display:flex;"><span>- col_b: str
+</span></span><span style="display:flex;"><span>- col_c: float
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>User Question: {user_query}
+</span></span></code></pre></div><h3 id="2-코드-생성-및-출력-규약">2. 코드 생성 및 출력 규약<a hidden class="anchor" aria-hidden="true" href="#2-코드-생성-및-출력-규약">#</a></h3>
+<p>LLM은 사용자의 질문에 대응하는 Python 코드를 생성합니다. <strong>출력은 반드시 아래 형식을 따릅니다.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># LLM이 생성한 실제 실행 코드만 포함</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 예시 필터링 로직 (실제 질문 내용에 따라 변동)</span>
+</span></span><span style="display:flex;"><span>result <span style="color:#f92672">=</span> df[df[<span style="color:#e6db74">&#39;col_a&#39;</span>] <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">10</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(result)
+</span></span></code></pre></div><h3 id="3-후처리-및-실행">3. 후처리 및 실행<a hidden class="anchor" aria-hidden="true" href="#3-후처리-및-실행">#</a></h3>
+<ul>
+<li>LLM의 출력을 <code>StrOutputParser</code> 등을 통해 문자열로 추출합니다.</li>
+<li>문자열에서 <code>python 와 </code> 사이의 내용을 식별하여 Python 환경에 전달합니다.</li>
+<li>추출된 코드를 안전하게 실행(사용자 정의 함수 제한 등)하고 결과를 사용자에게 반환합니다.</li>
+</ul>
+<p><strong>작성일:</strong> 2026-09-30
+<strong>모델:</strong> nvidia-nemotron-3.5-lightning-30b-a3b</p>
+<h2 id="3-파이썬-코드-파이프라인-단계-구분-질문-원시텍스트-코드-실행결과">3. 파이썬 코드 파이프라인 단계 구분: 질문-원시텍스트-코드-실행결과<a hidden class="anchor" aria-hidden="true" href="#3-파이썬-코드-파이프라인-단계-구분-질문-원시텍스트-코드-실행결과">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>LLM이 생성한 텍스트를 실제 Python 코드로 변환하고 실행하여 결과를 받아오는 파이프라인의 핵심은 문자열 형태가 같더라도 그 안에 담긴 의미와 목적에 따라 단계별 역할이 구분된다는 점입니다. 특히 <code>question</code>, <code>raw_llm_output</code>, <code>python_code</code>, <code>tool_output</code> 같은 중간 단계는 형식적으로는 모두 문자열이지만, 코드 포함 여부와 실행 상태에 따라 그 기능이 완전히 다르다는 점을 명확히 이해하는 것이 중요합니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>처음에는 LLM이 생성한 모든 출력이 문자열로 보여서, 현재 단계가 코드 작성 단계인지 결과 확인 단계인지 구분하기 어려웠습니다. 특히 <code>raw_llm_output</code>와 <code>python_code</code>가 모두 텍스트 형태라서, &ldquo;지금 이 문자열은 실행 가능한 코드인가, 아니면 그냥 설명인가?&ldquo;라는 혼란이 들곤 했습니다. 하지만 파이프라인 구조를 이해한 후에는, 각 단계가 문자열이라는 동일한 포맷을 공유하면서도 그 안의 의미와 목적(코드 작성 여부, 실행 결과 등)이 완전히 다르다는 점을 명확히 인식할 수 있게 되었습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>LLM이 생성한 텍스트를 실제 Python 코드로 실행하고, 그 결과를 다시 텍스트로 받아오는 일련의 과정이며, LangChain의 pipe 연산자를 사용해 LLM뿐만 아니라 일반 파이썬 함수도 처리 단계에 연결할 수 있습니다. 질문에서 시작해 원시 텍스트, 추출된 코드, 그리고 실행 결과까지 이어지는 각 단계는 형식은 문자열이지만 그 안의 의미와 목적은 완전히 다르다는 점을 명확히 하는 것이 중요합니다.</p>
+<h1 id="-python-code-extraction--execution-pipeline-llm--langchain">📌 Python Code Extraction &amp; Execution Pipeline (LLM + LangChain)<a hidden class="anchor" aria-hidden="true" href="#-python-code-extraction--execution-pipeline-llm--langchain">#</a></h1>
+<h3 id="-초보자-시점-학습자의-혼란">🔰 초보자 시점, 학습자의 혼란<a hidden class="anchor" aria-hidden="true" href="#-초보자-시점-학습자의-혼란">#</a></h3>
+<p>처음 이 파이프라인을 마주했을 때 가장 든 생각은 **&ldquo;모든 게 문자열로 보여서 무슨 단계가 진행되고 있는지 구별이 안 된다&rdquo;**는 것이었습니다. LLM이 내놓은 답변, 실제 Python 코드, 실행된 결과물까지 모두 <code>str</code> 타입으로 보이니, 현재 어떤 단계의 데이터가 흐르고 있는지 감을 잡기 힘들었죠. 특히 <code>question</code>에서 시작해 <code>raw_llm_output</code>, <code>python_code</code>, <code>tool_output</code>까지 이어지는 흐름을 눈으로 추적하다 보면, &ldquo;지금 이 문자열은 코드야? 아니면 실행된 결과야?&ldquo;라는 혼란이 들곤 했습니다.</p>
+<h3 id="-정리된-이해">📌 정리된 이해<a hidden class="anchor" aria-hidden="true" href="#-정리된-이해">#</a></h3>
+<p>이 pipeline의 핵심은 **&ldquo;LLM이 생성한 텍스트를 실제 Python 코드로 실행하고, 그 결과를 다시 텍스트로 받아오는 일련의 과정&rdquo;**입니다. LangChain의 pipe(<code>|</code>) 연산자를 사용하면 LLM뿐만 아니라 일반 파이썬 함수도 processing stage로 연결할 수 있다는 점이 핵심입니다.</p>
+<p>중간 단계들의 역할 구분은 다음과 같습니다.</p>
+<ol>
+<li><strong>question</strong>: 사용자의 질문이나 프롬프트</li>
+<li><strong>raw_llm_output</strong>: LLM이 생성한 원시 텍스트 (여기서 코드가 포함될 수 있음)</li>
+<li><strong>python_code</strong>: LLM으로부터 추출된 실제 실행 가능한 Python 코드 문자열</li>
+<li><strong>tool_output</strong>: <code>exec()</code>를 통해 실행된 후 나오는 결과 (print문의 출력 등)</li>
+</ol>
+<p>형식은 모두 문자열이지만, 그 안의 의미와 목적은 완전히 다르다는 점을 명확히 하는 것이 중요합니다.</p>
+<h3 id="-실습-예시">💻 실습 예시<a hidden class="anchor" aria-hidden="true" href="#-실습-예시">#</a></h3>
+<p>가장 기본적인 흐름을 코드로 표현하면 이렇습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> langchain_core.output_parsers <span style="color:#f92672">import</span> StrOutputParser
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> langchain_core.prompts <span style="color:#f92672">import</span> ChatPromptTemplate
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> io
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> contextlib
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. LLM이 코드를 생성한다고 가정</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">code_gen</span>(question):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 실제로는 LLM 호출, 여기서는 더미 반환</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;print(&#39;Hello from AI&#39;)&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. Python 코드 파싱 (문자열 그대로 통과하거나 추출하는 과정)</span>
+</span></span><span style="display:flex;"><span>parsed_code <span style="color:#f92672">=</span> code_gen(<span style="color:#e6db74">&#34;test question&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. 실행 전용 네임스페이스 및 출력 스트림 설정</span>
+</span></span><span style="display:flex;"><span>namespace <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span>output_capture <span style="color:#f92672">=</span> io<span style="color:#f92672">.</span>StringIO()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. 실제 exec()를 통한 코드 실행</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">with</span> contextlib<span style="color:#f92672">.</span>redirect_stdout(output_capture):
+</span></span><span style="display:flex;"><span>    exec(parsed_code, namespace)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 5. 실행 결과 텍스트 추출</span>
+</span></span><span style="display:flex;"><span>tool_output <span style="color:#f92672">=</span> output_capture<span style="color:#f92672">.</span>getvalue()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;📤 최종 출력: </span><span style="color:#e6db74">{</span>tool_output<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><h3 id="-핵심-요약">💡 핵심 요약<a hidden class="anchor" aria-hidden="true" href="#-핵심-요약">#</a></h3>
+<ul>
+<li><strong>question</strong>: 사용자 입력</li>
+<li><strong>raw_llm_output</strong>: LLM이 뱉은 원시 텍스트 (코드 포함 가능)</li>
+<li><strong>python_code</strong>: 실제 실행 가능한 코드 문자열로 추출된 상태</li>
+<li><strong>tool_output</strong>: <code>exec()</code> 실행을 통해 얻은 결과 텍스트</li>
+</ul>
+<p>모든 단계가 <code>str</code> 타입이지만, **&ldquo;의도된 역할&rdquo;**에 따라 다음 단계로 넘어가는 전이 과정이 달라진다는 점을 기억해야 합니다.</p>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>RAG 웹 서비스 구축 과정에서 기존 코드를 기능별로 재정비하고, PDF 업로드부터 검색까지의 데이터 흐름을 명확히 정리했습니다. 또한 LLM을 단순한 답변 제공자가 아닌, 데이터를 처리하는 Python 코드를 설계하는 &lsquo;프로그래머&rsquo;로 재정의하며 질문→코드 생성→실행이라는 새로운 파이프라인 구조를 이해하게 되었습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>RAG 서비스 통합 과정에서 느꼈던 코드 역할의 모호함을 경계 삼아, 앞으로는 <code>file_service</code>, <code>rag_service</code> 등 각 컴포넌트의 책임을 명확히 정의하고 분리하는 습관을 들일 것이다.</p>
+<p>LLM을 단순한 답변기가 아닌 &lsquo;코드 설계자&rsquo;로 재정의한 만큼, 다음 단계에서는 LLM이 생성한 텍스트가 실제 Python 코드로 실행될 수 있도록 프롬프트와 파이프라인 구조를 더욱 정교하게 검증하는 데 집중할 것이다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>RAG 웹 서비스 구축 과정에서 <code>file_service</code>, <code>rag_service</code> 등 각 컴포넌트의 역할 분담을 통해 기존 코드의 이동 여부를 명확히 구분하고, 메타데이터를 활용한 검색 범위 제한이 실제 애플리케이션 구조에서 어떻게 작동하는지 이해하는 것이 중요했습니다.</p>
+<p>LLM을 단순히 정보를 제공하는 답변기가 아니라 데이터 분석을 위한 실행 가능한 Python 코드를 설계하는 프로그램러로 재정의하며, 질문→코드 생성→Python 실행이라는 새로운 흐름에 적응해야 합니다. LLM이 직접 데이터를 처리하는 것이 아니라 코드를 &lsquo;설계&rsquo;하는 보조자의 역할을 한다는 점을 명확히 이해하고, <code>question</code>, <code>raw_llm_output</code>, <code>python_code</code> 등 단계별 문자열의 기능적 차이를 구분하는 연습을 이어가야 합니다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-10-01-pm-daily/">
+    <span class="title">« Prev</span>
+    <span>오후 학습 | 상태 누적과 체크포인트로 이어주는 대화 흐름</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-09-30-pm-daily/">
+    <span class="title">Next »</span>
+    <span>오후 학습 | 재사용된 executor로 구현한 LLM 기반 그래프 구조와 라우팅 통합</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

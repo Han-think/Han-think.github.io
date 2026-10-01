@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오후 학습 | 재사용된 executor로 구현한 LLM 기반 그래프 구조와 라우팅 통합 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-09-30 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-09-30-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-09-30-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-09-30-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오후 학습 | 재사용된 executor로 구현한 LLM 기반 그래프 구조와 라우팅 통합">
+  <meta property="og:description" content="2026-09-30 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-09-30T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-09-30T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오후 학습 | 재사용된 executor로 구현한 LLM 기반 그래프 구조와 라우팅 통합">
+  <meta name="twitter:description" content="2026-09-30 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오후 학습 | 재사용된 executor로 구현한 LLM 기반 그래프 구조와 라우팅 통합",
+      "item": "https://Han-think.github.io/learning/2026-09-30-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오후 학습 | 재사용된 executor로 구현한 LLM 기반 그래프 구조와 라우팅 통합",
+  "name": "오후 학습 | 재사용된 executor로 구현한 LLM 기반 그래프 구조와 라우팅 통합",
+  "description": "2026-09-30 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 LLM 코드 재사용과 그래프 시각화 확장 (LearningLog) LangGraph 핵심 개념과 비유 정리 LLM Router와 Worker의 그래프 통합 이해하기 총평 1. LLM 코드 재사용과 그래프 시각화 확장 (LearningLog) 무엇을 배웠나 오전과 동일한 executor 구조를 활용해 LLM이 Python 코드를 생성하고 실행하는 패턴을 재사용할 수 있음을 깨달았다. 핵심은 새로운 기술 습득이 아니라, ‘prompt 목적’만 변경하여 기존 worker를 그래프 생성 작업에 적용하는 재사용성이었다. 이를 통해 LangGraph와 같은 프레임워크에서 node/worker로 기능을 묶는 기반 구조를 이해하게 되었다.\n헷갈렸던 점 오전 수업에서 배운 DataFrame 기반 코드 실행 파이프라인 구조와 오늘 주제인 그래프 생성 흐름이 거의 동일하여, 새로운 기술을 배우는 것이 아니라 기존 패턴을 재사용하는 방법에 집중하게 되었습니다. 핵심은 LLM이 자연어 요청을 Python/Matplotlib 실행 단계로 변환하며, 공통 executor와 task-specific prompt를 분리하면 LangGraph 같은 프레임워크에서 각 기능을 노드/워커로 묶는 기반이 된다는 점이었습니다. 무엇보다 “새로운 실행 기술” 자체가 아니라, **“같은 패턴을 재사용 가능한 워커로 만드는 과정 자체”**가 학습의 대상였다는 점이 가장 큰 깨달음이었습니다.\n정리된 이해 오전 학습한 DataFrame 기반 코드 실행 파이프라인의 핵심 패턴을 재사용하는 것이 목표였으며, LLM에게 자연어를 Python/Matplotlib 코드로 변환하게 한 뒤 executor를 통해 그래프를 생성하는 구조임을 이해했습니다. 특히 기존의 executor와 task-specific prompt를 분리하여 구성하면 LangGraph와 같은 프레임워크에서 각 기능을 node/worker로 효율적으로 묶을 수 있다는 점에 주목했습니다.\n# 질문: 주어진 DataFrame으로 요청에 맞는 그래프 생성 # LLM에게 전달된 프롬프트 구조 prompt = \"\"\" 주어진 DataFrame으로 요청에 맞는 그래프 생성 데이터 로드 코드는 생략 label/title은 영문 matplotlib 사용 \"\"\" # 전체 흐름: 질문 → LLM code 생성 → code fence 제거 → Python code 추출 → exec() → 그래프 생성 2. LangGraph 핵심 개념과 비유 정리 무엇을 배웠나 LangGraph의 핵심 개념을 ‘작업 가방’, ‘처리 모듈’, ‘연결선’ 등 구체적인 비유로 환원하여 추상적인 문법과 전체 흐름을 분리해서 이해할 수 있었다. 특히 compile()와 invoke()가 설계도와 실제 실행의 차이라는 점을 명확히 인식하여, 노드와 라우팅 로직이 어떻게 데이터 흐름 속에서 상호작용하는지 전체적인 그림을 그릴 수 있게 되었다.\n헷갈렸던 점 처음에는 상태, 함수, 라우팅 로직이 같은 코드 블록에 섞여 있어 각 요소의 역할 분간이 어려웠습니다. 또한 Python 함수와 LangChain/Graph 개념이 동시에 등장하면서 데이터와 처리 로직, 연결 고리의 경계가 불분명했습니다. 이러한 혼란을 해소하기 위해 ‘작업 가방’, ‘처리 모듈’, ‘연결선’ 등의 비유를 먼저 머릿속에 그린 뒤 문법을 익힌 것이 가장 큰 도움이 되었습니다.\n정리된 이해 LangGraph는 상태, 노드, 엣지를 각각 데이터 용기, 처리 함수, 연결 로직으로 분리하여 생각해야 한다. 전체 흐름을 설계하는 compile()까지 완료한 뒤 invoke()로 실행하면, 파이프라인처럼 순차적으로 결과를 도출할 수 있다.\nfrom typing import TypedDict, Annotated import operator from langgraph.graph import StateGraph, END # 1. 상태 정의 (작업 가방) class AgentState(TypedDict): input: str output: str # 2. 노드 정의 (처리 모듈) def node_a(state: AgentState) -\u003e dict: # LLM이나 계산 로직이 들어가는 곳 return {\"output\": f\"Processed: {state['input']}\"} def router(state: AgentState) -\u003e str: # 판단자 역할 if \"error\" in state.get(\"output\", \"\"): return \"error_handler\" return END # 3. 그래프 컴파일 (일자리 초대장) graph = StateGraph(AgentState) graph.add_node(\"process\", node_a) graph.add_conditional_edges(\"process\", router) graph.set_entry_point(\"process\") app = graph.compile() # 4. 실행 (업무 시작) result = app.invoke({\"input\": \"Hello LangGraph\"}) print(result[\"output\"]) 3. LLM Router와 Worker의 그래프 통합 이해하기 무엇을 배웠나 Router는 답변을 생성하는 것이 아니라, 어떤 Worker에게 일을 시킬지 결정하는 classifier 역할이라는 점을 이해하게 되었다. 또한 conditional edge가 routing label과 실제 node를 연결해주는 고리라는 점도 명확해졌다. 현재 시스템은 통합 완성본보다 routing graph의 골격만 만든 단계로 보는 것이 정확하다.\n헷갈렸던 점 Router가 답을 생성하는 것이 아니라, 어떤 Worker에게 일을 시킬지 결정하는 classifier 역할이라는 점이 가장 핵심적인 전환점이었습니다.\n특히 conditional edge는 routing label과 실제 node를 매핑해주는 연결 고리 역할을 한다는 점도 명확해졌습니다.\n정리된 이해 Router는 답변을 생성하는 것이 아니라, 어떤 Worker에게 일을 시킬지 결정하는 classifier 역할입니다. conditional edge는 routing label과 실제 node를 매핑해주는 연결 고리 역할을 합니다. 현재 시스템은 통합 완성본보다 routing graph 골격을 만드는 단계로 이해해야 합니다.\nLearningLog 워킹 노트: LLM Router로 plain·excel·vector worker를 하나의 그래프로 묶기 🔍 무엇이 헷갈렸나 (Confusion Point) 오늘 가장 패닉이 온 부분은 **“부품 사이의 control flow가 새로 등장해 책임 경계가 안 보인다”**는 점이었습니다.\nRAG Pandas LLM code generation Python execution State Router LangGraph 이 모든 것이 한 화면에 합쳐졌을 때, 기존에 알고 있던 부품들이 낯설게 느껴진 것은 부품을 모르해서가 아니라, 어떤 부품이 어떤 역할을 하며 어떻게 연결되는지(control flow)의 책임 경계가 명확하지 않았기 때문입니다.\n특히 Router라는 decision component가 단순히 질문의 종류를 분류하는 것을 넘어, State 관리와 Worker 실행의 orchestration 역할을 하게 되면서 전체 시스템의 구조를 이해하기 어려웠습니다. “이전 거 융합하는 건 알겠는데 짬뽕처럼 보여서 패닉\"이라는 생각이 들었던 지점은 바로 이 control/orchestration layer가 새로 올라온 부분이었습니다.\n📚 정리된 이해 (Corrected Understanding) 헷갈리던 부분을 3층 구조로 나누니 단순해졌습니다.\nDecision Layer → Router → 무슨 능력이 필요한가? Worker Layer → plain / excel / vector → 실제 작업 수행 State Layer → question / data / code / context / generation → 결과 운반 핵심은 Router가 답변을 생성하는 것이 아니라, 어떤 Worker에게 일을 시킬지 결정하는 classifier 역할이라는 점이었습니다. 또한 conditional edge는 routing label과 실제 node를 매핑해주는 연결 고리 역할을 한다는 점도 명확해졌습니다.\n현재 Git 상태는 통합 완성본보다 routing graph 골격을 만드는 단계로 보는 것이 정확합니다. Prompt와 code에서 key name이({\"route\":\"plain\"} vs result['router']) 맞지 않거나, router가 실제 결과를 사용하지 않고 \"plain\"으로 고정되어 있는 등 중간 구현 상태라는 점도 이해하는 데 도움이 되었습니다.\n💡 실습 예시 (Practice Example) 수업에서 다룬 기본적인 라우팅 흐름은 다음과 같습니다.\n사용자 질문 입력: “오늘 날씨는 어때?” Router 결정: {\"route\": \"plain\"} (날씨 조회 능력이 필요하다고 판단) Worker 실행: plain worker가 API 호출 수행 State 업데이트: 결과가 State에 저장되어 다음 단계로 전달 핵심을 보여주는 코드 예시’만’ 백틱3개 코드블록으로 출력하라. 노트에 코드 근거가 없으면 아무것도 쓰지 마라.\nfrom langgraph.graph import StateGraph, END from typing_extensions import TypedDict # State Layer: 데이터가 흐르는 그릇 class AgentState(TypedDict): question: str route: str # Router의 결정 결과 (\"plain\", \"excel\", \"vector\") answer: str # Decision Layer: 어떤 Worker에게 일을 맡길지 결정 def router(state: AgentState) -\u003e dict: \"\"\" 질문의 의도를 분석하여 적절한 worker 경로를 결정합니다. \"\"\" q = state[\"question\"].lower() # 간단한 키워드 기반 라우팅 로직 (실제로는 LLM이 수행) if any(word in q for word in [\"날씨\", \"기온\", \"습도\"]): route = \"plain\" elif any(word in q for word in [\"엑셀\", \"표\", \"데이터 분석\"]): route = \"excel\" else: route = \"vector\" # 기본적으로 벡터 검색 등 사용 return {\"route\": route} # Worker Layer: 실제 작업을 수행하는 노드들 def plain_worker(state: AgentState) -\u003e dict: \"\"\"plain worker: 간단한 질의응답 또는 API 호출\"\"\" # 실제 구현에서는 날씨 API 등을 호출합니다. answer = f\"날씨 관련 답변: '{state['question']}'에 대한 정보를 처리했습니다.\" return {\"answer\": answer} def excel_worker(state: AgentState) -\u003e dict: \"\"\"excel worker: 데이터 분석 및 표 생성\"\"\" answer = f\"엑셀 관련 답변: '{state['question']}'에 대한 데이터를 분석했습니다.\" return {\"answer\": answer} def vector_worker(state: AgentState) -\u003e dict: \"\"\"vector worker: 의미 검색 또는 RAG\"\"\" answer = f\"벡터 검색 답변: 총평 오늘 오후 전체에서 배운 것 LLM 코드 재사용과 LangGraph 핵심 개념을 통해, 기존 worker 구조를 프롬프트 목적 변경만으로 그래프 생성 작업에 적용할 수 있음을 깨닫고, compile()와 invoke()가 설계도와 실행의 차이라는 점을 명확히 이해했다. 특히 Router가 답변이 아닌 Worker 할당을 결정하는 classifier 역할을 하고, conditional edge가 routing label과 node를 연결해주는 고리라는 점은 시스템 통합의 골격임을 확인할 수 있었다.\n다음에 조심할 것 LangGraph에서 compile()와 invoke()를 설계도와 실제 실행으로 구분하여, 노드 간 데이터 흐름과 라우팅 로직이 어떻게 상호작용하는지 전체적인 그림을 먼저 파악한 뒤 구체적인 코드에 착수해야 한다. Router가 답변 생성 자체가 아니라 Worker 할당이라는 classifier 역할임을 명확히 인지하고, conditional edge가 routing label과 실제 node를 연결해주는 고리라는 점을 항상 상기하여 불필요한 로직 중복을 방지해야 한다. 기존 LLM 코드 재사용 경험을 바탕으로 새로운 프레임워크 적용 시 ‘prompt 목적’만 변경하면 worker를 효율적으로 재사용할 수 있음을 전제로 하되, 시스템 통합 완료보다는 routing graph의 골격부터 단계별로 검증하며 진행해야 한다. 다음 복습 주제 LangGraph의 핵심 구조가 단순히 코드 작성법이 아니라, ‘어떤 작업을 누가 어떻게 연결하는지’에 대한 설계 사고임을 재정립해야 한다.\n특히 compile()와 invoke()의 차이를 명확히 이해하고, 라우팅 로직이 데이터 흐름 속에서 노드를 제어하는 메커니즘으로 작동한다는 점을 심화 학습해야 한다.\n현재 시스템에서 router와 worker가 유기적으로 연결된 완전한 그래프가 아니라, routing 레이어의 골격과 실제 실행 흐름을 분리하여 설계·검증하는 연습을 이어가야 한다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1264",
+  "inLanguage": "en",
+  "datePublished": "2026-09-30T00:00:00Z",
+  "dateModified": "2026-09-30T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-09-30-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오후 학습 | 재사용된 executor로 구현한 LLM 기반 그래프 구조와 라우팅 통합
+    </h1>
+    <div class="post-description">
+      2026-09-30 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-09-30 00:00:00 +0000 UTC'>2026년 9월 30일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-llm-%EC%BD%94%EB%93%9C-%EC%9E%AC%EC%82%AC%EC%9A%A9%EA%B3%BC-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%8B%9C%EA%B0%81%ED%99%94-%ED%99%95%EC%9E%A5-learninglog">LLM 코드 재사용과 그래프 시각화 확장 (LearningLog)</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-langgraph-%ED%95%B5%EC%8B%AC-%EA%B0%9C%EB%85%90%EA%B3%BC-%EB%B9%84%EC%9C%A0-%EC%A0%95%EB%A6%AC">LangGraph 핵심 개념과 비유 정리</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-llm-router%EC%99%80-worker%EC%9D%98-%EA%B7%B8%EB%9E%98%ED%94%84-%ED%86%B5%ED%95%A9-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">LLM Router와 Worker의 그래프 통합 이해하기</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-llm-코드-재사용과-그래프-시각화-확장-learninglog">1. LLM 코드 재사용과 그래프 시각화 확장 (LearningLog)<a hidden class="anchor" aria-hidden="true" href="#1-llm-코드-재사용과-그래프-시각화-확장-learninglog">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>오전과 동일한 executor 구조를 활용해 LLM이 Python 코드를 생성하고 실행하는 패턴을 재사용할 수 있음을 깨달았다. 핵심은 새로운 기술 습득이 아니라, &lsquo;prompt 목적&rsquo;만 변경하여 기존 worker를 그래프 생성 작업에 적용하는 재사용성이었다. 이를 통해 LangGraph와 같은 프레임워크에서 node/worker로 기능을 묶는 기반 구조를 이해하게 되었다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>오전 수업에서 배운 DataFrame 기반 코드 실행 파이프라인 구조와 오늘 주제인 그래프 생성 흐름이 거의 동일하여, 새로운 기술을 배우는 것이 아니라 기존 패턴을 재사용하는 방법에 집중하게 되었습니다. 핵심은 LLM이 자연어 요청을 Python/Matplotlib 실행 단계로 변환하며, 공통 executor와 task-specific prompt를 분리하면 LangGraph 같은 프레임워크에서 각 기능을 노드/워커로 묶는 기반이 된다는 점이었습니다. 무엇보다 &ldquo;새로운 실행 기술&rdquo; 자체가 아니라, **&ldquo;같은 패턴을 재사용 가능한 워커로 만드는 과정 자체&rdquo;**가 학습의 대상였다는 점이 가장 큰 깨달음이었습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>오전 학습한 DataFrame 기반 코드 실행 파이프라인의 핵심 패턴을 재사용하는 것이 목표였으며, LLM에게 자연어를 Python/Matplotlib 코드로 변환하게 한 뒤 executor를 통해 그래프를 생성하는 구조임을 이해했습니다. 특히 기존의 <code>executor</code>와 <code>task-specific prompt</code>를 분리하여 구성하면 LangGraph와 같은 프레임워크에서 각 기능을 node/worker로 효율적으로 묶을 수 있다는 점에 주목했습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 질문: 주어진 DataFrame으로 요청에 맞는 그래프 생성</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># LLM에게 전달된 프롬프트 구조</span>
+</span></span><span style="display:flex;"><span>prompt <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">주어진 DataFrame으로 요청에 맞는 그래프 생성
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">데이터 로드 코드는 생략
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">label/title은 영문
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">matplotlib 사용
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 전체 흐름: 질문 → LLM code 생성 → code fence 제거 → Python code 추출 → exec() → 그래프 생성</span>
+</span></span></code></pre></div><h2 id="2-langgraph-핵심-개념과-비유-정리">2. LangGraph 핵심 개념과 비유 정리<a hidden class="anchor" aria-hidden="true" href="#2-langgraph-핵심-개념과-비유-정리">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>LangGraph의 핵심 개념을 &lsquo;작업 가방&rsquo;, &lsquo;처리 모듈&rsquo;, &lsquo;연결선&rsquo; 등 구체적인 비유로 환원하여 추상적인 문법과 전체 흐름을 분리해서 이해할 수 있었다. 특히 <code>compile()</code>와 <code>invoke()</code>가 설계도와 실제 실행의 차이라는 점을 명확히 인식하여, 노드와 라우팅 로직이 어떻게 데이터 흐름 속에서 상호작용하는지 전체적인 그림을 그릴 수 있게 되었다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음에는 상태, 함수, 라우팅 로직이 같은 코드 블록에 섞여 있어 각 요소의 역할 분간이 어려웠습니다. 또한 Python 함수와 LangChain/Graph 개념이 동시에 등장하면서 데이터와 처리 로직, 연결 고리의 경계가 불분명했습니다. 이러한 혼란을 해소하기 위해 &lsquo;작업 가방&rsquo;, &lsquo;처리 모듈&rsquo;, &lsquo;연결선&rsquo; 등의 비유를 먼저 머릿속에 그린 뒤 문법을 익힌 것이 가장 큰 도움이 되었습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>LangGraph는 상태, 노드, 엣지를 각각 데이터 용기, 처리 함수, 연결 로직으로 분리하여 생각해야 한다. 전체 흐름을 설계하는 <code>compile()</code>까지 완료한 뒤 <code>invoke()</code>로 실행하면, 파이프라인처럼 순차적으로 결과를 도출할 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> TypedDict, Annotated
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> operator
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> langgraph.graph <span style="color:#f92672">import</span> StateGraph, END
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. 상태 정의 (작업 가방)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AgentState</span>(TypedDict):
+</span></span><span style="display:flex;"><span>    input: str
+</span></span><span style="display:flex;"><span>    output: str
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. 노드 정의 (처리 모듈)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">node_a</span>(state: AgentState) <span style="color:#f92672">-&gt;</span> dict:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># LLM이나 계산 로직이 들어가는 곳</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;output&#34;</span>: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Processed: </span><span style="color:#e6db74">{</span>state[<span style="color:#e6db74">&#39;input&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">router</span>(state: AgentState) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 판단자 역할</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;error&#34;</span> <span style="color:#f92672">in</span> state<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;output&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;error_handler&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> END
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. 그래프 컴파일 (일자리 초대장)</span>
+</span></span><span style="display:flex;"><span>graph <span style="color:#f92672">=</span> StateGraph(AgentState)
+</span></span><span style="display:flex;"><span>graph<span style="color:#f92672">.</span>add_node(<span style="color:#e6db74">&#34;process&#34;</span>, node_a)
+</span></span><span style="display:flex;"><span>graph<span style="color:#f92672">.</span>add_conditional_edges(<span style="color:#e6db74">&#34;process&#34;</span>, router)
+</span></span><span style="display:flex;"><span>graph<span style="color:#f92672">.</span>set_entry_point(<span style="color:#e6db74">&#34;process&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> graph<span style="color:#f92672">.</span>compile()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. 실행 (업무 시작)</span>
+</span></span><span style="display:flex;"><span>result <span style="color:#f92672">=</span> app<span style="color:#f92672">.</span>invoke({<span style="color:#e6db74">&#34;input&#34;</span>: <span style="color:#e6db74">&#34;Hello LangGraph&#34;</span>})
+</span></span><span style="display:flex;"><span>print(result[<span style="color:#e6db74">&#34;output&#34;</span>])
+</span></span></code></pre></div><h2 id="3-llm-router와-worker의-그래프-통합-이해하기">3. LLM Router와 Worker의 그래프 통합 이해하기<a hidden class="anchor" aria-hidden="true" href="#3-llm-router와-worker의-그래프-통합-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>Router는 답변을 생성하는 것이 아니라, 어떤 Worker에게 일을 시킬지 결정하는 classifier 역할이라는 점을 이해하게 되었다. 또한 conditional edge가 routing label과 실제 node를 연결해주는 고리라는 점도 명확해졌다. 현재 시스템은 통합 완성본보다 routing graph의 골격만 만든 단계로 보는 것이 정확하다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>Router가 답을 생성하는 것이 아니라, 어떤 Worker에게 일을 시킬지 결정하는 classifier 역할이라는 점이 가장 핵심적인 전환점이었습니다.</p>
+<p>특히 <code>conditional edge</code>는 routing label과 실제 node를 매핑해주는 연결 고리 역할을 한다는 점도 명확해졌습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>Router는 답변을 생성하는 것이 아니라, 어떤 Worker에게 일을 시킬지 결정하는 classifier 역할입니다. conditional edge는 routing label과 실제 node를 매핑해주는 연결 고리 역할을 합니다. 현재 시스템은 통합 완성본보다 routing graph 골격을 만드는 단계로 이해해야 합니다.</p>
+<h1 id="learninglog-워킹-노트-llm-router로-plainexcelvector-worker를-하나의-그래프로-묶기">LearningLog 워킹 노트: LLM Router로 plain·excel·vector worker를 하나의 그래프로 묶기<a hidden class="anchor" aria-hidden="true" href="#learninglog-워킹-노트-llm-router로-plainexcelvector-worker를-하나의-그래프로-묶기">#</a></h1>
+<h3 id="-무엇이-헷갈렸나-confusion-point">🔍 무엇이 헷갈렸나 (Confusion Point)<a hidden class="anchor" aria-hidden="true" href="#-무엇이-헷갈렸나-confusion-point">#</a></h3>
+<p>오늘 가장 패닉이 온 부분은 **&ldquo;부품 사이의 control flow가 새로 등장해 책임 경계가 안 보인다&rdquo;**는 점이었습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>RAG
+</span></span><span style="display:flex;"><span>Pandas
+</span></span><span style="display:flex;"><span>LLM code generation
+</span></span><span style="display:flex;"><span>Python execution
+</span></span><span style="display:flex;"><span>State
+</span></span><span style="display:flex;"><span>Router
+</span></span><span style="display:flex;"><span>LangGraph
+</span></span></code></pre></div><p>이 모든 것이 한 화면에 합쳐졌을 때, 기존에 알고 있던 부품들이 낯설게 느껴진 것은 부품을 모르해서가 아니라, <strong>어떤 부품이 어떤 역할을 하며 어떻게 연결되는지(control flow)의 책임 경계가 명확하지 않았기 때문</strong>입니다.</p>
+<p>특히 <code>Router</code>라는 decision component가 단순히 질문의 종류를 분류하는 것을 넘어, <code>State</code> 관리와 <code>Worker</code> 실행의 orchestration 역할을 하게 되면서 전체 시스템의 구조를 이해하기 어려웠습니다. &ldquo;이전 거 융합하는 건 알겠는데 짬뽕처럼 보여서 패닉&quot;이라는 생각이 들었던 지점은 바로 이 <strong>control/orchestration layer가 새로 올라온 부분</strong>이었습니다.</p>
+<h3 id="-정리된-이해-corrected-understanding">📚 정리된 이해 (Corrected Understanding)<a hidden class="anchor" aria-hidden="true" href="#-정리된-이해-corrected-understanding">#</a></h3>
+<p>헷갈리던 부분을 3층 구조로 나누니 단순해졌습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Decision Layer       → Router → 무슨 능력이 필요한가?
+</span></span><span style="display:flex;"><span>Worker Layer         → plain / excel / vector → 실제 작업 수행
+</span></span><span style="display:flex;"><span>State Layer          → question / data / code / context / generation → 결과 운반
+</span></span></code></pre></div><p>핵심은 <strong>Router가 답변을 생성하는 것이 아니라, 어떤 Worker에게 일을 시킬지 결정하는 classifier 역할</strong>이라는 점이었습니다. 또한 <code>conditional edge</code>는 routing label과 실제 node를 매핑해주는 연결 고리 역할을 한다는 점도 명확해졌습니다.</p>
+<p>현재 Git 상태는 통합 완성본보다 <strong>routing graph 골격을 만드는 단계</strong>로 보는 것이 정확합니다. Prompt와 code에서 key name이(<code>{&quot;route&quot;:&quot;plain&quot;}</code> vs <code>result['router']</code>) 맞지 않거나, router가 실제 결과를 사용하지 않고 <code>&quot;plain&quot;</code>으로 고정되어 있는 등 중간 구현 상태라는 점도 이해하는 데 도움이 되었습니다.</p>
+<h3 id="-실습-예시-practice-example">💡 실습 예시 (Practice Example)<a hidden class="anchor" aria-hidden="true" href="#-실습-예시-practice-example">#</a></h3>
+<p>수업에서 다룬 기본적인 라우팅 흐름은 다음과 같습니다.</p>
+<ol>
+<li><strong>사용자 질문 입력</strong>: &ldquo;오늘 날씨는 어때?&rdquo;</li>
+<li><strong>Router 결정</strong>: <code>{&quot;route&quot;: &quot;plain&quot;}</code> (날씨 조회 능력이 필요하다고 판단)</li>
+<li><strong>Worker 실행</strong>: plain worker가 API 호출 수행</li>
+<li><strong>State 업데이트</strong>: 결과가 State에 저장되어 다음 단계로 전달</li>
+</ol>
+<p>핵심을 보여주는 코드 예시&rsquo;만&rsquo; 백틱3개 코드블록으로 출력하라. 노트에 코드 근거가 없으면 아무것도 쓰지 마라.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> langgraph.graph <span style="color:#f92672">import</span> StateGraph, END
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing_extensions <span style="color:#f92672">import</span> TypedDict
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># State Layer: 데이터가 흐르는 그릇</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AgentState</span>(TypedDict):
+</span></span><span style="display:flex;"><span>    question: str
+</span></span><span style="display:flex;"><span>    route: str  <span style="color:#75715e"># Router의 결정 결과 (&#34;plain&#34;, &#34;excel&#34;, &#34;vector&#34;)</span>
+</span></span><span style="display:flex;"><span>    answer: str
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Decision Layer: 어떤 Worker에게 일을 맡길지 결정</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">router</span>(state: AgentState) <span style="color:#f92672">-&gt;</span> dict:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    질문의 의도를 분석하여 적절한 worker 경로를 결정합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    q <span style="color:#f92672">=</span> state[<span style="color:#e6db74">&#34;question&#34;</span>]<span style="color:#f92672">.</span>lower()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 간단한 키워드 기반 라우팅 로직 (실제로는 LLM이 수행)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> any(word <span style="color:#f92672">in</span> q <span style="color:#66d9ef">for</span> word <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#34;날씨&#34;</span>, <span style="color:#e6db74">&#34;기온&#34;</span>, <span style="color:#e6db74">&#34;습도&#34;</span>]):
+</span></span><span style="display:flex;"><span>        route <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;plain&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> any(word <span style="color:#f92672">in</span> q <span style="color:#66d9ef">for</span> word <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#34;엑셀&#34;</span>, <span style="color:#e6db74">&#34;표&#34;</span>, <span style="color:#e6db74">&#34;데이터 분석&#34;</span>]):
+</span></span><span style="display:flex;"><span>        route <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;excel&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        route <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;vector&#34;</span>  <span style="color:#75715e"># 기본적으로 벡터 검색 등 사용</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;route&#34;</span>: route}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Worker Layer: 실제 작업을 수행하는 노드들</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">plain_worker</span>(state: AgentState) <span style="color:#f92672">-&gt;</span> dict:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;plain worker: 간단한 질의응답 또는 API 호출&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 실제 구현에서는 날씨 API 등을 호출합니다.</span>
+</span></span><span style="display:flex;"><span>    answer <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;날씨 관련 답변: &#39;</span><span style="color:#e6db74">{</span>state[<span style="color:#e6db74">&#39;question&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;에 대한 정보를 처리했습니다.&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;answer&#34;</span>: answer}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">excel_worker</span>(state: AgentState) <span style="color:#f92672">-&gt;</span> dict:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;excel worker: 데이터 분석 및 표 생성&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    answer <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;엑셀 관련 답변: &#39;</span><span style="color:#e6db74">{</span>state[<span style="color:#e6db74">&#39;question&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;에 대한 데이터를 분석했습니다.&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;answer&#34;</span>: answer}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">vector_worker</span>(state: AgentState) <span style="color:#f92672">-&gt;</span> dict:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;vector worker: 의미 검색 또는 RAG&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    answer <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;벡터 검색 답변:</span>
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>LLM 코드 재사용과 LangGraph 핵심 개념을 통해, 기존 worker 구조를 프롬프트 목적 변경만으로 그래프 생성 작업에 적용할 수 있음을 깨닫고, <code>compile()</code>와 <code>invoke()</code>가 설계도와 실행의 차이라는 점을 명확히 이해했다. 특히 Router가 답변이 아닌 Worker 할당을 결정하는 classifier 역할을 하고, conditional edge가 routing label과 node를 연결해주는 고리라는 점은 시스템 통합의 골격임을 확인할 수 있었다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<ul>
+<li>LangGraph에서 <code>compile()</code>와 <code>invoke()</code>를 설계도와 실제 실행으로 구분하여, 노드 간 데이터 흐름과 라우팅 로직이 어떻게 상호작용하는지 전체적인 그림을 먼저 파악한 뒤 구체적인 코드에 착수해야 한다.</li>
+<li>Router가 답변 생성 자체가 아니라 Worker 할당이라는 classifier 역할임을 명확히 인지하고, conditional edge가 routing label과 실제 node를 연결해주는 고리라는 점을 항상 상기하여 불필요한 로직 중복을 방지해야 한다.</li>
+<li>기존 LLM 코드 재사용 경험을 바탕으로 새로운 프레임워크 적용 시 &lsquo;prompt 목적&rsquo;만 변경하면 worker를 효율적으로 재사용할 수 있음을 전제로 하되, 시스템 통합 완료보다는 routing graph의 골격부터 단계별로 검증하며 진행해야 한다.</li>
+</ul>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>LangGraph의 핵심 구조가 단순히 코드 작성법이 아니라, &lsquo;어떤 작업을 누가 어떻게 연결하는지&rsquo;에 대한 설계 사고임을 재정립해야 한다.</p>
+<p>특히 <code>compile()</code>와 <code>invoke()</code>의 차이를 명확히 이해하고, 라우팅 로직이 데이터 흐름 속에서 노드를 제어하는 메커니즘으로 작동한다는 점을 심화 학습해야 한다.</p>
+<p>현재 시스템에서 router와 worker가 유기적으로 연결된 완전한 그래프가 아니라, routing 레이어의 골격과 실제 실행 흐름을 분리하여 설계·검증하는 연습을 이어가야 한다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-09-30-am-daily/">
+    <span class="title">« Prev</span>
+    <span>오전 학습 | RAG 서비스 연결과 LLM 코드 생성 파이프라인 정리</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-09-29-am-daily/">
+    <span class="title">Next »</span>
+    <span>오전 학습 | 메타데이터로 ChromaDB 조건 검색과 PDF RAG 전처리 이해하기</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

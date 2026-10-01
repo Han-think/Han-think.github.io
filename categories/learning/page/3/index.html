@@ -203,6 +203,68 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">오전 학습 | LLM 스트리밍 구조와 GPU 실행 경로 이해
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 LLM 스트리밍 구조 핵심 개념 정리 GPU 스택 차이와 실행 경로의 오해 FastAPI와 Hugging Face 모델 통합 구조 정리 총평 1. LLM 스트리밍 구조 핵심 개념 정리 무엇을 배웠나 비동기 함수와 제너레이터가 결합된 형태를 이해하는 데 집중했다. async와 await는 I/O 대기 중 흐름을 양보하는 장치이며, yield는 함수를 종료하지 않고 값을 한 조각 뱉고 일시 정지하는 기능이다. 이를 통해 StreamingResponse가 제너레이터가 뿜어낸 조각들을 HTTP 응답으로 감싸주는 구조임을 명확히 파악했다.
+헷갈렸던 점 async, await, yield가 단순히 비동기나 반복과 관련된 키워드인지, 실제로는 I/O 흐름을 양보하고 값을 일시 정지했다가 이어주는 제너레이터의 핵심 기능인지 구분이 안 갔다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-14 00:00:00 +0000 UTC'>2026년 9월 14일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오전 학습 | LLM 스트리밍 구조와 GPU 실행 경로 이해" href="https://Han-think.github.io/learning/2026-09-14-am-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">오후 학습 | 멀티모달 입력 파이프라인 통합의 핵심
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 멀티모달 입력 파이프라인 기본 공식 파일 업로드와 FormData 연결 고리 소스코드와 모델 파일의 분리 총평 1. 멀티모달 입력 파이프라인 기본 공식 무엇을 배웠나 멀티모달 모델 입력은 이미지와 텍스트가 별도 경로가 아닌 하나의 메시지 구조로 통합된다는 점이 핵심이었다. processor를 통해 시각 정보와 텍스트가 섞인 텐서 형태로 변환되는 과정을 이해하는 것이 모델 활용의 시작점이다. 특히 프롬프트 길이만큼 잘라내는 후처리 단계는 생성된 답안을 정확히 추출하는 데 필수적이다.
+헷갈렸던 점 처음 멀티모달 모델을 접했을 때, 이미지와 텍스트가 별도의 경로로 전달된다고 생각했던 것이 가장 큰 오해였습니다. 실제로는 이미지가 텍스트와 섞여 하나의 message 안에 담기며, 이를 처리하는 processor 단계가 필수적입니다. 모델에 바로 입력하면 구조를 이해하지 못해 혼란을 겪을 수 있어, 입력 전처리 과정이 얼마나 중요한지 깨닫게 되었습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-14 00:00:00 +0000 UTC'>2026년 9월 14일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오후 학습 | 멀티모달 입력 파이프라인 통합의 핵심" href="https://Han-think.github.io/learning/2026-09-14-pm-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">오전 학습 | LLM 판단과 Tool 실행, FastAPI 스트리밍 연결
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 LangChain Agent의 도구 판단 및 인자 구성 과정 LLM Agent와 Tool의 역할 분리를 통한 FastAPI 웹 서비스 구축 lmstudio agent service adaptation 이해하기 LLM 스트리밍과 HTTP 연결 고리 이해하기 총평 1. LangChain Agent의 도구 판단 및 인자 구성 과정 무엇을 배웠나 LangChain Agent는 LLM이 질문의 의도를 파악해 적절한 도구를 선택하고 인자를 구성하는 ‘판단력 있는 실행자’ 역할을 수행합니다. 핵심은 LLM이 도구 사용을 결정하고, 실제 연산이나 검색 등 구체적인 작업은 Tool이 담당한다는 책임 분담 구조입니다. 오늘 혼란스러웠던 함수 구현 오류와 흐름의 주체 전환을 이해하며, LLM과 Tool이 협업하는 시나리오를 자연스럽게 파악할 수 있었습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-11 00:00:00 +0000 UTC'>2026년 9월 11일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오전 학습 | LLM 판단과 Tool 실행, FastAPI 스트리밍 연결" href="https://Han-think.github.io/learning/2026-09-11-am-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">오후 학습 | stream_mode 변경 시 파서 재구성 필요와 일관된 normalization layer
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 stream_mode 변경 시 chunk 구조와 파서 재구성 필요 에이전트 툴 인터페이스와 모듈성: 일관된 구조와 내부 구현 교체ability Transformers Pipeline과 ViT 이미지 분류 실습 정리 업로드 후 분류와 정리: 임시 파일 관리 전략 Intel Arc/XPU 환경으로 이어가는 오후 수업 요약 총평 1. stream_mode 변경 시 chunk 구조와 파서 재구성 필요 무엇을 배웠나 stream_mode 옵션을 변경하면 데이터의 청크 구조가 완전히 달라지므로, 단순히 옵션 하나만 바꾸는 것이 아니라 그에 맞는 파서 로직도 함께 재구성해야 한다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-11 00:00:00 +0000 UTC'>2026년 9월 11일</span>&nbsp;·&nbsp;<span>8 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오후 학습 | stream_mode 변경 시 파서 재구성 필요와 일관된 normalization layer" href="https://Han-think.github.io/learning/2026-09-11-pm-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">오전 학습 | HTTP 요청 구조와 함수 인자로 동적 응답 생성하기
     </h2>
   </header>
@@ -289,78 +351,6 @@
 
 <span title='2026-09-08 00:00:00 +0000 UTC'>2026년 9월 8일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
   <a class="entry-link" aria-label="post link to 오후 학습 | FastAPI 인스턴스 생성과 Uvicorn 역할 구분" href="https://Han-think.github.io/learning/2026-09-08-pm-daily/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오늘 오후, 멀티태스크와 앙상블의 Loss 구분 및 XPU 역할 분리 확인
-IMDB 전처리 길이 오해 수정과 `push_to_hub` 권한 인증 실전 경험
-SQuAD Exact Match와 F1 Score의 본질적 차이 이해
-PM_06 프로젝트에서 Datasets의 메트릭 보존 중요성 깨닫기
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 [워킹노트] 앙상블과 멀티태스크 Loss의 구분 CPU와 XPU의 역할 분리: 전처리와 모델 연산 IMDB 데이터 전처리 길이에 대한 오해와 수정 오늘의 혼란 포인트: 권한 인증 SQuAD 평가 메트릭: Exact Match와 F1의 차이 PM_06 메트릭 오케스트레이션 프로젝트 연결 총평 1. [워킹노트] 앙상블과 멀티태스크 Loss의 구분 무엇을 배웠나 멀티태스크 학습에서 Loss는 각 태스크의 오차를 가중합한 최종 신호이며, Checkpoint는 훈련된 모델 상태를 저장하는 스냅샷이라는 점을 명확히 구분했습니다. 앙상블이 여러 모델의 결과를 모아 최종 답을 도출하는 방식인 반면, 멀티태스크는 하나의 모델 내에서 여러 태스크의 Loss를 합쳐 가중치를 업데이트한다는 점에서 본질적인 차이가 있습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-07 00:00:00 +0000 UTC'>2026년 9월 7일</span>&nbsp;·&nbsp;<span>10 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오늘 오후, 멀티태스크와 앙상블의 Loss 구분 및 XPU 역할 분리 확인
-IMDB 전처리 길이 오해 수정과 `push_to_hub` 권한 인증 실전 경험
-SQuAD Exact Match와 F1 Score의 본질적 차이 이해
-PM_06 프로젝트에서 Datasets의 메트릭 보존 중요성 깨닫기" href="https://Han-think.github.io/learning/2026-09-07-pm-daily/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오전 학습 | backbone이 만든 벡터를 가공하는 head의 역할과 [CLS] 토큰을 통한 문장 의미 추출, 그리고 softmax가 정답 확률을 높여주지 않는다는 사실 등 모델 구조와 학습 과정의 본질을 정리했습니다.
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 custom model head와 backbone의 역할 분담 and [CLS] 벡터 흐름 이해 config로 정의한 라벨의 의미와 학습 과정 구분 Softmax와 확률의 오해, 그리고 모델의 한계 앙상블 기법의 이해: Soft Voting과 Weighted Average 총평 1. custom model head와 backbone의 역할 분담 and [CLS] 벡터 흐름 이해 무엇을 배웠나 처음에는 pipeline() 한 줄이 어떻게 동작하는지 막막했지만, 모델 내부 구조를 분해해 보니 Head는 단순히 붙이는 것이 아니라 Backbone이 만든 벡터를 가공하는 공정이라는 점을 깨닫게 되었다. 특히 [CLS] 토큰을 통해 문장 전체의 의미를 대표하는 벡터로 추출하는 과정이 핵심임을 이해하게 되었고, 코드 한 줄 안에 숨겨진 데이터 흐름을 정확히 파악할 수 있게 되어 모델 구조에 대한 감이 잡혔다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-07 00:00:00 +0000 UTC'>2026년 9월 7일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오전 학습 | backbone이 만든 벡터를 가공하는 head의 역할과 [CLS] 토큰을 통한 문장 의미 추출, 그리고 softmax가 정답 확률을 높여주지 않는다는 사실 등 모델 구조와 학습 과정의 본질을 정리했습니다." href="https://Han-think.github.io/learning/2026-09-07-am-daily/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">XPU 호환성 오해와 라이브러리 버전 충돌 정리 프롬프트 구조화와 steps·네거티브 프롬프트 활용법, Ollama Windows 설치 시 모델 저장소 분리 방법 및 Vulkan 감지와 GPU 오프로드의 실제 한계 파악
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 XPU 호환성과 라이브러리 버전 충돌 극복기 프롬프트 구조화와 steps 활용법, 네거티브 프롬프트의 필요성 Ollama Windows 설치와 모델 저장소 분리 🟡 초보자 시점, 학습자의 혼란 📌 정리된 이해 🛠️ 실습 예시 Vulkan 감지와 실제 GPU 오프로드의 간극 총평 1. XPU 호환성과 라이브러리 버전 충돌 극복기 무엇을 배웠나 처음에는 XPU 호환성 문제라고 생각했으나, 실제로는 diffusers, transformers, huggingface-hub 라이브러리 간의 버전 불일치로 인한 dependency conflict였습니다. 텍스트 생성보다 이미지 생성이 환경 궁합에 민감하므로, XPU 사용 시 기존 성공했던 설정이나 버전을 그대로 유지하는 것이 가장 중요하다는 점을 깨달았습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-04 00:00:00 +0000 UTC'>2026년 9월 4일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
-  <a class="entry-link" aria-label="post link to XPU 호환성 오해와 라이브러리 버전 충돌 정리 프롬프트 구조화와 steps·네거티브 프롬프트 활용법, Ollama Windows 설치 시 모델 저장소 분리 방법 및 Vulkan 감지와 GPU 오프로드의 실제 한계 파악" href="https://Han-think.github.io/learning/2026-09-04-pm-daily/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오늘 오전, AutoTokenizer와 AutoModel 직접 연결 이해하기: `pipeline()`는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, 두 방식은 wrapper와 그 내부의 부품 관계에 있으며 특수 하드웨어 환경에서는 직접 연결 방식을 통해 backend와의 인터페이스를 잡아주는 과정이 필수적이다.
-Qwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리: TextStreamer를 사용하려면 단순히 클래스를 생성하는 것만으로는 충분하지 않으며, generate() 메서드에 인자로 전달해야 실시간 토큰 출력이 가능하다.
-핵심적인 학습 포인트는 프롬프트를 message 리스트 형태로 구조화한 뒤 apply_chat_template()을 호출하여 모델이 기대하는 대화 형식으로 변환한 다음, tokenizer에 입력해야 한다는 점이다. chat template가 적용되지 않은 상태로 tokenizer에 직접 입력을 하면 모델이 예상하지 못한 형식을 받게 되어 오류가 발생할 수 있다.
-SDPA와 EAGR 속도 비교 실험 (XPU 환경): SDPA와 EAGER 속도 차이를 단순히 실행 결과로 비교하면 안 되며, XPU 환경에서는 첫 실행 시 하드웨어 초기화 비용이 섞이기 때문에 warm-up 과정을 반드시 거쳐야 정확한 측정이 가능하다. 또한 CUDA용 `torch.cuda.synchronize()` 대신 XPU 환경에 맞게 `torch.xpu.synchronize()`를 사용해야 하며, 내 하드웨어 백엔드에 맞는 최적의 구현체를 직접 측정하여 검증하는 것이 이론을 외우는 것보다 훨씬 실용적이다.
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 AutoTokenizer와 AutoModel 직접 연결 이해하기 핵심 내용 코드 예시: AutoTokenizer &#43; AutoModelForCausalLM 직접 연결 코드 근거 Qwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리 SDPA와 EAGER 속도 비교 실험 (XPU 환경) 총평 1. AutoTokenizer와 AutoModel 직접 연결 이해하기 무엇을 배웠나 pipeline()는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, AutoTokenizer와 AutoModelForCausalLM을 직접 연결하면 device 설정나 dtype 제어 등 모델의 세부 파라미터를 자유롭게 관리할 수 있다. 두 방식은 wrapper와 그 내부의 부품 관계에 있으며, 특수 하드웨어 환경에서는 직접 연결 방식을 통해 backend와의 인터페이스를 잡아주는 과정이 필수적이다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-04 00:00:00 +0000 UTC'>2026년 9월 4일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오늘 오전, AutoTokenizer와 AutoModel 직접 연결 이해하기: `pipeline()`는 전처리부터 후처리까지 자동화된 편리한 인터페이스이며, 두 방식은 wrapper와 그 내부의 부품 관계에 있으며 특수 하드웨어 환경에서는 직접 연결 방식을 통해 backend와의 인터페이스를 잡아주는 과정이 필수적이다.
-Qwen XPU 실행 시 TextStreamer·Chat Template 핵심 정리: TextStreamer를 사용하려면 단순히 클래스를 생성하는 것만으로는 충분하지 않으며, generate() 메서드에 인자로 전달해야 실시간 토큰 출력이 가능하다.
-핵심적인 학습 포인트는 프롬프트를 message 리스트 형태로 구조화한 뒤 apply_chat_template()을 호출하여 모델이 기대하는 대화 형식으로 변환한 다음, tokenizer에 입력해야 한다는 점이다. chat template가 적용되지 않은 상태로 tokenizer에 직접 입력을 하면 모델이 예상하지 못한 형식을 받게 되어 오류가 발생할 수 있다.
-SDPA와 EAGR 속도 비교 실험 (XPU 환경): SDPA와 EAGER 속도 차이를 단순히 실행 결과로 비교하면 안 되며, XPU 환경에서는 첫 실행 시 하드웨어 초기화 비용이 섞이기 때문에 warm-up 과정을 반드시 거쳐야 정확한 측정이 가능하다. 또한 CUDA용 `torch.cuda.synchronize()` 대신 XPU 환경에 맞게 `torch.xpu.synchronize()`를 사용해야 하며, 내 하드웨어 백엔드에 맞는 최적의 구현체를 직접 측정하여 검증하는 것이 이론을 외우는 것보다 훨씬 실용적이다." href="https://Han-think.github.io/learning/2026-09-04-am-daily/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
