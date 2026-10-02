@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오전 학습 | LLM 정보 경로 분리: Ollama, ChromaDB, Tavily | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-10-02 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-10-02-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-10-02-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-10-02-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오전 학습 | LLM 정보 경로 분리: Ollama, ChromaDB, Tavily">
+  <meta property="og:description" content="2026-10-02 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-10-02T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-10-02T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오전 학습 | LLM 정보 경로 분리: Ollama, ChromaDB, Tavily">
+  <meta name="twitter:description" content="2026-10-02 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오전 학습 | LLM 정보 경로 분리: Ollama, ChromaDB, Tavily",
+      "item": "https://Han-think.github.io/learning/2026-10-02-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오전 학습 | LLM 정보 경로 분리: Ollama, ChromaDB, Tavily",
+  "name": "오전 학습 | LLM 정보 경로 분리: Ollama, ChromaDB, Tavily",
+  "description": "2026-10-02 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 LLM 정보 경로 분리하기: Ollama, ChromaDB, Tavily Tavily 검색의 핵심 차이점: 로컬 vs 웹 검색 .env와 .gitignore로 API Key 분리하기 총평 1. LLM 정보 경로 분리하기: Ollama, ChromaDB, Tavily 무엇을 배웠나 오늘은 LLM이 답을 생성하는 과정과 정보를 가져오는 과정을 분리하여 생각해야 한다는 점을 명확히 이해했습니다. 특히 Ollama가 ‘두뇌’ 역할을 하고, ChromaDB와 Tavily는 각각 개인 지식과 외부 최신 정보를 담당한다는 구분이 중요하다고 느꼈습니다. LangGraph 같은 도구를 통해 이 세 가지를 순서대로 연결하는 구조를 파악하게 되어 실무 적용 시 어떤 도구를 활용해야 할지 기준이 생겼습니다.\n헷갈렸던 점 처음에는 Ollama, ChromaDB, Tavily가 모두 “AI가 무언가를 하는 도구\"라는 점에서 기능이 비슷하게 느껴져 구분하기 어려웠습니다. 특히 강사님의 설명으로 Ollama가 단순히 모델을 실행하는 툴이라는 사실보다 ‘내부 지식’의 대명사로 받아들여지면서 다른 도구의 역할이 더 혼동되었습니다. 이러한 혼란을 해소하기 위해 LLM이 답을 생성하는 과정과 정보를 가져오는 과정을 분리하여 생각해야 한다는 점을 가장중요하게 정리했습니다.\n정리된 이해 LLM은 답변을 생성하는 두뇌 역할을 수행하며, ChromaDB는 사내 자료와 같은 개인 맞춤형 지식 저장소로서 RAG를 지원하고 Tavily는 실시간 인터넷 정보를 제공하는 외부 검색 도구이다. 이 세 가지는 LangGraph 등 오케스트레이션 도구를 통해 질문의 목적에 따라 적절히 연계되어 활용된다.\n# LLM 정보 경로 분리: Ollama, ChromaDB, Tavily 역할 시뮬레이션 def answer_question(query_type, data_source): \"\"\" 질문에 따라 적절한 '정보 경로'를 선택하는 함수. :param query_type: 'internal', 'external', 'custom' :param data_source: 사용자 제공 데이터 (RAG용) 또는 None :return: 답변 문자열 \"\"\" # 1. LLM (Ollama): 답변 생성의 '두뇌' # 내부 지식이나 외부 정보를 받아 텍스트를 완성함. if query_type == \"internal\": # 자체 학습 데이터 활용 (예: 수학, 코드, 일반적인 상식) # Ollama가 모델 가중치를 이용해 확률적으로 다음 토큰 예측 return f\"LLM(Ollama) 내부 지식으로 답변: '{query_type}' 질문에 대한 표준적 답변.\" elif query_type == \"external\": # 실시간 인터넷 정보 활용 (Tavily 경로) # 검색 후 LLM에 전달하여 최신성 보장 return f\"LLM(Ollama) + Tavily 외부 검색: '{query_type}' 질문에 대한 최신 정보 통합 답변.\" elif query_type == \"custom\": # 사용자 지정 지식 (ChromaDB 경로 - RAG) # ChromaDB에서 유사한 문서 검색 후 프롬프트에 주입 if data_source: return f\"LLM(Ollama) + ChromaDB RAG: '{query_type}' 질문에 맞춰 '{data_source}' 지식 기반 답변.\" else: return \"오류: ChromaDB에 저장된 커스텀 데이터가 필요합니다.\" # 기본 경우 return \"알 수 없는 경로입니다.\" 2. Tavily 검색의 핵심 차이점: 로컬 vs 웹 검색 무엇을 배웠나 Tavily 웹 검색과 RAG(로컬 데이터베이스)의 핵심 차이는 ‘검색 대상’과 ‘통제 범위’에 있다. ChromaDB는 미리 저장된 지식 기반 내에서 검색하는 반면, Tavily는 실시간으로 인터넷상의 외부 정보를 가져오는 점이 다르다. 특히 Tavily는 단순히 답을 제공하는 도구가 아니라 LLM이 답변을 구성할 수 있는 외부 증거를 공급하는 역할을 한다는 점에서 중요했다. 실습을 통해 search_depth나 time_range 같은 옵션이 결과의 최신성과 구체성에 어떻게 영향을 주는지 확인할 수 있었다.\n헷갈렸던 점 처음에는 RAG와 Tavily 웹 검색이 단순히 ‘검색’이라는 행위만으로 비슷하게 느껴져 헷갈렸다. 하지만 검색 대상(로컬 데이터베이스 vs 외부 인터넷)의 차이와 최신성, 비용 및 통제 범위의 차이가 핵심임을 깨달았다. 특히 Tavily가 답을 직접 주는 도구가 아니라 LLM 답변을 구성하는 외부 증거를 공급한다는 점이 중요했다.\n정리된 이해 RAG는 기존 지식 기반 내에서 검색하는 반면, Tavily 웹 검색은 인터넷상에서 최신 정보를 실시간으로 확보하는 점에서 결정적인 차이가 있다. 특히 Tavily는 LLM이 답변을 구성하는 데 활용할 외부 증거를 공급하는 역할을 한다는 점이 중요하다. 따라서 두 방식은 검색 대상의 범위와 최신성, 비용 및 신뢰도 면에서 명확히 구분된다.\n# 기본 검색 (일반적인 정보 조회) search = TavilySearch( max_results=3, search_depth=\"basic\", topic=\"general\" ) # 고급 검색 (최근성, 제외 도메인 등 활용) TavilySearch( include_answer=True, include_raw_content=True, time_range=\"week\", # 최근 일주일 내의 정보 exclude_domains=[\"example.com\"] # 특정 도메인 제외 ) 3. .env와 .gitignore로 API Key 분리하기 무엇을 배웠나 오늘은 코드와 API 키를 분리하는 것이 왜 중요한지 실감했습니다. 이전에는 단순히 ‘키를 어딘가에 적으라’는 지시를 따라 했을 뿐이었지만, 이제는 소스 코드는 공유해도 되고 비밀키는 비밀로 해야 한다는 구분이 생겼습니다. 특히 .gitignore를 통해 의도치 않게 키가 Git에 업로드되는 것을 막고, 과거의 실수로 인해 이미 history에 노출된 키는 사라지지 않는다는 점을 반드시 기억해야 합니다.\n헷갈렸던 점 코드와 실제 키를 같은 선상에서 생각했던 것이 가장 큰 오류였습니다. .env 파일에 값을 넣는다고 해서 코드가 끝나는 줄 알았는데, .gitignore를 통해 업로드를 막아야 한다는 안전장치의 존재를 몰랐습니다. 이미 Git 히스토리에 시크릿이 commit된 경우, 나중에 .gitignore를 추가해도 과거의 비밀키가 사라지지 않는다는 점을 반드시 주의해야 합니다.\n정리된 이해 코드와 실제 키는 분리해야 하며, .env 파일은 Git에 업로드되지 않도록 .gitignore로 관리해야 한다. 이미 Git history에 키가 포함된 경우, .gitignore 추가만으로는 과거의 유출을 막을 수 없으므로 키 교체가 필수적이다.\n1) .env 파일 생성 및 키 입력\n# .env 파일 (Gitignore 적용 전용) OPENAI_API_KEY=sk-abcdefghijklmnopqrstuvwxyz123456 2) 코드에서 변수 사용하기\nimport os # .env 파일의 값을 자동으로 로드하여 환경 변수로 만듦 (dotenv 라이브러리 가정) from dotenv import load_dotenv load_dotenv() # 실제 키 값은 몰라도 되고, 변수명만 알면 됨 api_key = os.getenv(\"OPENAI_API_KEY\") print(f\"API Key loaded: {api_key}\") 3) .gitignore 설정\n# .gitignore 파일 내용 .env 총평 오늘 오전 전체에서 배운 것 LLM의 답변 생성과 정보 검색 과정을 분리하여, Ollama가 ‘두뇌’ 역할을 하고 ChromaDB와 Tavily가 각각 개인 지식과 외부 정보를 담당한다는 구조를 명확히 이해했습니다. 또한, .env와 .gitignore를 활용해 API 키를 코드에서 분리 관리하는 것이 보안 유지의 필수적임을 깨닫고, 실무 적용 시 도구 선택의 기준을 세웠습니다.\n다음에 조심할 것 .gitignore를 통해 API 키가 코드와 함께 Git에 업로드되지 않도록 철저히 관리하여 보안 사고를 예방한다. ChromaDB(내부 지식)와 Tavily(외부 실시간 정보)의 역할을 명확히 구분하여, 상황에 맞는 도구를 선택해 LLM의 답변 품질을 높인다. search_depth 등 검색 옵션을 조정하여 결과의 최신성과 구체성을 세밀하게 제어하는 습관을 들인다. 다음 복습 주제 LangGraph를 활용한 LLM, ChromaDB, Tavily 간의 연결 흐름을 시각화하고, 각 도구가 어떤 역할을 수행하는지 구체적인 시나리오에 적용해보는 연습을 하고 싶습니다. 실제 프로젝트에서 API 키 관리의 실수를 방지하기 위해 .env 파일 구성과 .gitignore 설정 전략을 직접 구현해보고, 과거 이력에 노출된 민감한 정보의 위험성을 재확인하는 시간을 갖겠습니다. 🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "903",
+  "inLanguage": "en",
+  "datePublished": "2026-10-02T00:00:00Z",
+  "dateModified": "2026-10-02T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-10-02-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오전 학습 | LLM 정보 경로 분리: Ollama, ChromaDB, Tavily
+    </h1>
+    <div class="post-description">
+      2026-10-02 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-10-02 00:00:00 +0000 UTC'>2026년 10월 2일</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-llm-%EC%A0%95%EB%B3%B4-%EA%B2%BD%EB%A1%9C-%EB%B6%84%EB%A6%AC%ED%95%98%EA%B8%B0-ollama-chromadb-tavily">LLM 정보 경로 분리하기: Ollama, ChromaDB, Tavily</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-tavily-%EA%B2%80%EC%83%89%EC%9D%98-%ED%95%B5%EC%8B%AC-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EB%A1%9C%EC%BB%AC-vs-%EC%9B%B9-%EA%B2%80%EC%83%89">Tavily 검색의 핵심 차이점: 로컬 vs 웹 검색</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-env%EC%99%80-gitignore%EB%A1%9C-api-key-%EB%B6%84%EB%A6%AC%ED%95%98%EA%B8%B0"><code>.env</code>와 <code>.gitignore</code>로 API Key 분리하기</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-llm-정보-경로-분리하기-ollama-chromadb-tavily">1. LLM 정보 경로 분리하기: Ollama, ChromaDB, Tavily<a hidden class="anchor" aria-hidden="true" href="#1-llm-정보-경로-분리하기-ollama-chromadb-tavily">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>오늘은 LLM이 답을 생성하는 과정과 정보를 가져오는 과정을 분리하여 생각해야 한다는 점을 명확히 이해했습니다. 특히 Ollama가 &lsquo;두뇌&rsquo; 역할을 하고, ChromaDB와 Tavily는 각각 개인 지식과 외부 최신 정보를 담당한다는 구분이 중요하다고 느꼈습니다. LangGraph 같은 도구를 통해 이 세 가지를 순서대로 연결하는 구조를 파악하게 되어 실무 적용 시 어떤 도구를 활용해야 할지 기준이 생겼습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>처음에는 <code>Ollama</code>, <code>ChromaDB</code>, <code>Tavily</code>가 모두 &ldquo;AI가 무언가를 하는 도구&quot;라는 점에서 기능이 비슷하게 느껴져 구분하기 어려웠습니다. 특히 강사님의 설명으로 <code>Ollama</code>가 단순히 모델을 실행하는 툴이라는 사실보다 &lsquo;내부 지식&rsquo;의 대명사로 받아들여지면서 다른 도구의 역할이 더 혼동되었습니다. 이러한 혼란을 해소하기 위해 LLM이 답을 생성하는 과정과 정보를 가져오는 과정을 분리하여 생각해야 한다는 점을 가장중요하게 정리했습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>LLM은 답변을 생성하는 두뇌 역할을 수행하며, ChromaDB는 사내 자료와 같은 개인 맞춤형 지식 저장소로서 RAG를 지원하고 Tavily는 실시간 인터넷 정보를 제공하는 외부 검색 도구이다. 이 세 가지는 LangGraph 등 오케스트레이션 도구를 통해 질문의 목적에 따라 적절히 연계되어 활용된다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># LLM 정보 경로 분리: Ollama, ChromaDB, Tavily 역할 시뮬레이션</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">answer_question</span>(query_type, data_source):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    질문에 따라 적절한 &#39;정보 경로&#39;를 선택하는 함수.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    :param query_type: &#39;internal&#39;, &#39;external&#39;, &#39;custom&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    :param data_source: 사용자 제공 데이터 (RAG용) 또는 None
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    :return: 답변 문자열
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 1. LLM (Ollama): 답변 생성의 &#39;두뇌&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#    내부 지식이나 외부 정보를 받아 텍스트를 완성함.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> query_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;internal&#34;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 자체 학습 데이터 활용 (예: 수학, 코드, 일반적인 상식)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Ollama가 모델 가중치를 이용해 확률적으로 다음 토큰 예측</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;LLM(Ollama) 내부 지식으로 답변: &#39;</span><span style="color:#e6db74">{</span>query_type<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39; 질문에 대한 표준적 답변.&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> query_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;external&#34;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 실시간 인터넷 정보 활용 (Tavily 경로)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 검색 후 LLM에 전달하여 최신성 보장</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;LLM(Ollama) + Tavily 외부 검색: &#39;</span><span style="color:#e6db74">{</span>query_type<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39; 질문에 대한 최신 정보 통합 답변.&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> query_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;custom&#34;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 사용자 지정 지식 (ChromaDB 경로 - RAG)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># ChromaDB에서 유사한 문서 검색 후 프롬프트에 주입</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> data_source:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;LLM(Ollama) + ChromaDB RAG: &#39;</span><span style="color:#e6db74">{</span>query_type<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39; 질문에 맞춰 &#39;</span><span style="color:#e6db74">{</span>data_source<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39; 지식 기반 답변.&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;오류: ChromaDB에 저장된 커스텀 데이터가 필요합니다.&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 기본 경우</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;알 수 없는 경로입니다.&#34;</span>
+</span></span></code></pre></div><h2 id="2-tavily-검색의-핵심-차이점-로컬-vs-웹-검색">2. Tavily 검색의 핵심 차이점: 로컬 vs 웹 검색<a hidden class="anchor" aria-hidden="true" href="#2-tavily-검색의-핵심-차이점-로컬-vs-웹-검색">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>Tavily 웹 검색과 RAG(로컬 데이터베이스)의 핵심 차이는 &lsquo;검색 대상&rsquo;과 &lsquo;통제 범위&rsquo;에 있다. ChromaDB는 미리 저장된 지식 기반 내에서 검색하는 반면, Tavily는 실시간으로 인터넷상의 외부 정보를 가져오는 점이 다르다. 특히 Tavily는 단순히 답을 제공하는 도구가 아니라 LLM이 답변을 구성할 수 있는 외부 증거를 공급하는 역할을 한다는 점에서 중요했다. 실습을 통해 <code>search_depth</code>나 <code>time_range</code> 같은 옵션이 결과의 최신성과 구체성에 어떻게 영향을 주는지 확인할 수 있었다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음에는 RAG와 Tavily 웹 검색이 단순히 &lsquo;검색&rsquo;이라는 행위만으로 비슷하게 느껴져 헷갈렸다. 하지만 검색 대상(로컬 데이터베이스 vs 외부 인터넷)의 차이와 최신성, 비용 및 통제 범위의 차이가 핵심임을 깨달았다. 특히 Tavily가 답을 직접 주는 도구가 아니라 LLM 답변을 구성하는 외부 증거를 공급한다는 점이 중요했다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>RAG는 기존 지식 기반 내에서 검색하는 반면, Tavily 웹 검색은 인터넷상에서 최신 정보를 실시간으로 확보하는 점에서 결정적인 차이가 있다. 특히 Tavily는 LLM이 답변을 구성하는 데 활용할 외부 증거를 공급하는 역할을 한다는 점이 중요하다. 따라서 두 방식은 검색 대상의 범위와 최신성, 비용 및 신뢰도 면에서 명확히 구분된다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 기본 검색 (일반적인 정보 조회)</span>
+</span></span><span style="display:flex;"><span>search <span style="color:#f92672">=</span> TavilySearch(
+</span></span><span style="display:flex;"><span>    max_results<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>,
+</span></span><span style="display:flex;"><span>    search_depth<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;basic&#34;</span>,
+</span></span><span style="display:flex;"><span>    topic<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;general&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 고급 검색 (최근성, 제외 도메인 등 활용)</span>
+</span></span><span style="display:flex;"><span>TavilySearch(
+</span></span><span style="display:flex;"><span>    include_answer<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    include_raw_content<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    time_range<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;week&#34;</span>,  <span style="color:#75715e"># 최근 일주일 내의 정보</span>
+</span></span><span style="display:flex;"><span>    exclude_domains<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;example.com&#34;</span>]  <span style="color:#75715e"># 특정 도메인 제외</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><h2 id="3-env와-gitignore로-api-key-분리하기">3. <code>.env</code>와 <code>.gitignore</code>로 API Key 분리하기<a hidden class="anchor" aria-hidden="true" href="#3-env와-gitignore로-api-key-분리하기">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>오늘은 코드와 API 키를 분리하는 것이 왜 중요한지 실감했습니다. 이전에는 단순히 &lsquo;키를 어딘가에 적으라&rsquo;는 지시를 따라 했을 뿐이었지만, 이제는 소스 코드는 공유해도 되고 비밀키는 비밀로 해야 한다는 구분이 생겼습니다. 특히 <code>.gitignore</code>를 통해 의도치 않게 키가 Git에 업로드되는 것을 막고, 과거의 실수로 인해 이미 history에 노출된 키는 사라지지 않는다는 점을 반드시 기억해야 합니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>코드와 실제 키를 같은 선상에서 생각했던 것이 가장 큰 오류였습니다.
+<code>.env</code> 파일에 값을 넣는다고 해서 코드가 끝나는 줄 알았는데, <code>.gitignore</code>를 통해 업로드를 막아야 한다는 안전장치의 존재를 몰랐습니다.
+이미 Git 히스토리에 시크릿이 commit된 경우, 나중에 <code>.gitignore</code>를 추가해도 과거의 비밀키가 사라지지 않는다는 점을 반드시 주의해야 합니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>코드와 실제 키는 분리해야 하며, <code>.env</code> 파일은 Git에 업로드되지 않도록 <code>.gitignore</code>로 관리해야 한다. 이미 Git history에 키가 포함된 경우, <code>.gitignore</code> 추가만으로는 과거의 유출을 막을 수 없으므로 키 교체가 필수적이다.</p>
+<p><strong>1) <code>.env</code> 파일 생성 및 키 입력</strong></p>
+<pre tabindex="0"><code class="language-dotenv" data-lang="dotenv"># .env 파일 (Gitignore 적용 전용)
+OPENAI_API_KEY=sk-abcdefghijklmnopqrstuvwxyz123456
+</code></pre><p><strong>2) 코드에서 변수 사용하기</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># .env 파일의 값을 자동으로 로드하여 환경 변수로 만듦 (dotenv 라이브러리 가정)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> dotenv <span style="color:#f92672">import</span> load_dotenv
+</span></span><span style="display:flex;"><span>load_dotenv()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 실제 키 값은 몰라도 되고, 변수명만 알면 됨</span>
+</span></span><span style="display:flex;"><span>api_key <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;OPENAI_API_KEY&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;API Key loaded: </span><span style="color:#e6db74">{</span>api_key<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><p><strong>3) <code>.gitignore</code> 설정</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span># .gitignore 파일 내용
+</span></span><span style="display:flex;"><span>.env
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>LLM의 답변 생성과 정보 검색 과정을 분리하여, Ollama가 &lsquo;두뇌&rsquo; 역할을 하고 ChromaDB와 Tavily가 각각 개인 지식과 외부 정보를 담당한다는 구조를 명확히 이해했습니다. 또한, <code>.env</code>와 <code>.gitignore</code>를 활용해 API 키를 코드에서 분리 관리하는 것이 보안 유지의 필수적임을 깨닫고, 실무 적용 시 도구 선택의 기준을 세웠습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<ol>
+<li><code>.gitignore</code>를 통해 API 키가 코드와 함께 Git에 업로드되지 않도록 철저히 관리하여 보안 사고를 예방한다.</li>
+<li>ChromaDB(내부 지식)와 Tavily(외부 실시간 정보)의 역할을 명확히 구분하여, 상황에 맞는 도구를 선택해 LLM의 답변 품질을 높인다.</li>
+<li><code>search_depth</code> 등 검색 옵션을 조정하여 결과의 최신성과 구체성을 세밀하게 제어하는 습관을 들인다.</li>
+</ol>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<ol>
+<li>LangGraph를 활용한 LLM, ChromaDB, Tavily 간의 연결 흐름을 시각화하고, 각 도구가 어떤 역할을 수행하는지 구체적인 시나리오에 적용해보는 연습을 하고 싶습니다.</li>
+<li>실제 프로젝트에서 API 키 관리의 실수를 방지하기 위해 <code>.env</code> 파일 구성과 <code>.gitignore</code> 설정 전략을 직접 구현해보고, 과거 이력에 노출된 민감한 정보의 위험성을 재확인하는 시간을 갖겠습니다.</li>
+</ol>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://Han-think.github.io/learning/2026-10-02-pm-daily/">
+    <span class="title">Next »</span>
+    <span>오후 학습 | 검색-먼저 접근과 라우팅 트레이드오프</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

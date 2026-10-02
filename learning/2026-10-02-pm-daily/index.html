@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오후 학습 | 검색-먼저 접근과 라우팅 트레이드오프 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-10-02 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-10-02-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-10-02-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-10-02-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오후 학습 | 검색-먼저 접근과 라우팅 트레이드오프">
+  <meta property="og:description" content="2026-10-02 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-10-02T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-10-02T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오후 학습 | 검색-먼저 접근과 라우팅 트레이드오프">
+  <meta name="twitter:description" content="2026-10-02 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오후 학습 | 검색-먼저 접근과 라우팅 트레이드오프",
+      "item": "https://Han-think.github.io/learning/2026-10-02-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오후 학습 | 검색-먼저 접근과 라우팅 트레이드오프",
+  "name": "오후 학습 | 검색-먼저 접근과 라우팅 트레이드오프",
+  "description": "2026-10-02 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 검색-먼저 접근, 라우팅과 트레이드오프 State 구조와 Source Selection 통합 적응형 검색 설계 검토: 코드와 서비스의 간극 총평 1. 검색-먼저 접근, 라우팅과 트레이드오프 무엇을 배웠나 PDF와 무관한 질문에도 검색을 먼저 수행하는 이유는, 라우터가 실제 문서 내용을 보고 판단해야 정확한 경로(RAG/Plain/Web)를 선택할 수 있기 때문이다. 이 ‘검색-먼저’ 접근 방식은 PDF 관련 질문에 강하지만, 비용이 발생한다는 trade-off가 있다. ultimately, 핵심은 검색을 먼저 수행함으로써 분류 오류를 방지하고 품질을 보장하는 대신, 비용 효율성을 희생한다는 점이다.\n헷갈렸던 점 처음에는 질문 유형을 먼저 판단하여 검색을 최소화하는 ‘Route First’ 방식이 더 효율적일 것이라 생각했으나, 시스템은 질문을 먼저 PDF에 노출시켜 근거를 확인한 뒤 라우팅함으로써 분류 오류로 인한 증거 부족 위험을 줄이는 ‘Retrieve-First’ 방식을 선택한다는 점을 이해하게 되었다.\n특히 Router가 질문의 의도뿐만 아니라 실제로 검색된 데이터 내용까지 종합적으로 판단하여 RAG, Plain, Web 경로 중 최적의 답변 경로를 분기시킨다는 점이 핵심이었다. 이는 단순히 비용 절감보다는, 불필요한 지식 누락 없이 정확한 답변을 제공하기 위한 시스템의 설계 철학이 담겨 있었다.\n정리된 이해 검색-먼저(Retrieve-First) 방식은 PDF 관련 질문에 강력한 근거를 제공하지만 검색 비용이 발생하며, 라우팅(질문 분류) 전에 실제 문서 내용을 확인하여 최적의 답변 경로(RAG/Plain/Web)를 선택하는 장점이 있다. 반면 질문-먼저(Route-First) 방식은 검색 비용을 절감할 수 있지만 분류 오류 시 관련 증거를 놓칠 위험이 있어 품질과 비용 사이에서 균형을 잡아야 한다.\n# Adaptive Search Path Selection Logic (Conceptual) def select_answer_path(question: str, retrieved_data: list) -\u003e str: \"\"\" 질문과 검색된 데이터를 기반으로 최적의 답변 경로(RAG, Plain, Web)를 선택합니다. \"\"\" # 1. Router 판단: 질문의 성격과 실제 검색 결과 평가 # (이 부분은 실제 시스템에서는 LLM이나 분류 모델에 의해 수행됩니다) need_rag = any(keyword in question.lower() for keyword in ['pdf', '문서', '보고서', '내용']) need_web = any(keyword in question.lower() for keyword in ['최근', '오늘', '날씨', '시세']) # 2. 경로 선택 로직 if need_rag and retrieved_data: # PDF 내용이 필수적이고 검색 결과가 유효할 경우 RAG 경로 선택 return \"RAG\" elif need_web: # 최신/실시간 정보가 필요할 경우 Web Search 경로 선택 return \"Web Search\" else: # 일반 지식 질문의 경우 Plain Text 답변 생성 return \"Plain\" # 실행 예시 시뮬레이션 question = \"오늘의 주식 시세는 어떻게 되나요?\" retrieved_docs = [] # PDF 검색 결과 (빈 리스트) path = select_answer_path(question, retrieved_docs) print(f\"선택된 경로: {path}\") # 출력 예시: 선택된 경로: Web Search 2. State 구조와 Source Selection 통합 무엇을 배웠나 State 구조를 통해 RAG, 웹 검색, 빈 문자열 등 다양한 소스를 하나의 data 필드에 통합할 수 있다는 점을 배웠습니다. 다만 data라는 필드명이 너무 포괄적이어서 현재 source가 무엇인지 즉시 파악하기 어렵다는 점을 인지했습니다. 이를 해결하기 위해 source_type을 별도 관리하거나 evidence를 구조화하는 방식이 필요하다고 느꼈습니다.\n헷갈렸던 점 data 필드 하나에 RAG 문서, 웹 검색 결과, 빈 문자열이 모두 들어간다는 점에 가장 큰 혼란을 느꼈습니다. data라는 필드명이 너무 포괄적이어서, 안에는 무엇이 들어있는지 코드를 읽어보지 않으면 알 수 없었기 때문입니다. 특히 URL 같은 출처 정보가 data 문자열에 포함되지 않는다는 점이 아쉬웠습니다.\n정리된 이해 State 구조에서 data 필드가 RAG, 웹 검색, 빈 문자열 등 다양한 형태를 수용하면서도 일관된 답변 생성을 가능하게 한다는 점이 핵심입니다. 특히 Source Selection과 Evidence Normalization 과정을 통해 각 worker의 로직을 통합하고, 통일된 형식으로 데이터를 정규화함으로써 최종 답변 노드에서 복잡한 분기 처리를 피할 수 있다는 점이 인상적이었습니다.\nclass State(TypedDict): question: str generation: str data: str # Source Selection 예시 (RAG 선택 시) data_rag = \"검색된 문서 내용... [출처: 벡터 DB]\" # Web Search 예시 (Tavily 결과 정규화) data_web = \"\"\" Title: 최신 AI 트렌드 URL: https://example.com Content: 최근 LLM의 발전 속도... \"\"\" # Plain Mode 예시 data_plain = \"\" # Common Answer Node 예시 prompt = f\"\"\"Question: {question} Data: {data} 위 정보를 바탕으로 간결하게 답변해줘.\"\"\" 3. 적응형 검색 설계 검토: 코드와 서비스의 간극 무엇을 배웠나 강사님의 시연을 통해 ‘기능 구현’과 ‘서비스 품질’ 사이의 간극을 실감했습니다. 단순히 코드가 동작하는지 확인하는 것을 넘어, 사용자가 의문을 가졌을 때 어떤 경로가 열려 있는지, 정보가 부족할 경우 어떻게 대응해야 하는지가 중요하다는 점을 깨달았습니다. 특히 clarify와 no_evidence 라우트가 설계에 포함된 이유를 통해, 신뢰성 있는 시스템을 위해서는 예외 처리와 추적 로직이 필수적임을 배웠습니다.\n헷갈렸던 점 처음에는 코드가 정상적으로 동작하는 모습을 보고 기능 구성이 완료된 것으로 착각하기 쉽습니다. 하지만 실제 서비스에서는 사용자가 경로 선택의 근거를 묻거나 정보가 부족할 때 어떻게 대처하는지가 중요하다는 점을 간과하고 있었습니다. 특히 clarify와 no_evidence 라우트가 설계에는 있지만 구현에는 없어 ‘왜 이 답변이 나왔는지’에 대한 투명성이 결여된 것처럼 느껴졌습니다.\n정리된 이해 작동하는 코드와 실제 서비스의 품질 요소는 별개라는 점을 깨달았다. 현재 구현은 rag → plain → web 세 경로를 최소 동작 단위로 연결한 학습용 프로토타입이지만, 실제 서비스 관점에서는 ‘근거의 충분성’, ‘출처 추적’, ‘폴백 행동’ 같은 요소가 동등하게 중요하다. 특히 정보가 부족할 때 사용자에게 물어주거나 없다고 인정하는 과정은 신뢰성을 위한 필수 요소이다.\ndef adaptive_search_router(query: str, context: dict) -\u003e str: \"\"\" Adaptive Search 설계의 핵심 라우팅 로직을 시연하는 예시입니다. 이 함수는 사용자 질의에 따라 적절한 검색 경로(RAG, Plain, Web)를 결정하고, 근거가 부족할 경우를 대비한 폴백(clarify/no_evidence) 흐름을 포함합니다. \"\"\" # 1. 초기 답변 시도 (Plain Response) if context.get(\"simple_query\", False): return \"plain\" # 2. RAG 경로 확인 (문서 기반 검색) rag_result = retrieve_from_documents(query, context.get(\"documents\", [])) if rag_result: return f\"rag:{rag_result['source']}\" # 3. 웹 검색 폴백 (외부 정보 탐색) web_result = search_external_web(query) if web_result: return f\"web:{web_result['url']}\" # 4. 근거 부족 시 clarify 라우트로 전환 (현재 구현 미포함, 설계 단계) # 실제 서비스에서는 사용자에게 \"더 구체적으로 물어보기\" 또는 \"관련 없는 경우 알림\" if not rag_result and not web_result: return \"clarify_needed\" return \"last_answer\" 총평 오늘 오후 전체에서 배운 것 검색-먼저 접근 방식은 라우터가 문서 내용을 정확히 판단하기 위해 필수적이지만, 비용 발생이라는 트레이드오프를 동반한다는 점을 명확히 이해했습니다. State 구조와 Source Selection을 통합하면서 data 필드의 포괄성으로 인해 소스 식별이 어렵다는 한계를 느껴, source_type 관리나 evidence 구조화의 필요성을 절실히 느꼈습니다. 마지막으로 코드 구현과 서비스 품질 사이의 간극을 실감했으며, clarify와 no_evidence 라우트 설계가 신뢰할 수 있는 시스템을 위한 필수적인 예외 처리와 추적 로직임을 깨달았습니다.\n다음에 조심할 것 검색-먼저 접근 방식은 분류 정확도를 보장하지만 비용이 발생한다는 trade-off를 명확히 인지하고, 불필요한 검색을 최소화하기 위해 라우터의 판단 기준을 정교하게 설계해야겠다.\nState 구조 통합 시 data 필드의 포괄성으로 인해 source 식별에 혼선이 올 수 있으므로, source_type이나 evidence 구조화를 별도로 관리하여 시스템의 추적 가능성을 높이는 방향으로 개선하겠다.\n기능 구현에만 집중하기보다 사용자의 의문 처리와 예외 상황(clarify, no_evidence 등)에 대한 로직을 설계에 반드시 포함시켜, 신뢰성 있는 서비스 품질을 보장하는 데 주력해야겠다.\n다음 복습 주제 오늘은 검색-먼저(Retrieve-first) 접근 방식의 장단점을 깊이 있게 이해할 수 있었다. 라우터가 문서 내용을 파악한 후 최적의 경로(RAG, Plain, Web)를 선택할 수 있다는 점에서 분류 오류를 방지하고 품질을 보장하는 효과가 있지만, 검색 비용이 발생한다는 트레이드오프가 있음을 명확히 했다.\nState 구조와 Source Selection 통합에 대한 고민도 이어졌다. 다양한 소스를 하나의 data 필드에 통합할 수는 있으나, 필드명이 너무 포괄적이라 현재 소스의 출처를 즉시 파악하기 어렵다는 한계를 느꼈다. 이에 source_type을 별도로 관리하거나 evidence를 구조화하는 방안이 필요하다고 생각했으며, 이는 시스템의 투명성을 높이는 중요한 과제가 될 것이다.\n마지막으로 적응형 검색 설계와 코드-서비스 간극에 대한 통찰을 얻었다. 단순히 기능이 동작하는지 확인하는 것을 넘어, 사용자가 의문을 가졌을 때 어떤 경로가 열려 있는지와 정보 부족 시의 대응 로직이 중요하다는 점을 깨달았다. clarify와 no_evidence 라우트의 존재는 신뢰성 있는 시스템 구축을 위한 예외 처리와 추적 로직의 필수성을 보여주었다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1120",
+  "inLanguage": "en",
+  "datePublished": "2026-10-02T00:00:00Z",
+  "dateModified": "2026-10-02T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-10-02-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오후 학습 | 검색-먼저 접근과 라우팅 트레이드오프
+    </h1>
+    <div class="post-description">
+      2026-10-02 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-10-02 00:00:00 +0000 UTC'>2026년 10월 2일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EA%B2%80%EC%83%89-%EB%A8%BC%EC%A0%80-%EC%A0%91%EA%B7%BC-%EB%9D%BC%EC%9A%B0%ED%8C%85%EA%B3%BC-%ED%8A%B8%EB%A0%88%EC%9D%B4%EB%93%9C%EC%98%A4%ED%94%84">검색-먼저 접근, 라우팅과 트레이드오프</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-state-%EA%B5%AC%EC%A1%B0%EC%99%80-source-selection-%ED%86%B5%ED%95%A9">State 구조와 Source Selection 통합</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%A0%81%EC%9D%91%ED%98%95-%EA%B2%80%EC%83%89-%EC%84%A4%EA%B3%84-%EA%B2%80%ED%86%A0-%EC%BD%94%EB%93%9C%EC%99%80-%EC%84%9C%EB%B9%84%EC%8A%A4%EC%9D%98-%EA%B0%84%EA%B7%B9">적응형 검색 설계 검토: 코드와 서비스의 간극</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-검색-먼저-접근-라우팅과-트레이드오프">1. 검색-먼저 접근, 라우팅과 트레이드오프<a hidden class="anchor" aria-hidden="true" href="#1-검색-먼저-접근-라우팅과-트레이드오프">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>PDF와 무관한 질문에도 검색을 먼저 수행하는 이유는, 라우터가 실제 문서 내용을 보고 판단해야 정확한 경로(RAG/Plain/Web)를 선택할 수 있기 때문이다. 이 &lsquo;검색-먼저&rsquo; 접근 방식은 PDF 관련 질문에 강하지만, 비용이 발생한다는 trade-off가 있다. ultimately, 핵심은 검색을 먼저 수행함으로써 분류 오류를 방지하고 품질을 보장하는 대신, 비용 효율성을 희생한다는 점이다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>처음에는 질문 유형을 먼저 판단하여 검색을 최소화하는 &lsquo;Route First&rsquo; 방식이 더 효율적일 것이라 생각했으나, 시스템은 질문을 먼저 PDF에 노출시켜 근거를 확인한 뒤 라우팅함으로써 분류 오류로 인한 증거 부족 위험을 줄이는 &lsquo;Retrieve-First&rsquo; 방식을 선택한다는 점을 이해하게 되었다.</p>
+<p>특히 Router가 질문의 의도뿐만 아니라 실제로 검색된 데이터 내용까지 종합적으로 판단하여 RAG, Plain, Web 경로 중 최적의 답변 경로를 분기시킨다는 점이 핵심이었다. 이는 단순히 비용 절감보다는, 불필요한 지식 누락 없이 정확한 답변을 제공하기 위한 시스템의 설계 철학이 담겨 있었다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>검색-먼저(Retrieve-First) 방식은 PDF 관련 질문에 강력한 근거를 제공하지만 검색 비용이 발생하며, 라우팅(질문 분류) 전에 실제 문서 내용을 확인하여 최적의 답변 경로(RAG/Plain/Web)를 선택하는 장점이 있다. 반면 질문-먼저(Route-First) 방식은 검색 비용을 절감할 수 있지만 분류 오류 시 관련 증거를 놓칠 위험이 있어 품질과 비용 사이에서 균형을 잡아야 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Adaptive Search Path Selection Logic (Conceptual)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">select_answer_path</span>(question: str, retrieved_data: list) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    질문과 검색된 데이터를 기반으로 최적의 답변 경로(RAG, Plain, Web)를 선택합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 1. Router 판단: 질문의 성격과 실제 검색 결과 평가</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># (이 부분은 실제 시스템에서는 LLM이나 분류 모델에 의해 수행됩니다)</span>
+</span></span><span style="display:flex;"><span>    need_rag <span style="color:#f92672">=</span> any(keyword <span style="color:#f92672">in</span> question<span style="color:#f92672">.</span>lower() <span style="color:#66d9ef">for</span> keyword <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#39;pdf&#39;</span>, <span style="color:#e6db74">&#39;문서&#39;</span>, <span style="color:#e6db74">&#39;보고서&#39;</span>, <span style="color:#e6db74">&#39;내용&#39;</span>])
+</span></span><span style="display:flex;"><span>    need_web <span style="color:#f92672">=</span> any(keyword <span style="color:#f92672">in</span> question<span style="color:#f92672">.</span>lower() <span style="color:#66d9ef">for</span> keyword <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#39;최근&#39;</span>, <span style="color:#e6db74">&#39;오늘&#39;</span>, <span style="color:#e6db74">&#39;날씨&#39;</span>, <span style="color:#e6db74">&#39;시세&#39;</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 2. 경로 선택 로직</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> need_rag <span style="color:#f92672">and</span> retrieved_data:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># PDF 내용이 필수적이고 검색 결과가 유효할 경우 RAG 경로 선택</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;RAG&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> need_web:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 최신/실시간 정보가 필요할 경우 Web Search 경로 선택</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Web Search&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 일반 지식 질문의 경우 Plain Text 답변 생성</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Plain&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 실행 예시 시뮬레이션</span>
+</span></span><span style="display:flex;"><span>question <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;오늘의 주식 시세는 어떻게 되나요?&#34;</span>
+</span></span><span style="display:flex;"><span>retrieved_docs <span style="color:#f92672">=</span> []  <span style="color:#75715e"># PDF 검색 결과 (빈 리스트)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>path <span style="color:#f92672">=</span> select_answer_path(question, retrieved_docs)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;선택된 경로: </span><span style="color:#e6db74">{</span>path<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 출력 예시: 선택된 경로: Web Search</span>
+</span></span></code></pre></div><h2 id="2-state-구조와-source-selection-통합">2. State 구조와 Source Selection 통합<a hidden class="anchor" aria-hidden="true" href="#2-state-구조와-source-selection-통합">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>State 구조를 통해 RAG, 웹 검색, 빈 문자열 등 다양한 소스를 하나의 <code>data</code> 필드에 통합할 수 있다는 점을 배웠습니다. 다만 <code>data</code>라는 필드명이 너무 포괄적이어서 현재 source가 무엇인지 즉시 파악하기 어렵다는 점을 인지했습니다. 이를 해결하기 위해 source_type을 별도 관리하거나 evidence를 구조화하는 방식이 필요하다고 느꼈습니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p><code>data</code> 필드 하나에 RAG 문서, 웹 검색 결과, 빈 문자열이 모두 들어간다는 점에 가장 큰 혼란을 느꼈습니다. <code>data</code>라는 필드명이 너무 포괄적이어서, 안에는 무엇이 들어있는지 코드를 읽어보지 않으면 알 수 없었기 때문입니다. 특히 URL 같은 출처 정보가 <code>data</code> 문자열에 포함되지 않는다는 점이 아쉬웠습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>State 구조에서 <code>data</code> 필드가 RAG, 웹 검색, 빈 문자열 등 다양한 형태를 수용하면서도 일관된 답변 생성을 가능하게 한다는 점이 핵심입니다. 특히 Source Selection과 Evidence Normalization 과정을 통해 각 worker의 로직을 통합하고, 통일된 형식으로 데이터를 정규화함으로써 최종 답변 노드에서 복잡한 분기 처리를 피할 수 있다는 점이 인상적이었습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">State</span>(TypedDict):
+</span></span><span style="display:flex;"><span>    question: str
+</span></span><span style="display:flex;"><span>    generation: str
+</span></span><span style="display:flex;"><span>    data: str
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Source Selection 예시 (RAG 선택 시)</span>
+</span></span><span style="display:flex;"><span>data_rag <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;검색된 문서 내용... [출처: 벡터 DB]&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Web Search 예시 (Tavily 결과 정규화)</span>
+</span></span><span style="display:flex;"><span>data_web <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Title: 최신 AI 트렌드
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">URL: https://example.com
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Content: 최근 LLM의 발전 속도...
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Plain Mode 예시</span>
+</span></span><span style="display:flex;"><span>data_plain <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Common Answer Node 예시</span>
+</span></span><span style="display:flex;"><span>prompt <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;&#34;&#34;Question: </span><span style="color:#e6db74">{</span>question<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Data: </span><span style="color:#e6db74">{</span>data<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">위 정보를 바탕으로 간결하게 답변해줘.&#34;&#34;&#34;</span>
+</span></span></code></pre></div><h2 id="3-적응형-검색-설계-검토-코드와-서비스의-간극">3. 적응형 검색 설계 검토: 코드와 서비스의 간극<a hidden class="anchor" aria-hidden="true" href="#3-적응형-검색-설계-검토-코드와-서비스의-간극">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>강사님의 시연을 통해 &lsquo;기능 구현&rsquo;과 &lsquo;서비스 품질&rsquo; 사이의 간극을 실감했습니다. 단순히 코드가 동작하는지 확인하는 것을 넘어, 사용자가 의문을 가졌을 때 어떤 경로가 열려 있는지, 정보가 부족할 경우 어떻게 대응해야 하는지가 중요하다는 점을 깨달았습니다. 특히 <code>clarify</code>와 <code>no_evidence</code> 라우트가 설계에 포함된 이유를 통해, 신뢰성 있는 시스템을 위해서는 예외 처리와 추적 로직이 필수적임을 배웠습니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>처음에는 코드가 정상적으로 동작하는 모습을 보고 기능 구성이 완료된 것으로 착각하기 쉽습니다. 하지만 실제 서비스에서는 사용자가 경로 선택의 근거를 묻거나 정보가 부족할 때 어떻게 대처하는지가 중요하다는 점을 간과하고 있었습니다. 특히 <code>clarify</code>와 <code>no_evidence</code> 라우트가 설계에는 있지만 구현에는 없어 &lsquo;왜 이 답변이 나왔는지&rsquo;에 대한 투명성이 결여된 것처럼 느껴졌습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>작동하는 코드와 실제 서비스의 품질 요소는 별개라는 점을 깨달았다. 현재 구현은 <code>rag → plain → web</code> 세 경로를 최소 동작 단위로 연결한 학습용 프로토타입이지만, 실제 서비스 관점에서는 &lsquo;근거의 충분성&rsquo;, &lsquo;출처 추적&rsquo;, &lsquo;폴백 행동&rsquo; 같은 요소가 동등하게 중요하다. 특히 정보가 부족할 때 사용자에게 물어주거나 없다고 인정하는 과정은 신뢰성을 위한 필수 요소이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">adaptive_search_router</span>(query: str, context: dict) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Adaptive Search 설계의 핵심 라우팅 로직을 시연하는 예시입니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    이 함수는 사용자 질의에 따라 적절한 검색 경로(RAG, Plain, Web)를 결정하고,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    근거가 부족할 경우를 대비한 폴백(clarify/no_evidence) 흐름을 포함합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 1. 초기 답변 시도 (Plain Response)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> context<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;simple_query&#34;</span>, <span style="color:#66d9ef">False</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;plain&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 2. RAG 경로 확인 (문서 기반 검색)</span>
+</span></span><span style="display:flex;"><span>    rag_result <span style="color:#f92672">=</span> retrieve_from_documents(query, context<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;documents&#34;</span>, []))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> rag_result:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;rag:</span><span style="color:#e6db74">{</span>rag_result[<span style="color:#e6db74">&#39;source&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 3. 웹 검색 폴백 (외부 정보 탐색)</span>
+</span></span><span style="display:flex;"><span>    web_result <span style="color:#f92672">=</span> search_external_web(query)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> web_result:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;web:</span><span style="color:#e6db74">{</span>web_result[<span style="color:#e6db74">&#39;url&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 4. 근거 부족 시 clarify 라우트로 전환 (현재 구현 미포함, 설계 단계)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 실제 서비스에서는 사용자에게 &#34;더 구체적으로 물어보기&#34; 또는 &#34;관련 없는 경우 알림&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> rag_result <span style="color:#f92672">and</span> <span style="color:#f92672">not</span> web_result:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;clarify_needed&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;last_answer&#34;</span>
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>검색-먼저 접근 방식은 라우터가 문서 내용을 정확히 판단하기 위해 필수적이지만, 비용 발생이라는 트레이드오프를 동반한다는 점을 명확히 이해했습니다. State 구조와 Source Selection을 통합하면서 <code>data</code> 필드의 포괄성으로 인해 소스 식별이 어렵다는 한계를 느껴, source_type 관리나 evidence 구조화의 필요성을 절실히 느꼈습니다. 마지막으로 코드 구현과 서비스 품질 사이의 간극을 실감했으며, clarify와 no_evidence 라우트 설계가 신뢰할 수 있는 시스템을 위한 필수적인 예외 처리와 추적 로직임을 깨달았습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>검색-먼저 접근 방식은 분류 정확도를 보장하지만 비용이 발생한다는 trade-off를 명확히 인지하고, 불필요한 검색을 최소화하기 위해 라우터의 판단 기준을 정교하게 설계해야겠다.</p>
+<p>State 구조 통합 시 <code>data</code> 필드의 포괄성으로 인해 source 식별에 혼선이 올 수 있으므로, source_type이나 evidence 구조화를 별도로 관리하여 시스템의 추적 가능성을 높이는 방향으로 개선하겠다.</p>
+<p>기능 구현에만 집중하기보다 사용자의 의문 처리와 예외 상황(<code>clarify</code>, <code>no_evidence</code> 등)에 대한 로직을 설계에 반드시 포함시켜, 신뢰성 있는 서비스 품질을 보장하는 데 주력해야겠다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>오늘은 검색-먼저(Retrieve-first) 접근 방식의 장단점을 깊이 있게 이해할 수 있었다. 라우터가 문서 내용을 파악한 후 최적의 경로(RAG, Plain, Web)를 선택할 수 있다는 점에서 분류 오류를 방지하고 품질을 보장하는 효과가 있지만, 검색 비용이 발생한다는 트레이드오프가 있음을 명확히 했다.</p>
+<p>State 구조와 Source Selection 통합에 대한 고민도 이어졌다. 다양한 소스를 하나의 <code>data</code> 필드에 통합할 수는 있으나, 필드명이 너무 포괄적이라 현재 소스의 출처를 즉시 파악하기 어렵다는 한계를 느꼈다. 이에 source_type을 별도로 관리하거나 evidence를 구조화하는 방안이 필요하다고 생각했으며, 이는 시스템의 투명성을 높이는 중요한 과제가 될 것이다.</p>
+<p>마지막으로 적응형 검색 설계와 코드-서비스 간극에 대한 통찰을 얻었다. 단순히 기능이 동작하는지 확인하는 것을 넘어, 사용자가 의문을 가졌을 때 어떤 경로가 열려 있는지와 정보 부족 시의 대응 로직이 중요하다는 점을 깨달았다. <code>clarify</code>와 <code>no_evidence</code> 라우트의 존재는 신뢰성 있는 시스템 구축을 위한 예외 처리와 추적 로직의 필수성을 보여주었다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-10-02-am-daily/">
+    <span class="title">« Prev</span>
+    <span>오전 학습 | LLM 정보 경로 분리: Ollama, ChromaDB, Tavily</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-10-01-am-daily/">
+    <span class="title">Next »</span>
+    <span>오전 학습 | LangGraph 기반 RAG 워크플로우와 엑셀 파이프라인 구축 경험</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
