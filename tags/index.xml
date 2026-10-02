@@ -6,48 +6,69 @@
     <description>Recent content in Tags on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Sat, 26 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 02 Oct 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Agent</title>
+      <link>https://Han-think.github.io/tags/agent/</link>
+      <pubDate>Fri, 02 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/agent/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Benchmark</title>
       <link>https://Han-think.github.io/tags/benchmark/</link>
-      <pubDate>Sat, 26 Sep 2026 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 02 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/benchmark/</guid>
       <description></description>
     </item>
     <item>
       <title>Huggingface</title>
       <link>https://Han-think.github.io/tags/huggingface/</link>
-      <pubDate>Sat, 26 Sep 2026 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 02 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/huggingface/</guid>
       <description></description>
     </item>
     <item>
       <title>Intel-Xpu</title>
       <link>https://Han-think.github.io/tags/intel-xpu/</link>
-      <pubDate>Sat, 26 Sep 2026 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 02 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/intel-xpu/</guid>
       <description></description>
     </item>
     <item>
-      <title>Llm</title>
+      <title>LLM</title>
       <link>https://Han-think.github.io/tags/llm/</link>
-      <pubDate>Sat, 26 Sep 2026 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 02 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/llm/</guid>
       <description></description>
     </item>
     <item>
       <title>Quantization</title>
       <link>https://Han-think.github.io/tags/quantization/</link>
-      <pubDate>Sat, 26 Sep 2026 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 02 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/quantization/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rag</title>
+      <link>https://Han-think.github.io/tags/rag/</link>
+      <pubDate>Fri, 02 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/rag/</guid>
       <description></description>
     </item>
     <item>
       <title>Reasoning</title>
       <link>https://Han-think.github.io/tags/reasoning/</link>
-      <pubDate>Sat, 26 Sep 2026 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 02 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/reasoning/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Weekly</title>
+      <link>https://Han-think.github.io/tags/weekly/</link>
+      <pubDate>Fri, 02 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/weekly/</guid>
       <description></description>
     </item>
     <item>
@@ -55,13 +76,6 @@
       <link>https://Han-think.github.io/tags/transformers/</link>
       <pubDate>Sat, 26 Sep 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/transformers/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Weekly</title>
-      <link>https://Han-think.github.io/tags/weekly/</link>
-      <pubDate>Sat, 26 Sep 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/weekly/</guid>
       <description></description>
     </item>
     <item>
@@ -107,13 +121,6 @@
       <description></description>
     </item>
     <item>
-      <title>Agent</title>
-      <link>https://Han-think.github.io/tags/agent/</link>
-      <pubDate>Fri, 18 Sep 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/agent/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Distillation</title>
       <link>https://Han-think.github.io/tags/distillation/</link>
       <pubDate>Fri, 18 Sep 2026 00:00:00 +0000</pubDate>
@@ -139,13 +146,6 @@
       <link>https://Han-think.github.io/tags/pytorch/</link>
       <pubDate>Fri, 18 Sep 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/pytorch/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Rag</title>
-      <link>https://Han-think.github.io/tags/rag/</link>
-      <pubDate>Fri, 18 Sep 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/rag/</guid>
       <description></description>
     </item>
     <item>
@@ -352,7 +352,7 @@
       <description></description>
     </item>
     <item>
-      <title>House Prices</title>
+      <title>House-Prices</title>
       <link>https://Han-think.github.io/tags/house-prices/</link>
       <pubDate>Mon, 20 Jul 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/house-prices/</guid>
