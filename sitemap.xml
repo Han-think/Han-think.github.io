@@ -2,52 +2,103 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://Han-think.github.io/research/weekly-ai-2026-10-02/</loc>
-    <lastmod>2026-10-02T00:00:00+00:00</lastmod>
+    <loc>https://Han-think.github.io/research/weekly-ai-2026-10-03/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/agent/</loc>
-    <lastmod>2026-10-02T00:00:00+00:00</lastmod>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/categories/ai-research/</loc>
-    <lastmod>2026-10-02T00:00:00+00:00</lastmod>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/ai-research/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/benchmark/</loc>
-    <lastmod>2026-10-02T00:00:00+00:00</lastmod>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/categories/</loc>
-    <lastmod>2026-10-02T00:00:00+00:00</lastmod>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/cuda/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/fine-tuning/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/gguf/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/</loc>
-    <lastmod>2026-10-02T00:00:00+00:00</lastmod>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/huggingface/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/llama-cpp/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/llm/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/local-llm/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/mlx/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/multimodal/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/ollama/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/onnx/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/openvino/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/pytorch/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/quantization/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/rag/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/reasoning/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/research/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/rocm/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/transformers/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/vllm/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/vulkan/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/tags/weekly/</loc>
+    <lastmod>2026-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://Han-think.github.io/research/weekly-ai-2026-10-02/</loc>
     <lastmod>2026-10-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/intel-xpu/</loc>
     <lastmod>2026-10-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/categories/learning/</loc>
-    <lastmod>2026-10-02T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/tags/llm/</loc>
-    <lastmod>2026-10-02T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/tags/quantization/</loc>
-    <lastmod>2026-10-02T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/tags/rag/</loc>
-    <lastmod>2026-10-02T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/tags/reasoning/</loc>
-    <lastmod>2026-10-02T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/research/</loc>
-    <lastmod>2026-10-02T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/tags/</loc>
-    <lastmod>2026-10-02T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/tags/weekly/</loc>
     <lastmod>2026-10-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/learning/2026-10-02-am-daily/</loc>
@@ -86,9 +137,6 @@
     <loc>https://Han-think.github.io/research/weekly-ai-2026-09-26/</loc>
     <lastmod>2026-09-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://Han-think.github.io/tags/transformers/</loc>
-    <lastmod>2026-09-26T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://Han-think.github.io/learning/2026-09-23-am-daily/</loc>
     <lastmod>2026-09-23T00:00:00+00:00</lastmod>
   </url><url>
@@ -113,9 +161,6 @@
     <loc>https://Han-think.github.io/categories/dev/</loc>
     <lastmod>2026-09-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://Han-think.github.io/tags/local-llm/</loc>
-    <lastmod>2026-09-20T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://Han-think.github.io/tags/python/</loc>
     <lastmod>2026-09-20T00:00:00+00:00</lastmod>
   </url><url>
@@ -132,15 +177,6 @@
     <lastmod>2026-09-18T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/distillation/</loc>
-    <lastmod>2026-09-18T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/tags/fine-tuning/</loc>
-    <lastmod>2026-09-18T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/tags/multimodal/</loc>
-    <lastmod>2026-09-18T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/tags/pytorch/</loc>
     <lastmod>2026-09-18T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/learning/2026-09-18-am-daily/</loc>
@@ -219,9 +255,6 @@
     <lastmod>2026-09-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/tags/oneapi/</loc>
-    <lastmod>2026-09-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/tags/openvino/</loc>
     <lastmod>2026-09-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/learning/2026-09-11-am-daily/</loc>
@@ -1000,9 +1033,6 @@
   </url><url>
     <loc>https://Han-think.github.io/learning/minto-scqa-mece/</loc>
     <lastmod>2026-06-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://Han-think.github.io/tags/ollama/</loc>
-    <lastmod>2026-07-06T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://Han-think.github.io/learning/pm-01-data-definition-erd-map/</loc>
     <lastmod>2026-06-09T00:00:00+00:00</lastmod>
