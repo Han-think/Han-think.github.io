@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오후 학습 | 적응형 RAG 경로 결정과 출처 추적의 중요성 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-10-06 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-10-06-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-10-06-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-10-06-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오후 학습 | 적응형 RAG 경로 결정과 출처 추적의 중요성">
+  <meta property="og:description" content="2026-10-06 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-10-06T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-10-06T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오후 학습 | 적응형 RAG 경로 결정과 출처 추적의 중요성">
+  <meta name="twitter:description" content="2026-10-06 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오후 학습 | 적응형 RAG 경로 결정과 출처 추적의 중요성",
+      "item": "https://Han-think.github.io/learning/2026-10-06-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오후 학습 | 적응형 RAG 경로 결정과 출처 추적의 중요성",
+  "name": "오후 학습 | 적응형 RAG 경로 결정과 출처 추적의 중요성",
+  "description": "2026-10-06 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 적응형 RAG 경로 결정 과정 Adaptive RAG 구현 흐름과 출처 추적 이해하기 핵심 혼란 해결 (Resolving Confusion) 정리의 이해 (Organized Understanding) 실습 예시 (Practice Example) RAG 청킹과 데이터 운영의 현실 RAG 검색 기법 미리보기: BM25, 하이브리드, 쿼리 변환 총평 1. 적응형 RAG 경로 결정 과정 무엇을 배웠나 Adaptive RAG는 검색 기술을 단순히 많이 붙이는 것이 아니라, 질문과 근거 상태에 따라 어떤 정보원을 선택할지 결정하는 제어 흐름을 만든다는 점을 배웠습니다. 특히 router가 JSON 형식으로 경로를 판단하고, plain, rag, web 중 하나를 선택해 실행한다는 구조를 이해했습니다. 또한 last_answer와 같은 공통 노드를 두면 source 선택과 답변 생성을 분리할 수 있는 유연성이 있다는 점도 인상 깊었습니다.\n헷갈렸던 점 처음 Adaptive RAG를 접했을 때 가장 큰 혼란은 **“그래프에 web node가 있으면 웹 검색이 이미 다 된 것 아닌가?”**라는 기대였습니다. 또한, 세 경로(rag, plain, web)가 모두 실행되어 답을 비교하는 구조인지, 아니면 router가 하나를 선택해 그 하나만 실행하는 구조인지에 대한 명확한 이해가 필요했습니다.\n핵심은 **“모든 source를 다 쓰는 구조가 아니라, 판단에 따라 하나의 경로만 선택한다”**는 점입니다.\n정리된 이해 Adaptive RAG는 검색 기술을 단순히 많이 붙이는 것이 아니라, 질문과 근거 상태에 따라 가장 적합한 정보원(rag, plain, web)을 선택하는 제어 흐름을 만드는 것이다. 핵심은 라우터가 JSON 형식으로 경로를 판단하고, 선택된 단일 경로만 실행하여 최종 답변을 도출한다는 점이다. 이를 통해 모델의 기본 지식과 외부 정보를 유연하게 결합할 수 있다.\n# Adaptive RAG 핵심 로직 요약 (노트 기반) def adaptive_rag_pipeline(question): # 1. 초기 답변 생성 (근거 검색) init_answer = search_and_generate(question) # 2. 라우터에 의해 경로 선택 (JSON 형식 결정) route = router.decide_route(question, init_answer) # 예: {\"route\": \"web\"} 또는 {\"route\": \"rag\"} 등 # 3. 선택된 경로만 실행 if route == \"web\": final_answer = web_search_and_generate(question) elif route == \"plain\": final_answer = use_internal_knowledge(question) else: # route == \"rag\" final_answer = rag_search_and_generate(question) return final_answer 2. Adaptive RAG 구현 흐름과 출처 추적 이해하기 무엇을 배웠나 수업 중에는 웹 검색 기능이 동작하지 않아 혼란스러웠지만, 최신 Commit을 확인해 보니 실제 구현된 상태였습니다. 이러한 시간 차이로 인해 ‘안 된 건가?’ 혹은 ‘된 건가?‘라는 판단이 수시로 바뀌어 집중력이 흐트러지는 문제가 있었습니다. 핵심은 실행 흐름의 우선순위에 있으며, 강사님은 먼저 RAG 검색 → route 판단 → plain/rag/web → 공통 답변이라는 최소 구조를 완성하는 데 초점을 두셨습니다. 특히 evidence와 source metadata의 중요성을 다시금 느꼈는데, 답변은 가능해도 나중에 근거를 검증하기 어렵다는 점은 RAG 시스템을 운영할 때 치명적인 약점이 될 수 있습니다.\nPDF evidence에는 filename, page, content가 포함되며, 저는 이 노트에서 배운 점을 2~4문장으로 요약하여 마크다운 헤딩 없이 출력합니다.\n헷갈렸던 점 1. 무엇이 헷갈렸나 (Confusion) 수업을 듣는 내내 가장 큰 혼란은 **“지금 이 코드가 동작하는가, 안 되는가”**에 대한 시점의 차이였습니다.\n강사님의 최신 코드(11_adaptive_rag)를 보면 Tavily 검색까지 실제로 연결되어 있어 “아, 웹 검색이구나” 하고 이해하게 됩니다. 그런데 수업 중간중간 Git을 확인하면 “웹 노드 골격만 있음\"이라고 느꼈던 상태와 딴판이죠.\n수업 중: \"웹 검색 안 됨\" 최신 Commit: \"웬 검색 구현됨\" 이런 시간 차이 때문에 “아직 안 했나?” 혹은 “이미 된 건가?“라는 판단이 수시로 바뀌어 집중력이 흐트러지곤 했습니다. 또한 similarity_top_k 같은 옵션 이름의 오타나, insert_data()가 주석 처리된 상태에서 기존 store가 있어야 한다는 점 등 **“기능이 동작한다\"와 “서비스가 검증 가능하다”**는 다른 단계에 대한 이해도 부족했습니다.\n2. 정리된 이해 (Organized Understanding) 핵심은 실행 흐름의 우선순위였습니다.\n강사님은 먼저 다음 최소 구조를 완성하는 데 초점을 둡니다.\nRAG 검색 → route 판단 → plain / rag / web → 공통 답변 provenance, fallback, document lifecycle 같은 고급 문제는 일단 접어두고, **“코드가 어떻게 연결되는가”**부터 파악하라는 조언이 인상적이었습니다. 로컬에서는 같은 구조를 더 명시적으로 나누어 추적할 수 있었지만, 강사님의 방식은 “빨리 개념을 학습\"하는 데 초점이 맞춰져 있었습니다.\n특히 evidence와 source metadata의 중요성을 다시금 느꼈습니다. 답변은 가능해도 나중에 근거를 검증하기 어렵다는 점은 RAG 시스템을 운영할 때 치명적인 약점이 될 수 있습니다.\n3. 실습 예시 (Practice Example) 가장 기억에 남는 부분은 evidence의 구조화였습니다.\nPDF evidence에는: - filename - page - content [학습 질문]\n위 학습 노트 내용을 바탕으로, RAG 시스템에서 답변을 생성할 때 source metadata를 보존하는 것이 왜 중요한지, 그리고 이를 통해 해결할 수 있는 구체적인 문제를 2~3문장으로 설명해 주세요.\n정리된 이해 핵심 요약 RAG 시스템 구현에서 가장 중요한 것은 **“검색 → 라우팅 → 답변”**이라는 명확한 실행 흐름의 우선순위입니다. 특히 답변의 신뢰도를 높이고 출처를 추적하기 위해서는 evidence와 source metadata의 구조화가 필수적이며, 로컬 환경에서는 동일한 구조를 더 명시적으로 나누어 추적할 수 있습니다.\n학습 포인트 구조화 우선: 답변 생성 전, filename, page, content 등 증거의 기본 정보를 명확히 정리해야 합니다. 흐름 이해: 강사님의 방식은 빠른 개념 습득을 위해 “검색 → 판단 → 답변\"의 최소 구조에 집중하며, 고급 기능(증명, 폴백 등)은 이후 단계로 미룹니다. 메타데이터 중요성: 최종적으로 출처를 검증하기 위해서는 source metadata 관리가 필수적이며, 로컬에서는 이를 더 세부적으로 분할하여 관리할 수 있습니다. 실전 적용 예시 (구조화된 증거) PDF 문서 기반의 증거는 다음과 같은 구조로 정리해야 합니다.\nfilename: 원본 문서명 page: 인용된 페이지 번호 content: 실제 인용된 텍스트 내용 Adaptive RAG 구현 상태와 출처 추적 학습 요약 1. 핵심 혼란 해결 (Resolving Confusion) 시점의 차이 문제 수업 중: “웹 검색 안 됨” → Tavily 연결 전 단계로 인식 최신 Commit: “웬 검색 구현됨” → 실제 웹 검색 기능이 작동하는 상태 이러한 시간 차이로 인해 “아직 안 했나?” vs “이미 된 건가?” 사이의 판단이 수시로 바뀌어 집중력 저하 발생 기능 동작 여부 vs 서비스 검증 가능성 similarity_top_k 같은 옵션 이름의 오타 문제 insert_data()가 주석 처리된 상태에서 기존 store가 필요하다는 점 **“코드가 어떻게 연결되는가”**에 집중해야 함 (고급 문제는 나중에) 2. 정리의 이해 (Organized Understanding) 핵심: 실행 흐름의 우선순위 강사님의 최소 구조:\nRAG 검색 → route 판단 → plain / rag / web → 공통 답변 중요 개념 재인식 evidence와 source metadata의 중요성 답변은 가능해도 나중에 근거를 검증하기 어렵다는 점은 RAG 운영 시 치명적인 약점 로컬에서는 구조를 더 명시적으로 나눌 수 있지만, 강사님의 방식은 “빨리 개념 학습\"에 초점 3. 실습 예시 (Practice Example) evidence 구조화의 중요성 PDF evidence에는 다음과 같은 메타데이터가 포함되어야 함:\nfilename page content 핵심 규칙: 핵심 내용을 보여주는 코드 예시만 백틱 3개(code block)로 출력하라. 노트에 코드 근거가 없으면 아무것도 쓰지 마라.\n작성일: 2026-10-06 모델: nvidia-nemotron-3.5-lightning-30b-a3b 모드: working_note\n3. RAG 청킹과 데이터 운영의 현실 무엇을 배웠나 RAG 파이프라인 코드가 동작한다고 해서 서비스가 완성된 것이 아니라는 점을 깨닫게 되었다. 실제 서비스에서는 데이터 업데이트, 권한 관리, 출처 추적 등 인프라적인 운영 문제가 가장 먼저 대두된다. 청크 크기와 문서 구조 보존을 통해 검색 정밀도를 높이고, 메타데이터를 필수적으로 관리해야 신뢰할 수 있는 시스템을 구축할 수 있다.\n헷갈렸던 점 처음 RAG 파이프라인을 접했을 때 코드가 단순히 돌아가면 서비스가 완성된 것처럼 느껴져 큰 착각에 빠졌습니다. 하지만 실제 서비스 관점에서 보면 데이터가 업데이트되거나 삭제될 때의 처리, 사용자별 권한 관리, 답변 출처 추적과 같은 운영 문제가 가장 먼저 대두됩니다. 이러한 현실적인 딜레마는 단순한 코드 연결 단계에서는 자연스럽게 드러나지 않아 서비스의 완성도를 가늠하기 어렵습니다.\n청크 설계에서 가장 중요한 원칙은 검색의 단위가 된다는 점입니다. 청크가 너무 작으면 문맥이 단절되고, 너무 크면 여러 주제가 섞여 검색 정밀도가 떨어지기 때문에 적절한 크기 조절이 필수적입니다. 또한 문서의 제목이나 섹션 구조를 보존하고, 길이 초과 시 문장 단위로 나누는 것이 시스템 전체의 안정적인 출발점이 됩니다.\n특히 메타데이터는 단순한 부가 정보를 넘어 검색 근거 추적과 문서 갱신·삭제 관리에 필수적입니다. 파일명, 페이지 번호, 제목 경로, 문서 ID 같은 정보가 있어야 사용자는 답변의 출처를 신뢰할 수 있고 시스템 관리자 입장에서 데이터 운영이 가능해집니다. 이러한 메타데이터 전략은 검색 정확도를 높이는 동시에 실제 서비스에서의 유지보수 편의성을 크게 좌우합니다.\n정리된 이해 청크는 검색 단위로, 문서 구조를 보존하고 메타데이터를 필수적으로 관리해야 실제 서비스에서 데이터 운영과 추적 가능성을 확보할 수 있다.\n# 청킹 및 메타데이터 부착 예시 (노트 기반 핵심 로직) def chunk_document(document, chunk_size=512, overlap=50): \"\"\" 문서를 청크로 분할하고 필수 메타데이터를 부착합니다. Args: document: 파싱된 문서 객체 (langchain Document 등) chunk_size: 한 청크의 최대 토큰 수 overlap: 인접 청크 간의 토큰 오버랩 수 Returns: 청크 리스트 (각 청크는 내용과 메타데이터를 가짐) \"\"\" chunks = [] # 1. 문서 구조 보존 (제목/섹션 유지 전제) # 실제 서비스에서는 document.metadata에 'source', 'page', 'section_path' 등이 있어야 함 # 간단한 문장 단위 청킹 로직 (실제로는 langchain의 RecursiveCharacterTextSplitter 등 사용) sentences = document.page_content.split('. ') current_chunk_text = \"\" current_meta = dict(document.metadata) # 원본 메타데이터 복사 for sentence in sentences: # 청크 크기 초과 시 저장 후 초기화 if len(current_chunk_text) + len(sentence) \u003e chunk_size: if current_chunk_text: chunks.append({ \"content\": current_chunk_text.strip(), \"metadata\": current_meta # 메타데이터 필수 부착 }) current_chunk_text = sentence # 필요 시 메타데이터 갱신 (예: 페이지 번호 재설정 등) else: current_chunk_text += sentence + \". \" # 마지막 청크 처리 if current_chunk_text: chunks.append({ \"content\": current_chunk_text.strip(), \"metadata\": current_meta }) return chunks # 사용 예시 (가상) # doc = Document(page_content=\"...긴 문서 내용...\", metadata={\"source\": \"report.pdf\", \"page\": 5, \"title\": \"재무 보고\"}) # chunks = chunk_document(doc) # print(f\"총 {len(chunks)}개의 청크 생성. 첫 번째 청크 메타데이터: {chunks[0]['metadata']}\") 4. RAG 검색 기법 미리보기: BM25, 하이브리드, 쿼리 변환 무엇을 배웠나 BM25는 단어 단위의 정확한 일치에 강하고, 벡터 검색은 의미가 비슷한 문서를 찾는 데 특화되어 있다는 점을 명확히 이해할 수 있었다. 특히 한국어 검색에서는 형태소 분석이 필수적이라는 점을 깨닫고, 단순한 공백 분리가 아닌 언어학적 전처리의 중요성을 새롭게 인식했다. 하이브리드 검색이나 RRF 같은 기법을 통해 두 방식의 장점을 결합하면 검색 결과의 정밀도와 재현율을 동시에 높일 수 있다는 점도 인상 깊었다.\n헷갈렸던 점 BM25는 단어 단위의 정확한 일치에 의존하는 반면, 벡터 검색은 의미적 유사성을 기반으로 문서를 찾기 때문에, 같은 의미를 담고 있어도 표현이 다르면 검색이 되지 않는 간극이 존재한다. 이러한 한계를 보완하고자 BM25와 벡터 검색 결과를 점수 통합 방식으로 결합해 두 방식의 장점을 모두 활용하는 하이브리드 접근 방식을 고려하게 되었다. 특히 한국어 특성상 형태소 분석 없이 단순 공백 분리를 하면 의미가 왜곡될 수 있어, 검색 정확도를 높이기 위해 전처리 단계에서 형태소 분석기가 반드시 필요하다는 점을 명확히 했다.\n정리된 이해 오늘 미리 살펴본 RAG 검색 기법은 단순한 벡터 유사도 검색을 넘어, BM25와 같은 단어 기반 검색과 Vector Search를 결합해 결과의 정밀도를 높이는 과정이었다. 특히 한국어 특성상 형태소 분석 없이 단순 공백 토큰화를 하면 의미가 왜곡될 수 있어 전처리 단계의 중요성을 실감했다. 결국 하이브리드 검색이나 RRF 같은 기법을 활용하면 단어 일치와 의미 유사성의 장점을 모두 취할 수 있어, 검색 결과의 질을 한층 끌어올릴 수 있었다.\n# BM25 (Sparse Lexical Search) # 단어 단위 일치 기반 검색, 한국어는 형태소 분석 전처리 권장 bm25_scores = bm25.get_scores(query_tokens, corpus) # Vector Search (Dense Semantic Search) # 의미 유사도 기반 검색, 표현이 달라도 비슷한 문서 검색 가능 vector_similarities = model.encode(query).dot(doc_embeddings.T) # Hybrid Search (RRF: Reciprocal Rank Fusion) # BM25와 Vector 검색 결과를 점수로 통합하여 최종 순위 도출 ranks = [bm25_rank, vector_rank] final_scores = rrf(ranks) 총평 오늘 오후 전체에서 배운 것 오늘은 Adaptive RAG의 경로 결정 구조와 검색 기법의 특성을 중심으로 배웠습니다. 먼저 질문과 근거 상태에 따라 plain, rag, web 중 최적의 정보를 선택하는 제어 흐름을 설계하는 것이 핵심이며, 실행 우선순위와 메타데이터 관리가 시스템 신뢰성을 좌우한다는 점을 강조했습니다. 또한 BM25와 벡터 검색의 장점을 결합한 하이브리드 기법과 한국어 처리를 위한 형태소 분석의 중요성을 새롭게 인식하게 되었습니다.\n다음에 조심할 것 오늘 수업에서 가장 인상 깊었던 점은 Adaptive RAG가 단순한 검색 기술의 나열이 아니라, 질문과 상태에 따라 정보를 선택하는 제어 흐름을 만든다는 점이었습니다. 특히 router가 JSON 형식으로 경로를 판단하고 plain, rag, web 중 하나를 실행한다는 구조를 이해하며, last_answer와 같은 공통 노드를 두면 source 선택과 답변 생성을 분리할 수 있는 유연성이 있다는 점을 배웠습니다.\n또 다른 핵심은 실제 구현 과정에서 웹 검색 기능이 동작하지 않아 momentarily 혼란스러웠지만, 최신 Commit을 확인해 보니 이미 구현된 상태였다는 점입니다. 이러한 시간 차이로 인해 ‘안 된 건가?’ 혹은 ‘된 건가?‘라는 판단이 수시로 바뀌어 집중력이 흐트러지는 문제가 있었습니다. 핵심은 실행 흐름의 우선순위에 있으며, 강사님은 먼저 RAG 검색 → route 판단 → plain/rag/web → 공통 답변이라는 최소 구조를 완성하는 데 초점을 두셨습니다.\n마지막으로 PDF evidence에는 filename, page, content가 포함되며, 답변은 가능해도 나중에 근거를 검증하기 어렵다는 점은 RAG 시스템을 운영할 때 치명적인 약점이 될 수 있다는 점을 다시금 느꼈습니다. 다음에는 이러한 시간 차이로 인한 혼란을 줄이기 위해 실시간 구현 상태를 지속적으로 확인하는 습관을 들여야겠습니다.\n다음 복습 주제 다음에는 Adaptive RAG의 실제 구현 환경 설정과 웹 검색 기능을 정상적으로 동작하게 하는 방법을 중점적으로 살펴보고 싶습니다. 또한, 답변 생성 시 출처 정보를 정확히 추적하고 메타데이터를 관리하는 구체적인 전략을 고민해 보고 싶습니다. 마지막으로 BM25와 벡터 검색의 장단점을 살려 상황에 맞는 최적의 검색 기법을 선택하는 실전 적용 방법을 복습할 계획입니다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1911",
+  "inLanguage": "en",
+  "datePublished": "2026-10-06T00:00:00Z",
+  "dateModified": "2026-10-06T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-10-06-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오후 학습 | 적응형 RAG 경로 결정과 출처 추적의 중요성
+    </h1>
+    <div class="post-description">
+      2026-10-06 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-10-06 00:00:00 +0000 UTC'>2026년 10월 6일</span>&nbsp;·&nbsp;<span>9 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EC%A0%81%EC%9D%91%ED%98%95-rag-%EA%B2%BD%EB%A1%9C-%EA%B2%B0%EC%A0%95-%EA%B3%BC%EC%A0%95">적응형 RAG 경로 결정 과정</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-adaptive-rag-%EA%B5%AC%ED%98%84-%ED%9D%90%EB%A6%84%EA%B3%BC-%EC%B6%9C%EC%B2%98-%EC%B6%94%EC%A0%81-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0">Adaptive RAG 구현 흐름과 출처 추적 이해하기</a></li>
+</ol>
+</li>
+<li>
+<ol>
+<li><a href="#1-%ED%95%B5%EC%8B%AC-%ED%98%BC%EB%9E%80-%ED%95%B4%EA%B2%B0-resolving-confusion">핵심 혼란 해결 (Resolving Confusion)</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%A0%95%EB%A6%AC%EC%9D%98-%EC%9D%B4%ED%95%B4-organized-understanding">정리의 이해 (Organized Understanding)</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%8B%A4%EC%8A%B5-%EC%98%88%EC%8B%9C-practice-example">실습 예시 (Practice Example)</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-rag-%EC%B2%AD%ED%82%B9%EA%B3%BC-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%9A%B4%EC%98%81%EC%9D%98-%ED%98%84%EC%8B%A4">RAG 청킹과 데이터 운영의 현실</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-rag-%EA%B2%80%EC%83%89-%EA%B8%B0%EB%B2%95-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0-bm25-%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C-%EC%BF%BC%EB%A6%AC-%EB%B3%80%ED%99%98">RAG 검색 기법 미리보기: BM25, 하이브리드, 쿼리 변환</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-적응형-rag-경로-결정-과정">1. 적응형 RAG 경로 결정 과정<a hidden class="anchor" aria-hidden="true" href="#1-적응형-rag-경로-결정-과정">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>Adaptive RAG는 검색 기술을 단순히 많이 붙이는 것이 아니라, 질문과 근거 상태에 따라 어떤 정보원을 선택할지 결정하는 제어 흐름을 만든다는 점을 배웠습니다. 특히 router가 JSON 형식으로 경로를 판단하고, <code>plain</code>, <code>rag</code>, <code>web</code> 중 하나를 선택해 실행한다는 구조를 이해했습니다. 또한 <code>last_answer</code>와 같은 공통 노드를 두면 source 선택과 답변 생성을 분리할 수 있는 유연성이 있다는 점도 인상 깊었습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>처음 Adaptive RAG를 접했을 때 가장 큰 혼란은 **&ldquo;그래프에 <code>web</code> node가 있으면 웹 검색이 이미 다 된 것 아닌가?&rdquo;**라는 기대였습니다. 또한, 세 경로(<code>rag</code>, <code>plain</code>, <code>web</code>)가 모두 실행되어 답을 비교하는 구조인지, 아니면 router가 하나를 선택해 그 하나만 실행하는 구조인지에 대한 명확한 이해가 필요했습니다.</p>
+<p>핵심은 **&ldquo;모든 source를 다 쓰는 구조가 아니라, 판단에 따라 하나의 경로만 선택한다&rdquo;**는 점입니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>Adaptive RAG는 검색 기술을 단순히 많이 붙이는 것이 아니라, 질문과 근거 상태에 따라 가장 적합한 정보원(rag, plain, web)을 선택하는 제어 흐름을 만드는 것이다. 핵심은 라우터가 JSON 형식으로 경로를 판단하고, 선택된 단일 경로만 실행하여 최종 답변을 도출한다는 점이다. 이를 통해 모델의 기본 지식과 외부 정보를 유연하게 결합할 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Adaptive RAG 핵심 로직 요약 (노트 기반)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">adaptive_rag_pipeline</span>(question):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 1. 초기 답변 생성 (근거 검색)</span>
+</span></span><span style="display:flex;"><span>    init_answer <span style="color:#f92672">=</span> search_and_generate(question)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 2. 라우터에 의해 경로 선택 (JSON 형식 결정)</span>
+</span></span><span style="display:flex;"><span>    route <span style="color:#f92672">=</span> router<span style="color:#f92672">.</span>decide_route(question, init_answer)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 예: {&#34;route&#34;: &#34;web&#34;} 또는 {&#34;route&#34;: &#34;rag&#34;} 등</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 3. 선택된 경로만 실행</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> route <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;web&#34;</span>:
+</span></span><span style="display:flex;"><span>        final_answer <span style="color:#f92672">=</span> web_search_and_generate(question)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> route <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;plain&#34;</span>:
+</span></span><span style="display:flex;"><span>        final_answer <span style="color:#f92672">=</span> use_internal_knowledge(question)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>: <span style="color:#75715e"># route == &#34;rag&#34;</span>
+</span></span><span style="display:flex;"><span>        final_answer <span style="color:#f92672">=</span> rag_search_and_generate(question)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> final_answer
+</span></span></code></pre></div><h2 id="2-adaptive-rag-구현-흐름과-출처-추적-이해하기">2. Adaptive RAG 구현 흐름과 출처 추적 이해하기<a hidden class="anchor" aria-hidden="true" href="#2-adaptive-rag-구현-흐름과-출처-추적-이해하기">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>수업 중에는 웹 검색 기능이 동작하지 않아 혼란스러웠지만, 최신 Commit을 확인해 보니 실제 구현된 상태였습니다. 이러한 시간 차이로 인해 &lsquo;안 된 건가?&rsquo; 혹은 &lsquo;된 건가?&lsquo;라는 판단이 수시로 바뀌어 집중력이 흐트러지는 문제가 있었습니다. 핵심은 <strong>실행 흐름의 우선순위</strong>에 있으며, 강사님은 먼저 RAG 검색 → route 판단 → plain/rag/web → 공통 답변이라는 최소 구조를 완성하는 데 초점을 두셨습니다. 특히 <strong>evidence와 source metadata</strong>의 중요성을 다시금 느꼈는데, 답변은 가능해도 나중에 근거를 검증하기 어렵다는 점은 RAG 시스템을 운영할 때 치명적인 약점이 될 수 있습니다.</p>
+<p>PDF evidence에는 filename, page, content가 포함되며, 저는 이 노트에서 배운 점을 2~4문장으로 요약하여 마크다운 헤딩 없이 출력합니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<h3 id="1-무엇이-헷갈렸나-confusion">1. 무엇이 헷갈렸나 (Confusion)<a hidden class="anchor" aria-hidden="true" href="#1-무엇이-헷갈렸나-confusion">#</a></h3>
+<p>수업을 듣는 내내 가장 큰 혼란은 **&ldquo;지금 이 코드가 동작하는가, 안 되는가&rdquo;**에 대한 시점의 차이였습니다.</p>
+<p>강사님의 최신 코드(<code>11_adaptive_rag</code>)를 보면 Tavily 검색까지 실제로 연결되어 있어 &ldquo;아, 웹 검색이구나&rdquo; 하고 이해하게 됩니다. 그런데 수업 중간중간 Git을 확인하면 &ldquo;웹 노드 골격만 있음&quot;이라고 느꼈던 상태와 딴판이죠.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>수업 중: &#34;웹 검색 안 됨&#34;
+</span></span><span style="display:flex;"><span>최신 Commit: &#34;웬 검색 구현됨&#34;
+</span></span></code></pre></div><p>이런 시간 차이 때문에 &ldquo;아직 안 했나?&rdquo; 혹은 &ldquo;이미 된 건가?&ldquo;라는 판단이 수시로 바뀌어 집중력이 흐트러지곤 했습니다. 또한 <code>similarity_top_k</code> 같은 옵션 이름의 오타나, <code>insert_data()</code>가 주석 처리된 상태에서 기존 store가 있어야 한다는 점 등 **&ldquo;기능이 동작한다&quot;와 &ldquo;서비스가 검증 가능하다&rdquo;**는 다른 단계에 대한 이해도 부족했습니다.</p>
+<h3 id="2-정리된-이해-organized-understanding">2. 정리된 이해 (Organized Understanding)<a hidden class="anchor" aria-hidden="true" href="#2-정리된-이해-organized-understanding">#</a></h3>
+<p>핵심은 <strong>실행 흐름의 우선순위</strong>였습니다.</p>
+<p>강사님은 먼저 다음 최소 구조를 완성하는 데 초점을 둡니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>RAG 검색 → route 판단 → plain / rag / web → 공통 답변
+</span></span></code></pre></div><p>provenance, fallback, document lifecycle 같은 고급 문제는 일단 접어두고, **&ldquo;코드가 어떻게 연결되는가&rdquo;**부터 파악하라는 조언이 인상적이었습니다. 로컬에서는 같은 구조를 더 명시적으로 나누어 추적할 수 있었지만, 강사님의 방식은 &ldquo;빨리 개념을 학습&quot;하는 데 초점이 맞춰져 있었습니다.</p>
+<p>특히 <strong>evidence와 source metadata</strong>의 중요성을 다시금 느꼈습니다. 답변은 가능해도 나중에 근거를 검증하기 어렵다는 점은 RAG 시스템을 운영할 때 치명적인 약점이 될 수 있습니다.</p>
+<h3 id="3-실습-예시-practice-example">3. 실습 예시 (Practice Example)<a hidden class="anchor" aria-hidden="true" href="#3-실습-예시-practice-example">#</a></h3>
+<p>가장 기억에 남는 부분은 <strong>evidence의 구조화</strong>였습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>PDF evidence에는:
+</span></span><span style="display:flex;"><span>- filename
+</span></span><span style="display:flex;"><span>- page
+</span></span><span style="display:flex;"><span>- content
+</span></span></code></pre></div><p><strong>[학습 질문]</strong></p>
+<p>위 학습 노트 내용을 바탕으로, RAG 시스템에서 답변을 생성할 때 <code>source metadata</code>를 보존하는 것이 왜 중요한지, 그리고 이를 통해 해결할 수 있는 구체적인 문제를 2~3문장으로 설명해 주세요.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<h3 id="핵심-요약">핵심 요약<a hidden class="anchor" aria-hidden="true" href="#핵심-요약">#</a></h3>
+<p>RAG 시스템 구현에서 가장 중요한 것은 **&ldquo;검색 → 라우팅 → 답변&rdquo;**이라는 명확한 실행 흐름의 우선순위입니다. 특히 답변의 신뢰도를 높이고 출처를 추적하기 위해서는 <code>evidence</code>와 <code>source metadata</code>의 구조화가 필수적이며, 로컬 환경에서는 동일한 구조를 더 명시적으로 나누어 추적할 수 있습니다.</p>
+<h3 id="학습-포인트">학습 포인트<a hidden class="anchor" aria-hidden="true" href="#학습-포인트">#</a></h3>
+<ol>
+<li><strong>구조화 우선</strong>: 답변 생성 전, <code>filename</code>, <code>page</code>, <code>content</code> 등 증거의 기본 정보를 명확히 정리해야 합니다.</li>
+<li><strong>흐름 이해</strong>: 강사님의 방식은 빠른 개념 습득을 위해 &ldquo;검색 → 판단 → 답변&quot;의 최소 구조에 집중하며, 고급 기능(증명, 폴백 등)은 이후 단계로 미룹니다.</li>
+<li><strong>메타데이터 중요성</strong>: 최종적으로 출처를 검증하기 위해서는 <code>source metadata</code> 관리가 필수적이며, 로컬에서는 이를 더 세부적으로 분할하여 관리할 수 있습니다.</li>
+</ol>
+<h3 id="실전-적용-예시-구조화된-증거">실전 적용 예시 (구조화된 증거)<a hidden class="anchor" aria-hidden="true" href="#실전-적용-예시-구조화된-증거">#</a></h3>
+<p>PDF 문서 기반의 증거는 다음과 같은 구조로 정리해야 합니다.</p>
+<ul>
+<li><strong>filename</strong>: 원본 문서명</li>
+<li><strong>page</strong>: 인용된 페이지 번호</li>
+<li><strong>content</strong>: 실제 인용된 텍스트 내용</li>
+</ul>
+<h1 id="adaptive-rag-구현-상태와-출처-추적-학습-요약">Adaptive RAG 구현 상태와 출처 추적 학습 요약<a hidden class="anchor" aria-hidden="true" href="#adaptive-rag-구현-상태와-출처-추적-학습-요약">#</a></h1>
+<h2 id="1-핵심-혼란-해결-resolving-confusion">1. 핵심 혼란 해결 (Resolving Confusion)<a hidden class="anchor" aria-hidden="true" href="#1-핵심-혼란-해결-resolving-confusion">#</a></h2>
+<h3 id="시점의-차이-문제">시점의 차이 문제<a hidden class="anchor" aria-hidden="true" href="#시점의-차이-문제">#</a></h3>
+<ul>
+<li><strong>수업 중</strong>: &ldquo;웹 검색 안 됨&rdquo; → Tavily 연결 전 단계로 인식</li>
+<li><strong>최신 Commit</strong>: &ldquo;웬 검색 구현됨&rdquo; → 실제 웹 검색 기능이 작동하는 상태</li>
+<li>이러한 시간 차이로 인해 &ldquo;아직 안 했나?&rdquo; vs &ldquo;이미 된 건가?&rdquo; 사이의 판단이 수시로 바뀌어 집중력 저하 발생</li>
+</ul>
+<h3 id="기능-동작-여부-vs-서비스-검증-가능성">기능 동작 여부 vs 서비스 검증 가능성<a hidden class="anchor" aria-hidden="true" href="#기능-동작-여부-vs-서비스-검증-가능성">#</a></h3>
+<ul>
+<li><code>similarity_top_k</code> 같은 옵션 이름의 오타 문제</li>
+<li><code>insert_data()</code>가 주석 처리된 상태에서 기존 store가 필요하다는 점</li>
+<li>**&ldquo;코드가 어떻게 연결되는가&rdquo;**에 집중해야 함 (고급 문제는 나중에)</li>
+</ul>
+<h2 id="2-정리의-이해-organized-understanding">2. 정리의 이해 (Organized Understanding)<a hidden class="anchor" aria-hidden="true" href="#2-정리의-이해-organized-understanding">#</a></h2>
+<h3 id="핵심-실행-흐름의-우선순위">핵심: 실행 흐름의 우선순위<a hidden class="anchor" aria-hidden="true" href="#핵심-실행-흐름의-우선순위">#</a></h3>
+<p>강사님의 최소 구조:</p>
+<pre tabindex="0"><code>RAG 검색 → route 판단 → plain / rag / web → 공통 답변
+</code></pre><h3 id="중요-개념-재인식">중요 개념 재인식<a hidden class="anchor" aria-hidden="true" href="#중요-개념-재인식">#</a></h3>
+<ul>
+<li><strong>evidence와 source metadata</strong>의 중요성</li>
+<li>답변은 가능해도 나중에 근거를 검증하기 어렵다는 점은 RAG 운영 시 치명적인 약점</li>
+<li>로컬에서는 구조를 더 명시적으로 나눌 수 있지만, 강사님의 방식은 &ldquo;빨리 개념 학습&quot;에 초점</li>
+</ul>
+<h2 id="3-실습-예시-practice-example-1">3. 실습 예시 (Practice Example)<a hidden class="anchor" aria-hidden="true" href="#3-실습-예시-practice-example-1">#</a></h2>
+<h3 id="evidence-구조화의-중요성">evidence 구조화의 중요성<a hidden class="anchor" aria-hidden="true" href="#evidence-구조화의-중요성">#</a></h3>
+<p>PDF evidence에는 다음과 같은 메타데이터가 포함되어야 함:</p>
+<ul>
+<li>filename</li>
+<li>page</li>
+<li>content</li>
+</ul>
+<blockquote>
+<p><strong>핵심 규칙</strong>: 핵심 내용을 보여주는 코드 예시만 백틱 3개(code block)로 출력하라. 노트에 코드 근거가 없으면 아무것도 쓰지 마라.</p>
+</blockquote>
+<p><strong>작성일</strong>: 2026-10-06
+<strong>모델</strong>: nvidia-nemotron-3.5-lightning-30b-a3b
+<strong>모드</strong>: working_note</p>
+<h2 id="3-rag-청킹과-데이터-운영의-현실">3. RAG 청킹과 데이터 운영의 현실<a hidden class="anchor" aria-hidden="true" href="#3-rag-청킹과-데이터-운영의-현실">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>RAG 파이프라인 코드가 동작한다고 해서 서비스가 완성된 것이 아니라는 점을 깨닫게 되었다. 실제 서비스에서는 데이터 업데이트, 권한 관리, 출처 추적 등 인프라적인 운영 문제가 가장 먼저 대두된다. 청크 크기와 문서 구조 보존을 통해 검색 정밀도를 높이고, 메타데이터를 필수적으로 관리해야 신뢰할 수 있는 시스템을 구축할 수 있다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>처음 RAG 파이프라인을 접했을 때 코드가 단순히 돌아가면 서비스가 완성된 것처럼 느껴져 큰 착각에 빠졌습니다. 하지만 실제 서비스 관점에서 보면 데이터가 업데이트되거나 삭제될 때의 처리, 사용자별 권한 관리, 답변 출처 추적과 같은 운영 문제가 가장 먼저 대두됩니다. 이러한 현실적인 딜레마는 단순한 코드 연결 단계에서는 자연스럽게 드러나지 않아 서비스의 완성도를 가늠하기 어렵습니다.</p>
+<p>청크 설계에서 가장 중요한 원칙은 검색의 단위가 된다는 점입니다. 청크가 너무 작으면 문맥이 단절되고, 너무 크면 여러 주제가 섞여 검색 정밀도가 떨어지기 때문에 적절한 크기 조절이 필수적입니다. 또한 문서의 제목이나 섹션 구조를 보존하고, 길이 초과 시 문장 단위로 나누는 것이 시스템 전체의 안정적인 출발점이 됩니다.</p>
+<p>특히 메타데이터는 단순한 부가 정보를 넘어 검색 근거 추적과 문서 갱신·삭제 관리에 필수적입니다. 파일명, 페이지 번호, 제목 경로, 문서 ID 같은 정보가 있어야 사용자는 답변의 출처를 신뢰할 수 있고 시스템 관리자 입장에서 데이터 운영이 가능해집니다. 이러한 메타데이터 전략은 검색 정확도를 높이는 동시에 실제 서비스에서의 유지보수 편의성을 크게 좌우합니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>청크는 검색 단위로, 문서 구조를 보존하고 메타데이터를 필수적으로 관리해야 실제 서비스에서 데이터 운영과 추적 가능성을 확보할 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 청킹 및 메타데이터 부착 예시 (노트 기반 핵심 로직)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">chunk_document</span>(document, chunk_size<span style="color:#f92672">=</span><span style="color:#ae81ff">512</span>, overlap<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    문서를 청크로 분할하고 필수 메타데이터를 부착합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Args:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        document: 파싱된 문서 객체 (langchain Document 등)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        chunk_size: 한 청크의 최대 토큰 수
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        overlap: 인접 청크 간의 토큰 오버랩 수
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Returns:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        청크 리스트 (각 청크는 내용과 메타데이터를 가짐)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    chunks <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 1. 문서 구조 보존 (제목/섹션 유지 전제)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 실제 서비스에서는 document.metadata에 &#39;source&#39;, &#39;page&#39;, &#39;section_path&#39; 등이 있어야 함</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 간단한 문장 단위 청킹 로직 (실제로는 langchain의 RecursiveCharacterTextSplitter 등 사용)</span>
+</span></span><span style="display:flex;"><span>    sentences <span style="color:#f92672">=</span> document<span style="color:#f92672">.</span>page_content<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;. &#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    current_chunk_text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    current_meta <span style="color:#f92672">=</span> dict(document<span style="color:#f92672">.</span>metadata)  <span style="color:#75715e"># 원본 메타데이터 복사</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> sentence <span style="color:#f92672">in</span> sentences:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 청크 크기 초과 시 저장 후 초기화</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> len(current_chunk_text) <span style="color:#f92672">+</span> len(sentence) <span style="color:#f92672">&gt;</span> chunk_size:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> current_chunk_text:
+</span></span><span style="display:flex;"><span>                chunks<span style="color:#f92672">.</span>append({
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;content&#34;</span>: current_chunk_text<span style="color:#f92672">.</span>strip(),
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;metadata&#34;</span>: current_meta  <span style="color:#75715e"># 메타데이터 필수 부착</span>
+</span></span><span style="display:flex;"><span>                })
+</span></span><span style="display:flex;"><span>            current_chunk_text <span style="color:#f92672">=</span> sentence
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># 필요 시 메타데이터 갱신 (예: 페이지 번호 재설정 등)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            current_chunk_text <span style="color:#f92672">+=</span> sentence <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;. &#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 마지막 청크 처리</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> current_chunk_text:
+</span></span><span style="display:flex;"><span>        chunks<span style="color:#f92672">.</span>append({
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;content&#34;</span>: current_chunk_text<span style="color:#f92672">.</span>strip(),
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;metadata&#34;</span>: current_meta
+</span></span><span style="display:flex;"><span>        })
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> chunks
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 사용 예시 (가상)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># doc = Document(page_content=&#34;...긴 문서 내용...&#34;, metadata={&#34;source&#34;: &#34;report.pdf&#34;, &#34;page&#34;: 5, &#34;title&#34;: &#34;재무 보고&#34;})</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># chunks = chunk_document(doc)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># print(f&#34;총 {len(chunks)}개의 청크 생성. 첫 번째 청크 메타데이터: {chunks[0][&#39;metadata&#39;]}&#34;)</span>
+</span></span></code></pre></div><h2 id="4-rag-검색-기법-미리보기-bm25-하이브리드-쿼리-변환">4. RAG 검색 기법 미리보기: BM25, 하이브리드, 쿼리 변환<a hidden class="anchor" aria-hidden="true" href="#4-rag-검색-기법-미리보기-bm25-하이브리드-쿼리-변환">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>BM25는 단어 단위의 정확한 일치에 강하고, 벡터 검색은 의미가 비슷한 문서를 찾는 데 특화되어 있다는 점을 명확히 이해할 수 있었다. 특히 한국어 검색에서는 형태소 분석이 필수적이라는 점을 깨닫고, 단순한 공백 분리가 아닌 언어학적 전처리의 중요성을 새롭게 인식했다. 하이브리드 검색이나 RRF 같은 기법을 통해 두 방식의 장점을 결합하면 검색 결과의 정밀도와 재현율을 동시에 높일 수 있다는 점도 인상 깊었다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>BM25는 단어 단위의 정확한 일치에 의존하는 반면, 벡터 검색은 의미적 유사성을 기반으로 문서를 찾기 때문에, 같은 의미를 담고 있어도 표현이 다르면 검색이 되지 않는 간극이 존재한다. 이러한 한계를 보완하고자 BM25와 벡터 검색 결과를 점수 통합 방식으로 결합해 두 방식의 장점을 모두 활용하는 하이브리드 접근 방식을 고려하게 되었다. 특히 한국어 특성상 형태소 분석 없이 단순 공백 분리를 하면 의미가 왜곡될 수 있어, 검색 정확도를 높이기 위해 전처리 단계에서 형태소 분석기가 반드시 필요하다는 점을 명확히 했다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>오늘 미리 살펴본 RAG 검색 기법은 단순한 벡터 유사도 검색을 넘어, BM25와 같은 단어 기반 검색과 Vector Search를 결합해 결과의 정밀도를 높이는 과정이었다. 특히 한국어 특성상 형태소 분석 없이 단순 공백 토큰화를 하면 의미가 왜곡될 수 있어 전처리 단계의 중요성을 실감했다. 결국 하이브리드 검색이나 RRF 같은 기법을 활용하면 단어 일치와 의미 유사성의 장점을 모두 취할 수 있어, 검색 결과의 질을 한층 끌어올릴 수 있었다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># BM25 (Sparse Lexical Search)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 단어 단위 일치 기반 검색, 한국어는 형태소 분석 전처리 권장</span>
+</span></span><span style="display:flex;"><span>bm25_scores <span style="color:#f92672">=</span> bm25<span style="color:#f92672">.</span>get_scores(query_tokens, corpus)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Vector Search (Dense Semantic Search)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 의미 유사도 기반 검색, 표현이 달라도 비슷한 문서 검색 가능</span>
+</span></span><span style="display:flex;"><span>vector_similarities <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>encode(query)<span style="color:#f92672">.</span>dot(doc_embeddings<span style="color:#f92672">.</span>T)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Hybrid Search (RRF: Reciprocal Rank Fusion)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># BM25와 Vector 검색 결과를 점수로 통합하여 최종 순위 도출</span>
+</span></span><span style="display:flex;"><span>ranks <span style="color:#f92672">=</span> [bm25_rank, vector_rank]
+</span></span><span style="display:flex;"><span>final_scores <span style="color:#f92672">=</span> rrf(ranks)
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>오늘은 Adaptive RAG의 경로 결정 구조와 검색 기법의 특성을 중심으로 배웠습니다. 먼저 질문과 근거 상태에 따라 <code>plain</code>, <code>rag</code>, <code>web</code> 중 최적의 정보를 선택하는 제어 흐름을 설계하는 것이 핵심이며, 실행 우선순위와 메타데이터 관리가 시스템 신뢰성을 좌우한다는 점을 강조했습니다. 또한 BM25와 벡터 검색의 장점을 결합한 하이브리드 기법과 한국어 처리를 위한 형태소 분석의 중요성을 새롭게 인식하게 되었습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>오늘 수업에서 가장 인상 깊었던 점은 Adaptive RAG가 단순한 검색 기술의 나열이 아니라, 질문과 상태에 따라 정보를 선택하는 제어 흐름을 만든다는 점이었습니다. 특히 router가 JSON 형식으로 경로를 판단하고 <code>plain</code>, <code>rag</code>, <code>web</code> 중 하나를 실행한다는 구조를 이해하며, <code>last_answer</code>와 같은 공통 노드를 두면 source 선택과 답변 생성을 분리할 수 있는 유연성이 있다는 점을 배웠습니다.</p>
+<p>또 다른 핵심은 실제 구현 과정에서 웹 검색 기능이 동작하지 않아 momentarily 혼란스러웠지만, 최신 Commit을 확인해 보니 이미 구현된 상태였다는 점입니다. 이러한 시간 차이로 인해 &lsquo;안 된 건가?&rsquo; 혹은 &lsquo;된 건가?&lsquo;라는 판단이 수시로 바뀌어 집중력이 흐트러지는 문제가 있었습니다. 핵심은 <strong>실행 흐름의 우선순위</strong>에 있으며, 강사님은 먼저 RAG 검색 → route 판단 → plain/rag/web → 공통 답변이라는 최소 구조를 완성하는 데 초점을 두셨습니다.</p>
+<p>마지막으로 PDF evidence에는 filename, page, content가 포함되며, 답변은 가능해도 나중에 근거를 검증하기 어렵다는 점은 RAG 시스템을 운영할 때 치명적인 약점이 될 수 있다는 점을 다시금 느꼈습니다. 다음에는 이러한 시간 차이로 인한 혼란을 줄이기 위해 실시간 구현 상태를 지속적으로 확인하는 습관을 들여야겠습니다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>다음에는 Adaptive RAG의 실제 구현 환경 설정과 웹 검색 기능을 정상적으로 동작하게 하는 방법을 중점적으로 살펴보고 싶습니다. 또한, 답변 생성 시 출처 정보를 정확히 추적하고 메타데이터를 관리하는 구체적인 전략을 고민해 보고 싶습니다. 마지막으로 BM25와 벡터 검색의 장단점을 살려 상황에 맞는 최적의 검색 기법을 선택하는 실전 적용 방법을 복습할 계획입니다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-10-06-am-daily/">
+    <span class="title">« Prev</span>
+    <span>오전 학습 | RAG 파이프라인 구조와 ChromaDB 영속성 관리</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-10-02-am-daily/">
+    <span class="title">Next »</span>
+    <span>오전 학습 | LLM 정보 경로 분리: Ollama, ChromaDB, Tavily</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
