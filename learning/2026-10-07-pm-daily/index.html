@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오후 학습 | 검색 파이프라인 통합과 reranker의 역할, Multi-Query와 HyDE 비교 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-10-07 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-10-07-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-10-07-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-10-07-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오후 학습 | 검색 파이프라인 통합과 reranker의 역할, Multi-Query와 HyDE 비교">
+  <meta property="og:description" content="2026-10-07 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-10-07T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-10-07T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오후 학습 | 검색 파이프라인 통합과 reranker의 역할, Multi-Query와 HyDE 비교">
+  <meta name="twitter:description" content="2026-10-07 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오후 학습 | 검색 파이프라인 통합과 reranker의 역할, Multi-Query와 HyDE 비교",
+      "item": "https://Han-think.github.io/learning/2026-10-07-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오후 학습 | 검색 파이프라인 통합과 reranker의 역할, Multi-Query와 HyDE 비교",
+  "name": "오후 학습 | 검색 파이프라인 통합과 reranker의 역할, Multi-Query와 HyDE 비교",
+  "description": "2026-10-07 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 질문 변환과 검색의 차이, Multi-Query와 HyDE 1. 질문 변환과 검색의 차이, Multi-Query와 HyDE 무엇을 배웠나 질문 자체가 검색을 방해할 수 있다는 점을 깨닫고, Multi-Query와 HyDE가 단순히 다른 표현이 아니라 recall과 semantic similarity를 높이는 서로 다른 접근법임을 명확히 이해했습니다. 특히 query transformation이 retrieval pipeline에서 핵심적인 역할을 한다는 점이 가장 인상적이었습니다.\n헷갈렸던 점 처음에는 LLM이 답변을 만드는 과정과 검색을 위한 질의 변환 과정이 어떻게 다른지 분간하기 어려웠습니다. 특히 HyDE가 ‘LLM이 가짜 답변을 만들어내는 것 아닐까’라는 걱정을 했습니다.\n또 한 가지 헷갈린 점은 Multi-Query와 HyDE의 차이점이 명확하지 않다는 점이었습니다. 질문의 관점을 여러 개 만드는 것인지, 가상의 문서를 만드는 것인지 구별이 안 되었던 것입니다.\n핵심적으로 ‘질문 자체가 검색에 방해가 될 수 있다’는 점을 이해할 수 있었습니다. 짧고 모호한 질문은 벡터 검색조차도 정답을 놓칠 수 있다는 사실이 인상적이었습니다.\n가장 중요했던 깨달음은 “검색이 안 되면 무조건 임베딩 모델부터 바꾸기보다, 질문이 너무 짧거나 추상적인 것은 아닌지 먼저 점검해야 한다\"는 점이었습니다. query transformation은 retrieval pipeline의 중요한 단계가 될 수 있습니다.\n정리된 이해 질문 자체가 검색을 방해할 수 있다는 점을 깨닫고, 임베딩 모델 변경 전 항상 질문 길이를 점검하는 습관을 들였습니다.\nMulti-Query는 다양한 표현의 질문을 추가 생성해 recall을 높이고, HyDE는 가상의 답변을 만들어 의미적 유사성을 통해 더 나은 문서를 찾는 방식입니다.\n# Multi-Query 예시 (강사님 common.py 기준) original_question = \"한번 더 거르기\" transformed_questions = multi_query(original_question) 2. 두 단계 검색의 원리: retriever와 reranker roles 무엇을 배웠나 벡터 검색은 넓은 범위에서 빠르게 후보군을 발굴하는 역할을 하고, 크로스 인코더는 그 후보들 사이의 순서를 정밀하게 재배치하여 가장 관련성 높은 문서를 최상위로 끌어올리는 역할을 한다. 두 단계 구조는 빠른 retriever와 비싼 reranker의 장점을 결합해 효율적으로 정확도를 높이는 전략이다. 특히 1차 검색에서 정답이 하위권에 밀려 있어도, reranker가 이를 상위로 끌어올릴 수 있다는 점은 검색 성능 최적화의 핵심임을 확인할 수 있었다.\n헷갈렸던 점 벡터 검색은 넓은 범위에서 대략적인 관련성을 판단해 후보를 발굴하는 역할이고, 크로스 인코더 리랭커는 이미 선정된 후보들 사이의 순서를 정밀하게 조정하는 과정이라는 점이 핵심이었다. 1차 검색에서 정답이 하위에 밀려 있어도, 리랭커가 이를 상위로 끌어올려 최종 결과를 결정한다는 점을 이해하는 데 시간이 걸렸다.\n정리된 이해 벡터 검색은 넓은 범위에서 후보군을 빠르게 확보하는 역할을 수행하고, 크로스 인코더 리랭커는 이미 선정된 후보들 사이의 순서를 정밀하게 재조정하여 가장 관련성이 높은 문서를 최상위로 끌어올리는 과정이다. 이 두 단계 구조는 빠른 retriever와 비싼 reranker의 장점을 결합해 검색 효율과 정확도를 동시에 높이는 전략이다.\n# 1차 검색: 넓은 후보군 확보 candidates = vector_search(query, k=6) # [문서3, 문서1, 정답_문서7, 문서5, 문서2, 문서8] # 2차 reranking: 정밀한 순위 조정 reranked = cross_encoder.rerank(query, candidates) # [정답_문서7, 문서3, 문서1, 문서5, 문서2, 문서8] 3. retrieval pipeline 통합: 기법별 k값 의미와 단계별 목적 정리 무엇을 배웠나 오늘은 검색 기법들이 하나의 파이프라인에서 어떻게 순차적으로 연결되는지 이해하는 데 집중했습니다. 각 단계별로 k 값이나 목적 등이 달라 혼란스러웠지만, 오후에 보여진 파이프라인 흐름을 통해 각 기법의 역할이 명확해졌습니다. 특히 Multi-Query와 Vector Search, RRF, Re-Rank가 어떻게 후보를 넓히고 정제하는지 구체적인 순서와 목적을 익힐 수 있었습니다.\n헷갈렸던 점 처음에는 k 값이 각 단계에서 다른 의미를 가지는지 구분하기 어려웠고, 여러 검색 기법이 따로 배워진 이유를 전체적인 흐름 속에서 연결 짓기 힘들었습니다. 하지만 파이프라인 구조를 통해 각 기법이 후보 생성, 융합, 재정렬 순서로 명확한 역할을 담당한다는 사실을 깨닫고 이해가 되었습니다.\n정리된 이해 오늘은 검색 기법들이 하나의 파이프라인 안에서 순차적으로 연결되어 검색 품질을 개선하는 패턴을 이해했습니다. Multi-Query, Vector Search, BM25, RRF, Re-Rank 등 각 단계는 목적과 대상이 다르며, k 값 또한 단계별로 의미가 달라 혼동 없이 설정해야 합니다. 결국 이러한 기법들을 조립하여 최종적으로 LLM이 근거가 있는 답변을 생성할 수 있도록 후보 문서를 선별하는 것이 핵심입니다.\n# 06_pipeline.py (핵심 파이프라인 구조) from typing import List, Dict class RetrievalPipeline: def __init__(self, k_multi_query: int = 3, k_vector: int = 50, k_bm25: int = 100, k_rrf: int = 60, k_rerank: int = 20): \"\"\" 파이프라인 초기화 시 각 단계별 k 값의 역할을 명확히 구분합니다. - k_multi_query: Multi-Query 단계에서 질문 변형 개수 - k_vector: Vector Search 후보 수 제한 - k_bm25: BM25 후보 수 제한 - k_rrf: RRF 융합 전후 후보 수 관리 - k_rerank: Re-Rank 최종 상위 선택 수 \"\"\" self.k_multi_query = k_multi_query self.k_vector = k_vector self.k_bm25 = k_bm25 self.k_rrf = k_rrf self.k_rerank = k_rerank def run(self, query: str, vector_store, bm25_index, reranker, llm): \"\"\" 전체 검색 파이프라인을 실행합니다. \"\"\" # 1. Multi-Query: 질문을 변형하여 다양한 관점에서 검색 queries = self._generate_multi_queries(query, self.k_multi_query) # 2. Vector + BM25: 의미적 검색과 키워드 검색 동시에 수행 vector_results = self._vector_search(queries, vector_store, self.k_vector) bm25_results = self._bm25_search(query, bm25_index, self.k_bm25) # 3. RRF: 서로 다른 검색 방식의 결과를 융합 fused_results = self._rrf_fusion(vector_results, bm25_results, self.k_rrf) # 4. Re-Rank: 후보들을 정밀하게 재정렬 reranked_results = self._rerank(fused_results, query, reranker, self.k_rerank) # 5. LLM: 최종 context를 바탕으로 답변 생성 answer = self._generate_answer(query, reranked_results, llm) return answer 4. 에이전트 RAG, 판단의 순간: 초보자의 혼란과 기댓값 무엇을 배웠나 나는 강사님의 Git에 올라온 12_search 폴더의 retrieval pipeline을 통해, 검색 과정이 Multi-Query → Hybrid → Rerank → LLM의 순서로 고정되어 있음을 확인했다. 그리고 Agentic RAG는 이 흐름에 ‘상태를 판단해 다음 행동을 스스로 선택하는 단계’가 추가된다는 점을 개인적으로 정리했다. 아직 실제 코드는 확인되지 않았지만, 후보 생성→평가→다음 단계 구조 안에 판단이 개입된다고 생각하면 진입이 수월할 것 같다.\n헷갈렸던 점 ‘에이전트’가 단순히 정해진 순서를 따르는 것이 아니라, 현재 검색 상태를 판단하여 다음 행동을 스스로 결정한다는 점이 가장 큰 차이점이었다. 기존 retrieval pipeline에서 부족한 결과를 보완하는 주체가 인위적인 흐름이 아닌, 스스로 판단하는 에이전트라는 점에 혼란을 느꼈다. 강사님의 실제 구현 코드가 아직 공개되지 않아, 이론과 실제 적용 사이의 간극을 어떻게 메울지 감이 잡히지 않았다. 정리된 이해 나는 오늘 LearningLog 파이프라인에서 ‘에이전틱 RAG’라는 개념을 마주했으나, 강사님의 Git에는 아직 해당 관련 코드가 없어 막연한 혼란에 빠졌다. 그럼에도 불구하고 나는 기존의 12_search 폴더 retrieval pipeline이 사람이 정해진 순서(Multi-Query → Hybrid → Rerank → LLM)로 동작한다는 사실만 확신할 수 있다. 그리고 에이전트 RAG는 이 흐름 속에 검색 결과를 보고 스스로 판단하여 다음 행동을 선택하는 단계를 추가한 개념이라고 해석하고 있다.\n# Agentic RAG의 핵심: 상태 기반 판단 루프 (가상/예비 구현) # 아직 강사님의 실제 소스는 확인되지 않았지만, 개념적 구조를 정리한 예시입니다. from typing import Literal, Optional StepResult = Literal[\"continue\", \"answer\", \"search\"] def agentic_rag_loop(query: str, max_iterations: int = 3) -\u003e str: \"\"\" Agentic RAG의 기본 흐름. 1. 검색 → 2. 평가 → 3. 판단(계속/답변)으로 반복 \"\"\" iteration = 0 context = [] while iteration \u003c max_iterations: iteration += 1 # 1. Search (검색) # 실제 구현에서는 retriever나 tool이 호출됨 new_docs = retrieve_documents(query, context) context.extend(new_docs) # 2. Evaluate (평가) relevance_score = assess_relevance(query, context) # 3. Judge (판단) - 다음 단계 결정 decision: StepResult = decide_next_step(relevance_score, iteration) if decision == \"answer\": # 답변 생성 answer = generate_answer(query, context) return answer elif decision == \"search\": # 더 검색 계속 continue else: break # 반복 종료 시 기본 답변 반환 return generate_answer(query, context) def retrieve_documents(query: str, existing_context: list) -\u003e list: \"\"\"검색 도구 호출 예시 (가상)\"\"\" # 실제로는 벡터 DB 검색 등 수행 return [] def assess_relevance(query: str, context: list) -\u003e float: \"\"\"관련성 점수 산출 (가상)\"\"\" return 0.8 def decide_next_step(score: float, iteration: int) -\u003e StepResult: \"\"\"다음 단계 판단 로직 (가상)\"\"\" if score \u003c 0.5 or iteration \u003e= 3: return \"answer\" return \"continue\" def generate_answer(query: str, context: list) -\u003e str: \"\"\"LLM 기반 답변 생성 (가상)\"\"\" return f\"질문 '{query}'에 대한 답변입니다.\" 총평 오늘 오후 전체에서 배운 것 오후에는 검색 파이프라인 전체가 어떻게 유기적으로 연결되는지 이해하는 데 집중했습니다. retriever와 reranker의 역할 분담과 각 단계별 k값 및 목적의 차이를 명확히 하여, 단순한 검색 기법 나열을 넘어 최적화된 pipeline 구조를 파악할 수 있었습니다. 특히 Multi-Query부터 RRF, Re-Rank까지 후보를 넓히고 정제하는 구체적인 흐름을 통해, 검색 성능 향상이 어떻게 단계적으로 이뤄지는지 전체적인 그림이 그려졌습니다.\n다음에 조심할 것 오늘은 검색 파이프라인 전체가 하나의 유기적인 흐름으로 연결된다는 점을 명확히 이해했습니다. 특히 retriever와 reranker가 각자의 역할을 수행하며 후보군을 선별하고 정제하는 과정이 중요하다고 느꼈습니다. 앞으로는 단순히 검색 결과를 나열하는 것이 아니라, 왜 특정 기법이 사용되는지 그 목적을 가지고 파이프라인을 설계하는 습관을 들일 것입니다.\n다음 복습 주제 오늘은 검색 파이프라인 전체가 하나의 흐름으로 연결된다는 점을 확실히 이해할 수 있었다. retriever와 reranker가 각자의 역할을 충실히 수행하며, Multi-Query 같은 기법들이 후보군을 얼마나 넓히느냐에 따라 이후 단계의 성패가 갈린다는 점이 인상 깊었다. 특히 검색 과정 안에 ‘판단’이 개입되는 Agentic RAG 구조가 어떻게 작동할지, retrieval pipeline 내에서의 순서와 목적 관계를 명확히 짚어두고 다음 복습을 준비해야겠다.\n다음 복습 주제는 검색 단계별 k값과 후보군 관리 전략이다. retriever에서 가져오는 초기 개수(k), RRF나 Re-Rank 과정에서 어떻게 임계치를 조절하는지, 그리고 LLM에 전달할 최종 문서 수를 어떻게 결정하는지가 파이프라인 성능의 핵심 열쇠가 된다는 점을 정리하고 싶다.\n다음 복습 주제는 Agentic RAG의 판단 로직과 상태 전이이다. 단순히 검색을 반복하는 것이 아니라, 현재 retrieved된 문서들이 LLM의 질문에 얼마나 부합하는지 판단하고 다음 단계(재검색, 요약, 종료 등)를 스스로 결정하는 메커니즘이 어떻게 설계되는지가 핵심 포인트가 될 것이다.\n다음 복습 주제는 하이브리드 검색(Retrieval)의 실제 적용 시나리오다. keyword 기반과 vector search의 장단점을 어떻게 조합해 RRF 점수를 매기는지, 그리고 특정 도메인이나 질문 유형에 따라 가중치를 두는 전략이 retrieval precision에 미치는 영향을 구체적으로 살펴보고 싶다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1410",
+  "inLanguage": "en",
+  "datePublished": "2026-10-07T00:00:00Z",
+  "dateModified": "2026-10-07T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-10-07-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오후 학습 | 검색 파이프라인 통합과 reranker의 역할, Multi-Query와 HyDE 비교
+    </h1>
+    <div class="post-description">
+      2026-10-07 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-10-07 00:00:00 +0000 UTC'>2026년 10월 7일</span>&nbsp;·&nbsp;<span>7 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EC%A7%88%EB%AC%B8-%EB%B3%80%ED%99%98%EA%B3%BC-%EA%B2%80%EC%83%89%EC%9D%98-%EC%B0%A8%EC%9D%B4-multi-query%EC%99%80-hyde">질문 변환과 검색의 차이, Multi-Query와 HyDE</a></li>
+</ol>
+</li>
+</ul>
+<h2 id="1-질문-변환과-검색의-차이-multi-query와-hyde">1. 질문 변환과 검색의 차이, Multi-Query와 HyDE<a hidden class="anchor" aria-hidden="true" href="#1-질문-변환과-검색의-차이-multi-query와-hyde">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>질문 자체가 검색을 방해할 수 있다는 점을 깨닫고, Multi-Query와 HyDE가 단순히 다른 표현이 아니라 recall과 semantic similarity를 높이는 서로 다른 접근법임을 명확히 이해했습니다. 특히 query transformation이 retrieval pipeline에서 핵심적인 역할을 한다는 점이 가장 인상적이었습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>처음에는 LLM이 답변을 만드는 과정과 검색을 위한 질의 변환 과정이 어떻게 다른지 분간하기 어려웠습니다. 특히 HyDE가 &lsquo;LLM이 가짜 답변을 만들어내는 것 아닐까&rsquo;라는 걱정을 했습니다.</p>
+<p>또 한 가지 헷갈린 점은 Multi-Query와 HyDE의 차이점이 명확하지 않다는 점이었습니다. 질문의 관점을 여러 개 만드는 것인지, 가상의 문서를 만드는 것인지 구별이 안 되었던 것입니다.</p>
+<p>핵심적으로 &lsquo;질문 자체가 검색에 방해가 될 수 있다&rsquo;는 점을 이해할 수 있었습니다. 짧고 모호한 질문은 벡터 검색조차도 정답을 놓칠 수 있다는 사실이 인상적이었습니다.</p>
+<p>가장 중요했던 깨달음은 &ldquo;검색이 안 되면 무조건 임베딩 모델부터 바꾸기보다, 질문이 너무 짧거나 추상적인 것은 아닌지 먼저 점검해야 한다&quot;는 점이었습니다. query transformation은 retrieval pipeline의 중요한 단계가 될 수 있습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>질문 자체가 검색을 방해할 수 있다는 점을 깨닫고, 임베딩 모델 변경 전 항상 질문 길이를 점검하는 습관을 들였습니다.</p>
+<p>Multi-Query는 다양한 표현의 질문을 추가 생성해 recall을 높이고, HyDE는 가상의 답변을 만들어 의미적 유사성을 통해 더 나은 문서를 찾는 방식입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Multi-Query 예시 (강사님 common.py 기준)</span>
+</span></span><span style="display:flex;"><span>original_question <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;한번 더 거르기&#34;</span>
+</span></span><span style="display:flex;"><span>transformed_questions <span style="color:#f92672">=</span> multi_query(original_question)
+</span></span></code></pre></div><h2 id="2-두-단계-검색의-원리-retriever와-reranker-roles">2. 두 단계 검색의 원리: retriever와 reranker roles<a hidden class="anchor" aria-hidden="true" href="#2-두-단계-검색의-원리-retriever와-reranker-roles">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>벡터 검색은 넓은 범위에서 빠르게 후보군을 발굴하는 역할을 하고, 크로스 인코더는 그 후보들 사이의 순서를 정밀하게 재배치하여 가장 관련성 높은 문서를 최상위로 끌어올리는 역할을 한다. 두 단계 구조는 빠른 retriever와 비싼 reranker의 장점을 결합해 효율적으로 정확도를 높이는 전략이다. 특히 1차 검색에서 정답이 하위권에 밀려 있어도, reranker가 이를 상위로 끌어올릴 수 있다는 점은 검색 성능 최적화의 핵심임을 확인할 수 있었다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>벡터 검색은 넓은 범위에서 대략적인 관련성을 판단해 후보를 발굴하는 역할이고, 크로스 인코더 리랭커는 이미 선정된 후보들 사이의 순서를 정밀하게 조정하는 과정이라는 점이 핵심이었다. 1차 검색에서 정답이 하위에 밀려 있어도, 리랭커가 이를 상위로 끌어올려 최종 결과를 결정한다는 점을 이해하는 데 시간이 걸렸다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>벡터 검색은 넓은 범위에서 후보군을 빠르게 확보하는 역할을 수행하고, 크로스 인코더 리랭커는 이미 선정된 후보들 사이의 순서를 정밀하게 재조정하여 가장 관련성이 높은 문서를 최상위로 끌어올리는 과정이다. 이 두 단계 구조는 빠른 retriever와 비싼 reranker의 장점을 결합해 검색 효율과 정확도를 동시에 높이는 전략이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 1차 검색: 넓은 후보군 확보</span>
+</span></span><span style="display:flex;"><span>candidates <span style="color:#f92672">=</span> vector_search(query, k<span style="color:#f92672">=</span><span style="color:#ae81ff">6</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># [문서3, 문서1, 정답_문서7, 문서5, 문서2, 문서8]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2차 reranking: 정밀한 순위 조정</span>
+</span></span><span style="display:flex;"><span>reranked <span style="color:#f92672">=</span> cross_encoder<span style="color:#f92672">.</span>rerank(query, candidates)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># [정답_문서7, 문서3, 문서1, 문서5, 문서2, 문서8]</span>
+</span></span></code></pre></div><h2 id="3-retrieval-pipeline-통합-기법별-k값-의미와-단계별-목적-정리">3. retrieval pipeline 통합: 기법별 k값 의미와 단계별 목적 정리<a hidden class="anchor" aria-hidden="true" href="#3-retrieval-pipeline-통합-기법별-k값-의미와-단계별-목적-정리">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>오늘은 검색 기법들이 하나의 파이프라인에서 어떻게 순차적으로 연결되는지 이해하는 데 집중했습니다. 각 단계별로 <code>k</code> 값이나 목적 등이 달라 혼란스러웠지만, 오후에 보여진 파이프라인 흐름을 통해 각 기법의 역할이 명확해졌습니다. 특히 Multi-Query와 Vector Search, RRF, Re-Rank가 어떻게 후보를 넓히고 정제하는지 구체적인 순서와 목적을 익힐 수 있었습니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>처음에는 <code>k</code> 값이 각 단계에서 다른 의미를 가지는지 구분하기 어려웠고, 여러 검색 기법이 따로 배워진 이유를 전체적인 흐름 속에서 연결 짓기 힘들었습니다. 하지만 파이프라인 구조를 통해 각 기법이 후보 생성, 융합, 재정렬 순서로 명확한 역할을 담당한다는 사실을 깨닫고 이해가 되었습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>오늘은 검색 기법들이 하나의 파이프라인 안에서 순차적으로 연결되어 검색 품질을 개선하는 패턴을 이해했습니다. Multi-Query, Vector Search, BM25, RRF, Re-Rank 등 각 단계는 목적과 대상이 다르며, <code>k</code> 값 또한 단계별로 의미가 달라 혼동 없이 설정해야 합니다. 결국 이러한 기법들을 조립하여 최종적으로 LLM이 근거가 있는 답변을 생성할 수 있도록 후보 문서를 선별하는 것이 핵심입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 06_pipeline.py (핵심 파이프라인 구조)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> List, Dict
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RetrievalPipeline</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, k_multi_query: int <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>, k_vector: int <span style="color:#f92672">=</span> <span style="color:#ae81ff">50</span>,
+</span></span><span style="display:flex;"><span>                 k_bm25: int <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>, k_rrf: int <span style="color:#f92672">=</span> <span style="color:#ae81ff">60</span>, k_rerank: int <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        파이프라인 초기화 시 각 단계별 k 값의 역할을 명확히 구분합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        - k_multi_query: Multi-Query 단계에서 질문 변형 개수
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        - k_vector: Vector Search 후보 수 제한
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        - k_bm25: BM25 후보 수 제한
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        - k_rrf: RRF 융합 전후 후보 수 관리
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        - k_rerank: Re-Rank 최종 상위 선택 수
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>k_multi_query <span style="color:#f92672">=</span> k_multi_query
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>k_vector <span style="color:#f92672">=</span> k_vector
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>k_bm25 <span style="color:#f92672">=</span> k_bm25
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>k_rrf <span style="color:#f92672">=</span> k_rrf
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>k_rerank <span style="color:#f92672">=</span> k_rerank
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">run</span>(self, query: str, vector_store, bm25_index, reranker, llm):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        전체 검색 파이프라인을 실행합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 1. Multi-Query: 질문을 변형하여 다양한 관점에서 검색</span>
+</span></span><span style="display:flex;"><span>        queries <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_generate_multi_queries(query, self<span style="color:#f92672">.</span>k_multi_query)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 2. Vector + BM25: 의미적 검색과 키워드 검색 동시에 수행</span>
+</span></span><span style="display:flex;"><span>        vector_results <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_vector_search(queries, vector_store, self<span style="color:#f92672">.</span>k_vector)
+</span></span><span style="display:flex;"><span>        bm25_results <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_bm25_search(query, bm25_index, self<span style="color:#f92672">.</span>k_bm25)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 3. RRF: 서로 다른 검색 방식의 결과를 융합</span>
+</span></span><span style="display:flex;"><span>        fused_results <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_rrf_fusion(vector_results, bm25_results, self<span style="color:#f92672">.</span>k_rrf)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 4. Re-Rank: 후보들을 정밀하게 재정렬</span>
+</span></span><span style="display:flex;"><span>        reranked_results <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_rerank(fused_results, query, reranker, self<span style="color:#f92672">.</span>k_rerank)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 5. LLM: 최종 context를 바탕으로 답변 생성</span>
+</span></span><span style="display:flex;"><span>        answer <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_generate_answer(query, reranked_results, llm)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> answer
+</span></span></code></pre></div><h2 id="4-에이전트-rag-판단의-순간-초보자의-혼란과-기댓값">4. 에이전트 RAG, 판단의 순간: 초보자의 혼란과 기댓값<a hidden class="anchor" aria-hidden="true" href="#4-에이전트-rag-판단의-순간-초보자의-혼란과-기댓값">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>나는 강사님의 Git에 올라온 <code>12_search</code> 폴더의 retrieval pipeline을 통해, 검색 과정이 Multi-Query → Hybrid → Rerank → LLM의 순서로 고정되어 있음을 확인했다. 그리고 Agentic RAG는 이 흐름에 &lsquo;상태를 판단해 다음 행동을 스스로 선택하는 단계&rsquo;가 추가된다는 점을 개인적으로 정리했다. 아직 실제 코드는 확인되지 않았지만, 후보 생성→평가→다음 단계 구조 안에 판단이 개입된다고 생각하면 진입이 수월할 것 같다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<ol>
+<li>&lsquo;에이전트&rsquo;가 단순히 정해진 순서를 따르는 것이 아니라, 현재 검색 상태를 판단하여 다음 행동을 스스로 결정한다는 점이 가장 큰 차이점이었다.</li>
+<li>기존 retrieval pipeline에서 부족한 결과를 보완하는 주체가 인위적인 흐름이 아닌, 스스로 판단하는 에이전트라는 점에 혼란을 느꼈다.</li>
+<li>강사님의 실제 구현 코드가 아직 공개되지 않아, 이론과 실제 적용 사이의 간극을 어떻게 메울지 감이 잡히지 않았다.</li>
+</ol>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>나는 오늘 <code>LearningLog</code> 파이프라인에서 &lsquo;에이전틱 RAG&rsquo;라는 개념을 마주했으나, 강사님의 Git에는 아직 해당 관련 코드가 없어 막연한 혼란에 빠졌다. 그럼에도 불구하고 나는 기존의 <code>12_search</code> 폴더 retrieval pipeline이 사람이 정해진 순서(<code>Multi-Query → Hybrid → Rerank → LLM</code>)로 동작한다는 사실만 확신할 수 있다. 그리고 에이전트 RAG는 이 흐름 속에 <strong>검색 결과를 보고 스스로 판단하여 다음 행동을 선택하는 단계</strong>를 추가한 개념이라고 해석하고 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Agentic RAG의 핵심: 상태 기반 판단 루프 (가상/예비 구현)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 아직 강사님의 실제 소스는 확인되지 않았지만, 개념적 구조를 정리한 예시입니다.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Literal, Optional
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>StepResult <span style="color:#f92672">=</span> Literal[<span style="color:#e6db74">&#34;continue&#34;</span>, <span style="color:#e6db74">&#34;answer&#34;</span>, <span style="color:#e6db74">&#34;search&#34;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">agentic_rag_loop</span>(query: str, max_iterations: int <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Agentic RAG의 기본 흐름.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    1. 검색 → 2. 평가 → 3. 판단(계속/답변)으로 반복
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    iteration <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    context <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> iteration <span style="color:#f92672">&lt;</span> max_iterations:
+</span></span><span style="display:flex;"><span>        iteration <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 1. Search (검색)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 실제 구현에서는 retriever나 tool이 호출됨</span>
+</span></span><span style="display:flex;"><span>        new_docs <span style="color:#f92672">=</span> retrieve_documents(query, context)
+</span></span><span style="display:flex;"><span>        context<span style="color:#f92672">.</span>extend(new_docs)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 2. Evaluate (평가)</span>
+</span></span><span style="display:flex;"><span>        relevance_score <span style="color:#f92672">=</span> assess_relevance(query, context)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 3. Judge (판단) - 다음 단계 결정</span>
+</span></span><span style="display:flex;"><span>        decision: StepResult <span style="color:#f92672">=</span> decide_next_step(relevance_score, iteration)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> decision <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;answer&#34;</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># 답변 생성</span>
+</span></span><span style="display:flex;"><span>            answer <span style="color:#f92672">=</span> generate_answer(query, context)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> answer
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> decision <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;search&#34;</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># 더 검색 계속</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 반복 종료 시 기본 답변 반환</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> generate_answer(query, context)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">retrieve_documents</span>(query: str, existing_context: list) <span style="color:#f92672">-&gt;</span> list:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;검색 도구 호출 예시 (가상)&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 실제로는 벡터 DB 검색 등 수행</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> []
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">assess_relevance</span>(query: str, context: list) <span style="color:#f92672">-&gt;</span> float:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;관련성 점수 산출 (가상)&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0.8</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">decide_next_step</span>(score: float, iteration: int) <span style="color:#f92672">-&gt;</span> StepResult:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;다음 단계 판단 로직 (가상)&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> score <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0.5</span> <span style="color:#f92672">or</span> iteration <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">3</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;answer&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;continue&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate_answer</span>(query: str, context: list) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;LLM 기반 답변 생성 (가상)&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;질문 &#39;</span><span style="color:#e6db74">{</span>query<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;에 대한 답변입니다.&#34;</span>
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>오후에는 검색 파이프라인 전체가 어떻게 유기적으로 연결되는지 이해하는 데 집중했습니다. retriever와 reranker의 역할 분담과 각 단계별 k값 및 목적의 차이를 명확히 하여, 단순한 검색 기법 나열을 넘어 최적화된 pipeline 구조를 파악할 수 있었습니다. 특히 Multi-Query부터 RRF, Re-Rank까지 후보를 넓히고 정제하는 구체적인 흐름을 통해, 검색 성능 향상이 어떻게 단계적으로 이뤄지는지 전체적인 그림이 그려졌습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>오늘은 검색 파이프라인 전체가 하나의 유기적인 흐름으로 연결된다는 점을 명확히 이해했습니다. 특히 retriever와 reranker가 각자의 역할을 수행하며 후보군을 선별하고 정제하는 과정이 중요하다고 느꼈습니다. 앞으로는 단순히 검색 결과를 나열하는 것이 아니라, 왜 특정 기법이 사용되는지 그 목적을 가지고 파이프라인을 설계하는 습관을 들일 것입니다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>오늘은 검색 파이프라인 전체가 하나의 흐름으로 연결된다는 점을 확실히 이해할 수 있었다. retriever와 reranker가 각자의 역할을 충실히 수행하며, Multi-Query 같은 기법들이 후보군을 얼마나 넓히느냐에 따라 이후 단계의 성패가 갈린다는 점이 인상 깊었다. 특히 검색 과정 안에 &lsquo;판단&rsquo;이 개입되는 Agentic RAG 구조가 어떻게 작동할지, retrieval pipeline 내에서의 순서와 목적 관계를 명확히 짚어두고 다음 복습을 준비해야겠다.</p>
+<p>다음 복습 주제는 <strong>검색 단계별 k값과 후보군 관리 전략</strong>이다. retriever에서 가져오는 초기 개수(k), RRF나 Re-Rank 과정에서 어떻게 임계치를 조절하는지, 그리고 LLM에 전달할 최종 문서 수를 어떻게 결정하는지가 파이프라인 성능의 핵심 열쇠가 된다는 점을 정리하고 싶다.</p>
+<p>다음 복습 주제는 <strong>Agentic RAG의 판단 로직과 상태 전이</strong>이다. 단순히 검색을 반복하는 것이 아니라, 현재 retrieved된 문서들이 LLM의 질문에 얼마나 부합하는지 판단하고 다음 단계(재검색, 요약, 종료 등)를 스스로 결정하는 메커니즘이 어떻게 설계되는지가 핵심 포인트가 될 것이다.</p>
+<p>다음 복습 주제는 <strong>하이브리드 검색(Retrieval)의 실제 적용 시나리오</strong>다. keyword 기반과 vector search의 장단점을 어떻게 조합해 RRF 점수를 매기는지, 그리고 특정 도메인이나 질문 유형에 따라 가중치를 두는 전략이 retrieval precision에 미치는 영향을 구체적으로 살펴보고 싶다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-10-07-am-daily/">
+    <span class="title">« Prev</span>
+    <span>오전 학습 | 청킹은 검색 단위를 설계하는 일</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-10-06-am-daily/">
+    <span class="title">Next »</span>
+    <span>오전 학습 | RAG 파이프라인 구조와 ChromaDB 영속성 관리</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

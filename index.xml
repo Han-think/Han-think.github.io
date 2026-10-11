@@ -6,8 +6,36 @@
     <description>Recent content on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Tue, 06 Oct 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 08 Oct 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>오전 학습 | DSPy와 YOLO, 입력 계약과 좌표 해석의 통합</title>
+      <link>https://Han-think.github.io/learning/2026-10-08-am-daily/</link>
+      <pubDate>Thu, 08 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-10-08-am-daily/</guid>
+      <description>2026-10-08 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>오후 학습 | YOLO 탐지와 분류, 그리고 영상 추적 및 OCR 실험 기록</title>
+      <link>https://Han-think.github.io/learning/2026-10-08-pm-daily/</link>
+      <pubDate>Thu, 08 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-10-08-pm-daily/</guid>
+      <description>2026-10-08 오후 학습 정리</description>
+    </item>
+    <item>
+      <title>오전 학습 | 청킹은 검색 단위를 설계하는 일</title>
+      <link>https://Han-think.github.io/learning/2026-10-07-am-daily/</link>
+      <pubDate>Wed, 07 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-10-07-am-daily/</guid>
+      <description>2026-10-07 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>오후 학습 | 검색 파이프라인 통합과 reranker의 역할, Multi-Query와 HyDE 비교</title>
+      <link>https://Han-think.github.io/learning/2026-10-07-pm-daily/</link>
+      <pubDate>Wed, 07 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-10-07-pm-daily/</guid>
+      <description>2026-10-07 오후 학습 정리</description>
+    </item>
     <item>
       <title>오전 학습 | RAG 파이프라인 구조와 ChromaDB 영속성 관리</title>
       <link>https://Han-think.github.io/learning/2026-10-06-am-daily/</link>

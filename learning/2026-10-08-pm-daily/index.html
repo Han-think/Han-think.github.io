@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오후 학습 | YOLO 탐지와 분류, 그리고 영상 추적 및 OCR 실험 기록 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-10-08 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-10-08-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-10-08-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-10-08-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오후 학습 | YOLO 탐지와 분류, 그리고 영상 추적 및 OCR 실험 기록">
+  <meta property="og:description" content="2026-10-08 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-10-08T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-10-08T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오후 학습 | YOLO 탐지와 분류, 그리고 영상 추적 및 OCR 실험 기록">
+  <meta name="twitter:description" content="2026-10-08 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오후 학습 | YOLO 탐지와 분류, 그리고 영상 추적 및 OCR 실험 기록",
+      "item": "https://Han-think.github.io/learning/2026-10-08-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오후 학습 | YOLO 탐지와 분류, 그리고 영상 추적 및 OCR 실험 기록",
+  "name": "오후 학습 | YOLO 탐지와 분류, 그리고 영상 추적 및 OCR 실험 기록",
+  "description": "2026-10-08 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 YOLO 분류와 탐지의 차이점 정리 영상 추론·클래스 필터링·OpenCV 추적 (초보자 워킹 노트) Intel Arc XPU 기반 사람 탐지 구현기: 입력·추론·표시 분리 화면 투명 오버레이 실험: 영역 감지 실패와 저부하 설계 강의 화면 OCR 실험: 캡처부터 인식까지 검증 단계와 다음 복습 순서 총평 1. YOLO 분류와 탐지의 차이점 정리 무엇을 배웠나 처음에는 YOLO가 주로 물체 탐지 도구라고 생각했지만, yolo26n-cls.pt와 같은 파일명과 result.probs 구조를 통해 이미지 전체 분류(Classification) 작업도 수행할 수 있음을 알게 되었다. 특히 result.probs와 result.boxes의 형태가 다르다는 점과 top1, top5 키워드를 사용한 평가 지표가 classification task임을 확인하는 데 큰 도움이 되었다. 또한, epochs나 imgsz 같은 하이퍼파라미터가 훈련에 미치는 영향과 사전 학습 모델을 활용한 파인튜닝(Fine-tuning) 가능성을 통해 YOLO가 다양한 태스크를 수행할 수 있는 유연한 프레임워크임을 이해했다.\n헷갈렸던 점 처음 YOLO 수업을 접했을 때, 모든 과제가 ‘물체 탐지(Object Detection)‘인 줄 알았다. 특히 yolo26n-cls.pt라는 파일명에 -cls가 붙어 있어도, YOLO 프레임워크 자체가 주로 익숙한 ‘박스와 라벨’ 형태의 탐지 결과를 내놓기 때문에, 이것이 이미지 전체를 분류하는(Classification) 작업인지 구분하기 힘들었다.\n가장 큰 혼란은 result.probs(분류 확률)와 result.boxes(탐지 박스)의 구조가 완전히 다르다는 점이었다. “모델을 학습시켰다\"는 사실만으로도 끝나는 줄 알았는데, 테스트 코드에서 top1, top5 같은 키워드를 찾으려 하니 당황스러웠다. 또한, 학습이 완료된 후 생성되는 best.pt 체크포인트가 어디에 저장되는지, 그리고 시험 코드가 그 위치를 정확히 읽어오는지에 대한 불안감도 있었다.\n이번 수업을 통해 YOLO가 단순히 ‘무엇을 찾는 도구’가 아니라, 목적에 따라 다른 태스크(task)를 수행할 수 있는 프레임워크라는 점을 깨달았다.\n분류(Classification): 이미지 전체가 어떤 카테고리에 속하는지를 판단하는 것. (yolo26n-cls.pt, result.probs) 탐지(Detection): 이미지 내에서 ‘무엇이’ 어디에 위치하고 있는지를 찾는 것. (yolo26n.pt, result.boxes) 특히 epochs(학습 횟수), imgsz(이미지 크기), batch(배치 크기) 같은 하이퍼파라미터가 훈련에 어떻게 영향을 미치는지 감을 잡을 수 있었다. 그리고 사전 학습된 모델에 새로운 데이터를 추가로 학습시키는 ‘추가 학습(Fine-tuning)‘이 가능하다는 점은 매우 실용적이었다.\n정리된 이해 YOLO는 탐지뿐만 아니라 이미지 전체를 분류하는 작업도 수행할 수 있는 범용 프레임워크다. result.probs와 result.boxes 같은 결과 객체의 구조가 태스크에 따라 다르다는 점을 명확히 구분하는 것이 중요하다. 특히 사전 학습된 모델을 활용한 파인튜닝은 새로운 데이터 상황에 빠르게 적응할 수 있는 실용적인 방법이다.\n# 1. YOLO Classification 모델 로드 (이미지 전체 분류용) from ultralytics import YOLO model = YOLO('yolo26n-cls.pt') # classification 전용 가중치 파일 # 2. 학습 실행 results = model.train( data='fashion-mnist-data.yaml', # 데이터셋 설정 파일 경로 epochs=10, # 학습 반복 횟수 imgsz=224, # 입력 이미지 크기 (가로/세로 pixel) batch=16 # 한 번에 처리할 샘플 수 ) # 3. 훈련 완료 후 최고 성능 모델 저장 경로 확인 print(f\"Best model saved at: {results.save_dir}/weights/best.pt\") # 4. 테스트 및 예측 (분류 확률 출력) test_results = model.val(data='fashion-mnist-data.yaml', split='test') probs = test_results.probs # 클래스별 확률 분포 (top1, top5 등 포함) print(f\"Top-1 Accuracy: {profs.top1}\") 2. 영상 추론·클래스 필터링·OpenCV 추적 (초보자 워킹 노트) 무엇을 배웠나 YOLO의 predict()와 track()는 박스 그리기라는 결과물은 비슷하지만, 전자는 프레임마다 독립적으로 물체를 탐지하는 반면 후자는 객체에게 ID를 부여해 연속성을 유지한다는 점이 핵심입니다. 또한 cv2.resize()의 인자 순서가 ‘(너비, 높이)‘임을 이해하고 적용해야 화면이 찌그러지는 문제를 예방할 수 있습니다. 마지막으로 result.plot(), cv2.imshow(), waitKey()는 각각 이미지 생성, 표시, 대기라는 명확한 역할을 수행하므로 이들을 분리해서 생각하면 코드의 의도가 명확해집니다.\n헷갈렸던 점 처음에는 YOLO의 predict()와 track()가 화면에 비슷한 박스를 그려주니 역할이 무엇인지 구분하기 어려웠습니다. 특히 show=True와 track()를 사용하면 창이 즉시 뜨고 박스가 그려져 있어, 두 함수의 차이를 혼동하기 쉽습니다. 또한 cv2.resize()의 인자 순서를 (너비, 높이)로 착각하다가 화면이 찌그러져 당황한 경험이 있습니다.\n정리된 이해 YOLO의 predict()는 매 프레임마다 객체를 새로 탐지하는 것이고, track()는 기존에 인식한 객체에게 ID를 부여해 연속성을 유지하며 추적하는 역할입니다. 영상 처리의 핵심은 탐지와 추적을 분리하여 생각하고, 표시 관련 함수인 plot(), imshow(), waitKey()가 각각 이미지 생성, 화면 출력, 대기 기능을 수행한다는 점을 명확히 구분해야 합니다.\n# 카메라 또는 영상 파일 열기 cap = cv2.VideoCapture('sample.mp4') while cap.isOpened(): success, frame = cap.read() if not success: break # YOLO 탐지 수행 (박스 그리기 포함) results = model.predict(frame) # 결과 이미지 추출 (plot 메서드 사용) annotated_frame = results[0].plot() # 화면에 표시 cv2.imshow('YOLO Tracking', annotated_frame) # 1ms 대기, 'q' 키를 누르면 종료 if cv2.waitKey(1) \u0026 0xFF == ord('q'): break cap.release() cv2.destroyAllWindows() 3. Intel Arc XPU 기반 사람 탐지 구현기: 입력·추론·표시 분리 무엇을 배웠나 YOLO 모델은 탐지 결과(박스 정보)를 반환할 뿐, 화면 표시나 콘솔 출력은 별도의 단계임을 명확히 이해하게 되었다. show=False 옵션이 영상 출력을 차단하는 것이 아니라 라이브러리 창을 숨기는 역할이라는 점도 중요한 학습 포인트였다. 또한 하드웨어 사양에 맞는 장치 지정과 fail-fast 정책 적용의 필요성을 통해 안정적인 실행 환경을 구성할 수 있게 되었다.\n헷갈렸던 점 처음에는 ‘사람 탐지’ 결과가 콘솔에 출력되는 것과 영상이 화면에 뜨는 것이 같은 과정인 줄 알았지만, show=False 옵션은 모델의 탐지 자체를 멈추는 것이 아니라 라이브러리 창을 끄는 역할뿐이라는 점을 깨닫고 큰 혼란이 있었습니다. 또한 Intel Arc XPU 환경에서 코드가 의도한 대로 실행되지 않을까 걱정하며 하드웨어 호환성 검증에 시간을 할애해야 했습니다.\n정리된 이해 YOLO 모델은 탐지 결과(박스 정보)를 반환할 뿐, 화면 표시나 콘솔 출력은 별도의 단계에서 이루어져야 한다. show=False 옵션은 라이브러리 내부 창을 끄는 것이지 탐지를 멈추는 것이 아니며, 하드웨어 사양에 따라 실행 백엔드를 선택하고 실패 시 빠르게 중단하는 정책이 필요하다.\n# YOLO 모델 로드 (Intel Arc XPU 지원 확인) model = YOLO('yolov8n.pt') # 입력 소스 설정 (웹캠 또는 영상 파일) USE_WEBCAM = True # True: 웹캠, False: 영상 파일 경로 지정 # 장치 및 실패 정책 설정 device = 'xpu:0' if torch.cuda.is_available() else 'cpu' # Intel Arc XPU 지정 (fallback 방지) confidence_threshold = 0.25 # 사람 클래스 탐지만 수행 (COCO 데이터셋 기준 class ID 0) classes_to_detect = [0] # 비디오 캡처 초기화 if USE_WEBCAM: cap = cv2.VideoCapture(0) # 기본 웹캠 인덱스 else: cap = cv2.VideoCapture('sample_video.mp4') # 영상 파일 경로 while cap.isOpened(): success, frame = cap.read() if not success: print(\"영상 종료 또는 캡처 실패\") break # YOLO 모델 추론 (사람 클래스만 필터링, 화면 표시 비활성화) results = model(frame, conf=confidence_threshold, classes=classes_to_detect, verbose=False) # 탐지 결과 박스 그리기 (표시 책임 분리) annotated_frame = results[0].plot() # 박스가 그려진 프레임 반환 # 콘솔에 탐지 정보 출력 (알림 책임 분리) for box in results[0].boxes: class_id = int(box.cls[0]) confidence = float(box.conf[0]) print(f\"탐지: 사람 (신뢰도: {confidence:.2f})\") # 화면 표시 (렌더링 책임 분리) cv2.imshow('Person Detection', annotated_frame) # 'q' 키를 누르면 종료 if cv2.waitKey(1) \u0026 0xFF == ord('q'): break # 리소스 해제 cap.release() cv2.destroyAllWindows() 4. 화면 투명 오버레이 실험: 영역 감지 실패와 저부하 설계 무엇을 배웠나 화면 특정 영역을 감지하려면 캡처, 추론, 오버레이라는 세 단계가 각각 독립적으로 작동해야 한다는 점을 깨달았습니다. 특히 투명도 설정은 코드 문법과 상관없이 운영체제나 그래픽 드라이버의 영향을 많이 받아 실제 화면에 반영되지 않을 수 있다는 사실을 이해하게 되었습니다.\n헷갈렸던 점 처음에는 ‘화면 특정 영역 감지’라는 목표가 너무 추상적이어서 좌표와 캡처 범위를 잡는 것이 막막했습니다. 특히 ‘투명 오버레이’ 부분이 헷갈려서, 코드가 에러 없이 돌아간다고 해서 실제 모니터 위에 얹힌 창이 투명하게 보이는 것은 아니라는 점을 혼동했던 것이 가장 큰 실수였습니다. 핵심은 캡처, 추론, 오버레이 세 단계가 따로 노는 것을 막는 것이었고, Tkinter의 -transparentcolor 설정은 운영체제나 그래픽 드라이버 환경에 따라 기대한 대로 작동하지 않을 수 있음을 깨닫고부터는 “코드가 맞더라도 화면이 안 변하면 실패\"로 받아들이게 되었습니다.\n정리된 이해 화면 특정 영역을 감지해 결과를 표시하는 작업은 크게 캡처, 추론, 오버레이 세 단계로 나뉘며, 각 단계가 독립적으로 작동하도록 설계해야 한다. 특히 투명 오버레이 기능은 코드 문법이 맞더라도 운영체제나 그래픽 드라이버 환경에 따라 실제 화면이 변하지 않을 수 있으므로, 시각적 결과와 코드 동작을 별개로 판단하는 것이 중요하다.\nimport cv2 import numpy as np from mss import mss # 1. Capture: 화면 영역 캡처 (mss 사용) with mss() as sct: # 모니터 전체가 아닌 특정 영역만 지정 (예: 좌상단 400x300 픽셀) monitor = {\"top\": 100, \"left\": 200, \"width\": 400, \"height\": 300} # 화면 캡처 (BGRA 형식) img = np.array(sct.grab(monitor)) # RGB로 변환 (모델 입력에 맞춤) frame = cv2.cvtColor(img, cv2.COLOR_BGRA2RGB) # 2. Inference: 모델에 넣어 탐지 (가상의 함수) # results = detector.detect(frame) # detections = results.xyxy[0].tolist() # [x1, y1, x2, y2, conf, class] # 예시 탐지 결과 (사용자 정의) detections = [[150, 100, 300, 250, 0.9, 0]] # 3. Overlay: 탐지 결과를 원본 화면 위에 표시 # mss로 캡처한 img는 BGRA이므로 투명 처리가 용이함 overlay = img.copy() for *box, conf, cls in detections: x1, y1, x2, y2 = map(int, box) # 탐지된 사각형 영역에 초록색 박스 그리기 (투명도 50%) cv2.rectangle(overlay, (x1, y1), (x2, y2), (0, 255, 0, 128), 2) # 원본 화면과 오버레이 합성 (알파 블렌딩) # alpha=0.5: 투명도 50%로 혼합 output = cv2.addWeighted(overlay, 0.5, img, 0.5, 0) # 표시 (cv2.imshow는 BGRA를 지원하므로 직접 사용 가능) cv2.imshow(\"Screen Overlay\", output) cv2.waitKey(1) 5. 강의 화면 OCR 실험: 캡처부터 인식까지 무엇을 배웠나 OCR과 YOLO가 같은 도구가 아니라는 점, 그리고 화면 전체 분석이 아니라 특정 영역 글자 인식에 집중해야 한다는 점을 명확히 이해할 수 있었다. 특히 캡처된 이미지가 올바른 입력인지 확인하는 과정이 무엇보다 중요하다는 사실을 실감했다. 앞으로는 OCR 실행 전 화면 구성을 꼼꼼히 점검하며 신뢰도 값을 해석하는 연습을 해야겠다.\n헷갈렸던 점 처음에는 YOLO와 OCR이 같은 도구인지 구분하기 어려웠습니다. 화면 전체를 분석한다는 점에서 두 기능이 섞여 있다고 느껴서, 모델이 ‘무엇을’ 찾는지를 먼저 파악하지 않으면 엉뚱한 결과를 얻을까 봐 두려웠습니다. 또한 OCR의 신뢰도 값이 무조건 정확한 정답인 줄 알았는데, 글씨 크기나 화질에 따라 오류가 날 수 있다는 점이 초보자로서는 감 잡기 힘들었습니다.\n정리된 이해 YOLO와 OCR은 화면 분석에서 서로 다른 역할을 수행한다. YOLO는 이미지 내 객체를 탐지하고 박스를 그리는 역할을 맡으며, OCR은 탐지된 영역 내에서 글자를 인식해 텍스트를 추출하는 전담 도구이다. 따라서 화면 캡처 전 올바른 입력 여부를 확인하는 과정이 무엇보다 중요하다.\n# OCR 인식 수행 및 결과 시각화 예시 (노트 기반) import cv2 from PIL import ImageGrab import pyocr import pyocr.builders # 1. 화면 캡처 (강의 브라우저 영역) # bbox = (left, top, right, bottom) 형태로 조정 필요 img = ImageGrab.grab(bbox=(0, 0, 1920, 1080)) # 2. OCR 도구 초기화 (한국어 지원 PP-OCRv5 가정) tools = pyocr.get_available_tools() if len(tools) == 0: print(\"OCR 툴을 찾을 수 없습니다.\") else: tool = tools[0] # 3. 글자 인식 수행 # lang='kor'는 한국어 지원을 의미하며, builder에 confidence 포함 요청 text = tool.image_to_string( img, lang=\"kor\", builder=pyocr.builders.TextBuilder(tesseract_layout=6) ) # 4. 신뢰도 점수 및 인식된 텍스트 출력 print(\"=== 인식 결과 ===\") print(f\"인식된 문장: {text}\") 설명: 위 코드는 노트에 기술된 흐름(캡처 → OCR 실행 → 결과 출력)을 파이썬으로 구현한 예시입니다. ImageGrab로 화면을 캡처하고, pyocr 라이브러리를 통해 한국어(OCR) 인식을 수행한 뒤, 인식된 문장과 신뢰도 정보를 콘솔에 출력하는 구조입니다.\n6. 검증 단계와 다음 복습 순서 무엇을 배웠나 강사님의 Git 원본과 제 로컬 기록이 뒤섞여 있어, 08, 08-1, 08-2가 연속된 버전인 줄 알았으나 실제로는 각기 다른 검증 단계와 목적을 가진 독립적인 실험들이었다. 특히 OCR과 투명 화면 관련해 실행 전부터 결과가 확인이 안 되는 상태였으며, XPU 설정 역시 장비 환경에 따라 실제 성능이 달라질 수 있다는 점을 확인했다. 무엇보다도 “문법 검사 성공\"만으로는 실제 모델 동작이나 원하는 기능 구현이 이루어졌는지 판단할 수 없다는 점이 가장 중요한 교훈이 되었다.\n헷갈렸던 점 처음에는 08, 08-1, 08-2가 연속된 버전으로 보여서 하나의 완성된 흐름인 줄 알았지만, 실제로는 각기 다른 실험 목적과 검증 기준을 가진 독립적인 작업들이었습니다. 특히 OCR과 투명 화면 관련해 “실행해보지도 못했는데 되는 것처럼 적혀 있나?“라는 의구심이 들었고, XPU 설정을 했다고 해서 실제로 가속이 되는지 확인하기 어려웠습니다.\n정리된 이해 08, 08-1, 08-2는 연속된 버전이 아니라, 사람 탐지, 투명 오버레이, OCR 실험 등 각기 다른 목적을 가진 독립적인 작업들이었다. 코드가 에러 없이 실행되었다고 해서 화면이 제대로 나오거나 기능이 작동하는 것은 아니므로, “문법 검사 성공\"은 실제 모델 동작의 증거가 되지 않는다. 마지막으로 OCR과 투명 UI 관련해 파일 설치부터 인식까지 전 과정이 미확인 상태였고, XPU 설정 역시 실제 장비 환경에 따라 성능 차이가 발생할 수 있는 변수였다.\n# YOLOv8 + OCR 검증 (사람 탐지 후 텍스트 인식 전 단계) # 참고: SRC-20261011-019 메모에 따르면 OCR 관련 전 과정이 미확인 상태였음 from ultralytics import YOLO import cv2 # 모델 로드 (사람 클래스 탐지) model = YOLO('yolov8n.pt') # 이미지 또는 비디오 파일 경로 source = 0 # 웹캠 인덱스 또는 파일 경로 # OCR 전 단계: 사람만 추출하여 표시 results = model(source, verbose=False) for r in results: for box in r.boxes: # 클래스 ID가 0(사람)인 경우만 처리 if int(box.cls[0]) == 0: xyxy = box.xyxy[0].tolist() conf = float(box.conf[0]) print(f\"탐지됨: 사람, 좌표={xyxy}, 신뢰도={conf:.2f}\") # TODO: OCR 적용을 위한 전처리 또는 화면 캡처 로직 추가 필요 총평 오늘 오후 전체에서 배운 것 YOLO는 탐지뿐만 아니라 분류와 파인튜닝이 가능한 유연한 프레임워크이며, predict와 track의 ID 부여 여부나 인자 순서 등 세부적인 구현 차이가 결과에 큰 영향을 미친다. 또한 모델 실행 전후로 화면 표시와 데이터 처리를 분리하고, 하드웨어 환경과 실제 출력(오버레이/OCR) 사이의 격차를 이해하는 것이 안정적인 개발을 위한 필수 조건임을 깨달았다.\n다음에 조심할 것 다음에 조심할 것은 다음과 같다.\nYOLO 모델이 반환하는 탐지 결과와 화면 표시 또는 OCR 처리는 별도의 단계로 분리하여 설계해야 하며, show=False 옵션이 창 생성을 차단한다는 사실을 전제로 코드를 작성해야 한다. 하드웨어 사양(예: Intel Arc XPU)에 맞는 장치 지정과 fail-fast 정책 적용은 안정적인 실행 환경을 구성하는 필수 조건이며, 운영체제나 드라이버 환경에 따라 화면 오버레이나 투명도 설정이 실제와 다르게 나타날 수 있음을 인지해야 한다. 다음 복습 주제 YOLO 모델이 탐지 결과 반환 외에 화면 표시나 OCR 등 다양한 후처리 작업을 수행할 수 있음을 전제로, show=False 옵션과 result.plot()의 역할을 명확히 구분하여 실제 기능 구현에 집중하는 연습을 해야겠다.\n화면 캡처, 모델 추론, 오버레이 표시라는 각 단계가 독립적으로 작동한다는 점을 전제로, 투명도 설정이나 그래픽 드라이버 환경에 따른 화면 반영 여부를 사전에 검증하는 습관을 들여 실제 적용 시 오류를 최소화해야겠다.\nOCR 수행 전 화면 구성 점검과 신뢰도 값 해석의 중요성을 전제로, 특정 영역 글자 인식 workflow를 체계적으로 구축하여 OCR 실패 가능성을 줄이고 실험 재현율을 높이는 방향으로 다음 단계를 진행하겠다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "2110",
+  "inLanguage": "en",
+  "datePublished": "2026-10-08T00:00:00Z",
+  "dateModified": "2026-10-08T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-10-08-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오후 학습 | YOLO 탐지와 분류, 그리고 영상 추적 및 OCR 실험 기록
+    </h1>
+    <div class="post-description">
+      2026-10-08 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-10-08 00:00:00 +0000 UTC'>2026년 10월 8일</span>&nbsp;·&nbsp;<span>10 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-yolo-%EB%B6%84%EB%A5%98%EC%99%80-%ED%83%90%EC%A7%80%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC">YOLO 분류와 탐지의 차이점 정리</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-%EC%98%81%EC%83%81-%EC%B6%94%EB%A1%A0%ED%81%B4%EB%9E%98%EC%8A%A4-%ED%95%84%ED%84%B0%EB%A7%81opencv-%EC%B6%94%EC%A0%81-%EC%B4%88%EB%B3%B4%EC%9E%90-%EC%9B%8C%ED%82%B9-%EB%85%B8%ED%8A%B8">영상 추론·클래스 필터링·OpenCV 추적 (초보자 워킹 노트)</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-intel-arc-xpu-%EA%B8%B0%EB%B0%98-%EC%82%AC%EB%9E%8C-%ED%83%90%EC%A7%80-%EA%B5%AC%ED%98%84%EA%B8%B0-%EC%9E%85%EB%A0%A5%EC%B6%94%EB%A1%A0%ED%91%9C%EC%8B%9C-%EB%B6%84%EB%A6%AC">Intel Arc XPU 기반 사람 탐지 구현기: 입력·추론·표시 분리</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%ED%99%94%EB%A9%B4-%ED%88%AC%EB%AA%85-%EC%98%A4%EB%B2%84%EB%A0%88%EC%9D%B4-%EC%8B%A4%ED%97%98-%EC%98%81%EC%97%AD-%EA%B0%90%EC%A7%80-%EC%8B%A4%ED%8C%A8%EC%99%80-%EC%A0%80%EB%B6%80%ED%95%98-%EC%84%A4%EA%B3%84">화면 투명 오버레이 실험: 영역 감지 실패와 저부하 설계</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-%EA%B0%95%EC%9D%98-%ED%99%94%EB%A9%B4-ocr-%EC%8B%A4%ED%97%98-%EC%BA%A1%EC%B2%98%EB%B6%80%ED%84%B0-%EC%9D%B8%EC%8B%9D%EA%B9%8C%EC%A7%80">강의 화면 OCR 실험: 캡처부터 인식까지</a></li>
+</ol>
+</li>
+<li>
+<ol start="6">
+<li><a href="#6-%EA%B2%80%EC%A6%9D-%EB%8B%A8%EA%B3%84%EC%99%80-%EB%8B%A4%EC%9D%8C-%EB%B3%B5%EC%8A%B5-%EC%88%9C%EC%84%9C">검증 단계와 다음 복습 순서</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-yolo-분류와-탐지의-차이점-정리">1. YOLO 분류와 탐지의 차이점 정리<a hidden class="anchor" aria-hidden="true" href="#1-yolo-분류와-탐지의-차이점-정리">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>처음에는 YOLO가 주로 물체 탐지 도구라고 생각했지만, <code>yolo26n-cls.pt</code>와 같은 파일명과 <code>result.probs</code> 구조를 통해 이미지 전체 분류(Classification) 작업도 수행할 수 있음을 알게 되었다. 특히 <code>result.probs</code>와 <code>result.boxes</code>의 형태가 다르다는 점과 <code>top1</code>, <code>top5</code> 키워드를 사용한 평가 지표가 classification task임을 확인하는 데 큰 도움이 되었다. 또한, <code>epochs</code>나 <code>imgsz</code> 같은 하이퍼파라미터가 훈련에 미치는 영향과 사전 학습 모델을 활용한 파인튜닝(Fine-tuning) 가능성을 통해 YOLO가 다양한 태스크를 수행할 수 있는 유연한 프레임워크임을 이해했다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>처음 YOLO 수업을 접했을 때, 모든 과제가 &lsquo;물체 탐지(Object Detection)&lsquo;인 줄 알았다. 특히 <code>yolo26n-cls.pt</code>라는 파일명에 <code>-cls</code>가 붙어 있어도, YOLO 프레임워크 자체가 주로 익숙한 &lsquo;박스와 라벨&rsquo; 형태의 탐지 결과를 내놓기 때문에, 이것이 <strong>이미지 전체를 분류하는(Classification)</strong> 작업인지 구분하기 힘들었다.</p>
+<p>가장 큰 혼란은 <code>result.probs</code>(분류 확률)와 <code>result.boxes</code>(탐지 박스)의 구조가 완전히 다르다는 점이었다. &ldquo;모델을 학습시켰다&quot;는 사실만으로도 끝나는 줄 알았는데, 테스트 코드에서 <code>top1</code>, <code>top5</code> 같은 키워드를 찾으려 하니 당황스러웠다. 또한, 학습이 완료된 후 생성되는 <code>best.pt</code> 체크포인트가 어디에 저장되는지, 그리고 시험 코드가 그 위치를 정확히 읽어오는지에 대한 불안감도 있었다.</p>
+<p>이번 수업을 통해 YOLO가 단순히 &lsquo;무엇을 찾는 도구&rsquo;가 아니라, <strong>목적에 따라 다른 태스크(task)를 수행할 수 있는 프레임워크</strong>라는 점을 깨달았다.</p>
+<ul>
+<li><strong>분류(Classification)</strong>: 이미지 전체가 어떤 카테고리에 속하는지를 판단하는 것. (<code>yolo26n-cls.pt</code>, <code>result.probs</code>)</li>
+<li><strong>탐지(Detection)</strong>: 이미지 내에서 &lsquo;무엇이&rsquo; 어디에 위치하고 있는지를 찾는 것. (<code>yolo26n.pt</code>, <code>result.boxes</code>)</li>
+</ul>
+<p>특히 <code>epochs(학습 횟수)</code>, <code>imgsz(이미지 크기)</code>, <code>batch(배치 크기)</code> 같은 하이퍼파라미터가 훈련에 어떻게 영향을 미치는지 감을 잡을 수 있었다. 그리고 사전 학습된 모델에 새로운 데이터를 추가로 학습시키는 &lsquo;추가 학습(Fine-tuning)&lsquo;이 가능하다는 점은 매우 실용적이었다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>YOLO는 탐지뿐만 아니라 이미지 전체를 분류하는 작업도 수행할 수 있는 범용 프레임워크다. <code>result.probs</code>와 <code>result.boxes</code> 같은 결과 객체의 구조가 태스크에 따라 다르다는 점을 명확히 구분하는 것이 중요하다. 특히 사전 학습된 모델을 활용한 파인튜닝은 새로운 데이터 상황에 빠르게 적응할 수 있는 실용적인 방법이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 1. YOLO Classification 모델 로드 (이미지 전체 분류용)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> ultralytics <span style="color:#f92672">import</span> YOLO
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> YOLO(<span style="color:#e6db74">&#39;yolo26n-cls.pt&#39;</span>)  <span style="color:#75715e"># classification 전용 가중치 파일</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. 학습 실행</span>
+</span></span><span style="display:flex;"><span>results <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>train(
+</span></span><span style="display:flex;"><span>    data<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;fashion-mnist-data.yaml&#39;</span>,  <span style="color:#75715e"># 데이터셋 설정 파일 경로</span>
+</span></span><span style="display:flex;"><span>    epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>,                       <span style="color:#75715e"># 학습 반복 횟수</span>
+</span></span><span style="display:flex;"><span>    imgsz<span style="color:#f92672">=</span><span style="color:#ae81ff">224</span>,                       <span style="color:#75715e"># 입력 이미지 크기 (가로/세로 pixel)</span>
+</span></span><span style="display:flex;"><span>    batch<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>                         <span style="color:#75715e"># 한 번에 처리할 샘플 수</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. 훈련 완료 후 최고 성능 모델 저장 경로 확인</span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Best model saved at: </span><span style="color:#e6db74">{</span>results<span style="color:#f92672">.</span>save_dir<span style="color:#e6db74">}</span><span style="color:#e6db74">/weights/best.pt&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. 테스트 및 예측 (분류 확률 출력)</span>
+</span></span><span style="display:flex;"><span>test_results <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>val(data<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;fashion-mnist-data.yaml&#39;</span>, split<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;test&#39;</span>)
+</span></span><span style="display:flex;"><span>probs <span style="color:#f92672">=</span> test_results<span style="color:#f92672">.</span>probs  <span style="color:#75715e"># 클래스별 확률 분포 (top1, top5 등 포함)</span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Top-1 Accuracy: </span><span style="color:#e6db74">{</span>profs<span style="color:#f92672">.</span>top1<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><h2 id="2-영상-추론클래스-필터링opencv-추적-초보자-워킹-노트">2. 영상 추론·클래스 필터링·OpenCV 추적 (초보자 워킹 노트)<a hidden class="anchor" aria-hidden="true" href="#2-영상-추론클래스-필터링opencv-추적-초보자-워킹-노트">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>YOLO의 <code>predict()</code>와 <code>track()</code>는 박스 그리기라는 결과물은 비슷하지만, 전자는 프레임마다 독립적으로 물체를 탐지하는 반면 후자는 객체에게 ID를 부여해 연속성을 유지한다는 점이 핵심입니다. 또한 <code>cv2.resize()</code>의 인자 순서가 &lsquo;(너비, 높이)&lsquo;임을 이해하고 적용해야 화면이 찌그러지는 문제를 예방할 수 있습니다. 마지막으로 <code>result.plot()</code>, <code>cv2.imshow()</code>, <code>waitKey()</code>는 각각 이미지 생성, 표시, 대기라는 명확한 역할을 수행하므로 이들을 분리해서 생각하면 코드의 의도가 명확해집니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음에는 YOLO의 <code>predict()</code>와 <code>track()</code>가 화면에 비슷한 박스를 그려주니 역할이 무엇인지 구분하기 어려웠습니다. 특히 <code>show=True</code>와 <code>track()</code>를 사용하면 창이 즉시 뜨고 박스가 그려져 있어, 두 함수의 차이를 혼동하기 쉽습니다. 또한 <code>cv2.resize()</code>의 인자 순서를 <code>(너비, 높이)</code>로 착각하다가 화면이 찌그러져 당황한 경험이 있습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>YOLO의 <code>predict()</code>는 매 프레임마다 객체를 새로 탐지하는 것이고, <code>track()</code>는 기존에 인식한 객체에게 ID를 부여해 연속성을 유지하며 추적하는 역할입니다. 영상 처리의 핵심은 탐지와 추적을 분리하여 생각하고, 표시 관련 함수인 <code>plot()</code>, <code>imshow()</code>, <code>waitKey()</code>가 각각 이미지 생성, 화면 출력, 대기 기능을 수행한다는 점을 명확히 구분해야 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 카메라 또는 영상 파일 열기</span>
+</span></span><span style="display:flex;"><span>cap <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>VideoCapture(<span style="color:#e6db74">&#39;sample.mp4&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> cap<span style="color:#f92672">.</span>isOpened():
+</span></span><span style="display:flex;"><span>    success, frame <span style="color:#f92672">=</span> cap<span style="color:#f92672">.</span>read()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> success:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># YOLO 탐지 수행 (박스 그리기 포함)</span>
+</span></span><span style="display:flex;"><span>    results <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict(frame)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 결과 이미지 추출 (plot 메서드 사용)</span>
+</span></span><span style="display:flex;"><span>    annotated_frame <span style="color:#f92672">=</span> results[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>plot()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 화면에 표시</span>
+</span></span><span style="display:flex;"><span>    cv2<span style="color:#f92672">.</span>imshow(<span style="color:#e6db74">&#39;YOLO Tracking&#39;</span>, annotated_frame)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 1ms 대기, &#39;q&#39; 키를 누르면 종료</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> cv2<span style="color:#f92672">.</span>waitKey(<span style="color:#ae81ff">1</span>) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0xFF</span> <span style="color:#f92672">==</span> ord(<span style="color:#e6db74">&#39;q&#39;</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cap<span style="color:#f92672">.</span>release()
+</span></span><span style="display:flex;"><span>cv2<span style="color:#f92672">.</span>destroyAllWindows()
+</span></span></code></pre></div><h2 id="3-intel-arc-xpu-기반-사람-탐지-구현기-입력추론표시-분리">3. Intel Arc XPU 기반 사람 탐지 구현기: 입력·추론·표시 분리<a hidden class="anchor" aria-hidden="true" href="#3-intel-arc-xpu-기반-사람-탐지-구현기-입력추론표시-분리">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>YOLO 모델은 탐지 결과(박스 정보)를 반환할 뿐, 화면 표시나 콘솔 출력은 별도의 단계임을 명확히 이해하게 되었다. <code>show=False</code> 옵션이 영상 출력을 차단하는 것이 아니라 라이브러리 창을 숨기는 역할이라는 점도 중요한 학습 포인트였다. 또한 하드웨어 사양에 맞는 장치 지정과 <code>fail-fast</code> 정책 적용의 필요성을 통해 안정적인 실행 환경을 구성할 수 있게 되었다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>처음에는 &lsquo;사람 탐지&rsquo; 결과가 콘솔에 출력되는 것과 영상이 화면에 뜨는 것이 같은 과정인 줄 알았지만, <code>show=False</code> 옵션은 모델의 탐지 자체를 멈추는 것이 아니라 라이브러리 창을 끄는 역할뿐이라는 점을 깨닫고 큰 혼란이 있었습니다. 또한 Intel Arc XPU 환경에서 코드가 의도한 대로 실행되지 않을까 걱정하며 하드웨어 호환성 검증에 시간을 할애해야 했습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>YOLO 모델은 탐지 결과(박스 정보)를 반환할 뿐, 화면 표시나 콘솔 출력은 별도의 단계에서 이루어져야 한다. <code>show=False</code> 옵션은 라이브러리 내부 창을 끄는 것이지 탐지를 멈추는 것이 아니며, 하드웨어 사양에 따라 실행 백엔드를 선택하고 실패 시 빠르게 중단하는 정책이 필요하다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># YOLO 모델 로드 (Intel Arc XPU 지원 확인)</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> YOLO(<span style="color:#e6db74">&#39;yolov8n.pt&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 입력 소스 설정 (웹캠 또는 영상 파일)</span>
+</span></span><span style="display:flex;"><span>USE_WEBCAM <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>  <span style="color:#75715e"># True: 웹캠, False: 영상 파일 경로 지정</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 장치 및 실패 정책 설정</span>
+</span></span><span style="display:flex;"><span>device <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;xpu:0&#39;</span> <span style="color:#66d9ef">if</span> torch<span style="color:#f92672">.</span>cuda<span style="color:#f92672">.</span>is_available() <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#39;cpu&#39;</span>  <span style="color:#75715e"># Intel Arc XPU 지정 (fallback 방지)</span>
+</span></span><span style="display:flex;"><span>confidence_threshold <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.25</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 사람 클래스 탐지만 수행 (COCO 데이터셋 기준 class ID 0)</span>
+</span></span><span style="display:flex;"><span>classes_to_detect <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 비디오 캡처 초기화</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> USE_WEBCAM:
+</span></span><span style="display:flex;"><span>    cap <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>VideoCapture(<span style="color:#ae81ff">0</span>)  <span style="color:#75715e"># 기본 웹캠 인덱스</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    cap <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>VideoCapture(<span style="color:#e6db74">&#39;sample_video.mp4&#39;</span>)  <span style="color:#75715e"># 영상 파일 경로</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> cap<span style="color:#f92672">.</span>isOpened():
+</span></span><span style="display:flex;"><span>    success, frame <span style="color:#f92672">=</span> cap<span style="color:#f92672">.</span>read()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> success:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;영상 종료 또는 캡처 실패&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># YOLO 모델 추론 (사람 클래스만 필터링, 화면 표시 비활성화)</span>
+</span></span><span style="display:flex;"><span>    results <span style="color:#f92672">=</span> model(frame, conf<span style="color:#f92672">=</span>confidence_threshold, classes<span style="color:#f92672">=</span>classes_to_detect, verbose<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 탐지 결과 박스 그리기 (표시 책임 분리)</span>
+</span></span><span style="display:flex;"><span>    annotated_frame <span style="color:#f92672">=</span> results[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>plot()  <span style="color:#75715e"># 박스가 그려진 프레임 반환</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 콘솔에 탐지 정보 출력 (알림 책임 분리)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> box <span style="color:#f92672">in</span> results[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>boxes:
+</span></span><span style="display:flex;"><span>        class_id <span style="color:#f92672">=</span> int(box<span style="color:#f92672">.</span>cls[<span style="color:#ae81ff">0</span>])
+</span></span><span style="display:flex;"><span>        confidence <span style="color:#f92672">=</span> float(box<span style="color:#f92672">.</span>conf[<span style="color:#ae81ff">0</span>])
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;탐지: 사람 (신뢰도: </span><span style="color:#e6db74">{</span>confidence<span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">)&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 화면 표시 (렌더링 책임 분리)</span>
+</span></span><span style="display:flex;"><span>    cv2<span style="color:#f92672">.</span>imshow(<span style="color:#e6db74">&#39;Person Detection&#39;</span>, annotated_frame)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># &#39;q&#39; 키를 누르면 종료</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> cv2<span style="color:#f92672">.</span>waitKey(<span style="color:#ae81ff">1</span>) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0xFF</span> <span style="color:#f92672">==</span> ord(<span style="color:#e6db74">&#39;q&#39;</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 리소스 해제</span>
+</span></span><span style="display:flex;"><span>cap<span style="color:#f92672">.</span>release()
+</span></span><span style="display:flex;"><span>cv2<span style="color:#f92672">.</span>destroyAllWindows()
+</span></span></code></pre></div><h2 id="4-화면-투명-오버레이-실험-영역-감지-실패와-저부하-설계">4. 화면 투명 오버레이 실험: 영역 감지 실패와 저부하 설계<a hidden class="anchor" aria-hidden="true" href="#4-화면-투명-오버레이-실험-영역-감지-실패와-저부하-설계">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>화면 특정 영역을 감지하려면 캡처, 추론, 오버레이라는 세 단계가 각각 독립적으로 작동해야 한다는 점을 깨달았습니다. 특히 투명도 설정은 코드 문법과 상관없이 운영체제나 그래픽 드라이버의 영향을 많이 받아 실제 화면에 반영되지 않을 수 있다는 사실을 이해하게 되었습니다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>처음에는 &lsquo;화면 특정 영역 감지&rsquo;라는 목표가 너무 추상적이어서 좌표와 캡처 범위를 잡는 것이 막막했습니다. 특히 &lsquo;투명 오버레이&rsquo; 부분이 헷갈려서, 코드가 에러 없이 돌아간다고 해서 실제 모니터 위에 얹힌 창이 투명하게 보이는 것은 아니라는 점을 혼동했던 것이 가장 큰 실수였습니다. 핵심은 캡처, 추론, 오버레이 세 단계가 따로 노는 것을 막는 것이었고, <code>Tkinter</code>의 <code>-transparentcolor</code> 설정은 운영체제나 그래픽 드라이버 환경에 따라 기대한 대로 작동하지 않을 수 있음을 깨닫고부터는 &ldquo;코드가 맞더라도 화면이 안 변하면 실패&quot;로 받아들이게 되었습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>화면 특정 영역을 감지해 결과를 표시하는 작업은 크게 캡처, 추론, 오버레이 세 단계로 나뉘며, 각 단계가 독립적으로 작동하도록 설계해야 한다. 특히 투명 오버레이 기능은 코드 문법이 맞더라도 운영체제나 그래픽 드라이버 환경에 따라 실제 화면이 변하지 않을 수 있으므로, 시각적 결과와 코드 동작을 별개로 판단하는 것이 중요하다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> cv2
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> mss <span style="color:#f92672">import</span> mss
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. Capture: 화면 영역 캡처 (mss 사용)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">with</span> mss() <span style="color:#66d9ef">as</span> sct:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 모니터 전체가 아닌 특정 영역만 지정 (예: 좌상단 400x300 픽셀)</span>
+</span></span><span style="display:flex;"><span>    monitor <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;top&#34;</span>: <span style="color:#ae81ff">100</span>, <span style="color:#e6db74">&#34;left&#34;</span>: <span style="color:#ae81ff">200</span>, <span style="color:#e6db74">&#34;width&#34;</span>: <span style="color:#ae81ff">400</span>, <span style="color:#e6db74">&#34;height&#34;</span>: <span style="color:#ae81ff">300</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 화면 캡처 (BGRA 형식)</span>
+</span></span><span style="display:flex;"><span>    img <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array(sct<span style="color:#f92672">.</span>grab(monitor))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># RGB로 변환 (모델 입력에 맞춤)</span>
+</span></span><span style="display:flex;"><span>    frame <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>cvtColor(img, cv2<span style="color:#f92672">.</span>COLOR_BGRA2RGB)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. Inference: 모델에 넣어 탐지 (가상의 함수)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># results = detector.detect(frame)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># detections = results.xyxy[0].tolist() # [x1, y1, x2, y2, conf, class]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 예시 탐지 결과 (사용자 정의)</span>
+</span></span><span style="display:flex;"><span>detections <span style="color:#f92672">=</span> [[<span style="color:#ae81ff">150</span>, <span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">300</span>, <span style="color:#ae81ff">250</span>, <span style="color:#ae81ff">0.9</span>, <span style="color:#ae81ff">0</span>]]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. Overlay: 탐지 결과를 원본 화면 위에 표시</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># mss로 캡처한 img는 BGRA이므로 투명 처리가 용이함</span>
+</span></span><span style="display:flex;"><span>overlay <span style="color:#f92672">=</span> img<span style="color:#f92672">.</span>copy()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> <span style="color:#f92672">*</span>box, conf, cls <span style="color:#f92672">in</span> detections:
+</span></span><span style="display:flex;"><span>    x1, y1, x2, y2 <span style="color:#f92672">=</span> map(int, box)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 탐지된 사각형 영역에 초록색 박스 그리기 (투명도 50%)</span>
+</span></span><span style="display:flex;"><span>    cv2<span style="color:#f92672">.</span>rectangle(overlay, (x1, y1), (x2, y2), (<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">255</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">128</span>), <span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 원본 화면과 오버레이 합성 (알파 블렌딩)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># alpha=0.5: 투명도 50%로 혼합</span>
+</span></span><span style="display:flex;"><span>output <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>addWeighted(overlay, <span style="color:#ae81ff">0.5</span>, img, <span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 표시 (cv2.imshow는 BGRA를 지원하므로 직접 사용 가능)</span>
+</span></span><span style="display:flex;"><span>cv2<span style="color:#f92672">.</span>imshow(<span style="color:#e6db74">&#34;Screen Overlay&#34;</span>, output)
+</span></span><span style="display:flex;"><span>cv2<span style="color:#f92672">.</span>waitKey(<span style="color:#ae81ff">1</span>)
+</span></span></code></pre></div><h2 id="5-강의-화면-ocr-실험-캡처부터-인식까지">5. 강의 화면 OCR 실험: 캡처부터 인식까지<a hidden class="anchor" aria-hidden="true" href="#5-강의-화면-ocr-실험-캡처부터-인식까지">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>OCR과 YOLO가 같은 도구가 아니라는 점, 그리고 화면 전체 분석이 아니라 특정 영역 글자 인식에 집중해야 한다는 점을 명확히 이해할 수 있었다. 특히 캡처된 이미지가 올바른 입력인지 확인하는 과정이 무엇보다 중요하다는 사실을 실감했다. 앞으로는 OCR 실행 전 화면 구성을 꼼꼼히 점검하며 신뢰도 값을 해석하는 연습을 해야겠다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>처음에는 YOLO와 OCR이 같은 도구인지 구분하기 어려웠습니다. 화면 전체를 분석한다는 점에서 두 기능이 섞여 있다고 느껴서, 모델이 &lsquo;무엇을&rsquo; 찾는지를 먼저 파악하지 않으면 엉뚱한 결과를 얻을까 봐 두려웠습니다. 또한 OCR의 신뢰도 값이 무조건 정확한 정답인 줄 알았는데, 글씨 크기나 화질에 따라 오류가 날 수 있다는 점이 초보자로서는 감 잡기 힘들었습니다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>YOLO와 OCR은 화면 분석에서 서로 다른 역할을 수행한다. YOLO는 이미지 내 객체를 탐지하고 박스를 그리는 역할을 맡으며, OCR은 탐지된 영역 내에서 글자를 인식해 텍스트를 추출하는 전담 도구이다. 따라서 화면 캡처 전 올바른 입력 여부를 확인하는 과정이 무엇보다 중요하다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># OCR 인식 수행 및 결과 시각화 예시 (노트 기반)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> cv2
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> PIL <span style="color:#f92672">import</span> ImageGrab
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pyocr
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pyocr.builders
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. 화면 캡처 (강의 브라우저 영역)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># bbox = (left, top, right, bottom) 형태로 조정 필요</span>
+</span></span><span style="display:flex;"><span>img <span style="color:#f92672">=</span> ImageGrab<span style="color:#f92672">.</span>grab(bbox<span style="color:#f92672">=</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1920</span>, <span style="color:#ae81ff">1080</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. OCR 도구 초기화 (한국어 지원 PP-OCRv5 가정)</span>
+</span></span><span style="display:flex;"><span>tools <span style="color:#f92672">=</span> pyocr<span style="color:#f92672">.</span>get_available_tools()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> len(tools) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;OCR 툴을 찾을 수 없습니다.&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    tool <span style="color:#f92672">=</span> tools[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 3. 글자 인식 수행</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># lang=&#39;kor&#39;는 한국어 지원을 의미하며, builder에 confidence 포함 요청</span>
+</span></span><span style="display:flex;"><span>    text <span style="color:#f92672">=</span> tool<span style="color:#f92672">.</span>image_to_string(
+</span></span><span style="display:flex;"><span>        img,
+</span></span><span style="display:flex;"><span>        lang<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;kor&#34;</span>,
+</span></span><span style="display:flex;"><span>        builder<span style="color:#f92672">=</span>pyocr<span style="color:#f92672">.</span>builders<span style="color:#f92672">.</span>TextBuilder(tesseract_layout<span style="color:#f92672">=</span><span style="color:#ae81ff">6</span>)
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 4. 신뢰도 점수 및 인식된 텍스트 출력</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;=== 인식 결과 ===&#34;</span>)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;인식된 문장: </span><span style="color:#e6db74">{</span>text<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><p><strong>설명:</strong>
+위 코드는 노트에 기술된 흐름(캡처 → OCR 실행 → 결과 출력)을 파이썬으로 구현한 예시입니다. <code>ImageGrab</code>로 화면을 캡처하고, <code>pyocr</code> 라이브러리를 통해 한국어(OCR) 인식을 수행한 뒤, 인식된 문장과 신뢰도 정보를 콘솔에 출력하는 구조입니다.</p>
+<h2 id="6-검증-단계와-다음-복습-순서">6. 검증 단계와 다음 복습 순서<a hidden class="anchor" aria-hidden="true" href="#6-검증-단계와-다음-복습-순서">#</a></h2>
+<h3 id="무엇을-배웠나-5">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-5">#</a></h3>
+<p>강사님의 Git 원본과 제 로컬 기록이 뒤섞여 있어, <code>08</code>, <code>08-1</code>, <code>08-2</code>가 연속된 버전인 줄 알았으나 실제로는 각기 다른 검증 단계와 목적을 가진 독립적인 실험들이었다. 특히 OCR과 투명 화면 관련해 실행 전부터 결과가 확인이 안 되는 상태였으며, XPU 설정 역시 장비 환경에 따라 실제 성능이 달라질 수 있다는 점을 확인했다. 무엇보다도 &ldquo;문법 검사 성공&quot;만으로는 실제 모델 동작이나 원하는 기능 구현이 이루어졌는지 판단할 수 없다는 점이 가장 중요한 교훈이 되었다.</p>
+<h3 id="헷갈렸던-점-5">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-5">#</a></h3>
+<p>처음에는 <code>08</code>, <code>08-1</code>, <code>08-2</code>가 연속된 버전으로 보여서 하나의 완성된 흐름인 줄 알았지만, 실제로는 각기 다른 실험 목적과 검증 기준을 가진 독립적인 작업들이었습니다. 특히 OCR과 투명 화면 관련해 &ldquo;실행해보지도 못했는데 되는 것처럼 적혀 있나?&ldquo;라는 의구심이 들었고, XPU 설정을 했다고 해서 실제로 가속이 되는지 확인하기 어려웠습니다.</p>
+<h3 id="정리된-이해-5">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-5">#</a></h3>
+<p><code>08</code>, <code>08-1</code>, <code>08-2</code>는 연속된 버전이 아니라, 사람 탐지, 투명 오버레이, OCR 실험 등 각기 다른 목적을 가진 독립적인 작업들이었다. 코드가 에러 없이 실행되었다고 해서 화면이 제대로 나오거나 기능이 작동하는 것은 아니므로, &ldquo;문법 검사 성공&quot;은 실제 모델 동작의 증거가 되지 않는다. 마지막으로 OCR과 투명 UI 관련해 파일 설치부터 인식까지 전 과정이 미확인 상태였고, XPU 설정 역시 실제 장비 환경에 따라 성능 차이가 발생할 수 있는 변수였다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># YOLOv8 + OCR 검증 (사람 탐지 후 텍스트 인식 전 단계)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 참고: SRC-20261011-019 메모에 따르면 OCR 관련 전 과정이 미확인 상태였음</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> ultralytics <span style="color:#f92672">import</span> YOLO
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> cv2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 모델 로드 (사람 클래스 탐지)</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> YOLO(<span style="color:#e6db74">&#39;yolov8n.pt&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 이미지 또는 비디오 파일 경로</span>
+</span></span><span style="display:flex;"><span>source <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>  <span style="color:#75715e"># 웹캠 인덱스 또는 파일 경로</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># OCR 전 단계: 사람만 추출하여 표시</span>
+</span></span><span style="display:flex;"><span>results <span style="color:#f92672">=</span> model(source, verbose<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> r <span style="color:#f92672">in</span> results:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> box <span style="color:#f92672">in</span> r<span style="color:#f92672">.</span>boxes:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 클래스 ID가 0(사람)인 경우만 처리</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> int(box<span style="color:#f92672">.</span>cls[<span style="color:#ae81ff">0</span>]) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>            xyxy <span style="color:#f92672">=</span> box<span style="color:#f92672">.</span>xyxy[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>tolist()
+</span></span><span style="display:flex;"><span>            conf <span style="color:#f92672">=</span> float(box<span style="color:#f92672">.</span>conf[<span style="color:#ae81ff">0</span>])
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;탐지됨: 사람, 좌표=</span><span style="color:#e6db74">{</span>xyxy<span style="color:#e6db74">}</span><span style="color:#e6db74">, 신뢰도=</span><span style="color:#e6db74">{</span>conf<span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># TODO: OCR 적용을 위한 전처리 또는 화면 캡처 로직 추가 필요</span>
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>YOLO는 탐지뿐만 아니라 분류와 파인튜닝이 가능한 유연한 프레임워크이며, <code>predict</code>와 <code>track</code>의 ID 부여 여부나 인자 순서 등 세부적인 구현 차이가 결과에 큰 영향을 미친다. 또한 모델 실행 전후로 화면 표시와 데이터 처리를 분리하고, 하드웨어 환경과 실제 출력(오버레이/OCR) 사이의 격차를 이해하는 것이 안정적인 개발을 위한 필수 조건임을 깨달았다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>다음에 조심할 것은 다음과 같다.</p>
+<ol>
+<li>YOLO 모델이 반환하는 탐지 결과와 화면 표시 또는 OCR 처리는 별도의 단계로 분리하여 설계해야 하며, <code>show=False</code> 옵션이 창 생성을 차단한다는 사실을 전제로 코드를 작성해야 한다.</li>
+<li>하드웨어 사양(예: Intel Arc XPU)에 맞는 장치 지정과 <code>fail-fast</code> 정책 적용은 안정적인 실행 환경을 구성하는 필수 조건이며, 운영체제나 드라이버 환경에 따라 화면 오버레이나 투명도 설정이 실제와 다르게 나타날 수 있음을 인지해야 한다.</li>
+</ol>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>YOLO 모델이 탐지 결과 반환 외에 화면 표시나 OCR 등 다양한 후처리 작업을 수행할 수 있음을 전제로, <code>show=False</code> 옵션과 <code>result.plot()</code>의 역할을 명확히 구분하여 실제 기능 구현에 집중하는 연습을 해야겠다.</p>
+<p>화면 캡처, 모델 추론, 오버레이 표시라는 각 단계가 독립적으로 작동한다는 점을 전제로, 투명도 설정이나 그래픽 드라이버 환경에 따른 화면 반영 여부를 사전에 검증하는 습관을 들여 실제 적용 시 오류를 최소화해야겠다.</p>
+<p>OCR 수행 전 화면 구성 점검과 신뢰도 값 해석의 중요성을 전제로, 특정 영역 글자 인식 workflow를 체계적으로 구축하여 OCR 실패 가능성을 줄이고 실험 재현율을 높이는 방향으로 다음 단계를 진행하겠다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-10-08-am-daily/">
+    <span class="title">« Prev</span>
+    <span>오전 학습 | DSPy와 YOLO, 입력 계약과 좌표 해석의 통합</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-10-07-am-daily/">
+    <span class="title">Next »</span>
+    <span>오전 학습 | 청킹은 검색 단위를 설계하는 일</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
