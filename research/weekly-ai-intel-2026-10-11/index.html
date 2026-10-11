@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>2026-10-11 Intel 로컬 AI 적용 점검 | Han-think Blog</title>
+<meta name="keywords" content="weekly, ai-research, local-llm, llama-cpp, ollama, mlx, gguf, quantization, distillation, fine-tuning, benchmark, openvino, onnx, cuda, vulkan, rocm, pytorch, transformers, huggingface, intel-view">
+<meta name="description" content="Intel 직접 관련 자료와 공통 런타임의 적용 조건을 따로 확인하는 점검편. 실행 성공이나 호환성 보장은 아님">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/research/weekly-ai-intel-2026-10-11/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/research/weekly-ai-intel-2026-10-11/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/research/weekly-ai-intel-2026-10-11/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="2026-10-11 Intel 로컬 AI 적용 점검">
+  <meta property="og:description" content="Intel 직접 관련 자료와 공통 런타임의 적용 조건을 따로 확인하는 점검편. 실행 성공이나 호환성 보장은 아님">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="research">
+    <meta property="article:published_time" content="2026-10-11T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-10-11T00:00:00+00:00">
+    <meta property="article:tag" content="Weekly">
+    <meta property="article:tag" content="Ai-Research">
+    <meta property="article:tag" content="Local-Llm">
+    <meta property="article:tag" content="Llama-Cpp">
+    <meta property="article:tag" content="Ollama">
+    <meta property="article:tag" content="Mlx">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="2026-10-11 Intel 로컬 AI 적용 점검">
+  <meta name="twitter:description" content="Intel 직접 관련 자료와 공통 런타임의 적용 조건을 따로 확인하는 점검편. 실행 성공이나 호환성 보장은 아님">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Researches",
+      "item": "https://Han-think.github.io/research/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "2026-10-11 Intel 로컬 AI 적용 점검",
+      "item": "https://Han-think.github.io/research/weekly-ai-intel-2026-10-11/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "2026-10-11 Intel 로컬 AI 적용 점검",
+  "name": "2026-10-11 Intel 로컬 AI 적용 점검",
+  "description": "Intel 직접 관련 자료와 공통 런타임의 적용 조건을 따로 확인하는 점검편. 실행 성공이나 호환성 보장은 아님",
+  "keywords": [
+    "weekly", "ai-research", "local-llm", "llama-cpp", "ollama", "mlx", "gguf", "quantization", "distillation", "fine-tuning", "benchmark", "openvino", "onnx", "cuda", "vulkan", "rocm", "pytorch", "transformers", "huggingface", "intel-view"
+  ],
+  "articleBody": "목차 이번 주 한눈에 이번 주 조사 범위 현재 환경에 가까운 업데이트 로컬 AI 전반의 새 소식 다른 플랫폼에서 주목할 변화 연구 관찰 Intel 적용 관찰 이력 지원 경로와 제작 흐름 적용 전 확인할 것 근거와 한계 한 줄 결론 원문 출처 이번 주 한눈에 자료 1 onnx runtime — ONNX Runtime CUDA Plugin EP 0.2.0 업데이트 — 이번 버전은 양자화 추론 및 어텐션 지원이 확대되고 커널 성능이 개선되었으며 신뢰성 수정 사항이 포함됐다. 자료 6 trl — v1.15.0 업데이트 — fused LM head 기능이 기본 적용돼 SFT, DPO, KTO, GRPO, RLOO 및 증류에서 최대 6.9배까지 긴 시퀀스 처리가 가능해졌으며, 피크 메모리 사용량이 크게 감소했다. 자료 4 whisper.cpp — v1.9.5 업데이트 — ggml 핵심 라이브러리가 v0.26.0으로 업데이트되었으며, CUDA·Vulkan·Metal·OpenCL 등 다양한 백엔드에서 플래시 어텐션 최적화, 메모리 관리 수정, 새로운 quant type 지원 등이 이뤄졌습니다. 자료 2 onnx runtime — ONNX Runtime v1.31.0 업데이트 — ONNX Runtime 1.31.0은 모델 패키지 및 EPContext 데이터 API를 안정화하고 CPU 모델 로딩 및 양자화 MoE 추론을 개선했으며 디바이스 기반 실행 공급자 선택을 확대하고 모델 로딩 및 런타임 신뢰성을 강화했다. 자료 3 ollama — v0.40.1 업데이트 — 서버 프록시 클라우드 사용량 및 균형 API가 추가되었으며, Windows에서 clef head 읽기가 2GiB를 초과하는 문제를 수정하고 CLI 온보딩에서 계정 단계가 제거되었습니다. 이번 주 조사 범위 이 편은 Intel 사용자 관점의 적용 점검이다. 공통 런타임 소식과 Intel 직접 관련 자료를 구분하며, NVIDIA·AMD·Apple 전용 성과를 Intel의 성과로 옮기지 않는다. 설치된 엔진·GPU·운영체제·버전의 지원 여부는 별도 확인해야 한다.\n수집 점검 기록: 원문 목록 조회 27개, 실패 0개 엔드포인트. 보관된 점검 시각 기준이며 이번 주 전체 정보의 완전성을 보장하지 않는다.\n실행 도구·서빙: 관련 자료 6 건(중복 주제 포함) GPU·백엔드·호환성: 관련 자료 5 건(중복 주제 포함) 모델·구조·메모리: 관련 자료 5 건(중복 주제 포함) 제작·학습·미세조정·증류: 관련 자료 1 건(중복 주제 포함) 이미지·음성·모달별 협업: 관련 자료 3 건(중복 주제 포함) 자원 절감·동시성·역할 분담: 관련 자료 5 건(중복 주제 포함) 응용·에이전트·평가: 관련 자료 1 건(중복 주제 포함) 현재 환경에 가까운 업데이트 onnx runtime 업데이트 묶음 자료 1 [공식 발표·로컬 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\n이번 버전은 양자화 추론 및 어텐션 지원이 확대되고 커널 성능이 개선되었으며 신뢰성 수정 사항이 포함됐다.\nONNX Runtime CUDA Plugin EP 0.2.0는 양자화된 추론과 어텐션 처리를 강화해 대형 언어 모델의 효율적인 실행을 지원한다. INT4 페이지된 KV 캐시와 2비트 MatMulNBits 같은 새로운 연산은 메모리 사용량을 크게 줄이며, speculative decoding 개선과 compact recurrent-state 업데이트는 추론 속도를 높여준다.\n해석·적용 시 주의: 본 자료는 발표 상태의 릴리스 노트이며 로컬 검증 결과가 아니다. INT4 KV 캐시와 FP8/QMoE 같은 양자화 경로는 빌드 옵션(onnxruntime_USE_INT4_KV_CACHE 등)에 따라 사용 여부가 달라지며, Windows에서는 일부 헤더 요구 사항으로 인해 기본 사용이 disabled될 수 있다.\n원문 근거 자료 1: This release brings expanded quantized inference and attention support, kernel performance improvements, and reliability fixes to\n자료 2 [공식 발표·로컬 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\nONNX Runtime 1.31.0은 모델 패키지 및 EPContext 데이터 API를 안정화하고 CPU 모델 로딩 및 양자화 MoE 추론을 개선했으며 디바이스 기반 실행 공급자 선택을 확대하고 모델 로딩 및 런타임 신뢰성을 강화했다.\n이번 릴리스는 model-package API와 EPContext 데이터 콜백을 안정 C/C++ API로 승격시켜 언어 바인딩 전반에서 일관된 사용을 가능하게 했다. CPU 세션 초기화 오버헤드를 줄이기 위해 가중치 prepacking을 병렬 처리했고 INT4/INT8 QMoE 전문가를 가속화했다.\n해석·적용 시 주의: 본 자료는 발표 상태의 릴리스 노트이며 로컬 검증 결과가 아니다. GatherBlockQuantized 동작 변경으로 범위 외 인덱스는 정수·부동소수점 모두 영 출력 슬라이스를 생성하도록 의도적으로 바뀌었으며, 이는 ONNX Gather 오류 semantics와 다르다.\n원문 근거 자료 2: ONNX Runtime 1.31.0 stabilizes model-package and EPContext data APIs, improves CPU model loading and quantized MoE\nollama — v0.40.1 업데이트 자료 3 [공식 발표·로컬 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\n서버 프록시 클라우드 사용량 및 균형 API가 추가되었으며, Windows에서 clef head 읽기가 2GiB를 초과하는 문제를 수정하고 CLI 온보딩에서 계정 단계가 제거되었습니다.\n이 버전은 ollama 서버의 프로토콜 확장과 클라이언트 편의성을 높이는 변화가 핵심입니다. Windows 환경에서 메모리 읽기 오류를 수정했고, 온보딩 과정을 간소화하여 초보자 진입 장벽을 낮췄습니다. 또한 README 링크 수정 및 다운로드 링크 수리로 문서 신뢰도가 향상되었습니다.\n해석·적용 시 주의: Windows에서 clef head 관련 메모리 문제는 하드웨어·드라이버 환경에 따라 재현 여부가 달라질 수 있습니다. 새 기능(프록시 API 등)은 운영 환경에서 테스트 전 검증이 권장됩니다.\n원문 근거 자료 3: llama: fix clef head reads past 2GiB on windows by @Gigrise in\nwhisper.cpp — v1.9.5 업데이트 자료 4 [공식 발표·로컬 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\nggml 핵심 라이브러리가 v0.26.0으로 업데이트되었으며, CUDA·Vulkan·Metal·OpenCL 등 다양한 백엔드에서 플래시 어텐션 최적화, 메모리 관리 수정, 새로운 quant type 지원 등이 이뤄졌습니다.\n이번 릴리스는 저수준 라이브러리 업그레이드를 기반으로 한 대규모 최적화입니다. CUDA 누적 최적화와 Flash Attention 메모리 경계 수정을 통해 추론 효율이 향상되었으며, Vulkan·Metal·OpenCL 등 다중 백엔드에서 호환성 및 안정성 문제가 수정되었습니다. 특히 SpacemiT X60 등 신규 하드웨어 지원이 추가된 점이 특징입니다.\n해석·적용 시 주의: 각 백엔드(Vulkan, Metal, OpenCL 등)별 최적화 내용이 혼재되어 있으며, 모든 하드웨어에서 동일하게 적용되는 것은 아닙니다. 새로운 quant type이나 백엔드 기능은 해당 장비·드라이버 환경에서 테스트가 필요합니다.\n원문 근거 자료 4: Flash Attention shmem write out of bounds (llama/29988) 563a9f7a vulkan: revert mul_mat_id tile selection PR #29182\n로컬 AI 전반의 새 소식 onnx runtime — ONNX Runtime CUDA Plugin EP 0.3.0 업데이트 자료 5 [공식 발표·로컬 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\n스파스 어텐션과 패킷 연속 배치 지원, INT2 및 혼합 폭 QMoE 실행, 디코드 커널 튜닝, Blackwell 소비자 GPU용 MXFP4 지원이 추가돼 신뢰성이 향상됐다.\n이번 릴리스는 QSA/CSA 어텐션 연산자와 페이지드 스펙ulative decoding 확장을 도입해 대규모 언어 모델의 디코딩 효율을 높였다. 또한 INT2/QMoE와 MXFP4 같은 양자화 포맷 지원이 강화돼 Blackwell GPU에서 토큰 처리량이 늘어난다. 커널 최적화와 workspace 관리 개선으로 CUDA 그래프 의존 오버헤드가 줄어들어 다양한 모델 구성에서 안정적인 실행이 기대된다.\n해석·적용 시 주의: 스키마 불일치는 잘못된 실행이나 크래시를 유발할 수 있으며, 플러그인 등록 시 감지되지 않을 수도 있다. 최소 ONNX 런타임 버전(1.24.4) 충족만으로는 기여 연산자 호환성을 보장하지 않으며, 코어와 플러그인이 같은 스키마를 사용해야 한다.\n원문 근거 자료 5: This release brings sparse attention and packed continuous-batching support, INT2 and mixed-width QMoE execution, decode-kernel tuning,\ntrl — v1.15.0 업데이트 자료 6 [공식 발표·로컬 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\nfused LM head 기능이 기본 적용돼 SFT, DPO, KTO, GRPO, RLOO 및 증류에서 최대 6.9배까지 긴 시퀀스 처리가 가능해졌으며, 피크 메모리 사용량이 크게 감소했다.\nTriton 커널이 hidden states를 타일로 프로젝트해 vocab 텐트를 전체 빌드하지 않고 토큰별 로그 확률과 엔트로피를 직접 산출한다. 이는 메모리 절감 효과가 크며, 8,192 토큰 구간에서 피크 메모리가 52~82% 감소하고 단계당 처리량이 소폭 향상된다. 특히 작은 모델에 큰 어휘를 사용할 때 효과가 두드러지지만, chunked_nll 기본값을 쓰는 SFT는 변경되지 않는다.\n해석·적용 시 주의: lm_head PEFT 어댑터 사용 시 modules_to_save 옵션이 필수이며, use_liger_kernel은 폐기 예정이다. compute_metrics와 compute_loss(…, return_outputs=True)는 여전히 전체 로짓을 필요로 하며, 이는 향후 v2.0.0에서 제거될 예정임을 알리는 경고가 표시된다.\n원문 근거 자료 6: Features ### ⚡ Fused LM head: up to 6.9× longer sequences on the same GPU\n다른 플랫폼에서 주목할 변화 이번 수집 자료에서 확인하지 못함.\n연구 관찰 이번 수집 자료에서 확인하지 못함.\nIntel 적용 관찰 이력 Intel 직접 자료와 공통 실행 경로의 관찰을 이 편에만 누적한다. 발표 본문·태그 변화는 실행 성공이나 성능 개선이 아니며, 실제 적용은 장비·드라이버·운영체제·백엔드 조건을 따로 확인해야 한다.\n자료 1 원문 부족 — 전후 비교 불가. 누적 관찰 1건; 최근 시스템 확인 2026-10-03 — ONNX Runtime v1.28.3 · 태그 v1.28.3. 자료 2 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 1건; 최근 시스템 확인 2026-10-03 — ONNX Runtime v1.28.3 · 태그 v1.28.3. 자료 3 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 1건; 최근 시스템 확인 2026-10-03 — v0.35.1 · 태그 v0.35.1. 자료 4 최초 원문 관찰 — 이전 성능을 추정하지 않음. 자료 5 원문 부족 — 전후 비교 불가. 누적 관찰 1건; 최근 시스템 확인 2026-10-03 — ONNX Runtime v1.28.3 · 태그 v1.28.3. 자료 6 최초 원문 관찰 — 이전 성능을 추정하지 않음. 지원 경로와 제작 흐름 이 부분은 새 소식을 이해하기 위한 배경 안내다. 아래 문서를 이번에 조회했다는 뜻이며, 이번 주에 새로 추가된 지원이나 로컬 실행 결과가 아니다. 문서 본문 접근·필수 주제 일치 확인은 개별 호환성 검증을 대신하지 않는다.\n배경 1 LM Studio 런타임 관리 LM Studio 앱과 실제 추론 런타임은 구분해서 본다. 공식 런타임 관리 문서에서 목록·선택·관리 방법을 확인하고, 상위 엔진의 새 변경이 설치된 런타임에도 포함됐는지는 별도로 확인한다.\n배경 2 llama.cpp 백엔드 빌드 문서 llama.cpp는 CUDA·HIP·Vulkan 등 백엔드별 빌드 경로를 따로 설명한다. 백엔드 이름이 있다는 것과 특정 GPU·모델·드라이버 조합의 동작 보장은 다르다. 사용할 엔진의 빌드 옵션과 운영체제별 조건을 먼저 대조한다.\n배경 3 PyTorch Intel GPU 시작 조건 PyTorch의 Intel GPU 경로는 모델 이름이나 GPU 제조사만으로 판단하지 않는다. 공식 안내의 장비·운영체제·드라이버·PyTorch 조건을 함께 확인한다. XPU 학습/추론 경로와 LM Studio의 실제 추론 엔진은 별개이며, 이 문서를 읽었다고 설치나 동작을 검증한 것은 아니다.\n배경 4 OpenVINO 시스템 요구 조건 OpenVINO의 CPU·GPU·운영체제 조건을 지원 문서에 대조한다. GPU 경로에는 별도 드라이버 조건이 있으므로 GPU 이름이나 다운로드 파일 존재를 동작 보장으로 해석하지 않는다. 정확한 모델·GPU 세대·버전의 조합은 실제 사용 환경에서 별도 확인해야 한다.\n적용 전 확인할 것 아래는 Intel 환경에서 원문의 적용 조건을 확인할 후보다. 직접 실행 성공이나 호환성 보장이 아니다.\n자료 1 onnx runtime — ONNX Runtime CUDA Plugin EP 0.2.0 업데이트 대상 버전/발표: ONNX Runtime CUDA Plugin EP 0.2.0. 설치된 런타임·백엔드·의존성이 원문의 적용 대상인지 먼저 확인한다. 확인 목적: 이번 버전은 양자화 추론 및 어텐션 지원이 확대되고 커널 성능이 개선되었으며 신뢰성 수정 사항이 포함됐다. 성공 기준: 분리한 시험 환경에서 같은 입력으로 기본 동작을 확인하고, 기존에 정상 동작하던 작업이 유지되는지 비교한다. 되돌릴 방법: 기존 검증 환경과 설정을 보관하고 분리 시험한다. 문제가 있으면 기존 환경과 설정으로 복원한다. 자료 3 ollama — v0.40.1 업데이트 대상 버전/발표: v0.40.1. 설치된 런타임·백엔드·의존성이 원문의 적용 대상인지 먼저 확인한다. 확인 목적: 서버 프록시 클라우드 사용량 및 균형 API가 추가되었으며, Windows에서 clef head 읽기가 2GiB를 초과하는 문제를 수정하고 CLI 온보딩에서 계정 단계가 제거되었습니다. 성공 기준: 분리한 시험 환경에서 같은 입력으로 기본 동작을 확인하고, 기존에 정상 동작하던 작업이 유지되는지 비교한다. 되돌릴 방법: 기존 검증 환경과 설정을 보관하고 분리 시험한다. 문제가 있으면 기존 환경과 설정으로 복원한다. 자료 4 whisper.cpp — v1.9.5 업데이트 대상 버전/발표: v1.9.5. 설치된 런타임·백엔드·의존성이 원문의 적용 대상인지 먼저 확인한다. 확인 목적: ggml 핵심 라이브러리가 v0.26.0으로 업데이트되었으며, CUDA·Vulkan·Metal·OpenCL 등 다양한 백엔드에서 플래시 어텐션 최적화, 메모리 관리 수정, 새로운 quant type 지원 등이 이뤄졌습니다. 성공 기준: 분리한 시험 환경에서 같은 입력으로 기본 동작을 확인하고, 기존에 정상 동작하던 작업이 유지되는지 비교한다. 되돌릴 방법: 기존 검증 환경과 설정을 보관하고 분리 시험한다. 문제가 있으면 기존 환경과 설정으로 복원한다. 근거와 한계 자료마다 실제 읽은 범위를 아래에 남겼다. 공식 릴리스는 태그·공개 URL을 대조한 본문을, 글은 분리한 본문 발췌를, 논문은 초록을 읽는다. 실패한 항목은 피드 요약으로 명시한다. 문서 조회와 사실 재현은 다르며, 본문 밖의 코드·실험 표·벤치마크 및 로컬 실행은 검증하지 않았다. 설명 문단의 의미 해석은 편집자의 해설이며 실측 성과가 아니다.\n자료 1 [공식 발표·로컬 미확인] — 읽은 범위: 피드 설명만(원문 확인 실패). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님. 자료 2 [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) · 앞부분 발췌만 모델에 전달. 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님. 자료 3 [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님. 자료 4 [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) · 앞부분 발췌만 모델에 전달. 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님. 자료 5 [공식 발표·로컬 미확인] — 읽은 범위: 피드 설명만(원문 확인 실패). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님. 자료 6 [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) · 앞부분 발췌만 모델에 전달. 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님. 한 줄 결론 자료 1, 자료 3, 자료 4 은 원문의 적용 조건을 먼저 확인할 후보이며, 개발 빌드와 연구 제안은 관찰 대상으로 남긴다.\n원문 출처 자료 1 ONNX Runtime CUDA Plugin EP 0.2.0\n피드 갱신일(최초 게시일 미확인): 2026-10-09 · 발행처: ONNX Runtime Releases 확인 범위: 피드 설명만(원문 확인 실패) 원문 조회 시각: 2026-10-11 05:53:38 UTC 원문 확인 실패: 본문 근거를 확보하지 못했다. 피드 설명보다 강한 주장으로 읽지 않는다. 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 2 ONNX Runtime v1.31.0\n피드 갱신일(최초 게시일 미확인): 2026-10-09 · 발행처: ONNX Runtime Releases 확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) 대조한 릴리스 태그: v1.31.0 원문 API 게시 시각: 10/09/2026 04:51:32 원문 조회 시각: 2026-10-11 05:53:39 UTC 모델에 전달한 원문: 5999자 · 본문 일부 발췌 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 3 v0.40.1\n피드 갱신일(최초 게시일 미확인): 2026-10-08 · 발행처: Ollama Releases 확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) 대조한 릴리스 태그: v0.40.1 원문 API 게시 시각: 10/07/2026 23:22:59 원문 조회 시각: 2026-10-11 05:53:39 UTC 모델에 전달한 원문: 1166자 · 추출 본문 범위 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 4 v1.9.5\n피드 갱신일(최초 게시일 미확인): 2026-10-07 · 발행처: whisper.cpp Releases 확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) 대조한 릴리스 태그: v1.9.5 원문 API 게시 시각: 10/06/2026 17:39:17 원문 조회 시각: 2026-10-11 05:53:39 UTC 모델에 전달한 원문: 6000자 · 본문 일부 발췌 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 5 ONNX Runtime CUDA Plugin EP 0.3.0\n피드 갱신일(최초 게시일 미확인): 2026-10-09 · 발행처: ONNX Runtime Releases 확인 범위: 피드 설명만(원문 확인 실패) 원문 조회 시각: 2026-10-11 05:53:40 UTC 원문 확인 실패: 본문 근거를 확보하지 못했다. 피드 설명보다 강한 주장으로 읽지 않는다. 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 6 v1.15.0\n피드 갱신일(최초 게시일 미확인): 2026-10-09 · 발행처: TRL Releases 확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) 대조한 릴리스 태그: v1.15.0 원문 API 게시 시각: 10/08/2026 19:26:48 원문 조회 시각: 2026-10-11 05:53:40 UTC 모델에 전달한 원문: 5999자 · 본문 일부 발췌 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 배경 1 LM Studio 런타임 관리\n조회 시각: 2026-10-11 05:53:40 UTC · 본문 접근·필수 주제 일치 확인 분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다. 배경 2 llama.cpp 백엔드 빌드 문서\n실제 읽은 문서: 고정된 조회 경로 조회 시각: 2026-10-11 05:53:41 UTC · 본문 접근·필수 주제 일치 확인 분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다. 배경 3 PyTorch Intel GPU 시작 조건\n실제 읽은 문서: 고정된 조회 경로 조회 시각: 2026-10-11 05:53:46 UTC · 본문 접근·필수 주제 일치 확인 분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다. 배경 4 OpenVINO 시스템 요구 조건\n조회 시각: 2026-10-11 05:53:48 UTC · 본문 접근·필수 주제 일치 확인 분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다. ",
+  "wordCount" : "2355",
+  "inLanguage": "en",
+  "datePublished": "2026-10-11T00:00:00Z",
+  "dateModified": "2026-10-11T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/research/weekly-ai-intel-2026-10-11/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      2026-10-11 Intel 로컬 AI 적용 점검
+    </h1>
+    <div class="post-description">
+      Intel 직접 관련 자료와 공통 런타임의 적용 조건을 따로 확인하는 점검편. 실행 성공이나 호환성 보장은 아님
+    </div>
+    <div class="post-meta">
+
+<span title='2026-10-11 00:00:00 +0000 UTC'>2026년 10월 11일</span>&nbsp;·&nbsp;<span>12 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li><a href="#%EC%9D%B4%EB%B2%88-%EC%A3%BC-%ED%95%9C%EB%88%88%EC%97%90">이번 주 한눈에</a></li>
+<li><a href="#%EC%9D%B4%EB%B2%88-%EC%A3%BC-%EC%A1%B0%EC%82%AC-%EB%B2%94%EC%9C%84">이번 주 조사 범위</a></li>
+<li><a href="#%ED%98%84%EC%9E%AC-%ED%99%98%EA%B2%BD%EC%97%90-%EA%B0%80%EA%B9%8C%EC%9A%B4-%EC%97%85%EB%8D%B0%EC%9D%B4%ED%8A%B8">현재 환경에 가까운 업데이트</a></li>
+<li><a href="#%EB%A1%9C%EC%BB%AC-ai-%EC%A0%84%EB%B0%98%EC%9D%98-%EC%83%88-%EC%86%8C%EC%8B%9D">로컬 AI 전반의 새 소식</a></li>
+<li><a href="#%EB%8B%A4%EB%A5%B8-%ED%94%8C%EB%9E%AB%ED%8F%BC%EC%97%90%EC%84%9C-%EC%A3%BC%EB%AA%A9%ED%95%A0-%EB%B3%80%ED%99%94">다른 플랫폼에서 주목할 변화</a></li>
+<li><a href="#%EC%97%B0%EA%B5%AC-%EA%B4%80%EC%B0%B0">연구 관찰</a></li>
+<li><a href="#intel-%EC%A0%81%EC%9A%A9-%EA%B4%80%EC%B0%B0-%EC%9D%B4%EB%A0%A5">Intel 적용 관찰 이력</a></li>
+<li><a href="#%EC%A7%80%EC%9B%90-%EA%B2%BD%EB%A1%9C%EC%99%80-%EC%A0%9C%EC%9E%91-%ED%9D%90%EB%A6%84">지원 경로와 제작 흐름</a></li>
+<li><a href="#%EC%A0%81%EC%9A%A9-%EC%A0%84-%ED%99%95%EC%9D%B8%ED%95%A0-%EA%B2%83">적용 전 확인할 것</a></li>
+<li><a href="#%EA%B7%BC%EA%B1%B0%EC%99%80-%ED%95%9C%EA%B3%84">근거와 한계</a></li>
+<li><a href="#%ED%95%9C-%EC%A4%84-%EA%B2%B0%EB%A1%A0">한 줄 결론</a></li>
+<li><a href="#%EC%9B%90%EB%AC%B8-%EC%B6%9C%EC%B2%98">원문 출처</a></li>
+</ul>
+<h2 id="이번-주-한눈에">이번 주 한눈에<a hidden class="anchor" aria-hidden="true" href="#이번-주-한눈에">#</a></h2>
+<ul>
+<li><a href="#%EC%9E%90%EB%A3%8C-1">자료 1</a> <strong>onnx runtime — ONNX Runtime CUDA Plugin EP 0.2.0 업데이트</strong> — 이번 버전은 양자화 추론 및 어텐션 지원이 확대되고 커널 성능이 개선되었으며 신뢰성 수정 사항이 포함됐다.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-6">자료 6</a> <strong>trl — v1.15.0 업데이트</strong> — fused LM head 기능이 기본 적용돼 SFT, DPO, KTO, GRPO, RLOO 및 증류에서 최대 6.9배까지 긴 시퀀스 처리가 가능해졌으며, 피크 메모리 사용량이 크게 감소했다.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-4">자료 4</a> <strong>whisper.cpp — v1.9.5 업데이트</strong> — ggml 핵심 라이브러리가 v0.26.0으로 업데이트되었으며, CUDA·Vulkan·Metal·OpenCL 등 다양한 백엔드에서 플래시 어텐션 최적화, 메모리 관리 수정, 새로운 quant type 지원 등이 이뤄졌습니다.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-2">자료 2</a> <strong>onnx runtime — ONNX Runtime v1.31.0 업데이트</strong> — ONNX Runtime 1.31.0은 모델 패키지 및 EPContext 데이터 API를 안정화하고 CPU 모델 로딩 및 양자화 MoE 추론을 개선했으며 디바이스 기반 실행 공급자 선택을 확대하고 모델 로딩 및 런타임 신뢰성을 강화했다.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-3">자료 3</a> <strong>ollama — v0.40.1 업데이트</strong> — 서버 프록시 클라우드 사용량 및 균형 API가 추가되었으며, Windows에서 clef head 읽기가 2GiB를 초과하는 문제를 수정하고 CLI 온보딩에서 계정 단계가 제거되었습니다.</li>
+</ul>
+<h2 id="이번-주-조사-범위">이번 주 조사 범위<a hidden class="anchor" aria-hidden="true" href="#이번-주-조사-범위">#</a></h2>
+<p>이 편은 Intel 사용자 관점의 적용 점검이다. 공통 런타임 소식과 Intel 직접 관련 자료를 구분하며, NVIDIA·AMD·Apple 전용 성과를 Intel의 성과로 옮기지 않는다. 설치된 엔진·GPU·운영체제·버전의 지원 여부는 별도 확인해야 한다.</p>
+<p>수집 점검 기록: 원문 목록 조회 27개, 실패 0개 엔드포인트. 보관된 점검 시각 기준이며 이번 주 전체 정보의 완전성을 보장하지 않는다.</p>
+<ul>
+<li><strong>실행 도구·서빙:</strong> 관련 자료 6 건(중복 주제 포함)</li>
+<li><strong>GPU·백엔드·호환성:</strong> 관련 자료 5 건(중복 주제 포함)</li>
+<li><strong>모델·구조·메모리:</strong> 관련 자료 5 건(중복 주제 포함)</li>
+<li><strong>제작·학습·미세조정·증류:</strong> 관련 자료 1 건(중복 주제 포함)</li>
+<li><strong>이미지·음성·모달별 협업:</strong> 관련 자료 3 건(중복 주제 포함)</li>
+<li><strong>자원 절감·동시성·역할 분담:</strong> 관련 자료 5 건(중복 주제 포함)</li>
+<li><strong>응용·에이전트·평가:</strong> 관련 자료 1 건(중복 주제 포함)</li>
+</ul>
+<h2 id="현재-환경에-가까운-업데이트">현재 환경에 가까운 업데이트<a hidden class="anchor" aria-hidden="true" href="#현재-환경에-가까운-업데이트">#</a></h2>
+<h3 id="onnx-runtime-업데이트-묶음">onnx runtime 업데이트 묶음<a hidden class="anchor" aria-hidden="true" href="#onnx-runtime-업데이트-묶음">#</a></h3>
+<p><a href="#%EC%9E%90%EB%A3%8C-1">자료 1</a> [공식 발표·로컬 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>이번 버전은 양자화 추론 및 어텐션 지원이 확대되고 커널 성능이 개선되었으며 신뢰성 수정 사항이 포함됐다.</p>
+<p>ONNX Runtime CUDA Plugin EP 0.2.0는 양자화된 추론과 어텐션 처리를 강화해 대형 언어 모델의 효율적인 실행을 지원한다. INT4 페이지된 KV 캐시와 2비트 MatMulNBits 같은 새로운 연산은 메모리 사용량을 크게 줄이며, speculative decoding 개선과 compact recurrent-state 업데이트는 추론 속도를 높여준다.</p>
+<p><strong>해석·적용 시 주의:</strong> 본 자료는 발표 상태의 릴리스 노트이며 로컬 검증 결과가 아니다. INT4 KV 캐시와 FP8/QMoE 같은 양자화 경로는 빌드 옵션(onnxruntime_USE_INT4_KV_CACHE 등)에 따라 사용 여부가 달라지며, Windows에서는 일부 헤더 요구 사항으로 인해 기본 사용이 disabled될 수 있다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-1">자료 1</a>: This release brings expanded quantized inference and attention support, kernel performance improvements, and reliability fixes to</p>
+</blockquote>
+<p><a href="#%EC%9E%90%EB%A3%8C-2">자료 2</a> [공식 발표·로컬 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>ONNX Runtime 1.31.0은 모델 패키지 및 EPContext 데이터 API를 안정화하고 CPU 모델 로딩 및 양자화 MoE 추론을 개선했으며 디바이스 기반 실행 공급자 선택을 확대하고 모델 로딩 및 런타임 신뢰성을 강화했다.</p>
+<p>이번 릴리스는 model-package API와 EPContext 데이터 콜백을 안정 C/C++ API로 승격시켜 언어 바인딩 전반에서 일관된 사용을 가능하게 했다. CPU 세션 초기화 오버헤드를 줄이기 위해 가중치 prepacking을 병렬 처리했고 INT4/INT8 QMoE 전문가를 가속화했다.</p>
+<p><strong>해석·적용 시 주의:</strong> 본 자료는 발표 상태의 릴리스 노트이며 로컬 검증 결과가 아니다. GatherBlockQuantized 동작 변경으로 범위 외 인덱스는 정수·부동소수점 모두 영 출력 슬라이스를 생성하도록 의도적으로 바뀌었으며, 이는 ONNX Gather 오류 semantics와 다르다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-2">자료 2</a>: ONNX Runtime 1.31.0 stabilizes model-package and EPContext data APIs, improves CPU model loading and quantized MoE</p>
+</blockquote>
+<h3 id="ollama--v0401-업데이트">ollama — v0.40.1 업데이트<a hidden class="anchor" aria-hidden="true" href="#ollama--v0401-업데이트">#</a></h3>
+<p><a href="#%EC%9E%90%EB%A3%8C-3">자료 3</a> [공식 발표·로컬 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>서버 프록시 클라우드 사용량 및 균형 API가 추가되었으며, Windows에서 clef head 읽기가 2GiB를 초과하는 문제를 수정하고 CLI 온보딩에서 계정 단계가 제거되었습니다.</p>
+<p>이 버전은 ollama 서버의 프로토콜 확장과 클라이언트 편의성을 높이는 변화가 핵심입니다. Windows 환경에서 메모리 읽기 오류를 수정했고, 온보딩 과정을 간소화하여 초보자 진입 장벽을 낮췄습니다. 또한 README 링크 수정 및 다운로드 링크 수리로 문서 신뢰도가 향상되었습니다.</p>
+<p><strong>해석·적용 시 주의:</strong> Windows에서 clef head 관련 메모리 문제는 하드웨어·드라이버 환경에 따라 재현 여부가 달라질 수 있습니다. 새 기능(프록시 API 등)은 운영 환경에서 테스트 전 검증이 권장됩니다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-3">자료 3</a>: llama: fix clef head reads past 2GiB on windows by @Gigrise in</p>
+</blockquote>
+<h3 id="whispercpp--v195-업데이트">whisper.cpp — v1.9.5 업데이트<a hidden class="anchor" aria-hidden="true" href="#whispercpp--v195-업데이트">#</a></h3>
+<p><a href="#%EC%9E%90%EB%A3%8C-4">자료 4</a> [공식 발표·로컬 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>ggml 핵심 라이브러리가 v0.26.0으로 업데이트되었으며, CUDA·Vulkan·Metal·OpenCL 등 다양한 백엔드에서 플래시 어텐션 최적화, 메모리 관리 수정, 새로운 quant type 지원 등이 이뤄졌습니다.</p>
+<p>이번 릴리스는 저수준 라이브러리 업그레이드를 기반으로 한 대규모 최적화입니다. CUDA 누적 최적화와 Flash Attention 메모리 경계 수정을 통해 추론 효율이 향상되었으며, Vulkan·Metal·OpenCL 등 다중 백엔드에서 호환성 및 안정성 문제가 수정되었습니다. 특히 SpacemiT X60 등 신규 하드웨어 지원이 추가된 점이 특징입니다.</p>
+<p><strong>해석·적용 시 주의:</strong> 각 백엔드(Vulkan, Metal, OpenCL 등)별 최적화 내용이 혼재되어 있으며, 모든 하드웨어에서 동일하게 적용되는 것은 아닙니다. 새로운 quant type이나 백엔드 기능은 해당 장비·드라이버 환경에서 테스트가 필요합니다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-4">자료 4</a>: Flash Attention shmem write out of bounds (llama/29988) 563a9f7a vulkan: revert mul_mat_id tile selection PR #29182</p>
+</blockquote>
+<h2 id="로컬-ai-전반의-새-소식">로컬 AI 전반의 새 소식<a hidden class="anchor" aria-hidden="true" href="#로컬-ai-전반의-새-소식">#</a></h2>
+<h3 id="onnx-runtime--onnx-runtime-cuda-plugin-ep-030-업데이트">onnx runtime — ONNX Runtime CUDA Plugin EP 0.3.0 업데이트<a hidden class="anchor" aria-hidden="true" href="#onnx-runtime--onnx-runtime-cuda-plugin-ep-030-업데이트">#</a></h3>
+<p><a href="#%EC%9E%90%EB%A3%8C-5">자료 5</a> [공식 발표·로컬 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>스파스 어텐션과 패킷 연속 배치 지원, INT2 및 혼합 폭 QMoE 실행, 디코드 커널 튜닝, Blackwell 소비자 GPU용 MXFP4 지원이 추가돼 신뢰성이 향상됐다.</p>
+<p>이번 릴리스는 QSA/CSA 어텐션 연산자와 페이지드 스펙ulative decoding 확장을 도입해 대규모 언어 모델의 디코딩 효율을 높였다. 또한 INT2/QMoE와 MXFP4 같은 양자화 포맷 지원이 강화돼 Blackwell GPU에서 토큰 처리량이 늘어난다. 커널 최적화와 workspace 관리 개선으로 CUDA 그래프 의존 오버헤드가 줄어들어 다양한 모델 구성에서 안정적인 실행이 기대된다.</p>
+<p><strong>해석·적용 시 주의:</strong> 스키마 불일치는 잘못된 실행이나 크래시를 유발할 수 있으며, 플러그인 등록 시 감지되지 않을 수도 있다. 최소 ONNX 런타임 버전(1.24.4) 충족만으로는 기여 연산자 호환성을 보장하지 않으며, 코어와 플러그인이 같은 스키마를 사용해야 한다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-5">자료 5</a>: This release brings sparse attention and packed continuous-batching support, INT2 and mixed-width QMoE execution, decode-kernel tuning,</p>
+</blockquote>
+<h3 id="trl--v1150-업데이트">trl — v1.15.0 업데이트<a hidden class="anchor" aria-hidden="true" href="#trl--v1150-업데이트">#</a></h3>
+<p><a href="#%EC%9E%90%EB%A3%8C-6">자료 6</a> [공식 발표·로컬 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>fused LM head 기능이 기본 적용돼 SFT, DPO, KTO, GRPO, RLOO 및 증류에서 최대 6.9배까지 긴 시퀀스 처리가 가능해졌으며, 피크 메모리 사용량이 크게 감소했다.</p>
+<p>Triton 커널이 hidden states를 타일로 프로젝트해 vocab 텐트를 전체 빌드하지 않고 토큰별 로그 확률과 엔트로피를 직접 산출한다. 이는 메모리 절감 효과가 크며, 8,192 토큰 구간에서 피크 메모리가 52~82% 감소하고 단계당 처리량이 소폭 향상된다. 특히 작은 모델에 큰 어휘를 사용할 때 효과가 두드러지지만, chunked_nll 기본값을 쓰는 SFT는 변경되지 않는다.</p>
+<p><strong>해석·적용 시 주의:</strong> lm_head PEFT 어댑터 사용 시 modules_to_save 옵션이 필수이며, use_liger_kernel은 폐기 예정이다. compute_metrics와 compute_loss(&hellip;, return_outputs=True)는 여전히 전체 로짓을 필요로 하며, 이는 향후 v2.0.0에서 제거될 예정임을 알리는 경고가 표시된다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-6">자료 6</a>: Features ### ⚡ Fused LM head: up to 6.9× longer sequences on the same GPU</p>
+</blockquote>
+<h2 id="다른-플랫폼에서-주목할-변화">다른 플랫폼에서 주목할 변화<a hidden class="anchor" aria-hidden="true" href="#다른-플랫폼에서-주목할-변화">#</a></h2>
+<p>이번 수집 자료에서 확인하지 못함.</p>
+<h2 id="연구-관찰">연구 관찰<a hidden class="anchor" aria-hidden="true" href="#연구-관찰">#</a></h2>
+<p>이번 수집 자료에서 확인하지 못함.</p>
+<h2 id="intel-적용-관찰-이력">Intel 적용 관찰 이력<a hidden class="anchor" aria-hidden="true" href="#intel-적용-관찰-이력">#</a></h2>
+<p>Intel 직접 자료와 공통 실행 경로의 관찰을 이 편에만 누적한다. 발표 본문·태그 변화는 실행 성공이나 성능 개선이 아니며, 실제 적용은 장비·드라이버·운영체제·백엔드 조건을 따로 확인해야 한다.</p>
+<ul>
+<li><a href="#%EC%9E%90%EB%A3%8C-1">자료 1</a> 원문 부족 — 전후 비교 불가. 누적 관찰 1건; 최근 시스템 확인 2026-10-03 — ONNX Runtime v1.28.3 · 태그 v1.28.3.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-2">자료 2</a> 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 1건; 최근 시스템 확인 2026-10-03 — ONNX Runtime v1.28.3 · 태그 v1.28.3.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-3">자료 3</a> 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 1건; 최근 시스템 확인 2026-10-03 — v0.35.1 · 태그 v0.35.1.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-4">자료 4</a> 최초 원문 관찰 — 이전 성능을 추정하지 않음.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-5">자료 5</a> 원문 부족 — 전후 비교 불가. 누적 관찰 1건; 최근 시스템 확인 2026-10-03 — ONNX Runtime v1.28.3 · 태그 v1.28.3.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-6">자료 6</a> 최초 원문 관찰 — 이전 성능을 추정하지 않음.</li>
+</ul>
+<h2 id="지원-경로와-제작-흐름">지원 경로와 제작 흐름<a hidden class="anchor" aria-hidden="true" href="#지원-경로와-제작-흐름">#</a></h2>
+<p>이 부분은 새 소식을 이해하기 위한 배경 안내다. 아래 문서를 이번에 조회했다는 뜻이며, 이번 주에 새로 추가된 지원이나 로컬 실행 결과가 아니다. 문서 본문 접근·필수 주제 일치 확인은 개별 호환성 검증을 대신하지 않는다.</p>
+<h3 id="배경-1-lm-studio-런타임-관리"><a href="#%EB%B0%B0%EA%B2%BD-1">배경 1</a> LM Studio 런타임 관리<a hidden class="anchor" aria-hidden="true" href="#배경-1-lm-studio-런타임-관리">#</a></h3>
+<p>LM Studio 앱과 실제 추론 런타임은 구분해서 본다. 공식 런타임 관리 문서에서 목록·선택·관리 방법을 확인하고, 상위 엔진의 새 변경이 설치된 런타임에도 포함됐는지는 별도로 확인한다.</p>
+<h3 id="배경-2-llamacpp-백엔드-빌드-문서"><a href="#%EB%B0%B0%EA%B2%BD-2">배경 2</a> llama.cpp 백엔드 빌드 문서<a hidden class="anchor" aria-hidden="true" href="#배경-2-llamacpp-백엔드-빌드-문서">#</a></h3>
+<p>llama.cpp는 CUDA·HIP·Vulkan 등 백엔드별 빌드 경로를 따로 설명한다. 백엔드 이름이 있다는 것과 특정 GPU·모델·드라이버 조합의 동작 보장은 다르다. 사용할 엔진의 빌드 옵션과 운영체제별 조건을 먼저 대조한다.</p>
+<h3 id="배경-3-pytorch-intel-gpu-시작-조건"><a href="#%EB%B0%B0%EA%B2%BD-3">배경 3</a> PyTorch Intel GPU 시작 조건<a hidden class="anchor" aria-hidden="true" href="#배경-3-pytorch-intel-gpu-시작-조건">#</a></h3>
+<p>PyTorch의 Intel GPU 경로는 모델 이름이나 GPU 제조사만으로 판단하지 않는다. 공식 안내의 장비·운영체제·드라이버·PyTorch 조건을 함께 확인한다. XPU 학습/추론 경로와 LM Studio의 실제 추론 엔진은 별개이며, 이 문서를 읽었다고 설치나 동작을 검증한 것은 아니다.</p>
+<h3 id="배경-4-openvino-시스템-요구-조건"><a href="#%EB%B0%B0%EA%B2%BD-4">배경 4</a> OpenVINO 시스템 요구 조건<a hidden class="anchor" aria-hidden="true" href="#배경-4-openvino-시스템-요구-조건">#</a></h3>
+<p>OpenVINO의 CPU·GPU·운영체제 조건을 지원 문서에 대조한다. GPU 경로에는 별도 드라이버 조건이 있으므로 GPU 이름이나 다운로드 파일 존재를 동작 보장으로 해석하지 않는다. 정확한 모델·GPU 세대·버전의 조합은 실제 사용 환경에서 별도 확인해야 한다.</p>
+<h2 id="적용-전-확인할-것">적용 전 확인할 것<a hidden class="anchor" aria-hidden="true" href="#적용-전-확인할-것">#</a></h2>
+<p>아래는 Intel 환경에서 원문의 적용 조건을 확인할 후보다. 직접 실행 성공이나 호환성 보장이 아니다.</p>
+<h3 id="자료-1-onnx-runtime--onnx-runtime-cuda-plugin-ep-020-업데이트"><a href="#%EC%9E%90%EB%A3%8C-1">자료 1</a> onnx runtime — ONNX Runtime CUDA Plugin EP 0.2.0 업데이트<a hidden class="anchor" aria-hidden="true" href="#자료-1-onnx-runtime--onnx-runtime-cuda-plugin-ep-020-업데이트">#</a></h3>
+<ul>
+<li><strong>대상 버전/발표:</strong> ONNX Runtime CUDA Plugin EP 0.2.0. 설치된 런타임·백엔드·의존성이 원문의 적용 대상인지 먼저 확인한다.</li>
+<li><strong>확인 목적:</strong> 이번 버전은 양자화 추론 및 어텐션 지원이 확대되고 커널 성능이 개선되었으며 신뢰성 수정 사항이 포함됐다.</li>
+<li><strong>성공 기준:</strong> 분리한 시험 환경에서 같은 입력으로 기본 동작을 확인하고, 기존에 정상 동작하던 작업이 유지되는지 비교한다.</li>
+<li><strong>되돌릴 방법:</strong> 기존 검증 환경과 설정을 보관하고 분리 시험한다. 문제가 있으면 기존 환경과 설정으로 복원한다.</li>
+</ul>
+<h3 id="자료-3-ollama--v0401-업데이트"><a href="#%EC%9E%90%EB%A3%8C-3">자료 3</a> ollama — v0.40.1 업데이트<a hidden class="anchor" aria-hidden="true" href="#자료-3-ollama--v0401-업데이트">#</a></h3>
+<ul>
+<li><strong>대상 버전/발표:</strong> v0.40.1. 설치된 런타임·백엔드·의존성이 원문의 적용 대상인지 먼저 확인한다.</li>
+<li><strong>확인 목적:</strong> 서버 프록시 클라우드 사용량 및 균형 API가 추가되었으며, Windows에서 clef head 읽기가 2GiB를 초과하는 문제를 수정하고 CLI 온보딩에서 계정 단계가 제거되었습니다.</li>
+<li><strong>성공 기준:</strong> 분리한 시험 환경에서 같은 입력으로 기본 동작을 확인하고, 기존에 정상 동작하던 작업이 유지되는지 비교한다.</li>
+<li><strong>되돌릴 방법:</strong> 기존 검증 환경과 설정을 보관하고 분리 시험한다. 문제가 있으면 기존 환경과 설정으로 복원한다.</li>
+</ul>
+<h3 id="자료-4-whispercpp--v195-업데이트"><a href="#%EC%9E%90%EB%A3%8C-4">자료 4</a> whisper.cpp — v1.9.5 업데이트<a hidden class="anchor" aria-hidden="true" href="#자료-4-whispercpp--v195-업데이트">#</a></h3>
+<ul>
+<li><strong>대상 버전/발표:</strong> v1.9.5. 설치된 런타임·백엔드·의존성이 원문의 적용 대상인지 먼저 확인한다.</li>
+<li><strong>확인 목적:</strong> ggml 핵심 라이브러리가 v0.26.0으로 업데이트되었으며, CUDA·Vulkan·Metal·OpenCL 등 다양한 백엔드에서 플래시 어텐션 최적화, 메모리 관리 수정, 새로운 quant type 지원 등이 이뤄졌습니다.</li>
+<li><strong>성공 기준:</strong> 분리한 시험 환경에서 같은 입력으로 기본 동작을 확인하고, 기존에 정상 동작하던 작업이 유지되는지 비교한다.</li>
+<li><strong>되돌릴 방법:</strong> 기존 검증 환경과 설정을 보관하고 분리 시험한다. 문제가 있으면 기존 환경과 설정으로 복원한다.</li>
+</ul>
+<h2 id="근거와-한계">근거와 한계<a hidden class="anchor" aria-hidden="true" href="#근거와-한계">#</a></h2>
+<p>자료마다 실제 읽은 범위를 아래에 남겼다. 공식 릴리스는 태그·공개 URL을 대조한 본문을, 글은 분리한 본문 발췌를, 논문은 초록을 읽는다. 실패한 항목은 피드 요약으로 명시한다. 문서 조회와 사실 재현은 다르며, 본문 밖의 코드·실험 표·벤치마크 및 로컬 실행은 검증하지 않았다. 설명 문단의 의미 해석은 편집자의 해설이며 실측 성과가 아니다.</p>
+<ul>
+<li><a href="#%EC%9E%90%EB%A3%8C-1">자료 1</a> [공식 발표·로컬 미확인] — 읽은 범위: 피드 설명만(원문 확인 실패). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-2">자료 2</a> [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) · 앞부분 발췌만 모델에 전달. 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-3">자료 3</a> [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-4">자료 4</a> [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) · 앞부분 발췌만 모델에 전달. 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-5">자료 5</a> [공식 발표·로컬 미확인] — 읽은 범위: 피드 설명만(원문 확인 실패). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-6">자료 6</a> [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) · 앞부분 발췌만 모델에 전달. 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님.</li>
+</ul>
+<h2 id="한-줄-결론">한 줄 결론<a hidden class="anchor" aria-hidden="true" href="#한-줄-결론">#</a></h2>
+<p><a href="#%EC%9E%90%EB%A3%8C-1">자료 1</a>, <a href="#%EC%9E%90%EB%A3%8C-3">자료 3</a>, <a href="#%EC%9E%90%EB%A3%8C-4">자료 4</a> 은 원문의 적용 조건을 먼저 확인할 후보이며, 개발 빌드와 연구 제안은 관찰 대상으로 남긴다.</p>
+<h2 id="원문-출처">원문 출처<a hidden class="anchor" aria-hidden="true" href="#원문-출처">#</a></h2>
+<h3 id="자료-1">자료 1<a hidden class="anchor" aria-hidden="true" href="#자료-1">#</a></h3>
+<p><a href="https://github.com/microsoft/onnxruntime/releases/tag/plugin-ep-cuda%2Fv0.2.0">ONNX Runtime CUDA Plugin EP 0.2.0</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-09 · 발행처: ONNX Runtime Releases</li>
+<li>확인 범위: 피드 설명만(원문 확인 실패)</li>
+<li>원문 조회 시각: 2026-10-11 05:53:38 UTC</li>
+<li>원문 확인 실패: 본문 근거를 확보하지 못했다. 피드 설명보다 강한 주장으로 읽지 않는다.</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-2">자료 2<a hidden class="anchor" aria-hidden="true" href="#자료-2">#</a></h3>
+<p><a href="https://github.com/microsoft/onnxruntime/releases/tag/v1.31.0">ONNX Runtime v1.31.0</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-09 · 발행처: ONNX Runtime Releases</li>
+<li>확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외)</li>
+<li>대조한 릴리스 태그: v1.31.0</li>
+<li>원문 API 게시 시각: 10/09/2026 04:51:32</li>
+<li>원문 조회 시각: 2026-10-11 05:53:39 UTC</li>
+<li>모델에 전달한 원문: 5999자 · 본문 일부 발췌</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-3">자료 3<a hidden class="anchor" aria-hidden="true" href="#자료-3">#</a></h3>
+<p><a href="https://github.com/ollama/ollama/releases/tag/v0.40.1">v0.40.1</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-08 · 발행처: Ollama Releases</li>
+<li>확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외)</li>
+<li>대조한 릴리스 태그: v0.40.1</li>
+<li>원문 API 게시 시각: 10/07/2026 23:22:59</li>
+<li>원문 조회 시각: 2026-10-11 05:53:39 UTC</li>
+<li>모델에 전달한 원문: 1166자 · 추출 본문 범위</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-4">자료 4<a hidden class="anchor" aria-hidden="true" href="#자료-4">#</a></h3>
+<p><a href="https://github.com/ggml-org/whisper.cpp/releases/tag/v1.9.5">v1.9.5</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-07 · 발행처: whisper.cpp Releases</li>
+<li>확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외)</li>
+<li>대조한 릴리스 태그: v1.9.5</li>
+<li>원문 API 게시 시각: 10/06/2026 17:39:17</li>
+<li>원문 조회 시각: 2026-10-11 05:53:39 UTC</li>
+<li>모델에 전달한 원문: 6000자 · 본문 일부 발췌</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-5">자료 5<a hidden class="anchor" aria-hidden="true" href="#자료-5">#</a></h3>
+<p><a href="https://github.com/microsoft/onnxruntime/releases/tag/plugin-ep-cuda%2Fv0.3.0">ONNX Runtime CUDA Plugin EP 0.3.0</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-09 · 발행처: ONNX Runtime Releases</li>
+<li>확인 범위: 피드 설명만(원문 확인 실패)</li>
+<li>원문 조회 시각: 2026-10-11 05:53:40 UTC</li>
+<li>원문 확인 실패: 본문 근거를 확보하지 못했다. 피드 설명보다 강한 주장으로 읽지 않는다.</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-6">자료 6<a hidden class="anchor" aria-hidden="true" href="#자료-6">#</a></h3>
+<p><a href="https://github.com/huggingface/trl/releases/tag/v1.15.0">v1.15.0</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-09 · 발행처: TRL Releases</li>
+<li>확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외)</li>
+<li>대조한 릴리스 태그: v1.15.0</li>
+<li>원문 API 게시 시각: 10/08/2026 19:26:48</li>
+<li>원문 조회 시각: 2026-10-11 05:53:40 UTC</li>
+<li>모델에 전달한 원문: 5999자 · 본문 일부 발췌</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="배경-1">배경 1<a hidden class="anchor" aria-hidden="true" href="#배경-1">#</a></h3>
+<p><a href="https://lmstudio.ai/docs/cli/runtime/runtime">LM Studio 런타임 관리</a></p>
+<ul>
+<li>조회 시각: 2026-10-11 05:53:40 UTC · 본문 접근·필수 주제 일치 확인</li>
+<li>분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다.</li>
+</ul>
+<h3 id="배경-2">배경 2<a hidden class="anchor" aria-hidden="true" href="#배경-2">#</a></h3>
+<p><a href="https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md">llama.cpp 백엔드 빌드 문서</a></p>
+<ul>
+<li>실제 읽은 문서: <a href="https://raw.githubusercontent.com/ggml-org/llama.cpp/master/docs/build.md">고정된 조회 경로</a></li>
+<li>조회 시각: 2026-10-11 05:53:41 UTC · 본문 접근·필수 주제 일치 확인</li>
+<li>분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다.</li>
+</ul>
+<h3 id="배경-3">배경 3<a hidden class="anchor" aria-hidden="true" href="#배경-3">#</a></h3>
+<p><a href="https://docs.pytorch.org/docs/stable/notes/get_start_xpu.html">PyTorch Intel GPU 시작 조건</a></p>
+<ul>
+<li>실제 읽은 문서: <a href="https://docs.pytorch.org/docs/2.14/notes/get_start_xpu.html">고정된 조회 경로</a></li>
+<li>조회 시각: 2026-10-11 05:53:46 UTC · 본문 접근·필수 주제 일치 확인</li>
+<li>분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다.</li>
+</ul>
+<h3 id="배경-4">배경 4<a hidden class="anchor" aria-hidden="true" href="#배경-4">#</a></h3>
+<p><a href="https://docs.openvino.ai/2026/about-openvino/release-notes-openvino/system-requirements.html">OpenVINO 시스템 요구 조건</a></p>
+<ul>
+<li>조회 시각: 2026-10-11 05:53:48 UTC · 본문 접근·필수 주제 일치 확인</li>
+<li>분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다.</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/weekly/">Weekly</a></li>
+      <li><a href="https://Han-think.github.io/tags/ai-research/">Ai-Research</a></li>
+      <li><a href="https://Han-think.github.io/tags/local-llm/">Local-Llm</a></li>
+      <li><a href="https://Han-think.github.io/tags/llama-cpp/">Llama-Cpp</a></li>
+      <li><a href="https://Han-think.github.io/tags/ollama/">Ollama</a></li>
+      <li><a href="https://Han-think.github.io/tags/mlx/">Mlx</a></li>
+      <li><a href="https://Han-think.github.io/tags/gguf/">Gguf</a></li>
+      <li><a href="https://Han-think.github.io/tags/quantization/">Quantization</a></li>
+      <li><a href="https://Han-think.github.io/tags/distillation/">Distillation</a></li>
+      <li><a href="https://Han-think.github.io/tags/fine-tuning/">Fine-Tuning</a></li>
+      <li><a href="https://Han-think.github.io/tags/benchmark/">Benchmark</a></li>
+      <li><a href="https://Han-think.github.io/tags/openvino/">Openvino</a></li>
+      <li><a href="https://Han-think.github.io/tags/onnx/">Onnx</a></li>
+      <li><a href="https://Han-think.github.io/tags/cuda/">Cuda</a></li>
+      <li><a href="https://Han-think.github.io/tags/vulkan/">Vulkan</a></li>
+      <li><a href="https://Han-think.github.io/tags/rocm/">Rocm</a></li>
+      <li><a href="https://Han-think.github.io/tags/pytorch/">Pytorch</a></li>
+      <li><a href="https://Han-think.github.io/tags/transformers/">Transformers</a></li>
+      <li><a href="https://Han-think.github.io/tags/huggingface/">Huggingface</a></li>
+      <li><a href="https://Han-think.github.io/tags/intel-view/">Intel-View</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
