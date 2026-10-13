@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오전 학습 | Docker와 Ollama, 데이터 영속성의 경계에서 마주한 혼란 | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-10-13 오전 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-10-13-am-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-10-13-am-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-10-13-am-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오전 학습 | Docker와 Ollama, 데이터 영속성의 경계에서 마주한 혼란">
+  <meta property="og:description" content="2026-10-13 오전 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-10-13T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-10-13T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오전 학습 | Docker와 Ollama, 데이터 영속성의 경계에서 마주한 혼란">
+  <meta name="twitter:description" content="2026-10-13 오전 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오전 학습 | Docker와 Ollama, 데이터 영속성의 경계에서 마주한 혼란",
+      "item": "https://Han-think.github.io/learning/2026-10-13-am-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오전 학습 | Docker와 Ollama, 데이터 영속성의 경계에서 마주한 혼란",
+  "name": "오전 학습 | Docker와 Ollama, 데이터 영속성의 경계에서 마주한 혼란",
+  "description": "2026-10-13 오전 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 Docker 이미지와 컨테이너의 핵심 개념과 명령어 정리 MariaDB 볼륨과 영속 데이터·SQL 실습의 경계 Docker와 Ollama, 그리고 나의 첫 수업 경험 Intel Arc, Docker·Vulkan 미인식과 CPU 수업의 괴리 총평 1. Docker 이미지와 컨테이너의 핵심 개념과 명령어 정리 무엇을 배웠나 Docker를 처음 접할 때 ‘이미지 다운로드’와 ‘컨테이너 실행’을 혼동했던 점이 가장 큰 실수였습니다. docker pull만으로는 프로그램이 실행되지 않으며, 실제 서비스를 위해서는 별도의 run 명령어가 필수적입니다. 또한, 삭제 명령어의 구조가 생각보다 복잡해 docker rm image와 같은 직관적인 표기가 아닌 docker image rm과 같이 정확한 구문을 외워야 한다는 점을 뼈저리게 느꼈습니다.\n헷갈렸던 점 처음 Docker를 접했을 때 docker pull만으로 이미지를 다운로드한 줄 알았지만, 실제로는 별도로 컨테이너를 실행해야 한다는 점이 가장 큰 혼란이었습니다. 또한 docker rm image와 같이 직관적으로 생각하다가 docker rmi나 docker container rm과 같은 정확한 명령어 구조를 구분하지 못해 삭제에 실패했던 경험이 있습니다.\n정리된 이해 Docker는 이미지를 기반으로 실제 실행 인스턴스인 컨테이너를 별도로 생성하고 관리하는 구조입니다. docker pull 명령어는 이미지만 다운로드할 뿐 자동으로 실행되지 않으므로, 반드시 run 명령을 통해 컨테이너를 시작해야 합니다. 특히 docker ps는 현재 실행 중인 컨테이너의 상태를 확인하는 데 집중해야 하며, 종료된 컨테이너까지 포함해 전체 목록을 보고 싶을 때는 -a 옵션을 사용하는 것이 중요합니다.\n# 이미지 다운로드 (Pull) docker pull mariadb:latest # 컨테이너 실행 (Run) - MariaDB 예시 docker run -d \\ --name my_mariadb \\ -e MARIADB_ROOT_PASSWORD=rootpass \\ -p 3306:3306 \\ mariadb:latest # 이미지 목록 확인 docker images # 실행 중인 컨테이너 확인 (ps) docker ps # 종료된 컨테이너 포함 전체 목록 조회 docker ps -a # 컨테이너 삭제 docker rm my_mariadb # 이미지 삭제 docker rmi mariadb:latest 2. MariaDB 볼륨과 영속 데이터·SQL 실습의 경계 무엇을 배웠나 Docker 컨테이너와 데이터의 생명주기를 분리하여 이해하는 것이 핵심이며, 볼륨 마운트를 통해 로컬 폴더와 컨테이너 데이터를 연결하면 삭제 후 재생성 시에도 데이터가 보존됩니다. MariaDB 실습에서는 SQL 명령어의 순서뿐만 아니라 .sh 스크립트 실행 시 주의해야 할 점과 CREATE DATABASE 등 기본적인 DB 생성 절차를 이해하는 것이 무엇보다 중요합니다.\n헷갈렸던 점 처음 Docker와 DB를 연동할 때 가장 헷갈렸던 지점은 “컨테이너를 지워도 데이터가 남는가?“라는 질문에 대한 답을 찾기 어려웠습니다. 강사님의 수업 방식은 볼륨 마운트를 통해 로컬 폴더와 컨테이너의 데이터를 연결하지만, 실제 docker container rm 명령을 실행했을 때 데이터가 어떻게 되는지 감이 잡히지 않았습니다. SQL 명령어의 순서도 중요했지만, 그보다 더 기본적인 “데이터가 실제로 어디에 저장되고 어떻게 보존되는지\"에 대한 이해가 선행되지 않아 혼란이 컸습니다.\n정리된 이해 Docker 컨테이너와 데이터 스토리지를 분리하여 이해하는 것이 핵심입니다. image는 프로그램 틀, container는 실행 상태, volume/bind mount는 데이터를 저장하는 공간으로 구분해야 합니다. 볼륨 마운트만으로는 DB 데이터가 자동 보존되지 않으며, 컨테이너 재생성 후 실제 DB를 조회하여 확인해야 합니다.\n# 볼륨 마운트 예시 (Windows 경로와 컨테이너 내부 연결) docker run -d -p 3306:3306 --name mariadb \\ -v C:/mysql_data:/var/lib/mysql \\ -e MARIADB_ROOT_PASSWORD=secure_password \\ mariadb:latest 3. Docker와 Ollama, 그리고 나의 첫 수업 경험 무엇을 배웠나 Docker와 Ollama를 결합할 때 포트 번호 매핑과 컨테이너 이름은 필수적으로 숙지해야 할 기본 설정 사항입니다. 특히 -p 옵션은 호스트 포트와 컨테이너 내부 포트의 관계를 정의하며, 임의로 이름을 붙인 컨테이너는 명령어 입력 시 혼동을 줄 수 있습니다. 또한 GPU 가속 옵션의 유무와 상관없이 Docker 자체는 CPU 환경에서도 정상적으로 동작할 수 있음을 확인했습니다.\n헷갈렸던 점 Docker와 Ollama를 결합할 때 포트 번호 매핑 방식과 컨테이너 이름 지정법에 대한 이해 부족으로 인해 접속 오류와 명령어 실수를 경험했습니다.\n특히 호스트 포트와 컨테이너 내부 포트의 관계, 그리고 임의로 지정한 컨테이너 이름을 사용할 경우 docker exec 등 명령어 입력 시 기존 예시와 혼동되어 당황했던 점이 가장 큰 혼란이었습니다.\n정리된 이해 Docker와 Ollama는 호스트 포트와 컨테이너 내부 포트를 -p 옵션으로 매핑하며, 이때 localhost:호스트포트로 접속해야 합니다. 또한 컨테이너 이름은 임의 지정 가능하지만, 명령어 실행 시 반드시 해당 이름을 정확히 입력해야 합니다. GPU 환경 여부와 상관없이 Docker의 네트워크 구조를 이해하는 것이 핵심입니다.\ndocker run -d -p 11435:11434 --gpus all ollama/ollama 4. Intel Arc, Docker·Vulkan 미인식과 CPU 수업의 괴리 무엇을 배웠나 오늘 수업은 GPU 가속 여부를 확인하는 과정이었으며, Intel Arc 환경에서 ollama ps가 보여주는 CPU 표시와 실제 실행 속도 사이의 차이를 명확히 인식하게 되었다. 특히 llamacpp라는 엔진 이름이 GPU 가속을 연상케 했지만, 실제로는 추론 전용 엔진일 뿐 하드웨어 백엔드의 활성화 여부를 판단하는 지표가 되지 않는다는 점을 깨닫고 혼란을 겪었다. 이러한 경험을 통해 ‘속도 체감’과 ‘하드웨어 프로세서 표시’는 별개의 문제이며, Docker 환경 내에서의 그래픽 카드 인식 여부가 RAG 파이프라인 구축의 핵심 열쇠임을 이해하게 되었다.\n헷갈렸던 점 강사님의 NVIDIA CUDA 기준 예시와 제 Intel Arc 환경 사이의 차이로 인해, GPU 가속 여부를 속도 체감만으로 판단하다가 실제 프로세서 표시를 보고 충격을 받았습니다. 특히 llamacpp라는 실행 엔진 이름이 GPU 가속과 연관된 것으로 오해하게 되었고, bge-m3 모델이 Docker 환경에서 정상적으로 목록에 뜨지 않아 RAG 파이프라인에서의 동작을 확신할 수 없었습니다.\n정리된 이해 Docker 환경 내 Ollama는 Intel Arc 그래픽 카드가 인식되지 않아 CPU 전적으로 추론이 이루어지며, llamacpp 실행 엔진은 GPU 가속 여부와 무관하게 모델 처리를 담당한다는 점을 확인했다.\n# LearningLog 워킹 노트: Intel Arc·Vulkan 검증과 CPU 수업 환경 확정 🟡 초보자 시점, 학습자의 혼란 오늘 수업은 “GPU 가속이 되는가 안 되는가\"에 대한 확인 작업처럼 느껴졌다. 강사님은 NVIDIA CUDA 환경을 기준으로 예시를 들었지만, 저는 Intel Arc를 쓰고 있어 모든 과정이 낯설었다. 특히 ollama ps로 모델이 돌아가는 모습을 보고도, 그게 realmente GPU에서 돌고 있는지 CPU에서 돌고 있는지 구별하기가 어려웠다. “모델 응답이 꽤 빠르니 GPU를 쓰는구나\"라고 직관적으로 생각했던 제게, PROCESSOR가 100% CPU라고 표시된 것은 큰 충격이었다. ‘Docker 안에서도 내 그래픽 카드가 인식되지 않는다’는 사실은, 그동안 내가 상상해온 것과 다른 현실을 마주하게 했다.\n📌 무엇이 헷갈렸나 가장 혼란스러웠던 지점은 llamacpp라는 실행 엔진의 정체성이다. 러너 이름이 llamacpp라고 되어 있으니, 이것이 Vulkan이나 CUDA와 연동된 가속 엔진인 줄 알았다. 실제로 모델이 빠르게 답변을 주니 “아, GPU가 잘 작동하는구나\"라고 안심했던 기억이 있다. 하지만 ollama ps에 표시된 RUNNER llamacpp는 단순히 추론을 담당하는 엔진일 뿐, GPU 백엔드가 활성화된 증거는 아니었다. ‘속도 체감’과 ‘하드웨어 프로세서 표시’는 별개의 문제였고, 이 부분을 구분하지 못하고 있었다.\n또 하나의 헷갈림은 bge-m3 모델에 대한 부분이었다. 임베딩 모델이 대화형으로 쓰이면 예상한 응답이 나오지 않을 수 있다는 강사님의 주석을 보고, 실제로 실행해보았으나 Docker 내에서는 모델 목록 확인이 되지 않았다. “다운로드와 실행 성공 여부는 불확실하다\"는 판단 하에, 저는 이 부분을 보류했지만, 이것이 실제 RAG 파이프라인에서 어떻게 작용할지 감이 안 잡혔다.\n🧹 정리된 이해 현재 제 상황은 명확해졌다.\nDocker 환경 내 Ollama: Intel Arc 그래픽 카드(/dev/dri, /dev/dxg)가 인식되지 총평 오늘 오전 전체에서 배운 것 Docker 이미지와 컨테이너의 생명주기 차이를 명확히 이해하고, docker pull과 run 명령어의 필수적 구분 및 정확한 삭제 구문을 숙지했습니다. 또한 MariaDB 볼륨을 통한 데이터 영속화와 SQL 실습의 기본 절차를 학습했으며, Docker 환경에서 포트 매핑과 컨테이너명 관리가 핵심임을 확인하고 GPU 인식 여부와 속도 체감 사이의 차이를 이해하게 되었습니다.\n다음에 조심할 것 Docker 명령어는 pull과 run을 반드시 구분하여 사용하고, 컨테이너 이름과 포트 매핑 옵션은 임의로 지정하지 않도록 꼼꼼히 확인해야 한다.\n특히 MariaDB와 같은 데이터베이스 실습 시에는 볼륨 마운트를 통해 데이터를 영구 보존하는 구조를 명확히 이해하고, GPU 가속 여부와 상관없이 Docker 환경 자체는 CPU에서도 정상 동작한다는 점에 유의하여 속도 차이를 정확히 판단해야 한다.\n다음 복습 주제 Docker 이미지와 컨테이너의 생명주기 관리와 docker rm과 같은 명령어 구문의 정확한 외우기가 가장 시급합니다. 또한, Ollama와 같은 AI 모델 실행 시 GPU 가속 여부 확인을 위해 하드웨어 프로세서 표시보다는 실제 속도 체감에 집중하는 연습이 필요합니다. 마지막으로, Docker 환경에서 볼륨 마운트를 통한 데이터 영속화 전략과 포트 매핑 설정의 중요성을 재확인하여 실전 적용 능력을 키워야 합니다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1150",
+  "inLanguage": "en",
+  "datePublished": "2026-10-13T00:00:00Z",
+  "dateModified": "2026-10-13T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-10-13-am-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오전 학습 | Docker와 Ollama, 데이터 영속성의 경계에서 마주한 혼란
+    </h1>
+    <div class="post-description">
+      2026-10-13 오전 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-10-13 00:00:00 +0000 UTC'>2026년 10월 13일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-docker-%EC%9D%B4%EB%AF%B8%EC%A7%80%EC%99%80-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%EC%9D%98-%ED%95%B5%EC%8B%AC-%EA%B0%9C%EB%85%90%EA%B3%BC-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC">Docker 이미지와 컨테이너의 핵심 개념과 명령어 정리</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-mariadb-%EB%B3%BC%EB%A5%A8%EA%B3%BC-%EC%98%81%EC%86%8D-%EB%8D%B0%EC%9D%B4%ED%84%B0sql-%EC%8B%A4%EC%8A%B5%EC%9D%98-%EA%B2%BD%EA%B3%84">MariaDB 볼륨과 영속 데이터·SQL 실습의 경계</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-docker%EC%99%80-ollama-%EA%B7%B8%EB%A6%AC%EA%B3%A0-%EB%82%98%EC%9D%98-%EC%B2%AB-%EC%88%98%EC%97%85-%EA%B2%BD%ED%97%98">Docker와 Ollama, 그리고 나의 첫 수업 경험</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-intel-arc-dockervulkan-%EB%AF%B8%EC%9D%B8%EC%8B%9D%EA%B3%BC-cpu-%EC%88%98%EC%97%85%EC%9D%98-%EA%B4%B4%EB%A6%AC">Intel Arc, Docker·Vulkan 미인식과 CPU 수업의 괴리</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-docker-이미지와-컨테이너의-핵심-개념과-명령어-정리">1. Docker 이미지와 컨테이너의 핵심 개념과 명령어 정리<a hidden class="anchor" aria-hidden="true" href="#1-docker-이미지와-컨테이너의-핵심-개념과-명령어-정리">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>Docker를 처음 접할 때 &lsquo;이미지 다운로드&rsquo;와 &lsquo;컨테이너 실행&rsquo;을 혼동했던 점이 가장 큰 실수였습니다. <code>docker pull</code>만으로는 프로그램이 실행되지 않으며, 실제 서비스를 위해서는 별도의 <code>run</code> 명령어가 필수적입니다. 또한, 삭제 명령어의 구조가 생각보다 복잡해 <code>docker rm image</code>와 같은 직관적인 표기가 아닌 <code>docker image rm</code>과 같이 정확한 구문을 외워야 한다는 점을 뼈저리게 느꼈습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>처음 Docker를 접했을 때 <code>docker pull</code>만으로 이미지를 다운로드한 줄 알았지만, 실제로는 별도로 컨테이너를 실행해야 한다는 점이 가장 큰 혼란이었습니다. 또한 <code>docker rm image</code>와 같이 직관적으로 생각하다가 <code>docker rmi</code>나 <code>docker container rm</code>과 같은 정확한 명령어 구조를 구분하지 못해 삭제에 실패했던 경험이 있습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>Docker는 이미지를 기반으로 실제 실행 인스턴스인 컨테이너를 별도로 생성하고 관리하는 구조입니다. <code>docker pull</code> 명령어는 이미지만 다운로드할 뿐 자동으로 실행되지 않으므로, 반드시 <code>run</code> 명령을 통해 컨테이너를 시작해야 합니다. 특히 <code>docker ps</code>는 현재 실행 중인 컨테이너의 상태를 확인하는 데 집중해야 하며, 종료된 컨테이너까지 포함해 전체 목록을 보고 싶을 때는 <code>-a</code> 옵션을 사용하는 것이 중요합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 이미지 다운로드 (Pull)</span>
+</span></span><span style="display:flex;"><span>docker pull mariadb:latest
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 컨테이너 실행 (Run) - MariaDB 예시</span>
+</span></span><span style="display:flex;"><span>docker run -d <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>  --name my_mariadb <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>  -e MARIADB_ROOT_PASSWORD<span style="color:#f92672">=</span>rootpass <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>  -p 3306:3306 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>  mariadb:latest
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 이미지 목록 확인</span>
+</span></span><span style="display:flex;"><span>docker images
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 실행 중인 컨테이너 확인 (ps)</span>
+</span></span><span style="display:flex;"><span>docker ps
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 종료된 컨테이너 포함 전체 목록 조회</span>
+</span></span><span style="display:flex;"><span>docker ps -a
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 컨테이너 삭제</span>
+</span></span><span style="display:flex;"><span>docker rm my_mariadb
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 이미지 삭제</span>
+</span></span><span style="display:flex;"><span>docker rmi mariadb:latest
+</span></span></code></pre></div><h2 id="2-mariadb-볼륨과-영속-데이터sql-실습의-경계">2. MariaDB 볼륨과 영속 데이터·SQL 실습의 경계<a hidden class="anchor" aria-hidden="true" href="#2-mariadb-볼륨과-영속-데이터sql-실습의-경계">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>Docker 컨테이너와 데이터의 생명주기를 분리하여 이해하는 것이 핵심이며, 볼륨 마운트를 통해 로컬 폴더와 컨테이너 데이터를 연결하면 삭제 후 재생성 시에도 데이터가 보존됩니다. MariaDB 실습에서는 SQL 명령어의 순서뿐만 아니라 <code>.sh</code> 스크립트 실행 시 주의해야 할 점과 <code>CREATE DATABASE</code> 등 기본적인 DB 생성 절차를 이해하는 것이 무엇보다 중요합니다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>처음 Docker와 DB를 연동할 때 가장 헷갈렸던 지점은 &ldquo;컨테이너를 지워도 데이터가 남는가?&ldquo;라는 질문에 대한 답을 찾기 어려웠습니다. 강사님의 수업 방식은 볼륨 마운트를 통해 로컬 폴더와 컨테이너의 데이터를 연결하지만, 실제 <code>docker container rm</code> 명령을 실행했을 때 데이터가 어떻게 되는지 감이 잡히지 않았습니다. SQL 명령어의 순서도 중요했지만, 그보다 더 기본적인 &ldquo;데이터가 실제로 어디에 저장되고 어떻게 보존되는지&quot;에 대한 이해가 선행되지 않아 혼란이 컸습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>Docker 컨테이너와 데이터 스토리지를 분리하여 이해하는 것이 핵심입니다. <code>image</code>는 프로그램 틀, <code>container</code>는 실행 상태, <code>volume/bind mount</code>는 데이터를 저장하는 공간으로 구분해야 합니다. 볼륨 마운트만으로는 DB 데이터가 자동 보존되지 않으며, 컨테이너 재생성 후 실제 DB를 조회하여 확인해야 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 볼륨 마운트 예시 (Windows 경로와 컨테이너 내부 연결)</span>
+</span></span><span style="display:flex;"><span>docker run -d -p 3306:3306 --name mariadb <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>  -v C:/mysql_data:/var/lib/mysql <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>  -e MARIADB_ROOT_PASSWORD<span style="color:#f92672">=</span>secure_password <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>  mariadb:latest
+</span></span></code></pre></div><h2 id="3-docker와-ollama-그리고-나의-첫-수업-경험">3. Docker와 Ollama, 그리고 나의 첫 수업 경험<a hidden class="anchor" aria-hidden="true" href="#3-docker와-ollama-그리고-나의-첫-수업-경험">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>Docker와 Ollama를 결합할 때 포트 번호 매핑과 컨테이너 이름은 필수적으로 숙지해야 할 기본 설정 사항입니다. 특히 <code>-p</code> 옵션은 호스트 포트와 컨테이너 내부 포트의 관계를 정의하며, 임의로 이름을 붙인 컨테이너는 명령어 입력 시 혼동을 줄 수 있습니다. 또한 GPU 가속 옵션의 유무와 상관없이 Docker 자체는 CPU 환경에서도 정상적으로 동작할 수 있음을 확인했습니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>Docker와 Ollama를 결합할 때 포트 번호 매핑 방식과 컨테이너 이름 지정법에 대한 이해 부족으로 인해 접속 오류와 명령어 실수를 경험했습니다.</p>
+<p>특히 호스트 포트와 컨테이너 내부 포트의 관계, 그리고 임의로 지정한 컨테이너 이름을 사용할 경우 <code>docker exec</code> 등 명령어 입력 시 기존 예시와 혼동되어 당황했던 점이 가장 큰 혼란이었습니다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>Docker와 Ollama는 호스트 포트와 컨테이너 내부 포트를 <code>-p</code> 옵션으로 매핑하며, 이때 <code>localhost:호스트포트</code>로 접속해야 합니다. 또한 컨테이너 이름은 임의 지정 가능하지만, 명령어 실행 시 반드시 해당 이름을 정확히 입력해야 합니다. GPU 환경 여부와 상관없이 Docker의 네트워크 구조를 이해하는 것이 핵심입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker run -d -p 11435:11434 --gpus all ollama/ollama
+</span></span></code></pre></div><h2 id="4-intel-arc-dockervulkan-미인식과-cpu-수업의-괴리">4. Intel Arc, Docker·Vulkan 미인식과 CPU 수업의 괴리<a hidden class="anchor" aria-hidden="true" href="#4-intel-arc-dockervulkan-미인식과-cpu-수업의-괴리">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>오늘 수업은 GPU 가속 여부를 확인하는 과정이었으며, Intel Arc 환경에서 <code>ollama ps</code>가 보여주는 CPU 표시와 실제 실행 속도 사이의 차이를 명확히 인식하게 되었다. 특히 <code>llamacpp</code>라는 엔진 이름이 GPU 가속을 연상케 했지만, 실제로는 추론 전용 엔진일 뿐 하드웨어 백엔드의 활성화 여부를 판단하는 지표가 되지 않는다는 점을 깨닫고 혼란을 겪었다. 이러한 경험을 통해 &lsquo;속도 체감&rsquo;과 &lsquo;하드웨어 프로세서 표시&rsquo;는 별개의 문제이며, Docker 환경 내에서의 그래픽 카드 인식 여부가 RAG 파이프라인 구축의 핵심 열쇠임을 이해하게 되었다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>강사님의 NVIDIA CUDA 기준 예시와 제 Intel Arc 환경 사이의 차이로 인해, GPU 가속 여부를 속도 체감만으로 판단하다가 실제 프로세서 표시를 보고 충격을 받았습니다. 특히 <code>llamacpp</code>라는 실행 엔진 이름이 GPU 가속과 연관된 것으로 오해하게 되었고, <code>bge-m3</code> 모델이 Docker 환경에서 정상적으로 목록에 뜨지 않아 RAG 파이프라인에서의 동작을 확신할 수 없었습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>Docker 환경 내 Ollama는 Intel Arc 그래픽 카드가 인식되지 않아 CPU 전적으로 추론이 이루어지며, <code>llamacpp</code> 실행 엔진은 GPU 가속 여부와 무관하게 모델 처리를 담당한다는 점을 확인했다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># LearningLog 워킹 노트: Intel Arc·Vulkan 검증과 CPU 수업 환경 확정
+</span></span></code></pre></div><h3 id="-초보자-시점-학습자의-혼란">🟡 초보자 시점, 학습자의 혼란<a hidden class="anchor" aria-hidden="true" href="#-초보자-시점-학습자의-혼란">#</a></h3>
+<p>오늘 수업은 &ldquo;GPU 가속이 되는가 안 되는가&quot;에 대한 확인 작업처럼 느껴졌다. 강사님은 NVIDIA CUDA 환경을 기준으로 예시를 들었지만, 저는 Intel Arc를 쓰고 있어 모든 과정이 낯설었다. 특히 <code>ollama ps</code>로 모델이 돌아가는 모습을 보고도, 그게 realmente GPU에서 돌고 있는지 CPU에서 돌고 있는지 구별하기가 어려웠다. &ldquo;모델 응답이 꽤 빠르니 GPU를 쓰는구나&quot;라고 직관적으로 생각했던 제게, <code>PROCESSOR</code>가 <code>100% CPU</code>라고 표시된 것은 큰 충격이었다. &lsquo;Docker 안에서도 내 그래픽 카드가 인식되지 않는다&rsquo;는 사실은, 그동안 내가 상상해온 것과 다른 현실을 마주하게 했다.</p>
+<h3 id="-무엇이-헷갈렸나">📌 무엇이 헷갈렸나<a hidden class="anchor" aria-hidden="true" href="#-무엇이-헷갈렸나">#</a></h3>
+<p>가장 혼란스러웠던 지점은 <code>llamacpp</code>라는 실행 엔진의 정체성이다. 러너 이름이 <code>llamacpp</code>라고 되어 있으니, 이것이 Vulkan이나 CUDA와 연동된 가속 엔진인 줄 알았다. 실제로 모델이 빠르게 답변을 주니 &ldquo;아, GPU가 잘 작동하는구나&quot;라고 안심했던 기억이 있다. 하지만 <code>ollama ps</code>에 표시된 <code>RUNNER llamacpp</code>는 단순히 추론을 담당하는 엔진일 뿐, GPU 백엔드가 활성화된 증거는 아니었다. &lsquo;속도 체감&rsquo;과 &lsquo;하드웨어 프로세서 표시&rsquo;는 별개의 문제였고, 이 부분을 구분하지 못하고 있었다.</p>
+<p>또 하나의 헷갈림은 <code>bge-m3</code> 모델에 대한 부분이었다. 임베딩 모델이 대화형으로 쓰이면 예상한 응답이 나오지 않을 수 있다는 강사님의 주석을 보고, 실제로 실행해보았으나 Docker 내에서는 모델 목록 확인이 되지 않았다. &ldquo;다운로드와 실행 성공 여부는 불확실하다&quot;는 판단 하에, 저는 이 부분을 보류했지만, 이것이 실제 RAG 파이프라인에서 어떻게 작용할지 감이 안 잡혔다.</p>
+<h3 id="-정리된-이해">🧹 정리된 이해<a hidden class="anchor" aria-hidden="true" href="#-정리된-이해">#</a></h3>
+<p>현재 제 상황은 명확해졌다.</p>
+<ol>
+<li><strong>Docker 환경 내 Ollama</strong>: Intel Arc 그래픽 카드(<code>/dev/dri</code>, <code>/dev/dxg</code>)가 인식되지</li>
+</ol>
+<h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오전-전체에서-배운-것">오늘 오전 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오전-전체에서-배운-것">#</a></h3>
+<p>Docker 이미지와 컨테이너의 생명주기 차이를 명확히 이해하고, <code>docker pull</code>과 <code>run</code> 명령어의 필수적 구분 및 정확한 삭제 구문을 숙지했습니다. 또한 MariaDB 볼륨을 통한 데이터 영속화와 SQL 실습의 기본 절차를 학습했으며, Docker 환경에서 포트 매핑과 컨테이너명 관리가 핵심임을 확인하고 GPU 인식 여부와 속도 체감 사이의 차이를 이해하게 되었습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>Docker 명령어는 <code>pull</code>과 <code>run</code>을 반드시 구분하여 사용하고, 컨테이너 이름과 포트 매핑 옵션은 임의로 지정하지 않도록 꼼꼼히 확인해야 한다.</p>
+<p>특히 MariaDB와 같은 데이터베이스 실습 시에는 볼륨 마운트를 통해 데이터를 영구 보존하는 구조를 명확히 이해하고, GPU 가속 여부와 상관없이 Docker 환경 자체는 CPU에서도 정상 동작한다는 점에 유의하여 속도 차이를 정확히 판단해야 한다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>Docker 이미지와 컨테이너의 생명주기 관리와 <code>docker rm</code>과 같은 명령어 구문의 정확한 외우기가 가장 시급합니다. 또한, Ollama와 같은 AI 모델 실행 시 GPU 가속 여부 확인을 위해 하드웨어 프로세서 표시보다는 실제 속도 체감에 집중하는 연습이 필요합니다. 마지막으로, Docker 환경에서 볼륨 마운트를 통한 데이터 영속화 전략과 포트 매핑 설정의 중요성을 재확인하여 실전 적용 능력을 키워야 합니다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://Han-think.github.io/learning/2026-10-13-pm-daily/">
+    <span class="title">Next »</span>
+    <span>오후 학습 | Docker Ollama와 LangChain 스트리밍 연결하기</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

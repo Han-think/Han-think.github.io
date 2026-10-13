@@ -213,6 +213,22 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">오전 학습 | 상태 공유와 렌더링 흐름 분리, 그리고 Redux 핵심 회로도 이해하기
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 상태 공유와 렌더링 흐름의 분리 Redux 핵심 회로도: dispatch → reducer → store → useSelector → 화면갱신 비동기 통신과 상태 관리의 분리 총평 1. 상태 공유와 렌더링 흐름의 분리 무엇을 배웠나 React Context는 상태를 멀리 있는 컴포넌트까지 전달하는 ‘통로’ 역할을 하며, useMemo는 의존값이 바뀔 때만 계산을 재실행하여 렌더링 성능을 최적화하는 도구다. 이 두 기능은 각각 상태 공유 경로와 재계산 시점을 제어한다는 점에서 별개의 개념으로 분리되어 이해해야 한다.
+헷갈렸던 점 Context는 상태를 공유하는 통로일 뿐, 상태 자체를 생성하거나 관리하는 기능이 아니라는 점이 가장 혼란스러웠습니다. 또한 useMemo가 단순히 값을 저장하는 것이 아니라, 의존값에 따라 렌더링 시점을 제어하는 성능 최적화 도구라는 점도 명확히 구분하지 못해 애를 먹었습니다. 결국 두 기능은 ‘상태 공유 경로(Context)‘와 ‘재계산 시점 제어(useMemo)‘라는 완전히 다른 목적을 가지고 있다는 점을 이해하는 데 시간이 걸렸습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-25 00:00:00 +0000 UTC'>2026년 8월 25일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오전 학습 | 상태 공유와 렌더링 흐름 분리, 그리고 Redux 핵심 회로도 이해하기" href="https://Han-think.github.io/learning/2026-08-25-am-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">오후 학습 | Redux 데이터 흐름 재정비와 마이그레이션 과정에서 마주한 인지 부하 관리하기
     </h2>
   </header>
@@ -349,21 +365,6 @@
 
 <span title='2026-08-21 00:00:00 +0000 UTC'>2026년 8월 21일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
   <a class="entry-link" aria-label="post link to 입력→처리→출력 파이프라인으로 DOM 입출력 해결하기 DOM 스타일·클래스·속성 명확히 구분하기 데이터 구조와 입력 값 의미 정확히 파악하기 순회와 정렬 개념을 명확히 분리하기" href="https://Han-think.github.io/learning/2026-08-21-am-daily/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오전 학습 | 리팩터링으로 다진 구조, 라우팅과 차트로 완성한 다음 단계
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 React 리팩터링 흐름 복습: 초보자의 구조 이해하기 React Router 비동기 상태 관리 복습 무엇이 헷갈렸나 정리된 이해 실습 예시 (오늘의 전환 과정) 자동 채점 계약과 기능 구현의 균형 카카오 지도 SDK와 React의 연결 고리 React Bootstrap 버튼 UI 입문하기 Next.js Link, 차트 페이지 라우팅 구성하기 MUI X Charts 핵심 prop 분류와 학습 포인트 📌 핵심 요약 🔑 핵심 prop 분류 💡 문법의 요령 📊 핵심 코드 예시 총평 1. React 리팩터링 흐름 복습: 초보자의 구조 이해하기 무엇을 배웠나 리팩터링은 화면을 바꾸는 것이 아니라, 같은 기능을 유지하면서 내부 구조를 개선하는 작업이라는 점을 명확히 이해했습니다. 특히 CSS Modules와 styled-components가 클래스 이름 격리나 JavaScript 템플릿 리터럴을 통해 스타일 관리의 방식을 어떻게 변화시키는지 구체적인 예시를 보며 체감할 수 있었습니다. 단순히 문법을 익히는 것을 넘어, 코드 관리 방식의 차이를 인지하는 연습이 무엇보다 중요하다고 느꼈습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-08-20 00:00:00 +0000 UTC'>2026년 8월 20일</span>&nbsp;·&nbsp;<span>11 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오전 학습 | 리팩터링으로 다진 구조, 라우팅과 차트로 완성한 다음 단계" href="https://Han-think.github.io/learning/2026-08-20-am-daily/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
