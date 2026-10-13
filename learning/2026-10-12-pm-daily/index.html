@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오후 학습 | YOLO 모델 선택과 데이터 매칭으로 완성하는 효율적인 학습 workflow | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-10-12 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-10-12-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-10-12-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-10-12-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오후 학습 | YOLO 모델 선택과 데이터 매칭으로 완성하는 효율적인 학습 workflow">
+  <meta property="og:description" content="2026-10-12 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-10-12T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-10-12T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오후 학습 | YOLO 모델 선택과 데이터 매칭으로 완성하는 효율적인 학습 workflow">
+  <meta name="twitter:description" content="2026-10-12 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오후 학습 | YOLO 모델 선택과 데이터 매칭으로 완성하는 효율적인 학습 workflow",
+      "item": "https://Han-think.github.io/learning/2026-10-12-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오후 학습 | YOLO 모델 선택과 데이터 매칭으로 완성하는 효율적인 학습 workflow",
+  "name": "오후 학습 | YOLO 모델 선택과 데이터 매칭으로 완성하는 효율적인 학습 workflow",
+  "description": "2026-10-12 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 영상 프레임 추출과 로컬 자동 후보 수집 workflow YOLO Detection/Segmentation 분리 학습 핵심 정리 📌 모델 및 가중치 매칭 (Code Block) 📋 데이터 설정 필수 조건 (Code Block) ⚙️ 환경별 하이퍼파라미터 조정 (Code Block) 웹캠 테스트에서 모델 성능 검증의 함정 데이터 정리와 Git 경계: 중복과 재현성의 구분 Docker Desktop과 WSL2의 실제 관계와 명령어 흐름 정리 1. 영상 프레임 추출과 로컬 자동 후보 수집 workflow 무엇을 배웠나 영상 프레임 추출 과정에서 수동 저장과 자동 모델 검출 사이에서 균형을 잡는 것이 데이터 다양성을 확보하는 핵심임을 깨달았습니다. 단순히 일정 간격으로 프레임을 캡처하는 것만으로는 의도치 않은 편향이 발생할 위험이 있어, 원본 영상을 기준으로 한 후보 수집 후 사람이 직접 검수하는 워크플로우가 필요하다고 판단했습니다. 또한 저장 해상도와 미리보기 해상도를 분리하여 관리하면 원본 변형을 최소화하면서도 효율적인 데이터 전처리가 가능하다는 점을 이해하게 되었습니다.\n헷갈렸던 점 수동 저장 방식은 프레임 선택에 대한 통제력을 주지만, 영상 전체를 일일이 확인해야 해 시간이 많이 걸리는 단점이 있었습니다. 반면 자동 추출은 시간 간격 설정에 따라 원하는 프레임이 실제로 캡처되지 않아 데이터가 편중될 위험이 있어 균형 잡힌 접근이 필요했습니다. 특히 모델이 이미 잘 아는 대상만 수집하게 되면 학습 데이터의 다양성이 떨어져 새로운 대상 탐지에 취약해질 수 있다는 점이 가장 큰 우려였습니다.\n정리된 이해 영상 속 모든 프레임을 일정 간격으로 추출하면, 모델이 이미 잘 아는 대상만 편향적으로 수집되는 것을 방지할 수 있어 데이터의 다양성을 확보하는 데 유리하다. 다만 실제 저장 간격이 영상의 FPS와 정확히 맞지 않을 경우 의도치 않은 시간 간격 차이가 발생할 수 있으므로, 이후 사람에 의한 검수 과정을 통해 오탐과 미탐을 걸러내는 것이 필수적이다. 따라서 자동으로 후보를 먼저 확보한 뒤, 사람이 직접 라벨링을 검토하는 워크플로우가 좋은 학습 데이터를 만드는 핵심적인 방법이다.\n# 영상 프레임 추출 및 자동 후보 수집을 위한 핵심 로직 import cv2 import os from pathlib import Path def extract_frames_auto(video_path, output_dir, interval_sec=1.0): \"\"\" 주어진 영상에서 일정 시간 간격으로 원본 해상도 프레임을 추출합니다. Args: video_path (str): 입력 영상 경로 output_dir (str): 저장할 디렉토리 경로 interval_sec (float): 프레임 추출 간격(초) \"\"\" cap = cv2.VideoCapture(video_path) if not cap.isOpened(): print(f\"Error: Cannot open video {video_path}\") return # 영상 정보 가져오기 fps = cap.get(cv2.CAP_PROP_FPS) frame_interval = int(fps * interval_sec) # 초 단위를 프레임 수로 변환 os.makedirs(output_dir, exist_ok=True) saved_count = 0 frame_count = 0 while True: ret, frame = cap.read() if not ret: break # 간격에 맞는 프레임만 저장 (원본 해상도 유지) if frame_count % frame_interval == 0: filename = os.path.join(output_dir, f\"frame_{saved_count:04d}.jpg\") cv2.imwrite(filename, frame) # 원본 품질로 저장 saved_count += 1 frame_count += 1 cap.release() print(f\"Extracted {saved_count} frames from {video_path}\") # 사용 예시 # extract_frames_auto(\"input_video.mp4\", \"output_frames\", interval_sec=2.0) 2. YOLO Detection/Segmentation 분리 학습 핵심 정리 무엇을 배웠나 YOLO 모델 선택과 라벨 형태를 반드시 매칭해야 하며, data.yaml의 클래스 정의가 모델 입력과 일치해야 한다. Detection은 박스(BBox), Segmentation은 폴리곤/마스크 라벨을 사용하며, 사전학습 weight도 detect와 seg 버전이 따로 존재한다. epochs나 batch 같은 하이퍼파라미터는 장치 환경에 따라 학습 속도와 안정성에 직접적인 영향을 주므로, 내 XPU 환경에서는 값을 조정하는 것이 중요하다.\n헷갈렸던 점 가장 큰 혼란은 라벨 형태(박스 vs 폴리곤)와 가중치 종류(detect vs seg)가 서로 다른 모델에 적용될 경우 학습이 꼬일 수 있다는 점이었습니다. 특히 mouse와 같은 세부 카테고리가 섞이면 클래스 수가 어떻게 변하는지, 기존 사전학습 weight와 호환되는지 감조차 잡히지 않았습니다. 결국 핵심은 내가 가진 라벨 형태에 정확히 맞는 모델과 task를 매칭하는 것이 무엇보다 중요하다는 점을 깨닫게 되었습니다.\n정리된 이해 YOLO Detection과 Segmentation은 라벨 형식(박스 vs 폴리곤)과 가중치 종류가 다르므로, 사용 중인 데이터 형태에 맞는 모델을 정확히 매칭하는 것이 가장 중요하다. data.yaml의 클래스 정의 순서와 개수는 모델 입력과 반드시 일맞춰야 학습이 올바르게 진행된다. 또한 epochs, batch, workers 등 하이퍼파라미터는 사용자의 장치 환경(CUDA 등)에 따라 학습 속도와 안정성에 직접적인 영향을 미치므로 적절히 조정해야 한다.\nYOLO Detection/Segmentation 분리 학습 핵심 요약 📌 모델 및 가중치 매칭 (Code Block) # 1) Object Detection: 사각형 박스 라벨 사용 model = YOLO('yolo26n.pt') # detect weight results = model.train( data='dataset/dataset2/data.yaml', epochs=10, imgsz=[480,640], batch=16, workers=2 ) # 2) Segmentation: 폴리곤/마스크 라벨 사용 model = YOLO('yolo26n-seg.pt') # seg weight results = model.train( data='dataset/dataset2/data.yaml', epochs=10, imgsz=[480,640], batch=16, workers=2 ) 📋 데이터 설정 필수 조건 (Code Block) # data.yaml 클래스 정의는 모델 입력과 반드시 일치해야 함 # 예: 1-class segmentation (mouse 경우) names: - mouse # classes.txt와 순서/개수 일치 필수 # 또는 multi-class detection names: - black-mouse - white-mouse ⚙️ 환경별 하이퍼파라미터 조정 (Code Block) # NVIDIA CUDA 환경 기본값 model.train(data='dataset/dataset2/data.yaml', epochs=10, imgsz=[480,640], batch=16, workers=2) # XPU 등 다른 디바이스 환경에서는 workers, batch 크기 조정 권장 3. 웹캠 테스트에서 모델 성능 검증의 함정 무엇을 배웠나 모델이 화면에 박스를 그리는 것만으로는 성능 검증이 되지 않는다는 점을 명확히 깨달았습니다. 단순히 탐지가 이루어졌는지 확인하는 것보다, model.names를 통해 클래스 매핑을 정확히 확인해야 모델이 무엇을 예측했는지 알 수 있습니다. 또한 best.pt와 last.pt의 차이를 이해하고, 다양한 조명과 배경 조건에서 모델이 robust하게 작동하는지 검증하는 것이 중요하다는 점을 배웠습니다.\n헷갈렸던 점 처음에는 모델이 영상에 박스를 그려주면 “아, 학습된 거구나” 하고 쉽게 판단하려 했습니다. 하지만 ‘박스가 뜬다 = 성능이 검증됐다’는 등식이 성립하지 않는다는 점이 가장 큰 혼란이었습니다. 특히 classes=[0, 1] 파라미터가 무엇을 의미하는지, 그리고 COCO 사전학습 모델의 숫자와 동일하다고 가정하면 안 된다는 점은 제 머릿속에 명확한 매핑을 만들기 어려웠습니다. “모델이 mouse를 예측했다\"는 사실만으로 그 예측이 정확한 것인지, 아니면 클래스 ID 혼동 때문에 그런 것인지 구별하는 것이 쉽지 않았죠.\n정리된 이해 웹캠 화면에 박스가 그려진다고 해서 모델이 다양한 현장 조건에서 검증된 성능을 보장한 것은 아닙니다. 모델이 예측한 클래스 라벨을 확인하려면 model.names나 results[0].names를 반드시 확인해야 합니다. 또한, 학습된 모델의 성능과 신뢰도를 판단할 때는 best.pt와 last.pt의 차이를 명확히 구분하는 것이 중요합니다.\nmodel = YOLO('best.pt') cap = cv2.VideoCapture(0) while cap.isOpened(): success, frame = cap.read() 4. 데이터 정리와 Git 경계: 중복과 재현성의 구분 무엇을 배웠나 SHA-256 해시가 같다는 것이 픽셀 단위의 완전 identical를 의미한다는 점을 깨닫고, 화면이 같아도 시간이 흐르면 해시가 달라진다는 점에 충격을 받았다. 단순히 중복을 제거해 용량을 줄이는 것보다, 원본 영상을 보존하면서 후보 데이터만 선별하고 annotation된 dataset으로 단계적으로 관리하는 것이 재현성과 검증의 관점에서 중요하다는 점을 이해했다. 특히 .gitignore로 데이터를 숨기는 것과 실제 파일 관리는 별개이며, 과거 커밋 이력이 자동으로 사라지지 않는다는 점은 데이터 관리에서의 중요한 경계가 되었다.\n헷갈렸던 점 SHA-256 해시가 같다는 것이 픽셀 단위의 완전 identical를 의미한다는 점과, 이웃한 영상 프레임이 시간이 조금만 흘러도 해시가 완전히 달라질 수 있다는 점 사이에서 ‘화면이 똑같을 수 있다’는 직관적 이해와 충돌했던 점이 가장 헷갈렸습니다. 또한 best.pt 파일명 하나로 여러 학습 run의 결과를 식별하기 어렵다는 점과, 파일명을 통해 학습의 출처를 한눈에 파악할 수 없다는 점에서 메타데이터 관리의 중요성을 새롭게 인식하게 되었습니다.\n정리된 이해 SHA-256 해시가 같다는 것은 픽셀 단위의 완전 identical를 의미하지만, 화면이 똑같다는 뜻은 아니므로 데이터 삭제 시 재현성과 검증 가능성을 우선해야 한다.\n완전 일치와 지각적 유사성을 구분하여 원본 영상을 보존하면서 후보 데이터만 선별하고 annotation된 dataset으로 단계적으로 관리하는 것이 중요하다. 특히 .gitignore로 데이터를 숨기는 것과 실제 파일 관리는 별개이며, 과거 커밋 이력이 자동으로 사라지지 않는다는 점은 중요한 경계점이다.\nimport hashlib from pathlib import Path def find_and_remove_duplicates(folder_path): folder = Path(folder_path) hashes = {} # 해시 -\u003e [파일경로 리스트] # 1. 모든 이미지 파일 순회하며 SHA-256 해시 계산 for img_path in folder.rglob(\"*.jpg\"): # 확장자에 맞게 조정 with open(img_path, 'rb') as f: file_hash = hashlib.sha256(f.read()).hexdigest() if file_hash not in hashes: hashes[file_hash] = [] hashes[file_hash].append(img_path) removed_count = 0 # 2. 중복된 해시를 가진 파일들 처리 for file_hash, paths in hashes.items(): if len(paths) \u003e 1: # 첫 번째 파일은 보존하고, 나머지는 삭제 # (라벨 파일도 동일 논리로 삭제한다고 가정) keep_path = paths[0] for dup_path in paths[1:]: dup_path.unlink() # 파일 삭제 removed_count += 1 print(f\"Removed duplicate: {dup_path}\") return removed_count # 실행 예시 if __name__ == \"__main__\": count = find_and_remove_duplicates(\"dataset/mouse2/train\") print(f\"\\nTotal files removed: {count}\") 5. Docker Desktop과 WSL2의 실제 관계와 명령어 흐름 정리 무엇을 배웠나 Docker Desktop과 WSL2는 별개의 개념이며, Docker Desktop은 자체적으로 docker-desktop이라는 WSL 배포판을 생성하지만 사용자가 설치한 Ubuntu와는 역할이 다르다. 주요 명령어인 search, pull, run의 용도와 실행 흐름을 명확히 이해하게 되었다.\n헷갈렸던 점 Docker Desktop 설치 시 WSL2 백엔드와 사용자가 별도로 다운로드한 Ubuntu 배포판이 같은 것인지 구분되지 않아 혼란스러웠다.\ndocker images, docker search, docker pull, docker run 등 명령어들이 각각 다른 기능을 수행한다는 점에서, 검색과 다운로드, 실행을 하나의 흐름으로 연결하기 어려웠다.\nDocker Image는 컨테러너를 실행하는 청사진이고, Container는 이를 실제로 실행한 격리된 인스턴스이며, Docker Desktop은 Windows/Mac에서 Engine을 구동하게 해주는 GUI 프로그램이라는 점에서 WSL2와 사용자 Ubuntu의 역할 차이를 명확히 구분해야 했다.\n정리된 이해 Docker Desktop은 Windows 시스템 위에 WSL2라는 리눅스 환경을 구축하여 Docker Engine을 실행하게 되며, 이때 사용자가 별도로 설치한 Ubuntu와는 목적과 역할이 다르다. 이미지 검색(docker search)은 원격 저장소에서 후보를 찾는 조회 명령이며, 실제 다운로드(docker pull)와 실행(docker run)은 별도의 단계로 나뉘어 수행된다.\n# Docker Desktop 엔진 구동 상태 확인 docker version # 로컬에 있는 이미지 목록 조회 (비어있음 확인) docker images # Docker Hub에서 MariaDB 관련 이미지 검색 docker search mariadb 총평 오늘 오후 전체에서 배운 것 오후 학습은 데이터 파이프라인 설계와 모델 검증의 세부 사항에 집중했다. 영상 프레임 추출과 후보 수집 과정에서는 자동화와 사람의 개입을 적절히 조합하여 데이터 편향을 방지하고, 해상도 관리를 통해 효율적인 전처리가 가능하다는 점을 확인했다. 또한 YOLO 모델 사용 시 라벨 형태와 클래스 정의의 일치, 그리고 best.pt와 last.pt의 차이점을 정확히 이해하여 모델 성능을 객관적으로 검증하는 중요성을 깨달았다.\n다음에 조심할 것 YOLO 모델과 라벨 형태를 반드시 매치하고, data.yaml 클래스 정의가 입력과 일치하는지 확인해 실수 없는 학습을 진행한다. 단순히 탐지가 되었는지 확인하기보다 model.names로 클래스를 정확히 매핑하고, 다양한 환경에서 모델이 robust하게 동작하는지 검증하여 실제 성능을 판단한다. 데이터는 SHA-256 해시로 식별하되, 화면이 같아도 시간이 흐르면 해시가 달라질 수 있음을 인지해 원본 영상을 보존하면서 후보 데이터만 단계적으로 관리한다. 다음 복습 주제 YOLO 모델 구조와 라벨링 포맷(박스/폴리곤)의 필수 매칭 규칙, 그리고 데이터 증강 시 클래스 정의와 weight 버전(detect/seg) 관리의 중요성을 재정립한다. Docker Desktop과 WSL2의 독립적인 아키텍처 차이점을 명확히 이해하고, docker-desktop 배포판과의 상호작용을 통해 명령어 흐름(pull, run)을 안정적으로 제어하는 방법을 숙지한다. 영상 데이터 관리에서 SHA-256 해시 기반의 완전 identical 판별 한계와, 시간 경과에 따른 파일 변동 추적의 필요성을 인식하여, 원본 보존과 후보 선별을 분리한 단계적 데이터 관리의 틀을 구축한다. 🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1561",
+  "inLanguage": "en",
+  "datePublished": "2026-10-12T00:00:00Z",
+  "dateModified": "2026-10-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-10-12-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오후 학습 | YOLO 모델 선택과 데이터 매칭으로 완성하는 효율적인 학습 workflow
+    </h1>
+    <div class="post-description">
+      2026-10-12 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-10-12 00:00:00 +0000 UTC'>2026년 10월 12일</span>&nbsp;·&nbsp;<span>8 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-%EC%98%81%EC%83%81-%ED%94%84%EB%A0%88%EC%9E%84-%EC%B6%94%EC%B6%9C%EA%B3%BC-%EB%A1%9C%EC%BB%AC-%EC%9E%90%EB%8F%99-%ED%9B%84%EB%B3%B4-%EC%88%98%EC%A7%91-workflow">영상 프레임 추출과 로컬 자동 후보 수집 workflow</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-yolo-detectionsegmentation-%EB%B6%84%EB%A6%AC-%ED%95%99%EC%8A%B5-%ED%95%B5%EC%8B%AC-%EC%A0%95%EB%A6%AC">YOLO Detection/Segmentation 분리 학습 핵심 정리</a></li>
+</ol>
+</li>
+<li><a href="#%EB%AA%A8%EB%8D%B8-%EB%B0%8F-%EA%B0%80%EC%A4%91%EC%B9%98-%EB%A7%A4%EC%B9%AD-code-block">📌 모델 및 가중치 매칭 (Code Block)</a></li>
+<li><a href="#%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%84%A4%EC%A0%95-%ED%95%84%EC%88%98-%EC%A1%B0%EA%B1%B4-code-block">📋 데이터 설정 필수 조건 (Code Block)</a></li>
+<li><a href="#%ED%99%98%EA%B2%BD%EB%B3%84-%ED%95%98%EC%9D%B4%ED%8D%BC%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0-%EC%A1%B0%EC%A0%95-code-block">⚙️ 환경별 하이퍼파라미터 조정 (Code Block)</a></li>
+<li>
+<ol start="3">
+<li><a href="#3-%EC%9B%B9%EC%BA%A0-%ED%85%8C%EC%8A%A4%ED%8A%B8%EC%97%90%EC%84%9C-%EB%AA%A8%EB%8D%B8-%EC%84%B1%EB%8A%A5-%EA%B2%80%EC%A6%9D%EC%9D%98-%ED%95%A8%EC%A0%95">웹캠 테스트에서 모델 성능 검증의 함정</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%95%EB%A6%AC%EC%99%80-git-%EA%B2%BD%EA%B3%84-%EC%A4%91%EB%B3%B5%EA%B3%BC-%EC%9E%AC%ED%98%84%EC%84%B1%EC%9D%98-%EA%B5%AC%EB%B6%84">데이터 정리와 Git 경계: 중복과 재현성의 구분</a></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><a href="#5-docker-desktop%EA%B3%BC-wsl2%EC%9D%98-%EC%8B%A4%EC%A0%9C-%EA%B4%80%EA%B3%84%EC%99%80-%EB%AA%85%EB%A0%B9%EC%96%B4-%ED%9D%90%EB%A6%84-%EC%A0%95%EB%A6%AC">Docker Desktop과 WSL2의 실제 관계와 명령어 흐름 정리</a></li>
+</ol>
+</li>
+</ul>
+<h2 id="1-영상-프레임-추출과-로컬-자동-후보-수집-workflow">1. 영상 프레임 추출과 로컬 자동 후보 수집 workflow<a hidden class="anchor" aria-hidden="true" href="#1-영상-프레임-추출과-로컬-자동-후보-수집-workflow">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>영상 프레임 추출 과정에서 수동 저장과 자동 모델 검출 사이에서 균형을 잡는 것이 데이터 다양성을 확보하는 핵심임을 깨달았습니다. 단순히 일정 간격으로 프레임을 캡처하는 것만으로는 의도치 않은 편향이 발생할 위험이 있어, 원본 영상을 기준으로 한 후보 수집 후 사람이 직접 검수하는 워크플로우가 필요하다고 판단했습니다. 또한 저장 해상도와 미리보기 해상도를 분리하여 관리하면 원본 변형을 최소화하면서도 효율적인 데이터 전처리가 가능하다는 점을 이해하게 되었습니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>수동 저장 방식은 프레임 선택에 대한 통제력을 주지만, 영상 전체를 일일이 확인해야 해 시간이 많이 걸리는 단점이 있었습니다. 반면 자동 추출은 시간 간격 설정에 따라 원하는 프레임이 실제로 캡처되지 않아 데이터가 편중될 위험이 있어 균형 잡힌 접근이 필요했습니다. 특히 모델이 이미 잘 아는 대상만 수집하게 되면 학습 데이터의 다양성이 떨어져 새로운 대상 탐지에 취약해질 수 있다는 점이 가장 큰 우려였습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p>영상 속 모든 프레임을 일정 간격으로 추출하면, 모델이 이미 잘 아는 대상만 편향적으로 수집되는 것을 방지할 수 있어 데이터의 다양성을 확보하는 데 유리하다. 다만 실제 저장 간격이 영상의 FPS와 정확히 맞지 않을 경우 의도치 않은 시간 간격 차이가 발생할 수 있으므로, 이후 사람에 의한 검수 과정을 통해 오탐과 미탐을 걸러내는 것이 필수적이다. 따라서 자동으로 후보를 먼저 확보한 뒤, 사람이 직접 라벨링을 검토하는 워크플로우가 좋은 학습 데이터를 만드는 핵심적인 방법이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 영상 프레임 추출 및 자동 후보 수집을 위한 핵심 로직</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> cv2
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pathlib <span style="color:#f92672">import</span> Path
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">extract_frames_auto</span>(video_path, output_dir, interval_sec<span style="color:#f92672">=</span><span style="color:#ae81ff">1.0</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    주어진 영상에서 일정 시간 간격으로 원본 해상도 프레임을 추출합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Args:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        video_path (str): 입력 영상 경로
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        output_dir (str): 저장할 디렉토리 경로
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        interval_sec (float): 프레임 추출 간격(초)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    cap <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>VideoCapture(video_path)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> cap<span style="color:#f92672">.</span>isOpened():
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Error: Cannot open video </span><span style="color:#e6db74">{</span>video_path<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 영상 정보 가져오기</span>
+</span></span><span style="display:flex;"><span>    fps <span style="color:#f92672">=</span> cap<span style="color:#f92672">.</span>get(cv2<span style="color:#f92672">.</span>CAP_PROP_FPS)
+</span></span><span style="display:flex;"><span>    frame_interval <span style="color:#f92672">=</span> int(fps <span style="color:#f92672">*</span> interval_sec)  <span style="color:#75715e"># 초 단위를 프레임 수로 변환</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    os<span style="color:#f92672">.</span>makedirs(output_dir, exist_ok<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    saved_count <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    frame_count <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>        ret, frame <span style="color:#f92672">=</span> cap<span style="color:#f92672">.</span>read()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> ret:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 간격에 맞는 프레임만 저장 (원본 해상도 유지)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> frame_count <span style="color:#f92672">%</span> frame_interval <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>            filename <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(output_dir, <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;frame_</span><span style="color:#e6db74">{</span>saved_count<span style="color:#e6db74">:</span><span style="color:#e6db74">04d</span><span style="color:#e6db74">}</span><span style="color:#e6db74">.jpg&#34;</span>)
+</span></span><span style="display:flex;"><span>            cv2<span style="color:#f92672">.</span>imwrite(filename, frame)  <span style="color:#75715e"># 원본 품질로 저장</span>
+</span></span><span style="display:flex;"><span>            saved_count <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        frame_count <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    cap<span style="color:#f92672">.</span>release()
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Extracted </span><span style="color:#e6db74">{</span>saved_count<span style="color:#e6db74">}</span><span style="color:#e6db74"> frames from </span><span style="color:#e6db74">{</span>video_path<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 사용 예시</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># extract_frames_auto(&#34;input_video.mp4&#34;, &#34;output_frames&#34;, interval_sec=2.0)</span>
+</span></span></code></pre></div><h2 id="2-yolo-detectionsegmentation-분리-학습-핵심-정리">2. YOLO Detection/Segmentation 분리 학습 핵심 정리<a hidden class="anchor" aria-hidden="true" href="#2-yolo-detectionsegmentation-분리-학습-핵심-정리">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p>YOLO 모델 선택과 라벨 형태를 반드시 매칭해야 하며, data.yaml의 클래스 정의가 모델 입력과 일치해야 한다. Detection은 박스(BBox), Segmentation은 폴리곤/마스크 라벨을 사용하며, 사전학습 weight도 <code>detect</code>와 <code>seg</code> 버전이 따로 존재한다. epochs나 batch 같은 하이퍼파라미터는 장치 환경에 따라 학습 속도와 안정성에 직접적인 영향을 주므로, 내 XPU 환경에서는 값을 조정하는 것이 중요하다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p>가장 큰 혼란은 라벨 형태(박스 vs 폴리곤)와 가중치 종류(detect vs seg)가 서로 다른 모델에 적용될 경우 학습이 꼬일 수 있다는 점이었습니다. 특히 <code>mouse</code>와 같은 세부 카테고리가 섞이면 클래스 수가 어떻게 변하는지, 기존 사전학습 weight와 호환되는지 감조차 잡히지 않았습니다. 결국 핵심은 내가 가진 라벨 형태에 정확히 맞는 모델과 task를 매칭하는 것이 무엇보다 중요하다는 점을 깨닫게 되었습니다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p>YOLO Detection과 Segmentation은 라벨 형식(박스 vs 폴리곤)과 가중치 종류가 다르므로, 사용 중인 데이터 형태에 맞는 모델을 정확히 매칭하는 것이 가장 중요하다. <code>data.yaml</code>의 클래스 정의 순서와 개수는 모델 입력과 반드시 일맞춰야 학습이 올바르게 진행된다. 또한 <code>epochs</code>, <code>batch</code>, <code>workers</code> 등 하이퍼파라미터는 사용자의 장치 환경(CUDA 등)에 따라 학습 속도와 안정성에 직접적인 영향을 미치므로 적절히 조정해야 한다.</p>
+<h1 id="yolo-detectionsegmentation-분리-학습-핵심-요약">YOLO Detection/Segmentation 분리 학습 핵심 요약<a hidden class="anchor" aria-hidden="true" href="#yolo-detectionsegmentation-분리-학습-핵심-요약">#</a></h1>
+<h2 id="-모델-및-가중치-매칭-code-block">📌 모델 및 가중치 매칭 (Code Block)<a hidden class="anchor" aria-hidden="true" href="#-모델-및-가중치-매칭-code-block">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 1) Object Detection: 사각형 박스 라벨 사용</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> YOLO(<span style="color:#e6db74">&#39;yolo26n.pt&#39;</span>)          <span style="color:#75715e"># detect weight</span>
+</span></span><span style="display:flex;"><span>results <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>train(
+</span></span><span style="display:flex;"><span>    data<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;dataset/dataset2/data.yaml&#39;</span>,
+</span></span><span style="display:flex;"><span>    epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>, imgsz<span style="color:#f92672">=</span>[<span style="color:#ae81ff">480</span>,<span style="color:#ae81ff">640</span>], batch<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>, workers<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2) Segmentation: 폴리곤/마스크 라벨 사용</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> YOLO(<span style="color:#e6db74">&#39;yolo26n-seg.pt&#39;</span>)     <span style="color:#75715e"># seg weight</span>
+</span></span><span style="display:flex;"><span>results <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>train(
+</span></span><span style="display:flex;"><span>    data<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;dataset/dataset2/data.yaml&#39;</span>,
+</span></span><span style="display:flex;"><span>    epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>, imgsz<span style="color:#f92672">=</span>[<span style="color:#ae81ff">480</span>,<span style="color:#ae81ff">640</span>], batch<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>, workers<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><h2 id="-데이터-설정-필수-조건-code-block">📋 데이터 설정 필수 조건 (Code Block)<a hidden class="anchor" aria-hidden="true" href="#-데이터-설정-필수-조건-code-block">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># data.yaml 클래스 정의는 모델 입력과 반드시 일치해야 함</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 예: 1-class segmentation (mouse 경우)</span>
+</span></span><span style="display:flex;"><span>names:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">-</span> mouse          <span style="color:#75715e"># classes.txt와 순서/개수 일치 필수</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 또는 multi-class detection</span>
+</span></span><span style="display:flex;"><span>names:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">-</span> black<span style="color:#f92672">-</span>mouse
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">-</span> white<span style="color:#f92672">-</span>mouse
+</span></span></code></pre></div><h2 id="-환경별-하이퍼파라미터-조정-code-block">⚙️ 환경별 하이퍼파라미터 조정 (Code Block)<a hidden class="anchor" aria-hidden="true" href="#-환경별-하이퍼파라미터-조정-code-block">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># NVIDIA CUDA 환경 기본값</span>
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>train(data<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;dataset/dataset2/data.yaml&#39;</span>,
+</span></span><span style="display:flex;"><span>            epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>, imgsz<span style="color:#f92672">=</span>[<span style="color:#ae81ff">480</span>,<span style="color:#ae81ff">640</span>], batch<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>, workers<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># XPU 등 다른 디바이스 환경에서는 workers, batch 크기 조정 권장</span>
+</span></span></code></pre></div><h2 id="3-웹캠-테스트에서-모델-성능-검증의-함정">3. 웹캠 테스트에서 모델 성능 검증의 함정<a hidden class="anchor" aria-hidden="true" href="#3-웹캠-테스트에서-모델-성능-검증의-함정">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>모델이 화면에 박스를 그리는 것만으로는 성능 검증이 되지 않는다는 점을 명확히 깨달았습니다. 단순히 탐지가 이루어졌는지 확인하는 것보다, <code>model.names</code>를 통해 클래스 매핑을 정확히 확인해야 모델이 무엇을 예측했는지 알 수 있습니다. 또한 <code>best.pt</code>와 <code>last.pt</code>의 차이를 이해하고, 다양한 조명과 배경 조건에서 모델이 robust하게 작동하는지 검증하는 것이 중요하다는 점을 배웠습니다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>처음에는 모델이 영상에 박스를 그려주면 &ldquo;아, 학습된 거구나&rdquo; 하고 쉽게 판단하려 했습니다. 하지만 &lsquo;박스가 뜬다 = 성능이 검증됐다&rsquo;는 등식이 성립하지 않는다는 점이 가장 큰 혼란이었습니다. 특히 <code>classes=[0, 1]</code> 파라미터가 무엇을 의미하는지, 그리고 COCO 사전학습 모델의 숫자와 동일하다고 가정하면 안 된다는 점은 제 머릿속에 명확한 매핑을 만들기 어려웠습니다. &ldquo;모델이 mouse를 예측했다&quot;는 사실만으로 그 예측이 정확한 것인지, 아니면 클래스 ID 혼동 때문에 그런 것인지 구별하는 것이 쉽지 않았죠.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>웹캠 화면에 박스가 그려진다고 해서 모델이 다양한 현장 조건에서 검증된 성능을 보장한 것은 아닙니다. 모델이 예측한 클래스 라벨을 확인하려면 <code>model.names</code>나 <code>results[0].names</code>를 반드시 확인해야 합니다. 또한, 학습된 모델의 성능과 신뢰도를 판단할 때는 <code>best.pt</code>와 <code>last.pt</code>의 차이를 명확히 구분하는 것이 중요합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>model <span style="color:#f92672">=</span> YOLO(<span style="color:#e6db74">&#39;best.pt&#39;</span>)
+</span></span><span style="display:flex;"><span>cap <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>VideoCapture(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> cap<span style="color:#f92672">.</span>isOpened():
+</span></span><span style="display:flex;"><span>    success, frame <span style="color:#f92672">=</span> cap<span style="color:#f92672">.</span>read()
+</span></span></code></pre></div><h2 id="4-데이터-정리와-git-경계-중복과-재현성의-구분">4. 데이터 정리와 Git 경계: 중복과 재현성의 구분<a hidden class="anchor" aria-hidden="true" href="#4-데이터-정리와-git-경계-중복과-재현성의-구분">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>SHA-256 해시가 같다는 것이 픽셀 단위의 완전 identical를 의미한다는 점을 깨닫고, 화면이 같아도 시간이 흐르면 해시가 달라진다는 점에 충격을 받았다. 단순히 중복을 제거해 용량을 줄이는 것보다, 원본 영상을 보존하면서 후보 데이터만 선별하고 annotation된 dataset으로 단계적으로 관리하는 것이 재현성과 검증의 관점에서 중요하다는 점을 이해했다. 특히 <code>.gitignore</code>로 데이터를 숨기는 것과 실제 파일 관리는 별개이며, 과거 커밋 이력이 자동으로 사라지지 않는다는 점은 데이터 관리에서의 중요한 경계가 되었다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>SHA-256 해시가 같다는 것이 픽셀 단위의 완전 identical를 의미한다는 점과, 이웃한 영상 프레임이 시간이 조금만 흘러도 해시가 완전히 달라질 수 있다는 점 사이에서 &lsquo;화면이 똑같을 수 있다&rsquo;는 직관적 이해와 충돌했던 점이 가장 헷갈렸습니다. 또한 <code>best.pt</code> 파일명 하나로 여러 학습 run의 결과를 식별하기 어렵다는 점과, 파일명을 통해 학습의 출처를 한눈에 파악할 수 없다는 점에서 메타데이터 관리의 중요성을 새롭게 인식하게 되었습니다.</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>SHA-256 해시가 같다는 것은 픽셀 단위의 완전 identical를 의미하지만, 화면이 똑같다는 뜻은 아니므로 데이터 삭제 시 재현성과 검증 가능성을 우선해야 한다.</p>
+<p>완전 일치와 지각적 유사성을 구분하여 원본 영상을 보존하면서 후보 데이터만 선별하고 annotation된 dataset으로 단계적으로 관리하는 것이 중요하다. 특히 <code>.gitignore</code>로 데이터를 숨기는 것과 실제 파일 관리는 별개이며, 과거 커밋 이력이 자동으로 사라지지 않는다는 점은 중요한 경계점이다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> hashlib
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pathlib <span style="color:#f92672">import</span> Path
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">find_and_remove_duplicates</span>(folder_path):
+</span></span><span style="display:flex;"><span>    folder <span style="color:#f92672">=</span> Path(folder_path)
+</span></span><span style="display:flex;"><span>    hashes <span style="color:#f92672">=</span> {}  <span style="color:#75715e"># 해시 -&gt; [파일경로 리스트]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 1. 모든 이미지 파일 순회하며 SHA-256 해시 계산</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> img_path <span style="color:#f92672">in</span> folder<span style="color:#f92672">.</span>rglob(<span style="color:#e6db74">&#34;*.jpg&#34;</span>):  <span style="color:#75715e"># 확장자에 맞게 조정</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> open(img_path, <span style="color:#e6db74">&#39;rb&#39;</span>) <span style="color:#66d9ef">as</span> f:
+</span></span><span style="display:flex;"><span>            file_hash <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha256(f<span style="color:#f92672">.</span>read())<span style="color:#f92672">.</span>hexdigest()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> file_hash <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> hashes:
+</span></span><span style="display:flex;"><span>            hashes[file_hash] <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>        hashes[file_hash]<span style="color:#f92672">.</span>append(img_path)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    removed_count <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 2. 중복된 해시를 가진 파일들 처리</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> file_hash, paths <span style="color:#f92672">in</span> hashes<span style="color:#f92672">.</span>items():
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> len(paths) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># 첫 번째 파일은 보존하고, 나머지는 삭제</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># (라벨 파일도 동일 논리로 삭제한다고 가정)</span>
+</span></span><span style="display:flex;"><span>            keep_path <span style="color:#f92672">=</span> paths[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> dup_path <span style="color:#f92672">in</span> paths[<span style="color:#ae81ff">1</span>:]:
+</span></span><span style="display:flex;"><span>                dup_path<span style="color:#f92672">.</span>unlink()  <span style="color:#75715e"># 파일 삭제</span>
+</span></span><span style="display:flex;"><span>                removed_count <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>                print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Removed duplicate: </span><span style="color:#e6db74">{</span>dup_path<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> removed_count
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 실행 예시</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    count <span style="color:#f92672">=</span> find_and_remove_duplicates(<span style="color:#e6db74">&#34;dataset/mouse2/train&#34;</span>)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">Total files removed: </span><span style="color:#e6db74">{</span>count<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><h2 id="5-docker-desktop과-wsl2의-실제-관계와-명령어-흐름-정리">5. Docker Desktop과 WSL2의 실제 관계와 명령어 흐름 정리<a hidden class="anchor" aria-hidden="true" href="#5-docker-desktop과-wsl2의-실제-관계와-명령어-흐름-정리">#</a></h2>
+<h3 id="무엇을-배웠나-4">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-4">#</a></h3>
+<p>Docker Desktop과 WSL2는 별개의 개념이며, Docker Desktop은 자체적으로 <code>docker-desktop</code>이라는 WSL 배포판을 생성하지만 사용자가 설치한 Ubuntu와는 역할이 다르다. 주요 명령어인 <code>search</code>, <code>pull</code>, <code>run</code>의 용도와 실행 흐름을 명확히 이해하게 되었다.</p>
+<h3 id="헷갈렸던-점-4">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-4">#</a></h3>
+<p>Docker Desktop 설치 시 WSL2 백엔드와 사용자가 별도로 다운로드한 Ubuntu 배포판이 같은 것인지 구분되지 않아 혼란스러웠다.</p>
+<p><code>docker images</code>, <code>docker search</code>, <code>docker pull</code>, <code>docker run</code> 등 명령어들이 각각 다른 기능을 수행한다는 점에서, 검색과 다운로드, 실행을 하나의 흐름으로 연결하기 어려웠다.</p>
+<p>Docker Image는 컨테러너를 실행하는 청사진이고, Container는 이를 실제로 실행한 격리된 인스턴스이며, Docker Desktop은 Windows/Mac에서 Engine을 구동하게 해주는 GUI 프로그램이라는 점에서 WSL2와 사용자 Ubuntu의 역할 차이를 명확히 구분해야 했다.</p>
+<h3 id="정리된-이해-4">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-4">#</a></h3>
+<p>Docker Desktop은 Windows 시스템 위에 WSL2라는 리눅스 환경을 구축하여 Docker Engine을 실행하게 되며, 이때 사용자가 별도로 설치한 Ubuntu와는 목적과 역할이 다르다. 이미지 검색(<code>docker search</code>)은 원격 저장소에서 후보를 찾는 조회 명령이며, 실제 다운로드(<code>docker pull</code>)와 실행(<code>docker run</code>)은 별도의 단계로 나뉘어 수행된다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># Docker Desktop 엔진 구동 상태 확인</span>
+</span></span><span style="display:flex;"><span>docker version
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 로컬에 있는 이미지 목록 조회 (비어있음 확인)</span>
+</span></span><span style="display:flex;"><span>docker images
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Docker Hub에서 MariaDB 관련 이미지 검색</span>
+</span></span><span style="display:flex;"><span>docker search mariadb
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>오후 학습은 데이터 파이프라인 설계와 모델 검증의 세부 사항에 집중했다. 영상 프레임 추출과 후보 수집 과정에서는 자동화와 사람의 개입을 적절히 조합하여 데이터 편향을 방지하고, 해상도 관리를 통해 효율적인 전처리가 가능하다는 점을 확인했다. 또한 YOLO 모델 사용 시 라벨 형태와 클래스 정의의 일치, 그리고 <code>best.pt</code>와 <code>last.pt</code>의 차이점을 정확히 이해하여 모델 성능을 객관적으로 검증하는 중요성을 깨달았다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<ol>
+<li>YOLO 모델과 라벨 형태를 반드시 매치하고, <code>data.yaml</code> 클래스 정의가 입력과 일치하는지 확인해 실수 없는 학습을 진행한다.</li>
+<li>단순히 탐지가 되었는지 확인하기보다 <code>model.names</code>로 클래스를 정확히 매핑하고, 다양한 환경에서 모델이 robust하게 동작하는지 검증하여 실제 성능을 판단한다.</li>
+<li>데이터는 SHA-256 해시로 식별하되, 화면이 같아도 시간이 흐르면 해시가 달라질 수 있음을 인지해 원본 영상을 보존하면서 후보 데이터만 단계적으로 관리한다.</li>
+</ol>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<ul>
+<li>YOLO 모델 구조와 라벨링 포맷(박스/폴리곤)의 필수 매칭 규칙, 그리고 데이터 증강 시 클래스 정의와 weight 버전(<code>detect</code>/<code>seg</code>) 관리의 중요성을 재정립한다.</li>
+<li>Docker Desktop과 WSL2의 독립적인 아키텍처 차이점을 명확히 이해하고, <code>docker-desktop</code> 배포판과의 상호작용을 통해 명령어 흐름(<code>pull</code>, <code>run</code>)을 안정적으로 제어하는 방법을 숙지한다.</li>
+<li>영상 데이터 관리에서 SHA-256 해시 기반의 완전 identical 판별 한계와, 시간 경과에 따른 파일 변동 추적의 필요성을 인식하여, 원본 보존과 후보 선별을 분리한 단계적 데이터 관리의 틀을 구축한다.</li>
+</ul>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-10-12-am-daily/">
+    <span class="title">« Prev</span>
+    <span>오전 학습 | 프레임 추출 간격과 모델 신뢰도 임계값에 대한 이해</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-10-08-am-daily/">
+    <span class="title">Next »</span>
+    <span>오전 학습 | DSPy와 YOLO, 입력 계약과 좌표 해석의 통합</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

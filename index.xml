@@ -6,14 +6,35 @@
     <description>Recent content on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Mon, 12 Oct 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 13 Oct 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>오후 학습 | Docker Ollama와 LangChain 스트리밍 연결하기</title>
+      <link>https://Han-think.github.io/learning/2026-10-13-pm-daily/</link>
+      <pubDate>Tue, 13 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-10-13-pm-daily/</guid>
+      <description>2026-10-13 오후 학습 정리</description>
+    </item>
     <item>
       <title>2026-10-12 로컬 AI 실용화 주간 기록</title>
       <link>https://Han-think.github.io/research/weekly-ai-2026-10-12/</link>
       <pubDate>Mon, 12 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/research/weekly-ai-2026-10-12/</guid>
       <description>여러 플랫폼의 최신 실행·최적화·모델·멀티모달 자료와 누적 관찰, 비교 조건을 구분한 전반편</description>
+    </item>
+    <item>
+      <title>오전 학습 | 프레임 추출 간격과 모델 신뢰도 임계값에 대한 이해</title>
+      <link>https://Han-think.github.io/learning/2026-10-12-am-daily/</link>
+      <pubDate>Mon, 12 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-10-12-am-daily/</guid>
+      <description>2026-10-12 오전 학습 정리</description>
+    </item>
+    <item>
+      <title>오후 학습 | YOLO 모델 선택과 데이터 매칭으로 완성하는 효율적인 학습 workflow</title>
+      <link>https://Han-think.github.io/learning/2026-10-12-pm-daily/</link>
+      <pubDate>Mon, 12 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/learning/2026-10-12-pm-daily/</guid>
+      <description>2026-10-12 오후 학습 정리</description>
     </item>
     <item>
       <title>2026-10-11 Intel 로컬 AI 적용 점검</title>

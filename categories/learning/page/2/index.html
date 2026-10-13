@@ -203,6 +203,51 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">오후 학습 | 검색-먼저 접근과 라우팅 트레이드오프
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 검색-먼저 접근, 라우팅과 트레이드오프 State 구조와 Source Selection 통합 적응형 검색 설계 검토: 코드와 서비스의 간극 총평 1. 검색-먼저 접근, 라우팅과 트레이드오프 무엇을 배웠나 PDF와 무관한 질문에도 검색을 먼저 수행하는 이유는, 라우터가 실제 문서 내용을 보고 판단해야 정확한 경로(RAG/Plain/Web)를 선택할 수 있기 때문이다. 이 ‘검색-먼저’ 접근 방식은 PDF 관련 질문에 강하지만, 비용이 발생한다는 trade-off가 있다. ultimately, 핵심은 검색을 먼저 수행함으로써 분류 오류를 방지하고 품질을 보장하는 대신, 비용 효율성을 희생한다는 점이다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-10-02 00:00:00 +0000 UTC'>2026년 10월 2일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오후 학습 | 검색-먼저 접근과 라우팅 트레이드오프" href="https://Han-think.github.io/learning/2026-10-02-pm-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">오전 학습 | LangGraph 기반 RAG 워크플로우와 엑셀 파이프라인 구축 경험
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 LangGraph로 연결한 질문 분기 그래프 라우팅 그래프와 워커 계약: plain과 RAG 구분하기 엑셀 파이프라인: 코드 생성에서 답변 도출까지 총평 1. LangGraph로 연결한 질문 분기 그래프 무엇을 배웠나 오늘은 기존에 따로 공부해왔던 RAG, DataFrame, Python Worker 기능들이 LangGraph 워크플로우 안에서 하나의 흐름으로 연결된 것을 확인했습니다. 특히 router가 답변을 생성하는 것이 아니라, 어떤 worker를 호출할지 결정하는 가이드 역할이라는 점이 핵심 이해점으로 다가왔습니다. State와 Edge를 통해 데이터가 노드 사이에서 자연스럽게 전달되는 과정을 보니 LangGraph의 구조가 명확해졌습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-10-01 00:00:00 +0000 UTC'>2026년 10월 1일</span>&nbsp;·&nbsp;<span>7 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오전 학습 | LangGraph 기반 RAG 워크플로우와 엑셀 파이프라인 구축 경험" href="https://Han-think.github.io/learning/2026-10-01-am-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">오후 학습 | 상태 누적과 체크포인트로 이어주는 대화 흐름
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 대화 이력을 State에 누적하기 — end_point와 message history 대화 흐름을 잇는 체크포인트: thread_id와 MemorySaver history를 프롬프트에 다시 연결하기 총평 1. 대화 이력을 State에 누적하기 — end_point와 message history 무엇을 배웠나 State가 단순한 중간값 전달을 넘어, 다음 실행에서도 이어질 수 있는 대화 이력을 담아가는 저장소 역할을 한다는 점을 이해하게 되었습니다. 특히 end_point_answer() 함수에서 HumanMessage와 AIMessage를 만들어 context에 저장하는 방식이, 답변을 단순히 텍스트로 저장하는 것을 넘어 conversation의 맥락을 다음 질문에도 전달하여 연속성을 유지하게 한다는 점이 인상 깊었습니다. 각 worker가 답변을 내고 나면 end_point에서 history를 통합적으로 관리함으로써 중복 코드를 줄이고 시스템 전체의 일관성을 높일 수 있다는 구조적 이점도 명확히 파악했습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-10-01 00:00:00 +0000 UTC'>2026년 10월 1일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오후 학습 | 상태 누적과 체크포인트로 이어주는 대화 흐름" href="https://Han-think.github.io/learning/2026-10-01-pm-daily/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">오전 학습 | RAG 서비스 연결과 LLM 코드 생성 파이프라인 정리
     </h2>
   </header>
@@ -306,52 +351,6 @@
 
 <span title='2026-09-23 00:00:00 +0000 UTC'>2026년 9월 23일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
   <a class="entry-link" aria-label="post link to 오전 학습 | SQL 프롬프트 경계 확인과 employees DB 이력 관리, 팀 이동 사원 ID 추출" href="https://Han-think.github.io/learning/2026-09-23-am-daily/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오후 학습 | 기준 테이블 선택과 SQL 작성법
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 기준 테이블 선택의 중요성: employees vs titles 🔍 핵심 통찰: “기준 테이블의 선택이 쿼리의 성패를 가른다” 📊 기준 테이블 비교 FastAPI와 SQLAlchemy 데이터베이스 연결 이해하기 회원가입 화면 구조와 데이터 흐름 총평 1. 기준 테이블 선택의 중요성: employees vs titles 무엇을 배웠나 SQL 작성에서 가장 중요한 것은 어떤 집합을 시작점으로 삼느냐이다. 문제 해결 과정에서 기준 테이블을 옮기며 쿼리가 달라지는 것을 경험하며, 단순히 문법에 집중하는 것보다 먼저 ‘내가 원하는 대상이 누구인가’를 정하고 기준 테이블을 잡는 것이 훨씬 중요하다는 점을 깨달았다. 특히 NULL 값이 발생하는 문제를 해결하기 위해 titles 테이블로 기준을 이동시킨 과정은, 결과의 정확성을 확보하기 위한 필수적인 선택이었다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-23 00:00:00 +0000 UTC'>2026년 9월 23일</span>&nbsp;·&nbsp;<span>7 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오후 학습 | 기준 테이블 선택과 SQL 작성법" href="https://Han-think.github.io/learning/2026-09-23-pm-daily/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오전 학습 | PRIMARY KEY와 UPSERT를 통한 데이터 무결성 확보
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 PRIMARY KEY와 UPSERT의 연결 고리 RDBMS 관계와 참조 무결성 이해하기 dept/emp 관계에서 서브쿼리의 핵심: PK-FK 연결 흐름 1. PRIMARY KEY와 UPSERT의 연결 고리 무엇을 배웠나 PRIMARY KEY는 테이블당 하나라는 제약조건을 가지며, 컬럼이 하나뿐일 필요는 없고 여러 컬럼을 조합해 복합키로 설정할 수 있음을 깨달았다. ALTER TABLE 문을 사용해 기존 테이블에 키를 추가하는 과정은 DB 구조에 기능을 부착하는 듯한 낯설음이 있었지만, 문법 자체는 간단했다. UPSERT에서 ON DUPLICATE KEY UPDATE가 PRIMARY KEY가 실제로 설정되어 있어야만 중복 판정과 업데이트가 작동한다는 점을 실감하며, 키가 스위치 역할을 한다는 것을 체감할 수 있었다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-21 00:00:00 +0000 UTC'>2026년 9월 21일</span>&nbsp;·&nbsp;<span>7 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오전 학습 | PRIMARY KEY와 UPSERT를 통한 데이터 무결성 확보" href="https://Han-think.github.io/learning/2026-09-21-am-daily/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오후 학습 | 상관 서브쿼리 패턴과 JOIN 전략 이해
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 상관 서브쿼리의 핵심 이해 JOIN 종류별 데이터 유지 전략: INNER·OUTER·CROSS 구분하기 SQL 합집합과 차집합 개념 정리 auto_increment_primary_key의_연관성 총평 1. 상관 서브쿼리의 핵심 이해 무엇을 배웠나 오늘은 dept와 emp 테이블 구조에 익숙해지는 데 집중했다. 특히 문제 5처럼 안쪽 쿼리가 바깥 행의 값을 참조하는 상관 서브쿼리 패턴을 이해하는 것이 가장 중요하다고 느꼈다. ‘값 하나면 =, 여러 개면 IN’이라는 단순한 규칙을 넘어, 쿼리의 의존 관계를 파악하는 사고가 필요하다는 점을 깨달았다.
-헷갈렸던 점 오전에 이어 오후에 sub_query.sql 문제 1~5를 풀었다. 전반적으로 “SELECT로 중간 결과를 먼저 뽑아보는 습관&#34;은 잡혀 있었는데, 테이블이 dept와 emp로 바뀌니 컬럼 이름과 테이블 관계도 다시 머릿속에 그렸다는 점이 가장 큰 혼란이었다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-21 00:00:00 +0000 UTC'>2026년 9월 21일</span>&nbsp;·&nbsp;<span>6 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오후 학습 | 상관 서브쿼리 패턴과 JOIN 전략 이해" href="https://Han-think.github.io/learning/2026-09-21-pm-daily/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
