@@ -213,6 +213,36 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">오전 학습 | RAG 파이프라인 구조와 ChromaDB 영속성 관리
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 RAG 파이프라인: 검색과 생성의 분리 Chroma 영속 저장과 Chat Engine 연결 흐름 — LlamaIndex 서비스화 여정 총평 1. RAG 파이프라인: 검색과 생성의 분리 무엇을 배웠나 오늘 RAG 파이프라인의 핵심 구조를 명확히 이해할 수 있었다. 검색기와 질문 엔진으로 나뉘는 두 단계가 단순히 문서를 찾는 것을 넘어, 점수 기반의 근거 확인과 답변 생성의 역할을 한다는 점이 인상 깊었다. 특히 검색된 결과의 점수를 통해 LLM이 어떤 부분을 참고했는지 추적하는 과정이 중요하다는 점을 깨닫고 실무에 적용해보고자 한다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-10-06 00:00:00 +0000 UTC'>2026년 10월 6일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오전 학습 | RAG 파이프라인 구조와 ChromaDB 영속성 관리" href="https://Han-think.github.io/learning/2026-10-06-am-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">오후 학습 | 적응형 RAG 경로 결정과 출처 추적의 중요성
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>목차 적응형 RAG 경로 결정 과정 Adaptive RAG 구현 흐름과 출처 추적 이해하기 핵심 혼란 해결 (Resolving Confusion) 정리의 이해 (Organized Understanding) 실습 예시 (Practice Example) RAG 청킹과 데이터 운영의 현실 RAG 검색 기법 미리보기: BM25, 하이브리드, 쿼리 변환 총평 1. 적응형 RAG 경로 결정 과정 무엇을 배웠나 Adaptive RAG는 검색 기술을 단순히 많이 붙이는 것이 아니라, 질문과 근거 상태에 따라 어떤 정보원을 선택할지 결정하는 제어 흐름을 만든다는 점을 배웠습니다. 특히 router가 JSON 형식으로 경로를 판단하고, plain, rag, web 중 하나를 선택해 실행한다는 구조를 이해했습니다. 또한 last_answer와 같은 공통 노드를 두면 source 선택과 답변 생성을 분리할 수 있는 유연성이 있다는 점도 인상 깊었습니다.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-10-06 00:00:00 +0000 UTC'>2026년 10월 6일</span>&nbsp;·&nbsp;<span>9 min</span></footer>
+  <a class="entry-link" aria-label="post link to 오후 학습 | 적응형 RAG 경로 결정과 출처 추적의 중요성" href="https://Han-think.github.io/learning/2026-10-06-pm-daily/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">오전 학습 | LLM 정보 경로 분리: Ollama, ChromaDB, Tavily
     </h2>
   </header>
@@ -330,36 +360,6 @@
 
 <span title='2026-09-29 00:00:00 +0000 UTC'>2026년 9월 29일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
   <a class="entry-link" aria-label="post link to 오후 학습 | PDF RAG 메타데이터 활용과 검색 정밀화" href="https://Han-think.github.io/learning/2026-09-29-pm-daily/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오전 학습 | FastAPI 회원가입 DB 연결 및 INSERT 흐름 정리
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 FastAPI 회원가입 DB 연결 및 INSERT 흐름 정리 트랜잭션과 bcrypt 해시 처리 이해하기 bcrypt 비밀번호 검증 흐름 이해하기 프론트엔드 (JavaScript &#43; Axios) 백엔드 (Python &#43; SQLAlchemy &#43; bcrypt) 총평 1. FastAPI 회원가입 DB 연결 및 INSERT 흐름 정리 무엇을 배웠나 FastAPI와 SQLAlchemy를 활용한 DB 연결 흐름을 get_conn() → SQL 작성 → execute() → 결과 fetch 순서로 파악했다. 특히 /overlay와 /join 엔드포인트가 SELECT/INSERT 차이 외에는 구조가 동일하다는 점을 이해하는 것이 핵심이었다. 또한 quote_plus()는 비밀번호 특수문제로 인한 URL 파싱 오류를 방지하기 위한 보안 처리임을 명확히 했다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-28 00:00:00 +0000 UTC'>2026년 9월 28일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오전 학습 | FastAPI 회원가입 DB 연결 및 INSERT 흐름 정리" href="https://Han-think.github.io/learning/2026-09-28-am-daily/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">오후 학습 | JWT 기반 인증과 RAG Vector DB 개념 정리
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>목차 JWT 기반 로그인 인증 연결하기 💻 실습 예시 RAG와 Vector DB, 개념 정리의 핵심 metadata 조건 검색과 upsert 데이터 관리 총평 1. JWT 기반 로그인 인증 연결하기 무엇을 배웠나 JWT는 로그인 자체를 처리하는 것이 아니라, 로그인 후 후속 요청에서 사용자가 인증된 상태임을 증명하기 위한 토큰입니다. 서버는 로그인 직후의 상태를 자동으로 기억하지 않기 때문에, 이후 모든 요청에 token을 Authorization 헤더에 실어 재검증을 받아야 합니다. 실습을 통해 token은 Python으로 secret key로 암호화해 생성하고, 브라우저에서는 sessionStorage에 저장한 뒤 다음 요청 시 header에 실어 보내는 흐름을 확인했습니다.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-09-28 00:00:00 +0000 UTC'>2026년 9월 28일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
-  <a class="entry-link" aria-label="post link to 오후 학습 | JWT 기반 인증과 RAG Vector DB 개념 정리" href="https://Han-think.github.io/learning/2026-09-28-pm-daily/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
