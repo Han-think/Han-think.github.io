@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>2026-10-16 로컬 AI 실용화 주간 기록 | Han-think Blog</title>
+<meta name="keywords" content="weekly, ai-research, local-llm, llama-cpp, ollama, vllm, mlx, llm, agent, reasoning, distillation, rag, multimodal, fine-tuning, cuda, rocm, pytorch, transformers, huggingface">
+<meta name="description" content="여러 플랫폼의 최신 실행·최적화·모델·멀티모달 자료와 누적 관찰, 비교 조건을 구분한 전반편">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/research/weekly-ai-2026-10-16/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/research/weekly-ai-2026-10-16/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/research/weekly-ai-2026-10-16/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="2026-10-16 로컬 AI 실용화 주간 기록">
+  <meta property="og:description" content="여러 플랫폼의 최신 실행·최적화·모델·멀티모달 자료와 누적 관찰, 비교 조건을 구분한 전반편">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="research">
+    <meta property="article:published_time" content="2026-10-16T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-10-16T00:00:00+00:00">
+    <meta property="article:tag" content="Weekly">
+    <meta property="article:tag" content="Ai-Research">
+    <meta property="article:tag" content="Local-Llm">
+    <meta property="article:tag" content="Llama-Cpp">
+    <meta property="article:tag" content="Ollama">
+    <meta property="article:tag" content="Vllm">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="2026-10-16 로컬 AI 실용화 주간 기록">
+  <meta name="twitter:description" content="여러 플랫폼의 최신 실행·최적화·모델·멀티모달 자료와 누적 관찰, 비교 조건을 구분한 전반편">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Researches",
+      "item": "https://Han-think.github.io/research/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "2026-10-16 로컬 AI 실용화 주간 기록",
+      "item": "https://Han-think.github.io/research/weekly-ai-2026-10-16/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "2026-10-16 로컬 AI 실용화 주간 기록",
+  "name": "2026-10-16 로컬 AI 실용화 주간 기록",
+  "description": "여러 플랫폼의 최신 실행·최적화·모델·멀티모달 자료와 누적 관찰, 비교 조건을 구분한 전반편",
+  "keywords": [
+    "weekly", "ai-research", "local-llm", "llama-cpp", "ollama", "vllm", "mlx", "llm", "agent", "reasoning", "distillation", "rag", "multimodal", "fine-tuning", "cuda", "rocm", "pytorch", "transformers", "huggingface"
+  ],
+  "articleBody": "목차 이번 주 한눈에 이번 주 조사 범위 실행·최적화와 운영 변화 모델·제작·멀티모달 연구 관찰 누적 변화 기록 구성 선택과 확인 조건 지원 경로와 제작 흐름 적용 전 확인할 것 근거와 한계 한 줄 결론 원문 출처 이번 주 한눈에 자료 1 ollama — v0.40.5 업데이트 — NVIDIA Nemotron 3.5 Super 모델에 대한 클라우드 기반 결정 모델 지원 추가 및 로컬 실행 시 오픈AI 호환 대화 도구 호출 안정화, 클라우드 접속 실패 시 clearer error 메시지 제공. 자료 2 trl — v1.16.0 업데이트 — AWS Trainium 지원 및 Tree attention 기반 AsyncGRPO 최적화로 훈련 효율성 향상, AMD GPU 비동기 트레이너 지원 및 각종 버그 수정. 자료 3 ollama — v0.40.4 업데이트 — Apple Silicon용 MLX 런너에서 Kev 결정 모델 지원이 추가되었으며, 사용 크레딧을 통한 ollama launch 명령어 확장 및 로컬 모델 픽커 개선이 이루어졌습니다. 자료 4 sglang — v0.5.22 업데이트 — v0.5.22 버전으로의 공식 릴리스가 진행되었습니다. 자료 5 mlx-lm — v0.32.2 업데이트 — 주의력 점수 스케일링 수정 및 SMM 마스크 수정을 통해 MiMo-V2-Flash 모델의 안정성을 개선했다. 이번 주 조사 범위 제한된 비용·메모리에서 가능한 작업과 운영 제약의 변화를 여러 플랫폼에 걸쳐 살핀다. 작성자의 장비는 공개 순위를 결정하지 않는다. 아래는 제한된 출처의 선별 결과이며, 자료가 없는 분야에 변화가 없다는 뜻은 아니다. 별도 Intel 편은 개인 적용 조건을 확인하는 글이다.\n탐색은 릴리스/RSS와 일부 게시자의 모델 저장소 목록이다. 전체 웹·사용자 포럼·모든 모델 게시자를 검색한 것이 아니며, 드라이버/지원표의 개별 변경을 포괄적으로 추적하지 않는다. 배경 문서 조회는 신규 지원 검증이 아니다.\n플랫폼·경로의 언급 단서 선별 자료 Intel 경로 1 NVIDIA 경로 4 AMD 경로 4 Apple 경로 5 CPU 경로 3 공통·Vulkan·범용 경로 5 단서의 수는 해당 GPU에서 실행됐다는 뜻이 아니다. 여러 경로를 언급한 자료는 중복 집계한다.\n수집 점검 기록: 원문 목록 조회 27개, 실패 0개 엔드포인트. 보관된 점검 시각 기준이며 이번 주 전체 정보의 완전성을 보장하지 않는다.\n실행 도구·서빙: 관련 자료 11 건(중복 주제 포함) GPU·백엔드·호환성: 관련 자료 6 건(중복 주제 포함) 모델·구조·메모리: 관련 자료 8 건(중복 주제 포함) 제작·학습·미세조정·증류: 관련 자료 2 건(중복 주제 포함) 이미지·음성·모달별 협업: 관련 자료 6 건(중복 주제 포함) 자원 절감·동시성·역할 분담: 관련 자료 4 건(중복 주제 포함) 응용·에이전트·평가: 관련 자료 7 건(중복 주제 포함) 실행·최적화와 운영 변화 sglang — v0.5.22 업데이트 자료 4 [공식 발표·로컬 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\nv0.5.22 버전으로의 공식 릴리스가 진행되었습니다.\nsglang의 최신 버전 출시로, 해당_release_note에 상세된 구체적인 변경 사항이 포함되어 있습니다. 사용자는 안정적인 최신 버전을 통해 기존 기능의 지속 가능성을 확보할 수 있습니다.\n해석·적용 시 주의: 피드 설명만 확인된 상태로 원문 확인이 이루어지지 않아, 이번 릴리스에서 구체적으로 어떤 기능이 추가되거나 개선되었는지 정확히 파악하기 어렵습니다.\n원문 근거 자료 4: Release v0.5.22\nmlx-lm 업데이트 묶음 자료 5 [공식 발표·로컬 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\n주의력 점수 스케일링 수정 및 SMM 마스크 수정을 통해 MiMo-V2-Flash 모델의 안정성을 개선했다.\nmlx-lm 프로젝트에서 v0.32.2 버전이 발표되었으며, MiMo-V2-Flash 모델의 주의력 메커니즘 스케일링 문제를 수정하고 SMM(Structured Matrix Multiplication) 관련 마스크 기능을 보완하였다. 이러한 변경 사항은 로컬 환경에서 모델을 실행하는 사용자의 안정성을 높이는 것을 목표로 한다.\n해석·적용 시 주의: 주의력 점수 스케일링 및 SMM 마스크 관련 수정 사항으로, 구체적인 하드웨어나 드라이버 환경에 따라 효과가 달라질 수 있다. 원문에는 특정 장비 요구사항이 명시되어 있지 않다.\n원문 근거 자료 5: What’s Changed * Fix attention value scaling in MiMo-V2-Flash by @ricky-chaoju in\n자료 10 [공식 발표·로컬 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\nmuse 템플릿 수정으로, GitHub PR #1977을 통해 template 관련 버그가 해결되었습니다.\nMLX-LM v0.32.1은 muse 템플릿 수정을 통해 특정 프롬프트나 설정에서 발생할 수 있는 형식 또는 동작 문제를 보정했습니다. 이 외에 주요 변경사항은 포함되어 있지 않습니다.\n해석·적용 시 주의: 해당 릴리스는 template 수정 외에 다른 성능 향상이나 API 변화가 없으므로, 기존 사용자는 템플릿 호환성 문제 해결 여부를 확인하면 됩니다.\n원문 근거 자료 10: What’s Changed * fix muse template by @nastya236 in\nollama — v0.40.3 업데이트 자료 6 [공식 발표·로컬 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\nClaude 커넥터 경고 제거 및 배경 모델 업그레이드 일시 중지로 사용자 경험을 개선했다.\nollama 프로젝트에서 v0.40.3 버전이 발표되었으며, Claude 런칭 시 표시되던 불필요한 경고를 제거하고 코덱 런칭 관련 서비스 티어 경고도 해결하였다. 또한 임베딩 및 요청 성능을 고려하여 배경 모델 업그레이드를 일시 중지하는 등 사용자 경험을 개선했다.\n해석·적용 시 주의: 경고 제거 및 업그레이드 일시 중지 조치로, 기존 설정에서 경고가 표시되지 않거나 업그레이드가 자동으로 재개될 수 있다. 원문에는 구체적인 호환성 보장 내용이 명시되어 있지 않다.\n원문 근거 자료 6: What’s Changed * ollama launch claude no longer shows a warning about Claude connectors by\nllama.cpp 업데이트 묶음 자료 7 [공식 발표·로컬 미확인] 발표 상태: 사전 릴리스/실험 단계. 운영 적용은 별도 확인 필요.\ns309x 하드웨어 지원과 관련된 리팩토링을 통해 CPU 추론 관련 보조 함수를 정리했다.\nllama.cpp 프로젝트에서 CPU 기반 추환 환경을 최적화하는 차원의 코드 개편이 이뤄졌다. s309x와 같은 특정 명령어 집합 지원을 위한 helper functions가 재구성되어, 다양한 CPU 환경에서 llama.cpp를 로컬로 실행할 때 호환성과 유지보수성에 영향을 미친다.\n해석·적용 시 주의: s309x 관련 하드웨어 지원 여부는 해당 CPU 아키텍처를 사용하는 사용자에게 적용된다. 모든 CPU 환경에서 자동으로 최적화되는 것은 아니며, 구체적인 하드웨어 사양에 따라 성능 차이가 발생할 수 있다.\n원문 근거 자료 7: ggml-cpu: refactor s309x repack helper functions (#30588)\n자료 8 [공식 발표·로컬 미확인] 발표 상태: 사전 릴리스/실험 단계. 운영 적용은 별도 확인 필요.\nSYCL 기반 멀티매트릭스 연산 및 버퍼 관리와 관련된 메모리 오류를 수정했다.\nllama.cpp에서 SYCL 백엔드를 사용하는 경우, 행렬 곱셈(mul_mat) 및 버퍼 분할(split buffer), 호스트 풀(pool) 관련 코드에 메모리 관련 결함이 있었다. 이 수정으로 SYCL을 활용한 GPU나 가속기 환경에서의 안정성이 개선되었으며, 로컬 실행 시 메모리 오류로 인한 크래시 위험이 줄어들었다.\n해석·적용 시 주의: SYCL 백엔드를 사용하는 특정 하드웨어 및 드라이버 환경에서만 적용되며, 모든 GPU 또는 가속기 구형 모델에서 자동으로 해결되는 것은 아니다. 사용자의 하드웨어·소프트웨어 조합에 따라 효과가 다를 수 있다.\n원문 근거 자료 8: [SYCL]: fix memory errors in mul_mat, split buffer, host pool (#29889) **\nrocm 업데이트 묶음 자료 11 [공식 발표·로컬 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\n피드 요약에 표시된 빌드 태그는 hip-version_10.2.62870입니다.\n제공된 한 줄 설명은 태그 식별자만 제시합니다. 구체적인 코드 변경이나 로컬 적용 조건은 이 자료만으로 확인할 수 없습니다.\n해석·적용 시 주의: 피드 설명에는 태그가 가리키는 코드 변경과 적용 조건이 없습니다.\n원문 근거 자료 11: Tag for build hip-version_10.2.62870\n자료 12 [공식 발표·로컬 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\n피드 요약에 표시된 빌드 태그는 hip-version_10.2.62860입니다.\n제공된 한 줄 설명은 태그 식별자만 제시합니다. 구체적인 코드 변경이나 로컬 적용 조건은 이 자료만으로 확인할 수 없습니다.\n해석·적용 시 주의: 피드 설명에는 태그가 가리키는 코드 변경과 적용 조건이 없습니다.\n원문 근거 자료 12: Tag for build hip-version_10.2.62860\n자료 13 [공식 발표·로컬 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\n피드 요약에 표시된 빌드 태그는 hip-version_10.2.62850입니다.\n제공된 한 줄 설명은 태그 식별자만 제시합니다. 구체적인 코드 변경이나 로컬 적용 조건은 이 자료만으로 확인할 수 없습니다.\n해석·적용 시 주의: 피드 설명에는 태그가 가리키는 코드 변경과 적용 조건이 없습니다.\n원문 근거 자료 13: Tag for build hip-version_10.2.62850\npytorch 업데이트 묶음 자료 14 [공식 발표·로컬 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\nFSDP가 파라미터를 더 작은 메시에 재샤딩하기 전에 모든 파라미터 그룹을 검사하도록 수정하여, 중간 단계에서 오류가 발생하던 문제를 Named NotImplementedError로 명확히 보고한다.\n이전 버전에서는 reshard_after_forward 설정 시 일부 파라미터 그룹 도중 인덱싱 오류가 발생했으나, 이번 수정 사항은 모든 파라미터를 순회하며 재샤딩 전 상태를 검증한다. DTensor 및 all-gather 확장 기능과 관련된 unnamed error를 Named NotImplementedError로 대체하여 디버깅 용이성을 높였다.\n해석·적용 시 주의: 재샤딩 동작 중 일부 파라미터(Shard(i\u003e0) 및 DTensor)에서 여전히 NotImplementedError가 발생할 수 있으며, 모든 경우를 커버하지는 못한다. CPU 환경에서 파라미터당 약 0.3~0.4us의 추가 오버헤드가 발생한다.\n원문 근거 자료 14: on dim 0 or chunked along the shard dim, which this PR leaves for later since\n자료 15 [공식 발표·로컬 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\nlinalg.lstsq가 빈 입력 형태를 백엔드에 직접 전달하여 LAPACK의 빠른 종료 동작을 상속받게 했는데, 이 동작들이 서로 모순되고 수학 정의와도 달라 수정했다. n==0일 때 CPU는 ||B||^2 대신 0을 보고했고, gelsy는 B의 순위에 관계없이 nrhs==0 시 rank를 0으로 설정했으며, gelsd/gelss는 m 또는 n이 0일 때만 빠른 종료가 아니라 nrhs==0 시 B 접근으로 인해 CPU에서 세그폴트가 발생했다. 이번 PR은 이러한 호출 전 빈 입력 처리를 추가하여 정답(B의 노름), 올바른 rank, 그리고 empty out 텐서 처리를 보장한다.\n이 변경 사항은 PyTorch의 linalg.lstsq 연산에서 빈 또는 퇴화된 선형 시스템을 처리하는 방식을 개선합니다. 특히 m, n, nrhs 중 최소값이 0인 경우 LAPACK 백엔드 간의 동작 불일치를 해결하여, CPU에서 잘못된 잔차(0 대신 ||B||^2)나 메모리 접근 오류(세그폴트)를 예방합니다. gels, gelsy, gelsd, gelss 등 다양한 솔버의 빈 입력 시 행동이 표준화되어 예측 가능한 결과를 보장하며, 사용자 제공 out= 텐서가 잘못된 형태를 가질 경우에도 빈 텐서로 올바르게 리사이징됩니다.\n해석·적용 시 주의: 본 변경 사항은 LAPACK 백엔드 동작의 불일치를 수정하여 오류를 방지하지만, 여전히 특정 하드웨어(MPS)나 특수한 텐서 형태에서의 동작은 원문의 테스트 범위를 벗어날 수 있습니다. 특히 out= 파라미터와 관련된 빈 솔루션 형태에 대한 처리는 사용자 코드에서 신중히 확인해야 합니다.\n원문 근거 자료 15: linalg.lstsq handed degenerate shapes straight to the backend, so each one inherited LAPACK’s quick-return behavior, and\n자료 16 [공식 발표·로컬 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\nMetal 백엔드를 위한 special_airy_ai 커널이 추가되었으며, 이는 aten/src/ATen/native/Math.h에 있던 airy_ai_forward에서 포팅된 내용이다. 이 변경은 PyTorch의 MPS(Apple Silicon) 지원 확장을 통해 특수 함수 연산을 가속화한다.\n이 커널 추가는 Apple 실리콘 기반 Mac에서의 PyTorch 연산 성능을 개선합니다. special_airy_ai 함수는 에어리 함수(Airy function)의 변형으로, MPS 그래프 내에서 직접 실행되어 CPU 대비 연산 속도를 높입니다. 이는 PyTorch가 Apple 하드웨어를 더 효율적으로 활용할 수 있게 하는 백엔드 확장 작업의 일환입니다.\n해석·적용 시 주의: 본 변경 사항은 MPS 백엔드를 위한 새로운 커널 추가이지만, 모든 연산자나 입력 형태에 대해 검증된 것은 아닙니다. Apple Silicon 환경에서의 안정성 및 호환성은 추가적인 테스트와 검증을 필요로 합니다.\n원문 근거 자료 16: Adds Metal kernel for special.airy_ai , ported from airy_ai_forward in aten/src/ATen/native/Math.h 🤖 Generated with Claude Code\n모델·제작·멀티모달 ollama 업데이트 묶음 자료 1 [공식 발표·로컬 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\nNVIDIA Nemotron 3.5 Super 모델에 대한 클라우드 기반 결정 모델 지원 추가 및 로컬 실행 시 오픈AI 호환 대화 도구 호출 안정화, 클라우드 접속 실패 시 clearer error 메시지 제공.\nollama v0.40.5는 NVIDIA의 Nemotron 3.5 Super라는 대규모 비전-언어 모델 출시를 중심으로 업데이트됐다. 120B 파라미터 하이브리드 Mamba-2/Transformer MoE 백본과 C-RADIO vision 인코더를 결합했으며, 1M 토큰 컨텍스트 지원, 툴 콜링 및 사고 모드 기능을 제공한다. 또한, 클라우드에서 결정 모델을 실행할 수 있는 clef:cloud 및 clef-flash:cloud 기능이 새롭게 추가돼 로컬 설치 없이도 클라우드 기반 추리가 가능해졌다. 그 외에 OpenAI 호환 대화 도구 호출 시 오류가 발생하지 않도록 수정했으며, 클라우드 접속 실패 시 사인인 결제 등 구체적인 원인을 clearer하게 안내하는 메시지 개선도 이뤄졌다.\n해석·적용 시 주의: Nemotron 3.5 Super 모델은 120B 파라미터 규모로 로컬 실행에는 상당한 GPU 자원이 필요하며, 클라우드 전용 기능(clef:cloud 등)은 로컬 환경에서는 사용할 수 없다. 또한, speculative decodingdrafter 포함 여부에 따라 실제 성능이 달라질 수 있다.\n원문 근거 자료 1: NVIDIA Nemotron 3.5 Super [NVIDIA Nemotron 3.5 Super] is a vision-language model for coding, reasoning,\n자료 3 [공식 발표·로컬 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\nApple Silicon용 MLX 런너에서 Kev 결정 모델 지원이 추가되었으며, 사용 크레딧을 통한 ollama launch 명령어 확장 및 로컬 모델 픽커 개선이 이루어졌습니다.\n이 버전은 Ollama CLI에 결정 모델(decision models) 기능을 통합하여 터미널에서 yes/no 질문, 텍스트 분류, 루브릭 점수 매기기가 가능하게 했습니다. MLX 런너 최적화와 multimodal 임베딩 지원 확장을 통해 다양한 하드웨어 환경에서의 추론 성능과 안정성이 강화되었습니다.\n해석·적용 시 주의: MLX 런너에서 long Laya 상태 클리핑 및 speculative decoding 신뢰도 개선이 이루어졌으나, 모든 하드웨어 구성에서 동일한 성능 향상이 보장되지는 않습니다. 멀티모달 모델 로딩 시 컨텍스트 윈도우 크기에 따라 동작이 달라질 수 있습니다.\n원문 근거 자료 3: Decision models in the CLI Decision models can now be used directly from the terminal\ntrl — v1.16.0 업데이트 자료 2 [공식 발표·로컬 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\nAWS Trainium 지원 및 Tree attention 기반 AsyncGRPO 최적화로 훈련 효율성 향상, AMD GPU 비동기 트레이너 지원 및 각종 버그 수정.\ntrl v1.16.0는 AWS Trainium 칩셋을 공식적으로 지원하기 시작했으며, fused LM head 적용으로 Neuron에서의 훈련이 가능해졌다. pad_to_multiple_of 기본값이 ‘auto’로 변경돼 GPU에서는 별도 설정 없이 동작하고, Trainium2 위주로 Qwen3-0.6B SFT 20스텝 기준 기본값 사용 시 130초, 미사용 시 260초 소요돼 효율이 크게 개선됐다. 또한 AsyncGRPO에 Tree attention 메커니즘이 적용되어 공통 프롬프트 토큰을 한 번만 처리함으로써 메모리 사용량과 추산 시간을 대폭 줄였다. Qwen3-1.7B 기준 트리 패킹은 packing ratio에 따라 1.90배~3.10배 속도 향상이 있었으며, nested fork 상황에서도 효과가 입증됐다. 그 외 AMD GPU 비동기 트레이너 지원, 도구 호출 인자 타입화 등 다양한 기능이 추가되고 실험적 SSD 트레이너가 제거되는 등 정리된 내용이다.\n해석·적용 시 주의: Trainium 기반 훈련은 해당 하드웨어 환경에서만 적용되며, 기본값 변경(pad_to_multiple_of: auto)은 Neuron 외 GPU에서는 기존 동작과 동일하게 작동한다. Tree attention은 공통 프롬프트가 있을 때 효과가 크지만, fork가 많은 상황에서는 효율이 제한될 수 있다. AMD GPU 지원은 비동기 트레이너에서만 유효하다.\n원문 근거 자료 2: 🌳 Tree attention for AsyncGRPO AsyncGRPO now packs every micro-batch row as a prefix tree\ntransformers — Release v5.20.0 업데이트 자료 9 [공식 발표·로컬 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\n다양한 멀티모달 및 언어 모델의 지원이 추가되었으며, SubConfigSpec 도입으로 설정 초기화 방식이 중앙 집중화되고 토크나이저 처리 규칙이 개선된 것이 핵심 변경사항입니다.\nTransformers v5.20.0은 Meta의 Muse Spark Open과 같은 대규모 멀티모달 모델, InclusionAI의 Ling 3.0 Flash와 같은 효율적인 Mixture-of-Experts 언어 모델, Aleph Alpha의 Kolibri 1과 같은 추론 전용 모델 등 다양한 신규 모델을 통합했습니다. 특히 Ling 3.0 Flash는 BailingHybridForCausalLM으로 변환 없이 로드 가능하며, MiniCPM-V 4.7은 canvas M-RoPE를 통해 시각 토큰의 공간 관계와 영상 프레임 순서를 보존합니다. 또한 UnlimitedOcr 같은 OCR 모델과 UltraBERT 같은 색인 모델도 새롭게 지원 범위에 포함되었습니다.\n해석·적용 시 주의: EP(Engineered Platform) 추론 속도에 회귀가 보고되었으며, 일부 deprecated cache utils 메서드가 제거되어 코드 호환성 점검이 필요합니다. kernels 버전은 0.17.2 이상으로 업그레이드해야 fallback 기능이 활성화됩니다. SubConfigSpec 적용 여부에 따라 기존 nested config 수정이 요구될 수 있습니다.\n원문 근거 자료 9: Release v5.20.0 ## New Model additions ### Muse Spark Open Muse Spark Open is a\nmodels 업데이트 묶음 자료 17 [모델 게시 자료·실행 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\nNVIDIA가 개발한 멀티모달 및 다국어 질문-답변 검색용 임베딩 모델로, 이미지·텍스트 복합 입력을 지원하며 34개 언어 텍스트와 18개 언어 이미지 retrieval에 평가됐다.\nNemotron-3.5-Embed-1B-BF16는 텍스트와 문서 이미지를 고정 크기 임베딩 벡터로 변환하는 바이인코더 모델이다. vision encoder와 language model을 결합해 텍스트 임베딩 공간을 공유하면서 이미지 retrieval 기능을 추가했다. 멀티모달 코퍼스에 대한 의미 검색과 RAG 워크플로우에 활용된다.\n해석·적용 시 주의: 본 모델은 NVIDIA GPU 가속 시스템 최적화되어 있으며 CPU만으로는 훈련 및 추론 속도가 제한될 수 있다. 하드웨어·런타임에 따라 출력 점수가 변동될 수 있다.\n원문 근거 자료 17: NVIDIA Nemotron 3.5 Embed** # Nemotron-3.5-Embed-1B-BF16 Overview ## Description: Nemotron-3.5-Embed-1B-BF16 is a versatile embedding\n자료 18 [모델 게시 자료·실행 미확인] 발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.\nNVIDIA가 개발한 고성능 멀티모달 및 다국어 질문-답변 검색용 임베딩 모델로, 8B 규모의 파라미터를 가지며 이미지·텍스트 복합 입력을 지원한다.\nNemotron-3.5-Embed-8B-BF16는 텍스트와 문서 이미지를 고정 크기 임베딩 벡터로 변환하는 바이인코더 모델이다. 8.38B 파라미터를 가지며 language model component가 frozen 상태를 유지해 text retrieval 정확도를 보존한다. vision encoder와 multimodal projector만 미세조정돼 image retrieval 기능을 추가했다.\n해석·적용 시 주의: 본 모델은 NVIDIA GPU 가속 시스템 최적화되어 있으며 CPU만으로는 훈련 및 추론 속도가 제한될 수 있다. 하드웨어·런타임에 따라 출력 점수가 변동될 수 있다.\n원문 근거 자료 18: NVIDIA Nemotron 3.5 Embed** # Nemotron-3.5-Embed-8B-BF16 Overview ## Description: Nemotron-3.5-Embed-8B-BF16 is a state-of-the-art, versatile\n연구 관찰 이번 수집 자료에서 확인하지 못함.\n누적 변화 기록 아래는 조회한 발표의 관찰 이력이다. 새 발표나 본문 변경을 성능 향상으로 세지 않는다. 이전 기록이 없으면 최초 관찰로 남기며 과거 실측을 만들어내지 않는다.\n자료 1 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 5건; 최근 시스템 확인 2026-10-12 — v0.40.2 · 태그 v0.40.2. 자료 2 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 3건; 최근 시스템 확인 2026-10-12 — v1.15.0 · 태그 v1.15.0. 자료 3 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 5건; 최근 시스템 확인 2026-10-12 — v0.40.2 · 태그 v0.40.2. 자료 4 원문 부족 — 전후 비교 불가. 누적 관찰 1건; 최근 시스템 확인 2026-10-03 — v0.5.21 · 태그 v0.5.21. 자료 5 최초 원문 관찰 — 이전 성능을 추정하지 않음. 자료 6 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 5건; 최근 시스템 확인 2026-10-12 — v0.40.2 · 태그 v0.40.2. 자료 7 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 2건; 최근 시스템 확인 2026-10-03 — b11355 · 태그 b11355. 자료 8 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 2건; 최근 시스템 확인 2026-10-03 — b11355 · 태그 b11355. 자료 9 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 2건; 최근 시스템 확인 2026-10-12 — Release v5.19.0 · 태그 v5.19.0. 자료 10 최초 원문 관찰 — 이전 성능을 추정하지 않음. 자료 11 원문 부족 — 전후 비교 불가. 누적 관찰 1건; 최근 시스템 확인 2026-10-12 — ROCm Core SDK 10.1.0 Release · 태그 therock-10.1. 자료 12 원문 부족 — 전후 비교 불가. 누적 관찰 1건; 최근 시스템 확인 2026-10-12 — ROCm Core SDK 10.1.0 Release · 태그 therock-10.1. 자료 13 원문 부족 — 전후 비교 불가. 누적 관찰 1건; 최근 시스템 확인 2026-10-12 — ROCm Core SDK 10.1.0 Release · 태그 therock-10.1. 자료 14 원문 부족 — 전후 비교 불가. 자료 15 원문 부족 — 전후 비교 불가. 자료 16 원문 부족 — 전후 비교 불가. 자료 17 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 1건; 최근 시스템 확인 2026-10-03 — nvidia/GLM-5.3-Flash-NVFP4 repository update · revision da920bb0. 자료 18 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 1건; 최근 시스템 확인 2026-10-03 — nvidia/GLM-5.3-Flash-NVFP4 repository update · revision da920bb0. 같은 작업·입력·품질 조건과 허용된 단일 변경 축을 갖춘 측정 쌍이 없어 수치 비교를 싣지 않았다. 저가 장비가 고가 장비의 작업을 대체한다는 결론도 내리지 않는다.\n구성 선택과 확인 조건 실행 가능, 실용 가능, 안정 운영은 별도 단계다. 이번의 원문 조회만으로 어느 단계의 실행 검증도 통과한 것으로 처리하지 않는다. 어떤 구성이 최선인지는 같은 작업과 품질 기준에서 메모리·응답 지연·전체 완료 시간·실패율·설치 부담을 비교한 뒤 판단한다.\n작은 모델의 단독 실행, 한 모델의 여러 동시 요청, 여러 모델 동시 상주, 이미지·음성·텍스트 모델의 역할 분담을 구분한다. 병렬 처리의 전체 처리량과 개별 응답 지연도 따로 본다. 모델 파일 크기를 전체 실행 메모리로 간주하지 않는다. 컨텍스트·캐시·동시 요청·보조 모델의 자원 조건을 함께 확인한다. 저가·중가라는 표현에는 가격 기준일·지역·통화·구성품 범위가 필요하다. 가격 근거와 같은 품질의 비교가 없으면 비용 절감을 입증했다고 하지 않는다. 홍보 문구·시연·평가 점수 하나는 종합 추천의 근거로 삼지 않는다. 실패·회귀·라이선스·지원 중단 및 불리한 조건도 남긴다. 지원 경로와 제작 흐름 이 부분은 새 소식을 이해하기 위한 배경 안내다. 아래 문서를 이번에 조회했다는 뜻이며, 이번 주에 새로 추가된 지원이나 로컬 실행 결과가 아니다. 문서 본문 접근·필수 주제 일치 확인은 개별 호환성 검증을 대신하지 않는다.\n배경 1 LM Studio 런타임 관리 LM Studio 앱과 실제 추론 런타임은 구분해서 본다. 공식 런타임 관리 문서에서 목록·선택·관리 방법을 확인하고, 상위 엔진의 새 변경이 설치된 런타임에도 포함됐는지는 별도로 확인한다.\n배경 2 llama.cpp 백엔드 빌드 문서 llama.cpp는 CUDA·HIP·Vulkan 등 백엔드별 빌드 경로를 따로 설명한다. 백엔드 이름이 있다는 것과 특정 GPU·모델·드라이버 조합의 동작 보장은 다르다. 사용할 엔진의 빌드 옵션과 운영체제별 조건을 먼저 대조한다.\n배경 3 NVIDIA CUDA 호환성 안내 NVIDIA CUDA 경로는 도구 이름만으로 호환성을 판단하지 않는다. CUDA 툴킷·드라이버·실행 라이브러리의 호환성 안내를 확인한 뒤, 실제 사용하는 추론·학습 프레임워크의 조건도 별도로 대조한다.\n배경 4 AMD ROCm Radeon·Ryzen 지원 조건 AMD 쪽 소프트웨어 스택 명칭은 ROCm이다. 공식 문서는 운영체제별 호환성 경로를 나누므로 GPU 이름·운영체제·ROCm 및 프레임워크 버전을 함께 확인해야 한다. Linux의 지원 조건을 Windows나 WSL에 그대로 옮겨 적용하지 않는다.\n배경 5 Hugging Face TRL GKD 증류 문서 증류는 교사 모델의 신호로 학생 모델을 학습시키는 제작 단계다. TRL의 GKD 문서는 학생이 생성한 출력에 교사의 피드백을 활용하는 방법을 설명한다. main 문서와 실험적 API의 설명을 안정 릴리스 지원으로 단정하지 않으며, 학습 메모리·데이터·라이선스·평가 조건을 별도 확인한다.\n배경 6 PyTorch Intel GPU 시작 조건 PyTorch의 Intel GPU 경로는 모델 이름이나 GPU 제조사만으로 판단하지 않는다. 공식 안내의 장비·운영체제·드라이버·PyTorch 조건을 함께 확인한다. XPU 학습/추론 경로와 LM Studio의 실제 추론 엔진은 별개이며, 이 문서를 읽었다고 설치나 동작을 검증한 것은 아니다.\n배경 7 OpenVINO 시스템 요구 조건 OpenVINO의 CPU·GPU·운영체제 조건을 지원 문서에 대조한다. GPU 경로에는 별도 드라이버 조건이 있으므로 GPU 이름이나 다운로드 파일 존재를 동작 보장으로 해석하지 않는다. 정확한 모델·GPU 세대·버전의 조합은 실제 사용 환경에서 별도 확인해야 한다.\n적용 전 확인할 것 개인 적용 후보는 별도 Intel 편에서 다룬다. 여기의 확인 목록은 작성자의 관심 경로와 겹치는 자료일 뿐, 모든 독자에게 권하는 설치 목록이 아니다.\n자료 3 ollama — v0.40.4 업데이트 대상 버전/발표: v0.40.4. 설치된 런타임·백엔드·의존성이 원문의 적용 대상인지 먼저 확인한다. 확인 목적: Apple Silicon용 MLX 런너에서 Kev 결정 모델 지원이 추가되었으며, 사용 크레딧을 통한 ollama launch 명령어 확장 및 로컬 모델 픽커 개선이 이루어졌습니다. 성공 기준: 분리한 시험 환경에서 같은 입력으로 기본 동작을 확인하고, 기존에 정상 동작하던 작업이 유지되는지 비교한다. 되돌릴 방법: 기존 검증 환경과 설정을 보관하고 분리 시험한다. 문제가 있으면 기존 환경과 설정으로 복원한다. 근거와 한계 자료마다 실제 읽은 범위를 아래에 남겼다. 공식 릴리스는 태그·공개 URL을 대조한 본문을, 글은 분리한 본문 발췌를, 논문은 초록을 읽는다. 실패한 항목은 피드 요약으로 명시한다. 문서 조회와 사실 재현은 다르며, 본문 밖의 코드·실험 표·벤치마크 및 로컬 실행은 검증하지 않았다. 설명 문단의 의미 해석은 편집자의 해설이며 실측 성과가 아니다.\n자료 1 [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님. 자료 2 [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) · 앞부분 발췌만 모델에 전달. 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님. 자료 3 [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님. 자료 4 [공식 발표·로컬 미확인] — 읽은 범위: 피드 설명만(원문 확인 실패). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님. 자료 5 [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님. 자료 6 [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님. 자료 7 [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외). 공식 릴리스 API의 prerelease 표기. 안정 버전 및 로컬 동작은 미확인. 자료 8 [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외). 공식 릴리스 API의 prerelease 표기. 안정 버전 및 로컬 동작은 미확인. 자료 9 [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) · 앞부분 발췌만 모델에 전달. 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님. 자료 10 [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님. 자료 11 [공식 발표·로컬 미확인] — 읽은 범위: 피드 설명만(원문 확인 실패). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님. 자료 12 [공식 발표·로컬 미확인] — 읽은 범위: 피드 설명만(원문 확인 실패). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님. 자료 13 [공식 발표·로컬 미확인] — 읽은 범위: 피드 설명만(원문 확인 실패). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님. 자료 14 [공식 발표·로컬 미확인] — 읽은 범위: 피드 설명만(원문 확인 실패). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님. 자료 15 [공식 발표·로컬 미확인] — 읽은 범위: 피드 설명만(원문 확인 실패). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님. 자료 16 [공식 발표·로컬 미확인] — 읽은 범위: 피드 설명만(원문 확인 실패). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님. 자료 17 [모델 게시 자료·실행 미확인] — 읽은 범위: 고정 revision의 게시자 모델 카드 본문(가중치·코드·평가 재현 미확인) · 앞부분 발췌만 모델에 전달. 큐레이션된 게시자의 모델 저장소. 수정 시각은 출시일이 아니며 모델 성능·로컬 동작은 미확인. 자료 18 [모델 게시 자료·실행 미확인] — 읽은 범위: 고정 revision의 게시자 모델 카드 본문(가중치·코드·평가 재현 미확인) · 앞부분 발췌만 모델에 전달. 큐레이션된 게시자의 모델 저장소. 수정 시각은 출시일이 아니며 모델 성능·로컬 동작은 미확인. 한 줄 결론 자료 3 은 원문의 적용 조건을 먼저 확인할 후보이며, 개발 빌드와 연구 제안은 관찰 대상으로 남긴다.\n원문 출처 자료 1 v0.40.5\n피드 갱신일(최초 게시일 미확인): 2026-10-16 · 발행처: Ollama Releases 확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) 대조한 릴리스 태그: v0.40.5 원문 API 게시 시각: 10/14/2026 19:45:22 원문 조회 시각: 2026-10-16 11:57:58 UTC 모델에 전달한 원문: 1294자 · 추출 본문 범위 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 2 v1.16.0\n피드 갱신일(최초 게시일 미확인): 2026-10-16 · 발행처: TRL Releases 확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) 대조한 릴리스 태그: v1.16.0 원문 API 게시 시각: 10/15/2026 18:00:33 원문 조회 시각: 2026-10-16 11:57:58 UTC 모델에 전달한 원문: 6000자 · 본문 일부 발췌 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 3 v0.40.4\n피드 갱신일(최초 게시일 미확인): 2026-10-14 · 발행처: Ollama Releases 확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) 대조한 릴리스 태그: v0.40.4 원문 API 게시 시각: 10/12/2026 19:00:12 원문 조회 시각: 2026-10-16 11:57:58 UTC 모델에 전달한 원문: 1266자 · 추출 본문 범위 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 4 v0.5.22\n피드 갱신일(최초 게시일 미확인): 2026-10-16 · 발행처: SGLang Releases 확인 범위: 피드 설명만(원문 확인 실패) 원문 조회 시각: 2026-10-16 11:58:00 UTC 원문 확인 실패: 본문 근거를 확보하지 못했다. 피드 설명보다 강한 주장으로 읽지 않는다. 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 5 v0.32.2\n피드 갱신일(최초 게시일 미확인): 2026-10-16 · 발행처: MLX-LM Releases 확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) 대조한 릴리스 태그: v0.32.2 원문 API 게시 시각: 10/16/2026 02:49:02 원문 조회 시각: 2026-10-16 11:58:00 UTC 모델에 전달한 원문: 497자 · 추출 본문 범위 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 6 v0.40.3\n피드 갱신일(최초 게시일 미확인): 2026-10-11 · 발행처: Ollama Releases 확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) 대조한 릴리스 태그: v0.40.3 원문 API 게시 시각: 10/11/2026 01:39:04 원문 조회 시각: 2026-10-16 11:58:00 UTC 모델에 전달한 원문: 489자 · 추출 본문 범위 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 7 b11687\n피드 갱신일(최초 게시일 미확인): 2026-10-16 · 발행처: llama.cpp Releases 확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) 대조한 릴리스 태그: b11687 원문 API 게시 시각: 10/16/2026 09:40:33 원문 조회 시각: 2026-10-16 11:58:03 UTC 모델에 전달한 원문: 57자 · 추출 본문 범위 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 8 b11693\n피드 갱신일(최초 게시일 미확인): 2026-10-16 · 발행처: llama.cpp Releases 확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) 대조한 릴리스 태그: b11693 원문 API 게시 시각: 10/16/2026 10:56:43 원문 조회 시각: 2026-10-16 11:58:07 UTC 모델에 전달한 원문: 73자 · 추출 본문 범위 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 9 Release v5.20.0\n피드 갱신일(최초 게시일 미확인): 2026-10-16 · 발행처: Transformers Releases 확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) 대조한 릴리스 태그: v5.20.0 원문 API 게시 시각: 10/15/2026 18:05:36 원문 조회 시각: 2026-10-16 11:58:07 UTC 모델에 전달한 원문: 6000자 · 본문 일부 발췌 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 10 v0.32.1\n피드 갱신일(최초 게시일 미확인): 2026-10-16 · 발행처: MLX-LM Releases 확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) 대조한 릴리스 태그: v0.32.1 원문 API 게시 시각: 10/15/2026 21:22:02 원문 조회 시각: 2026-10-16 11:58:08 UTC 모델에 전달한 원문: 101자 · 추출 본문 범위 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 11 hip-version_10.2.62870\n피드 갱신일(최초 게시일 미확인): 2026-10-14 · 발행처: ROCm Releases 확인 범위: 피드 설명만(원문 확인 실패) 원문 조회 시각: 2026-10-16 11:58:08 UTC 원문 확인 실패: 본문 근거를 확보하지 못했다. 피드 설명보다 강한 주장으로 읽지 않는다. 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 12 hip-version_10.2.62860\n피드 갱신일(최초 게시일 미확인): 2026-10-13 · 발행처: ROCm Releases 확인 범위: 피드 설명만(원문 확인 실패) 원문 조회 시각: 2026-10-16 11:58:08 UTC 원문 확인 실패: 본문 근거를 확보하지 못했다. 피드 설명보다 강한 주장으로 읽지 않는다. 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 13 hip-version_10.2.62850\n피드 갱신일(최초 게시일 미확인): 2026-10-12 · 발행처: ROCm Releases 확인 범위: 피드 설명만(원문 확인 실패) 원문 조회 시각: 2026-10-16 11:58:08 UTC 원문 확인 실패: 본문 근거를 확보하지 못했다. 피드 설명보다 강한 주장으로 읽지 않는다. 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 14 trunk/841e3dc165963ca6550560eab70a84d1c166b9eb: [FSDP2] Fix resharding to a smaller mesh after forward (#200985)\n피드 갱신일(최초 게시일 미확인): 2026-10-16 · 발행처: PyTorch Releases 확인 범위: 피드 설명만(원문 확인 실패) 원문 조회 시각: 2026-10-16 11:58:09 UTC 원문 확인 실패: 본문 근거를 확보하지 못했다. 피드 설명보다 강한 주장으로 읽지 않는다. 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 15 trunk/98a0190638f271ea6e37e7e5891ea9823d11baae: Handle empty linalg.lstsq inputs in shared code (#199696)\n피드 갱신일(최초 게시일 미확인): 2026-10-12 · 발행처: PyTorch Releases 확인 범위: 피드 설명만(원문 확인 실패) 원문 조회 시각: 2026-10-16 11:58:10 UTC 원문 확인 실패: 본문 근거를 확보하지 못했다. 피드 설명보다 강한 주장으로 읽지 않는다. 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 16 trunk/4862ce0dc3fd31f37cc1b0c9fa55d49eefa21d0c: [MPS] Add special_airy_ai (#195264)\n피드 갱신일(최초 게시일 미확인): 2026-10-16 · 발행처: PyTorch Releases 확인 범위: 피드 설명만(원문 확인 실패) 원문 조회 시각: 2026-10-16 11:58:10 UTC 원문 확인 실패: 본문 근거를 확보하지 못했다. 피드 설명보다 강한 주장으로 읽지 않는다. 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 17 nvidia/Nemotron-3.5-Embed-1B-BF16 repository update\n저장소 수정일(출시일·모델 카드 변경일 아님): 2026-10-16 · 발행처: Publisher Model Repositories 확인 범위: 고정 revision의 게시자 모델 카드 본문(가중치·코드·평가 재현 미확인) 모델 카드 고정 revision: 2a4f9cb55266a4a1453cabba86992623630d93ac 원문 조회 시각: 2026-10-16 11:58:11 UTC 모델에 전달한 원문: 6000자 · 본문 일부 발췌 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 자료 18 nvidia/Nemotron-3.5-Embed-8B-BF16 repository update\n저장소 수정일(출시일·모델 카드 변경일 아님): 2026-10-16 · 발행처: Publisher Model Repositories 확인 범위: 고정 revision의 게시자 모델 카드 본문(가중치·코드·평가 재현 미확인) 모델 카드 고정 revision: ae7240ed24a9111d6be25bf3e4308951a797393c 원문 조회 시각: 2026-10-16 11:58:11 UTC 모델에 전달한 원문: 6000자 · 본문 일부 발췌 확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행. 배경 1 LM Studio 런타임 관리\n조회 시각: 2026-10-16 11:58:12 UTC · 본문 접근·필수 주제 일치 확인 분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다. 배경 2 llama.cpp 백엔드 빌드 문서\n실제 읽은 문서: 고정된 조회 경로 조회 시각: 2026-10-16 11:58:13 UTC · 본문 접근·필수 주제 일치 확인 분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다. 배경 3 NVIDIA CUDA 호환성 안내\n조회 시각: 2026-10-16 11:58:14 UTC · 본문 접근·필수 주제 일치 확인 분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다. 배경 4 AMD ROCm Radeon·Ryzen 지원 조건\n조회 시각: 2026-10-16 11:58:14 UTC · 본문 접근·필수 주제 일치 확인 분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다. 배경 5 Hugging Face TRL GKD 증류 문서\n조회 시각: 2026-10-16 11:58:15 UTC · 본문 접근·필수 주제 일치 확인 분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다. 배경 6 PyTorch Intel GPU 시작 조건\n실제 읽은 문서: 고정된 조회 경로 조회 시각: 2026-10-16 11:58:16 UTC · 본문 접근·필수 주제 일치 확인 분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다. 배경 7 OpenVINO 시스템 요구 조건\n조회 시각: 2026-10-16 11:58:16 UTC · 본문 접근·필수 주제 일치 확인 분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다. ",
+  "wordCount" : "5046",
+  "inLanguage": "en",
+  "datePublished": "2026-10-16T00:00:00Z",
+  "dateModified": "2026-10-16T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/research/weekly-ai-2026-10-16/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      2026-10-16 로컬 AI 실용화 주간 기록
+    </h1>
+    <div class="post-description">
+      여러 플랫폼의 최신 실행·최적화·모델·멀티모달 자료와 누적 관찰, 비교 조건을 구분한 전반편
+    </div>
+    <div class="post-meta">
+
+<span title='2026-10-16 00:00:00 +0000 UTC'>2026년 10월 16일</span>&nbsp;·&nbsp;<span>24 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li><a href="#%EC%9D%B4%EB%B2%88-%EC%A3%BC-%ED%95%9C%EB%88%88%EC%97%90">이번 주 한눈에</a></li>
+<li><a href="#%EC%9D%B4%EB%B2%88-%EC%A3%BC-%EC%A1%B0%EC%82%AC-%EB%B2%94%EC%9C%84">이번 주 조사 범위</a></li>
+<li><a href="#%EC%8B%A4%ED%96%89%EC%B5%9C%EC%A0%81%ED%99%94%EC%99%80-%EC%9A%B4%EC%98%81-%EB%B3%80%ED%99%94">실행·최적화와 운영 변화</a></li>
+<li><a href="#%EB%AA%A8%EB%8D%B8%EC%A0%9C%EC%9E%91%EB%A9%80%ED%8B%B0%EB%AA%A8%EB%8B%AC">모델·제작·멀티모달</a></li>
+<li><a href="#%EC%97%B0%EA%B5%AC-%EA%B4%80%EC%B0%B0">연구 관찰</a></li>
+<li><a href="#%EB%88%84%EC%A0%81-%EB%B3%80%ED%99%94-%EA%B8%B0%EB%A1%9D">누적 변화 기록</a></li>
+<li><a href="#%EA%B5%AC%EC%84%B1-%EC%84%A0%ED%83%9D%EA%B3%BC-%ED%99%95%EC%9D%B8-%EC%A1%B0%EA%B1%B4">구성 선택과 확인 조건</a></li>
+<li><a href="#%EC%A7%80%EC%9B%90-%EA%B2%BD%EB%A1%9C%EC%99%80-%EC%A0%9C%EC%9E%91-%ED%9D%90%EB%A6%84">지원 경로와 제작 흐름</a></li>
+<li><a href="#%EC%A0%81%EC%9A%A9-%EC%A0%84-%ED%99%95%EC%9D%B8%ED%95%A0-%EA%B2%83">적용 전 확인할 것</a></li>
+<li><a href="#%EA%B7%BC%EA%B1%B0%EC%99%80-%ED%95%9C%EA%B3%84">근거와 한계</a></li>
+<li><a href="#%ED%95%9C-%EC%A4%84-%EA%B2%B0%EB%A1%A0">한 줄 결론</a></li>
+<li><a href="#%EC%9B%90%EB%AC%B8-%EC%B6%9C%EC%B2%98">원문 출처</a></li>
+</ul>
+<h2 id="이번-주-한눈에">이번 주 한눈에<a hidden class="anchor" aria-hidden="true" href="#이번-주-한눈에">#</a></h2>
+<ul>
+<li><a href="#%EC%9E%90%EB%A3%8C-1">자료 1</a> <strong>ollama — v0.40.5 업데이트</strong> — NVIDIA Nemotron 3.5 Super 모델에 대한 클라우드 기반 결정 모델 지원 추가 및 로컬 실행 시 오픈AI 호환 대화 도구 호출 안정화, 클라우드 접속 실패 시 clearer error 메시지 제공.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-2">자료 2</a> <strong>trl — v1.16.0 업데이트</strong> — AWS Trainium 지원 및 Tree attention 기반 AsyncGRPO 최적화로 훈련 효율성 향상, AMD GPU 비동기 트레이너 지원 및 각종 버그 수정.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-3">자료 3</a> <strong>ollama — v0.40.4 업데이트</strong> — Apple Silicon용 MLX 런너에서 Kev 결정 모델 지원이 추가되었으며, 사용 크레딧을 통한 ollama launch 명령어 확장 및 로컬 모델 픽커 개선이 이루어졌습니다.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-4">자료 4</a> <strong>sglang — v0.5.22 업데이트</strong> — v0.5.22 버전으로의 공식 릴리스가 진행되었습니다.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-5">자료 5</a> <strong>mlx-lm — v0.32.2 업데이트</strong> — 주의력 점수 스케일링 수정 및 SMM 마스크 수정을 통해 MiMo-V2-Flash 모델의 안정성을 개선했다.</li>
+</ul>
+<h2 id="이번-주-조사-범위">이번 주 조사 범위<a hidden class="anchor" aria-hidden="true" href="#이번-주-조사-범위">#</a></h2>
+<p>제한된 비용·메모리에서 가능한 작업과 운영 제약의 변화를 여러 플랫폼에 걸쳐 살핀다. 작성자의 장비는 공개 순위를 결정하지 않는다. 아래는 제한된 출처의 선별 결과이며, 자료가 없는 분야에 변화가 없다는 뜻은 아니다. 별도 Intel 편은 개인 적용 조건을 확인하는 글이다.</p>
+<p>탐색은 릴리스/RSS와 일부 게시자의 모델 저장소 목록이다. 전체 웹·사용자 포럼·모든 모델 게시자를 검색한 것이 아니며, 드라이버/지원표의 개별 변경을 포괄적으로 추적하지 않는다. 배경 문서 조회는 신규 지원 검증이 아니다.</p>
+<table>
+	<thead>
+			<tr>
+					<th>플랫폼·경로의 언급 단서</th>
+					<th style="text-align: right">선별 자료</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Intel 경로</td>
+					<td style="text-align: right">1</td>
+			</tr>
+			<tr>
+					<td>NVIDIA 경로</td>
+					<td style="text-align: right">4</td>
+			</tr>
+			<tr>
+					<td>AMD 경로</td>
+					<td style="text-align: right">4</td>
+			</tr>
+			<tr>
+					<td>Apple 경로</td>
+					<td style="text-align: right">5</td>
+			</tr>
+			<tr>
+					<td>CPU 경로</td>
+					<td style="text-align: right">3</td>
+			</tr>
+			<tr>
+					<td>공통·Vulkan·범용 경로</td>
+					<td style="text-align: right">5</td>
+			</tr>
+	</tbody>
+</table>
+<p>단서의 수는 해당 GPU에서 실행됐다는 뜻이 아니다. 여러 경로를 언급한 자료는 중복 집계한다.</p>
+<p>수집 점검 기록: 원문 목록 조회 27개, 실패 0개 엔드포인트. 보관된 점검 시각 기준이며 이번 주 전체 정보의 완전성을 보장하지 않는다.</p>
+<ul>
+<li><strong>실행 도구·서빙:</strong> 관련 자료 11 건(중복 주제 포함)</li>
+<li><strong>GPU·백엔드·호환성:</strong> 관련 자료 6 건(중복 주제 포함)</li>
+<li><strong>모델·구조·메모리:</strong> 관련 자료 8 건(중복 주제 포함)</li>
+<li><strong>제작·학습·미세조정·증류:</strong> 관련 자료 2 건(중복 주제 포함)</li>
+<li><strong>이미지·음성·모달별 협업:</strong> 관련 자료 6 건(중복 주제 포함)</li>
+<li><strong>자원 절감·동시성·역할 분담:</strong> 관련 자료 4 건(중복 주제 포함)</li>
+<li><strong>응용·에이전트·평가:</strong> 관련 자료 7 건(중복 주제 포함)</li>
+</ul>
+<h2 id="실행최적화와-운영-변화">실행·최적화와 운영 변화<a hidden class="anchor" aria-hidden="true" href="#실행최적화와-운영-변화">#</a></h2>
+<h3 id="sglang--v0522-업데이트">sglang — v0.5.22 업데이트<a hidden class="anchor" aria-hidden="true" href="#sglang--v0522-업데이트">#</a></h3>
+<p><a href="#%EC%9E%90%EB%A3%8C-4">자료 4</a> [공식 발표·로컬 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>v0.5.22 버전으로의 공식 릴리스가 진행되었습니다.</p>
+<p>sglang의 최신 버전 출시로, 해당_release_note에 상세된 구체적인 변경 사항이 포함되어 있습니다. 사용자는 안정적인 최신 버전을 통해 기존 기능의 지속 가능성을 확보할 수 있습니다.</p>
+<p><strong>해석·적용 시 주의:</strong> 피드 설명만 확인된 상태로 원문 확인이 이루어지지 않아, 이번 릴리스에서 구체적으로 어떤 기능이 추가되거나 개선되었는지 정확히 파악하기 어렵습니다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-4">자료 4</a>: Release v0.5.22</p>
+</blockquote>
+<h3 id="mlx-lm-업데이트-묶음">mlx-lm 업데이트 묶음<a hidden class="anchor" aria-hidden="true" href="#mlx-lm-업데이트-묶음">#</a></h3>
+<p><a href="#%EC%9E%90%EB%A3%8C-5">자료 5</a> [공식 발표·로컬 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>주의력 점수 스케일링 수정 및 SMM 마스크 수정을 통해 MiMo-V2-Flash 모델의 안정성을 개선했다.</p>
+<p>mlx-lm 프로젝트에서 v0.32.2 버전이 발표되었으며, MiMo-V2-Flash 모델의 주의력 메커니즘 스케일링 문제를 수정하고 SMM(Structured Matrix Multiplication) 관련 마스크 기능을 보완하였다. 이러한 변경 사항은 로컬 환경에서 모델을 실행하는 사용자의 안정성을 높이는 것을 목표로 한다.</p>
+<p><strong>해석·적용 시 주의:</strong> 주의력 점수 스케일링 및 SMM 마스크 관련 수정 사항으로, 구체적인 하드웨어나 드라이버 환경에 따라 효과가 달라질 수 있다. 원문에는 특정 장비 요구사항이 명시되어 있지 않다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-5">자료 5</a>: What&rsquo;s Changed * Fix attention value scaling in MiMo-V2-Flash by @ricky-chaoju in</p>
+</blockquote>
+<p><a href="#%EC%9E%90%EB%A3%8C-10">자료 10</a> [공식 발표·로컬 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>muse 템플릿 수정으로, GitHub PR #1977을 통해 template 관련 버그가 해결되었습니다.</p>
+<p>MLX-LM v0.32.1은 muse 템플릿 수정을 통해 특정 프롬프트나 설정에서 발생할 수 있는 형식 또는 동작 문제를 보정했습니다. 이 외에 주요 변경사항은 포함되어 있지 않습니다.</p>
+<p><strong>해석·적용 시 주의:</strong> 해당 릴리스는 template 수정 외에 다른 성능 향상이나 API 변화가 없으므로, 기존 사용자는 템플릿 호환성 문제 해결 여부를 확인하면 됩니다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-10">자료 10</a>: What&rsquo;s Changed * fix muse template by @nastya236 in</p>
+</blockquote>
+<h3 id="ollama--v0403-업데이트">ollama — v0.40.3 업데이트<a hidden class="anchor" aria-hidden="true" href="#ollama--v0403-업데이트">#</a></h3>
+<p><a href="#%EC%9E%90%EB%A3%8C-6">자료 6</a> [공식 발표·로컬 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>Claude 커넥터 경고 제거 및 배경 모델 업그레이드 일시 중지로 사용자 경험을 개선했다.</p>
+<p>ollama 프로젝트에서 v0.40.3 버전이 발표되었으며, Claude 런칭 시 표시되던 불필요한 경고를 제거하고 코덱 런칭 관련 서비스 티어 경고도 해결하였다. 또한 임베딩 및 요청 성능을 고려하여 배경 모델 업그레이드를 일시 중지하는 등 사용자 경험을 개선했다.</p>
+<p><strong>해석·적용 시 주의:</strong> 경고 제거 및 업그레이드 일시 중지 조치로, 기존 설정에서 경고가 표시되지 않거나 업그레이드가 자동으로 재개될 수 있다. 원문에는 구체적인 호환성 보장 내용이 명시되어 있지 않다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-6">자료 6</a>: What&rsquo;s Changed * <code>ollama launch claude</code> no longer shows a warning about Claude connectors by</p>
+</blockquote>
+<h3 id="llamacpp-업데이트-묶음">llama.cpp 업데이트 묶음<a hidden class="anchor" aria-hidden="true" href="#llamacpp-업데이트-묶음">#</a></h3>
+<p><a href="#%EC%9E%90%EB%A3%8C-7">자료 7</a> [공식 발표·로컬 미확인]
+발표 상태: 사전 릴리스/실험 단계. 운영 적용은 별도 확인 필요.</p>
+<p>s309x 하드웨어 지원과 관련된 리팩토링을 통해 CPU 추론 관련 보조 함수를 정리했다.</p>
+<p>llama.cpp 프로젝트에서 CPU 기반 추환 환경을 최적화하는 차원의 코드 개편이 이뤄졌다. s309x와 같은 특정 명령어 집합 지원을 위한 helper functions가 재구성되어, 다양한 CPU 환경에서 llama.cpp를 로컬로 실행할 때 호환성과 유지보수성에 영향을 미친다.</p>
+<p><strong>해석·적용 시 주의:</strong> s309x 관련 하드웨어 지원 여부는 해당 CPU 아키텍처를 사용하는 사용자에게 적용된다. 모든 CPU 환경에서 자동으로 최적화되는 것은 아니며, 구체적인 하드웨어 사양에 따라 성능 차이가 발생할 수 있다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-7">자료 7</a>: ggml-cpu: refactor s309x repack helper functions (#30588)</p>
+</blockquote>
+<p><a href="#%EC%9E%90%EB%A3%8C-8">자료 8</a> [공식 발표·로컬 미확인]
+발표 상태: 사전 릴리스/실험 단계. 운영 적용은 별도 확인 필요.</p>
+<p>SYCL 기반 멀티매트릭스 연산 및 버퍼 관리와 관련된 메모리 오류를 수정했다.</p>
+<p>llama.cpp에서 SYCL 백엔드를 사용하는 경우, 행렬 곱셈(mul_mat) 및 버퍼 분할(split buffer), 호스트 풀(pool) 관련 코드에 메모리 관련 결함이 있었다. 이 수정으로 SYCL을 활용한 GPU나 가속기 환경에서의 안정성이 개선되었으며, 로컬 실행 시 메모리 오류로 인한 크래시 위험이 줄어들었다.</p>
+<p><strong>해석·적용 시 주의:</strong> SYCL 백엔드를 사용하는 특정 하드웨어 및 드라이버 환경에서만 적용되며, 모든 GPU 또는 가속기 구형 모델에서 자동으로 해결되는 것은 아니다. 사용자의 하드웨어·소프트웨어 조합에 따라 효과가 다를 수 있다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-8">자료 8</a>: [SYCL]: fix memory errors in mul_mat, split buffer, host pool (#29889) **</p>
+</blockquote>
+<h3 id="rocm-업데이트-묶음">rocm 업데이트 묶음<a hidden class="anchor" aria-hidden="true" href="#rocm-업데이트-묶음">#</a></h3>
+<p><a href="#%EC%9E%90%EB%A3%8C-11">자료 11</a> [공식 발표·로컬 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>피드 요약에 표시된 빌드 태그는 hip-version_10.2.62870입니다.</p>
+<p>제공된 한 줄 설명은 태그 식별자만 제시합니다. 구체적인 코드 변경이나 로컬 적용 조건은 이 자료만으로 확인할 수 없습니다.</p>
+<p><strong>해석·적용 시 주의:</strong> 피드 설명에는 태그가 가리키는 코드 변경과 적용 조건이 없습니다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-11">자료 11</a>: Tag for build hip-version_10.2.62870</p>
+</blockquote>
+<p><a href="#%EC%9E%90%EB%A3%8C-12">자료 12</a> [공식 발표·로컬 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>피드 요약에 표시된 빌드 태그는 hip-version_10.2.62860입니다.</p>
+<p>제공된 한 줄 설명은 태그 식별자만 제시합니다. 구체적인 코드 변경이나 로컬 적용 조건은 이 자료만으로 확인할 수 없습니다.</p>
+<p><strong>해석·적용 시 주의:</strong> 피드 설명에는 태그가 가리키는 코드 변경과 적용 조건이 없습니다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-12">자료 12</a>: Tag for build hip-version_10.2.62860</p>
+</blockquote>
+<p><a href="#%EC%9E%90%EB%A3%8C-13">자료 13</a> [공식 발표·로컬 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>피드 요약에 표시된 빌드 태그는 hip-version_10.2.62850입니다.</p>
+<p>제공된 한 줄 설명은 태그 식별자만 제시합니다. 구체적인 코드 변경이나 로컬 적용 조건은 이 자료만으로 확인할 수 없습니다.</p>
+<p><strong>해석·적용 시 주의:</strong> 피드 설명에는 태그가 가리키는 코드 변경과 적용 조건이 없습니다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-13">자료 13</a>: Tag for build hip-version_10.2.62850</p>
+</blockquote>
+<h3 id="pytorch-업데이트-묶음">pytorch 업데이트 묶음<a hidden class="anchor" aria-hidden="true" href="#pytorch-업데이트-묶음">#</a></h3>
+<p><a href="#%EC%9E%90%EB%A3%8C-14">자료 14</a> [공식 발표·로컬 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>FSDP가 파라미터를 더 작은 메시에 재샤딩하기 전에 모든 파라미터 그룹을 검사하도록 수정하여, 중간 단계에서 오류가 발생하던 문제를 Named NotImplementedError로 명확히 보고한다.</p>
+<p>이전 버전에서는 reshard_after_forward 설정 시 일부 파라미터 그룹 도중 인덱싱 오류가 발생했으나, 이번 수정 사항은 모든 파라미터를 순회하며 재샤딩 전 상태를 검증한다. DTensor 및 all-gather 확장 기능과 관련된 unnamed error를 Named NotImplementedError로 대체하여 디버깅 용이성을 높였다.</p>
+<p><strong>해석·적용 시 주의:</strong> 재샤딩 동작 중 일부 파라미터(Shard(i&gt;0) 및 DTensor)에서 여전히 NotImplementedError가 발생할 수 있으며, 모든 경우를 커버하지는 못한다. CPU 환경에서 파라미터당 약 0.3~0.4us의 추가 오버헤드가 발생한다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-14">자료 14</a>: on dim 0 or chunked along the shard dim, which this PR leaves for later since</p>
+</blockquote>
+<p><a href="#%EC%9E%90%EB%A3%8C-15">자료 15</a> [공식 발표·로컬 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>linalg.lstsq가 빈 입력 형태를 백엔드에 직접 전달하여 LAPACK의 빠른 종료 동작을 상속받게 했는데, 이 동작들이 서로 모순되고 수학 정의와도 달라 수정했다. n==0일 때 CPU는 ||B||^2 대신 0을 보고했고, gelsy는 B의 순위에 관계없이 nrhs==0 시 rank를 0으로 설정했으며, gelsd/gelss는 m 또는 n이 0일 때만 빠른 종료가 아니라 nrhs==0 시 B 접근으로 인해 CPU에서 세그폴트가 발생했다. 이번 PR은 이러한 호출 전 빈 입력 처리를 추가하여 정답(B의 노름), 올바른 rank, 그리고 empty out 텐서 처리를 보장한다.</p>
+<p>이 변경 사항은 PyTorch의 linalg.lstsq 연산에서 빈 또는 퇴화된 선형 시스템을 처리하는 방식을 개선합니다. 특히 m, n, nrhs 중 최소값이 0인 경우 LAPACK 백엔드 간의 동작 불일치를 해결하여, CPU에서 잘못된 잔차(0 대신 ||B||^2)나 메모리 접근 오류(세그폴트)를 예방합니다. gels, gelsy, gelsd, gelss 등 다양한 솔버의 빈 입력 시 행동이 표준화되어 예측 가능한 결과를 보장하며, 사용자 제공 out= 텐서가 잘못된 형태를 가질 경우에도 빈 텐서로 올바르게 리사이징됩니다.</p>
+<p><strong>해석·적용 시 주의:</strong> 본 변경 사항은 LAPACK 백엔드 동작의 불일치를 수정하여 오류를 방지하지만, 여전히 특정 하드웨어(MPS)나 특수한 텐서 형태에서의 동작은 원문의 테스트 범위를 벗어날 수 있습니다. 특히 out= 파라미터와 관련된 빈 솔루션 형태에 대한 처리는 사용자 코드에서 신중히 확인해야 합니다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-15">자료 15</a>: linalg.lstsq handed degenerate shapes straight to the backend, so each one inherited LAPACK&rsquo;s quick-return behavior, and</p>
+</blockquote>
+<p><a href="#%EC%9E%90%EB%A3%8C-16">자료 16</a> [공식 발표·로컬 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>Metal 백엔드를 위한 special_airy_ai 커널이 추가되었으며, 이는 aten/src/ATen/native/Math.h에 있던 airy_ai_forward에서 포팅된 내용이다. 이 변경은 PyTorch의 MPS(Apple Silicon) 지원 확장을 통해 특수 함수 연산을 가속화한다.</p>
+<p>이 커널 추가는 Apple 실리콘 기반 Mac에서의 PyTorch 연산 성능을 개선합니다. special_airy_ai 함수는 에어리 함수(Airy function)의 변형으로, MPS 그래프 내에서 직접 실행되어 CPU 대비 연산 속도를 높입니다. 이는 PyTorch가 Apple 하드웨어를 더 효율적으로 활용할 수 있게 하는 백엔드 확장 작업의 일환입니다.</p>
+<p><strong>해석·적용 시 주의:</strong> 본 변경 사항은 MPS 백엔드를 위한 새로운 커널 추가이지만, 모든 연산자나 입력 형태에 대해 검증된 것은 아닙니다. Apple Silicon 환경에서의 안정성 및 호환성은 추가적인 테스트와 검증을 필요로 합니다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-16">자료 16</a>: Adds Metal kernel for special.airy_ai , ported from airy_ai_forward in aten/src/ATen/native/Math.h 🤖 Generated with Claude Code</p>
+</blockquote>
+<h2 id="모델제작멀티모달">모델·제작·멀티모달<a hidden class="anchor" aria-hidden="true" href="#모델제작멀티모달">#</a></h2>
+<h3 id="ollama-업데이트-묶음">ollama 업데이트 묶음<a hidden class="anchor" aria-hidden="true" href="#ollama-업데이트-묶음">#</a></h3>
+<p><a href="#%EC%9E%90%EB%A3%8C-1">자료 1</a> [공식 발표·로컬 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>NVIDIA Nemotron 3.5 Super 모델에 대한 클라우드 기반 결정 모델 지원 추가 및 로컬 실행 시 오픈AI 호환 대화 도구 호출 안정화, 클라우드 접속 실패 시 clearer error 메시지 제공.</p>
+<p>ollama v0.40.5는 NVIDIA의 Nemotron 3.5 Super라는 대규모 비전-언어 모델 출시를 중심으로 업데이트됐다. 120B 파라미터 하이브리드 Mamba-2/Transformer MoE 백본과 C-RADIO vision 인코더를 결합했으며, 1M 토큰 컨텍스트 지원, 툴 콜링 및 사고 모드 기능을 제공한다. 또한, 클라우드에서 결정 모델을 실행할 수 있는 clef:cloud 및 clef-flash:cloud 기능이 새롭게 추가돼 로컬 설치 없이도 클라우드 기반 추리가 가능해졌다. 그 외에 OpenAI 호환 대화 도구 호출 시 오류가 발생하지 않도록 수정했으며, 클라우드 접속 실패 시 사인인 결제 등 구체적인 원인을 clearer하게 안내하는 메시지 개선도 이뤄졌다.</p>
+<p><strong>해석·적용 시 주의:</strong> Nemotron 3.5 Super 모델은 120B 파라미터 규모로 로컬 실행에는 상당한 GPU 자원이 필요하며, 클라우드 전용 기능(clef:cloud 등)은 로컬 환경에서는 사용할 수 없다. 또한, speculative decodingdrafter 포함 여부에 따라 실제 성능이 달라질 수 있다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-1">자료 1</a>: NVIDIA Nemotron 3.5 Super [NVIDIA Nemotron 3.5 Super] is a vision-language model for coding, reasoning,</p>
+</blockquote>
+<p><a href="#%EC%9E%90%EB%A3%8C-3">자료 3</a> [공식 발표·로컬 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>Apple Silicon용 MLX 런너에서 Kev 결정 모델 지원이 추가되었으며, 사용 크레딧을 통한 ollama launch 명령어 확장 및 로컬 모델 픽커 개선이 이루어졌습니다.</p>
+<p>이 버전은 Ollama CLI에 결정 모델(decision models) 기능을 통합하여 터미널에서 yes/no 질문, 텍스트 분류, 루브릭 점수 매기기가 가능하게 했습니다. MLX 런너 최적화와 multimodal 임베딩 지원 확장을 통해 다양한 하드웨어 환경에서의 추론 성능과 안정성이 강화되었습니다.</p>
+<p><strong>해석·적용 시 주의:</strong> MLX 런너에서 long Laya 상태 클리핑 및 speculative decoding 신뢰도 개선이 이루어졌으나, 모든 하드웨어 구성에서 동일한 성능 향상이 보장되지는 않습니다. 멀티모달 모델 로딩 시 컨텍스트 윈도우 크기에 따라 동작이 달라질 수 있습니다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-3">자료 3</a>: Decision models in the CLI Decision models can now be used directly from the terminal</p>
+</blockquote>
+<h3 id="trl--v1160-업데이트">trl — v1.16.0 업데이트<a hidden class="anchor" aria-hidden="true" href="#trl--v1160-업데이트">#</a></h3>
+<p><a href="#%EC%9E%90%EB%A3%8C-2">자료 2</a> [공식 발표·로컬 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>AWS Trainium 지원 및 Tree attention 기반 AsyncGRPO 최적화로 훈련 효율성 향상, AMD GPU 비동기 트레이너 지원 및 각종 버그 수정.</p>
+<p>trl v1.16.0는 AWS Trainium 칩셋을 공식적으로 지원하기 시작했으며, fused LM head 적용으로 Neuron에서의 훈련이 가능해졌다. <code>pad_to_multiple_of</code> 기본값이 &lsquo;auto&rsquo;로 변경돼 GPU에서는 별도 설정 없이 동작하고, Trainium2 위주로 Qwen3-0.6B SFT 20스텝 기준 기본값 사용 시 130초, 미사용 시 260초 소요돼 효율이 크게 개선됐다. 또한 AsyncGRPO에 Tree attention 메커니즘이 적용되어 공통 프롬프트 토큰을 한 번만 처리함으로써 메모리 사용량과 추산 시간을 대폭 줄였다. Qwen3-1.7B 기준 트리 패킹은 packing ratio에 따라 1.90배~3.10배 속도 향상이 있었으며, nested fork 상황에서도 효과가 입증됐다. 그 외 AMD GPU 비동기 트레이너 지원, 도구 호출 인자 타입화 등 다양한 기능이 추가되고 실험적 SSD 트레이너가 제거되는 등 정리된 내용이다.</p>
+<p><strong>해석·적용 시 주의:</strong> Trainium 기반 훈련은 해당 하드웨어 환경에서만 적용되며, 기본값 변경(<code>pad_to_multiple_of: auto</code>)은 Neuron 외 GPU에서는 기존 동작과 동일하게 작동한다. Tree attention은 공통 프롬프트가 있을 때 효과가 크지만, fork가 많은 상황에서는 효율이 제한될 수 있다. AMD GPU 지원은 비동기 트레이너에서만 유효하다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-2">자료 2</a>: 🌳 Tree attention for AsyncGRPO AsyncGRPO now packs every micro-batch row as a <strong>prefix tree</strong></p>
+</blockquote>
+<h3 id="transformers--release-v5200-업데이트">transformers — Release v5.20.0 업데이트<a hidden class="anchor" aria-hidden="true" href="#transformers--release-v5200-업데이트">#</a></h3>
+<p><a href="#%EC%9E%90%EB%A3%8C-9">자료 9</a> [공식 발표·로컬 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>다양한 멀티모달 및 언어 모델의 지원이 추가되었으며, <code>SubConfigSpec</code> 도입으로 설정 초기화 방식이 중앙 집중화되고 토크나이저 처리 규칙이 개선된 것이 핵심 변경사항입니다.</p>
+<p>Transformers v5.20.0은 Meta의 Muse Spark Open과 같은 대규모 멀티모달 모델, InclusionAI의 Ling 3.0 Flash와 같은 효율적인 Mixture-of-Experts 언어 모델, Aleph Alpha의 Kolibri 1과 같은 추론 전용 모델 등 다양한 신규 모델을 통합했습니다. 특히 Ling 3.0 Flash는 <code>BailingHybridForCausalLM</code>으로 변환 없이 로드 가능하며, MiniCPM-V 4.7은 canvas M-RoPE를 통해 시각 토큰의 공간 관계와 영상 프레임 순서를 보존합니다. 또한 UnlimitedOcr 같은 OCR 모델과 UltraBERT 같은 색인 모델도 새롭게 지원 범위에 포함되었습니다.</p>
+<p><strong>해석·적용 시 주의:</strong> EP(Engineered Platform) 추론 속도에 회귀가 보고되었으며, 일부 deprecated cache utils 메서드가 제거되어 코드 호환성 점검이 필요합니다. <code>kernels</code> 버전은 0.17.2 이상으로 업그레이드해야 fallback 기능이 활성화됩니다. SubConfigSpec 적용 여부에 따라 기존 nested config 수정이 요구될 수 있습니다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-9">자료 9</a>: Release v5.20.0 ## New Model additions ### Muse Spark Open Muse Spark Open is a</p>
+</blockquote>
+<h3 id="models-업데이트-묶음">models 업데이트 묶음<a hidden class="anchor" aria-hidden="true" href="#models-업데이트-묶음">#</a></h3>
+<p><a href="#%EC%9E%90%EB%A3%8C-17">자료 17</a> [모델 게시 자료·실행 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>NVIDIA가 개발한 멀티모달 및 다국어 질문-답변 검색용 임베딩 모델로, 이미지·텍스트 복합 입력을 지원하며 34개 언어 텍스트와 18개 언어 이미지 retrieval에 평가됐다.</p>
+<p>Nemotron-3.5-Embed-1B-BF16는 텍스트와 문서 이미지를 고정 크기 임베딩 벡터로 변환하는 바이인코더 모델이다. vision encoder와 language model을 결합해 텍스트 임베딩 공간을 공유하면서 이미지 retrieval 기능을 추가했다. 멀티모달 코퍼스에 대한 의미 검색과 RAG 워크플로우에 활용된다.</p>
+<p><strong>해석·적용 시 주의:</strong> 본 모델은 NVIDIA GPU 가속 시스템 최적화되어 있으며 CPU만으로는 훈련 및 추론 속도가 제한될 수 있다. 하드웨어·런타임에 따라 출력 점수가 변동될 수 있다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-17">자료 17</a>: NVIDIA Nemotron 3.5 Embed**     # Nemotron-3.5-Embed-1B-BF16 Overview ## Description: <strong>Nemotron-3.5-Embed-1B-BF16</strong> is a versatile embedding</p>
+</blockquote>
+<p><a href="#%EC%9E%90%EB%A3%8C-18">자료 18</a> [모델 게시 자료·실행 미확인]
+발표 상태: 발표/게시 자료이며 로컬 실행은 확인하지 않음.</p>
+<p>NVIDIA가 개발한 고성능 멀티모달 및 다국어 질문-답변 검색용 임베딩 모델로, 8B 규모의 파라미터를 가지며 이미지·텍스트 복합 입력을 지원한다.</p>
+<p>Nemotron-3.5-Embed-8B-BF16는 텍스트와 문서 이미지를 고정 크기 임베딩 벡터로 변환하는 바이인코더 모델이다. 8.38B 파라미터를 가지며 language model component가 frozen 상태를 유지해 text retrieval 정확도를 보존한다. vision encoder와 multimodal projector만 미세조정돼 image retrieval 기능을 추가했다.</p>
+<p><strong>해석·적용 시 주의:</strong> 본 모델은 NVIDIA GPU 가속 시스템 최적화되어 있으며 CPU만으로는 훈련 및 추론 속도가 제한될 수 있다. 하드웨어·런타임에 따라 출력 점수가 변동될 수 있다.</p>
+<blockquote>
+<p>원문 근거 <a href="#%EC%9E%90%EB%A3%8C-18">자료 18</a>: NVIDIA Nemotron 3.5 Embed**     # Nemotron-3.5-Embed-8B-BF16 Overview ## Description: <strong>Nemotron-3.5-Embed-8B-BF16</strong> is a state-of-the-art, versatile</p>
+</blockquote>
+<h2 id="연구-관찰">연구 관찰<a hidden class="anchor" aria-hidden="true" href="#연구-관찰">#</a></h2>
+<p>이번 수집 자료에서 확인하지 못함.</p>
+<h2 id="누적-변화-기록">누적 변화 기록<a hidden class="anchor" aria-hidden="true" href="#누적-변화-기록">#</a></h2>
+<p>아래는 조회한 발표의 관찰 이력이다. 새 발표나 본문 변경을 성능 향상으로 세지 않는다. 이전 기록이 없으면 최초 관찰로 남기며 과거 실측을 만들어내지 않는다.</p>
+<ul>
+<li><a href="#%EC%9E%90%EB%A3%8C-1">자료 1</a> 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 5건; 최근 시스템 확인 2026-10-12 — v0.40.2 · 태그 v0.40.2.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-2">자료 2</a> 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 3건; 최근 시스템 확인 2026-10-12 — v1.15.0 · 태그 v1.15.0.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-3">자료 3</a> 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 5건; 최근 시스템 확인 2026-10-12 — v0.40.2 · 태그 v0.40.2.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-4">자료 4</a> 원문 부족 — 전후 비교 불가. 누적 관찰 1건; 최근 시스템 확인 2026-10-03 — v0.5.21 · 태그 v0.5.21.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-5">자료 5</a> 최초 원문 관찰 — 이전 성능을 추정하지 않음.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-6">자료 6</a> 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 5건; 최근 시스템 확인 2026-10-12 — v0.40.2 · 태그 v0.40.2.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-7">자료 7</a> 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 2건; 최근 시스템 확인 2026-10-03 — b11355 · 태그 b11355.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-8">자료 8</a> 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 2건; 최근 시스템 확인 2026-10-03 — b11355 · 태그 b11355.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-9">자료 9</a> 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 2건; 최근 시스템 확인 2026-10-12 — Release v5.19.0 · 태그 v5.19.0.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-10">자료 10</a> 최초 원문 관찰 — 이전 성능을 추정하지 않음.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-11">자료 11</a> 원문 부족 — 전후 비교 불가. 누적 관찰 1건; 최근 시스템 확인 2026-10-12 — ROCm Core SDK 10.1.0 Release · 태그 therock-10.1.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-12">자료 12</a> 원문 부족 — 전후 비교 불가. 누적 관찰 1건; 최근 시스템 확인 2026-10-12 — ROCm Core SDK 10.1.0 Release · 태그 therock-10.1.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-13">자료 13</a> 원문 부족 — 전후 비교 불가. 누적 관찰 1건; 최근 시스템 확인 2026-10-12 — ROCm Core SDK 10.1.0 Release · 태그 therock-10.1.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-14">자료 14</a> 원문 부족 — 전후 비교 불가.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-15">자료 15</a> 원문 부족 — 전후 비교 불가.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-16">자료 16</a> 원문 부족 — 전후 비교 불가.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-17">자료 17</a> 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 1건; 최근 시스템 확인 2026-10-03 — nvidia/GLM-5.3-Flash-NVFP4 repository update · revision da920bb0.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-18">자료 18</a> 관련 도구의 추가 발표 관찰 — 같은 작업 비교 아님. 누적 관찰 1건; 최근 시스템 확인 2026-10-03 — nvidia/GLM-5.3-Flash-NVFP4 repository update · revision da920bb0.</li>
+</ul>
+<p>같은 작업·입력·품질 조건과 허용된 단일 변경 축을 갖춘 측정 쌍이 없어 수치 비교를 싣지 않았다. 저가 장비가 고가 장비의 작업을 대체한다는 결론도 내리지 않는다.</p>
+<h2 id="구성-선택과-확인-조건">구성 선택과 확인 조건<a hidden class="anchor" aria-hidden="true" href="#구성-선택과-확인-조건">#</a></h2>
+<p>실행 가능, 실용 가능, 안정 운영은 별도 단계다. 이번의 원문 조회만으로 어느 단계의 실행 검증도 통과한 것으로 처리하지 않는다. 어떤 구성이 최선인지는 같은 작업과 품질 기준에서 메모리·응답 지연·전체 완료 시간·실패율·설치 부담을 비교한 뒤 판단한다.</p>
+<ul>
+<li>작은 모델의 단독 실행, 한 모델의 여러 동시 요청, 여러 모델 동시 상주, 이미지·음성·텍스트 모델의 역할 분담을 구분한다. 병렬 처리의 전체 처리량과 개별 응답 지연도 따로 본다.</li>
+<li>모델 파일 크기를 전체 실행 메모리로 간주하지 않는다. 컨텍스트·캐시·동시 요청·보조 모델의 자원 조건을 함께 확인한다.</li>
+<li>저가·중가라는 표현에는 가격 기준일·지역·통화·구성품 범위가 필요하다. 가격 근거와 같은 품질의 비교가 없으면 비용 절감을 입증했다고 하지 않는다.</li>
+<li>홍보 문구·시연·평가 점수 하나는 종합 추천의 근거로 삼지 않는다. 실패·회귀·라이선스·지원 중단 및 불리한 조건도 남긴다.</li>
+</ul>
+<h2 id="지원-경로와-제작-흐름">지원 경로와 제작 흐름<a hidden class="anchor" aria-hidden="true" href="#지원-경로와-제작-흐름">#</a></h2>
+<p>이 부분은 새 소식을 이해하기 위한 배경 안내다. 아래 문서를 이번에 조회했다는 뜻이며, 이번 주에 새로 추가된 지원이나 로컬 실행 결과가 아니다. 문서 본문 접근·필수 주제 일치 확인은 개별 호환성 검증을 대신하지 않는다.</p>
+<h3 id="배경-1-lm-studio-런타임-관리"><a href="#%EB%B0%B0%EA%B2%BD-1">배경 1</a> LM Studio 런타임 관리<a hidden class="anchor" aria-hidden="true" href="#배경-1-lm-studio-런타임-관리">#</a></h3>
+<p>LM Studio 앱과 실제 추론 런타임은 구분해서 본다. 공식 런타임 관리 문서에서 목록·선택·관리 방법을 확인하고, 상위 엔진의 새 변경이 설치된 런타임에도 포함됐는지는 별도로 확인한다.</p>
+<h3 id="배경-2-llamacpp-백엔드-빌드-문서"><a href="#%EB%B0%B0%EA%B2%BD-2">배경 2</a> llama.cpp 백엔드 빌드 문서<a hidden class="anchor" aria-hidden="true" href="#배경-2-llamacpp-백엔드-빌드-문서">#</a></h3>
+<p>llama.cpp는 CUDA·HIP·Vulkan 등 백엔드별 빌드 경로를 따로 설명한다. 백엔드 이름이 있다는 것과 특정 GPU·모델·드라이버 조합의 동작 보장은 다르다. 사용할 엔진의 빌드 옵션과 운영체제별 조건을 먼저 대조한다.</p>
+<h3 id="배경-3-nvidia-cuda-호환성-안내"><a href="#%EB%B0%B0%EA%B2%BD-3">배경 3</a> NVIDIA CUDA 호환성 안내<a hidden class="anchor" aria-hidden="true" href="#배경-3-nvidia-cuda-호환성-안내">#</a></h3>
+<p>NVIDIA CUDA 경로는 도구 이름만으로 호환성을 판단하지 않는다. CUDA 툴킷·드라이버·실행 라이브러리의 호환성 안내를 확인한 뒤, 실제 사용하는 추론·학습 프레임워크의 조건도 별도로 대조한다.</p>
+<h3 id="배경-4-amd-rocm-radeonryzen-지원-조건"><a href="#%EB%B0%B0%EA%B2%BD-4">배경 4</a> AMD ROCm Radeon·Ryzen 지원 조건<a hidden class="anchor" aria-hidden="true" href="#배경-4-amd-rocm-radeonryzen-지원-조건">#</a></h3>
+<p>AMD 쪽 소프트웨어 스택 명칭은 ROCm이다. 공식 문서는 운영체제별 호환성 경로를 나누므로 GPU 이름·운영체제·ROCm 및 프레임워크 버전을 함께 확인해야 한다. Linux의 지원 조건을 Windows나 WSL에 그대로 옮겨 적용하지 않는다.</p>
+<h3 id="배경-5-hugging-face-trl-gkd-증류-문서"><a href="#%EB%B0%B0%EA%B2%BD-5">배경 5</a> Hugging Face TRL GKD 증류 문서<a hidden class="anchor" aria-hidden="true" href="#배경-5-hugging-face-trl-gkd-증류-문서">#</a></h3>
+<p>증류는 교사 모델의 신호로 학생 모델을 학습시키는 제작 단계다. TRL의 GKD 문서는 학생이 생성한 출력에 교사의 피드백을 활용하는 방법을 설명한다. main 문서와 실험적 API의 설명을 안정 릴리스 지원으로 단정하지 않으며, 학습 메모리·데이터·라이선스·평가 조건을 별도 확인한다.</p>
+<h3 id="배경-6-pytorch-intel-gpu-시작-조건"><a href="#%EB%B0%B0%EA%B2%BD-6">배경 6</a> PyTorch Intel GPU 시작 조건<a hidden class="anchor" aria-hidden="true" href="#배경-6-pytorch-intel-gpu-시작-조건">#</a></h3>
+<p>PyTorch의 Intel GPU 경로는 모델 이름이나 GPU 제조사만으로 판단하지 않는다. 공식 안내의 장비·운영체제·드라이버·PyTorch 조건을 함께 확인한다. XPU 학습/추론 경로와 LM Studio의 실제 추론 엔진은 별개이며, 이 문서를 읽었다고 설치나 동작을 검증한 것은 아니다.</p>
+<h3 id="배경-7-openvino-시스템-요구-조건"><a href="#%EB%B0%B0%EA%B2%BD-7">배경 7</a> OpenVINO 시스템 요구 조건<a hidden class="anchor" aria-hidden="true" href="#배경-7-openvino-시스템-요구-조건">#</a></h3>
+<p>OpenVINO의 CPU·GPU·운영체제 조건을 지원 문서에 대조한다. GPU 경로에는 별도 드라이버 조건이 있으므로 GPU 이름이나 다운로드 파일 존재를 동작 보장으로 해석하지 않는다. 정확한 모델·GPU 세대·버전의 조합은 실제 사용 환경에서 별도 확인해야 한다.</p>
+<h2 id="적용-전-확인할-것">적용 전 확인할 것<a hidden class="anchor" aria-hidden="true" href="#적용-전-확인할-것">#</a></h2>
+<p>개인 적용 후보는 별도 Intel 편에서 다룬다. 여기의 확인 목록은 작성자의 관심 경로와 겹치는 자료일 뿐, 모든 독자에게 권하는 설치 목록이 아니다.</p>
+<h3 id="자료-3-ollama--v0404-업데이트"><a href="#%EC%9E%90%EB%A3%8C-3">자료 3</a> ollama — v0.40.4 업데이트<a hidden class="anchor" aria-hidden="true" href="#자료-3-ollama--v0404-업데이트">#</a></h3>
+<ul>
+<li><strong>대상 버전/발표:</strong> v0.40.4. 설치된 런타임·백엔드·의존성이 원문의 적용 대상인지 먼저 확인한다.</li>
+<li><strong>확인 목적:</strong> Apple Silicon용 MLX 런너에서 Kev 결정 모델 지원이 추가되었으며, 사용 크레딧을 통한 ollama launch 명령어 확장 및 로컬 모델 픽커 개선이 이루어졌습니다.</li>
+<li><strong>성공 기준:</strong> 분리한 시험 환경에서 같은 입력으로 기본 동작을 확인하고, 기존에 정상 동작하던 작업이 유지되는지 비교한다.</li>
+<li><strong>되돌릴 방법:</strong> 기존 검증 환경과 설정을 보관하고 분리 시험한다. 문제가 있으면 기존 환경과 설정으로 복원한다.</li>
+</ul>
+<h2 id="근거와-한계">근거와 한계<a hidden class="anchor" aria-hidden="true" href="#근거와-한계">#</a></h2>
+<p>자료마다 실제 읽은 범위를 아래에 남겼다. 공식 릴리스는 태그·공개 URL을 대조한 본문을, 글은 분리한 본문 발췌를, 논문은 초록을 읽는다. 실패한 항목은 피드 요약으로 명시한다. 문서 조회와 사실 재현은 다르며, 본문 밖의 코드·실험 표·벤치마크 및 로컬 실행은 검증하지 않았다. 설명 문단의 의미 해석은 편집자의 해설이며 실측 성과가 아니다.</p>
+<ul>
+<li><a href="#%EC%9E%90%EB%A3%8C-1">자료 1</a> [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-2">자료 2</a> [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) · 앞부분 발췌만 모델에 전달. 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-3">자료 3</a> [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-4">자료 4</a> [공식 발표·로컬 미확인] — 읽은 범위: 피드 설명만(원문 확인 실패). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-5">자료 5</a> [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-6">자료 6</a> [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-7">자료 7</a> [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외). 공식 릴리스 API의 prerelease 표기. 안정 버전 및 로컬 동작은 미확인.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-8">자료 8</a> [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외). 공식 릴리스 API의 prerelease 표기. 안정 버전 및 로컬 동작은 미확인.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-9">자료 9</a> [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외) · 앞부분 발췌만 모델에 전달. 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-10">자료 10</a> [공식 발표·로컬 미확인] — 읽은 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-11">자료 11</a> [공식 발표·로컬 미확인] — 읽은 범위: 피드 설명만(원문 확인 실패). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-12">자료 12</a> [공식 발표·로컬 미확인] — 읽은 범위: 피드 설명만(원문 확인 실패). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-13">자료 13</a> [공식 발표·로컬 미확인] — 읽은 범위: 피드 설명만(원문 확인 실패). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-14">자료 14</a> [공식 발표·로컬 미확인] — 읽은 범위: 피드 설명만(원문 확인 실패). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-15">자료 15</a> [공식 발표·로컬 미확인] — 읽은 범위: 피드 설명만(원문 확인 실패). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-16">자료 16</a> [공식 발표·로컬 미확인] — 읽은 범위: 피드 설명만(원문 확인 실패). 설정된 공식 저장소의 릴리스 자료. 로컬 동작 검증은 아님.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-17">자료 17</a> [모델 게시 자료·실행 미확인] — 읽은 범위: 고정 revision의 게시자 모델 카드 본문(가중치·코드·평가 재현 미확인) · 앞부분 발췌만 모델에 전달. 큐레이션된 게시자의 모델 저장소. 수정 시각은 출시일이 아니며 모델 성능·로컬 동작은 미확인.</li>
+<li><a href="#%EC%9E%90%EB%A3%8C-18">자료 18</a> [모델 게시 자료·실행 미확인] — 읽은 범위: 고정 revision의 게시자 모델 카드 본문(가중치·코드·평가 재현 미확인) · 앞부분 발췌만 모델에 전달. 큐레이션된 게시자의 모델 저장소. 수정 시각은 출시일이 아니며 모델 성능·로컬 동작은 미확인.</li>
+</ul>
+<h2 id="한-줄-결론">한 줄 결론<a hidden class="anchor" aria-hidden="true" href="#한-줄-결론">#</a></h2>
+<p><a href="#%EC%9E%90%EB%A3%8C-3">자료 3</a> 은 원문의 적용 조건을 먼저 확인할 후보이며, 개발 빌드와 연구 제안은 관찰 대상으로 남긴다.</p>
+<h2 id="원문-출처">원문 출처<a hidden class="anchor" aria-hidden="true" href="#원문-출처">#</a></h2>
+<h3 id="자료-1">자료 1<a hidden class="anchor" aria-hidden="true" href="#자료-1">#</a></h3>
+<p><a href="https://github.com/ollama/ollama/releases/tag/v0.40.5">v0.40.5</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-16 · 발행처: Ollama Releases</li>
+<li>확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외)</li>
+<li>대조한 릴리스 태그: v0.40.5</li>
+<li>원문 API 게시 시각: 10/14/2026 19:45:22</li>
+<li>원문 조회 시각: 2026-10-16 11:57:58 UTC</li>
+<li>모델에 전달한 원문: 1294자 · 추출 본문 범위</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-2">자료 2<a hidden class="anchor" aria-hidden="true" href="#자료-2">#</a></h3>
+<p><a href="https://github.com/huggingface/trl/releases/tag/v1.16.0">v1.16.0</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-16 · 발행처: TRL Releases</li>
+<li>확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외)</li>
+<li>대조한 릴리스 태그: v1.16.0</li>
+<li>원문 API 게시 시각: 10/15/2026 18:00:33</li>
+<li>원문 조회 시각: 2026-10-16 11:57:58 UTC</li>
+<li>모델에 전달한 원문: 6000자 · 본문 일부 발췌</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-3">자료 3<a hidden class="anchor" aria-hidden="true" href="#자료-3">#</a></h3>
+<p><a href="https://github.com/ollama/ollama/releases/tag/v0.40.4">v0.40.4</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-14 · 발행처: Ollama Releases</li>
+<li>확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외)</li>
+<li>대조한 릴리스 태그: v0.40.4</li>
+<li>원문 API 게시 시각: 10/12/2026 19:00:12</li>
+<li>원문 조회 시각: 2026-10-16 11:57:58 UTC</li>
+<li>모델에 전달한 원문: 1266자 · 추출 본문 범위</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-4">자료 4<a hidden class="anchor" aria-hidden="true" href="#자료-4">#</a></h3>
+<p><a href="https://github.com/sgl-project/sglang/releases/tag/v0.5.22">v0.5.22</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-16 · 발행처: SGLang Releases</li>
+<li>확인 범위: 피드 설명만(원문 확인 실패)</li>
+<li>원문 조회 시각: 2026-10-16 11:58:00 UTC</li>
+<li>원문 확인 실패: 본문 근거를 확보하지 못했다. 피드 설명보다 강한 주장으로 읽지 않는다.</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-5">자료 5<a hidden class="anchor" aria-hidden="true" href="#자료-5">#</a></h3>
+<p><a href="https://github.com/ml-explore/mlx-lm/releases/tag/v0.32.2">v0.32.2</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-16 · 발행처: MLX-LM Releases</li>
+<li>확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외)</li>
+<li>대조한 릴리스 태그: v0.32.2</li>
+<li>원문 API 게시 시각: 10/16/2026 02:49:02</li>
+<li>원문 조회 시각: 2026-10-16 11:58:00 UTC</li>
+<li>모델에 전달한 원문: 497자 · 추출 본문 범위</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-6">자료 6<a hidden class="anchor" aria-hidden="true" href="#자료-6">#</a></h3>
+<p><a href="https://github.com/ollama/ollama/releases/tag/v0.40.3">v0.40.3</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-11 · 발행처: Ollama Releases</li>
+<li>확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외)</li>
+<li>대조한 릴리스 태그: v0.40.3</li>
+<li>원문 API 게시 시각: 10/11/2026 01:39:04</li>
+<li>원문 조회 시각: 2026-10-16 11:58:00 UTC</li>
+<li>모델에 전달한 원문: 489자 · 추출 본문 범위</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-7">자료 7<a hidden class="anchor" aria-hidden="true" href="#자료-7">#</a></h3>
+<p><a href="https://github.com/ggml-org/llama.cpp/releases/tag/b11687">b11687</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-16 · 발행처: llama.cpp Releases</li>
+<li>확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외)</li>
+<li>대조한 릴리스 태그: b11687</li>
+<li>원문 API 게시 시각: 10/16/2026 09:40:33</li>
+<li>원문 조회 시각: 2026-10-16 11:58:03 UTC</li>
+<li>모델에 전달한 원문: 57자 · 추출 본문 범위</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-8">자료 8<a hidden class="anchor" aria-hidden="true" href="#자료-8">#</a></h3>
+<p><a href="https://github.com/ggml-org/llama.cpp/releases/tag/b11693">b11693</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-16 · 발행처: llama.cpp Releases</li>
+<li>확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외)</li>
+<li>대조한 릴리스 태그: b11693</li>
+<li>원문 API 게시 시각: 10/16/2026 10:56:43</li>
+<li>원문 조회 시각: 2026-10-16 11:58:07 UTC</li>
+<li>모델에 전달한 원문: 73자 · 추출 본문 범위</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-9">자료 9<a hidden class="anchor" aria-hidden="true" href="#자료-9">#</a></h3>
+<p><a href="https://github.com/huggingface/transformers/releases/tag/v5.20.0">Release v5.20.0</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-16 · 발행처: Transformers Releases</li>
+<li>확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외)</li>
+<li>대조한 릴리스 태그: v5.20.0</li>
+<li>원문 API 게시 시각: 10/15/2026 18:05:36</li>
+<li>원문 조회 시각: 2026-10-16 11:58:07 UTC</li>
+<li>모델에 전달한 원문: 6000자 · 본문 일부 발췌</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-10">자료 10<a hidden class="anchor" aria-hidden="true" href="#자료-10">#</a></h3>
+<p><a href="https://github.com/ml-explore/mlx-lm/releases/tag/v0.32.1">v0.32.1</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-16 · 발행처: MLX-LM Releases</li>
+<li>확인 범위: 공식 릴리스 본문(다운로드 자산·크레딧 제외)</li>
+<li>대조한 릴리스 태그: v0.32.1</li>
+<li>원문 API 게시 시각: 10/15/2026 21:22:02</li>
+<li>원문 조회 시각: 2026-10-16 11:58:08 UTC</li>
+<li>모델에 전달한 원문: 101자 · 추출 본문 범위</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-11">자료 11<a hidden class="anchor" aria-hidden="true" href="#자료-11">#</a></h3>
+<p><a href="https://github.com/ROCm/rocm-systems/releases/tag/hip-version_10.2.62870">hip-version_10.2.62870</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-14 · 발행처: ROCm Releases</li>
+<li>확인 범위: 피드 설명만(원문 확인 실패)</li>
+<li>원문 조회 시각: 2026-10-16 11:58:08 UTC</li>
+<li>원문 확인 실패: 본문 근거를 확보하지 못했다. 피드 설명보다 강한 주장으로 읽지 않는다.</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-12">자료 12<a hidden class="anchor" aria-hidden="true" href="#자료-12">#</a></h3>
+<p><a href="https://github.com/ROCm/rocm-systems/releases/tag/hip-version_10.2.62860">hip-version_10.2.62860</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-13 · 발행처: ROCm Releases</li>
+<li>확인 범위: 피드 설명만(원문 확인 실패)</li>
+<li>원문 조회 시각: 2026-10-16 11:58:08 UTC</li>
+<li>원문 확인 실패: 본문 근거를 확보하지 못했다. 피드 설명보다 강한 주장으로 읽지 않는다.</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-13">자료 13<a hidden class="anchor" aria-hidden="true" href="#자료-13">#</a></h3>
+<p><a href="https://github.com/ROCm/rocm-systems/releases/tag/hip-version_10.2.62850">hip-version_10.2.62850</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-12 · 발행처: ROCm Releases</li>
+<li>확인 범위: 피드 설명만(원문 확인 실패)</li>
+<li>원문 조회 시각: 2026-10-16 11:58:08 UTC</li>
+<li>원문 확인 실패: 본문 근거를 확보하지 못했다. 피드 설명보다 강한 주장으로 읽지 않는다.</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-14">자료 14<a hidden class="anchor" aria-hidden="true" href="#자료-14">#</a></h3>
+<p><a href="https://github.com/pytorch/pytorch/releases/tag/trunk%2F841e3dc165963ca6550560eab70a84d1c166b9eb">trunk/841e3dc165963ca6550560eab70a84d1c166b9eb: [FSDP2] Fix resharding to a smaller mesh after forward (#200985)</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-16 · 발행처: PyTorch Releases</li>
+<li>확인 범위: 피드 설명만(원문 확인 실패)</li>
+<li>원문 조회 시각: 2026-10-16 11:58:09 UTC</li>
+<li>원문 확인 실패: 본문 근거를 확보하지 못했다. 피드 설명보다 강한 주장으로 읽지 않는다.</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-15">자료 15<a hidden class="anchor" aria-hidden="true" href="#자료-15">#</a></h3>
+<p><a href="https://github.com/pytorch/pytorch/releases/tag/trunk%2F98a0190638f271ea6e37e7e5891ea9823d11baae">trunk/98a0190638f271ea6e37e7e5891ea9823d11baae: Handle empty linalg.lstsq inputs in shared code (#199696)</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-12 · 발행처: PyTorch Releases</li>
+<li>확인 범위: 피드 설명만(원문 확인 실패)</li>
+<li>원문 조회 시각: 2026-10-16 11:58:10 UTC</li>
+<li>원문 확인 실패: 본문 근거를 확보하지 못했다. 피드 설명보다 강한 주장으로 읽지 않는다.</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-16">자료 16<a hidden class="anchor" aria-hidden="true" href="#자료-16">#</a></h3>
+<p><a href="https://github.com/pytorch/pytorch/releases/tag/trunk%2F4862ce0dc3fd31f37cc1b0c9fa55d49eefa21d0c">trunk/4862ce0dc3fd31f37cc1b0c9fa55d49eefa21d0c: [MPS] Add special_airy_ai (#195264)</a></p>
+<ul>
+<li>피드 갱신일(최초 게시일 미확인): 2026-10-16 · 발행처: PyTorch Releases</li>
+<li>확인 범위: 피드 설명만(원문 확인 실패)</li>
+<li>원문 조회 시각: 2026-10-16 11:58:10 UTC</li>
+<li>원문 확인 실패: 본문 근거를 확보하지 못했다. 피드 설명보다 강한 주장으로 읽지 않는다.</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-17">자료 17<a hidden class="anchor" aria-hidden="true" href="#자료-17">#</a></h3>
+<p><a href="https://huggingface.co/nvidia/Nemotron-3.5-Embed-1B-BF16">nvidia/Nemotron-3.5-Embed-1B-BF16 repository update</a></p>
+<ul>
+<li>저장소 수정일(출시일·모델 카드 변경일 아님): 2026-10-16 · 발행처: Publisher Model Repositories</li>
+<li>확인 범위: 고정 revision의 게시자 모델 카드 본문(가중치·코드·평가 재현 미확인)</li>
+<li>모델 카드 고정 revision: 2a4f9cb55266a4a1453cabba86992623630d93ac</li>
+<li>원문 조회 시각: 2026-10-16 11:58:11 UTC</li>
+<li>모델에 전달한 원문: 6000자 · 본문 일부 발췌</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="자료-18">자료 18<a hidden class="anchor" aria-hidden="true" href="#자료-18">#</a></h3>
+<p><a href="https://huggingface.co/nvidia/Nemotron-3.5-Embed-8B-BF16">nvidia/Nemotron-3.5-Embed-8B-BF16 repository update</a></p>
+<ul>
+<li>저장소 수정일(출시일·모델 카드 변경일 아님): 2026-10-16 · 발행처: Publisher Model Repositories</li>
+<li>확인 범위: 고정 revision의 게시자 모델 카드 본문(가중치·코드·평가 재현 미확인)</li>
+<li>모델 카드 고정 revision: ae7240ed24a9111d6be25bf3e4308951a797393c</li>
+<li>원문 조회 시각: 2026-10-16 11:58:11 UTC</li>
+<li>모델에 전달한 원문: 6000자 · 본문 일부 발췌</li>
+<li>확인하지 않은 것: 연결 코드·데이터·벤치마크 재현 및 내 장비에서의 실행.</li>
+</ul>
+<h3 id="배경-1">배경 1<a hidden class="anchor" aria-hidden="true" href="#배경-1">#</a></h3>
+<p><a href="https://lmstudio.ai/docs/cli/runtime/runtime">LM Studio 런타임 관리</a></p>
+<ul>
+<li>조회 시각: 2026-10-16 11:58:12 UTC · 본문 접근·필수 주제 일치 확인</li>
+<li>분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다.</li>
+</ul>
+<h3 id="배경-2">배경 2<a hidden class="anchor" aria-hidden="true" href="#배경-2">#</a></h3>
+<p><a href="https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md">llama.cpp 백엔드 빌드 문서</a></p>
+<ul>
+<li>실제 읽은 문서: <a href="https://raw.githubusercontent.com/ggml-org/llama.cpp/master/docs/build.md">고정된 조회 경로</a></li>
+<li>조회 시각: 2026-10-16 11:58:13 UTC · 본문 접근·필수 주제 일치 확인</li>
+<li>분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다.</li>
+</ul>
+<h3 id="배경-3">배경 3<a hidden class="anchor" aria-hidden="true" href="#배경-3">#</a></h3>
+<p><a href="https://docs.nvidia.com/deploy/cuda-compatibility/latest/">NVIDIA CUDA 호환성 안내</a></p>
+<ul>
+<li>조회 시각: 2026-10-16 11:58:14 UTC · 본문 접근·필수 주제 일치 확인</li>
+<li>분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다.</li>
+</ul>
+<h3 id="배경-4">배경 4<a hidden class="anchor" aria-hidden="true" href="#배경-4">#</a></h3>
+<p><a href="https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/compatibility/compatibilityrad/compatibility.html">AMD ROCm Radeon·Ryzen 지원 조건</a></p>
+<ul>
+<li>조회 시각: 2026-10-16 11:58:14 UTC · 본문 접근·필수 주제 일치 확인</li>
+<li>분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다.</li>
+</ul>
+<h3 id="배경-5">배경 5<a hidden class="anchor" aria-hidden="true" href="#배경-5">#</a></h3>
+<p><a href="https://huggingface.co/docs/trl/main/en/gkd_trainer">Hugging Face TRL GKD 증류 문서</a></p>
+<ul>
+<li>조회 시각: 2026-10-16 11:58:15 UTC · 본문 접근·필수 주제 일치 확인</li>
+<li>분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다.</li>
+</ul>
+<h3 id="배경-6">배경 6<a hidden class="anchor" aria-hidden="true" href="#배경-6">#</a></h3>
+<p><a href="https://docs.pytorch.org/docs/stable/notes/get_start_xpu.html">PyTorch Intel GPU 시작 조건</a></p>
+<ul>
+<li>실제 읽은 문서: <a href="https://docs.pytorch.org/docs/2.14/notes/get_start_xpu.html">고정된 조회 경로</a></li>
+<li>조회 시각: 2026-10-16 11:58:16 UTC · 본문 접근·필수 주제 일치 확인</li>
+<li>분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다.</li>
+</ul>
+<h3 id="배경-7">배경 7<a hidden class="anchor" aria-hidden="true" href="#배경-7">#</a></h3>
+<p><a href="https://docs.openvino.ai/2026/about-openvino/release-notes-openvino/system-requirements.html">OpenVINO 시스템 요구 조건</a></p>
+<ul>
+<li>조회 시각: 2026-10-16 11:58:16 UTC · 본문 접근·필수 주제 일치 확인</li>
+<li>분류: 지원/제작 경로를 이해하기 위한 배경 문서. 이번 주 새 소식 또는 개별 장비의 호환성 검증이 아니다.</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/weekly/">Weekly</a></li>
+      <li><a href="https://Han-think.github.io/tags/ai-research/">Ai-Research</a></li>
+      <li><a href="https://Han-think.github.io/tags/local-llm/">Local-Llm</a></li>
+      <li><a href="https://Han-think.github.io/tags/llama-cpp/">Llama-Cpp</a></li>
+      <li><a href="https://Han-think.github.io/tags/ollama/">Ollama</a></li>
+      <li><a href="https://Han-think.github.io/tags/vllm/">Vllm</a></li>
+      <li><a href="https://Han-think.github.io/tags/mlx/">Mlx</a></li>
+      <li><a href="https://Han-think.github.io/tags/llm/">LLM</a></li>
+      <li><a href="https://Han-think.github.io/tags/agent/">Agent</a></li>
+      <li><a href="https://Han-think.github.io/tags/reasoning/">Reasoning</a></li>
+      <li><a href="https://Han-think.github.io/tags/distillation/">Distillation</a></li>
+      <li><a href="https://Han-think.github.io/tags/rag/">Rag</a></li>
+      <li><a href="https://Han-think.github.io/tags/multimodal/">Multimodal</a></li>
+      <li><a href="https://Han-think.github.io/tags/fine-tuning/">Fine-Tuning</a></li>
+      <li><a href="https://Han-think.github.io/tags/cuda/">Cuda</a></li>
+      <li><a href="https://Han-think.github.io/tags/rocm/">Rocm</a></li>
+      <li><a href="https://Han-think.github.io/tags/pytorch/">Pytorch</a></li>
+      <li><a href="https://Han-think.github.io/tags/transformers/">Transformers</a></li>
+      <li><a href="https://Han-think.github.io/tags/huggingface/">Huggingface</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

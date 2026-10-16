@@ -23,6 +23,34 @@
       <description></description>
     </item>
     <item>
+      <title>Cuda</title>
+      <link>https://Han-think.github.io/tags/cuda/</link>
+      <pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/cuda/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Distillation</title>
+      <link>https://Han-think.github.io/tags/distillation/</link>
+      <pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/distillation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Fine-Tuning</title>
+      <link>https://Han-think.github.io/tags/fine-tuning/</link>
+      <pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/fine-tuning/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Huggingface</title>
+      <link>https://Han-think.github.io/tags/huggingface/</link>
+      <pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/huggingface/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Intel-View</title>
       <link>https://Han-think.github.io/tags/intel-view/</link>
       <pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate>
@@ -37,7 +65,7 @@
       <description></description>
     </item>
     <item>
-      <title>Llm</title>
+      <title>LLM</title>
       <link>https://Han-think.github.io/tags/llm/</link>
       <pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/llm/</guid>
@@ -86,10 +114,38 @@
       <description></description>
     </item>
     <item>
+      <title>Rag</title>
+      <link>https://Han-think.github.io/tags/rag/</link>
+      <pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/rag/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Reasoning</title>
       <link>https://Han-think.github.io/tags/reasoning/</link>
       <pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/reasoning/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rocm</title>
+      <link>https://Han-think.github.io/tags/rocm/</link>
+      <pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/rocm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Transformers</title>
+      <link>https://Han-think.github.io/tags/transformers/</link>
+      <pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/transformers/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Vllm</title>
+      <link>https://Han-think.github.io/tags/vllm/</link>
+      <pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/vllm/</guid>
       <description></description>
     </item>
     <item>
@@ -114,38 +170,10 @@
       <description></description>
     </item>
     <item>
-      <title>Cuda</title>
-      <link>https://Han-think.github.io/tags/cuda/</link>
-      <pubDate>Mon, 12 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/cuda/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Distillation</title>
-      <link>https://Han-think.github.io/tags/distillation/</link>
-      <pubDate>Mon, 12 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/distillation/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Fine-Tuning</title>
-      <link>https://Han-think.github.io/tags/fine-tuning/</link>
-      <pubDate>Mon, 12 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/fine-tuning/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Gguf</title>
       <link>https://Han-think.github.io/tags/gguf/</link>
       <pubDate>Mon, 12 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/gguf/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Huggingface</title>
-      <link>https://Han-think.github.io/tags/huggingface/</link>
-      <pubDate>Mon, 12 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/huggingface/</guid>
       <description></description>
     </item>
     <item>
@@ -160,34 +188,6 @@
       <link>https://Han-think.github.io/tags/openvino/</link>
       <pubDate>Mon, 12 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/openvino/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Rocm</title>
-      <link>https://Han-think.github.io/tags/rocm/</link>
-      <pubDate>Mon, 12 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/rocm/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Transformers</title>
-      <link>https://Han-think.github.io/tags/transformers/</link>
-      <pubDate>Mon, 12 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/transformers/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Vllm</title>
-      <link>https://Han-think.github.io/tags/vllm/</link>
-      <pubDate>Mon, 12 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/vllm/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Rag</title>
-      <link>https://Han-think.github.io/tags/rag/</link>
-      <pubDate>Sat, 03 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/rag/</guid>
       <description></description>
     </item>
     <item>
