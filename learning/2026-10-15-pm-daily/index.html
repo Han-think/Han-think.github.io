@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>오후 학습 | 오늘 오후 LangChain·Opik 기본 호출과 추적 흐름 정리 (초보자 워킹 노트) | Han-think Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="2026-10-15 오후 학습 정리">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/learning/2026-10-15-pm-daily/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/learning/2026-10-15-pm-daily/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/learning/2026-10-15-pm-daily/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="오후 학습 | 오늘 오후 LangChain·Opik 기본 호출과 추적 흐름 정리 (초보자 워킹 노트)">
+  <meta property="og:description" content="2026-10-15 오후 학습 정리">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="learning">
+    <meta property="article:published_time" content="2026-10-15T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-10-15T00:00:00+00:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="오후 학습 | 오늘 오후 LangChain·Opik 기본 호출과 추적 흐름 정리 (초보자 워킹 노트)">
+  <meta name="twitter:description" content="2026-10-15 오후 학습 정리">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "학습 기록",
+      "item": "https://Han-think.github.io/learning/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "오후 학습 | 오늘 오후 LangChain·Opik 기본 호출과 추적 흐름 정리 (초보자 워킹 노트)",
+      "item": "https://Han-think.github.io/learning/2026-10-15-pm-daily/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "오후 학습 | 오늘 오후 LangChain·Opik 기본 호출과 추적 흐름 정리 (초보자 워킹 노트)",
+  "name": "오후 학습 | 오늘 오후 LangChain·Opik 기본 호출과 추적 흐름 정리 (초보자 워킹 노트)",
+  "description": "2026-10-15 오후 학습 정리",
+  "keywords": [
+    
+  ],
+  "articleBody": "목차 LangChain·Opik 기본 호출과 추적 흐름 (초보자 워킹 노트) CallbackManager 인스턴스 생성과 속성 대입 Docker Ollama 포트와 호스트 주소 구분하기 RAG 파이프라인 단계별 이해 정리 총평 1. LangChain·Opik 기본 호출과 추적 흐름 (초보자 워킹 노트) 무엇을 배웠나 처음에는 HAKSA.txt가 포함된 코드를 보고 RAG 프로그램인 줄 알았지만, 실제로는 LLM 기본 호출에 트레이서를 붙이는 예제였습니다. 01_start.py는 문서를 검색하는 기능이 아니라 단순히 질문을 던지고 결과를 Opik으로 추적하는 것이 핵심입니다. 따라서 실제 문서 기반 답변은 02_rag.py에서 다루며, 두 단계는 확실히 구분해야 합니다.\n헷갈렸던 점 가장 큰 혼란은 01_start.py 코드에서 HAKSA.txt 파일이 언급된 점입니다. 단순히 LLM에게 질문을 던지는 기본 예제임에도 불구하고 문서가 등장하자, 이것이 RAG(검색 증강 생성) 프로그램인 줄 알았습니다. 또한 Opik이라는 추적 도구를 사용했다는 사실과 웹 화면에서 trace를 확인한다는 사실이 같은 과정인 것처럼 여겨져, 코드 실행과 대시보드 시각화가 별개라는 점을 구분하는 데 시간이 걸렸습니다.\n정리된 이해 01_start.py는 문서 검색 기능이 없는 순수 LLM 호출 실습이며, Opik 트레이서를 통해 질문과 답변을 추적하는 것이 주된 목적입니다. 실제 RAG(검색 증강 생성) 기능은 02_rag.py에서 다루며, 두 예제는 목적이 명확히 구분됩니다.\ntracer = OpikTracer(project_name=PROJECT_NAME, tags=['langchain', 'ollama']) llm = ChatOllama(model=LLM_MODEL, base_url=OLLAMA_URL, temperature=0) chain = prompt | llm 2. CallbackManager 인스턴스 생성과 속성 대입 무엇을 배웠나 Settings.callback_manager는 함수 호출이 아니라 값을 대입하는 속성(attribute)이라는 점을 명확히 이해하게 되었다. CallbackManager 클래스를 인스턴스로 생성한 뒤, 그 객체를 = 연산자를 통해 Settings에 할당해야만 정상적으로 작동한다는 사실을 깨달았다. 이러한 타입의 의미를 정확히 파악함으로써 발생했던 TypeError를 해결할 수 있었다.\n헷갈렸던 점 Settings.callback_manager()를 함수 호출로 오해하여 괄호(())가 붙은 형태를 함수 실행처럼 생각하다가, 실제로는 속성(attribute)에 값을 대입하는 것임을 깨닫고 TypeError가 발생했다. 특히 CallbackManager라는 클래스 이름이 붙어 있어 객체 자체가 callable한 존재인 줄 알았으나, 인스턴스를 생성한 후 = 연산자로 Settings에 할당해야만 정상적으로 작동한다.\n정리된 이해 Settings.callback_manager는 괄호를 붙여 실행하는 함수가 아니라, 값을 대입하는 속성(attribute)이다. CallbackManager 클래스를 import해 인스턴스를 생성한 뒤, 그 객체를 = 연산자를 통해 해당 속성에 할당해야 정상적으로 작동한다. 이러한 타입의 의미를 정확히 파악하면 TypeError: 'CallbackManager' object is not callable 오류를 해결할 수 있다.\n# 수정된 이해 from llama_index.core import Settings from llama_index.core.callbacks import CallbackManager from opik.integrations.llama_index import LlamaIndexCallbackHandler # 1. CallbackManager 인스턴스 생성 (괄호로 감싸서 객체 생성) callback_manager = CallbackManager([ LlamaIndexCallbackHandler( project_name=PROJECT_NAME, skip_index_construction_trace=True, ) ]) # 2. Settings의 속성에 대입 (등호로 값 할당) Settings.callback_manager = callback_manager 3. Docker Ollama 포트와 호스트 주소 구분하기 무엇을 배웠나 Docker 컨테이너 내에서 Python 코드가 실행될 경우, localhost는 컨테이너 자체를 의미하므로 호스트 측 포트 매핑을 별도로 지정해야 한다. 반면, Windows 호스트에서 직접 실행되는 코드라면 localhost는 자신의 컴퓨터 주소를 뜻하며, Docker가 게시한 포트의 왼쪽 값인 호스트 측 포트를 사용해야 연결된다. 또한, ConnectionError 발생 시 모델 미설치 여부와 함께 네트워크 포트 설정이나 host.docker.internal 같은 특수 주소가 원인일 가능성을 반드시 확인해야 한다.\n헷갈렸던 점 Docker가 호스트와 컨테이너 사이에서 포트를 매핑할 때, ’localhost’는 호스트(내 컴퓨터)의 자기 자신을 의미한다는 점을 명확히 구분하지 못해 헷갈렸다.\n강의 예시에서 언급된 172.17.0.1 같은 네트워크 주소가 환경에 따라 변동된다는 점과, Python이 컨테이너 내부에서 실행될 경우 ’localhost’가 자기 자신을 가리키는 것인지 외부 접속을 의미하는 것인지 확신할 수 없어 혼란스러웠다.\n연결 오류가 났을 때 모델 파일이 없는 것으로 착각하기보다, 먼저 포트 매핑 설정이나 네트워크 주소 접근 방식 자체를 점검해야 한다는 점을 구분하지 못해 실제 문제 해결에 시간을 지체한 적이 있다.\n정리된 이해 Docker 환경에서 호스트와 컨테이너는 각각 고유한 localhost를 가지므로, Python 실행 위치에 따라 접속 주소가 달라진다. Windows 호스트에서는 Docker가 매핑해준 포트(예: 11435)를 직접 사용해야 하며, 컨테이너 내부에서는 host.docker.internal을 통해 외부 호스트의 서비스에 접근할 수 있다.\n# Docker Ollama 포트 매핑 및 접속 주소 정리 1. Windows 호스트에서의 실행 (Python 외부) Python이 Docker 컨테이너 밖(Windows 자체)에서 실행되는 경우: localhost는 Windows 자신의 localhost를 의미한다. Docker가 게시한 포트의 호스트 측(left) 값을 사용해야 한다. # Windows 호스트에서 OLLAMA_URL 설정 예시 OLLAMA_URL = 'http://localhost:11435' # 호측측 포트 매핑 2. Docker 컨테이너 내부에서의 실행 (Python 내) Python 코드가 Docker 컨테이너 내부에서 실행되는 경우: localhost는 컨테이너 자체의 localhost(자기 자신을 의미)다. 호스트 측 포트 매핑은 적용되지 않으며, 컨테이너 내부 네트워크 환경을 사용해야 한다. # Docker 컨테이너 내부에서 OLLAMA_URL 설정 예시 OLLAMA_URL = 'http://localhost:11434' # 컨테이너 내부 포트 3. 다른 Docker 컨테이너에서 실행 시 (연결용) FastAPI 등 다른 Docker 컨테이너에서 Ollama에 접속해야 할 때: host.docker.internal을 사용하여 호스트 측 포트에 접근할 수 있다. # 다른 Docker 컨테이너에서 OLLAMA_URL 설정 예시 OLLAMA_URL = 'http://host.docker.internal:11435' 4. RAG 파이프라인 단계별 이해 정리 무엇을 배웠나 RAG 파이프라인은 문서 로딩, 임베딩 및 색인 생성, 질문 기반 검색, LLM 답변 생성 등 명확한 단계로 나뉘며, 각 단계가 순차적으로 의존한다는 점을 배웠습니다. 특히 similarity_top_k는 최종 답안의 개수를 결정하는 것이 아니라, 답변 생성을 위한 참고 문서 후보를 제한하는 검색 단계의 파라미터임을 명확히 이해했습니다. 또한 LLM이 답을 생성하기 전에도 문서를 벡터화하여 색인 구축할 때 외부 API가 필요하다는 점은 간과하기 쉬운 중요한 시스템 설계 요소였습니다. 마지막으로 코드 실행 흐름과 학습 로그를 구분하는 연습을 통해, 실제 RAG 동작 원리와 한계를 더 객관적으로 파악할 수 있게 되었습니다.\n헷갈렸던 점 가장 큰 오해는 similarity_top_k=2를 최종 답변 개수를 결정하는 설정으로 착각했던 점입니다. 실제로는 검색 단계에서 상위 2개 문서만 추출할 뿐, LLM이 생성하는 최종 답변의 수는 이 설정과 무관합니다. 또 다른 혼란점은 RAG 파이프라인 전체가 LLM 답변 생성 전후로 외부 API(임베딩 모델 등)를 필수적으로 사용한다는 점입니다. 문서 색인 구축 단계에서도 API 호출이 발생하므로, 이 연결 고리가 끊어지면 나중에 “답이 안 나온다\"는 문제를 추적하기 매우 어렵습니다. finally\n정리된 이해 RAG 파이프라인은 문서 로딩, 임베딩 및 색인 생성, 질문 기반 유사 문서 검색, LLM을 통한 답변 생성, 그리고 결과 추적의 5단계로 구성되며, 각 단계는 독립적인 API 호출과 데이터 흐름을 가집니다. 특히 similarity_top_k 설정은 검색 단계에서 반환할 최대 문서 수를 제어하는 파라미터일 뿐, 최종 사용자에게 제공되는 답변의 개수를 직접 결정하지는 않습니다. 마지막으로 시스템 전체의 동작을 정확히 파악하고 디버깅하기 위해서는 각 단계별 API 호출 시점과 데이터 흐름을 명확히 구분하여 추적하는 것이 필수적입니다.\nfrom llama_index.core import SimpleDirectoryReader, VectorStoreIndex, Settings from llama_index.embeddings.huggingface import HuggingFaceEmbedding from llama_index.llms.ollama import OllamaLLM # 1. 데이터 로딩 (문서 인덱싱 전 단계) documents = SimpleDirectoryReader(\"data\").load_data() # 2. 임베딩 모델 설정 (색인 생성 시 사용) Settings.embed_model = HuggingFaceEmbedding(model_name=\"BAAI/bge-m3\") # 3. 벡터 스토어 인덱스 구축 (임베딩 + 색인 생성, 이때 외부 API 호출 발생) index = VectorStoreIndex.from_documents(documents) # 4. 쿼리 엔진 설정 (검색 시 similarity_top_k=2 적용) query_engine = index.as_query_engine(similarity_top_k=2) # 5. LLM 설정 (답변 생성 시 사용) Settings.llm = OllamaLLM(model=\"gemma4:e4b\") # 6. 질문 및 답변 실행 response = query_engine.query(\"기숙사 신청 방법\") print(response) 총평 오늘 오후 전체에서 배운 것 RAG 파이프라인의 각 단계(로딩, 임베딩, 검색, 답변 생성)가 순차적으로 의존하며, similarity_top_k는 최종 답안 개수가 아니라 검색 후보를 제한하는 파라미터임을 명확히 이해했습니다. 또한 Docker 환경에서는 localhost가 컨테이너 자체를 의미하므로 호스트 포트 매핑이나 host.docker.internal을 정확히 구분해야 연결 오류를 해결할 수 있었습니다. 마지막으로 CallbackManager 인스턴스를 생성해 Settings.callback_manager에 할당하는 방식이 함수 호출이 아닌 속성 대입임을 깨닫고, 타입 이해 부족으로 발생했던 TypeError를 해결할 수 있게 되었습니다.\n다음에 조심할 것 Docker 환경에서는 localhost가 컨테이너 내부 주소를 의미한다는 점을 반드시 확인하고, 호스트 포트 매핑을 정확히 지정해야 합니다. 또한 CallbackManager는 속성 할당 형태임을 잊지 말고, 실제 RAG 파이프라인 구축 시에는 문서 로딩부터 답변 생성까지 각 단계의 의존 관계를 명확히 파악하는 습관을 들입니다.\n다음 복습 주제 다음에는 Settings 객체에 콜백 매니저를 할당하는 구체적인 코드 패턴을 직접 작성해보며, 실제 RAG 파이프라인에서 임베딩 모델과 LLM 호출 시 발생할 수 있는 네트워크 설정(특히 Docker 환경에서의 포트 매핑) 문제를 해결하는 방법을 심층적으로 점검할 예정입니다. 특히 similarity_top_k와 같은 검색 파라미터가 답변 품질에 미치는 영향을 실험해보며, 시스템 전체 흐름에서 각 단계의 의존 관계를 시각화할 수 있는 다이어그램을 그려보는 시간을 가집니다.\n🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다! This post was created collaboratively by AI and the blog owner.\n",
+  "wordCount" : "1169",
+  "inLanguage": "en",
+  "datePublished": "2026-10-15T00:00:00Z",
+  "dateModified": "2026-10-15T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/learning/2026-10-15-pm-daily/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      오후 학습 | 오늘 오후 LangChain·Opik 기본 호출과 추적 흐름 정리 (초보자 워킹 노트)
+    </h1>
+    <div class="post-description">
+      2026-10-15 오후 학습 정리
+    </div>
+    <div class="post-meta">
+
+<span title='2026-10-15 00:00:00 +0000 UTC'>2026년 10월 15일</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li>
+<ol>
+<li><a href="#1-langchainopik-%EA%B8%B0%EB%B3%B8-%ED%98%B8%EC%B6%9C%EA%B3%BC-%EC%B6%94%EC%A0%81-%ED%9D%90%EB%A6%84-%EC%B4%88%EB%B3%B4%EC%9E%90-%EC%9B%8C%ED%82%B9-%EB%85%B8%ED%8A%B8">LangChain·Opik 기본 호출과 추적 흐름 (초보자 워킹 노트)</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="#2-callbackmanager-%EC%9D%B8%EC%8A%A4%ED%84%B4%EC%8A%A4-%EC%83%9D%EC%84%B1%EA%B3%BC-%EC%86%8D%EC%84%B1-%EB%8C%80%EC%9E%85">CallbackManager 인스턴스 생성과 속성 대입</a></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><a href="#3-docker-ollama-%ED%8F%AC%ED%8A%B8%EC%99%80-%ED%98%B8%EC%8A%A4%ED%8A%B8-%EC%A3%BC%EC%86%8C-%EA%B5%AC%EB%B6%84%ED%95%98%EA%B8%B0">Docker Ollama 포트와 호스트 주소 구분하기</a></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li><a href="#4-rag-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EB%8B%A8%EA%B3%84%EB%B3%84-%EC%9D%B4%ED%95%B4-%EC%A0%95%EB%A6%AC">RAG 파이프라인 단계별 이해 정리</a></li>
+</ol>
+</li>
+<li><a href="#%EC%B4%9D%ED%8F%89">총평</a></li>
+</ul>
+<h2 id="1-langchainopik-기본-호출과-추적-흐름-초보자-워킹-노트">1. LangChain·Opik 기본 호출과 추적 흐름 (초보자 워킹 노트)<a hidden class="anchor" aria-hidden="true" href="#1-langchainopik-기본-호출과-추적-흐름-초보자-워킹-노트">#</a></h2>
+<h3 id="무엇을-배웠나">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나">#</a></h3>
+<p>처음에는 <code>HAKSA.txt</code>가 포함된 코드를 보고 RAG 프로그램인 줄 알았지만, 실제로는 LLM 기본 호출에 트레이서를 붙이는 예제였습니다. <code>01_start.py</code>는 문서를 검색하는 기능이 아니라 단순히 질문을 던지고 결과를 Opik으로 추적하는 것이 핵심입니다. 따라서 실제 문서 기반 답변은 <code>02_rag.py</code>에서 다루며, 두 단계는 확실히 구분해야 합니다.</p>
+<h3 id="헷갈렸던-점">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점">#</a></h3>
+<p>가장 큰 혼란은 <code>01_start.py</code> 코드에서 <code>HAKSA.txt</code> 파일이 언급된 점입니다. 단순히 LLM에게 질문을 던지는 기본 예제임에도 불구하고 문서가 등장하자, 이것이 RAG(검색 증강 생성) 프로그램인 줄 알았습니다. 또한 Opik이라는 추적 도구를 사용했다는 사실과 웹 화면에서 trace를 확인한다는 사실이 같은 과정인 것처럼 여겨져, 코드 실행과 대시보드 시각화가 별개라는 점을 구분하는 데 시간이 걸렸습니다.</p>
+<h3 id="정리된-이해">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해">#</a></h3>
+<p><code>01_start.py</code>는 문서 검색 기능이 없는 순수 LLM 호출 실습이며, Opik 트레이서를 통해 질문과 답변을 추적하는 것이 주된 목적입니다. 실제 RAG(검색 증강 생성) 기능은 <code>02_rag.py</code>에서 다루며, 두 예제는 목적이 명확히 구분됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>tracer <span style="color:#f92672">=</span> OpikTracer(project_name<span style="color:#f92672">=</span>PROJECT_NAME, tags<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;langchain&#39;</span>, <span style="color:#e6db74">&#39;ollama&#39;</span>])
+</span></span><span style="display:flex;"><span>llm <span style="color:#f92672">=</span> ChatOllama(model<span style="color:#f92672">=</span>LLM_MODEL, base_url<span style="color:#f92672">=</span>OLLAMA_URL, temperature<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>chain <span style="color:#f92672">=</span> prompt <span style="color:#f92672">|</span> llm
+</span></span></code></pre></div><h2 id="2-callbackmanager-인스턴스-생성과-속성-대입">2. CallbackManager 인스턴스 생성과 속성 대입<a hidden class="anchor" aria-hidden="true" href="#2-callbackmanager-인스턴스-생성과-속성-대입">#</a></h2>
+<h3 id="무엇을-배웠나-1">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-1">#</a></h3>
+<p><code>Settings.callback_manager</code>는 함수 호출이 아니라 값을 대입하는 속성(attribute)이라는 점을 명확히 이해하게 되었다. <code>CallbackManager</code> 클래스를 인스턴스로 생성한 뒤, 그 객체를 <code>=</code> 연산자를 통해 <code>Settings</code>에 할당해야만 정상적으로 작동한다는 사실을 깨달았다. 이러한 타입의 의미를 정확히 파악함으로써 발생했던 <code>TypeError</code>를 해결할 수 있었다.</p>
+<h3 id="헷갈렸던-점-1">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-1">#</a></h3>
+<p><code>Settings.callback_manager()</code>를 함수 호출로 오해하여 괄호(<code>()</code>)가 붙은 형태를 함수 실행처럼 생각하다가, 실제로는 속성(attribute)에 값을 대입하는 것임을 깨닫고 <code>TypeError</code>가 발생했다. 특히 <code>CallbackManager</code>라는 클래스 이름이 붙어 있어 객체 자체가 callable한 존재인 줄 알았으나, 인스턴스를 생성한 후 <code>=</code> 연산자로 <code>Settings</code>에 할당해야만 정상적으로 작동한다.</p>
+<h3 id="정리된-이해-1">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-1">#</a></h3>
+<p><code>Settings.callback_manager</code>는 괄호를 붙여 실행하는 함수가 아니라, 값을 대입하는 속성(attribute)이다. <code>CallbackManager</code> 클래스를 import해 인스턴스를 생성한 뒤, 그 객체를 <code>=</code> 연산자를 통해 해당 속성에 할당해야 정상적으로 작동한다. 이러한 타입의 의미를 정확히 파악하면 <code>TypeError: 'CallbackManager' object is not callable</code> 오류를 해결할 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 수정된 이해</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> llama_index.core <span style="color:#f92672">import</span> Settings
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> llama_index.core.callbacks <span style="color:#f92672">import</span> CallbackManager
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> opik.integrations.llama_index <span style="color:#f92672">import</span> LlamaIndexCallbackHandler
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. CallbackManager 인스턴스 생성 (괄호로 감싸서 객체 생성)</span>
+</span></span><span style="display:flex;"><span>callback_manager <span style="color:#f92672">=</span> CallbackManager([
+</span></span><span style="display:flex;"><span>    LlamaIndexCallbackHandler(
+</span></span><span style="display:flex;"><span>        project_name<span style="color:#f92672">=</span>PROJECT_NAME,
+</span></span><span style="display:flex;"><span>        skip_index_construction_trace<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. Settings의 속성에 대입 (등호로 값 할당)</span>
+</span></span><span style="display:flex;"><span>Settings<span style="color:#f92672">.</span>callback_manager <span style="color:#f92672">=</span> callback_manager
+</span></span></code></pre></div><h2 id="3-docker-ollama-포트와-호스트-주소-구분하기">3. Docker Ollama 포트와 호스트 주소 구분하기<a hidden class="anchor" aria-hidden="true" href="#3-docker-ollama-포트와-호스트-주소-구분하기">#</a></h2>
+<h3 id="무엇을-배웠나-2">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-2">#</a></h3>
+<p>Docker 컨테이너 내에서 Python 코드가 실행될 경우, <code>localhost</code>는 컨테이너 자체를 의미하므로 호스트 측 포트 매핑을 별도로 지정해야 한다. 반면, Windows 호스트에서 직접 실행되는 코드라면 <code>localhost</code>는 자신의 컴퓨터 주소를 뜻하며, Docker가 게시한 포트의 왼쪽 값인 호스트 측 포트를 사용해야 연결된다. 또한, <code>ConnectionError</code> 발생 시 모델 미설치 여부와 함께 네트워크 포트 설정이나 <code>host.docker.internal</code> 같은 특수 주소가 원인일 가능성을 반드시 확인해야 한다.</p>
+<h3 id="헷갈렸던-점-2">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-2">#</a></h3>
+<p>Docker가 호스트와 컨테이너 사이에서 포트를 매핑할 때, &rsquo;localhost&rsquo;는 호스트(내 컴퓨터)의 자기 자신을 의미한다는 점을 명확히 구분하지 못해 헷갈렸다.</p>
+<p>강의 예시에서 언급된 <code>172.17.0.1</code> 같은 네트워크 주소가 환경에 따라 변동된다는 점과, Python이 컨테이너 내부에서 실행될 경우 &rsquo;localhost&rsquo;가 자기 자신을 가리키는 것인지 외부 접속을 의미하는 것인지 확신할 수 없어 혼란스러웠다.</p>
+<p>연결 오류가 났을 때 모델 파일이 없는 것으로 착각하기보다, 먼저 포트 매핑 설정이나 네트워크 주소 접근 방식 자체를 점검해야 한다는 점을 구분하지 못해 실제 문제 해결에 시간을 지체한 적이 있다.</p>
+<h3 id="정리된-이해-2">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-2">#</a></h3>
+<p>Docker 환경에서 호스트와 컨테이너는 각각 고유한 localhost를 가지므로, Python 실행 위치에 따라 접속 주소가 달라진다. Windows 호스트에서는 Docker가 매핑해준 포트(예: 11435)를 직접 사용해야 하며, 컨테이너 내부에서는 <code>host.docker.internal</code>을 통해 외부 호스트의 서비스에 접근할 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span># Docker Ollama 포트 매핑 및 접속 주소 정리
+</span></span></code></pre></div><h2 id="1-windows-호스트에서의-실행-python-외부">1. Windows 호스트에서의 실행 (Python 외부)<a hidden class="anchor" aria-hidden="true" href="#1-windows-호스트에서의-실행-python-외부">#</a></h2>
+<ul>
+<li>Python이 Docker 컨테이너 밖(Windows 자체)에서 실행되는 경우:</li>
+<li><code>localhost</code>는 <strong>Windows 자신의 localhost</strong>를 의미한다.</li>
+<li>Docker가 게시한 포트의 <strong>호스트 측(left) 값</strong>을 사용해야 한다.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Windows 호스트에서 OLLAMA_URL 설정 예시</span>
+</span></span><span style="display:flex;"><span>OLLAMA_URL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;http://localhost:11435&#39;</span>  <span style="color:#75715e"># 호측측 포트 매핑</span>
+</span></span></code></pre></div><h2 id="2-docker-컨테이너-내부에서의-실행-python-내">2. Docker 컨테이너 내부에서의 실행 (Python 내)<a hidden class="anchor" aria-hidden="true" href="#2-docker-컨테이너-내부에서의-실행-python-내">#</a></h2>
+<ul>
+<li>Python 코드가 Docker 컨테이너 <strong>내부</strong>에서 실행되는 경우:</li>
+<li><code>localhost</code>는 <strong>컨테이너 자체의 localhost</strong>(자기 자신을 의미)다.</li>
+<li>호스트 측 포트 매핑은 적용되지 않으며, 컨테이너 내부 네트워크 환경을 사용해야 한다.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Docker 컨테이너 내부에서 OLLAMA_URL 설정 예시</span>
+</span></span><span style="display:flex;"><span>OLLAMA_URL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;http://localhost:11434&#39;</span>  <span style="color:#75715e"># 컨테이너 내부 포트</span>
+</span></span></code></pre></div><h2 id="3-다른-docker-컨테이너에서-실행-시-연결용">3. 다른 Docker 컨테이너에서 실행 시 (연결용)<a hidden class="anchor" aria-hidden="true" href="#3-다른-docker-컨테이너에서-실행-시-연결용">#</a></h2>
+<ul>
+<li>FastAPI 등 다른 Docker 컨테이너에서 Ollama에 접속해야 할 때:</li>
+<li><code>host.docker.internal</code>을 사용하여 호스트 측 포트에 접근할 수 있다.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 다른 Docker 컨테이너에서 OLLAMA_URL 설정 예시</span>
+</span></span><span style="display:flex;"><span>OLLAMA_URL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;http://host.docker.internal:11435&#39;</span>
+</span></span></code></pre></div><h2 id="4-rag-파이프라인-단계별-이해-정리">4. RAG 파이프라인 단계별 이해 정리<a hidden class="anchor" aria-hidden="true" href="#4-rag-파이프라인-단계별-이해-정리">#</a></h2>
+<h3 id="무엇을-배웠나-3">무엇을 배웠나<a hidden class="anchor" aria-hidden="true" href="#무엇을-배웠나-3">#</a></h3>
+<p>RAG 파이프라인은 문서 로딩, 임베딩 및 색인 생성, 질문 기반 검색, LLM 답변 생성 등 명확한 단계로 나뉘며, 각 단계가 순차적으로 의존한다는 점을 배웠습니다. 특히 <code>similarity_top_k</code>는 최종 답안의 개수를 결정하는 것이 아니라, 답변 생성을 위한 참고 문서 후보를 제한하는 검색 단계의 파라미터임을 명확히 이해했습니다. 또한 LLM이 답을 생성하기 전에도 문서를 벡터화하여 색인 구축할 때 외부 API가 필요하다는 점은 간과하기 쉬운 중요한 시스템 설계 요소였습니다. 마지막으로 코드 실행 흐름과 학습 로그를 구분하는 연습을 통해, 실제 RAG 동작 원리와 한계를 더 객관적으로 파악할 수 있게 되었습니다.</p>
+<h3 id="헷갈렸던-점-3">헷갈렸던 점<a hidden class="anchor" aria-hidden="true" href="#헷갈렸던-점-3">#</a></h3>
+<p>가장 큰 오해는 <code>similarity_top_k=2</code>를 최종 답변 개수를 결정하는 설정으로 착각했던 점입니다. 실제로는 검색 단계에서 상위 2개 문서만 추출할 뿐, LLM이 생성하는 최종 답변의 수는 이 설정과 무관합니다. 또 다른 혼란점은 RAG 파이프라인 전체가 LLM 답변 생성 전후로 외부 API(임베딩 모델 등)를 필수적으로 사용한다는 점입니다. 문서 색인 구축 단계에서도 API 호출이 발생하므로, 이 연결 고리가 끊어지면 나중에 &ldquo;답이 안 나온다&quot;는 문제를 추적하기 매우 어렵습니다. finally</p>
+<h3 id="정리된-이해-3">정리된 이해<a hidden class="anchor" aria-hidden="true" href="#정리된-이해-3">#</a></h3>
+<p>RAG 파이프라인은 문서 로딩, 임베딩 및 색인 생성, 질문 기반 유사 문서 검색, LLM을 통한 답변 생성, 그리고 결과 추적의 5단계로 구성되며, 각 단계는 독립적인 API 호출과 데이터 흐름을 가집니다. 특히 <code>similarity_top_k</code> 설정은 검색 단계에서 반환할 최대 문서 수를 제어하는 파라미터일 뿐, 최종 사용자에게 제공되는 답변의 개수를 직접 결정하지는 않습니다. 마지막으로 시스템 전체의 동작을 정확히 파악하고 디버깅하기 위해서는 각 단계별 API 호출 시점과 데이터 흐름을 명확히 구분하여 추적하는 것이 필수적입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> llama_index.core <span style="color:#f92672">import</span> SimpleDirectoryReader, VectorStoreIndex, Settings
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> llama_index.embeddings.huggingface <span style="color:#f92672">import</span> HuggingFaceEmbedding
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> llama_index.llms.ollama <span style="color:#f92672">import</span> OllamaLLM
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. 데이터 로딩 (문서 인덱싱 전 단계)</span>
+</span></span><span style="display:flex;"><span>documents <span style="color:#f92672">=</span> SimpleDirectoryReader(<span style="color:#e6db74">&#34;data&#34;</span>)<span style="color:#f92672">.</span>load_data()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. 임베딩 모델 설정 (색인 생성 시 사용)</span>
+</span></span><span style="display:flex;"><span>Settings<span style="color:#f92672">.</span>embed_model <span style="color:#f92672">=</span> HuggingFaceEmbedding(model_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;BAAI/bge-m3&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. 벡터 스토어 인덱스 구축 (임베딩 + 색인 생성, 이때 외부 API 호출 발생)</span>
+</span></span><span style="display:flex;"><span>index <span style="color:#f92672">=</span> VectorStoreIndex<span style="color:#f92672">.</span>from_documents(documents)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. 쿼리 엔진 설정 (검색 시 similarity_top_k=2 적용)</span>
+</span></span><span style="display:flex;"><span>query_engine <span style="color:#f92672">=</span> index<span style="color:#f92672">.</span>as_query_engine(similarity_top_k<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 5. LLM 설정 (답변 생성 시 사용)</span>
+</span></span><span style="display:flex;"><span>Settings<span style="color:#f92672">.</span>llm <span style="color:#f92672">=</span> OllamaLLM(model<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;gemma4:e4b&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 6. 질문 및 답변 실행</span>
+</span></span><span style="display:flex;"><span>response <span style="color:#f92672">=</span> query_engine<span style="color:#f92672">.</span>query(<span style="color:#e6db74">&#34;기숙사 신청 방법&#34;</span>)
+</span></span><span style="display:flex;"><span>print(response)
+</span></span></code></pre></div><h2 id="총평">총평<a hidden class="anchor" aria-hidden="true" href="#총평">#</a></h2>
+<h3 id="오늘-오후-전체에서-배운-것">오늘 오후 전체에서 배운 것<a hidden class="anchor" aria-hidden="true" href="#오늘-오후-전체에서-배운-것">#</a></h3>
+<p>RAG 파이프라인의 각 단계(로딩, 임베딩, 검색, 답변 생성)가 순차적으로 의존하며, <code>similarity_top_k</code>는 최종 답안 개수가 아니라 검색 후보를 제한하는 파라미터임을 명확히 이해했습니다. 또한 Docker 환경에서는 <code>localhost</code>가 컨테이너 자체를 의미하므로 호스트 포트 매핑이나 <code>host.docker.internal</code>을 정확히 구분해야 연결 오류를 해결할 수 있었습니다. 마지막으로 CallbackManager 인스턴스를 생성해 <code>Settings.callback_manager</code>에 할당하는 방식이 함수 호출이 아닌 속성 대입임을 깨닫고, 타입 이해 부족으로 발생했던 <code>TypeError</code>를 해결할 수 있게 되었습니다.</p>
+<h3 id="다음에-조심할-것">다음에 조심할 것<a hidden class="anchor" aria-hidden="true" href="#다음에-조심할-것">#</a></h3>
+<p>Docker 환경에서는 <code>localhost</code>가 컨테이너 내부 주소를 의미한다는 점을 반드시 확인하고, 호스트 포트 매핑을 정확히 지정해야 합니다. 또한 <code>CallbackManager</code>는 속성 할당 형태임을 잊지 말고, 실제 RAG 파이프라인 구축 시에는 문서 로딩부터 답변 생성까지 각 단계의 의존 관계를 명확히 파악하는 습관을 들입니다.</p>
+<h3 id="다음-복습-주제">다음 복습 주제<a hidden class="anchor" aria-hidden="true" href="#다음-복습-주제">#</a></h3>
+<p>다음에는 <code>Settings</code> 객체에 콜백 매니저를 할당하는 구체적인 코드 패턴을 직접 작성해보며, 실제 RAG 파이프라인에서 임베딩 모델과 LLM 호출 시 발생할 수 있는 네트워크 설정(특히 Docker 환경에서의 포트 매핑) 문제를 해결하는 방법을 심층적으로 점검할 예정입니다. 특히 <code>similarity_top_k</code>와 같은 검색 파라미터가 답변 품질에 미치는 영향을 실험해보며, 시스템 전체 흐름에서 각 단계의 의존 관계를 시각화할 수 있는 다이어그램을 그려보는 시간을 가집니다.</p>
+<blockquote>
+<p>🤖 이 글은 AI와 블로그 주인의 합작으로 작성되었습니다!
+This post was created collaboratively by AI and the blog owner.</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Han-think.github.io/learning/2026-10-15-am-daily/">
+    <span class="title">« Prev</span>
+    <span>오전 학습 | 쇼핑몰 엔터티 구조와 민감정보 관리, 관계선 검증까지 오전 학습 요약</span>
+  </a>
+  <a class="next" href="https://Han-think.github.io/learning/2026-10-14-am-daily/">
+    <span class="title">Next »</span>
+    <span>오전 학습 | Dockerfile 기반 FastAPI 컨테이너 구축 핵심 정리</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
