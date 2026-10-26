@@ -9,6 +9,20 @@
     <lastBuildDate>Mon, 26 Oct 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Agent</title>
+      <link>https://Han-think.github.io/tags/agent/</link>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/agent/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ai-Research</title>
+      <link>https://Han-think.github.io/tags/ai-research/</link>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/ai-research/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>AI평가</title>
       <link>https://Han-think.github.io/tags/ai%ED%8F%89%EA%B0%80/</link>
       <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
@@ -16,10 +30,24 @@
       <description></description>
     </item>
     <item>
-      <title>Erd</title>
+      <title>Distillation</title>
+      <link>https://Han-think.github.io/tags/distillation/</link>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/distillation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>ERD</title>
       <link>https://Han-think.github.io/tags/erd/</link>
       <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/erd/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Evaluation</title>
+      <link>https://Han-think.github.io/tags/evaluation/</link>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/evaluation/</guid>
       <description></description>
     </item>
     <item>
@@ -37,10 +65,38 @@
       <description></description>
     </item>
     <item>
+      <title>Langgraph</title>
+      <link>https://Han-think.github.io/tags/langgraph/</link>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/langgraph/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Local-Llm</title>
+      <link>https://Han-think.github.io/tags/local-llm/</link>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/local-llm/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Louvain</title>
       <link>https://Han-think.github.io/tags/louvain/</link>
       <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/louvain/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Multimodal</title>
+      <link>https://Han-think.github.io/tags/multimodal/</link>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/multimodal/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Observability</title>
+      <link>https://Han-think.github.io/tags/observability/</link>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/tags/observability/</guid>
       <description></description>
     </item>
     <item>
@@ -219,31 +275,10 @@
       <description></description>
     </item>
     <item>
-      <title>Agent</title>
-      <link>https://Han-think.github.io/tags/agent/</link>
-      <pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/agent/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Ai-Research</title>
-      <link>https://Han-think.github.io/tags/ai-research/</link>
-      <pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/ai-research/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Cuda</title>
       <link>https://Han-think.github.io/tags/cuda/</link>
       <pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/cuda/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Distillation</title>
-      <link>https://Han-think.github.io/tags/distillation/</link>
-      <pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/distillation/</guid>
       <description></description>
     </item>
     <item>
@@ -275,17 +310,10 @@
       <description></description>
     </item>
     <item>
-      <title>Llm</title>
+      <title>LLM</title>
       <link>https://Han-think.github.io/tags/llm/</link>
       <pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/llm/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Local-Llm</title>
-      <link>https://Han-think.github.io/tags/local-llm/</link>
-      <pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/local-llm/</guid>
       <description></description>
     </item>
     <item>
@@ -293,13 +321,6 @@
       <link>https://Han-think.github.io/tags/mlx/</link>
       <pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/mlx/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Multimodal</title>
-      <link>https://Han-think.github.io/tags/multimodal/</link>
-      <pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/tags/multimodal/</guid>
       <description></description>
     </item>
     <item>
@@ -632,7 +653,7 @@
       <description></description>
     </item>
     <item>
-      <title>House Prices</title>
+      <title>House-Prices</title>
       <link>https://Han-think.github.io/tags/house-prices/</link>
       <pubDate>Mon, 20 Jul 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/tags/house-prices/</guid>
