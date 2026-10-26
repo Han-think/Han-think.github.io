@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>그린존 프로젝트 6 — 사진은 후보, 공식 자료는 답변의 근거로 | Han-think Blog</title>
+<meta name="keywords" content="그린존, Gemini, RAG, Opik, AI평가, 폐기물안내">
+<meta name="description" content="사진 AI의 품목 후보를 사람이 확인하고, RAG는 검수한 공식 문서로 안내하며, 평가 수치의 범위를 제한한 방식.">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/projects/greenzone-team-series-06-ai-guide-20261026/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/projects/greenzone-team-series-06-ai-guide-20261026/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/projects/greenzone-team-series-06-ai-guide-20261026/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="그린존 프로젝트 6 — 사진은 후보, 공식 자료는 답변의 근거로">
+  <meta property="og:description" content="사진 AI의 품목 후보를 사람이 확인하고, RAG는 검수한 공식 문서로 안내하며, 평가 수치의 범위를 제한한 방식.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2026-10-26T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-10-26T00:00:00+00:00">
+    <meta property="article:tag" content="그린존">
+    <meta property="article:tag" content="Gemini">
+    <meta property="article:tag" content="Rag">
+    <meta property="article:tag" content="Opik">
+    <meta property="article:tag" content="AI평가">
+    <meta property="article:tag" content="폐기물안내">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="그린존 프로젝트 6 — 사진은 후보, 공식 자료는 답변의 근거로">
+  <meta name="twitter:description" content="사진 AI의 품목 후보를 사람이 확인하고, RAG는 검수한 공식 문서로 안내하며, 평가 수치의 범위를 제한한 방식.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "프로젝트",
+      "item": "https://Han-think.github.io/projects/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "그린존 프로젝트 6 — 사진은 후보, 공식 자료는 답변의 근거로",
+      "item": "https://Han-think.github.io/projects/greenzone-team-series-06-ai-guide-20261026/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "그린존 프로젝트 6 — 사진은 후보, 공식 자료는 답변의 근거로",
+  "name": "그린존 프로젝트 6 — 사진은 후보, 공식 자료는 답변의 근거로",
+  "description": "사진 AI의 품목 후보를 사람이 확인하고, RAG는 검수한 공식 문서로 안내하며, 평가 수치의 범위를 제한한 방식.",
+  "keywords": [
+    "그린존", "Gemini", "RAG", "Opik", "AI평가", "폐기물안내"
+  ],
+  "articleBody": "목차 사진 분류 문제와 목표 사용자 선택을 포함한 구현 흐름 공식 문서 검색 구조와 근거 Opik 관측과 답변 검증 결과 평가 결과의 해석과 한계 이번 편의 정리 사진 분류 문제와 목표 대형폐기물 사진을 올리면 가구 이름은 짐작할 수 있어도, 사진만으로 규격·수량·수수료·공식 배출장소까지 확정하기는 어렵다. 보이는 각도와 가림 때문에 침대가 수납장으로 분류되거나, 같은 물건이 두 개로 보일 수도 있다. 그래서 사진 분석의 결과를 최종 정답이 아니라 품목 후보로 제한했다.\n업로드한 사진은 서버에 영구 저장하지 않도록 구성했다. 다만 분석을 위해 EXIF를 제거하고 크기를 줄인 뒤 외부 Vision API로 전송한다. “저장하지 않는다”와 “외부로 보내지 않는다”는 같은 말이 아니다. 공개 글에는 원본 사진을 첨부하지 않고, 사용자는 제공자의 처리 정책도 확인해야 한다.\n사용자 선택을 포함한 구현 흐름 서비스의 실제 흐름은 다음과 같다.\n사진 업로드 → Gemini가 공식 품목 목록에서 최대 3개 후보 제안 → 사용자가 후보를 선택하거나 직접 검색 → 규격·수량을 사람이 확인 → 보유 DB의 참고 수수료와 공식 신청 경로 표시 모델이 새 품목명이나 금액을 만들어 바로 결제 단계로 넘기는 구조가 아니다. 사용자가 선택한 품목 ID가 허용 목록에 있는지 다시 확인하고, 금액은 선택한 규격과 데이터베이스를 통해 계산한다. 실제 예약·결제는 지자체 공식 사이트에서 진행한다.\n초기 실험에서는 AI-Hub의 가구 이미지 일부와 물체가 없는 합성 이미지를 여러 방식으로 비교했다. 표본이 작고 촬영 환경도 제한적이어서 일반적인 정확도나 실제 민원 환경의 성공률로 말할 수 없다. YOLO 학습 모델과 DINO 비교는 이 웹 업로드 경로에 연결하지 않았다.\n공식 문서 검색 구조와 근거 사진 인식과 배출 규칙은 다른 문제다. 사진은 “무슨 품목처럼 보이는가”를 제안하고, RAG는 “어떤 규칙이 공식 자료에 적혀 있는가”를 찾아 설명한다.\n배출 안내 화면에서 질문을 받으면 검수한 공식 발췌 문서를 문단으로 나누고, 임베딩 검색으로 관련 근거를 찾는다. Gemini는 검색된 근거에 기대어 답변을 구조화하고, 화면에는 출처와 확인일 또는 시행일을 보여준다. 근거가 없거나 질문에 필요한 품목·규격이 비어 있으면 답변을 보류하거나 확인을 요청한다. 현재 검색 범위는 보유 문서이지 실시간 웹 검색이 아니다.\nOpik 관측과 답변 검증 결과 Opik은 선택 설정에서 실제 서비스 호출의 상태, 근거 ID, 처리시간, 토큰 사용량 같은 관측 정보를 남긴다. 사진·키·주소·질문 원문을 저장하지 않도록 제한했다. 이 관측 로그가 답변의 정답 여부를 자동으로 판정해 주는 것은 아니다.\n답변의 질문 충족 여부와 근거 일치는 별도의 고정 질문 평가 파일에서 직접 대조했다. 따라서 “Opik을 붙였으니 환각을 측정했다”라고 쓰지 않는다. 로그 추적과 답변 품질 평가는 서로 다른 작업이다.\n평가 결과의 해석과 한계 고정 개발 질문 14건의 첫 평가에서는 11건이 충족, 3건이 부분 충족이었다. 공식 안내의 누락 문단을 보완한 뒤 같은 14건을 다시 확인했을 때 13건 충족, 1건 부분 충족으로 기록되었다. 최종 세트에서 근거 없는 단정을 발견하지 못했지만, 이것은 전체 질문의 정확도나 일반 환각률 0%를 뜻하지 않는다. 같은 질문과 같은 평가 흐름이기 때문이다.\n평가에서 드러난 점은 단순했다. 근거가 없어서 안전하게 보류하는 것은 좋은 출발이지만, 공식 자료에 답이 있는데 검색 자료에 빠져 있으면 사용자의 문제를 해결하지 못한다. 검색 대상 자료의 최신성·누락·상충 여부를 계속 관리해야 한다.\n이번 편의 정리 AI가 제안한 후보와 공식 자료를 확인한 결과를 분리하고, 마지막 선택은 사용자에게 남기는 방식이 이번 구현의 핵심이었다. RAG도 자료 품질과 평가 범위를 함께 관리해야 신뢰를 설명할 수 있다.\n다음 편에서는 관리자 화면과 ERD, 제출 결과, 그리고 운영까지 아직 남은 경계를 정리한다.\n공개 출처 양천구 대형폐기물 품목표 양천구 대형폐기물 이용 안내 팀 저장소 ",
+  "wordCount" : "494",
+  "inLanguage": "en",
+  "datePublished": "2026-10-26T00:00:00Z",
+  "dateModified": "2026-10-26T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/projects/greenzone-team-series-06-ai-guide-20261026/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      그린존 프로젝트 6 — 사진은 후보, 공식 자료는 답변의 근거로
+    </h1>
+    <div class="post-description">
+      사진 AI의 품목 후보를 사람이 확인하고, RAG는 검수한 공식 문서로 안내하며, 평가 수치의 범위를 제한한 방식.
+    </div>
+    <div class="post-meta">
+
+<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>3 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li><a href="#%EC%82%AC%EC%A7%84-%EB%B6%84%EB%A5%98-%EB%AC%B8%EC%A0%9C%EC%99%80-%EB%AA%A9%ED%91%9C">사진 분류 문제와 목표</a></li>
+<li><a href="#%EC%82%AC%EC%9A%A9%EC%9E%90-%EC%84%A0%ED%83%9D%EC%9D%84-%ED%8F%AC%ED%95%A8%ED%95%9C-%EA%B5%AC%ED%98%84-%ED%9D%90%EB%A6%84">사용자 선택을 포함한 구현 흐름</a></li>
+<li><a href="#%EA%B3%B5%EC%8B%9D-%EB%AC%B8%EC%84%9C-%EA%B2%80%EC%83%89-%EA%B5%AC%EC%A1%B0%EC%99%80-%EA%B7%BC%EA%B1%B0">공식 문서 검색 구조와 근거</a></li>
+<li><a href="#opik-%EA%B4%80%EC%B8%A1%EA%B3%BC-%EB%8B%B5%EB%B3%80-%EA%B2%80%EC%A6%9D-%EA%B2%B0%EA%B3%BC">Opik 관측과 답변 검증 결과</a></li>
+<li><a href="#%ED%8F%89%EA%B0%80-%EA%B2%B0%EA%B3%BC%EC%9D%98-%ED%95%B4%EC%84%9D%EA%B3%BC-%ED%95%9C%EA%B3%84">평가 결과의 해석과 한계</a></li>
+<li><a href="#%EC%9D%B4%EB%B2%88-%ED%8E%B8%EC%9D%98-%EC%A0%95%EB%A6%AC">이번 편의 정리</a></li>
+</ul>
+<h2 id="사진-분류-문제와-목표">사진 분류 문제와 목표<a hidden class="anchor" aria-hidden="true" href="#사진-분류-문제와-목표">#</a></h2>
+<p>대형폐기물 사진을 올리면 가구 이름은 짐작할 수 있어도, 사진만으로 규격·수량·수수료·공식 배출장소까지 확정하기는 어렵다. 보이는 각도와 가림 때문에 침대가 수납장으로 분류되거나, 같은 물건이 두 개로 보일 수도 있다. 그래서 사진 분석의 결과를 최종 정답이 아니라 품목 후보로 제한했다.</p>
+<p>업로드한 사진은 서버에 영구 저장하지 않도록 구성했다. 다만 분석을 위해 EXIF를 제거하고 크기를 줄인 뒤 외부 Vision API로 전송한다. “저장하지 않는다”와 “외부로 보내지 않는다”는 같은 말이 아니다. 공개 글에는 원본 사진을 첨부하지 않고, 사용자는 제공자의 처리 정책도 확인해야 한다.</p>
+<h2 id="사용자-선택을-포함한-구현-흐름">사용자 선택을 포함한 구현 흐름<a hidden class="anchor" aria-hidden="true" href="#사용자-선택을-포함한-구현-흐름">#</a></h2>
+<p>서비스의 실제 흐름은 다음과 같다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>사진 업로드 → Gemini가 공식 품목 목록에서 최대 3개 후보 제안
+</span></span><span style="display:flex;"><span>           → 사용자가 후보를 선택하거나 직접 검색
+</span></span><span style="display:flex;"><span>           → 규격·수량을 사람이 확인
+</span></span><span style="display:flex;"><span>           → 보유 DB의 참고 수수료와 공식 신청 경로 표시
+</span></span></code></pre></div><p>모델이 새 품목명이나 금액을 만들어 바로 결제 단계로 넘기는 구조가 아니다. 사용자가 선택한 품목 ID가 허용 목록에 있는지 다시 확인하고, 금액은 선택한 규격과 데이터베이스를 통해 계산한다. 실제 예약·결제는 지자체 공식 사이트에서 진행한다.</p>
+<p>초기 실험에서는 AI-Hub의 가구 이미지 일부와 물체가 없는 합성 이미지를 여러 방식으로 비교했다. 표본이 작고 촬영 환경도 제한적이어서 일반적인 정확도나 실제 민원 환경의 성공률로 말할 수 없다. YOLO 학습 모델과 DINO 비교는 이 웹 업로드 경로에 연결하지 않았다.</p>
+<h2 id="공식-문서-검색-구조와-근거">공식 문서 검색 구조와 근거<a hidden class="anchor" aria-hidden="true" href="#공식-문서-검색-구조와-근거">#</a></h2>
+<p>사진 인식과 배출 규칙은 다른 문제다. 사진은 “무슨 품목처럼 보이는가”를 제안하고, RAG는 “어떤 규칙이 공식 자료에 적혀 있는가”를 찾아 설명한다.</p>
+<p>배출 안내 화면에서 질문을 받으면 검수한 공식 발췌 문서를 문단으로 나누고, 임베딩 검색으로 관련 근거를 찾는다. Gemini는 검색된 근거에 기대어 답변을 구조화하고, 화면에는 출처와 확인일 또는 시행일을 보여준다. 근거가 없거나 질문에 필요한 품목·규격이 비어 있으면 답변을 보류하거나 확인을 요청한다. 현재 검색 범위는 보유 문서이지 실시간 웹 검색이 아니다.</p>
+<h2 id="opik-관측과-답변-검증-결과">Opik 관측과 답변 검증 결과<a hidden class="anchor" aria-hidden="true" href="#opik-관측과-답변-검증-결과">#</a></h2>
+<p>Opik은 선택 설정에서 실제 서비스 호출의 상태, 근거 ID, 처리시간, 토큰 사용량 같은 관측 정보를 남긴다. 사진·키·주소·질문 원문을 저장하지 않도록 제한했다. 이 관측 로그가 답변의 정답 여부를 자동으로 판정해 주는 것은 아니다.</p>
+<p>답변의 질문 충족 여부와 근거 일치는 별도의 고정 질문 평가 파일에서 직접 대조했다. 따라서 “Opik을 붙였으니 환각을 측정했다”라고 쓰지 않는다. 로그 추적과 답변 품질 평가는 서로 다른 작업이다.</p>
+<h2 id="평가-결과의-해석과-한계">평가 결과의 해석과 한계<a hidden class="anchor" aria-hidden="true" href="#평가-결과의-해석과-한계">#</a></h2>
+<p>고정 개발 질문 14건의 첫 평가에서는 11건이 충족, 3건이 부분 충족이었다. 공식 안내의 누락 문단을 보완한 뒤 같은 14건을 다시 확인했을 때 13건 충족, 1건 부분 충족으로 기록되었다. 최종 세트에서 근거 없는 단정을 발견하지 못했지만, 이것은 전체 질문의 정확도나 일반 환각률 0%를 뜻하지 않는다. 같은 질문과 같은 평가 흐름이기 때문이다.</p>
+<p>평가에서 드러난 점은 단순했다. 근거가 없어서 안전하게 보류하는 것은 좋은 출발이지만, 공식 자료에 답이 있는데 검색 자료에 빠져 있으면 사용자의 문제를 해결하지 못한다. 검색 대상 자료의 최신성·누락·상충 여부를 계속 관리해야 한다.</p>
+<h2 id="이번-편의-정리">이번 편의 정리<a hidden class="anchor" aria-hidden="true" href="#이번-편의-정리">#</a></h2>
+<p>AI가 제안한 후보와 공식 자료를 확인한 결과를 분리하고, 마지막 선택은 사용자에게 남기는 방식이 이번 구현의 핵심이었다. RAG도 자료 품질과 평가 범위를 함께 관리해야 신뢰를 설명할 수 있다.</p>
+<p>다음 편에서는 관리자 화면과 ERD, 제출 결과, 그리고 운영까지 아직 남은 경계를 정리한다.</p>
+<h3 id="공개-출처">공개 출처<a hidden class="anchor" aria-hidden="true" href="#공개-출처">#</a></h3>
+<ul>
+<li><a href="https://smartclean.yangcheon.go.kr/online/bulky/item">양천구 대형폐기물 품목표</a></li>
+<li><a href="https://smartclean.yangcheon.go.kr/online/bulky/guide">양천구 대형폐기물 이용 안내</a></li>
+<li><a href="https://github.com/Han-think/greenzone_ai">팀 저장소</a></li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/%EA%B7%B8%EB%A6%B0%EC%A1%B4/">그린존</a></li>
+      <li><a href="https://Han-think.github.io/tags/gemini/">Gemini</a></li>
+      <li><a href="https://Han-think.github.io/tags/rag/">Rag</a></li>
+      <li><a href="https://Han-think.github.io/tags/opik/">Opik</a></li>
+      <li><a href="https://Han-think.github.io/tags/ai%ED%8F%89%EA%B0%80/">AI평가</a></li>
+      <li><a href="https://Han-think.github.io/tags/%ED%8F%90%EA%B8%B0%EB%AC%BC%EC%95%88%EB%82%B4/">폐기물안내</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>그린존 확장 8 — 운영 기능을 화면과 로컬 데이터까지 연결하기 | Han-think Blog</title>
+<meta name="keywords" content="그린존, 개인개발, 관리자, FastAPI, 서비스운영">
+<meta name="description" content="D 팀 제출본을 바꾸지 않고 C 개인 통합판에 운영 자료·이력·시나리오 흐름을 연결하려는 목표와 현재 남은 연결점.">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/projects/greenzone-extension-series-08-operations-20261026/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/projects/greenzone-extension-series-08-operations-20261026/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/projects/greenzone-extension-series-08-operations-20261026/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="그린존 확장 8 — 운영 기능을 화면과 로컬 데이터까지 연결하기">
+  <meta property="og:description" content="D 팀 제출본을 바꾸지 않고 C 개인 통합판에 운영 자료·이력·시나리오 흐름을 연결하려는 목표와 현재 남은 연결점.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2026-10-26T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-10-26T00:00:00+00:00">
+    <meta property="article:tag" content="그린존">
+    <meta property="article:tag" content="개인개발">
+    <meta property="article:tag" content="관리자">
+    <meta property="article:tag" content="FastAPI">
+    <meta property="article:tag" content="서비스운영">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="그린존 확장 8 — 운영 기능을 화면과 로컬 데이터까지 연결하기">
+  <meta name="twitter:description" content="D 팀 제출본을 바꾸지 않고 C 개인 통합판에 운영 자료·이력·시나리오 흐름을 연결하려는 목표와 현재 남은 연결점.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "프로젝트",
+      "item": "https://Han-think.github.io/projects/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "그린존 확장 8 — 운영 기능을 화면과 로컬 데이터까지 연결하기",
+      "item": "https://Han-think.github.io/projects/greenzone-extension-series-08-operations-20261026/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "그린존 확장 8 — 운영 기능을 화면과 로컬 데이터까지 연결하기",
+  "name": "그린존 확장 8 — 운영 기능을 화면과 로컬 데이터까지 연결하기",
+  "description": "D 팀 제출본을 바꾸지 않고 C 개인 통합판에 운영 자료·이력·시나리오 흐름을 연결하려는 목표와 현재 남은 연결점.",
+  "keywords": [
+    "그린존", "개인개발", "관리자", "FastAPI", "서비스운영"
+  ],
+  "articleBody": "목차 C에서 더 완성하고 싶은 운영 문제와 목표 운영 기능의 구조와 현재 코드 화면 연결 구현의 현황 완료 검증 순서와 다음 단계 이번 편의 정리 C에서 더 완성하고 싶은 운영 문제와 목표 팀 저장소 D에서는 검색, 지도, 경로안, 배출 안내, 관리자 자료 관리를 하나의 제출 가능한 흐름으로 정리했다. 하지만 관리자가 실제로 운영한다면 안내 문서만 바꾸는 것으로 충분한지, 거점 제안과 현장 의견, 작업 기록, 영상 검토까지 어떻게 이어지는지 더 고민하고 싶었다.\n그래서 개인 통합판 C는 팀 제출 D를 덮어쓰는 브랜치가 아니라, 핵심 서비스 구조를 참고해 내 로컬에서 추가 기능을 연결해 보는 작업 공간으로 두었다. 두 저장소를 섞어 설명하지 않는 것이 먼저였다.\n운영 기능의 구조와 현재 코드 C에는 운영 레코드 저장, 변경 이력, 시나리오, 영상 작업을 위한 서버 코드와 화면 뼈대가 들어 있다. 관리자 관점에서 생각한 흐름은 다음과 같다.\n자료 등록·검토 → 상태와 출처 관리 → 변경 이력 확인 → 거점 시나리오 비교 → 현장 확인 항목 기록 시나리오는 팀 Louvain 분석의 결과를 다시 계산하거나 대체하는 용도가 아니다. 기존 분석 결과를 기준으로 몇 가지 조건을 바꾸었을 때 어떤 차이를 비교할지 살피는 추가 도구다. 근사 계산이나 관리자 입력값은 팀의 공식 분석 결과와 구분해야 한다.\n화면 연결 구현의 현황 현재 C에는 API와 저장 구조가 추가되었지만, 일부 화면 연결이 빠져 있다. 운영 페이지에서 호출하는 JavaScript가 없고, 주민 의견이나 거점 카드로 연결되는 일부 템플릿도 빠져 있어 API만 존재한다고 사용자 흐름이 끝난 것은 아니다. 영상과 시나리오도 화면에서 실제로 등록하고 결과를 확인하는 종단 검증 자료가 남아 있지 않다.\n이 점을 확인한 뒤 “C에 운영 기능이 완성됐다”고 쓰지 않기로 했다. 지금 상태를 정확히 말하면 운영·영상·시나리오를 위한 기반 코드가 있고, 화면 연결과 실제 로컬 흐름 확인이 남아 있다.\n완료 검증 순서와 다음 단계 관리자 운영 화면에서 자료 목록·등록·수정·중지·복원과 이력을 실제 로컬 DB로 연결한다. 각 저장 동작 뒤 사용자 화면에서 어떤 값이 언제 바뀌는지 확인한다. 데이터가 없는 경우, 잘못된 값, 수정 취소, 중복 등록을 확인해 빈 상태와 오류 안내를 만든다. 시나리오 비교값에는 입력 조건·계산 기준·근사 한계를 표시하고 팀 분석 결과와 나란히 놓는다. 사용 가능한 데이터가 없는 시설은 임의로 채우지 않고 “자료 미확보”로 둔다. 이 순서가 끝나야 관리자에게 보이는 기능이라고 할 수 있다. 외부에 공개하거나 실제 기관 업무에 붙이는 일은 별도의 승인과 운영 준비가 필요하다.\n이번 편의 정리 C에서 더 많은 코드를 추가하는 것보다, 이미 있는 서버 기능을 화면과 데이터의 한 흐름으로 연결하는 것이 지금의 우선 작업이다. 다음 편에서는 영상 처리 코드도 사람의 확인과 안전한 원본 정리까지 연결해야 완성이라 부를 수 있는 이유를 살펴본다.\n공개 출처 팀 기준 코드: Han-think/greenzone_ai C 개인 확장 세부 사항은 공개 전 최신 로컬 코드와 상태 문서를 다시 확인한다. ",
+  "wordCount" : "402",
+  "inLanguage": "en",
+  "datePublished": "2026-10-26T00:00:00Z",
+  "dateModified": "2026-10-26T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/projects/greenzone-extension-series-08-operations-20261026/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      그린존 확장 8 — 운영 기능을 화면과 로컬 데이터까지 연결하기
+    </h1>
+    <div class="post-description">
+      D 팀 제출본을 바꾸지 않고 C 개인 통합판에 운영 자료·이력·시나리오 흐름을 연결하려는 목표와 현재 남은 연결점.
+    </div>
+    <div class="post-meta">
+
+<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>2 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li><a href="#c%EC%97%90%EC%84%9C-%EB%8D%94-%EC%99%84%EC%84%B1%ED%95%98%EA%B3%A0-%EC%8B%B6%EC%9D%80-%EC%9A%B4%EC%98%81-%EB%AC%B8%EC%A0%9C%EC%99%80-%EB%AA%A9%ED%91%9C">C에서 더 완성하고 싶은 운영 문제와 목표</a></li>
+<li><a href="#%EC%9A%B4%EC%98%81-%EA%B8%B0%EB%8A%A5%EC%9D%98-%EA%B5%AC%EC%A1%B0%EC%99%80-%ED%98%84%EC%9E%AC-%EC%BD%94%EB%93%9C">운영 기능의 구조와 현재 코드</a></li>
+<li><a href="#%ED%99%94%EB%A9%B4-%EC%97%B0%EA%B2%B0-%EA%B5%AC%ED%98%84%EC%9D%98-%ED%98%84%ED%99%A9">화면 연결 구현의 현황</a></li>
+<li><a href="#%EC%99%84%EB%A3%8C-%EA%B2%80%EC%A6%9D-%EC%88%9C%EC%84%9C%EC%99%80-%EB%8B%A4%EC%9D%8C-%EB%8B%A8%EA%B3%84">완료 검증 순서와 다음 단계</a></li>
+<li><a href="#%EC%9D%B4%EB%B2%88-%ED%8E%B8%EC%9D%98-%EC%A0%95%EB%A6%AC">이번 편의 정리</a></li>
+</ul>
+<h2 id="c에서-더-완성하고-싶은-운영-문제와-목표">C에서 더 완성하고 싶은 운영 문제와 목표<a hidden class="anchor" aria-hidden="true" href="#c에서-더-완성하고-싶은-운영-문제와-목표">#</a></h2>
+<p>팀 저장소 D에서는 검색, 지도, 경로안, 배출 안내, 관리자 자료 관리를 하나의 제출 가능한 흐름으로 정리했다. 하지만 관리자가 실제로 운영한다면 안내 문서만 바꾸는 것으로 충분한지, 거점 제안과 현장 의견, 작업 기록, 영상 검토까지 어떻게 이어지는지 더 고민하고 싶었다.</p>
+<p>그래서 개인 통합판 C는 팀 제출 D를 덮어쓰는 브랜치가 아니라, 핵심 서비스 구조를 참고해 내 로컬에서 추가 기능을 연결해 보는 작업 공간으로 두었다. 두 저장소를 섞어 설명하지 않는 것이 먼저였다.</p>
+<h2 id="운영-기능의-구조와-현재-코드">운영 기능의 구조와 현재 코드<a hidden class="anchor" aria-hidden="true" href="#운영-기능의-구조와-현재-코드">#</a></h2>
+<p>C에는 운영 레코드 저장, 변경 이력, 시나리오, 영상 작업을 위한 서버 코드와 화면 뼈대가 들어 있다. 관리자 관점에서 생각한 흐름은 다음과 같다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>자료 등록·검토 → 상태와 출처 관리 → 변경 이력 확인
+</span></span><span style="display:flex;"><span>            → 거점 시나리오 비교 → 현장 확인 항목 기록
+</span></span></code></pre></div><p>시나리오는 팀 Louvain 분석의 결과를 다시 계산하거나 대체하는 용도가 아니다. 기존 분석 결과를 기준으로 몇 가지 조건을 바꾸었을 때 어떤 차이를 비교할지 살피는 추가 도구다. 근사 계산이나 관리자 입력값은 팀의 공식 분석 결과와 구분해야 한다.</p>
+<h2 id="화면-연결-구현의-현황">화면 연결 구현의 현황<a hidden class="anchor" aria-hidden="true" href="#화면-연결-구현의-현황">#</a></h2>
+<p>현재 C에는 API와 저장 구조가 추가되었지만, 일부 화면 연결이 빠져 있다. 운영 페이지에서 호출하는 JavaScript가 없고, 주민 의견이나 거점 카드로 연결되는 일부 템플릿도 빠져 있어 API만 존재한다고 사용자 흐름이 끝난 것은 아니다. 영상과 시나리오도 화면에서 실제로 등록하고 결과를 확인하는 종단 검증 자료가 남아 있지 않다.</p>
+<p>이 점을 확인한 뒤 “C에 운영 기능이 완성됐다”고 쓰지 않기로 했다. 지금 상태를 정확히 말하면 운영·영상·시나리오를 위한 기반 코드가 있고, 화면 연결과 실제 로컬 흐름 확인이 남아 있다.</p>
+<h2 id="완료-검증-순서와-다음-단계">완료 검증 순서와 다음 단계<a hidden class="anchor" aria-hidden="true" href="#완료-검증-순서와-다음-단계">#</a></h2>
+<ol>
+<li>관리자 운영 화면에서 자료 목록·등록·수정·중지·복원과 이력을 실제 로컬 DB로 연결한다.</li>
+<li>각 저장 동작 뒤 사용자 화면에서 어떤 값이 언제 바뀌는지 확인한다.</li>
+<li>데이터가 없는 경우, 잘못된 값, 수정 취소, 중복 등록을 확인해 빈 상태와 오류 안내를 만든다.</li>
+<li>시나리오 비교값에는 입력 조건·계산 기준·근사 한계를 표시하고 팀 분석 결과와 나란히 놓는다.</li>
+<li>사용 가능한 데이터가 없는 시설은 임의로 채우지 않고 “자료 미확보”로 둔다.</li>
+</ol>
+<p>이 순서가 끝나야 관리자에게 보이는 기능이라고 할 수 있다. 외부에 공개하거나 실제 기관 업무에 붙이는 일은 별도의 승인과 운영 준비가 필요하다.</p>
+<h2 id="이번-편의-정리">이번 편의 정리<a hidden class="anchor" aria-hidden="true" href="#이번-편의-정리">#</a></h2>
+<p>C에서 더 많은 코드를 추가하는 것보다, 이미 있는 서버 기능을 화면과 데이터의 한 흐름으로 연결하는 것이 지금의 우선 작업이다. 다음 편에서는 영상 처리 코드도 사람의 확인과 안전한 원본 정리까지 연결해야 완성이라 부를 수 있는 이유를 살펴본다.</p>
+<h3 id="공개-출처">공개 출처<a hidden class="anchor" aria-hidden="true" href="#공개-출처">#</a></h3>
+<ul>
+<li>팀 기준 코드: <a href="https://github.com/Han-think/greenzone_ai">Han-think/greenzone_ai</a></li>
+<li>C 개인 확장 세부 사항은 공개 전 최신 로컬 코드와 상태 문서를 다시 확인한다.</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/%EA%B7%B8%EB%A6%B0%EC%A1%B4/">그린존</a></li>
+      <li><a href="https://Han-think.github.io/tags/%EA%B0%9C%EC%9D%B8%EA%B0%9C%EB%B0%9C/">개인개발</a></li>
+      <li><a href="https://Han-think.github.io/tags/%EA%B4%80%EB%A6%AC%EC%9E%90/">관리자</a></li>
+      <li><a href="https://Han-think.github.io/tags/fastapi/">FastAPI</a></li>
+      <li><a href="https://Han-think.github.io/tags/%EC%84%9C%EB%B9%84%EC%8A%A4%EC%9A%B4%EC%98%81/">서비스운영</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

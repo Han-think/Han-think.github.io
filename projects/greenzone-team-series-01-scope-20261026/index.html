@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>그린존 프로젝트 1 — 쓰레기 배출 문제를 신월1동 서비스로 좁히다 | Han-think Blog</title>
+<meta name="keywords" content="그린존, 문제정의, 서비스기획, 신월1동">
+<meta name="description" content="큰 도시 문제를 한 동네의 데이터·검색·거점 안내 흐름으로 줄이고, 제안과 운영을 구분한 과정.">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/projects/greenzone-team-series-01-scope-20261026/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/projects/greenzone-team-series-01-scope-20261026/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/projects/greenzone-team-series-01-scope-20261026/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="그린존 프로젝트 1 — 쓰레기 배출 문제를 신월1동 서비스로 좁히다">
+  <meta property="og:description" content="큰 도시 문제를 한 동네의 데이터·검색·거점 안내 흐름으로 줄이고, 제안과 운영을 구분한 과정.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2026-10-26T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-10-26T00:00:00+00:00">
+    <meta property="article:tag" content="그린존">
+    <meta property="article:tag" content="문제정의">
+    <meta property="article:tag" content="서비스기획">
+    <meta property="article:tag" content="신월1동">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="그린존 프로젝트 1 — 쓰레기 배출 문제를 신월1동 서비스로 좁히다">
+  <meta name="twitter:description" content="큰 도시 문제를 한 동네의 데이터·검색·거점 안내 흐름으로 줄이고, 제안과 운영을 구분한 과정.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "프로젝트",
+      "item": "https://Han-think.github.io/projects/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "그린존 프로젝트 1 — 쓰레기 배출 문제를 신월1동 서비스로 좁히다",
+      "item": "https://Han-think.github.io/projects/greenzone-team-series-01-scope-20261026/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "그린존 프로젝트 1 — 쓰레기 배출 문제를 신월1동 서비스로 좁히다",
+  "name": "그린존 프로젝트 1 — 쓰레기 배출 문제를 신월1동 서비스로 좁히다",
+  "description": "큰 도시 문제를 한 동네의 데이터·검색·거점 안내 흐름으로 줄이고, 제안과 운영을 구분한 과정.",
+  "keywords": [
+    "그린존", "문제정의", "서비스기획", "신월1동"
+  ],
+  "articleBody": "목차 문제와 요구사항의 범위 왜 신월1동으로 좁혔나 서비스 구조와 한 줄 소개 미확정 항목과 다음 검증 이번 편의 정리 문제와 요구사항의 범위 그린존은 쓰레기 문제를 전부 해결한다고 말하는 프로젝트가 아니다. 배출 장소와 시간에 관한 주민 안내, 수거 작업의 접근 조건, 주택가 안에서 배출 정보를 찾기 어려운 문제를 함께 살펴보는 작은 서비스 제안이다.\n처음부터 문제를 크게 잡으면 자료도 기능도 끝없이 늘어난다. 그래서 이번 팀 프로젝트에서는 “신월1동의 주거 건물을 검색하면, 분석에서 제안한 생활권과 거점안을 확인하고, 공식 배출 안내까지 이어질 수 있는가?”를 중심 질문으로 삼았다. 넓은 도시 문제를 하나의 이용 흐름으로 바꾸는 것이 첫 번째 설계 작업이었다.\n다만 지역에 쓰레기가 오래 방치된다거나, 새 거점을 두면 청결이 개선된다는 결과를 이 분석만으로 증명한 것은 아니다. 그런 문제는 프로젝트의 추진 가설과 선행 사례에서 출발한 것이며, 실제 개선 효과를 말하려면 운영 전후의 현장 자료가 따로 필요하다.\n왜 신월1동으로 좁혔나 신월1동만 분석 범위로 정한 이유는 데이터와 결과를 한 지역 안에서 연결하기 위해서다. 건물·도로·보호시설 자료를 같은 경계에 맞추고, 그 결과를 지도에서 검색과 비교로 보여주려면 하나의 작은 범위부터 정해야 했다.\n대상은 아파트를 제외한 주거 필지다. 아파트 단지는 내부에 자체 분리배출 체계를 둔 경우가 있어 이번 제안 대상에서 분리했다. 이 선택이 모든 아파트의 배출 방식이 같다는 뜻은 아니고, 분석 범위를 분명히 하기 위한 기준이다.\n팀 프로젝트는 분석과 개발을 함께 진행했다. 분석에서는 건물·주거 단위·도로 자료를 정리해 생활권과 거점안을 만들고, 개발에서는 그 결과를 검색과 지도, 안내 화면으로 연결했다. 나는 PM으로 범위와 흐름이 한 서비스 안에서 설명되는지 확인하는 역할을 맡았다.\n서비스 구조와 한 줄 소개 이번 서비스 흐름은 다음처럼 정리했다.\n건물 검색 → 담당 생활권·거점안 확인 → 지도에서 비교 → 수거 경로안 확인 → 공식 배출 안내 지도는 단순히 후보 점을 찍는 화면이 아니다. 검색 결과가 주민이 확인할 담당 생활권과 거점안으로 연결되고, 분석 담당자가 자료 레이어를 바꾸어 비교할 수 있도록 하는 전달 화면이다. 별도의 배출 안내에서는 품목·규격·수수료 정보를 확인하고, 필요한 경우 근거 문서를 바탕으로 추가 질문을 한다.\n한 문장 소개는 이렇게 잡을 수 있다.\n그린존은 신월1동의 건물·도로·공식 배출자료를 분석해 생활권과 거점안을 비교하고, 검색 지도와 근거 기반 배출 안내로 연결하는 서비스 제안이다.\n미확정 항목과 다음 검증 거점 지도는 운영 승인을 받은 장소 목록이 아니다. 도로 폭과 보호시설 이격 같은 기준을 적용해 조사할 후보를 만들었지만, 실제 부지 사용 가능성·차량 정차·보행 연속성은 현장 확인과 행정 협의가 필요하다.\n수거차가 실제로 그 경로를 운행하는 것도 아니다. 경로 화면은 보유 도로 데이터에서 계산한 비교안이며, 차량의 회전 반경·일방통행·차고지·시간대 교통을 모두 확인한 내비게이션이 아니다. 실제 서비스라면 이 차이를 사용자에게 그대로 알려야 한다.\n이번 편의 정리 가장 큰 배움은 기능 목록보다 문제의 경계를 먼저 잡아야 한다는 점이었다. 신월1동의 분석 제안과 실제 운영 승인을 구분했고, 주민 검색부터 안내까지 하나의 흐름으로 표현했다.\n다음 편에서는 그 흐름의 바탕이 된 공공 데이터와 각 자료의 기준일을 어떻게 정리했는지 살펴본다.\n공개 출처 팀 저장소 ",
+  "wordCount" : "425",
+  "inLanguage": "en",
+  "datePublished": "2026-10-26T00:00:00Z",
+  "dateModified": "2026-10-26T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/projects/greenzone-team-series-01-scope-20261026/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      그린존 프로젝트 1 — 쓰레기 배출 문제를 신월1동 서비스로 좁히다
+    </h1>
+    <div class="post-description">
+      큰 도시 문제를 한 동네의 데이터·검색·거점 안내 흐름으로 줄이고, 제안과 운영을 구분한 과정.
+    </div>
+    <div class="post-meta">
+
+<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>2 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li><a href="#%EB%AC%B8%EC%A0%9C%EC%99%80-%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%EC%9D%98-%EB%B2%94%EC%9C%84">문제와 요구사항의 범위</a></li>
+<li><a href="#%EC%99%9C-%EC%8B%A0%EC%9B%941%EB%8F%99%EC%9C%BC%EB%A1%9C-%EC%A2%81%ED%98%94%EB%82%98">왜 신월1동으로 좁혔나</a></li>
+<li><a href="#%EC%84%9C%EB%B9%84%EC%8A%A4-%EA%B5%AC%EC%A1%B0%EC%99%80-%ED%95%9C-%EC%A4%84-%EC%86%8C%EA%B0%9C">서비스 구조와 한 줄 소개</a></li>
+<li><a href="#%EB%AF%B8%ED%99%95%EC%A0%95-%ED%95%AD%EB%AA%A9%EA%B3%BC-%EB%8B%A4%EC%9D%8C-%EA%B2%80%EC%A6%9D">미확정 항목과 다음 검증</a></li>
+<li><a href="#%EC%9D%B4%EB%B2%88-%ED%8E%B8%EC%9D%98-%EC%A0%95%EB%A6%AC">이번 편의 정리</a></li>
+</ul>
+<h2 id="문제와-요구사항의-범위">문제와 요구사항의 범위<a hidden class="anchor" aria-hidden="true" href="#문제와-요구사항의-범위">#</a></h2>
+<p>그린존은 쓰레기 문제를 전부 해결한다고 말하는 프로젝트가 아니다. 배출 장소와 시간에 관한 주민 안내, 수거 작업의 접근 조건, 주택가 안에서 배출 정보를 찾기 어려운 문제를 함께 살펴보는 작은 서비스 제안이다.</p>
+<p>처음부터 문제를 크게 잡으면 자료도 기능도 끝없이 늘어난다. 그래서 이번 팀 프로젝트에서는 “신월1동의 주거 건물을 검색하면, 분석에서 제안한 생활권과 거점안을 확인하고, 공식 배출 안내까지 이어질 수 있는가?”를 중심 질문으로 삼았다. 넓은 도시 문제를 하나의 이용 흐름으로 바꾸는 것이 첫 번째 설계 작업이었다.</p>
+<p>다만 지역에 쓰레기가 오래 방치된다거나, 새 거점을 두면 청결이 개선된다는 결과를 이 분석만으로 증명한 것은 아니다. 그런 문제는 프로젝트의 추진 가설과 선행 사례에서 출발한 것이며, 실제 개선 효과를 말하려면 운영 전후의 현장 자료가 따로 필요하다.</p>
+<h2 id="왜-신월1동으로-좁혔나">왜 신월1동으로 좁혔나<a hidden class="anchor" aria-hidden="true" href="#왜-신월1동으로-좁혔나">#</a></h2>
+<p>신월1동만 분석 범위로 정한 이유는 데이터와 결과를 한 지역 안에서 연결하기 위해서다. 건물·도로·보호시설 자료를 같은 경계에 맞추고, 그 결과를 지도에서 검색과 비교로 보여주려면 하나의 작은 범위부터 정해야 했다.</p>
+<p>대상은 아파트를 제외한 주거 필지다. 아파트 단지는 내부에 자체 분리배출 체계를 둔 경우가 있어 이번 제안 대상에서 분리했다. 이 선택이 모든 아파트의 배출 방식이 같다는 뜻은 아니고, 분석 범위를 분명히 하기 위한 기준이다.</p>
+<p>팀 프로젝트는 분석과 개발을 함께 진행했다. 분석에서는 건물·주거 단위·도로 자료를 정리해 생활권과 거점안을 만들고, 개발에서는 그 결과를 검색과 지도, 안내 화면으로 연결했다. 나는 PM으로 범위와 흐름이 한 서비스 안에서 설명되는지 확인하는 역할을 맡았다.</p>
+<h2 id="서비스-구조와-한-줄-소개">서비스 구조와 한 줄 소개<a hidden class="anchor" aria-hidden="true" href="#서비스-구조와-한-줄-소개">#</a></h2>
+<p>이번 서비스 흐름은 다음처럼 정리했다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>건물 검색 → 담당 생활권·거점안 확인 → 지도에서 비교
+</span></span><span style="display:flex;"><span>        → 수거 경로안 확인 → 공식 배출 안내
+</span></span></code></pre></div><p>지도는 단순히 후보 점을 찍는 화면이 아니다. 검색 결과가 주민이 확인할 담당 생활권과 거점안으로 연결되고, 분석 담당자가 자료 레이어를 바꾸어 비교할 수 있도록 하는 전달 화면이다. 별도의 배출 안내에서는 품목·규격·수수료 정보를 확인하고, 필요한 경우 근거 문서를 바탕으로 추가 질문을 한다.</p>
+<p>한 문장 소개는 이렇게 잡을 수 있다.</p>
+<blockquote>
+<p>그린존은 신월1동의 건물·도로·공식 배출자료를 분석해 생활권과 거점안을 비교하고, 검색 지도와 근거 기반 배출 안내로 연결하는 서비스 제안이다.</p>
+</blockquote>
+<h2 id="미확정-항목과-다음-검증">미확정 항목과 다음 검증<a hidden class="anchor" aria-hidden="true" href="#미확정-항목과-다음-검증">#</a></h2>
+<p>거점 지도는 운영 승인을 받은 장소 목록이 아니다. 도로 폭과 보호시설 이격 같은 기준을 적용해 조사할 후보를 만들었지만, 실제 부지 사용 가능성·차량 정차·보행 연속성은 현장 확인과 행정 협의가 필요하다.</p>
+<p>수거차가 실제로 그 경로를 운행하는 것도 아니다. 경로 화면은 보유 도로 데이터에서 계산한 비교안이며, 차량의 회전 반경·일방통행·차고지·시간대 교통을 모두 확인한 내비게이션이 아니다. 실제 서비스라면 이 차이를 사용자에게 그대로 알려야 한다.</p>
+<h2 id="이번-편의-정리">이번 편의 정리<a hidden class="anchor" aria-hidden="true" href="#이번-편의-정리">#</a></h2>
+<p>가장 큰 배움은 기능 목록보다 문제의 경계를 먼저 잡아야 한다는 점이었다. 신월1동의 분석 제안과 실제 운영 승인을 구분했고, 주민 검색부터 안내까지 하나의 흐름으로 표현했다.</p>
+<p>다음 편에서는 그 흐름의 바탕이 된 공공 데이터와 각 자료의 기준일을 어떻게 정리했는지 살펴본다.</p>
+<h3 id="공개-출처">공개 출처<a hidden class="anchor" aria-hidden="true" href="#공개-출처">#</a></h3>
+<ul>
+<li><a href="https://github.com/Han-think/greenzone_ai">팀 저장소</a></li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/%EA%B7%B8%EB%A6%B0%EC%A1%B4/">그린존</a></li>
+      <li><a href="https://Han-think.github.io/tags/%EB%AC%B8%EC%A0%9C%EC%A0%95%EC%9D%98/">문제정의</a></li>
+      <li><a href="https://Han-think.github.io/tags/%EC%84%9C%EB%B9%84%EC%8A%A4%EA%B8%B0%ED%9A%8D/">서비스기획</a></li>
+      <li><a href="https://Han-think.github.io/tags/%EC%8B%A0%EC%9B%941%EB%8F%99/">신월1동</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

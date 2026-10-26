@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>팀프로젝트 on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/%ED%8C%80%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/</link>
+    <description>Recent content in 팀프로젝트 on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Mon, 26 Oct 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/%ED%8C%80%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>그린존 팀 프로젝트 기록 — 7일의 구현과 2일의 확장</title>
+      <link>https://Han-think.github.io/projects/greenzone-series-index-20261026/</link>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/greenzone-series-index-20261026/</guid>
+      <description>D 팀 프로젝트의 7편과 C 개인 확장 2편을 구분해 문제 정의부터 운영 확장까지 읽는 프로젝트 연재 안내.</description>
+    </item>
+  </channel>
+</rss>

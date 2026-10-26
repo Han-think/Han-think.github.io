@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>공공데이터 on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/%EA%B3%B5%EA%B3%B5%EB%8D%B0%EC%9D%B4%ED%84%B0/</link>
+    <description>Recent content in 공공데이터 on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Mon, 26 Oct 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/%EA%B3%B5%EA%B3%B5%EB%8D%B0%EC%9D%B4%ED%84%B0/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>그린존 팀 프로젝트 기록 — 7일의 구현과 2일의 확장</title>
+      <link>https://Han-think.github.io/projects/greenzone-series-index-20261026/</link>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/greenzone-series-index-20261026/</guid>
+      <description>D 팀 프로젝트의 7편과 C 개인 확장 2편을 구분해 문제 정의부터 운영 확장까지 읽는 프로젝트 연재 안내.</description>
+    </item>
+    <item>
+      <title>그린존 프로젝트 2 — 데이터를 모으는 일보다 기준일을 맞추는 일이 먼저였다</title>
+      <link>https://Han-think.github.io/projects/greenzone-team-series-02-data-20261026/</link>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/greenzone-team-series-02-data-20261026/</guid>
+      <description>건물·도로·보호시설·배출량 자료의 제공처와 기준시점을 나누고, 분석에서 어디에 쓰였는지 정리한 방법.</description>
+    </item>
+  </channel>
+</rss>

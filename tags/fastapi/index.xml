@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>FastAPI on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/fastapi/</link>
+    <description>Recent content in FastAPI on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Mon, 26 Oct 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/fastapi/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>그린존 팀 프로젝트 기록 — 7일의 구현과 2일의 확장</title>
+      <link>https://Han-think.github.io/projects/greenzone-series-index-20261026/</link>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/greenzone-series-index-20261026/</guid>
+      <description>D 팀 프로젝트의 7편과 C 개인 확장 2편을 구분해 문제 정의부터 운영 확장까지 읽는 프로젝트 연재 안내.</description>
+    </item>
+    <item>
+      <title>그린존 프로젝트 5 — 검색 결과를 지도와 수거 경로안으로 이어 붙이다</title>
+      <link>https://Han-think.github.io/projects/greenzone-team-series-05-web-map-20261026/</link>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/greenzone-team-series-05-web-map-20261026/</guid>
+      <description>보유 건물 검색, 지도 레이어 필터, Leaflet·Folium 비교, 자동·직접 순서 경로안을 하나의 웹 흐름으로 연결한 과정.</description>
+    </item>
+    <item>
+      <title>그린존 확장 8 — 운영 기능을 화면과 로컬 데이터까지 연결하기</title>
+      <link>https://Han-think.github.io/projects/greenzone-extension-series-08-operations-20261026/</link>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/greenzone-extension-series-08-operations-20261026/</guid>
+      <description>D 팀 제출본을 바꾸지 않고 C 개인 통합판에 운영 자료·이력·시나리오 흐름을 연결하려는 목표와 현재 남은 연결점.</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>그린존 프로젝트 7 — 기능을 만들었다는 것과 실제 운영은 다르다 | Han-think Blog</title>
+<meta name="keywords" content="그린존, 관리자, ERD, SQLite, 프로젝트회고">
+<meta name="description" content="관리자 자료 수정·이력, 실제 SQLite 구조, 기능 확인과 독립 검증의 차이를 제출 결과를 기준으로 정리한다.">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/projects/greenzone-team-series-07-admin-review-20261026/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/projects/greenzone-team-series-07-admin-review-20261026/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/projects/greenzone-team-series-07-admin-review-20261026/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="그린존 프로젝트 7 — 기능을 만들었다는 것과 실제 운영은 다르다">
+  <meta property="og:description" content="관리자 자료 수정·이력, 실제 SQLite 구조, 기능 확인과 독립 검증의 차이를 제출 결과를 기준으로 정리한다.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2026-10-26T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-10-26T00:00:00+00:00">
+    <meta property="article:tag" content="그린존">
+    <meta property="article:tag" content="관리자">
+    <meta property="article:tag" content="ERD">
+    <meta property="article:tag" content="Sqlite">
+    <meta property="article:tag" content="프로젝트회고">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="그린존 프로젝트 7 — 기능을 만들었다는 것과 실제 운영은 다르다">
+  <meta name="twitter:description" content="관리자 자료 수정·이력, 실제 SQLite 구조, 기능 확인과 독립 검증의 차이를 제출 결과를 기준으로 정리한다.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "프로젝트",
+      "item": "https://Han-think.github.io/projects/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "그린존 프로젝트 7 — 기능을 만들었다는 것과 실제 운영은 다르다",
+      "item": "https://Han-think.github.io/projects/greenzone-team-series-07-admin-review-20261026/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "그린존 프로젝트 7 — 기능을 만들었다는 것과 실제 운영은 다르다",
+  "name": "그린존 프로젝트 7 — 기능을 만들었다는 것과 실제 운영은 다르다",
+  "description": "관리자 자료 수정·이력, 실제 SQLite 구조, 기능 확인과 독립 검증의 차이를 제출 결과를 기준으로 정리한다.",
+  "keywords": [
+    "그린존", "관리자", "ERD", "SQLite", "프로젝트회고"
+  ],
+  "articleBody": "목차 관리자 운영 기능과 목표 논리 ERD와 실제 DB 구조 확인된 기능과 검증 결과 남은 운영 한계와 다음 단계 이번 편의 정리 관리자 운영 기능과 목표 관리자 화면은 개발자가 코드를 수정하는 화면이 아니다. 프로젝트에서는 안내 자료의 원문·출처·확인일·시행일·사용 상태를 검토하고, 설명을 수정하거나 사용을 중지하며, 변경 이유와 이전·새 값을 이력으로 남기는 흐름을 구성했다.\n수정 결과는 같은 서버의 로컬 SQLite에 저장되어 다음 조회부터 반영된다. 이 데이터는 Git을 통해 다른 팀원의 PC와 자동 동기화되는 운영 DB가 아니다. 사용자는 이미 열어 둔 결과가 바뀌지 않을 수 있어 다시 조회해야 한다. 따라서 관리자 기능을 설명할 때는 변경이 저장되는 위치와 적용 범위를 함께 말해야 한다.\n실제 비밀번호나 키는 발표자료·스크린샷·공개 글에 넣지 않았다. 공개 예제에서는 변수 이름과 가짜 값만 보여주고, 각자 로컬 환경에서 설정해야 한다.\n논리 ERD와 실제 DB 구조 발표의 ERD는 서비스에서 필요한 데이터 관계를 설명하는 논리 그림이다. 후보, 생활권, 데이터 출처, 운영 기록처럼 개념을 넓게 표현할 수 있다. 하지만 그림에 엔터티가 11개 있다고 실제 SQLite에 테이블도 11개 있다는 뜻은 아니다.\n제출 코드의 실제 SQLite에는 records, history, seeds 세 테이블이 있다. records는 종류별 현재 자료, history는 수정 전후와 이유, seeds는 초기 입력 여부를 관리한다. 논리 ERD는 향후 정규화한 DB 설계를 설명하는 자료이고, 실제 구현은 현재 코드에서 작동하는 구조라고 분리해야 했다.\n확인된 기능과 검증 결과 로컬 브라우저에서 사진 후보, 사용자 품목·규격 선택, 참고 금액 조회, 관리자 로그인, 자료 수정과 반영, 원복, 한국어 이력을 확인했다. 별도 HTTP 점검과 관리자 임시 DB 검사, RAG 핵심 검사도 수행했다.\n이 숫자는 기능 계약이나 정해 둔 입력 검사의 결과다. 팀원이 처음 보는 질문으로 독립 평가한 결과, 현장에서 거점이 안전하다고 확인한 결과, 실제 주민이 이용한 결과와는 다르다. RAG의 14개 고정 질문도 전체 민원 질문을 대표하지 않으며, 반복 평가를 일반 정확도나 환각률로 바꾸면 안 된다.\n제안 거점의 현장 안전과 부지 사용, 실제 수거차 운행, 거점별 실측 폐기물량, 예약·결제의 자체 처리, 다른 PC에서의 독립 실행은 이번 제출이 자동으로 증명하지 않는다. 필요한 협의·자료·장비를 확보한 뒤 별도로 확인해야 한다.\n남은 운영 한계와 다음 단계 이번 팀 프로젝트는 정해진 발표와 산출물을 제출했다. 그렇다고 양천구의 공식 수거 체계를 바꾸거나, 주민에게 실제 운영 거점을 확정해 안내하거나, 기관 시스템과 연동한 것은 아니다. 웹은 분석 결과를 보여주는 제안형 시제품이다.\n이 경계를 명확히 하는 것이 프로젝트를 작게 보이게 하지 않았다. 오히려 무엇을 이미 만들었고, 무엇을 데이터·현장·기관 협의와 함께 해야 하는지 구체적으로 보이게 했다.\n이번 편의 정리 관리자 기능, ERD, 테스트 결과는 서로 다른 수준의 근거다. 화면에서 수정이 작동했다는 것과 실제 운영자가 여러 PC에서 장기적으로 서비스를 운영한다는 것은 다른 목표다.\n이제 팀 제출 범위를 정리했으니, 다음 두 편에서는 내가 개인 통합판 C에서 더 완성하고 싶은 부분을 나누어 기록한다.\n공개 출처 팀 저장소 국가법령정보센터 인용 조례 자료 ",
+  "wordCount" : "411",
+  "inLanguage": "en",
+  "datePublished": "2026-10-26T00:00:00Z",
+  "dateModified": "2026-10-26T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/projects/greenzone-team-series-07-admin-review-20261026/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      그린존 프로젝트 7 — 기능을 만들었다는 것과 실제 운영은 다르다
+    </h1>
+    <div class="post-description">
+      관리자 자료 수정·이력, 실제 SQLite 구조, 기능 확인과 독립 검증의 차이를 제출 결과를 기준으로 정리한다.
+    </div>
+    <div class="post-meta">
+
+<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>2 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li><a href="#%EA%B4%80%EB%A6%AC%EC%9E%90-%EC%9A%B4%EC%98%81-%EA%B8%B0%EB%8A%A5%EA%B3%BC-%EB%AA%A9%ED%91%9C">관리자 운영 기능과 목표</a></li>
+<li><a href="#%EB%85%BC%EB%A6%AC-erd%EC%99%80-%EC%8B%A4%EC%A0%9C-db-%EA%B5%AC%EC%A1%B0">논리 ERD와 실제 DB 구조</a></li>
+<li><a href="#%ED%99%95%EC%9D%B8%EB%90%9C-%EA%B8%B0%EB%8A%A5%EA%B3%BC-%EA%B2%80%EC%A6%9D-%EA%B2%B0%EA%B3%BC">확인된 기능과 검증 결과</a></li>
+<li><a href="#%EB%82%A8%EC%9D%80-%EC%9A%B4%EC%98%81-%ED%95%9C%EA%B3%84%EC%99%80-%EB%8B%A4%EC%9D%8C-%EB%8B%A8%EA%B3%84">남은 운영 한계와 다음 단계</a></li>
+<li><a href="#%EC%9D%B4%EB%B2%88-%ED%8E%B8%EC%9D%98-%EC%A0%95%EB%A6%AC">이번 편의 정리</a></li>
+</ul>
+<h2 id="관리자-운영-기능과-목표">관리자 운영 기능과 목표<a hidden class="anchor" aria-hidden="true" href="#관리자-운영-기능과-목표">#</a></h2>
+<p>관리자 화면은 개발자가 코드를 수정하는 화면이 아니다. 프로젝트에서는 안내 자료의 원문·출처·확인일·시행일·사용 상태를 검토하고, 설명을 수정하거나 사용을 중지하며, 변경 이유와 이전·새 값을 이력으로 남기는 흐름을 구성했다.</p>
+<p>수정 결과는 같은 서버의 로컬 SQLite에 저장되어 다음 조회부터 반영된다. 이 데이터는 Git을 통해 다른 팀원의 PC와 자동 동기화되는 운영 DB가 아니다. 사용자는 이미 열어 둔 결과가 바뀌지 않을 수 있어 다시 조회해야 한다. 따라서 관리자 기능을 설명할 때는 변경이 저장되는 위치와 적용 범위를 함께 말해야 한다.</p>
+<p>실제 비밀번호나 키는 발표자료·스크린샷·공개 글에 넣지 않았다. 공개 예제에서는 변수 이름과 가짜 값만 보여주고, 각자 로컬 환경에서 설정해야 한다.</p>
+<h2 id="논리-erd와-실제-db-구조">논리 ERD와 실제 DB 구조<a hidden class="anchor" aria-hidden="true" href="#논리-erd와-실제-db-구조">#</a></h2>
+<p>발표의 ERD는 서비스에서 필요한 데이터 관계를 설명하는 논리 그림이다. 후보, 생활권, 데이터 출처, 운영 기록처럼 개념을 넓게 표현할 수 있다. 하지만 그림에 엔터티가 11개 있다고 실제 SQLite에 테이블도 11개 있다는 뜻은 아니다.</p>
+<p>제출 코드의 실제 SQLite에는 <code>records</code>, <code>history</code>, <code>seeds</code> 세 테이블이 있다. <code>records</code>는 종류별 현재 자료, <code>history</code>는 수정 전후와 이유, <code>seeds</code>는 초기 입력 여부를 관리한다. 논리 ERD는 향후 정규화한 DB 설계를 설명하는 자료이고, 실제 구현은 현재 코드에서 작동하는 구조라고 분리해야 했다.</p>
+<h2 id="확인된-기능과-검증-결과">확인된 기능과 검증 결과<a hidden class="anchor" aria-hidden="true" href="#확인된-기능과-검증-결과">#</a></h2>
+<p>로컬 브라우저에서 사진 후보, 사용자 품목·규격 선택, 참고 금액 조회, 관리자 로그인, 자료 수정과 반영, 원복, 한국어 이력을 확인했다. 별도 HTTP 점검과 관리자 임시 DB 검사, RAG 핵심 검사도 수행했다.</p>
+<p>이 숫자는 기능 계약이나 정해 둔 입력 검사의 결과다. 팀원이 처음 보는 질문으로 독립 평가한 결과, 현장에서 거점이 안전하다고 확인한 결과, 실제 주민이 이용한 결과와는 다르다. RAG의 14개 고정 질문도 전체 민원 질문을 대표하지 않으며, 반복 평가를 일반 정확도나 환각률로 바꾸면 안 된다.</p>
+<p>제안 거점의 현장 안전과 부지 사용, 실제 수거차 운행, 거점별 실측 폐기물량, 예약·결제의 자체 처리, 다른 PC에서의 독립 실행은 이번 제출이 자동으로 증명하지 않는다. 필요한 협의·자료·장비를 확보한 뒤 별도로 확인해야 한다.</p>
+<h2 id="남은-운영-한계와-다음-단계">남은 운영 한계와 다음 단계<a hidden class="anchor" aria-hidden="true" href="#남은-운영-한계와-다음-단계">#</a></h2>
+<p>이번 팀 프로젝트는 정해진 발표와 산출물을 제출했다. 그렇다고 양천구의 공식 수거 체계를 바꾸거나, 주민에게 실제 운영 거점을 확정해 안내하거나, 기관 시스템과 연동한 것은 아니다. 웹은 분석 결과를 보여주는 제안형 시제품이다.</p>
+<p>이 경계를 명확히 하는 것이 프로젝트를 작게 보이게 하지 않았다. 오히려 무엇을 이미 만들었고, 무엇을 데이터·현장·기관 협의와 함께 해야 하는지 구체적으로 보이게 했다.</p>
+<h2 id="이번-편의-정리">이번 편의 정리<a hidden class="anchor" aria-hidden="true" href="#이번-편의-정리">#</a></h2>
+<p>관리자 기능, ERD, 테스트 결과는 서로 다른 수준의 근거다. 화면에서 수정이 작동했다는 것과 실제 운영자가 여러 PC에서 장기적으로 서비스를 운영한다는 것은 다른 목표다.</p>
+<p>이제 팀 제출 범위를 정리했으니, 다음 두 편에서는 내가 개인 통합판 C에서 더 완성하고 싶은 부분을 나누어 기록한다.</p>
+<h3 id="공개-출처">공개 출처<a hidden class="anchor" aria-hidden="true" href="#공개-출처">#</a></h3>
+<ul>
+<li><a href="https://github.com/Han-think/greenzone_ai">팀 저장소</a></li>
+<li><a href="https://law.go.kr/LSW/ordinInfoP.do?ordinSeq=2176939">국가법령정보센터 인용 조례 자료</a></li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/%EA%B7%B8%EB%A6%B0%EC%A1%B4/">그린존</a></li>
+      <li><a href="https://Han-think.github.io/tags/%EA%B4%80%EB%A6%AC%EC%9E%90/">관리자</a></li>
+      <li><a href="https://Han-think.github.io/tags/erd/">ERD</a></li>
+      <li><a href="https://Han-think.github.io/tags/sqlite/">Sqlite</a></li>
+      <li><a href="https://Han-think.github.io/tags/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%ED%9A%8C%EA%B3%A0/">프로젝트회고</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

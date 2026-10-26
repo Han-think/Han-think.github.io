@@ -227,165 +227,159 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">0.88188에서 0.95005까지, Kaggle 예측 모델을 리듬ON 서비스 제안으로 연결한 기록
+    <h2 class="entry-hint-parent">그린존 팀 프로젝트 기록 — 7일의 구현과 2일의 확장
     </h2>
   </header>
   <div class="entry-content">
-    <p>목차 프로젝트의 출발점과 최종 결과 문제 정의와 평가 지표부터 다시 잡기 첫 번째 전환점 수치형 변수를 문자열로 다루던 오류 검증 전략 OOF와 nested 검증을 분리한 이유 클래스별 확률 보정으로 불균형을 다루기 모델 스크리닝과 후보 압축 CatBoost와 LightGBM을 함께 사용한 이유 하이퍼파라미터 튜닝에서 배운 시간 관리 EDA 재검토가 만든 가장 큰 돌파구 13개 원본 변수를 30개 피처로 확장한 방식 최종 모델과 점수 계보 점수 경쟁을 서비스 설계로 바꾼 리듬ON 사람 중심 운영 구조와 안전 경계 8주 파일럿과 KPI 설계 실패한 시도와 남겨야 할 교훈 재현 가능한 프로젝트 패키지 구조 이 프로젝트가 내 Pipeline OS 사고와 연결된 지점 마무리 점수가 아니라 책임 있는 흐름을 남기기 총평 1. 프로젝트의 출발점과 최종 결과 무엇을 만들었나 이 프로젝트는 Kaggle Playground Series S6E7의 학생 생활습관 데이터를 이용해 health_condition을 예측하는 다중 분류 문제에서 시작했다.
+    <p>목차 연재의 목표와 문제 정의 9편의 진행 구조 검증 범위와 공개 기준 게시 순서와 다음 행동 연재의 목표와 문제 정의 제출을 마친 그린존 팀 프로젝트를 한 번에 결과만 나열하지 않고, 문제 정의부터 자료와 분석, 지도 화면, AI 안내, 관리자 기능까지 이어지는 흐름으로 다시 정리한다. 앞의 일곱 편은 팀 저장소 D에서 확인한 결과를 기준으로 쓴다. 저장소에 남은 코드·문서·분석 결과를 따라 읽기 좋은 순서로 재구성한 기록이며, 실제 하루별 작업일지와 동일하다고 단정하지 않는다.
 ...</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-07-20 00:00:00 +0000 UTC'>2026년 7월 20일</span>&nbsp;·&nbsp;<span>27 min</span></footer>
-  <a class="entry-link" aria-label="post link to 0.88188에서 0.95005까지, Kaggle 예측 모델을 리듬ON 서비스 제안으로 연결한 기록" href="https://Han-think.github.io/projects/2026-07-20-kaggle-s6e7-rhythmon-project-retrospective/"></a>
+<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>3 min</span></footer>
+  <a class="entry-link" aria-label="post link to 그린존 팀 프로젝트 기록 — 7일의 구현과 2일의 확장" href="https://Han-think.github.io/projects/greenzone-series-index-20261026/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Kaggle House Prices 첫 프로젝트 회고 - 1. 목표와 전체 흐름
+    <h2 class="entry-hint-parent">그린존 프로젝트 1 — 쓰레기 배출 문제를 신월1동 서비스로 좁히다
     </h2>
   </header>
   <div class="entry-content">
-    <p>목차 왜 이 프로젝트를 따로 남기는가 프로젝트 목표 산출물 기준 이 시리즈의 구성 총평 1. 왜 이 프로젝트를 따로 남기는가 House Prices는 단순히 점수를 올리는 문제보다 프로젝트 흐름을 익히는 데 의미가 컸다. 데이터 파일을 읽고, 결측치와 범주형 변수를 다루고, 모델을 비교하고, 제출 파일을 만드는 전 과정이 하나의 작은 머신러닝 프로젝트였다.
-2. 프로젝트 목표 목표는 집값을 예측하는 제출 파일을 만드는 것이지만, 학습 목표는 더 구체적이었다. 수업에서 강조한 pipeline 문법을 사용해 전처리와 모델 학습을 하나의 흐름으로 묶고, 같은 기준으로 실험을 비교하는 것이 핵심이었다.
+    <p>목차 문제와 요구사항의 범위 왜 신월1동으로 좁혔나 서비스 구조와 한 줄 소개 미확정 항목과 다음 검증 이번 편의 정리 문제와 요구사항의 범위 그린존은 쓰레기 문제를 전부 해결한다고 말하는 프로젝트가 아니다. 배출 장소와 시간에 관한 주민 안내, 수거 작업의 접근 조건, 주택가 안에서 배출 정보를 찾기 어려운 문제를 함께 살펴보는 작은 서비스 제안이다.
+처음부터 문제를 크게 잡으면 자료도 기능도 끝없이 늘어난다. 그래서 이번 팀 프로젝트에서는 “신월1동의 주거 건물을 검색하면, 분석에서 제안한 생활권과 거점안을 확인하고, 공식 배출 안내까지 이어질 수 있는가?”를 중심 질문으로 삼았다. 넓은 도시 문제를 하나의 이용 흐름으로 바꾸는 것이 첫 번째 설계 작업이었다.
 ...</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-07-20 00:00:00 +0000 UTC'>2026년 7월 20일</span>&nbsp;·&nbsp;<span>1 min</span></footer>
-  <a class="entry-link" aria-label="post link to Kaggle House Prices 첫 프로젝트 회고 - 1. 목표와 전체 흐름" href="https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-01-overview/"></a>
+<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
+  <a class="entry-link" aria-label="post link to 그린존 프로젝트 1 — 쓰레기 배출 문제를 신월1동 서비스로 좁히다" href="https://Han-think.github.io/projects/greenzone-team-series-01-scope-20261026/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Kaggle House Prices 첫 프로젝트 회고 - 2. Pipeline 문법이 중요한 이유
+    <h2 class="entry-hint-parent">그린존 프로젝트 2 — 데이터를 모으는 일보다 기준일을 맞추는 일이 먼저였다
     </h2>
   </header>
   <div class="entry-content">
-    <p>목차 Pipeline은 절차를 고정하는 문법이다 데이터 누수를 막는 기준 실험 비교가 쉬워지는 이유 강사님 지시사항의 의미 총평 1. Pipeline은 절차를 고정하는 문법이다 초보자에게 pipeline은 처음에는 복잡해 보이지만, 실제 의미는 전처리와 모델을 순서대로 묶는 것이다. 결측치 처리, 스케일링, 원핫 인코딩, 모델 학습을 한 묶음으로 만들면 실험마다 같은 순서를 유지할 수 있다.
-2. 데이터 누수를 막는 기준 train 데이터에서 배운 전처리 기준이 test 데이터에 섞이면 평가가 부풀려질 수 있다. Pipeline과 ColumnTransformer를 쓰면 fit은 학습 데이터에서만 하고, transform은 그 규칙을 적용하는 방식으로 분리하기 쉬워진다.
+    <p>목차 데이터 준비의 문제와 목표 데이터 구성과 출처별 사용 기준일 확인과 검증 가공·연결 구현과 한계 이번 편의 정리 데이터 준비의 문제와 목표 팀 공유 폴더에는 행정동 경계, 건축물대장, 도로명주소 전자지도, 보호구역, 공원·주차장, 배출량 자료가 모였다. 처음에는 파일을 모으면 바로 지도에 올릴 수 있을 거라 생각하기 쉽다. 하지만 데이터마다 좌표계, 갱신 시점, 행정구역 단위, 컬럼 이름이 다르다. 같은 “현재 데이터”라고 묶으면 기준이 다른 파일을 한꺼번에 비교할 위험이 있다.
+그래서 데이터 명세에는 파일 이름만 적지 않고 제공기관, 형식, 좌표계, 기준일, 사용 목적, 사용 컬럼, 필터·가공, 조인 방식을 함께 적었다. 명세의 목적은 자료를 많이 모았다는 것을 보여주는 게 아니라, 분석 결과가 어느 원본과 어떤 처리에서 나왔는지 되짚을 수 있게 하는 것이다.
 ...</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-07-20 00:00:00 +0000 UTC'>2026년 7월 20일</span>&nbsp;·&nbsp;<span>1 min</span></footer>
-  <a class="entry-link" aria-label="post link to Kaggle House Prices 첫 프로젝트 회고 - 2. Pipeline 문법이 중요한 이유" href="https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-02-pipeline-syntax/"></a>
+<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
+  <a class="entry-link" aria-label="post link to 그린존 프로젝트 2 — 데이터를 모으는 일보다 기준일을 맞추는 일이 먼저였다" href="https://Han-think.github.io/projects/greenzone-team-series-02-data-20261026/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Kaggle House Prices 첫 프로젝트 회고 - 3. 네 가지 분석 축
+    <h2 class="entry-hint-parent">그린존 프로젝트 3 — 건물 수가 아니라 등록 주거단위를 수요 대리값으로 삼다
     </h2>
   </header>
   <div class="entry-content">
-    <p>목차 데이터 이해 분석 특징 설계 분석 모델 비교 분석 오류와 위험 분석 총평 1. 데이터 이해 분석 먼저 SalePrice 분포, 결측치, 범주형 변수, 수치형 변수의 기본 구조를 확인한다. 이 단계는 모델을 돌리기 전 문제의 지형을 보는 과정이다.
-2. 특징 설계 분석 전체 면적, 품질 등급, 건축 연도, 리모델링 여부처럼 집값에 영향을 줄 만한 변수를 살핀다. 초보 단계에서는 복잡한 특징보다 의미를 설명할 수 있는 특징을 우선한다.
-3. 모델 비교 분석 단순 선형 모델, 규제가 들어간 선형 모델, 트리 기반 모델을 같은 평가 기준으로 비교한다. 모델을 늘리는 것보다 같은 검증 방식으로 비교하는 것이 더 중요하다.
+    <p>목차 수요 분석의 문제와 목표 건축물대장과 건물 도형의 연결 구조 1,585필지와 7,193 등록 주거단위의 결과 배출량 추정의 한계와 다음 단계 이번 편의 정리 수요 분석의 문제와 목표 거점을 나누려면 “사람이 어느 정도 분포해 있는가”를 표현할 기준이 필요했다. 건물 한 동씩 세면 단독주택 한 동과 여러 세대가 사는 다세대 건물을 같은 1로 보게 된다. 그래서 팀 분석에서는 건축물대장 표제부의 세대수와 가구수를 건물의 등록 주거 단위 대리값으로 사용했다.
+여기서 대리값은 실제 주민 수나 쓰레기 무게와 다르다. 주민등록 인구를 직접 가져온 것도 아니고, 건물별 배출량을 계량한 것도 아니다. 어디에 주거 수요가 상대적으로 몰렸는지 분석하기 위한 입력값이다.
 ...</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-07-20 00:00:00 +0000 UTC'>2026년 7월 20일</span>&nbsp;·&nbsp;<span>1 min</span></footer>
-  <a class="entry-link" aria-label="post link to Kaggle House Prices 첫 프로젝트 회고 - 3. 네 가지 분석 축" href="https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-03-four-analysis-tracks/"></a>
+<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
+  <a class="entry-link" aria-label="post link to 그린존 프로젝트 3 — 건물 수가 아니라 등록 주거단위를 수요 대리값으로 삼다" href="https://Han-think.github.io/projects/greenzone-team-series-03-demand-20261026/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Kaggle House Prices 첫 프로젝트 회고 - 4. 네 가지 LLM 리뷰 관점
+    <h2 class="entry-hint-parent">그린존 프로젝트 4 — K-means 대신 Louvain으로 생활권을 나눈 이유
     </h2>
   </header>
   <div class="entry-content">
-    <p>목차 코드 리뷰 관점 분석 보고서 관점 발표 자료 관점 학습 회고 관점 총평 1. 코드 리뷰 관점 LLM에게 코드를 보여줄 때는 실행 흐름, 데이터 누수 가능성, 제출 파일 형식 오류를 먼저 점검하게 한다. 이때 LLM의 답은 제안일 뿐이고 실제 코드는 직접 확인해야 한다.
-2. 분석 보고서 관점 결과 표와 그래프를 보고 어떤 해석이 빠졌는지 묻게 하면 보고서 문장이 보강된다. 특히 초보자 글에서는 왜 이 그래프를 봤는지가 빠지기 쉽다.
-3. 발표 자료 관점 발표용으로는 기술 세부사항보다 문제 정의, 방법, 결과, 한계를 짧게 연결해야 한다. LLM은 긴 내용을 요약해 구조를 잡는 데 도움이 된다.
+    <p>목차 생활권과 거점 분산 분석의 목표 도로망 구성과 거리 가중치 Louvain 분석 구조와 반복 검증 9곳 제안의 분석 결과 거리 시나리오의 해석과 한계 이번 편의 정리 생활권과 거점 분산 분석의 목표 후보 위치를 고르는 일과 거점이 몇 곳 필요한지 정하는 일은 다르다. K-means는 군집 수 K를 먼저 정해야 하고, p-median도 거점 수를 입력한 뒤 위치를 찾는 데 적합하다. 그런데 신월1동에서 “몇 곳이 적당한가?”를 먼저 정할 근거가 뚜렷하지 않았다.
+팀은 생활권의 연결 구조에서 묶음 수를 찾는 Louvain 방식을 사용했다. 이것도 유일한 정답을 자동으로 찾아주는 마법은 아니다. 도로망 구성, 연결 반경, 해상도 설정, 입력 자료에 따라 결과가 달라질 수 있기 때문에 설정과 민감도 비교를 함께 보아야 했다.
 ...</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-07-20 00:00:00 +0000 UTC'>2026년 7월 20일</span>&nbsp;·&nbsp;<span>1 min</span></footer>
-  <a class="entry-link" aria-label="post link to Kaggle House Prices 첫 프로젝트 회고 - 4. 네 가지 LLM 리뷰 관점" href="https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-04-four-llm-review/"></a>
+<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>3 min</span></footer>
+  <a class="entry-link" aria-label="post link to 그린존 프로젝트 4 — K-means 대신 Louvain으로 생활권을 나눈 이유" href="https://Han-think.github.io/projects/greenzone-team-series-04-algorithm-20261026/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Kaggle House Prices 첫 프로젝트 회고 - 5. 검증과 다음 액션
+    <h2 class="entry-hint-parent">그린존 프로젝트 5 — 검색 결과를 지도와 수거 경로안으로 이어 붙이다
     </h2>
   </header>
   <div class="entry-content">
-    <p>목차 제출 전 검증 보고서 검증 포트폴리오 관점 다음 액션 총평 1. 제출 전 검증 제출 CSV의 열 이름, 행 개수, 예측값 범위, 결측 여부를 확인한다. 모델 점수가 좋아도 제출 형식이 틀리면 프로젝트 결과물로 볼 수 없다.
-2. 보고서 검증 보고서의 수치, 그래프, 코드 결과가 서로 같은 실험을 말하는지 확인한다. 서로 다른 버전의 결과가 섞이면 읽는 사람이 흐름을 믿기 어렵다.
-3. 포트폴리오 관점 포트폴리오로 남길 때는 최고 점수보다 문제를 어떻게 읽고, 어떤 기준으로 실험했고, 무엇을 다음 액션으로 남겼는지가 중요하다.
+    <p>목차 분석 결과를 화면에 연결한 구현 보유 자료 기반 검색 구조 Leaflet·Folium 지도 기능과 역할 수거 경로 계산 기능과 한계 화면 결과의 검증 범위와 다음 단계 이번 편의 정리 분석 결과를 화면에 연결한 구현 분석 파일을 만들어 두는 것만으로 주민이나 관리자에게 결과가 전달되지는 않는다. 팀은 기존 FastAPI 앱과 화면을 바탕으로, 건물 검색에서 생활권·거점안 확인으로 이어지는 화면을 연결했다. 지도에는 집 위치, 생활권, 기존 후보, 신규 대안, 도로, 보호시설 같은 레이어를 나누어 표시한다.
 ...</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-07-20 00:00:00 +0000 UTC'>2026년 7월 20일</span>&nbsp;·&nbsp;<span>1 min</span></footer>
-  <a class="entry-link" aria-label="post link to Kaggle House Prices 첫 프로젝트 회고 - 5. 검증과 다음 액션" href="https://Han-think.github.io/projects/2026-07-20-kaggle-house-prices-first-project-05-validation-action-plan/"></a>
+<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
+  <a class="entry-link" aria-label="post link to 그린존 프로젝트 5 — 검색 결과를 지도와 수거 경로안으로 이어 붙이다" href="https://Han-think.github.io/projects/greenzone-team-series-05-web-map-20261026/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Kaggle Playground S6E7 팀 프로젝트 - 12. 분석을 리듬ON 제안으로 연결한 최종 발표자료
+    <h2 class="entry-hint-parent">그린존 프로젝트 6 — 사진은 후보, 공식 자료는 답변의 근거로
     </h2>
   </header>
   <div class="entry-content">
-    <p> 1~11편이 개인 실험의 점수와 검증 과정을 기록했다면, 12편부터는 팀원들과 그 결과를 하나의 문제 정의와 서비스 제안으로 묶은 팀 프로젝트의 마무리를 기록한다.
-이 글은 실제 발표 수행 기록이 아니라, 팀원들과 완성한 최종 발표자료와 그 제작 과정을 남기는 기록이다.
-목차 개인 실험에서 팀 프로젝트로 결론부터 시작한 이유 분석을 서비스로 잇는 다섯 고리 팀원들과 역할을 나눠 만든 결과 발표자료에 끝까지 담은 경계 총평 개인 실험에서 팀 프로젝트로 이 프로젝트의 출발점은 Kaggle Playground Series S6E7의 학생 건강 상태 분류 문제였다. 입력은 수면, 활동, 스트레스 등 13개 생활습관 특성이었고, 목표는 at-risk, fit, unhealthy 세 상태를 구분하는 것이었다.
+    <p>목차 사진 분류 문제와 목표 사용자 선택을 포함한 구현 흐름 공식 문서 검색 구조와 근거 Opik 관측과 답변 검증 결과 평가 결과의 해석과 한계 이번 편의 정리 사진 분류 문제와 목표 대형폐기물 사진을 올리면 가구 이름은 짐작할 수 있어도, 사진만으로 규격·수량·수수료·공식 배출장소까지 확정하기는 어렵다. 보이는 각도와 가림 때문에 침대가 수납장으로 분류되거나, 같은 물건이 두 개로 보일 수도 있다. 그래서 사진 분석의 결과를 최종 정답이 아니라 품목 후보로 제한했다.
+업로드한 사진은 서버에 영구 저장하지 않도록 구성했다. 다만 분석을 위해 EXIF를 제거하고 크기를 줄인 뒤 외부 Vision API로 전송한다. “저장하지 않는다”와 “외부로 보내지 않는다”는 같은 말이 아니다. 공개 글에는 원본 사진을 첨부하지 않고, 사용자는 제공자의 처리 정책도 확인해야 한다.
 ...</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-07-17 00:00:00 +0000 UTC'>2026년 7월 17일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
-  <a class="entry-link" aria-label="post link to Kaggle Playground S6E7 팀 프로젝트 - 12. 분석을 리듬ON 제안으로 연결한 최종 발표자료" href="https://Han-think.github.io/projects/2026-07-17-kaggle-playground-s6e7-12-team-project-final-presentation/"></a>
+<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>3 min</span></footer>
+  <a class="entry-link" aria-label="post link to 그린존 프로젝트 6 — 사진은 후보, 공식 자료는 답변의 근거로" href="https://Han-think.github.io/projects/greenzone-team-series-06-ai-guide-20261026/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Kaggle Playground S6E7 팀 프로젝트 - 13. 재현 모델과 리듬ON 파일럿 설계
+    <h2 class="entry-hint-parent">그린존 프로젝트 7 — 기능을 만들었다는 것과 실제 운영은 다르다
     </h2>
   </header>
   <div class="entry-content">
-    <p> 팀 프로젝트의 최종 선택은 가장 높은 표시점수를 제품에 붙이는 것이 아니었다. 다시 실행할 수 있는 분석 코어와 사람이 책임지는 운영 흐름을 함께 선택하는 일이었다.
-목차 최고점과 제품 근거를 분리하다 재현 가능한 모델을 고른 과정 모델은 검토 후보까지만 제안한다 리듬ON에서 참여자가 갖는 선택권 8주 파일럿의 검증 게이트 확대보다 중단 조건이 먼저다 총평 최고점과 제품 근거를 분리하다 개인 실험에서 Public 최고점은 0.95113이었다. 그러나 이 점수는 외부 anchor에 특정 행을 수정해 만든 대회 최적화 결과였다. 성과로는 남길 수 있지만, 같은 학습 파이프라인을 다시 실행해 얻는 모델은 아니었다.
+    <p>목차 관리자 운영 기능과 목표 논리 ERD와 실제 DB 구조 확인된 기능과 검증 결과 남은 운영 한계와 다음 단계 이번 편의 정리 관리자 운영 기능과 목표 관리자 화면은 개발자가 코드를 수정하는 화면이 아니다. 프로젝트에서는 안내 자료의 원문·출처·확인일·시행일·사용 상태를 검토하고, 설명을 수정하거나 사용을 중지하며, 변경 이유와 이전·새 값을 이력으로 남기는 흐름을 구성했다.
+수정 결과는 같은 서버의 로컬 SQLite에 저장되어 다음 조회부터 반영된다. 이 데이터는 Git을 통해 다른 팀원의 PC와 자동 동기화되는 운영 DB가 아니다. 사용자는 이미 열어 둔 결과가 바뀌지 않을 수 있어 다시 조회해야 한다. 따라서 관리자 기능을 설명할 때는 변경이 저장되는 위치와 적용 범위를 함께 말해야 한다.
 ...</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-07-17 00:00:00 +0000 UTC'>2026년 7월 17일</span>&nbsp;·&nbsp;<span>4 min</span></footer>
-  <a class="entry-link" aria-label="post link to Kaggle Playground S6E7 팀 프로젝트 - 13. 재현 모델과 리듬ON 파일럿 설계" href="https://Han-think.github.io/projects/2026-07-17-kaggle-playground-s6e7-13-rhythmon-model-and-pilot/"></a>
+<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
+  <a class="entry-link" aria-label="post link to 그린존 프로젝트 7 — 기능을 만들었다는 것과 실제 운영은 다르다" href="https://Han-think.github.io/projects/greenzone-team-series-07-admin-review-20261026/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Kaggle Playground S6E7 팀 프로젝트 - 14. 최종 회고와 처음 보는 데이터 접근법
+    <h2 class="entry-hint-parent">그린존 확장 8 — 운영 기능을 화면과 로컬 데이터까지 연결하기
     </h2>
   </header>
   <div class="entry-content">
-    <p> 이 프로젝트의 마지막 결론은 하나의 점수나 앱 화면이 아니다. 처음 보는 데이터를 받았을 때 무엇을 먼저 확인하고, 어떤 증거를 남기며, 어디에서 사람의 판단으로 넘길지를 배운 과정 자체가 결과다.
-목차 팀 프로젝트가 개인 실험과 달랐던 점 함께 만들며 좋아진 네 가지 아쉬웠던 점과 남은 한계 처음 보는 데이터를 받았을 때의 접근 순서 실험을 멈추고 결론을 만드는 기준 총평 팀 프로젝트가 개인 실험과 달랐던 점 개인 실험에서는 원하는 만큼 모델을 바꾸고, 실패를 추적하고, 한 행의 예측까지 파고들 수 있었다. 팀 프로젝트에서는 그 결과를 다른 사람이 이해하고 검토할 수 있는 구조로 바꿔야 했다.
+    <p>목차 C에서 더 완성하고 싶은 운영 문제와 목표 운영 기능의 구조와 현재 코드 화면 연결 구현의 현황 완료 검증 순서와 다음 단계 이번 편의 정리 C에서 더 완성하고 싶은 운영 문제와 목표 팀 저장소 D에서는 검색, 지도, 경로안, 배출 안내, 관리자 자료 관리를 하나의 제출 가능한 흐름으로 정리했다. 하지만 관리자가 실제로 운영한다면 안내 문서만 바꾸는 것으로 충분한지, 거점 제안과 현장 의견, 작업 기록, 영상 검토까지 어떻게 이어지는지 더 고민하고 싶었다.
 ...</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-07-17 00:00:00 +0000 UTC'>2026년 7월 17일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
-  <a class="entry-link" aria-label="post link to Kaggle Playground S6E7 팀 프로젝트 - 14. 최종 회고와 처음 보는 데이터 접근법" href="https://Han-think.github.io/projects/2026-07-17-kaggle-playground-s6e7-14-team-retrospective-and-data-approach/"></a>
+<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
+  <a class="entry-link" aria-label="post link to 그린존 확장 8 — 운영 기능을 화면과 로컬 데이터까지 연결하기" href="https://Han-think.github.io/projects/greenzone-extension-series-08-operations-20261026/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">classmap 프로젝트 릴리스, 초보자를 위한 Git과 PyPI 활용 경험
+    <h2 class="entry-hint-parent">그린존 확장 9 — 영상 분석은 사람의 검토와 원본 정리까지 연결해야 한다
     </h2>
   </header>
   <div class="entry-content">
-    <p>목차 GitHub 레포 생성 메인 브랜치 푸시 PyPI 역할 Git 명령어 총평 1. GitHub 레포 생성 왜 이걸 보게 됐나 classmap-hanthink 프로젝트 릴리스 과정에서 GitHub 레포지토리를 만들고 관리하는 기본적인 과정이 막막하게 느껴졌어요. 특히 로컬 저장소와 원격 저장소를 연결하는 방법을 제대로 이해하지 못해 푸시 과정에서 오류가 발생했고, 이 문제를 해결하면서 GitHub 레포 생성 및 연결 과정을 익히게 됐습니다. 이 경험을 통해 협업 환경에서 필수적인 Git 사용법의 기초를 다지게 되었습니다.
-내가 헷갈린 지점 처음 GitHub 레포지토리를 만들 때 git init만 하면 자동으로 원격 저장소가 만들어지는 줄 알았는데, 로컬 저장소만 생성되고 별도로 웹에서 레포를 만들어야 한다는 것을 깨달았습니다. 또한, 이미 초기 커밋이 있는 원격 저장소에 main 브랜치를 푸시할 때 바로 실패할 거라고 예상하지 못해서 당황했습니다.
+    <p>목차 영상 검토의 문제와 목표 현재 코드의 구현 범위와 검증 결과 사람 검토를 포함한 구조와 완료 기준 실제 운영 연계의 한계와 다음 단계 흡연구역 검색은 별도 기능 마무리하며 영상 검토의 문제와 목표 거점을 정한 뒤에도 실제 현장에서는 배출물이 얼마나 쌓였는지, 차량이 작업 공간을 막고 있는지, 관리자가 확인했는지 같은 운영 질문이 생긴다. 그래서 개인 통합판 C에서는 영상 작업을 받아 상태 후보를 만들고 관리자가 확인하는 확장 흐름을 생각했다.
+이 기능은 팀 제출 D의 완료 기능이 아니다. 현재 팀 프로젝트에서는 차량 점유·적치·넘침 영상 관제를 범위에서 제외했다. 영상 분석은 별도의 개인정보·보존·현장 권한 검토가 필요하기 때문이다.
 ...</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-07-16 00:00:00 +0000 UTC'>2026년 7월 16일</span>&nbsp;·&nbsp;<span>5 min</span></footer>
-  <a class="entry-link" aria-label="post link to classmap 프로젝트 릴리스, 초보자를 위한 Git과 PyPI 활용 경험" href="https://Han-think.github.io/projects/classmap-release-workflow/"></a>
+<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>3 min</span></footer>
+  <a class="entry-link" aria-label="post link to 그린존 확장 9 — 영상 분석은 사람의 검토와 원본 정리까지 연결해야 한다" href="https://Han-think.github.io/projects/greenzone-extension-series-09-video-review-20261026/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

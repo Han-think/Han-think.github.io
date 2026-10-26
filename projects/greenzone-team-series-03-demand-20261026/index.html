@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>그린존 프로젝트 3 — 건물 수가 아니라 등록 주거단위를 수요 대리값으로 삼다 | Han-think Blog</title>
+<meta name="keywords" content="그린존, 건축물대장, 공간분석, 데이터정제">
+<meta name="description" content="건축물대장과 건물 지도를 연결해 아파트 제외 1,585필지와 7,193 등록 주거단위를 만든 기준과 한계.">
+<meta name="author" content="">
+<link rel="canonical" href="https://Han-think.github.io/projects/greenzone-team-series-03-demand-20261026/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Han-think.github.io/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Han-think.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Han-think.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Han-think.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Han-think.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#1f3345">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://Han-think.github.io/projects/greenzone-team-series-03-demand-20261026/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+  (function () {
+    var saved = window.localStorage.getItem('hanthink-scene');
+    document.documentElement.dataset.scene = saved === 'cyber' ? 'cyber' : 'maru';
+  }());
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var button = document.querySelector('#theme-toggle') || document.querySelector('[data-scene-toggle]');
+    if (!button) return;
+    button.classList.add('scene-toggle-header');
+    button.removeAttribute('accesskey');
+    button.removeAttribute('title');
+    button.setAttribute('aria-label', '장면 전환');
+    button.innerHTML = '<span class="scene-icon" aria-hidden="true"></span><span data-scene-label>대청마루</span>';
+    var label = button.querySelector('[data-scene-label]');
+    var icon = button.querySelector('.scene-icon');
+
+    function sync() {
+      var cyber = document.documentElement.dataset.scene === 'cyber';
+      button.setAttribute('aria-pressed', cyber ? 'true' : 'false');
+      if (label) label.textContent = cyber ? '사이버 골목' : '대청마루';
+      if (icon) icon.textContent = cyber ? '⌁' : '☼';
+    }
+
+    button.addEventListener('click', function (event) {
+      if (button.id === 'theme-toggle') {
+        event.stopImmediatePropagation();
+      }
+      var next = document.documentElement.dataset.scene === 'cyber' ? 'maru' : 'cyber';
+      document.documentElement.dataset.scene = next;
+      window.localStorage.setItem('hanthink-scene', next);
+      sync();
+    });
+    sync();
+  });
+</script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YN1SZZ1G8"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9YN1SZZ1G8');
+        }
+      </script><meta property="og:url" content="https://Han-think.github.io/projects/greenzone-team-series-03-demand-20261026/">
+  <meta property="og:site_name" content="Han-think Blog">
+  <meta property="og:title" content="그린존 프로젝트 3 — 건물 수가 아니라 등록 주거단위를 수요 대리값으로 삼다">
+  <meta property="og:description" content="건축물대장과 건물 지도를 연결해 아파트 제외 1,585필지와 7,193 등록 주거단위를 만든 기준과 한계.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2026-10-26T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-10-26T00:00:00+00:00">
+    <meta property="article:tag" content="그린존">
+    <meta property="article:tag" content="건축물대장">
+    <meta property="article:tag" content="공간분석">
+    <meta property="article:tag" content="데이터정제">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="그린존 프로젝트 3 — 건물 수가 아니라 등록 주거단위를 수요 대리값으로 삼다">
+  <meta name="twitter:description" content="건축물대장과 건물 지도를 연결해 아파트 제외 1,585필지와 7,193 등록 주거단위를 만든 기준과 한계.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "프로젝트",
+      "item": "https://Han-think.github.io/projects/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "그린존 프로젝트 3 — 건물 수가 아니라 등록 주거단위를 수요 대리값으로 삼다",
+      "item": "https://Han-think.github.io/projects/greenzone-team-series-03-demand-20261026/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "그린존 프로젝트 3 — 건물 수가 아니라 등록 주거단위를 수요 대리값으로 삼다",
+  "name": "그린존 프로젝트 3 — 건물 수가 아니라 등록 주거단위를 수요 대리값으로 삼다",
+  "description": "건축물대장과 건물 지도를 연결해 아파트 제외 1,585필지와 7,193 등록 주거단위를 만든 기준과 한계.",
+  "keywords": [
+    "그린존", "건축물대장", "공간분석", "데이터정제"
+  ],
+  "articleBody": "목차 수요 분석의 문제와 목표 건축물대장과 건물 도형의 연결 구조 1,585필지와 7,193 등록 주거단위의 결과 배출량 추정의 한계와 다음 단계 이번 편의 정리 수요 분석의 문제와 목표 거점을 나누려면 “사람이 어느 정도 분포해 있는가”를 표현할 기준이 필요했다. 건물 한 동씩 세면 단독주택 한 동과 여러 세대가 사는 다세대 건물을 같은 1로 보게 된다. 그래서 팀 분석에서는 건축물대장 표제부의 세대수와 가구수를 건물의 등록 주거 단위 대리값으로 사용했다.\n여기서 대리값은 실제 주민 수나 쓰레기 무게와 다르다. 주민등록 인구를 직접 가져온 것도 아니고, 건물별 배출량을 계량한 것도 아니다. 어디에 주거 수요가 상대적으로 몰렸는지 분석하기 위한 입력값이다.\n건축물대장과 건물 도형의 연결 구조 건축물대장은 지번 기준이고, 전자지도 건물은 지번 코드와 도형을 갖는다. 팀은 시군구·법정동·산 여부·번지 값을 조합해 두 자료를 연결했다. 이름이 비슷하다는 이유로 임의 매칭하지 않고, 지번을 연결 키로 둔 점이 중요했다.\n같은 지번에 건물이 여러 동 있으면 먼저 건물 단위 값을 확인하고, 분석 지도에서는 해당 필지를 대표하는 위치 하나로 묶었다. 주용도가 근린생활시설이라고 해서 전부 빼면 위층에 실제 주거 단위가 있는 상가주택이 빠질 수 있어, 세대·가구 자료가 있는 건물은 함께 검토했다.\n아파트는 이번 분석의 대상 정의에 따라 제외했다. 이 과정에서 주거 건물인데 세대수와 가구수가 0으로 비어 있는 일부 항목을 팀 기준에 따라 보정했다. 보정은 원자료에 실제 세대가 기록되어 있었다는 뜻이 아니므로, 규칙을 공개하고 결과에서 분리해 해석해야 한다.\n1,585필지와 7,193 등록 주거단위의 결과 팀의 2차 결과는 아파트를 제외한 주거 필지 1,585곳과 등록 주거단위 7,193개다. 등록 주거단위는 건축물대장의 세대수와 가구수를 가공한 값이다. 이 숫자는 신월1동 실제 거주 인구가 7,193명이라는 뜻도, 실제 쓰레기 배출 가구를 전부 확인했다는 뜻도 아니다.\n같은 지번의 여러 건물을 한 필지 대표점으로 묶었기 때문에 “필지 수”와 “건물 동수”도 다르다. 분석 지표를 발표할 때 단위를 함께 써야 하는 이유가 여기에 있다. 단순히 숫자만 크게 보이면 데이터가 말하지 않는 의미를 청중이 추측하게 된다.\n배출량 추정의 한계와 다음 단계 공식 공개 배출량 자료는 여러 행정동이 합쳐진 수거 권역 단위였다. 신월1동 비아파트 가구의 실제 배출량이나 필지별 실측량은 없었다. 팀은 과거 권역 배출량에 신월1동 가구 비율과 비아파트 주택 수 비율을 적용해 계획용 추정 시나리오를 구성했지만, 이 계산에는 가구별 배출량이 같다는 가정 등이 들어간다.\n그래서 분석 결과에서는 공식 관측값과 조건부 추정값을 구분해야 한다. 일평균 추정치를 거점의 일일 용량으로 부르거나, 필지별 정밀 배출량으로 쪼개서 표현하지 않는다. 실제 운영 용량을 정하려면 품목별·기간별·지역별 계량 자료가 필요하다.\n이번 편의 정리 데이터 정제는 숫자를 만드는 작업인 동시에, 숫자가 의미하는 범위를 좁히는 작업이었다. 1,585는 필지 단위, 7,193은 등록 주거단위 대리값이며 둘 다 현장 실측 배출량이 아니다.\n다음 편에서는 이 수요 대리값과 도로망을 이용해 생활권을 나누고, 6곳의 기존 후보와 3곳의 대안을 비교한 방법을 정리한다.\n공개 출처 공공데이터포털 권역별 쓰레기 배출량 팀 분석 결과와 코드 ",
+  "wordCount" : "407",
+  "inLanguage": "en",
+  "datePublished": "2026-10-26T00:00:00Z",
+  "dateModified": "2026-10-26T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Han-think.github.io/projects/greenzone-team-series-03-demand-20261026/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Han-think Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Han-think.github.io/favicon.svg"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://Han-think.github.io/" accesskey="h" title="Han-think Blog (Alt + H)">
+                <img src="https://Han-think.github.io/favicon.svg" alt="" aria-label="logo"
+                    height="26">Han-think Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="https://Han-think.github.io/learning/" title="학습 로그">
+                    <span>학습 로그</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/projects/" title="프로젝트">
+                    <span>프로젝트</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/dev/" title="개인 개발">
+                    <span>개인 개발</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/personal/" title="개인 기록">
+                    <span>개인 기록</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/research/" title="AI 자료">
+                    <span>AI 자료</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Han-think.github.io/search/" title="검색">
+                    <span>검색</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      그린존 프로젝트 3 — 건물 수가 아니라 등록 주거단위를 수요 대리값으로 삼다
+    </h1>
+    <div class="post-description">
+      건축물대장과 건물 지도를 연결해 아파트 제외 1,585필지와 7,193 등록 주거단위를 만든 기준과 한계.
+    </div>
+    <div class="post-meta">
+
+<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>2 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
+<ul>
+<li><a href="#%EC%88%98%EC%9A%94-%EB%B6%84%EC%84%9D%EC%9D%98-%EB%AC%B8%EC%A0%9C%EC%99%80-%EB%AA%A9%ED%91%9C">수요 분석의 문제와 목표</a></li>
+<li><a href="#%EA%B1%B4%EC%B6%95%EB%AC%BC%EB%8C%80%EC%9E%A5%EA%B3%BC-%EA%B1%B4%EB%AC%BC-%EB%8F%84%ED%98%95%EC%9D%98-%EC%97%B0%EA%B2%B0-%EA%B5%AC%EC%A1%B0">건축물대장과 건물 도형의 연결 구조</a></li>
+<li><a href="#1585%ED%95%84%EC%A7%80%EC%99%80-7193-%EB%93%B1%EB%A1%9D-%EC%A3%BC%EA%B1%B0%EB%8B%A8%EC%9C%84%EC%9D%98-%EA%B2%B0%EA%B3%BC">1,585필지와 7,193 등록 주거단위의 결과</a></li>
+<li><a href="#%EB%B0%B0%EC%B6%9C%EB%9F%89-%EC%B6%94%EC%A0%95%EC%9D%98-%ED%95%9C%EA%B3%84%EC%99%80-%EB%8B%A4%EC%9D%8C-%EB%8B%A8%EA%B3%84">배출량 추정의 한계와 다음 단계</a></li>
+<li><a href="#%EC%9D%B4%EB%B2%88-%ED%8E%B8%EC%9D%98-%EC%A0%95%EB%A6%AC">이번 편의 정리</a></li>
+</ul>
+<h2 id="수요-분석의-문제와-목표">수요 분석의 문제와 목표<a hidden class="anchor" aria-hidden="true" href="#수요-분석의-문제와-목표">#</a></h2>
+<p>거점을 나누려면 “사람이 어느 정도 분포해 있는가”를 표현할 기준이 필요했다. 건물 한 동씩 세면 단독주택 한 동과 여러 세대가 사는 다세대 건물을 같은 1로 보게 된다. 그래서 팀 분석에서는 건축물대장 표제부의 세대수와 가구수를 건물의 등록 주거 단위 대리값으로 사용했다.</p>
+<p>여기서 대리값은 실제 주민 수나 쓰레기 무게와 다르다. 주민등록 인구를 직접 가져온 것도 아니고, 건물별 배출량을 계량한 것도 아니다. 어디에 주거 수요가 상대적으로 몰렸는지 분석하기 위한 입력값이다.</p>
+<h2 id="건축물대장과-건물-도형의-연결-구조">건축물대장과 건물 도형의 연결 구조<a hidden class="anchor" aria-hidden="true" href="#건축물대장과-건물-도형의-연결-구조">#</a></h2>
+<p>건축물대장은 지번 기준이고, 전자지도 건물은 지번 코드와 도형을 갖는다. 팀은 시군구·법정동·산 여부·번지 값을 조합해 두 자료를 연결했다. 이름이 비슷하다는 이유로 임의 매칭하지 않고, 지번을 연결 키로 둔 점이 중요했다.</p>
+<p>같은 지번에 건물이 여러 동 있으면 먼저 건물 단위 값을 확인하고, 분석 지도에서는 해당 필지를 대표하는 위치 하나로 묶었다. 주용도가 근린생활시설이라고 해서 전부 빼면 위층에 실제 주거 단위가 있는 상가주택이 빠질 수 있어, 세대·가구 자료가 있는 건물은 함께 검토했다.</p>
+<p>아파트는 이번 분석의 대상 정의에 따라 제외했다. 이 과정에서 주거 건물인데 세대수와 가구수가 0으로 비어 있는 일부 항목을 팀 기준에 따라 보정했다. 보정은 원자료에 실제 세대가 기록되어 있었다는 뜻이 아니므로, 규칙을 공개하고 결과에서 분리해 해석해야 한다.</p>
+<h2 id="1585필지와-7193-등록-주거단위의-결과">1,585필지와 7,193 등록 주거단위의 결과<a hidden class="anchor" aria-hidden="true" href="#1585필지와-7193-등록-주거단위의-결과">#</a></h2>
+<p>팀의 2차 결과는 아파트를 제외한 주거 필지 1,585곳과 등록 주거단위 7,193개다. 등록 주거단위는 건축물대장의 세대수와 가구수를 가공한 값이다. 이 숫자는 신월1동 실제 거주 인구가 7,193명이라는 뜻도, 실제 쓰레기 배출 가구를 전부 확인했다는 뜻도 아니다.</p>
+<p>같은 지번의 여러 건물을 한 필지 대표점으로 묶었기 때문에 “필지 수”와 “건물 동수”도 다르다. 분석 지표를 발표할 때 단위를 함께 써야 하는 이유가 여기에 있다. 단순히 숫자만 크게 보이면 데이터가 말하지 않는 의미를 청중이 추측하게 된다.</p>
+<h2 id="배출량-추정의-한계와-다음-단계">배출량 추정의 한계와 다음 단계<a hidden class="anchor" aria-hidden="true" href="#배출량-추정의-한계와-다음-단계">#</a></h2>
+<p>공식 공개 배출량 자료는 여러 행정동이 합쳐진 수거 권역 단위였다. 신월1동 비아파트 가구의 실제 배출량이나 필지별 실측량은 없었다. 팀은 과거 권역 배출량에 신월1동 가구 비율과 비아파트 주택 수 비율을 적용해 계획용 추정 시나리오를 구성했지만, 이 계산에는 가구별 배출량이 같다는 가정 등이 들어간다.</p>
+<p>그래서 분석 결과에서는 공식 관측값과 조건부 추정값을 구분해야 한다. 일평균 추정치를 거점의 일일 용량으로 부르거나, 필지별 정밀 배출량으로 쪼개서 표현하지 않는다. 실제 운영 용량을 정하려면 품목별·기간별·지역별 계량 자료가 필요하다.</p>
+<h2 id="이번-편의-정리">이번 편의 정리<a hidden class="anchor" aria-hidden="true" href="#이번-편의-정리">#</a></h2>
+<p>데이터 정제는 숫자를 만드는 작업인 동시에, 숫자가 의미하는 범위를 좁히는 작업이었다. 1,585는 필지 단위, 7,193은 등록 주거단위 대리값이며 둘 다 현장 실측 배출량이 아니다.</p>
+<p>다음 편에서는 이 수요 대리값과 도로망을 이용해 생활권을 나누고, 6곳의 기존 후보와 3곳의 대안을 비교한 방법을 정리한다.</p>
+<h3 id="공개-출처">공개 출처<a hidden class="anchor" aria-hidden="true" href="#공개-출처">#</a></h3>
+<ul>
+<li><a href="https://www.data.go.kr/data/15093944/fileData.do">공공데이터포털 권역별 쓰레기 배출량</a></li>
+<li><a href="https://github.com/Han-think/greenzone_ai">팀 분석 결과와 코드</a></li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Han-think.github.io/tags/%EA%B7%B8%EB%A6%B0%EC%A1%B4/">그린존</a></li>
+      <li><a href="https://Han-think.github.io/tags/%EA%B1%B4%EC%B6%95%EB%AC%BC%EB%8C%80%EC%9E%A5/">건축물대장</a></li>
+      <li><a href="https://Han-think.github.io/tags/%EA%B3%B5%EA%B0%84%EB%B6%84%EC%84%9D/">공간분석</a></li>
+      <li><a href="https://Han-think.github.io/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%A0%95%EC%A0%9C/">데이터정제</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://Han-think.github.io/">Han-think Blog</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
