@@ -5,9 +5,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>그린존 프로젝트 4 — K-means 대신 Louvain으로 생활권을 나눈 이유 | Han-think Blog</title>
-<meta name="keywords" content="그린존, Louvain, K-means, GIS, 공간분석">
-<meta name="description" content="도로망 거리와 주거단위로 생활권을 묶고, 기존 후보 6곳과 신규 대안 3곳을 비교한 팀 분석.">
+<title>그린존 4 — 생활권 분석과 후보 비교를 분리하다 | Han-think Blog</title>
+<meta name="keywords" content="그린존, 생활권, Louvain, 데이터분석">
+<meta name="description" content="생활권 구조를 살피는 분석과 후보 장소 검토를 구분하고, 결과가 현장 확정이 아님을 설명한다.">
 <meta name="author" content="">
 <link rel="canonical" href="https://Han-think.github.io/projects/greenzone-team-series-04-algorithm-20261026/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
@@ -121,22 +121,21 @@
         }
       </script><meta property="og:url" content="https://Han-think.github.io/projects/greenzone-team-series-04-algorithm-20261026/">
   <meta property="og:site_name" content="Han-think Blog">
-  <meta property="og:title" content="그린존 프로젝트 4 — K-means 대신 Louvain으로 생활권을 나눈 이유">
-  <meta property="og:description" content="도로망 거리와 주거단위로 생활권을 묶고, 기존 후보 6곳과 신규 대안 3곳을 비교한 팀 분석.">
+  <meta property="og:title" content="그린존 4 — 생활권 분석과 후보 비교를 분리하다">
+  <meta property="og:description" content="생활권 구조를 살피는 분석과 후보 장소 검토를 구분하고, 결과가 현장 확정이 아님을 설명한다.">
   <meta property="og:locale" content="ko_KR">
   <meta property="og:type" content="article">
     <meta property="article:section" content="projects">
     <meta property="article:published_time" content="2026-10-26T00:00:00+00:00">
     <meta property="article:modified_time" content="2026-10-26T00:00:00+00:00">
     <meta property="article:tag" content="그린존">
+    <meta property="article:tag" content="생활권">
     <meta property="article:tag" content="Louvain">
-    <meta property="article:tag" content="K-Means">
-    <meta property="article:tag" content="GIS">
-    <meta property="article:tag" content="공간분석">
+    <meta property="article:tag" content="데이터분석">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="그린존 프로젝트 4 — K-means 대신 Louvain으로 생활권을 나눈 이유">
-  <meta name="twitter:description" content="도로망 거리와 주거단위로 생활권을 묶고, 기존 후보 6곳과 신규 대안 3곳을 비교한 팀 분석.">
+  <meta name="twitter:title" content="그린존 4 — 생활권 분석과 후보 비교를 분리하다">
+  <meta name="twitter:description" content="생활권 구조를 살피는 분석과 후보 장소 검토를 구분하고, 결과가 현장 확정이 아님을 설명한다.">
 
 
 <script type="application/ld+json">
@@ -153,7 +152,7 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "그린존 프로젝트 4 — K-means 대신 Louvain으로 생활권을 나눈 이유",
+      "name": "그린존 4 — 생활권 분석과 후보 비교를 분리하다",
       "item": "https://Han-think.github.io/projects/greenzone-team-series-04-algorithm-20261026/"
     }
   ]
@@ -163,14 +162,14 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "그린존 프로젝트 4 — K-means 대신 Louvain으로 생활권을 나눈 이유",
-  "name": "그린존 프로젝트 4 — K-means 대신 Louvain으로 생활권을 나눈 이유",
-  "description": "도로망 거리와 주거단위로 생활권을 묶고, 기존 후보 6곳과 신규 대안 3곳을 비교한 팀 분석.",
+  "headline": "그린존 4 — 생활권 분석과 후보 비교를 분리하다",
+  "name": "그린존 4 — 생활권 분석과 후보 비교를 분리하다",
+  "description": "생활권 구조를 살피는 분석과 후보 장소 검토를 구분하고, 결과가 현장 확정이 아님을 설명한다.",
   "keywords": [
-    "그린존", "Louvain", "K-means", "GIS", "공간분석"
+    "그린존", "생활권", "Louvain", "데이터분석"
   ],
-  "articleBody": "목차 생활권과 거점 분산 분석의 목표 도로망 구성과 거리 가중치 Louvain 분석 구조와 반복 검증 9곳 제안의 분석 결과 거리 시나리오의 해석과 한계 이번 편의 정리 생활권과 거점 분산 분석의 목표 후보 위치를 고르는 일과 거점이 몇 곳 필요한지 정하는 일은 다르다. K-means는 군집 수 K를 먼저 정해야 하고, p-median도 거점 수를 입력한 뒤 위치를 찾는 데 적합하다. 그런데 신월1동에서 “몇 곳이 적당한가?”를 먼저 정할 근거가 뚜렷하지 않았다.\n팀은 생활권의 연결 구조에서 묶음 수를 찾는 Louvain 방식을 사용했다. 이것도 유일한 정답을 자동으로 찾아주는 마법은 아니다. 도로망 구성, 연결 반경, 해상도 설정, 입력 자료에 따라 결과가 달라질 수 있기 때문에 설정과 민감도 비교를 함께 보아야 했다.\n도로망 구성과 거리 가중치 주택가의 블록과 골목은 직선으로 갈 수 없는 곳이 많다. 그래서 도로 중심선을 교차점에서 나누어 그래프를 만들고, 도로를 따라 최단거리를 계산했다. 필지 대표점은 가까운 도로에 붙여 연결했다.\n팀 보고서에서는 1,585개 필지 노드를 도로거리 150m 이내에서 연결했다. 연결 강도는 가까운 필지끼리 더 크게, 등록 주거단위가 많은 필지끼리 더 크게 주도록 설정했다.\n연결 강도 = exp(-도로거리 / 75) × √(필지 i의 주거단위 × 필지 j의 주거단위) 말로 풀면 가까운 이웃끼리는 같은 생활권일 가능성을 높이고, 주거 단위가 많은 필지가 생활권 구조에 더 큰 비중을 갖게 했다. 결과 그래프에는 51,234개의 필지 연결이 생겼다.\nLouvain 분석 구조와 반복 검증 Louvain은 한 필지를 이웃 그룹으로 옮겼을 때 생활권 안의 연결이 더 촘촘해지는지 반복해서 살핀다. 팀은 표준 해상도 γ=1을 사용하고, 초기 순서에 따른 차이를 보기 위해 20회 반복 결과를 비교했다. 선택 설정에서는 9개 생활권이 나왔고, 결과 보고서에는 모듈성 Q=0.775가 기록되어 있다.\n연결 반경과 해상도를 바꾼 18개 설정도 검토했다. 작은 반경에서는 그룹 수가 크게 늘고, 큰 반경에서는 그룹 수가 줄었다. 9개는 입력·설정에 따른 결과이며, 현실 세계의 경계가 반드시 9개라는 뜻은 아니다.\n9곳 제안의 분석 결과 첫 분석의 후보는 11곳이었다. 2차 분석은 그 후보를 9곳으로 잘라낸 것이 아니다. 9개 생활권 중 6곳은 기존 후보와 연결했고, 후보가 없던 3개 생활권에는 도로·보호시설 조건을 고려한 새 대안을 제안했다.\n도로 등록 폭 7m 이상, 보호시설 반경 200m 밖 같은 값은 분석에 사용한 필터 설정이다. 실제 도로의 주차 후 유효 폭이나 회차 가능성, 보행자 동선, 부지 사용 권한은 확인되지 않았다. 따라서 대안 3곳은 안전이 승인된 장소가 아니라 실사·협의 전 검토 위치다.\n거리 시나리오의 해석과 한계 팀이 생활권별 담당 거점을 안내한다고 가정한 결과는 평균 195.2m, 300m 이내 등록 주거단위 비율 84.1%였다. 반면 각 필지가 가장 가까운 거점을 자유롭게 이용한다고 가정하면 평균 172.6m, 300m 이내 비율 95.3%였다.\n두 값은 배정 규칙이 다르다. 웹 검색에서 안내하는 담당 생활권 기준과 가장 가까운 점을 고르는 비교 실험을 같은 결과라고 섞으면 안 된다. 실제 주민의 이동이나 이용률을 관측한 것도 아니다.\n이번 편의 정리 알고리즘의 이름보다 데이터 단위와 입력 설정, 비교 시나리오가 더 중요했다. Louvain은 생활권을 제안하는 도구였고, 현장 안전과 실제 이용을 대신 판정하지 않았다.\n다음 편에서는 이 분석 결과를 검색 지도와 경로안 화면에 어떻게 연결했는지 살펴본다.\n공개 출처 팀 저장소 SGIS 센서스 API 안내 ",
-  "wordCount" : "452",
+  "articleBody": "목차 문제와 목표 구조와 결정 구현과 확인 한계와 다음 단계 문제와 목표 — 한 가지 알고리즘으로 모든 결정을 하지 않았다 초기에는 지도에 거점을 찍고 가까운 건물을 나누는 그림부터 떠올렸다. 검토를 이어가면서 생활권을 나누는 문제와 실제 후보 장소를 고르는 문제는 다르다는 점이 드러났다.\n팀 분석은 도로 연결과 건물 간 관계를 바탕으로 생활권 구조를 살피고, 별도의 도로·보호시설·공간 조건으로 거점 후보를 비교했다. Louvain은 연결된 지점들의 군집 구조를 찾는 데 사용했다. K-means처럼 좌표와 군집 수를 먼저 정해 중심점 주변으로 나누는 방식과 목적이 다르다. 어느 방법이 언제나 더 낫다는 뜻은 아니며, 자료와 질문에 맞춰 선택해야 한다.\n구조와 결정 — 6개와 9개는 다른 단계의 결과다 제출 자료에서 9개 생활권을 기준으로 기존 후보와 새 대안을 함께 비교했다. 기존 후보 6곳과 추가 대안 3곳을 함께 살펴본 결과이지, 처음의 11개 후보 중 2곳을 탈락시켜 9곳을 확정한 것이 아니다.\n추가 대안은 도로와 보호시설 등 공개자료에서 확인 가능한 조건을 활용한 조사 후보다. 실제 도로 유효폭, 차량 진입·정차, 보행 연속성, 부지 사용 권한은 현장 확인 전이다. 따라서 “안전한 거점”이나 “운영 승인 장소”로 표현하지 않았다.\n구현과 확인 — 결과를 제안으로 남긴 이유 분석은 선택지를 비교하게 도울 수 있지만, 주민 동선과 현장 상황을 전부 대신하지 못한다. 후보별 장단점과 자료의 한계를 함께 보여주고, 현장 확인과 협의가 필요한 지점을 다음 단계로 남겼다.\n한계와 다음 단계 — 이번 편의 정리 생활권 분석, 거점 후보 검토, 실제 운영 승인이라는 세 단계는 서로 다르다. 알고리즘 이름을 강조하기보다 각 단계가 어떤 질문에 답하는지 구분하는 것이 더 중요했다.\n공개 자료 팀 저장소 도로·보호시설 관련 공개자료의 출처와 기준은 해당 기관의 공개 페이지에서 확인한다. ",
+  "wordCount" : "241",
   "inLanguage": "en",
   "datePublished": "2026-10-26T00:00:00Z",
   "dateModified": "2026-10-26T00:00:00Z",
@@ -259,50 +258,38 @@
   <header class="post-header">
     
     <h1 class="post-title entry-hint-parent">
-      그린존 프로젝트 4 — K-means 대신 Louvain으로 생활권을 나눈 이유
+      그린존 4 — 생활권 분석과 후보 비교를 분리하다
     </h1>
     <div class="post-description">
-      도로망 거리와 주거단위로 생활권을 묶고, 기존 후보 6곳과 신규 대안 3곳을 비교한 팀 분석.
+      생활권 구조를 살피는 분석과 후보 장소 검토를 구분하고, 결과가 현장 확정이 아님을 설명한다.
     </div>
     <div class="post-meta">
 
-<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>3 min</span>
+<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>2 min</span>
 
 </div>
   </header> 
   <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
 <ul>
-<li><a href="#%EC%83%9D%ED%99%9C%EA%B6%8C%EA%B3%BC-%EA%B1%B0%EC%A0%90-%EB%B6%84%EC%82%B0-%EB%B6%84%EC%84%9D%EC%9D%98-%EB%AA%A9%ED%91%9C">생활권과 거점 분산 분석의 목표</a></li>
-<li><a href="#%EB%8F%84%EB%A1%9C%EB%A7%9D-%EA%B5%AC%EC%84%B1%EA%B3%BC-%EA%B1%B0%EB%A6%AC-%EA%B0%80%EC%A4%91%EC%B9%98">도로망 구성과 거리 가중치</a></li>
-<li><a href="#louvain-%EB%B6%84%EC%84%9D-%EA%B5%AC%EC%A1%B0%EC%99%80-%EB%B0%98%EB%B3%B5-%EA%B2%80%EC%A6%9D">Louvain 분석 구조와 반복 검증</a></li>
-<li><a href="#9%EA%B3%B3-%EC%A0%9C%EC%95%88%EC%9D%98-%EB%B6%84%EC%84%9D-%EA%B2%B0%EA%B3%BC">9곳 제안의 분석 결과</a></li>
-<li><a href="#%EA%B1%B0%EB%A6%AC-%EC%8B%9C%EB%82%98%EB%A6%AC%EC%98%A4%EC%9D%98-%ED%95%B4%EC%84%9D%EA%B3%BC-%ED%95%9C%EA%B3%84">거리 시나리오의 해석과 한계</a></li>
-<li><a href="#%EC%9D%B4%EB%B2%88-%ED%8E%B8%EC%9D%98-%EC%A0%95%EB%A6%AC">이번 편의 정리</a></li>
+<li>문제와 목표</li>
+<li>구조와 결정</li>
+<li>구현과 확인</li>
+<li>한계와 다음 단계</li>
 </ul>
-<h2 id="생활권과-거점-분산-분석의-목표">생활권과 거점 분산 분석의 목표<a hidden class="anchor" aria-hidden="true" href="#생활권과-거점-분산-분석의-목표">#</a></h2>
-<p>후보 위치를 고르는 일과 거점이 몇 곳 필요한지 정하는 일은 다르다. K-means는 군집 수 K를 먼저 정해야 하고, p-median도 거점 수를 입력한 뒤 위치를 찾는 데 적합하다. 그런데 신월1동에서 “몇 곳이 적당한가?”를 먼저 정할 근거가 뚜렷하지 않았다.</p>
-<p>팀은 생활권의 연결 구조에서 묶음 수를 찾는 Louvain 방식을 사용했다. 이것도 유일한 정답을 자동으로 찾아주는 마법은 아니다. 도로망 구성, 연결 반경, 해상도 설정, 입력 자료에 따라 결과가 달라질 수 있기 때문에 설정과 민감도 비교를 함께 보아야 했다.</p>
-<h2 id="도로망-구성과-거리-가중치">도로망 구성과 거리 가중치<a hidden class="anchor" aria-hidden="true" href="#도로망-구성과-거리-가중치">#</a></h2>
-<p>주택가의 블록과 골목은 직선으로 갈 수 없는 곳이 많다. 그래서 도로 중심선을 교차점에서 나누어 그래프를 만들고, 도로를 따라 최단거리를 계산했다. 필지 대표점은 가까운 도로에 붙여 연결했다.</p>
-<p>팀 보고서에서는 1,585개 필지 노드를 도로거리 150m 이내에서 연결했다. 연결 강도는 가까운 필지끼리 더 크게, 등록 주거단위가 많은 필지끼리 더 크게 주도록 설정했다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>연결 강도 = exp(-도로거리 / 75) × √(필지 i의 주거단위 × 필지 j의 주거단위)
-</span></span></code></pre></div><p>말로 풀면 가까운 이웃끼리는 같은 생활권일 가능성을 높이고, 주거 단위가 많은 필지가 생활권 구조에 더 큰 비중을 갖게 했다. 결과 그래프에는 51,234개의 필지 연결이 생겼다.</p>
-<h2 id="louvain-분석-구조와-반복-검증">Louvain 분석 구조와 반복 검증<a hidden class="anchor" aria-hidden="true" href="#louvain-분석-구조와-반복-검증">#</a></h2>
-<p>Louvain은 한 필지를 이웃 그룹으로 옮겼을 때 생활권 안의 연결이 더 촘촘해지는지 반복해서 살핀다. 팀은 표준 해상도 γ=1을 사용하고, 초기 순서에 따른 차이를 보기 위해 20회 반복 결과를 비교했다. 선택 설정에서는 9개 생활권이 나왔고, 결과 보고서에는 모듈성 Q=0.775가 기록되어 있다.</p>
-<p>연결 반경과 해상도를 바꾼 18개 설정도 검토했다. 작은 반경에서는 그룹 수가 크게 늘고, 큰 반경에서는 그룹 수가 줄었다. 9개는 입력·설정에 따른 결과이며, 현실 세계의 경계가 반드시 9개라는 뜻은 아니다.</p>
-<h2 id="9곳-제안의-분석-결과">9곳 제안의 분석 결과<a hidden class="anchor" aria-hidden="true" href="#9곳-제안의-분석-결과">#</a></h2>
-<p>첫 분석의 후보는 11곳이었다. 2차 분석은 그 후보를 9곳으로 잘라낸 것이 아니다. 9개 생활권 중 6곳은 기존 후보와 연결했고, 후보가 없던 3개 생활권에는 도로·보호시설 조건을 고려한 새 대안을 제안했다.</p>
-<p>도로 등록 폭 7m 이상, 보호시설 반경 200m 밖 같은 값은 분석에 사용한 필터 설정이다. 실제 도로의 주차 후 유효 폭이나 회차 가능성, 보행자 동선, 부지 사용 권한은 확인되지 않았다. 따라서 대안 3곳은 안전이 승인된 장소가 아니라 실사·협의 전 검토 위치다.</p>
-<h2 id="거리-시나리오의-해석과-한계">거리 시나리오의 해석과 한계<a hidden class="anchor" aria-hidden="true" href="#거리-시나리오의-해석과-한계">#</a></h2>
-<p>팀이 생활권별 담당 거점을 안내한다고 가정한 결과는 평균 195.2m, 300m 이내 등록 주거단위 비율 84.1%였다. 반면 각 필지가 가장 가까운 거점을 자유롭게 이용한다고 가정하면 평균 172.6m, 300m 이내 비율 95.3%였다.</p>
-<p>두 값은 배정 규칙이 다르다. 웹 검색에서 안내하는 담당 생활권 기준과 가장 가까운 점을 고르는 비교 실험을 같은 결과라고 섞으면 안 된다. 실제 주민의 이동이나 이용률을 관측한 것도 아니다.</p>
-<h2 id="이번-편의-정리">이번 편의 정리<a hidden class="anchor" aria-hidden="true" href="#이번-편의-정리">#</a></h2>
-<p>알고리즘의 이름보다 데이터 단위와 입력 설정, 비교 시나리오가 더 중요했다. Louvain은 생활권을 제안하는 도구였고, 현장 안전과 실제 이용을 대신 판정하지 않았다.</p>
-<p>다음 편에서는 이 분석 결과를 검색 지도와 경로안 화면에 어떻게 연결했는지 살펴본다.</p>
-<h3 id="공개-출처">공개 출처<a hidden class="anchor" aria-hidden="true" href="#공개-출처">#</a></h3>
+<h2 id="문제와-목표--한-가지-알고리즘으로-모든-결정을-하지-않았다">문제와 목표 — 한 가지 알고리즘으로 모든 결정을 하지 않았다<a hidden class="anchor" aria-hidden="true" href="#문제와-목표--한-가지-알고리즘으로-모든-결정을-하지-않았다">#</a></h2>
+<p>초기에는 지도에 거점을 찍고 가까운 건물을 나누는 그림부터 떠올렸다. 검토를 이어가면서 생활권을 나누는 문제와 실제 후보 장소를 고르는 문제는 다르다는 점이 드러났다.</p>
+<p>팀 분석은 도로 연결과 건물 간 관계를 바탕으로 생활권 구조를 살피고, 별도의 도로·보호시설·공간 조건으로 거점 후보를 비교했다. Louvain은 연결된 지점들의 군집 구조를 찾는 데 사용했다. K-means처럼 좌표와 군집 수를 먼저 정해 중심점 주변으로 나누는 방식과 목적이 다르다. 어느 방법이 언제나 더 낫다는 뜻은 아니며, 자료와 질문에 맞춰 선택해야 한다.</p>
+<h2 id="구조와-결정--6개와-9개는-다른-단계의-결과다">구조와 결정 — 6개와 9개는 다른 단계의 결과다<a hidden class="anchor" aria-hidden="true" href="#구조와-결정--6개와-9개는-다른-단계의-결과다">#</a></h2>
+<p>제출 자료에서 9개 생활권을 기준으로 기존 후보와 새 대안을 함께 비교했다. 기존 후보 6곳과 추가 대안 3곳을 함께 살펴본 결과이지, 처음의 11개 후보 중 2곳을 탈락시켜 9곳을 확정한 것이 아니다.</p>
+<p>추가 대안은 도로와 보호시설 등 공개자료에서 확인 가능한 조건을 활용한 조사 후보다. 실제 도로 유효폭, 차량 진입·정차, 보행 연속성, 부지 사용 권한은 현장 확인 전이다. 따라서 “안전한 거점”이나 “운영 승인 장소”로 표현하지 않았다.</p>
+<h2 id="구현과-확인--결과를-제안으로-남긴-이유">구현과 확인 — 결과를 제안으로 남긴 이유<a hidden class="anchor" aria-hidden="true" href="#구현과-확인--결과를-제안으로-남긴-이유">#</a></h2>
+<p>분석은 선택지를 비교하게 도울 수 있지만, 주민 동선과 현장 상황을 전부 대신하지 못한다. 후보별 장단점과 자료의 한계를 함께 보여주고, 현장 확인과 협의가 필요한 지점을 다음 단계로 남겼다.</p>
+<h2 id="한계와-다음-단계--이번-편의-정리">한계와 다음 단계 — 이번 편의 정리<a hidden class="anchor" aria-hidden="true" href="#한계와-다음-단계--이번-편의-정리">#</a></h2>
+<p>생활권 분석, 거점 후보 검토, 실제 운영 승인이라는 세 단계는 서로 다르다. 알고리즘 이름을 강조하기보다 각 단계가 어떤 질문에 답하는지 구분하는 것이 더 중요했다.</p>
+<h3 id="공개-자료">공개 자료<a hidden class="anchor" aria-hidden="true" href="#공개-자료">#</a></h3>
 <ul>
 <li><a href="https://github.com/Han-think/greenzone_ai">팀 저장소</a></li>
-<li><a href="https://sgis.mods.go.kr/developer/html/newOpenApi/api/dataApi/census.html">SGIS 센서스 API 안내</a></li>
+<li>도로·보호시설 관련 공개자료의 출처와 기준은 해당 기관의 공개 페이지에서 확인한다.</li>
 </ul>
 
 
@@ -311,10 +298,9 @@
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://Han-think.github.io/tags/%EA%B7%B8%EB%A6%B0%EC%A1%B4/">그린존</a></li>
+      <li><a href="https://Han-think.github.io/tags/%EC%83%9D%ED%99%9C%EA%B6%8C/">생활권</a></li>
       <li><a href="https://Han-think.github.io/tags/louvain/">Louvain</a></li>
-      <li><a href="https://Han-think.github.io/tags/k-means/">K-Means</a></li>
-      <li><a href="https://Han-think.github.io/tags/gis/">GIS</a></li>
-      <li><a href="https://Han-think.github.io/tags/%EA%B3%B5%EA%B0%84%EB%B6%84%EC%84%9D/">공간분석</a></li>
+      <li><a href="https://Han-think.github.io/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B6%84%EC%84%9D/">데이터분석</a></li>
     </ul>
 
   </footer>

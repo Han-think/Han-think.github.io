@@ -9,74 +9,74 @@
     <lastBuildDate>Mon, 26 Oct 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/projects/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>그린존 팀 프로젝트 기록 — 7일의 구현과 2일의 확장</title>
-      <link>https://Han-think.github.io/projects/greenzone-series-index-20261026/</link>
-      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/projects/greenzone-series-index-20261026/</guid>
-      <description>D 팀 프로젝트의 7편과 C 개인 확장 2편을 구분해 문제 정의부터 운영 확장까지 읽는 프로젝트 연재 안내.</description>
-    </item>
-    <item>
-      <title>그린존 프로젝트 1 — 쓰레기 배출 문제를 신월1동 서비스로 좁히다</title>
+      <title>그린존 1 — 큰 문제를 신월1동의 이용 흐름으로 좁히다</title>
       <link>https://Han-think.github.io/projects/greenzone-team-series-01-scope-20261026/</link>
       <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/projects/greenzone-team-series-01-scope-20261026/</guid>
-      <description>큰 도시 문제를 한 동네의 데이터·검색·거점 안내 흐름으로 줄이고, 제안과 운영을 구분한 과정.</description>
+      <description>팀 대화와 검토를 거쳐 넓은 쓰레기 문제를 검색·지도·배출 안내의 한 흐름으로 정리한 과정.</description>
     </item>
     <item>
-      <title>그린존 프로젝트 2 — 데이터를 모으는 일보다 기준일을 맞추는 일이 먼저였다</title>
+      <title>그린존 2 — 공공자료를 모으고 기준을 맞추다</title>
       <link>https://Han-think.github.io/projects/greenzone-team-series-02-data-20261026/</link>
       <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/projects/greenzone-team-series-02-data-20261026/</guid>
-      <description>건물·도로·보호시설·배출량 자료의 제공처와 기준시점을 나누고, 분석에서 어디에 쓰였는지 정리한 방법.</description>
+      <description>자료를 많이 모으는 것보다 대상 지역과 기준 시점, 자료가 설명하는 범위를 확인하는 일이 먼저였던 이유.</description>
     </item>
     <item>
-      <title>그린존 프로젝트 3 — 건물 수가 아니라 등록 주거단위를 수요 대리값으로 삼다</title>
+      <title>그린존 3 — 등록 주거단위로 잠재 수요를 살펴보다</title>
       <link>https://Han-think.github.io/projects/greenzone-team-series-03-demand-20261026/</link>
       <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/projects/greenzone-team-series-03-demand-20261026/</guid>
-      <description>건축물대장과 건물 지도를 연결해 아파트 제외 1,585필지와 7,193 등록 주거단위를 만든 기준과 한계.</description>
+      <description>등록 주거단위를 비교용 대리값으로 사용하고 실제 인구나 계량된 배출량과 구분한 이유.</description>
     </item>
     <item>
-      <title>그린존 프로젝트 4 — K-means 대신 Louvain으로 생활권을 나눈 이유</title>
+      <title>그린존 4 — 생활권 분석과 후보 비교를 분리하다</title>
       <link>https://Han-think.github.io/projects/greenzone-team-series-04-algorithm-20261026/</link>
       <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/projects/greenzone-team-series-04-algorithm-20261026/</guid>
-      <description>도로망 거리와 주거단위로 생활권을 묶고, 기존 후보 6곳과 신규 대안 3곳을 비교한 팀 분석.</description>
+      <description>생활권 구조를 살피는 분석과 후보 장소 검토를 구분하고, 결과가 현장 확정이 아님을 설명한다.</description>
     </item>
     <item>
-      <title>그린존 프로젝트 5 — 검색 결과를 지도와 수거 경로안으로 이어 붙이다</title>
+      <title>그린존 5 — 검색 결과가 지도에서 읽히도록 화면을 고치다</title>
       <link>https://Han-think.github.io/projects/greenzone-team-series-05-web-map-20261026/</link>
       <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/projects/greenzone-team-series-05-web-map-20261026/</guid>
-      <description>보유 건물 검색, 지도 레이어 필터, Leaflet·Folium 비교, 자동·직접 순서 경로안을 하나의 웹 흐름으로 연결한 과정.</description>
+      <description>검색 위치와 분석 결과를 구분하고, 필터와 지도 표시를 다듬으며 발견한 사용 흐름.</description>
     </item>
     <item>
-      <title>그린존 프로젝트 6 — 사진은 후보, 공식 자료는 답변의 근거로</title>
+      <title>그린존 6 — AI는 후보를 돕고 근거와 선택은 분리하다</title>
       <link>https://Han-think.github.io/projects/greenzone-team-series-06-ai-guide-20261026/</link>
       <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/projects/greenzone-team-series-06-ai-guide-20261026/</guid>
-      <description>사진 AI의 품목 후보를 사람이 확인하고, RAG는 검수한 공식 문서로 안내하며, 평가 수치의 범위를 제한한 방식.</description>
+      <description>폐기물 사진 후보, 사용자의 최종 확인, 공식 배출 안내 검색을 서로 다른 단계로 구성한 이유.</description>
     </item>
     <item>
-      <title>그린존 프로젝트 7 — 기능을 만들었다는 것과 실제 운영은 다르다</title>
+      <title>그린존 7 — 화면에서 확인한 기능과 실제 운영을 구분하다</title>
       <link>https://Han-think.github.io/projects/greenzone-team-series-07-admin-review-20261026/</link>
       <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/projects/greenzone-team-series-07-admin-review-20261026/</guid>
-      <description>관리자 자료 수정·이력, 실제 SQLite 구조, 기능 확인과 독립 검증의 차이를 제출 결과를 기준으로 정리한다.</description>
+      <description>관리자 화면과 데이터 구조를 살펴보며 시제품의 구현 범위와 실제 운영에 필요한 조건을 나눈 기록.</description>
     </item>
     <item>
-      <title>그린존 확장 8 — 운영 기능을 화면과 로컬 데이터까지 연결하기</title>
+      <title>그린존 프로젝트 기록 — 팀 결과 7편과 개인 확장 2편</title>
+      <link>https://Han-think.github.io/projects/greenzone-series-index-20261026/</link>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/greenzone-series-index-20261026/</guid>
+      <description>문제 범위를 정하고 공공자료와 분석 결과를 검색 지도·배출 안내로 연결한 팀 프로젝트, 그리고 이후 확장 아이디어를 정리한 연재.</description>
+    </item>
+    <item>
+      <title>그린존 확장 8 — 개인 작업에서 운영 흐름을 더 생각하다</title>
       <link>https://Han-think.github.io/projects/greenzone-extension-series-08-operations-20261026/</link>
       <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/projects/greenzone-extension-series-08-operations-20261026/</guid>
-      <description>D 팀 제출본을 바꾸지 않고 C 개인 통합판에 운영 자료·이력·시나리오 흐름을 연결하려는 목표와 현재 남은 연결점.</description>
+      <description>팀 제출 결과와 구분해, 향후 운영 자료·이력·검토를 한 흐름으로 잇기 위해 생각한 확장 방향.</description>
     </item>
     <item>
-      <title>그린존 확장 9 — 영상 분석은 사람의 검토와 원본 정리까지 연결해야 한다</title>
+      <title>그린존 확장 9 — 영상 분석에는 사람 검토와 보호 기준이 필요하다</title>
       <link>https://Han-think.github.io/projects/greenzone-extension-series-09-video-review-20261026/</link>
       <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/projects/greenzone-extension-series-09-video-review-20261026/</guid>
-      <description>C의 영상 처리 기반을 실제 검토 루프로 완성하기 위한 조건과, GPS·예약·흡연구역 검색을 별도 과제로 두는 이유.</description>
+      <description>팀 시연에서 제외한 영상 기능을 다룰 때 필요한 사람 확인, 개인정보 보호, 운영 승인 조건을 정리한다.</description>
     </item>
     <item>
       <title>0.88188에서 0.95005까지, Kaggle 예측 모델을 리듬ON 서비스 제안으로 연결한 기록</title>

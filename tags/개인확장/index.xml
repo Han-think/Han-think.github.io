@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>개인확장 on Han-think Blog</title>
+    <link>https://Han-think.github.io/tags/%EA%B0%9C%EC%9D%B8%ED%99%95%EC%9E%A5/</link>
+    <description>Recent content in 개인확장 on Han-think Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Mon, 26 Oct 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Han-think.github.io/tags/%EA%B0%9C%EC%9D%B8%ED%99%95%EC%9E%A5/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>그린존 확장 8 — 개인 작업에서 운영 흐름을 더 생각하다</title>
+      <link>https://Han-think.github.io/projects/greenzone-extension-series-08-operations-20261026/</link>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/greenzone-extension-series-08-operations-20261026/</guid>
+      <description>팀 제출 결과와 구분해, 향후 운영 자료·이력·검토를 한 흐름으로 잇기 위해 생각한 확장 방향.</description>
+    </item>
+    <item>
+      <title>그린존 확장 9 — 영상 분석에는 사람 검토와 보호 기준이 필요하다</title>
+      <link>https://Han-think.github.io/projects/greenzone-extension-series-09-video-review-20261026/</link>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/greenzone-extension-series-09-video-review-20261026/</guid>
+      <description>팀 시연에서 제외한 영상 기능을 다룰 때 필요한 사람 확인, 개인정보 보호, 운영 승인 조건을 정리한다.</description>
+    </item>
+  </channel>
+</rss>

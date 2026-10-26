@@ -5,9 +5,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>그린존 확장 9 — 영상 분석은 사람의 검토와 원본 정리까지 연결해야 한다 | Han-think Blog</title>
-<meta name="keywords" content="그린존, 영상분석, 개인정보, 사람검토, 서비스확장">
-<meta name="description" content="C의 영상 처리 기반을 실제 검토 루프로 완성하기 위한 조건과, GPS·예약·흡연구역 검색을 별도 과제로 두는 이유.">
+<title>그린존 확장 9 — 영상 분석에는 사람 검토와 보호 기준이 필요하다 | Han-think Blog</title>
+<meta name="keywords" content="그린존, 개인확장, 영상분석, 사람검토, 개인정보보호">
+<meta name="description" content="팀 시연에서 제외한 영상 기능을 다룰 때 필요한 사람 확인, 개인정보 보호, 운영 승인 조건을 정리한다.">
 <meta name="author" content="">
 <link rel="canonical" href="https://Han-think.github.io/projects/greenzone-extension-series-09-video-review-20261026/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
@@ -121,22 +121,22 @@
         }
       </script><meta property="og:url" content="https://Han-think.github.io/projects/greenzone-extension-series-09-video-review-20261026/">
   <meta property="og:site_name" content="Han-think Blog">
-  <meta property="og:title" content="그린존 확장 9 — 영상 분석은 사람의 검토와 원본 정리까지 연결해야 한다">
-  <meta property="og:description" content="C의 영상 처리 기반을 실제 검토 루프로 완성하기 위한 조건과, GPS·예약·흡연구역 검색을 별도 과제로 두는 이유.">
+  <meta property="og:title" content="그린존 확장 9 — 영상 분석에는 사람 검토와 보호 기준이 필요하다">
+  <meta property="og:description" content="팀 시연에서 제외한 영상 기능을 다룰 때 필요한 사람 확인, 개인정보 보호, 운영 승인 조건을 정리한다.">
   <meta property="og:locale" content="ko_KR">
   <meta property="og:type" content="article">
     <meta property="article:section" content="projects">
     <meta property="article:published_time" content="2026-10-26T00:00:00+00:00">
     <meta property="article:modified_time" content="2026-10-26T00:00:00+00:00">
     <meta property="article:tag" content="그린존">
+    <meta property="article:tag" content="개인확장">
     <meta property="article:tag" content="영상분석">
-    <meta property="article:tag" content="개인정보">
     <meta property="article:tag" content="사람검토">
-    <meta property="article:tag" content="서비스확장">
+    <meta property="article:tag" content="개인정보보호">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="그린존 확장 9 — 영상 분석은 사람의 검토와 원본 정리까지 연결해야 한다">
-  <meta name="twitter:description" content="C의 영상 처리 기반을 실제 검토 루프로 완성하기 위한 조건과, GPS·예약·흡연구역 검색을 별도 과제로 두는 이유.">
+  <meta name="twitter:title" content="그린존 확장 9 — 영상 분석에는 사람 검토와 보호 기준이 필요하다">
+  <meta name="twitter:description" content="팀 시연에서 제외한 영상 기능을 다룰 때 필요한 사람 확인, 개인정보 보호, 운영 승인 조건을 정리한다.">
 
 
 <script type="application/ld+json">
@@ -153,7 +153,7 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "그린존 확장 9 — 영상 분석은 사람의 검토와 원본 정리까지 연결해야 한다",
+      "name": "그린존 확장 9 — 영상 분석에는 사람 검토와 보호 기준이 필요하다",
       "item": "https://Han-think.github.io/projects/greenzone-extension-series-09-video-review-20261026/"
     }
   ]
@@ -163,14 +163,14 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "그린존 확장 9 — 영상 분석은 사람의 검토와 원본 정리까지 연결해야 한다",
-  "name": "그린존 확장 9 — 영상 분석은 사람의 검토와 원본 정리까지 연결해야 한다",
-  "description": "C의 영상 처리 기반을 실제 검토 루프로 완성하기 위한 조건과, GPS·예약·흡연구역 검색을 별도 과제로 두는 이유.",
+  "headline": "그린존 확장 9 — 영상 분석에는 사람 검토와 보호 기준이 필요하다",
+  "name": "그린존 확장 9 — 영상 분석에는 사람 검토와 보호 기준이 필요하다",
+  "description": "팀 시연에서 제외한 영상 기능을 다룰 때 필요한 사람 확인, 개인정보 보호, 운영 승인 조건을 정리한다.",
   "keywords": [
-    "그린존", "영상분석", "개인정보", "사람검토", "서비스확장"
+    "그린존", "개인확장", "영상분석", "사람검토", "개인정보보호"
   ],
-  "articleBody": "목차 영상 검토의 문제와 목표 현재 코드의 구현 범위와 검증 결과 사람 검토를 포함한 구조와 완료 기준 실제 운영 연계의 한계와 다음 단계 흡연구역 검색은 별도 기능 마무리하며 영상 검토의 문제와 목표 거점을 정한 뒤에도 실제 현장에서는 배출물이 얼마나 쌓였는지, 차량이 작업 공간을 막고 있는지, 관리자가 확인했는지 같은 운영 질문이 생긴다. 그래서 개인 통합판 C에서는 영상 작업을 받아 상태 후보를 만들고 관리자가 확인하는 확장 흐름을 생각했다.\n이 기능은 팀 제출 D의 완료 기능이 아니다. 현재 팀 프로젝트에서는 차량 점유·적치·넘침 영상 관제를 범위에서 제외했다. 영상 분석은 별도의 개인정보·보존·현장 권한 검토가 필요하기 때문이다.\n현재 코드의 구현 범위와 검증 결과 C에는 영상 업로드 작업, 프레임 변화와 차량 체류 후보를 다루는 처리 코드, 결과 화면을 위한 서버 기반이 추가되어 있다. 그러나 운영 화면의 JavaScript 연결과 실제 샘플 영상을 통한 끝까지의 실행·검토 기록은 확인되지 않았다.\n따라서 아직 “영상으로 불법 주차를 자동 단속한다”거나 “넘침을 정확히 감지한다”고 쓸 수 없다. 모델이 만든 후보는 사실 확정이 아니며, 카메라 각도·조도·가림·촬영 간격에 따라 결과가 달라질 수 있다.\n사람 검토를 포함한 구조와 완료 기준 영상 확장 기능을 로컬에서 확인하려면 권한이 있는 비식별 샘플만 사용해 아래 흐름을 검증해야 한다.\n허가된 영상 선택 → 관심 영역(ROI) 설정 → 분석 후보 생성 → 얼굴·번호판 등 가림 상태 확인 → 담당자가 후보 확인 또는 기각 → 조치 메모와 이력 저장 → 원본과 임시 파일 삭제 확인 성공 기준은 후보를 몇 개 찾았는지만이 아니다. 잘못된 후보를 쉽게 기각할 수 있는지, 사람이 확인하지 않은 결과가 확정처럼 보이지 않는지, 오류가 났을 때 원본이 남는지, 삭제 결과를 확인할 수 있는지도 포함한다. 실제 운영에 쓰려면 보존 기간, 접근 권한, 책임자, 이용 목적, 법적 근거를 먼저 정해야 한다.\n실제 운영 연계의 한계와 다음 단계 실제 차량 위치는 허가된 GPS 장비와 기관·업체 API가 있어야 한다. 계량을 붙이려면 계량기 사양과 교정, 수거 묶음과 반입 기록이 필요하다. 예약·결제는 지자체 공식 시스템의 허용된 연계 방식이 있어야 한다. 현재 가지고 있는 분석 코드만으로 이 외부 데이터를 만들어낼 수는 없다.\n그래서 개인 구현의 마감선은 “실제 도시 운영 완료”가 아니라 “로컬 데이터로 관리 흐름을 설명하고, 연결이 없는 지점은 명확히 표시하는 시연 가능한 구조”로 둔다.\n흡연구역 검색은 별도 기능 장기적으로는 그린존에 흡연 공간을 새로 지정하는 대신, 공식 지정 흡연구역이 확인되면 별도의 시설로 등록해 주변 위치를 검색하는 기능을 생각하고 있다. 흡연구역을 쓰레기 거점 안에 자동으로 붙이지 않는다. 공식 목록과 좌표, 운영시간, 폐쇄 여부가 확보되기 전에는 지도에 장소를 임의로 찍어 허용 구역처럼 보이게 하지 않는다.\n이 확장은 주변 시설 데이터를 확보하고 관리 주체를 확인한 뒤 별도로 진행할 일이다. 청결 개선이나 꽁초 감소도 운영 전후 자료가 있어야 효과라고 말할 수 있다.\n마무리하며 팀 프로젝트는 신월1동의 분석 결과를 검색·지도·공식 안내로 연결하는 제출물을 만들었다. 개인 확장에서는 관리자 운영 흐름과 영상 검토를 더하고 싶지만, 코드를 추가한 것과 기능이 화면에서 검증된 것은 다르다.\n이번 프로젝트를 마무리하면서 얻은 가장 큰 기준은 “완성했다고 부를 수 있는 근거를 기능별로 남기자”는 것이다. 분석 제안, 로컬 시연, 공식 자료, 현장 승인, 외부 기관 연계는 서로 다른 단계다. 그 경계를 유지해야 다음 구현도 과장 없이 이어갈 수 있다.\n공개 출처 양천구 공식 대형폐기물 안내 팀 저장소 ",
-  "wordCount" : "474",
+  "articleBody": "목차 문제와 목표 구조와 결정 구현과 확인 한계와 다음 단계 문제와 목표 — 영상 기능은 팀의 핵심 구현 범위가 아니었다 영상으로 배출 상태나 작업 공간을 살피는 아이디어도 나왔지만, 이번 팀 시연의 핵심 범위에서는 제외했다. 영상은 사람과 차량을 식별할 수 있고, 잘못된 분석 결과가 운영 판단으로 이어질 수 있어 지도 기능처럼 가볍게 추가하기 어렵다.\n따라서 이 편은 완료된 팀 기능을 설명하는 글이 아니라, 개인적으로 검토한 확장 조건을 정리한다. 영상 분석이 실제 단속이나 자동 조치를 수행한다고 말하지 않는다.\n구조와 결정 — 사람의 검토와 개인정보 보호를 먼저 설계한다 가능한 시연 흐름을 만든다면 허가된 비식별 샘플을 사용하고, 분석 결과를 확정이 아닌 검토 후보로 보여줘야 한다. 담당자가 결과를 확인하거나 기각하고, 판단 이유를 남기는 단계가 필요하다. 원본과 임시 파일의 보관·삭제 방식도 정해야 한다.\n실제 운영 전에는 촬영 목적, 접근 권한, 보존 기간, 책임자, 법적 근거를 관계 기관과 확인해야 한다. 기술적으로 분석이 된다는 것만으로 현장 촬영과 사용이 허용되는 것은 아니다.\n구현과 확인 — 흡연구역은 별도의 검색 확장으로 생각한다 장기 아이디어로는 그린존 안에 흡연구역을 새로 지정하기보다, 공식 지정 장소의 정보가 확보됐을 때 주변 위치를 검색할 수 있게 하는 방안을 생각했다. 폐기물 거점과 흡연구역을 자동으로 한 장소로 묶지 않는다.\n공식 목록과 최신 운영 정보, 관리 주체가 확인되기 전에는 장소를 지도에 임의로 표시하지 않는다. 꽁초 감소나 환경 개선 효과도 실제 운영 전후의 자료가 있어야 검증할 수 있다.\n한계와 다음 단계 — 마무리하며 이번 프로젝트에서 배운 것은 기능을 더하는 일보다, 결과를 누가 확인하고 어떤 책임으로 사용할지 정하는 일이 먼저라는 점이다. 팀이 구현한 검색·지도·안내와 개인 확장 아이디어를 구분하고, 자료·현장·기관 협의가 필요한 부분은 다음 단계로 남겼다.\n참고 팀 저장소 영상 및 위치정보의 실제 운영 여부는 관계 기관의 검토와 승인 후 별도로 판단해야 한다. ",
+  "wordCount" : "260",
   "inLanguage": "en",
   "datePublished": "2026-10-26T00:00:00Z",
   "dateModified": "2026-10-26T00:00:00Z",
@@ -259,55 +259,39 @@
   <header class="post-header">
     
     <h1 class="post-title entry-hint-parent">
-      그린존 확장 9 — 영상 분석은 사람의 검토와 원본 정리까지 연결해야 한다
+      그린존 확장 9 — 영상 분석에는 사람 검토와 보호 기준이 필요하다
     </h1>
     <div class="post-description">
-      C의 영상 처리 기반을 실제 검토 루프로 완성하기 위한 조건과, GPS·예약·흡연구역 검색을 별도 과제로 두는 이유.
+      팀 시연에서 제외한 영상 기능을 다룰 때 필요한 사람 확인, 개인정보 보호, 운영 승인 조건을 정리한다.
     </div>
     <div class="post-meta">
 
-<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>3 min</span>
+<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>2 min</span>
 
 </div>
   </header> 
   <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
 <ul>
-<li><a href="#%EC%98%81%EC%83%81-%EA%B2%80%ED%86%A0%EC%9D%98-%EB%AC%B8%EC%A0%9C%EC%99%80-%EB%AA%A9%ED%91%9C">영상 검토의 문제와 목표</a></li>
-<li><a href="#%ED%98%84%EC%9E%AC-%EC%BD%94%EB%93%9C%EC%9D%98-%EA%B5%AC%ED%98%84-%EB%B2%94%EC%9C%84%EC%99%80-%EA%B2%80%EC%A6%9D-%EA%B2%B0%EA%B3%BC">현재 코드의 구현 범위와 검증 결과</a></li>
-<li><a href="#%EC%82%AC%EB%9E%8C-%EA%B2%80%ED%86%A0%EB%A5%BC-%ED%8F%AC%ED%95%A8%ED%95%9C-%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%99%84%EB%A3%8C-%EA%B8%B0%EC%A4%80">사람 검토를 포함한 구조와 완료 기준</a></li>
-<li><a href="#%EC%8B%A4%EC%A0%9C-%EC%9A%B4%EC%98%81-%EC%97%B0%EA%B3%84%EC%9D%98-%ED%95%9C%EA%B3%84%EC%99%80-%EB%8B%A4%EC%9D%8C-%EB%8B%A8%EA%B3%84">실제 운영 연계의 한계와 다음 단계</a></li>
-<li><a href="#%ED%9D%A1%EC%97%B0%EA%B5%AC%EC%97%AD-%EA%B2%80%EC%83%89%EC%9D%80-%EB%B3%84%EB%8F%84-%EA%B8%B0%EB%8A%A5">흡연구역 검색은 별도 기능</a></li>
-<li><a href="#%EB%A7%88%EB%AC%B4%EB%A6%AC%ED%95%98%EB%A9%B0">마무리하며</a></li>
+<li>문제와 목표</li>
+<li>구조와 결정</li>
+<li>구현과 확인</li>
+<li>한계와 다음 단계</li>
 </ul>
-<h2 id="영상-검토의-문제와-목표">영상 검토의 문제와 목표<a hidden class="anchor" aria-hidden="true" href="#영상-검토의-문제와-목표">#</a></h2>
-<p>거점을 정한 뒤에도 실제 현장에서는 배출물이 얼마나 쌓였는지, 차량이 작업 공간을 막고 있는지, 관리자가 확인했는지 같은 운영 질문이 생긴다. 그래서 개인 통합판 C에서는 영상 작업을 받아 상태 후보를 만들고 관리자가 확인하는 확장 흐름을 생각했다.</p>
-<p>이 기능은 팀 제출 D의 완료 기능이 아니다. 현재 팀 프로젝트에서는 차량 점유·적치·넘침 영상 관제를 범위에서 제외했다. 영상 분석은 별도의 개인정보·보존·현장 권한 검토가 필요하기 때문이다.</p>
-<h2 id="현재-코드의-구현-범위와-검증-결과">현재 코드의 구현 범위와 검증 결과<a hidden class="anchor" aria-hidden="true" href="#현재-코드의-구현-범위와-검증-결과">#</a></h2>
-<p>C에는 영상 업로드 작업, 프레임 변화와 차량 체류 후보를 다루는 처리 코드, 결과 화면을 위한 서버 기반이 추가되어 있다. 그러나 운영 화면의 JavaScript 연결과 실제 샘플 영상을 통한 끝까지의 실행·검토 기록은 확인되지 않았다.</p>
-<p>따라서 아직 “영상으로 불법 주차를 자동 단속한다”거나 “넘침을 정확히 감지한다”고 쓸 수 없다. 모델이 만든 후보는 사실 확정이 아니며, 카메라 각도·조도·가림·촬영 간격에 따라 결과가 달라질 수 있다.</p>
-<h2 id="사람-검토를-포함한-구조와-완료-기준">사람 검토를 포함한 구조와 완료 기준<a hidden class="anchor" aria-hidden="true" href="#사람-검토를-포함한-구조와-완료-기준">#</a></h2>
-<p>영상 확장 기능을 로컬에서 확인하려면 권한이 있는 비식별 샘플만 사용해 아래 흐름을 검증해야 한다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>허가된 영상 선택
-</span></span><span style="display:flex;"><span>  → 관심 영역(ROI) 설정
-</span></span><span style="display:flex;"><span>  → 분석 후보 생성
-</span></span><span style="display:flex;"><span>  → 얼굴·번호판 등 가림 상태 확인
-</span></span><span style="display:flex;"><span>  → 담당자가 후보 확인 또는 기각
-</span></span><span style="display:flex;"><span>  → 조치 메모와 이력 저장
-</span></span><span style="display:flex;"><span>  → 원본과 임시 파일 삭제 확인
-</span></span></code></pre></div><p>성공 기준은 후보를 몇 개 찾았는지만이 아니다. 잘못된 후보를 쉽게 기각할 수 있는지, 사람이 확인하지 않은 결과가 확정처럼 보이지 않는지, 오류가 났을 때 원본이 남는지, 삭제 결과를 확인할 수 있는지도 포함한다. 실제 운영에 쓰려면 보존 기간, 접근 권한, 책임자, 이용 목적, 법적 근거를 먼저 정해야 한다.</p>
-<h2 id="실제-운영-연계의-한계와-다음-단계">실제 운영 연계의 한계와 다음 단계<a hidden class="anchor" aria-hidden="true" href="#실제-운영-연계의-한계와-다음-단계">#</a></h2>
-<p>실제 차량 위치는 허가된 GPS 장비와 기관·업체 API가 있어야 한다. 계량을 붙이려면 계량기 사양과 교정, 수거 묶음과 반입 기록이 필요하다. 예약·결제는 지자체 공식 시스템의 허용된 연계 방식이 있어야 한다. 현재 가지고 있는 분석 코드만으로 이 외부 데이터를 만들어낼 수는 없다.</p>
-<p>그래서 개인 구현의 마감선은 “실제 도시 운영 완료”가 아니라 “로컬 데이터로 관리 흐름을 설명하고, 연결이 없는 지점은 명확히 표시하는 시연 가능한 구조”로 둔다.</p>
-<h2 id="흡연구역-검색은-별도-기능">흡연구역 검색은 별도 기능<a hidden class="anchor" aria-hidden="true" href="#흡연구역-검색은-별도-기능">#</a></h2>
-<p>장기적으로는 그린존에 흡연 공간을 새로 지정하는 대신, 공식 지정 흡연구역이 확인되면 별도의 시설로 등록해 주변 위치를 검색하는 기능을 생각하고 있다. 흡연구역을 쓰레기 거점 안에 자동으로 붙이지 않는다. 공식 목록과 좌표, 운영시간, 폐쇄 여부가 확보되기 전에는 지도에 장소를 임의로 찍어 허용 구역처럼 보이게 하지 않는다.</p>
-<p>이 확장은 주변 시설 데이터를 확보하고 관리 주체를 확인한 뒤 별도로 진행할 일이다. 청결 개선이나 꽁초 감소도 운영 전후 자료가 있어야 효과라고 말할 수 있다.</p>
-<h2 id="마무리하며">마무리하며<a hidden class="anchor" aria-hidden="true" href="#마무리하며">#</a></h2>
-<p>팀 프로젝트는 신월1동의 분석 결과를 검색·지도·공식 안내로 연결하는 제출물을 만들었다. 개인 확장에서는 관리자 운영 흐름과 영상 검토를 더하고 싶지만, 코드를 추가한 것과 기능이 화면에서 검증된 것은 다르다.</p>
-<p>이번 프로젝트를 마무리하면서 얻은 가장 큰 기준은 “완성했다고 부를 수 있는 근거를 기능별로 남기자”는 것이다. 분석 제안, 로컬 시연, 공식 자료, 현장 승인, 외부 기관 연계는 서로 다른 단계다. 그 경계를 유지해야 다음 구현도 과장 없이 이어갈 수 있다.</p>
-<h3 id="공개-출처">공개 출처<a hidden class="anchor" aria-hidden="true" href="#공개-출처">#</a></h3>
+<h2 id="문제와-목표--영상-기능은-팀의-핵심-구현-범위가-아니었다">문제와 목표 — 영상 기능은 팀의 핵심 구현 범위가 아니었다<a hidden class="anchor" aria-hidden="true" href="#문제와-목표--영상-기능은-팀의-핵심-구현-범위가-아니었다">#</a></h2>
+<p>영상으로 배출 상태나 작업 공간을 살피는 아이디어도 나왔지만, 이번 팀 시연의 핵심 범위에서는 제외했다. 영상은 사람과 차량을 식별할 수 있고, 잘못된 분석 결과가 운영 판단으로 이어질 수 있어 지도 기능처럼 가볍게 추가하기 어렵다.</p>
+<p>따라서 이 편은 완료된 팀 기능을 설명하는 글이 아니라, 개인적으로 검토한 확장 조건을 정리한다. 영상 분석이 실제 단속이나 자동 조치를 수행한다고 말하지 않는다.</p>
+<h2 id="구조와-결정--사람의-검토와-개인정보-보호를-먼저-설계한다">구조와 결정 — 사람의 검토와 개인정보 보호를 먼저 설계한다<a hidden class="anchor" aria-hidden="true" href="#구조와-결정--사람의-검토와-개인정보-보호를-먼저-설계한다">#</a></h2>
+<p>가능한 시연 흐름을 만든다면 허가된 비식별 샘플을 사용하고, 분석 결과를 확정이 아닌 검토 후보로 보여줘야 한다. 담당자가 결과를 확인하거나 기각하고, 판단 이유를 남기는 단계가 필요하다. 원본과 임시 파일의 보관·삭제 방식도 정해야 한다.</p>
+<p>실제 운영 전에는 촬영 목적, 접근 권한, 보존 기간, 책임자, 법적 근거를 관계 기관과 확인해야 한다. 기술적으로 분석이 된다는 것만으로 현장 촬영과 사용이 허용되는 것은 아니다.</p>
+<h2 id="구현과-확인--흡연구역은-별도의-검색-확장으로-생각한다">구현과 확인 — 흡연구역은 별도의 검색 확장으로 생각한다<a hidden class="anchor" aria-hidden="true" href="#구현과-확인--흡연구역은-별도의-검색-확장으로-생각한다">#</a></h2>
+<p>장기 아이디어로는 그린존 안에 흡연구역을 새로 지정하기보다, 공식 지정 장소의 정보가 확보됐을 때 주변 위치를 검색할 수 있게 하는 방안을 생각했다. 폐기물 거점과 흡연구역을 자동으로 한 장소로 묶지 않는다.</p>
+<p>공식 목록과 최신 운영 정보, 관리 주체가 확인되기 전에는 장소를 지도에 임의로 표시하지 않는다. 꽁초 감소나 환경 개선 효과도 실제 운영 전후의 자료가 있어야 검증할 수 있다.</p>
+<h2 id="한계와-다음-단계--마무리하며">한계와 다음 단계 — 마무리하며<a hidden class="anchor" aria-hidden="true" href="#한계와-다음-단계--마무리하며">#</a></h2>
+<p>이번 프로젝트에서 배운 것은 기능을 더하는 일보다, 결과를 누가 확인하고 어떤 책임으로 사용할지 정하는 일이 먼저라는 점이다. 팀이 구현한 검색·지도·안내와 개인 확장 아이디어를 구분하고, 자료·현장·기관 협의가 필요한 부분은 다음 단계로 남겼다.</p>
+<h3 id="참고">참고<a hidden class="anchor" aria-hidden="true" href="#참고">#</a></h3>
 <ul>
-<li><a href="https://smartclean.yangcheon.go.kr/online/bulky/guide">양천구 공식 대형폐기물 안내</a></li>
 <li><a href="https://github.com/Han-think/greenzone_ai">팀 저장소</a></li>
+<li>영상 및 위치정보의 실제 운영 여부는 관계 기관의 검토와 승인 후 별도로 판단해야 한다.</li>
 </ul>
 
 
@@ -316,10 +300,10 @@
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://Han-think.github.io/tags/%EA%B7%B8%EB%A6%B0%EC%A1%B4/">그린존</a></li>
+      <li><a href="https://Han-think.github.io/tags/%EA%B0%9C%EC%9D%B8%ED%99%95%EC%9E%A5/">개인확장</a></li>
       <li><a href="https://Han-think.github.io/tags/%EC%98%81%EC%83%81%EB%B6%84%EC%84%9D/">영상분석</a></li>
-      <li><a href="https://Han-think.github.io/tags/%EA%B0%9C%EC%9D%B8%EC%A0%95%EB%B3%B4/">개인정보</a></li>
       <li><a href="https://Han-think.github.io/tags/%EC%82%AC%EB%9E%8C%EA%B2%80%ED%86%A0/">사람검토</a></li>
-      <li><a href="https://Han-think.github.io/tags/%EC%84%9C%EB%B9%84%EC%8A%A4%ED%99%95%EC%9E%A5/">서비스확장</a></li>
+      <li><a href="https://Han-think.github.io/tags/%EA%B0%9C%EC%9D%B8%EC%A0%95%EB%B3%B4%EB%B3%B4%ED%98%B8/">개인정보보호</a></li>
     </ul>
 
   </footer>

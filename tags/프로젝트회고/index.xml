@@ -9,11 +9,11 @@
     <lastBuildDate>Mon, 26 Oct 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%ED%9A%8C%EA%B3%A0/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>그린존 프로젝트 7 — 기능을 만들었다는 것과 실제 운영은 다르다</title>
+      <title>그린존 7 — 화면에서 확인한 기능과 실제 운영을 구분하다</title>
       <link>https://Han-think.github.io/projects/greenzone-team-series-07-admin-review-20261026/</link>
       <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/projects/greenzone-team-series-07-admin-review-20261026/</guid>
-      <description>관리자 자료 수정·이력, 실제 SQLite 구조, 기능 확인과 독립 검증의 차이를 제출 결과를 기준으로 정리한다.</description>
+      <description>관리자 화면과 데이터 구조를 살펴보며 시제품의 구현 범위와 실제 운영에 필요한 조건을 나눈 기록.</description>
     </item>
   </channel>
 </rss>

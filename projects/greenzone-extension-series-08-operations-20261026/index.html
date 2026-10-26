@@ -5,9 +5,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>그린존 확장 8 — 운영 기능을 화면과 로컬 데이터까지 연결하기 | Han-think Blog</title>
-<meta name="keywords" content="그린존, 개인개발, 관리자, FastAPI, 서비스운영">
-<meta name="description" content="D 팀 제출본을 바꾸지 않고 C 개인 통합판에 운영 자료·이력·시나리오 흐름을 연결하려는 목표와 현재 남은 연결점.">
+<title>그린존 확장 8 — 개인 작업에서 운영 흐름을 더 생각하다 | Han-think Blog</title>
+<meta name="keywords" content="그린존, 개인확장, 관리자, 서비스운영">
+<meta name="description" content="팀 제출 결과와 구분해, 향후 운영 자료·이력·검토를 한 흐름으로 잇기 위해 생각한 확장 방향.">
 <meta name="author" content="">
 <link rel="canonical" href="https://Han-think.github.io/projects/greenzone-extension-series-08-operations-20261026/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
@@ -121,22 +121,21 @@
         }
       </script><meta property="og:url" content="https://Han-think.github.io/projects/greenzone-extension-series-08-operations-20261026/">
   <meta property="og:site_name" content="Han-think Blog">
-  <meta property="og:title" content="그린존 확장 8 — 운영 기능을 화면과 로컬 데이터까지 연결하기">
-  <meta property="og:description" content="D 팀 제출본을 바꾸지 않고 C 개인 통합판에 운영 자료·이력·시나리오 흐름을 연결하려는 목표와 현재 남은 연결점.">
+  <meta property="og:title" content="그린존 확장 8 — 개인 작업에서 운영 흐름을 더 생각하다">
+  <meta property="og:description" content="팀 제출 결과와 구분해, 향후 운영 자료·이력·검토를 한 흐름으로 잇기 위해 생각한 확장 방향.">
   <meta property="og:locale" content="ko_KR">
   <meta property="og:type" content="article">
     <meta property="article:section" content="projects">
     <meta property="article:published_time" content="2026-10-26T00:00:00+00:00">
     <meta property="article:modified_time" content="2026-10-26T00:00:00+00:00">
     <meta property="article:tag" content="그린존">
-    <meta property="article:tag" content="개인개발">
+    <meta property="article:tag" content="개인확장">
     <meta property="article:tag" content="관리자">
-    <meta property="article:tag" content="FastAPI">
     <meta property="article:tag" content="서비스운영">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="그린존 확장 8 — 운영 기능을 화면과 로컬 데이터까지 연결하기">
-  <meta name="twitter:description" content="D 팀 제출본을 바꾸지 않고 C 개인 통합판에 운영 자료·이력·시나리오 흐름을 연결하려는 목표와 현재 남은 연결점.">
+  <meta name="twitter:title" content="그린존 확장 8 — 개인 작업에서 운영 흐름을 더 생각하다">
+  <meta name="twitter:description" content="팀 제출 결과와 구분해, 향후 운영 자료·이력·검토를 한 흐름으로 잇기 위해 생각한 확장 방향.">
 
 
 <script type="application/ld+json">
@@ -153,7 +152,7 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "그린존 확장 8 — 운영 기능을 화면과 로컬 데이터까지 연결하기",
+      "name": "그린존 확장 8 — 개인 작업에서 운영 흐름을 더 생각하다",
       "item": "https://Han-think.github.io/projects/greenzone-extension-series-08-operations-20261026/"
     }
   ]
@@ -163,14 +162,14 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "그린존 확장 8 — 운영 기능을 화면과 로컬 데이터까지 연결하기",
-  "name": "그린존 확장 8 — 운영 기능을 화면과 로컬 데이터까지 연결하기",
-  "description": "D 팀 제출본을 바꾸지 않고 C 개인 통합판에 운영 자료·이력·시나리오 흐름을 연결하려는 목표와 현재 남은 연결점.",
+  "headline": "그린존 확장 8 — 개인 작업에서 운영 흐름을 더 생각하다",
+  "name": "그린존 확장 8 — 개인 작업에서 운영 흐름을 더 생각하다",
+  "description": "팀 제출 결과와 구분해, 향후 운영 자료·이력·검토를 한 흐름으로 잇기 위해 생각한 확장 방향.",
   "keywords": [
-    "그린존", "개인개발", "관리자", "FastAPI", "서비스운영"
+    "그린존", "개인확장", "관리자", "서비스운영"
   ],
-  "articleBody": "목차 C에서 더 완성하고 싶은 운영 문제와 목표 운영 기능의 구조와 현재 코드 화면 연결 구현의 현황 완료 검증 순서와 다음 단계 이번 편의 정리 C에서 더 완성하고 싶은 운영 문제와 목표 팀 저장소 D에서는 검색, 지도, 경로안, 배출 안내, 관리자 자료 관리를 하나의 제출 가능한 흐름으로 정리했다. 하지만 관리자가 실제로 운영한다면 안내 문서만 바꾸는 것으로 충분한지, 거점 제안과 현장 의견, 작업 기록, 영상 검토까지 어떻게 이어지는지 더 고민하고 싶었다.\n그래서 개인 통합판 C는 팀 제출 D를 덮어쓰는 브랜치가 아니라, 핵심 서비스 구조를 참고해 내 로컬에서 추가 기능을 연결해 보는 작업 공간으로 두었다. 두 저장소를 섞어 설명하지 않는 것이 먼저였다.\n운영 기능의 구조와 현재 코드 C에는 운영 레코드 저장, 변경 이력, 시나리오, 영상 작업을 위한 서버 코드와 화면 뼈대가 들어 있다. 관리자 관점에서 생각한 흐름은 다음과 같다.\n자료 등록·검토 → 상태와 출처 관리 → 변경 이력 확인 → 거점 시나리오 비교 → 현장 확인 항목 기록 시나리오는 팀 Louvain 분석의 결과를 다시 계산하거나 대체하는 용도가 아니다. 기존 분석 결과를 기준으로 몇 가지 조건을 바꾸었을 때 어떤 차이를 비교할지 살피는 추가 도구다. 근사 계산이나 관리자 입력값은 팀의 공식 분석 결과와 구분해야 한다.\n화면 연결 구현의 현황 현재 C에는 API와 저장 구조가 추가되었지만, 일부 화면 연결이 빠져 있다. 운영 페이지에서 호출하는 JavaScript가 없고, 주민 의견이나 거점 카드로 연결되는 일부 템플릿도 빠져 있어 API만 존재한다고 사용자 흐름이 끝난 것은 아니다. 영상과 시나리오도 화면에서 실제로 등록하고 결과를 확인하는 종단 검증 자료가 남아 있지 않다.\n이 점을 확인한 뒤 “C에 운영 기능이 완성됐다”고 쓰지 않기로 했다. 지금 상태를 정확히 말하면 운영·영상·시나리오를 위한 기반 코드가 있고, 화면 연결과 실제 로컬 흐름 확인이 남아 있다.\n완료 검증 순서와 다음 단계 관리자 운영 화면에서 자료 목록·등록·수정·중지·복원과 이력을 실제 로컬 DB로 연결한다. 각 저장 동작 뒤 사용자 화면에서 어떤 값이 언제 바뀌는지 확인한다. 데이터가 없는 경우, 잘못된 값, 수정 취소, 중복 등록을 확인해 빈 상태와 오류 안내를 만든다. 시나리오 비교값에는 입력 조건·계산 기준·근사 한계를 표시하고 팀 분석 결과와 나란히 놓는다. 사용 가능한 데이터가 없는 시설은 임의로 채우지 않고 “자료 미확보”로 둔다. 이 순서가 끝나야 관리자에게 보이는 기능이라고 할 수 있다. 외부에 공개하거나 실제 기관 업무에 붙이는 일은 별도의 승인과 운영 준비가 필요하다.\n이번 편의 정리 C에서 더 많은 코드를 추가하는 것보다, 이미 있는 서버 기능을 화면과 데이터의 한 흐름으로 연결하는 것이 지금의 우선 작업이다. 다음 편에서는 영상 처리 코드도 사람의 확인과 안전한 원본 정리까지 연결해야 완성이라 부를 수 있는 이유를 살펴본다.\n공개 출처 팀 기준 코드: Han-think/greenzone_ai C 개인 확장 세부 사항은 공개 전 최신 로컬 코드와 상태 문서를 다시 확인한다. ",
-  "wordCount" : "402",
+  "articleBody": "목차 문제와 목표 구조와 결정 구현과 확인 한계와 다음 단계 문제와 목표 — 팀 결과 다음에 남은 질문 팀 프로젝트는 검색, 지도, 경로안, 배출 안내와 관리자 자료 관리를 하나의 시연 흐름으로 정리했다. 그 과정을 다시 보니, 실제 운영자가 자료를 바꾸고 그 변경이 사용자에게 어떻게 보이는지까지 연결해야 한다는 질문이 남았다.\n이 편은 팀 제출 기능을 더 크게 보이게 하려는 내용이 아니다. 개인 작업에서 추가로 생각한 방향과 아직 끝나지 않은 연결점을 분리해 기록한다.\n구조와 결정 — 운영 흐름은 수정 버튼에서 끝나지 않는다 운영 자료를 관리한다면 등록과 수정뿐 아니라 출처, 확인 시점, 사용 상태, 변경 이유가 함께 남아야 한다. 바뀐 내용이 사용자 화면에 반영되는지와 이전 값으로 돌아갈 수 있는지도 살펴야 한다.\n데이터가 저장된다고 여러 사람이 함께 쓰는 서비스가 되는 것은 아니다. 공용 계정과 권한, 서버 배포, 백업, 오류 대응 등은 별도의 운영 설계가 필요하다. 로컬 시연은 그 흐름을 설계하고 확인하는 출발점으로 둔다.\n구현과 확인 — 다음에 확인할 순서 먼저 관리자 화면과 저장 데이터가 실제로 연결되는지 확인하고, 변경 뒤 사용자 화면에서 반영 여부를 살핀다. 이후 오류나 잘못된 입력, 중복 자료 같은 상황과 이력 복원을 점검한다. 데이터가 없거나 권한이 정해지지 않은 부분은 임의로 채우지 않는다.\n한계와 다음 단계 — 이번 편의 정리 기능 수를 늘리는 대신, 운영자의 행동과 사용자가 보는 결과를 하나의 흐름으로 연결하는 일이 남았다. 개인 확장과 팀 제출 결과의 경계를 지키면서 다음 작업을 정리했다.\n참고 팀 저장소 ",
+  "wordCount" : "214",
   "inLanguage": "en",
   "datePublished": "2026-10-26T00:00:00Z",
   "dateModified": "2026-10-26T00:00:00Z",
@@ -259,10 +258,10 @@
   <header class="post-header">
     
     <h1 class="post-title entry-hint-parent">
-      그린존 확장 8 — 운영 기능을 화면과 로컬 데이터까지 연결하기
+      그린존 확장 8 — 개인 작업에서 운영 흐름을 더 생각하다
     </h1>
     <div class="post-description">
-      D 팀 제출본을 바꾸지 않고 C 개인 통합판에 운영 자료·이력·시나리오 흐름을 연결하려는 목표와 현재 남은 연결점.
+      팀 제출 결과와 구분해, 향후 운영 자료·이력·검토를 한 흐름으로 잇기 위해 생각한 확장 방향.
     </div>
     <div class="post-meta">
 
@@ -272,38 +271,24 @@
   </header> 
   <div class="post-content md-content"><h2 id="목차">목차<a hidden class="anchor" aria-hidden="true" href="#목차">#</a></h2>
 <ul>
-<li><a href="#c%EC%97%90%EC%84%9C-%EB%8D%94-%EC%99%84%EC%84%B1%ED%95%98%EA%B3%A0-%EC%8B%B6%EC%9D%80-%EC%9A%B4%EC%98%81-%EB%AC%B8%EC%A0%9C%EC%99%80-%EB%AA%A9%ED%91%9C">C에서 더 완성하고 싶은 운영 문제와 목표</a></li>
-<li><a href="#%EC%9A%B4%EC%98%81-%EA%B8%B0%EB%8A%A5%EC%9D%98-%EA%B5%AC%EC%A1%B0%EC%99%80-%ED%98%84%EC%9E%AC-%EC%BD%94%EB%93%9C">운영 기능의 구조와 현재 코드</a></li>
-<li><a href="#%ED%99%94%EB%A9%B4-%EC%97%B0%EA%B2%B0-%EA%B5%AC%ED%98%84%EC%9D%98-%ED%98%84%ED%99%A9">화면 연결 구현의 현황</a></li>
-<li><a href="#%EC%99%84%EB%A3%8C-%EA%B2%80%EC%A6%9D-%EC%88%9C%EC%84%9C%EC%99%80-%EB%8B%A4%EC%9D%8C-%EB%8B%A8%EA%B3%84">완료 검증 순서와 다음 단계</a></li>
-<li><a href="#%EC%9D%B4%EB%B2%88-%ED%8E%B8%EC%9D%98-%EC%A0%95%EB%A6%AC">이번 편의 정리</a></li>
+<li>문제와 목표</li>
+<li>구조와 결정</li>
+<li>구현과 확인</li>
+<li>한계와 다음 단계</li>
 </ul>
-<h2 id="c에서-더-완성하고-싶은-운영-문제와-목표">C에서 더 완성하고 싶은 운영 문제와 목표<a hidden class="anchor" aria-hidden="true" href="#c에서-더-완성하고-싶은-운영-문제와-목표">#</a></h2>
-<p>팀 저장소 D에서는 검색, 지도, 경로안, 배출 안내, 관리자 자료 관리를 하나의 제출 가능한 흐름으로 정리했다. 하지만 관리자가 실제로 운영한다면 안내 문서만 바꾸는 것으로 충분한지, 거점 제안과 현장 의견, 작업 기록, 영상 검토까지 어떻게 이어지는지 더 고민하고 싶었다.</p>
-<p>그래서 개인 통합판 C는 팀 제출 D를 덮어쓰는 브랜치가 아니라, 핵심 서비스 구조를 참고해 내 로컬에서 추가 기능을 연결해 보는 작업 공간으로 두었다. 두 저장소를 섞어 설명하지 않는 것이 먼저였다.</p>
-<h2 id="운영-기능의-구조와-현재-코드">운영 기능의 구조와 현재 코드<a hidden class="anchor" aria-hidden="true" href="#운영-기능의-구조와-현재-코드">#</a></h2>
-<p>C에는 운영 레코드 저장, 변경 이력, 시나리오, 영상 작업을 위한 서버 코드와 화면 뼈대가 들어 있다. 관리자 관점에서 생각한 흐름은 다음과 같다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>자료 등록·검토 → 상태와 출처 관리 → 변경 이력 확인
-</span></span><span style="display:flex;"><span>            → 거점 시나리오 비교 → 현장 확인 항목 기록
-</span></span></code></pre></div><p>시나리오는 팀 Louvain 분석의 결과를 다시 계산하거나 대체하는 용도가 아니다. 기존 분석 결과를 기준으로 몇 가지 조건을 바꾸었을 때 어떤 차이를 비교할지 살피는 추가 도구다. 근사 계산이나 관리자 입력값은 팀의 공식 분석 결과와 구분해야 한다.</p>
-<h2 id="화면-연결-구현의-현황">화면 연결 구현의 현황<a hidden class="anchor" aria-hidden="true" href="#화면-연결-구현의-현황">#</a></h2>
-<p>현재 C에는 API와 저장 구조가 추가되었지만, 일부 화면 연결이 빠져 있다. 운영 페이지에서 호출하는 JavaScript가 없고, 주민 의견이나 거점 카드로 연결되는 일부 템플릿도 빠져 있어 API만 존재한다고 사용자 흐름이 끝난 것은 아니다. 영상과 시나리오도 화면에서 실제로 등록하고 결과를 확인하는 종단 검증 자료가 남아 있지 않다.</p>
-<p>이 점을 확인한 뒤 “C에 운영 기능이 완성됐다”고 쓰지 않기로 했다. 지금 상태를 정확히 말하면 운영·영상·시나리오를 위한 기반 코드가 있고, 화면 연결과 실제 로컬 흐름 확인이 남아 있다.</p>
-<h2 id="완료-검증-순서와-다음-단계">완료 검증 순서와 다음 단계<a hidden class="anchor" aria-hidden="true" href="#완료-검증-순서와-다음-단계">#</a></h2>
-<ol>
-<li>관리자 운영 화면에서 자료 목록·등록·수정·중지·복원과 이력을 실제 로컬 DB로 연결한다.</li>
-<li>각 저장 동작 뒤 사용자 화면에서 어떤 값이 언제 바뀌는지 확인한다.</li>
-<li>데이터가 없는 경우, 잘못된 값, 수정 취소, 중복 등록을 확인해 빈 상태와 오류 안내를 만든다.</li>
-<li>시나리오 비교값에는 입력 조건·계산 기준·근사 한계를 표시하고 팀 분석 결과와 나란히 놓는다.</li>
-<li>사용 가능한 데이터가 없는 시설은 임의로 채우지 않고 “자료 미확보”로 둔다.</li>
-</ol>
-<p>이 순서가 끝나야 관리자에게 보이는 기능이라고 할 수 있다. 외부에 공개하거나 실제 기관 업무에 붙이는 일은 별도의 승인과 운영 준비가 필요하다.</p>
-<h2 id="이번-편의-정리">이번 편의 정리<a hidden class="anchor" aria-hidden="true" href="#이번-편의-정리">#</a></h2>
-<p>C에서 더 많은 코드를 추가하는 것보다, 이미 있는 서버 기능을 화면과 데이터의 한 흐름으로 연결하는 것이 지금의 우선 작업이다. 다음 편에서는 영상 처리 코드도 사람의 확인과 안전한 원본 정리까지 연결해야 완성이라 부를 수 있는 이유를 살펴본다.</p>
-<h3 id="공개-출처">공개 출처<a hidden class="anchor" aria-hidden="true" href="#공개-출처">#</a></h3>
+<h2 id="문제와-목표--팀-결과-다음에-남은-질문">문제와 목표 — 팀 결과 다음에 남은 질문<a hidden class="anchor" aria-hidden="true" href="#문제와-목표--팀-결과-다음에-남은-질문">#</a></h2>
+<p>팀 프로젝트는 검색, 지도, 경로안, 배출 안내와 관리자 자료 관리를 하나의 시연 흐름으로 정리했다. 그 과정을 다시 보니, 실제 운영자가 자료를 바꾸고 그 변경이 사용자에게 어떻게 보이는지까지 연결해야 한다는 질문이 남았다.</p>
+<p>이 편은 팀 제출 기능을 더 크게 보이게 하려는 내용이 아니다. 개인 작업에서 추가로 생각한 방향과 아직 끝나지 않은 연결점을 분리해 기록한다.</p>
+<h2 id="구조와-결정--운영-흐름은-수정-버튼에서-끝나지-않는다">구조와 결정 — 운영 흐름은 수정 버튼에서 끝나지 않는다<a hidden class="anchor" aria-hidden="true" href="#구조와-결정--운영-흐름은-수정-버튼에서-끝나지-않는다">#</a></h2>
+<p>운영 자료를 관리한다면 등록과 수정뿐 아니라 출처, 확인 시점, 사용 상태, 변경 이유가 함께 남아야 한다. 바뀐 내용이 사용자 화면에 반영되는지와 이전 값으로 돌아갈 수 있는지도 살펴야 한다.</p>
+<p>데이터가 저장된다고 여러 사람이 함께 쓰는 서비스가 되는 것은 아니다. 공용 계정과 권한, 서버 배포, 백업, 오류 대응 등은 별도의 운영 설계가 필요하다. 로컬 시연은 그 흐름을 설계하고 확인하는 출발점으로 둔다.</p>
+<h2 id="구현과-확인--다음에-확인할-순서">구현과 확인 — 다음에 확인할 순서<a hidden class="anchor" aria-hidden="true" href="#구현과-확인--다음에-확인할-순서">#</a></h2>
+<p>먼저 관리자 화면과 저장 데이터가 실제로 연결되는지 확인하고, 변경 뒤 사용자 화면에서 반영 여부를 살핀다. 이후 오류나 잘못된 입력, 중복 자료 같은 상황과 이력 복원을 점검한다. 데이터가 없거나 권한이 정해지지 않은 부분은 임의로 채우지 않는다.</p>
+<h2 id="한계와-다음-단계--이번-편의-정리">한계와 다음 단계 — 이번 편의 정리<a hidden class="anchor" aria-hidden="true" href="#한계와-다음-단계--이번-편의-정리">#</a></h2>
+<p>기능 수를 늘리는 대신, 운영자의 행동과 사용자가 보는 결과를 하나의 흐름으로 연결하는 일이 남았다. 개인 확장과 팀 제출 결과의 경계를 지키면서 다음 작업을 정리했다.</p>
+<h3 id="참고">참고<a hidden class="anchor" aria-hidden="true" href="#참고">#</a></h3>
 <ul>
-<li>팀 기준 코드: <a href="https://github.com/Han-think/greenzone_ai">Han-think/greenzone_ai</a></li>
-<li>C 개인 확장 세부 사항은 공개 전 최신 로컬 코드와 상태 문서를 다시 확인한다.</li>
+<li><a href="https://github.com/Han-think/greenzone_ai">팀 저장소</a></li>
 </ul>
 
 
@@ -312,9 +297,8 @@
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://Han-think.github.io/tags/%EA%B7%B8%EB%A6%B0%EC%A1%B4/">그린존</a></li>
-      <li><a href="https://Han-think.github.io/tags/%EA%B0%9C%EC%9D%B8%EA%B0%9C%EB%B0%9C/">개인개발</a></li>
+      <li><a href="https://Han-think.github.io/tags/%EA%B0%9C%EC%9D%B8%ED%99%95%EC%9E%A5/">개인확장</a></li>
       <li><a href="https://Han-think.github.io/tags/%EA%B4%80%EB%A6%AC%EC%9E%90/">관리자</a></li>
-      <li><a href="https://Han-think.github.io/tags/fastapi/">FastAPI</a></li>
       <li><a href="https://Han-think.github.io/tags/%EC%84%9C%EB%B9%84%EC%8A%A4%EC%9A%B4%EC%98%81/">서비스운영</a></li>
     </ul>
 

@@ -9,25 +9,18 @@
     <lastBuildDate>Mon, 26 Oct 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/gis/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>그린존 팀 프로젝트 기록 — 7일의 구현과 2일의 확장</title>
-      <link>https://Han-think.github.io/projects/greenzone-series-index-20261026/</link>
-      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/projects/greenzone-series-index-20261026/</guid>
-      <description>D 팀 프로젝트의 7편과 C 개인 확장 2편을 구분해 문제 정의부터 운영 확장까지 읽는 프로젝트 연재 안내.</description>
-    </item>
-    <item>
-      <title>그린존 프로젝트 4 — K-means 대신 Louvain으로 생활권을 나눈 이유</title>
-      <link>https://Han-think.github.io/projects/greenzone-team-series-04-algorithm-20261026/</link>
-      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/projects/greenzone-team-series-04-algorithm-20261026/</guid>
-      <description>도로망 거리와 주거단위로 생활권을 묶고, 기존 후보 6곳과 신규 대안 3곳을 비교한 팀 분석.</description>
-    </item>
-    <item>
-      <title>그린존 프로젝트 5 — 검색 결과를 지도와 수거 경로안으로 이어 붙이다</title>
+      <title>그린존 5 — 검색 결과가 지도에서 읽히도록 화면을 고치다</title>
       <link>https://Han-think.github.io/projects/greenzone-team-series-05-web-map-20261026/</link>
       <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/projects/greenzone-team-series-05-web-map-20261026/</guid>
-      <description>보유 건물 검색, 지도 레이어 필터, Leaflet·Folium 비교, 자동·직접 순서 경로안을 하나의 웹 흐름으로 연결한 과정.</description>
+      <description>검색 위치와 분석 결과를 구분하고, 필터와 지도 표시를 다듬으며 발견한 사용 흐름.</description>
+    </item>
+    <item>
+      <title>그린존 프로젝트 기록 — 팀 결과 7편과 개인 확장 2편</title>
+      <link>https://Han-think.github.io/projects/greenzone-series-index-20261026/</link>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://Han-think.github.io/projects/greenzone-series-index-20261026/</guid>
+      <description>문제 범위를 정하고 공공자료와 분석 결과를 검색 지도·배출 안내로 연결한 팀 프로젝트, 그리고 이후 확장 아이디어를 정리한 연재.</description>
     </item>
   </channel>
 </rss>

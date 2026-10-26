@@ -203,33 +203,34 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">그린존 팀 프로젝트 기록 — 7일의 구현과 2일의 확장
+    <h2 class="entry-hint-parent">그린존 6 — AI는 후보를 돕고 근거와 선택은 분리하다
     </h2>
   </header>
   <div class="entry-content">
-    <p>목차 연재의 목표와 문제 정의 9편의 진행 구조 검증 범위와 공개 기준 게시 순서와 다음 행동 연재의 목표와 문제 정의 제출을 마친 그린존 팀 프로젝트를 한 번에 결과만 나열하지 않고, 문제 정의부터 자료와 분석, 지도 화면, AI 안내, 관리자 기능까지 이어지는 흐름으로 다시 정리한다. 앞의 일곱 편은 팀 저장소 D에서 확인한 결과를 기준으로 쓴다. 저장소에 남은 코드·문서·분석 결과를 따라 읽기 좋은 순서로 재구성한 기록이며, 실제 하루별 작업일지와 동일하다고 단정하지 않는다.
+    <p>목차 문제와 목표 구조와 결정 구현과 확인 한계와 다음 단계 문제와 목표 — 사진 한 장으로 확정할 수 없는 것 가구 사진을 보고 품목을 짐작할 수는 있지만, 촬영 각도와 가림에 따라 잘못 분류될 수 있다. 사진만으로 규격과 수수료, 공식 배출 방법까지 확정하기도 어렵다. 그래서 이미지 분석은 품목 후보를 제시하는 보조 단계로 두고 마지막 선택은 사용자에게 남겼다.
+흐름은 사진 업로드, 품목 후보 확인, 사용자의 수정·선택, 규격과 수량 확인, 공식 배출 정보 확인 순서다. 사진 분석 결과가 곧 신청이나 결제로 이어지지는 않는다. 사진을 외부 분석 서비스에 보내는 경우에는 저장 여부와 별개로 전송 사실도 사용자에게 알려야 한다.
 ...</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>3 min</span></footer>
-  <a class="entry-link" aria-label="post link to 그린존 팀 프로젝트 기록 — 7일의 구현과 2일의 확장" href="https://Han-think.github.io/projects/greenzone-series-index-20261026/"></a>
+<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
+  <a class="entry-link" aria-label="post link to 그린존 6 — AI는 후보를 돕고 근거와 선택은 분리하다" href="https://Han-think.github.io/projects/greenzone-team-series-06-ai-guide-20261026/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">그린존 프로젝트 6 — 사진은 후보, 공식 자료는 답변의 근거로
+    <h2 class="entry-hint-parent">그린존 프로젝트 기록 — 팀 결과 7편과 개인 확장 2편
     </h2>
   </header>
   <div class="entry-content">
-    <p>목차 사진 분류 문제와 목표 사용자 선택을 포함한 구현 흐름 공식 문서 검색 구조와 근거 Opik 관측과 답변 검증 결과 평가 결과의 해석과 한계 이번 편의 정리 사진 분류 문제와 목표 대형폐기물 사진을 올리면 가구 이름은 짐작할 수 있어도, 사진만으로 규격·수량·수수료·공식 배출장소까지 확정하기는 어렵다. 보이는 각도와 가림 때문에 침대가 수납장으로 분류되거나, 같은 물건이 두 개로 보일 수도 있다. 그래서 사진 분석의 결과를 최종 정답이 아니라 품목 후보로 제한했다.
-업로드한 사진은 서버에 영구 저장하지 않도록 구성했다. 다만 분석을 위해 EXIF를 제거하고 크기를 줄인 뒤 외부 Vision API로 전송한다. “저장하지 않는다”와 “외부로 보내지 않는다”는 같은 말이 아니다. 공개 글에는 원본 사진을 첨부하지 않고, 사용자는 제공자의 처리 정책도 확인해야 한다.
+    <p>목차 문제와 목표 구조와 결정 구현과 확인 한계와 다음 단계 문제와 목표 — 이 연재를 읽기 전에 그린존은 신월1동의 건물과 공공자료를 살펴 생활권·거점안을 비교하고, 그 결과를 검색 지도와 배출 안내로 연결한 팀 프로젝트다. 이 연재는 제출 결과를 다시 따라가며, 처음의 큰 아이디어가 팀 대화와 검토를 거쳐 어떻게 작아지고 구체화됐는지 기록한다.
+처음에는 쓰레기 배출 문제를 넓게 다루려 했다. 도움을 받아도 놓친 질문은 계속 나왔다. 주민이 어디서 검색하는지, 지도에서 무엇이 먼저 보여야 하는지, 분석 결과를 실제 운영처럼 오해하지 않게 하려면 무엇을 밝혀야 하는지 하나씩 발견했다. 그래서 기능을 무작정 늘리기보다 이용 흐름과 화면 우선순위를 조금씩 정리했다.
 ...</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>3 min</span></footer>
-  <a class="entry-link" aria-label="post link to 그린존 프로젝트 6 — 사진은 후보, 공식 자료는 답변의 근거로" href="https://Han-think.github.io/projects/greenzone-team-series-06-ai-guide-20261026/"></a>
+<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
+  <a class="entry-link" aria-label="post link to 그린존 프로젝트 기록 — 팀 결과 7편과 개인 확장 2편" href="https://Han-think.github.io/projects/greenzone-series-index-20261026/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 

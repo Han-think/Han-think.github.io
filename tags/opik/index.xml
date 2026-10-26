@@ -9,11 +9,11 @@
     <lastBuildDate>Mon, 26 Oct 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/tags/opik/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>그린존 프로젝트 6 — 사진은 후보, 공식 자료는 답변의 근거로</title>
+      <title>그린존 6 — AI는 후보를 돕고 근거와 선택은 분리하다</title>
       <link>https://Han-think.github.io/projects/greenzone-team-series-06-ai-guide-20261026/</link>
       <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/projects/greenzone-team-series-06-ai-guide-20261026/</guid>
-      <description>사진 AI의 품목 후보를 사람이 확인하고, RAG는 검수한 공식 문서로 안내하며, 평가 수치의 범위를 제한한 방식.</description>
+      <description>폐기물 사진 후보, 사용자의 최종 확인, 공식 배출 안내 검색을 서로 다른 단계로 구성한 이유.</description>
     </item>
   </channel>
 </rss>

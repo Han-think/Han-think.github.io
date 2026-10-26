@@ -203,18 +203,18 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">그린존 프로젝트 4 — K-means 대신 Louvain으로 생활권을 나눈 이유
+    <h2 class="entry-hint-parent">그린존 4 — 생활권 분석과 후보 비교를 분리하다
     </h2>
   </header>
   <div class="entry-content">
-    <p>목차 생활권과 거점 분산 분석의 목표 도로망 구성과 거리 가중치 Louvain 분석 구조와 반복 검증 9곳 제안의 분석 결과 거리 시나리오의 해석과 한계 이번 편의 정리 생활권과 거점 분산 분석의 목표 후보 위치를 고르는 일과 거점이 몇 곳 필요한지 정하는 일은 다르다. K-means는 군집 수 K를 먼저 정해야 하고, p-median도 거점 수를 입력한 뒤 위치를 찾는 데 적합하다. 그런데 신월1동에서 “몇 곳이 적당한가?”를 먼저 정할 근거가 뚜렷하지 않았다.
-팀은 생활권의 연결 구조에서 묶음 수를 찾는 Louvain 방식을 사용했다. 이것도 유일한 정답을 자동으로 찾아주는 마법은 아니다. 도로망 구성, 연결 반경, 해상도 설정, 입력 자료에 따라 결과가 달라질 수 있기 때문에 설정과 민감도 비교를 함께 보아야 했다.
+    <p>목차 문제와 목표 구조와 결정 구현과 확인 한계와 다음 단계 문제와 목표 — 한 가지 알고리즘으로 모든 결정을 하지 않았다 초기에는 지도에 거점을 찍고 가까운 건물을 나누는 그림부터 떠올렸다. 검토를 이어가면서 생활권을 나누는 문제와 실제 후보 장소를 고르는 문제는 다르다는 점이 드러났다.
+팀 분석은 도로 연결과 건물 간 관계를 바탕으로 생활권 구조를 살피고, 별도의 도로·보호시설·공간 조건으로 거점 후보를 비교했다. Louvain은 연결된 지점들의 군집 구조를 찾는 데 사용했다. K-means처럼 좌표와 군집 수를 먼저 정해 중심점 주변으로 나누는 방식과 목적이 다르다. 어느 방법이 언제나 더 낫다는 뜻은 아니며, 자료와 질문에 맞춰 선택해야 한다.
 ...</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>3 min</span></footer>
-  <a class="entry-link" aria-label="post link to 그린존 프로젝트 4 — K-means 대신 Louvain으로 생활권을 나눈 이유" href="https://Han-think.github.io/projects/greenzone-team-series-04-algorithm-20261026/"></a>
+<span title='2026-10-26 00:00:00 +0000 UTC'>2026년 10월 26일</span>&nbsp;·&nbsp;<span>2 min</span></footer>
+  <a class="entry-link" aria-label="post link to 그린존 4 — 생활권 분석과 후보 비교를 분리하다" href="https://Han-think.github.io/projects/greenzone-team-series-04-algorithm-20261026/"></a>
 </article>
     </main>
     
