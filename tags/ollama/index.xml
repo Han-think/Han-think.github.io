@@ -92,12 +92,5 @@
 &lt;/table&gt;
 &lt;p&gt;DailyLog Kit은 블로그 발행 안전장치가 필요한 글을 다루지 않는다. 블로그에 올릴 학습 글이나 프로젝트 시리즈는 LearningLog Kit의 Windows runner를 사용한다.&lt;/p&gt;</description>
     </item>
-    <item>
-      <title>[환경구성] LearningLog Kit — 학습 노트를 블로그로 자동 발행하는 파이프라인</title>
-      <link>https://Han-think.github.io/dev/learninglog-kit/</link>
-      <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
-      <guid>https://Han-think.github.io/dev/learninglog-kit/</guid>
-      <description>강의자료와 개인 학습 노트, 프로젝트 시리즈를 분리해 intake, extract, preview, approve, publish 흐름으로 정리하는 학습 기록 파이프라인. v0.5.4는 LearningLog와 Projects 메뉴 분리를 포함한다.</description>
-    </item>
   </channel>
 </rss>

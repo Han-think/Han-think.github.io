@@ -6,7 +6,7 @@
     <description>Recent content in 개인 개발 on Han-think Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Wed, 14 Oct 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 30 Oct 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://Han-think.github.io/dev/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>SA 개념을 HTML로 표현해 본 SNS 학습 시안</title>
@@ -87,7 +87,7 @@
       <link>https://Han-think.github.io/dev/learninglog-kit/</link>
       <pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate>
       <guid>https://Han-think.github.io/dev/learninglog-kit/</guid>
-      <description>강의자료와 개인 학습 노트, 프로젝트 시리즈를 분리해 intake, extract, preview, approve, publish 흐름으로 정리하는 학습 기록 파이프라인. v0.5.4는 LearningLog와 Projects 메뉴 분리를 포함한다.</description>
+      <description>강의자료와 개인 학습 노트, 프로젝트 시리즈를 분리해 intake, extract, preview, approve, publish 흐름으로 정리하는 학습 기록 파이프라인. v0.7.0은 발행 로직을 단계별 모듈로 나누고 LM 호출을 하나로 합쳤으며, 테스트와 가짜 LM 서버 하니스를 함께 담았다.</description>
     </item>
   </channel>
 </rss>
