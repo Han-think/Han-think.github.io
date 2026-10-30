@@ -1,0 +1,19 @@
+# Local/editor noise and credential files; existing tracked site files remain tracked.
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*.bak
+*.swp
+*.swo
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.p12
+*.pfx
+credentials.json
+service-account*.json
+id_rsa
+id_ed25519
